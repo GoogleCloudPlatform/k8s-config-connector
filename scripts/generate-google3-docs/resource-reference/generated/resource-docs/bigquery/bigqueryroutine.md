@@ -60,20 +60,6 @@
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/project-id</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -475,7 +461,7 @@ epoch.{% endverbatim %}</p>
 
 ### Typical Use Case
 ```yaml
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -492,16 +478,46 @@ epoch.{% endverbatim %}</p>
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryRoutine
 metadata:
-  name: bigqueryroutine-${uniqueId}
+  name: bigqueryroutine-sample
 spec:
   datasetRef:
-    name: bigquerydataset${uniqueId}
+    name: bigquerydatasetdep
   definitionBody: CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x
     + y);
   projectRef:
-    external: ${projectId}
-  resourceID: bigqueryroutine${uniqueId}
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
+  resourceID: bigqueryroutinesample
   routineType: PROCEDURE
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/delete-contents-on-destroy: "false"
+  name: bigquerydatasetdep
+spec:
+  defaultTableExpirationMs: 3600000
+  description: "BigQuery Dataset Dep"
+  friendlyName: bigquerydataset-dep
+  location: US
+  access:
+    - role: OWNER
+      # Replace ${PROJECT_ID?} with the ID of the project where your service
+      # account lives.
+      userByEmail: bigquerydataset-dep@${PROJECT_ID?}.iam.gserviceaccount.com
+    - role: WRITER
+      specialGroup: projectWriters
+    - role: READER
+      domain: google.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID.
+    cnrm.cloud.google.com/project-id: "${PROJECT_ID?}"
+  name: bigquerydataset-dep
 ```
 
 

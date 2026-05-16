@@ -387,7 +387,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The BigQueryDataTransferConfig name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
