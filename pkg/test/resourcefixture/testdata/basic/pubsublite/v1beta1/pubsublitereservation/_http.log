@@ -15,13 +15,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "reservation \"projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "reservation \"projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
