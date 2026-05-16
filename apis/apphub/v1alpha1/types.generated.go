@@ -58,13 +58,17 @@ type ServiceReference struct {
 }
 */
 
+/* unreachable type WorkloadProperties
 // +kcc:proto=google.cloud.apphub.v1.WorkloadProperties
 type WorkloadProperties struct {
 }
+*/
 
+/* unreachable type WorkloadReference
 // +kcc:proto=google.cloud.apphub.v1.WorkloadReference
 type WorkloadReference struct {
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.apphub.v1.DiscoveredService", skipping
 

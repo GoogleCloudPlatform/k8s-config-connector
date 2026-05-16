@@ -22,16 +22,20 @@
 
 package v1beta1
 
+/* unreachable type Instance_HostConfig
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfig struct {
 }
+*/
 
+/* unreachable type Instance_WorkforceIdentityFederationConfig
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.WorkforceIdentityFederationConfig
 type Instance_WorkforceIdentityFederationConfig struct {
 	// Optional. Immutable. Whether Workforce Identity Federation is enabled.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.WorkforceIdentityFederationConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.InitialConfig
 type Repository_InitialConfig struct {
@@ -176,9 +180,11 @@ type Repository_InitialConfig struct {
 	Readme *string `json:"readme,omitempty"`
 }
 
+/* unreachable type Repository_UrIs
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
 type Repository_UrIs struct {
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfigObservedState struct {

@@ -49,12 +49,14 @@ type AcceleratorConfig struct {
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 }
 
+/* unreachable type AuthenticationConfig
 // +kcc:proto=google.cloud.dataproc.v1.AuthenticationConfig
 type AuthenticationConfig struct {
 	// Optional. Authentication type for the user workload running in containers.
 	// +kcc:proto:field=google.cloud.dataproc.v1.AuthenticationConfig.user_workload_authentication_type
 	UserWorkloadAuthenticationType *string `json:"userWorkloadAuthenticationType,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "AutotuningConfig", skipping
 
@@ -1480,6 +1482,7 @@ type InstanceFlexibilityPolicyObservedState struct {
 	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResult `json:"instanceSelectionResults,omitempty"`
 }
 
+/* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// Output only. Full machine-type names, e.g. "n1-standard-16".
@@ -1490,6 +1493,7 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.vm_count
 	VMCount *int32 `json:"vmCount,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfigObservedState struct {
@@ -1606,6 +1610,7 @@ type JobStatusObservedState struct {
 }
 */
 
+/* unreachable type ManagedGroupConfigObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfigObservedState struct {
 	// Output only. The name of the Instance Template used for the Managed
@@ -1622,6 +1627,7 @@ type ManagedGroupConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ManagedGroupConfig.instance_group_manager_uri
 	InstanceGroupManagerURI *string `json:"instanceGroupManagerURI,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroup", skipping
 
