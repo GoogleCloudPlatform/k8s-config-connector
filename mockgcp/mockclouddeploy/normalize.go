@@ -28,27 +28,26 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	}
 	// Use standard placeholders to avoid conflicts with global normalizers
 	const (
-		PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
-		PlaceholderUID       = "111111111111111111111"
-		PlaceholderEtag      = "abcdef0123A="
+		PlaceholderUID  = "111111111111111111111"
+		PlaceholderEtag = "abcdef0123A="
 	)
 
 	// Note: .uid and .etag are already handled globally at the root.
 	// We only need to specify them for nested paths or if we use non-standard values.
 
-	replacements.ReplacePath(".createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".updateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// Array normalization for ListTargets
 	replacements.ReplacePath(".targets[].uid", PlaceholderUID)
-	replacements.ReplacePath(".targets[].createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".targets[].updateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".targets[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".targets[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".targets[].etag", PlaceholderEtag)
 
 	// Array normalization for ListAutomations
 	replacements.ReplacePath(".automations[].uid", PlaceholderUID)
-	replacements.ReplacePath(".automations[].createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".automations[].updateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".automations[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".automations[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".automations[].etag", PlaceholderEtag)
 
 	replacements.ReplacePath(".rules[].promoteReleaseRule.condition", map[string]interface{}{
@@ -56,17 +55,17 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	})
 
 	// Some responses wrap the object in a "response" field (e.g. LROs or some List responses in the harness)
-	replacements.ReplacePath(".response.createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".response.updateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.ReplacePath(".response.targets[].uid", PlaceholderUID)
-	replacements.ReplacePath(".response.targets[].createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".response.targets[].updateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".response.targets[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.targets[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.targets[].etag", PlaceholderEtag)
 
 	replacements.ReplacePath(".response.automations[].uid", PlaceholderUID)
-	replacements.ReplacePath(".response.automations[].createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".response.automations[].updateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".response.automations[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.automations[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.automations[].etag", PlaceholderEtag)
 
 	replacements.ReplacePath(".response.rules[].promoteReleaseRule.condition", map[string]interface{}{
@@ -74,8 +73,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	})
 
 	// LRO metadata
-	replacements.ReplacePath(".metadata.createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".metadata.endTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.requestedCancellation", false)
 
 	// LRO root

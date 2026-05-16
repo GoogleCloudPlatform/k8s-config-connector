@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockpubsub
+package mockgcpregistry
 
-import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+const (
+	// PlaceholderTime is commonly used for normalization of generic timestamps.
+	PlaceholderTime = "1970-01-01T00:00:00Z"
+
+	// PlaceholderTimestamp is commonly used for normalization of API timestamps.
+	PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 )
-
-var _ mockgcpregistry.SupportsNormalization = &MockService{}
-
-func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	replacements.ReplacePath(".snapshot.expireTime", mockgcpregistry.PlaceholderTimestamp)
-}
-
-func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
-}
