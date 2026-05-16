@@ -297,7 +297,7 @@ scope:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The location of the application.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Defines the parent path of the resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +307,7 @@ scope:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. The host project of the application.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The host project of the resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

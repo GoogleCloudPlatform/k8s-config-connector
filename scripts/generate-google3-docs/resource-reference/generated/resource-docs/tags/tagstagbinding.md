@@ -286,16 +286,51 @@ observedGeneration: integer
 
 ### Typical Use Case
 ```yaml
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagBinding
 metadata:
-  name: tagstagbinding-${uniqueId}
+  name: tagstagbinding-sample
 spec:
   parentRef:
-    #  external: //cloudresourcemanager.googleapis.com/projects/938492827514 # If parent is project, This is the full resource name of a GCP project number not ID! 
-    external: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
+    # If parent is project, This is the full resource name of a GCP project number not ID!
+    # Replace ${PROJECT_NUMBER?} with your project number.
+    external: //cloudresourcemanager.googleapis.com/projects/${PROJECT_NUMBER?}
   tagValueRef:
-    name: tagstagvalue-${uniqueId}
+    name: tagstagvalue-dep
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagKey
+metadata:
+  name: tagstagkey-dep
+spec:
+  description: For keyname resources.
+  # Replace ${ORG_ID?} with your organization ID.
+  parent: organizations/${ORG_ID?}
+  shortName: keynamedep
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagValue
+metadata:
+  name: tagstagvalue-dep
+spec:
+  description: For valuename resources.
+  parentRef:
+    name: tagstagkey-dep
+  shortName: valuename
 ```
 
 
