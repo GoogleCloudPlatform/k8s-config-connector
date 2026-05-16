@@ -136,11 +136,15 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
    - Running `dev/tasks/generate-types-and-mappers` will generate the mapper code once the `apis/datacatalog/v1beta1/policytag_types.go` file is generating an equivalent CRD.
    - Run `make all-binary` to ensure the generated mapper code compiles. Please fix any issue discovered by this compilation.
 
-9. **Update Migration Tracker**:
+- [ ] 9. **Update Migration Tracker**:
    - When creating a PR for this issue, please update the metadata for `DataCatalogPolicyTag` in `dev/migration-tracker/data.json`.
    - Change its `"state"` to `"In Progress"` and update the `"steps"` as they are completed.
 
-10. **Create PR**:
+- [ ] 10. **Run local validations**:
+   - Run `scripts/validate-prereqs.sh`, if the script fails the output will contain agent hints for fixing the errors.
+   - Run `./dev/ci/presubmits/tests-e2e-fixtures-datacatalog`
+
+- [ ] 11. **Create PR**:
    - Create a Pull Request with your changes.
    - Apply the same labels to the PR as are on this issue.
    - Include a link to the chore file (`.agents/tf2d-create-issue-for-types-go-gen-sh.md`) in the PR description.
