@@ -1207,7 +1207,6 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 		case "identityplatformoauthidpconfig":
 		case "kmscryptokey":
 		case "logginglogview":
-		case "memcacheinstance":
 		case "monitoringalertpolicy":
 		case "networkconnectivityhub":
 		case "networkservicesgrpcroute":
