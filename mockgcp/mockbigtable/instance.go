@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 )
@@ -38,6 +39,39 @@ import (
 type instanceAdminServer struct {
 	*MockService
 	pb.UnimplementedBigtableInstanceAdminServer
+}
+
+func (s *instanceAdminServer) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	fqn := req.Resource + "/iamPolicy"
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, fqn, policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return &iampb.Policy{}, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *instanceAdminServer) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	fqn := req.Resource + "/iamPolicy"
+
+	policy := proto.Clone(req.Policy).(*iampb.Policy)
+	policy.Etag = []byte("etag") // Dummy etag
+
+	if err := s.storage.Update(ctx, fqn, policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, fqn, policy); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	return policy, nil
 }
 
 func (s *instanceAdminServer) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {

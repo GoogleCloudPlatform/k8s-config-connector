@@ -28,9 +28,11 @@ import (
 
 	gcp "cloud.google.com/go/bigtable"
 	bigtablepb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"google.golang.org/api/option"
+	transportgrpc "google.golang.org/api/transport/grpc"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -53,11 +55,26 @@ type modelBigtableAppProfile struct {
 func (m *modelBigtableAppProfile) client(ctx context.Context, parentProject string) (*gcp.InstanceAdminClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
+	}
 	gcpClient, err := gcp.NewInstanceAdminClient(ctx, parentProject, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building BigtableAppProfile client: %w", err)
 	}
 	return gcpClient, err
+}
+
+func (m *modelBigtableAppProfile) iamClient(ctx context.Context) (bigtablepb.BigtableInstanceAdminClient, error) {
+	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	conn, err := transportgrpc.Dial(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("dialing bigtable admin: %w", err)
+	}
+	return bigtablepb.NewBigtableInstanceAdminClient(conn), nil
 }
 
 // This helper function converts a fully qualified project like "projects/myproject" into
@@ -93,9 +110,14 @@ func (m *modelBigtableAppProfile) AdapterForObject(ctx context.Context, op *dire
 	if err != nil {
 		return nil, fmt.Errorf("error creating instance admin client: %w", err)
 	}
+	iamClient, err := m.iamClient(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error creating iam client: %w", err)
+	}
 	return &BigtableAppProfileAdapter{
 		id:        id,
 		gcpClient: instanceAdminClient,
+		iamClient: iamClient,
 		desired:   obj,
 	}, nil
 }
@@ -108,11 +130,38 @@ func (m *modelBigtableAppProfile) AdapterForURL(ctx context.Context, url string)
 type BigtableAppProfileAdapter struct {
 	id        *krm.AppProfileIdentity
 	gcpClient *gcp.InstanceAdminClient
+	iamClient bigtablepb.BigtableInstanceAdminClient
 	desired   *krm.BigtableAppProfile
 	actual    *bigtablepb.AppProfile
 }
 
 var _ directbase.Adapter = &BigtableAppProfileAdapter{}
+var _ direct.IAMAdapter = &BigtableAppProfileAdapter{}
+
+func (a *BigtableAppProfileAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *BigtableAppProfileAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
+}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
