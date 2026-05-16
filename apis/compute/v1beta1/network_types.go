@@ -97,7 +97,7 @@ type ComputeNetworkStatus struct {
 
 	// The gateway address for default routing out of the network. This value
 	// is selected by GCP.
-	GatewayIpv4 *string `json:"gatewayIpv4,omitempty"`
+	GatewayIPV4 *string `json:"gatewayIPV4,omitempty"`
 
 	// The self link of the ComputeNetwork.
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -108,7 +108,7 @@ type ComputeNetworkStatus struct {
 type ComputeNetworkObservedState struct {
 	// [Output Only] The gateway address for default routing out of the network, selected by Google Cloud.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.gateway_i_pv4
-	GatewayIPv4 *string `json:"gatewayIPv4,omitempty"`
+	GatewayIPV4 *string `json:"gatewayIPV4,omitempty"`
 
 	// [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.self_link
