@@ -1,0 +1,6 @@
+This PR adds mockgcp support for MemcacheInstance to KCC.
+It implements the basic Create/Get/Update/Delete operations using the `cloud.google.com/go/memcache/apiv1beta2/memcachepb` library.
+
+It also introduces the skill documentation `.gemini/skills/add-new-mockgcp-resource/SKILL.md` to guide future mockgcp implementations, along with its associated journal file.
+
+Fixes #8197
