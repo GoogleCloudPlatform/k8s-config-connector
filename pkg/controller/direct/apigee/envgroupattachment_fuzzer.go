@@ -32,11 +32,11 @@ func envgroupAttachmentFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.SpecField(".Environment")
 	f.StatusField(".CreatedAt")
 
-	f.Unimplemented_NotYetTriaged(".Name")
-	f.Unimplemented_NotYetTriaged(".EnvironmentGroupId")
-	f.Unimplemented_NotYetTriaged(".ForceSendFields")
-	f.Unimplemented_NotYetTriaged(".NullFields")
-	f.Unimplemented_NotYetTriaged(".ServerResponse")
+	f.IdentityField(".Name")
+	f.IdentityField(".EnvironmentGroupId")
+	f.Ignore_JSONBookkeeping(".ForceSendFields")
+	f.Ignore_JSONBookkeeping(".NullFields")
+	f.Ignore_JSONBookkeeping(".ServerResponse")
 
 	f.FilterStatus = func(in *api.GoogleCloudApigeeV1EnvironmentGroupAttachment) {
 		// time.RFC3339 format drops the milliseconds, so we zero them to pass roundtrip.

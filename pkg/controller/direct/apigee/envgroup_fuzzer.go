@@ -47,9 +47,9 @@ func envgroupFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.StatusField(".State")
 	f.StatusField(".Name")
 
-	f.Unimplemented_NotYetTriaged(".ForceSendFields")
-	f.Unimplemented_NotYetTriaged(".NullFields")
-	f.Unimplemented_NotYetTriaged(".ServerResponse")
+	f.Ignore_JSONBookkeeping(".ForceSendFields")
+	f.Ignore_JSONBookkeeping(".NullFields")
+	f.Ignore_JSONBookkeeping(".ServerResponse")
 
 	return f
 }
