@@ -20,8 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
-const TimePlaceholder = "2024-04-01T12:34:56.123456Z"
-
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
@@ -29,20 +27,20 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		return
 	}
 
-	replacements.ReplacePath(".createTime", TimePlaceholder)
-	replacements.ReplacePath(".updateTime", TimePlaceholder)
-	replacements.ReplacePath(".endTime", TimePlaceholder)
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
 
-	replacements.ReplacePath(".lbRouteExtensions[].createTime", TimePlaceholder)
-	replacements.ReplacePath(".lbRouteExtensions[].updateTime", TimePlaceholder)
+	replacements.ReplacePath(".lbRouteExtensions[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".lbRouteExtensions[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 
-	replacements.ReplacePath(".wasmPlugins[].createTime", TimePlaceholder)
-	replacements.ReplacePath(".wasmPlugins[].updateTime", TimePlaceholder)
-	replacements.ReplacePath(".versions.*.createTime", TimePlaceholder)
-	replacements.ReplacePath(".versions.*.updateTime", TimePlaceholder)
+	replacements.ReplacePath(".wasmPlugins[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".wasmPlugins[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".versions.*.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".versions.*.updateTime", mockgcpregistry.PlaceholderTimestamp)
 
-	replacements.ReplacePath(".metadata.createTime", TimePlaceholder)
-	replacements.ReplacePath(".metadata.endTime", TimePlaceholder)
+	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.requestedCancellation", nil)
 }
 

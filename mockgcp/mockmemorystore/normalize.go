@@ -23,8 +23,7 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 const (
-	PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
-	PlaceholderUID       = "11111111-1111-1111-1111-111111111111"
+	PlaceholderUID = "11111111-1111-1111-1111-111111111111"
 )
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
@@ -32,25 +31,25 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		return
 	}
 
-	replacements.ReplacePath(".crossInstanceReplicationConfig.updateTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".expireTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".maintenancePolicy.createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".maintenancePolicy.updateTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".response.crossInstanceReplicationConfig.updateTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".response.expireTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".response.maintenancePolicy.createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".response.maintenancePolicy.updateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".crossInstanceReplicationConfig.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".maintenancePolicy.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".maintenancePolicy.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.crossInstanceReplicationConfig.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.expireTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.maintenancePolicy.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.maintenancePolicy.updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.ReplacePath(".crossInstanceReplicationConfig.membership.primaryInstance.uid", PlaceholderUID)
 	replacements.ReplacePath(".crossInstanceReplicationConfig.membership.secondaryInstances[].uid", PlaceholderUID)
 	replacements.ReplacePath(".response.crossInstanceReplicationConfig.membership.primaryInstance.uid", PlaceholderUID)
 	replacements.ReplacePath(".response.crossInstanceReplicationConfig.membership.secondaryInstances[].uid", PlaceholderUID)
 	// Backups
-	replacements.ReplacePath(".backupFiles[].createTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".backupFiles[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".backupFiles[].fileName", "fakefilename.rdb")
-	replacements.ReplacePath(".response.backupFiles[].createTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".response.backupFiles[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".instanceUid", PlaceholderUID)
-	replacements.ReplacePath(".encryptionInfo.lastUpdateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".encryptionInfo.lastUpdateTime", mockgcpregistry.PlaceholderTimestamp)
 
 }
 

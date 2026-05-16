@@ -20,14 +20,12 @@ import (
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
-const NormalizedTimestamp = "2024-04-01T12:34:56.123456Z"
-
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// Cluster
-	replacements.ReplacePath(".createTime", NormalizedTimestamp)
-	replacements.ReplacePath(".clusters[].createTime", NormalizedTimestamp)
-	replacements.ReplacePath(".updateTime", NormalizedTimestamp)
-	replacements.ReplacePath(".clusters[].updateTime", NormalizedTimestamp)
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".clusters[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".clusters[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
