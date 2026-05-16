@@ -1,4 +1,3 @@
-
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,56 +29,57 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-import (
 
-"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type StorageNotificationSpec struct {
-BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
-/* Immutable.  A set of key/value attribute pairs to attach to each Cloud Pub/Sub message published for this notification subscription. */
-// +optional
-CustomAttributes map[string]string `json:"customAttributes,omitempty"`
+	/* Immutable.  A set of key/value attribute pairs to attach to each Cloud Pub/Sub message published for this notification subscription. */
+	// +optional
+	CustomAttributes map[string]string `json:"customAttributes,omitempty"`
 
-/* Immutable. List of event type filters for this notification config. If not specified, Cloud Storage will send notifications for all event types. The valid types are: "OBJECT_FINALIZE", "OBJECT_METADATA_UPDATE", "OBJECT_DELETE", "OBJECT_ARCHIVE". */
-// +optional
-EventTypes []string `json:"eventTypes,omitempty"`
+	/* Immutable. List of event type filters for this notification config. If not specified, Cloud Storage will send notifications for all event types. The valid types are: "OBJECT_FINALIZE", "OBJECT_METADATA_UPDATE", "OBJECT_DELETE", "OBJECT_ARCHIVE". */
+	// +optional
+	EventTypes []string `json:"eventTypes,omitempty"`
 
-/* Immutable. Specifies a prefix path filter for this notification config. Cloud Storage will only send notifications for objects in this bucket whose names begin with the specified prefix. */
-// +optional
-ObjectNamePrefix *string `json:"objectNamePrefix,omitempty"`
+	/* Immutable. Specifies a prefix path filter for this notification config. Cloud Storage will only send notifications for objects in this bucket whose names begin with the specified prefix. */
+	// +optional
+	ObjectNamePrefix *string `json:"objectNamePrefix,omitempty"`
 
-/* Immutable. The desired content of the Payload. One of "JSON_API_V1" or "NONE". */
-PayloadFormat string `json:"payloadFormat"`
+	/* Immutable. The desired content of the Payload. One of "JSON_API_V1" or "NONE". */
+	PayloadFormat string `json:"payloadFormat"`
 
-/* Immutable. Optional. The service-generated notificationId of the resource. Used for acquisition only. Leave unset to create a new resource. */
-// +optional
-ResourceID *string `json:"resourceID,omitempty"`
+	/* Immutable. Optional. The service-generated notificationId of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
 
-TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type StorageNotificationStatus struct {
 	/* Conditions represent the latest available observations of the
-	    StorageNotification's current state. */
-Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-/* The ID of the created notification. */
-// +optional
-NotificationId *string `json:"notificationId,omitempty"`
+	   StorageNotification's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The ID of the created notification. */
+	// +optional
+	NotificationId *string `json:"notificationId,omitempty"`
 
-/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-// +optional
-ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-/* The URI of the created resource. */
-// +optional
-SelfLink *string `json:"selfLink,omitempty"`
+	/* The URI of the created resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpstoragenotification;gcpstoragenotifications
@@ -96,20 +96,22 @@ SelfLink *string `json:"selfLink,omitempty"`
 // StorageNotification is the Schema for the storage API
 // +k8s:openapi-gen=true
 type StorageNotification struct {
-  metav1.TypeMeta `json:",inline"`
-  metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-  Spec StorageNotificationSpec `json:"spec,omitempty"`
-  Status StorageNotificationStatus `json:"status,omitempty"`
+	Spec   StorageNotificationSpec   `json:"spec,omitempty"`
+	Status StorageNotificationStatus `json:"status,omitempty"`
 }
- // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
- // StorageNotificationList contains a list of StorageNotification
- type StorageNotificationList struct {
-   metav1.TypeMeta `json:",inline"`
-   metav1.ListMeta `json:"metadata,omitempty"`
-   Items []StorageNotification `json:"items"`
- }
- func init() {
-   SchemeBuilder.Register(&StorageNotification{}, &StorageNotificationList{})
- }
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// StorageNotificationList contains a list of StorageNotification
+type StorageNotificationList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []StorageNotification `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&StorageNotification{}, &StorageNotificationList{})
+}
