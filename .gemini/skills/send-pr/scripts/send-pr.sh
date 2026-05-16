@@ -58,6 +58,12 @@ if [[ ! -f "$BODY_FILE" ]]; then
   exit 1
 fi
 
+if git ls-files --error-unmatch pr-body.txt >/dev/null 2>&1; then
+  echo "Error: pr-body.txt is checked into git."
+  echo "Please remove it (e.g., git rm pr-body.txt) and commit the removal before sending a PR."
+  exit 1
+fi
+
 if ! git diff --quiet; then
   echo "Error: There are uncommitted changes in your working directory."
   echo "Please commit your work before running this script."
