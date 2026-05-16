@@ -265,6 +265,7 @@ type JobStatus struct {
 	RunDuration *string `json:"runDuration,omitempty"`
 }
 
+/* unreachable type JobStatus_InstanceStatus
 // +kcc:proto=google.cloud.batch.v1.JobStatus.InstanceStatus
 type JobStatus_InstanceStatus struct {
 	// The Compute Engine machine type.
@@ -283,7 +284,9 @@ type JobStatus_InstanceStatus struct {
 	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.InstanceStatus.boot_disk
 	BootDisk *AllocationPolicy_Disk `json:"bootDisk,omitempty"`
 }
+*/
 
+/* unreachable type JobStatus_TaskGroupStatus
 // +kcc:proto=google.cloud.batch.v1.JobStatus.TaskGroupStatus
 type JobStatus_TaskGroupStatus struct {
 	// Count of task in each state in the TaskGroup.
@@ -295,6 +298,7 @@ type JobStatus_TaskGroupStatus struct {
 	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.TaskGroupStatus.instances
 	Instances []JobStatus_InstanceStatus `json:"instances,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.batch.v1.LifecyclePolicy
 type LifecyclePolicy struct {
@@ -472,6 +476,7 @@ type Runnable_Script struct {
 	Text *string `json:"text,omitempty"`
 }
 
+/* unreachable type ServiceAccount
 // +kcc:proto=google.cloud.batch.v1.ServiceAccount
 type ServiceAccount struct {
 	// Email address of the service account.
@@ -482,6 +487,7 @@ type ServiceAccount struct {
 	// +kcc:proto:field=google.cloud.batch.v1.ServiceAccount.scopes
 	Scopes []string `json:"scopes,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.batch.v1.StatusEvent
 type StatusEvent struct {

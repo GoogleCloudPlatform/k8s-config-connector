@@ -97,6 +97,7 @@ type BackupVault struct {
 }
 */
 
+/* unreachable type BackupVault_BackupRetentionPolicy
 // +kcc:proto=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy
 type BackupVault_BackupRetentionPolicy struct {
 	// Required. Minimum retention duration in days for backups in the backup
@@ -128,6 +129,7 @@ type BackupVault_BackupRetentionPolicy struct {
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.manual_backup_immutable
 	ManualBackupImmutable *bool `json:"manualBackupImmutable,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.netapp.v1.BackupPolicy", skipping
 
