@@ -153,6 +153,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/datacatalog/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
