@@ -32,11 +32,11 @@ type FakeBigqueryanalyticshubV1beta1 struct {
 }
 
 func (c *FakeBigqueryanalyticshubV1beta1) BigQueryAnalyticsHubDataExchanges(namespace string) v1beta1.BigQueryAnalyticsHubDataExchangeInterface {
-	return &FakeBigQueryAnalyticsHubDataExchanges{c, namespace}
+	return newFakeBigQueryAnalyticsHubDataExchanges(c, namespace)
 }
 
 func (c *FakeBigqueryanalyticshubV1beta1) BigQueryAnalyticsHubListings(namespace string) v1beta1.BigQueryAnalyticsHubListingInterface {
-	return &FakeBigQueryAnalyticsHubListings{c, namespace}
+	return newFakeBigQueryAnalyticsHubListings(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

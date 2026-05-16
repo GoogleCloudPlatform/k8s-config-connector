@@ -32,11 +32,11 @@ type FakeCloudbuildV1beta1 struct {
 }
 
 func (c *FakeCloudbuildV1beta1) CloudBuildTriggers(namespace string) v1beta1.CloudBuildTriggerInterface {
-	return &FakeCloudBuildTriggers{c, namespace}
+	return newFakeCloudBuildTriggers(c, namespace)
 }
 
 func (c *FakeCloudbuildV1beta1) CloudBuildWorkerPools(namespace string) v1beta1.CloudBuildWorkerPoolInterface {
-	return &FakeCloudBuildWorkerPools{c, namespace}
+	return newFakeCloudBuildWorkerPools(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

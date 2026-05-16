@@ -22,123 +22,32 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sql/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sql/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeSQLSSLCerts implements SQLSSLCertInterface
-type FakeSQLSSLCerts struct {
+// fakeSQLSSLCerts implements SQLSSLCertInterface
+type fakeSQLSSLCerts struct {
+	*gentype.FakeClientWithList[*v1beta1.SQLSSLCert, *v1beta1.SQLSSLCertList]
 	Fake *FakeSqlV1beta1
-	ns   string
 }
 
-var sqlsslcertsResource = v1beta1.SchemeGroupVersion.WithResource("sqlsslcerts")
-
-var sqlsslcertsKind = v1beta1.SchemeGroupVersion.WithKind("SQLSSLCert")
-
-// Get takes name of the sQLSSLCert, and returns the corresponding sQLSSLCert object, and an error if there is any.
-func (c *FakeSQLSSLCerts) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SQLSSLCert, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(sqlsslcertsResource, c.ns, name), &v1beta1.SQLSSLCert{})
-
-	if obj == nil {
-		return nil, err
+func newFakeSQLSSLCerts(fake *FakeSqlV1beta1, namespace string) sqlv1beta1.SQLSSLCertInterface {
+	return &fakeSQLSSLCerts{
+		gentype.NewFakeClientWithList[*v1beta1.SQLSSLCert, *v1beta1.SQLSSLCertList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("sqlsslcerts"),
+			v1beta1.SchemeGroupVersion.WithKind("SQLSSLCert"),
+			func() *v1beta1.SQLSSLCert { return &v1beta1.SQLSSLCert{} },
+			func() *v1beta1.SQLSSLCertList { return &v1beta1.SQLSSLCertList{} },
+			func(dst, src *v1beta1.SQLSSLCertList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.SQLSSLCertList) []*v1beta1.SQLSSLCert { return gentype.ToPointerSlice(list.Items) },
+			func(list *v1beta1.SQLSSLCertList, items []*v1beta1.SQLSSLCert) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.SQLSSLCert), err
-}
-
-// List takes label and field selectors, and returns the list of SQLSSLCerts that match those selectors.
-func (c *FakeSQLSSLCerts) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SQLSSLCertList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(sqlsslcertsResource, sqlsslcertsKind, c.ns, opts), &v1beta1.SQLSSLCertList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.SQLSSLCertList{ListMeta: obj.(*v1beta1.SQLSSLCertList).ListMeta}
-	for _, item := range obj.(*v1beta1.SQLSSLCertList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested sQLSSLCerts.
-func (c *FakeSQLSSLCerts) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(sqlsslcertsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a sQLSSLCert and creates it.  Returns the server's representation of the sQLSSLCert, and an error, if there is any.
-func (c *FakeSQLSSLCerts) Create(ctx context.Context, sQLSSLCert *v1beta1.SQLSSLCert, opts v1.CreateOptions) (result *v1beta1.SQLSSLCert, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(sqlsslcertsResource, c.ns, sQLSSLCert), &v1beta1.SQLSSLCert{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SQLSSLCert), err
-}
-
-// Update takes the representation of a sQLSSLCert and updates it. Returns the server's representation of the sQLSSLCert, and an error, if there is any.
-func (c *FakeSQLSSLCerts) Update(ctx context.Context, sQLSSLCert *v1beta1.SQLSSLCert, opts v1.UpdateOptions) (result *v1beta1.SQLSSLCert, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(sqlsslcertsResource, c.ns, sQLSSLCert), &v1beta1.SQLSSLCert{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SQLSSLCert), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeSQLSSLCerts) UpdateStatus(ctx context.Context, sQLSSLCert *v1beta1.SQLSSLCert, opts v1.UpdateOptions) (*v1beta1.SQLSSLCert, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(sqlsslcertsResource, "status", c.ns, sQLSSLCert), &v1beta1.SQLSSLCert{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SQLSSLCert), err
-}
-
-// Delete takes name of the sQLSSLCert and deletes it. Returns an error if one occurs.
-func (c *FakeSQLSSLCerts) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(sqlsslcertsResource, c.ns, name, opts), &v1beta1.SQLSSLCert{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeSQLSSLCerts) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(sqlsslcertsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.SQLSSLCertList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched sQLSSLCert.
-func (c *FakeSQLSSLCerts) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SQLSSLCert, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(sqlsslcertsResource, c.ns, name, pt, data, subresources...), &v1beta1.SQLSSLCert{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SQLSSLCert), err
 }

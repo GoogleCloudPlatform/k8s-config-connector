@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1alpha1"
+	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // BinaryAuthorizationPlatformPoliciesGetter has a method to return a BinaryAuthorizationPlatformPolicyInterface.
@@ -41,158 +40,38 @@ type BinaryAuthorizationPlatformPoliciesGetter interface {
 
 // BinaryAuthorizationPlatformPolicyInterface has methods to work with BinaryAuthorizationPlatformPolicy resources.
 type BinaryAuthorizationPlatformPolicyInterface interface {
-	Create(ctx context.Context, binaryAuthorizationPlatformPolicy *v1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.CreateOptions) (*v1alpha1.BinaryAuthorizationPlatformPolicy, error)
-	Update(ctx context.Context, binaryAuthorizationPlatformPolicy *v1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.UpdateOptions) (*v1alpha1.BinaryAuthorizationPlatformPolicy, error)
-	UpdateStatus(ctx context.Context, binaryAuthorizationPlatformPolicy *v1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.UpdateOptions) (*v1alpha1.BinaryAuthorizationPlatformPolicy, error)
+	Create(ctx context.Context, binaryAuthorizationPlatformPolicy *binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.CreateOptions) (*binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, error)
+	Update(ctx context.Context, binaryAuthorizationPlatformPolicy *binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.UpdateOptions) (*binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, binaryAuthorizationPlatformPolicy *binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.UpdateOptions) (*binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.BinaryAuthorizationPlatformPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.BinaryAuthorizationPlatformPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, err error)
 	BinaryAuthorizationPlatformPolicyExpansion
 }
 
 // binaryAuthorizationPlatformPolicies implements BinaryAuthorizationPlatformPolicyInterface
 type binaryAuthorizationPlatformPolicies struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, *binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicyList]
 }
 
 // newBinaryAuthorizationPlatformPolicies returns a BinaryAuthorizationPlatformPolicies
 func newBinaryAuthorizationPlatformPolicies(c *BinaryauthorizationV1alpha1Client, namespace string) *binaryAuthorizationPlatformPolicies {
 	return &binaryAuthorizationPlatformPolicies{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy, *binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicyList](
+			"binaryauthorizationplatformpolicies",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy {
+				return &binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicy{}
+			},
+			func() *binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicyList {
+				return &binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicyList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the binaryAuthorizationPlatformPolicy, and returns the corresponding binaryAuthorizationPlatformPolicy object, and an error if there is any.
-func (c *binaryAuthorizationPlatformPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error) {
-	result = &v1alpha1.BinaryAuthorizationPlatformPolicy{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("binaryauthorizationplatformpolicies").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of BinaryAuthorizationPlatformPolicies that match those selectors.
-func (c *binaryAuthorizationPlatformPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BinaryAuthorizationPlatformPolicyList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.BinaryAuthorizationPlatformPolicyList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("binaryauthorizationplatformpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested binaryAuthorizationPlatformPolicies.
-func (c *binaryAuthorizationPlatformPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("binaryauthorizationplatformpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a binaryAuthorizationPlatformPolicy and creates it.  Returns the server's representation of the binaryAuthorizationPlatformPolicy, and an error, if there is any.
-func (c *binaryAuthorizationPlatformPolicies) Create(ctx context.Context, binaryAuthorizationPlatformPolicy *v1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.CreateOptions) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error) {
-	result = &v1alpha1.BinaryAuthorizationPlatformPolicy{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("binaryauthorizationplatformpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(binaryAuthorizationPlatformPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a binaryAuthorizationPlatformPolicy and updates it. Returns the server's representation of the binaryAuthorizationPlatformPolicy, and an error, if there is any.
-func (c *binaryAuthorizationPlatformPolicies) Update(ctx context.Context, binaryAuthorizationPlatformPolicy *v1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.UpdateOptions) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error) {
-	result = &v1alpha1.BinaryAuthorizationPlatformPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("binaryauthorizationplatformpolicies").
-		Name(binaryAuthorizationPlatformPolicy.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(binaryAuthorizationPlatformPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *binaryAuthorizationPlatformPolicies) UpdateStatus(ctx context.Context, binaryAuthorizationPlatformPolicy *v1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.UpdateOptions) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error) {
-	result = &v1alpha1.BinaryAuthorizationPlatformPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("binaryauthorizationplatformpolicies").
-		Name(binaryAuthorizationPlatformPolicy.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(binaryAuthorizationPlatformPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the binaryAuthorizationPlatformPolicy and deletes it. Returns an error if one occurs.
-func (c *binaryAuthorizationPlatformPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("binaryauthorizationplatformpolicies").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *binaryAuthorizationPlatformPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("binaryauthorizationplatformpolicies").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched binaryAuthorizationPlatformPolicy.
-func (c *binaryAuthorizationPlatformPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error) {
-	result = &v1alpha1.BinaryAuthorizationPlatformPolicy{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("binaryauthorizationplatformpolicies").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }
