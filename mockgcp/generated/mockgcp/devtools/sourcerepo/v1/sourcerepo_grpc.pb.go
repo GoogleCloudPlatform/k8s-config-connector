@@ -34,6 +34,8 @@ type SourceRepoClient interface {
 	// If the named repository already exists, `CreateRepo` returns
 	// `ALREADY_EXISTS`.
 	CreateRepo(ctx context.Context, in *CreateRepoRequest, opts ...grpc.CallOption) (*Repo, error)
+	// Updates a repo.
+	UpdateRepo(ctx context.Context, in *UpdateRepoRequest, opts ...grpc.CallOption) (*Repo, error)
 	// Deletes a repo.
 	DeleteRepo(ctx context.Context, in *DeleteRepoRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Sets the access control policy on the specified resource. Replaces any
@@ -78,6 +80,15 @@ func (c *sourceRepoClient) GetRepo(ctx context.Context, in *GetRepoRequest, opts
 func (c *sourceRepoClient) CreateRepo(ctx context.Context, in *CreateRepoRequest, opts ...grpc.CallOption) (*Repo, error) {
 	out := new(Repo)
 	err := c.cc.Invoke(ctx, "/mockgcp.devtools.sourcerepo.v1.SourceRepo/CreateRepo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sourceRepoClient) UpdateRepo(ctx context.Context, in *UpdateRepoRequest, opts ...grpc.CallOption) (*Repo, error) {
+	out := new(Repo)
+	err := c.cc.Invoke(ctx, "/mockgcp.devtools.sourcerepo.v1.SourceRepo/UpdateRepo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -134,6 +145,8 @@ type SourceRepoServer interface {
 	// If the named repository already exists, `CreateRepo` returns
 	// `ALREADY_EXISTS`.
 	CreateRepo(context.Context, *CreateRepoRequest) (*Repo, error)
+	// Updates a repo.
+	UpdateRepo(context.Context, *UpdateRepoRequest) (*Repo, error)
 	// Deletes a repo.
 	DeleteRepo(context.Context, *DeleteRepoRequest) (*empty.Empty, error)
 	// Sets the access control policy on the specified resource. Replaces any
@@ -162,6 +175,9 @@ func (UnimplementedSourceRepoServer) GetRepo(context.Context, *GetRepoRequest) (
 }
 func (UnimplementedSourceRepoServer) CreateRepo(context.Context, *CreateRepoRequest) (*Repo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRepo not implemented")
+}
+func (UnimplementedSourceRepoServer) UpdateRepo(context.Context, *UpdateRepoRequest) (*Repo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRepo not implemented")
 }
 func (UnimplementedSourceRepoServer) DeleteRepo(context.Context, *DeleteRepoRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRepo not implemented")
@@ -238,6 +254,24 @@ func _SourceRepo_CreateRepo_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SourceRepoServer).CreateRepo(ctx, req.(*CreateRepoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SourceRepo_UpdateRepo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRepoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SourceRepoServer).UpdateRepo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.devtools.sourcerepo.v1.SourceRepo/UpdateRepo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SourceRepoServer).UpdateRepo(ctx, req.(*UpdateRepoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -332,6 +366,10 @@ var SourceRepo_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateRepo",
 			Handler:    _SourceRepo_CreateRepo_Handler,
+		},
+		{
+			MethodName: "UpdateRepo",
+			Handler:    _SourceRepo_UpdateRepo_Handler,
 		},
 		{
 			MethodName: "DeleteRepo",

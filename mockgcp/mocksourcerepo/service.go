@@ -22,9 +22,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"sync"
 
 	"google.golang.org/grpc"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -39,9 +41,12 @@ func init() {
 
 // MockService represents a mocked sourcerepo service.
 type MockService struct {
+	sync.Mutex
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
+
+	iamPolicies map[string]*iampb.Policy
 }
 
 // New creates a MockService.
@@ -50,6 +55,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		MockEnvironment: env,
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
+		iamPolicies:     make(map[string]*iampb.Policy),
 	}
 	return s
 }

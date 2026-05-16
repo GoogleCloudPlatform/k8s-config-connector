@@ -20,6 +20,7 @@ package mocksourcerepo
 
 import (
 	"context"
+	"crypto/md5"
 	"fmt"
 	"strings"
 
@@ -28,6 +29,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/sourcerepo/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -108,17 +111,73 @@ func (s *SourceRepoServer) DeleteRepo(ctx context.Context, req *pb.DeleteRepoReq
 	return &emptypb.Empty{}, nil
 }
 
-// func (s *SourceRepoServer) GetIamPolicy(ctx context.Context, req *iamv1.GetIamPolicyRequest) (*iamv1.Policy, error) {
-// 	return s.iam.GetIamPolicy(ctx, req)
-// }
+func (s *SourceRepoServer) UpdateRepo(ctx context.Context, req *pb.UpdateRepoRequest) (*pb.Repo, error) {
+	name, err := s.parseRepoName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
 
-// func (s *SourceRepoServer) SetIamPolicy(ctx context.Context, req *iamv1.SetIamPolicyRequest) (*iamv1.Policy, error) {
-// 	return s.iam.SetIamPolicy(ctx, req)
-// }
+	fqn := name.String()
 
-// func (s *SourceRepoServer) TestIamPermissions(ctx context.Context, req *iamv1.TestIamPermissionsRequest) (*iamv1.TestIamPermissionsResponse, error) {
-// 	return s.iam.TestIamPermissions(ctx, req)
-// }
+	obj := &pb.Repo{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	updateMask := req.GetUpdateMask()
+	if updateMask != nil {
+		if err := fields.UpdateByFieldMask(obj, req.GetRepo(), updateMask.GetPaths()); err != nil {
+			return nil, err
+		}
+	} else {
+		// Full update if no mask
+		obj = req.GetRepo()
+		obj.Name = fqn
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *SourceRepoServer) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	s.MockService.Lock()
+	defer s.MockService.Unlock()
+
+	policy := s.iamPolicies[req.Resource]
+	if policy == nil {
+		policy = &iampb.Policy{}
+		policy.Etag = s.computeEtag(policy)
+	}
+	return policy, nil
+}
+
+func (s *SourceRepoServer) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	s.MockService.Lock()
+	defer s.MockService.Unlock()
+
+	s.iamPolicies[req.Resource] = req.Policy
+	req.Policy.Etag = s.computeEtag(req.Policy)
+	return req.Policy, nil
+}
+
+func (s *SourceRepoServer) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	// For mock, just allow all requested permissions
+	return &iampb.TestIamPermissionsResponse{
+		Permissions: req.Permissions,
+	}, nil
+}
+
+func (s *SourceRepoServer) computeEtag(policy *iampb.Policy) []byte {
+	b, err := proto.Marshal(policy)
+	if err != nil {
+		panic(fmt.Errorf("error marshaling policy: %w", err))
+	}
+	hash := md5.Sum(b)
+	return hash[:]
+}
 
 type repoName struct {
 	Project *projects.ProjectData

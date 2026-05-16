@@ -45,7 +45,7 @@ mv google/api/serviceusage/ mockgcp/api/
 mv google/api/cloudquotas/ mockgcp/api/
 mv google/devtools/artifactregistry mockgcp/devtools
 mv google/devtools/cloudbuild mockgcp/devtools
-mv google/devtools/sourcerepo mockgcp/devtools
+# mv google/devtools/sourcerepo mockgcp/devtools (using patched version in apis/mockgcp)
 
 rm -rf mockgrafeas/
 mv grafeas mockgrafeas
