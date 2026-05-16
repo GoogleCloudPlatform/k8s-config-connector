@@ -38,7 +38,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpcomputeforwardingrule<br>gcpcomputeforwardingrules<br>computeforwardingrule</td>
+<td>computeforwardingrule<br>gcpcomputeforwardingrule<br>gcpcomputeforwardingrules</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -1317,20 +1317,6 @@ serviceName: string
 
 ### Global Forwarding Rule With Target Http Proxy
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
@@ -1389,20 +1375,6 @@ spec:
 
 ### Global Forwarding Rule With Target Ssl Proxy
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
@@ -1525,20 +1497,6 @@ stringData:
 
 ### Global Forwarding Rule With Target Tcp Proxy
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
@@ -1587,20 +1545,6 @@ spec:
 
 ### Global Forwarding Rule With Target gRPC Proxy
 ```yaml
-# Copyright 2021 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
@@ -1651,20 +1595,6 @@ spec:
 
 ### Global Internal Forwarding Rule With Target Http Proxy
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
@@ -1785,20 +1715,6 @@ spec:
 
 ### Regional Forwarding Rule
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
@@ -1846,20 +1762,6 @@ spec:
 
 ### Regional Forwarding Rule Vpc Psc
 ```yaml
-# Copyright 2024 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:

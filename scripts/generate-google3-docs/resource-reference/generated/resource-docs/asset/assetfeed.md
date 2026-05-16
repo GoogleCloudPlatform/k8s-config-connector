@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpassetfeed<br>gcpassetfeeds<br>assetfeed</td>
+<td>assetfeed<br>gcpassetfeed<br>gcpassetfeeds</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>

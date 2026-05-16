@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpbigqueryreservationreservation<br>gcpbigqueryreservationreservations<br>bigqueryreservationreservation</td>
+<td>bigqueryreservationreservation<br>gcpbigqueryreservationreservation<br>gcpbigqueryreservationreservations</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>

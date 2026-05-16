@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpessentialcontactscontact<br>gcpessentialcontactscontacts<br>essentialcontactscontact</td>
+<td>essentialcontactscontact<br>gcpessentialcontactscontact<br>gcpessentialcontactscontacts</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
