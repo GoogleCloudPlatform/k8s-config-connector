@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // ComputeRouterPeersGetter has a method to return a ComputeRouterPeerInterface.
@@ -41,158 +40,34 @@ type ComputeRouterPeersGetter interface {
 
 // ComputeRouterPeerInterface has methods to work with ComputeRouterPeer resources.
 type ComputeRouterPeerInterface interface {
-	Create(ctx context.Context, computeRouterPeer *v1beta1.ComputeRouterPeer, opts v1.CreateOptions) (*v1beta1.ComputeRouterPeer, error)
-	Update(ctx context.Context, computeRouterPeer *v1beta1.ComputeRouterPeer, opts v1.UpdateOptions) (*v1beta1.ComputeRouterPeer, error)
-	UpdateStatus(ctx context.Context, computeRouterPeer *v1beta1.ComputeRouterPeer, opts v1.UpdateOptions) (*v1beta1.ComputeRouterPeer, error)
+	Create(ctx context.Context, computeRouterPeer *computev1beta1.ComputeRouterPeer, opts v1.CreateOptions) (*computev1beta1.ComputeRouterPeer, error)
+	Update(ctx context.Context, computeRouterPeer *computev1beta1.ComputeRouterPeer, opts v1.UpdateOptions) (*computev1beta1.ComputeRouterPeer, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, computeRouterPeer *computev1beta1.ComputeRouterPeer, opts v1.UpdateOptions) (*computev1beta1.ComputeRouterPeer, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeRouterPeer, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeRouterPeerList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeRouterPeer, error)
+	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeRouterPeerList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeRouterPeer, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeRouterPeer, err error)
 	ComputeRouterPeerExpansion
 }
 
 // computeRouterPeers implements ComputeRouterPeerInterface
 type computeRouterPeers struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*computev1beta1.ComputeRouterPeer, *computev1beta1.ComputeRouterPeerList]
 }
 
 // newComputeRouterPeers returns a ComputeRouterPeers
 func newComputeRouterPeers(c *ComputeV1beta1Client, namespace string) *computeRouterPeers {
 	return &computeRouterPeers{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*computev1beta1.ComputeRouterPeer, *computev1beta1.ComputeRouterPeerList](
+			"computerouterpeers",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *computev1beta1.ComputeRouterPeer { return &computev1beta1.ComputeRouterPeer{} },
+			func() *computev1beta1.ComputeRouterPeerList { return &computev1beta1.ComputeRouterPeerList{} },
+		),
 	}
-}
-
-// Get takes name of the computeRouterPeer, and returns the corresponding computeRouterPeer object, and an error if there is any.
-func (c *computeRouterPeers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeRouterPeer, err error) {
-	result = &v1beta1.ComputeRouterPeer{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computerouterpeers").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ComputeRouterPeers that match those selectors.
-func (c *computeRouterPeers) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeRouterPeerList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.ComputeRouterPeerList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computerouterpeers").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested computeRouterPeers.
-func (c *computeRouterPeers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("computerouterpeers").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a computeRouterPeer and creates it.  Returns the server's representation of the computeRouterPeer, and an error, if there is any.
-func (c *computeRouterPeers) Create(ctx context.Context, computeRouterPeer *v1beta1.ComputeRouterPeer, opts v1.CreateOptions) (result *v1beta1.ComputeRouterPeer, err error) {
-	result = &v1beta1.ComputeRouterPeer{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("computerouterpeers").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeRouterPeer).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a computeRouterPeer and updates it. Returns the server's representation of the computeRouterPeer, and an error, if there is any.
-func (c *computeRouterPeers) Update(ctx context.Context, computeRouterPeer *v1beta1.ComputeRouterPeer, opts v1.UpdateOptions) (result *v1beta1.ComputeRouterPeer, err error) {
-	result = &v1beta1.ComputeRouterPeer{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computerouterpeers").
-		Name(computeRouterPeer.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeRouterPeer).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *computeRouterPeers) UpdateStatus(ctx context.Context, computeRouterPeer *v1beta1.ComputeRouterPeer, opts v1.UpdateOptions) (result *v1beta1.ComputeRouterPeer, err error) {
-	result = &v1beta1.ComputeRouterPeer{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computerouterpeers").
-		Name(computeRouterPeer.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeRouterPeer).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the computeRouterPeer and deletes it. Returns an error if one occurs.
-func (c *computeRouterPeers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computerouterpeers").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *computeRouterPeers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computerouterpeers").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched computeRouterPeer.
-func (c *computeRouterPeers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeRouterPeer, err error) {
-	result = &v1beta1.ComputeRouterPeer{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("computerouterpeers").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

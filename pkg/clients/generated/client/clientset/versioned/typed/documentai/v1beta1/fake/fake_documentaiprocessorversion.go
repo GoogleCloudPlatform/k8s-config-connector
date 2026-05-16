@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/documentai/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	documentaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDocumentAIProcessorVersions implements DocumentAIProcessorVersionInterface
-type FakeDocumentAIProcessorVersions struct {
+// fakeDocumentAIProcessorVersions implements DocumentAIProcessorVersionInterface
+type fakeDocumentAIProcessorVersions struct {
+	*gentype.FakeClientWithList[*v1beta1.DocumentAIProcessorVersion, *v1beta1.DocumentAIProcessorVersionList]
 	Fake *FakeDocumentaiV1beta1
-	ns   string
 }
 
-var documentaiprocessorversionsResource = v1beta1.SchemeGroupVersion.WithResource("documentaiprocessorversions")
-
-var documentaiprocessorversionsKind = v1beta1.SchemeGroupVersion.WithKind("DocumentAIProcessorVersion")
-
-// Get takes name of the documentAIProcessorVersion, and returns the corresponding documentAIProcessorVersion object, and an error if there is any.
-func (c *FakeDocumentAIProcessorVersions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DocumentAIProcessorVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(documentaiprocessorversionsResource, c.ns, name), &v1beta1.DocumentAIProcessorVersion{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDocumentAIProcessorVersions(fake *FakeDocumentaiV1beta1, namespace string) documentaiv1beta1.DocumentAIProcessorVersionInterface {
+	return &fakeDocumentAIProcessorVersions{
+		gentype.NewFakeClientWithList[*v1beta1.DocumentAIProcessorVersion, *v1beta1.DocumentAIProcessorVersionList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("documentaiprocessorversions"),
+			v1beta1.SchemeGroupVersion.WithKind("DocumentAIProcessorVersion"),
+			func() *v1beta1.DocumentAIProcessorVersion { return &v1beta1.DocumentAIProcessorVersion{} },
+			func() *v1beta1.DocumentAIProcessorVersionList { return &v1beta1.DocumentAIProcessorVersionList{} },
+			func(dst, src *v1beta1.DocumentAIProcessorVersionList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.DocumentAIProcessorVersionList) []*v1beta1.DocumentAIProcessorVersion {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.DocumentAIProcessorVersionList, items []*v1beta1.DocumentAIProcessorVersion) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.DocumentAIProcessorVersion), err
-}
-
-// List takes label and field selectors, and returns the list of DocumentAIProcessorVersions that match those selectors.
-func (c *FakeDocumentAIProcessorVersions) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.DocumentAIProcessorVersionList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(documentaiprocessorversionsResource, documentaiprocessorversionsKind, c.ns, opts), &v1beta1.DocumentAIProcessorVersionList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.DocumentAIProcessorVersionList{ListMeta: obj.(*v1beta1.DocumentAIProcessorVersionList).ListMeta}
-	for _, item := range obj.(*v1beta1.DocumentAIProcessorVersionList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested documentAIProcessorVersions.
-func (c *FakeDocumentAIProcessorVersions) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(documentaiprocessorversionsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a documentAIProcessorVersion and creates it.  Returns the server's representation of the documentAIProcessorVersion, and an error, if there is any.
-func (c *FakeDocumentAIProcessorVersions) Create(ctx context.Context, documentAIProcessorVersion *v1beta1.DocumentAIProcessorVersion, opts v1.CreateOptions) (result *v1beta1.DocumentAIProcessorVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(documentaiprocessorversionsResource, c.ns, documentAIProcessorVersion), &v1beta1.DocumentAIProcessorVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DocumentAIProcessorVersion), err
-}
-
-// Update takes the representation of a documentAIProcessorVersion and updates it. Returns the server's representation of the documentAIProcessorVersion, and an error, if there is any.
-func (c *FakeDocumentAIProcessorVersions) Update(ctx context.Context, documentAIProcessorVersion *v1beta1.DocumentAIProcessorVersion, opts v1.UpdateOptions) (result *v1beta1.DocumentAIProcessorVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(documentaiprocessorversionsResource, c.ns, documentAIProcessorVersion), &v1beta1.DocumentAIProcessorVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DocumentAIProcessorVersion), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDocumentAIProcessorVersions) UpdateStatus(ctx context.Context, documentAIProcessorVersion *v1beta1.DocumentAIProcessorVersion, opts v1.UpdateOptions) (*v1beta1.DocumentAIProcessorVersion, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(documentaiprocessorversionsResource, "status", c.ns, documentAIProcessorVersion), &v1beta1.DocumentAIProcessorVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DocumentAIProcessorVersion), err
-}
-
-// Delete takes name of the documentAIProcessorVersion and deletes it. Returns an error if one occurs.
-func (c *FakeDocumentAIProcessorVersions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(documentaiprocessorversionsResource, c.ns, name, opts), &v1beta1.DocumentAIProcessorVersion{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDocumentAIProcessorVersions) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(documentaiprocessorversionsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.DocumentAIProcessorVersionList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched documentAIProcessorVersion.
-func (c *FakeDocumentAIProcessorVersions) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DocumentAIProcessorVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(documentaiprocessorversionsResource, c.ns, name, pt, data, subresources...), &v1beta1.DocumentAIProcessorVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DocumentAIProcessorVersion), err
 }

@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeGKEHubScopeRBACRoleBindings implements GKEHubScopeRBACRoleBindingInterface
-type FakeGKEHubScopeRBACRoleBindings struct {
+// fakeGKEHubScopeRBACRoleBindings implements GKEHubScopeRBACRoleBindingInterface
+type fakeGKEHubScopeRBACRoleBindings struct {
+	*gentype.FakeClientWithList[*v1alpha1.GKEHubScopeRBACRoleBinding, *v1alpha1.GKEHubScopeRBACRoleBindingList]
 	Fake *FakeGkehubV1alpha1
-	ns   string
 }
 
-var gkehubscoperbacrolebindingsResource = v1alpha1.SchemeGroupVersion.WithResource("gkehubscoperbacrolebindings")
-
-var gkehubscoperbacrolebindingsKind = v1alpha1.SchemeGroupVersion.WithKind("GKEHubScopeRBACRoleBinding")
-
-// Get takes name of the gKEHubScopeRBACRoleBinding, and returns the corresponding gKEHubScopeRBACRoleBinding object, and an error if there is any.
-func (c *FakeGKEHubScopeRBACRoleBindings) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.GKEHubScopeRBACRoleBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(gkehubscoperbacrolebindingsResource, c.ns, name), &v1alpha1.GKEHubScopeRBACRoleBinding{})
-
-	if obj == nil {
-		return nil, err
+func newFakeGKEHubScopeRBACRoleBindings(fake *FakeGkehubV1alpha1, namespace string) gkehubv1alpha1.GKEHubScopeRBACRoleBindingInterface {
+	return &fakeGKEHubScopeRBACRoleBindings{
+		gentype.NewFakeClientWithList[*v1alpha1.GKEHubScopeRBACRoleBinding, *v1alpha1.GKEHubScopeRBACRoleBindingList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("gkehubscoperbacrolebindings"),
+			v1alpha1.SchemeGroupVersion.WithKind("GKEHubScopeRBACRoleBinding"),
+			func() *v1alpha1.GKEHubScopeRBACRoleBinding { return &v1alpha1.GKEHubScopeRBACRoleBinding{} },
+			func() *v1alpha1.GKEHubScopeRBACRoleBindingList { return &v1alpha1.GKEHubScopeRBACRoleBindingList{} },
+			func(dst, src *v1alpha1.GKEHubScopeRBACRoleBindingList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.GKEHubScopeRBACRoleBindingList) []*v1alpha1.GKEHubScopeRBACRoleBinding {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.GKEHubScopeRBACRoleBindingList, items []*v1alpha1.GKEHubScopeRBACRoleBinding) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.GKEHubScopeRBACRoleBinding), err
-}
-
-// List takes label and field selectors, and returns the list of GKEHubScopeRBACRoleBindings that match those selectors.
-func (c *FakeGKEHubScopeRBACRoleBindings) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.GKEHubScopeRBACRoleBindingList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(gkehubscoperbacrolebindingsResource, gkehubscoperbacrolebindingsKind, c.ns, opts), &v1alpha1.GKEHubScopeRBACRoleBindingList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.GKEHubScopeRBACRoleBindingList{ListMeta: obj.(*v1alpha1.GKEHubScopeRBACRoleBindingList).ListMeta}
-	for _, item := range obj.(*v1alpha1.GKEHubScopeRBACRoleBindingList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested gKEHubScopeRBACRoleBindings.
-func (c *FakeGKEHubScopeRBACRoleBindings) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(gkehubscoperbacrolebindingsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a gKEHubScopeRBACRoleBinding and creates it.  Returns the server's representation of the gKEHubScopeRBACRoleBinding, and an error, if there is any.
-func (c *FakeGKEHubScopeRBACRoleBindings) Create(ctx context.Context, gKEHubScopeRBACRoleBinding *v1alpha1.GKEHubScopeRBACRoleBinding, opts v1.CreateOptions) (result *v1alpha1.GKEHubScopeRBACRoleBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(gkehubscoperbacrolebindingsResource, c.ns, gKEHubScopeRBACRoleBinding), &v1alpha1.GKEHubScopeRBACRoleBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEHubScopeRBACRoleBinding), err
-}
-
-// Update takes the representation of a gKEHubScopeRBACRoleBinding and updates it. Returns the server's representation of the gKEHubScopeRBACRoleBinding, and an error, if there is any.
-func (c *FakeGKEHubScopeRBACRoleBindings) Update(ctx context.Context, gKEHubScopeRBACRoleBinding *v1alpha1.GKEHubScopeRBACRoleBinding, opts v1.UpdateOptions) (result *v1alpha1.GKEHubScopeRBACRoleBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(gkehubscoperbacrolebindingsResource, c.ns, gKEHubScopeRBACRoleBinding), &v1alpha1.GKEHubScopeRBACRoleBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEHubScopeRBACRoleBinding), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeGKEHubScopeRBACRoleBindings) UpdateStatus(ctx context.Context, gKEHubScopeRBACRoleBinding *v1alpha1.GKEHubScopeRBACRoleBinding, opts v1.UpdateOptions) (*v1alpha1.GKEHubScopeRBACRoleBinding, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(gkehubscoperbacrolebindingsResource, "status", c.ns, gKEHubScopeRBACRoleBinding), &v1alpha1.GKEHubScopeRBACRoleBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEHubScopeRBACRoleBinding), err
-}
-
-// Delete takes name of the gKEHubScopeRBACRoleBinding and deletes it. Returns an error if one occurs.
-func (c *FakeGKEHubScopeRBACRoleBindings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(gkehubscoperbacrolebindingsResource, c.ns, name, opts), &v1alpha1.GKEHubScopeRBACRoleBinding{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeGKEHubScopeRBACRoleBindings) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(gkehubscoperbacrolebindingsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.GKEHubScopeRBACRoleBindingList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched gKEHubScopeRBACRoleBinding.
-func (c *FakeGKEHubScopeRBACRoleBindings) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.GKEHubScopeRBACRoleBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(gkehubscoperbacrolebindingsResource, c.ns, name, pt, data, subresources...), &v1alpha1.GKEHubScopeRBACRoleBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEHubScopeRBACRoleBinding), err
 }

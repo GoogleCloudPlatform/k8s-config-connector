@@ -32,7 +32,7 @@ type FakeMlengineV1alpha1 struct {
 }
 
 func (c *FakeMlengineV1alpha1) MLEngineModels(namespace string) v1alpha1.MLEngineModelInterface {
-	return &FakeMLEngineModels{c, namespace}
+	return newFakeMLEngineModels(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

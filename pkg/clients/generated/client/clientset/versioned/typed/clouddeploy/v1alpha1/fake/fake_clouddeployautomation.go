@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	clouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeCloudDeployAutomations implements CloudDeployAutomationInterface
-type FakeCloudDeployAutomations struct {
+// fakeCloudDeployAutomations implements CloudDeployAutomationInterface
+type fakeCloudDeployAutomations struct {
+	*gentype.FakeClientWithList[*v1alpha1.CloudDeployAutomation, *v1alpha1.CloudDeployAutomationList]
 	Fake *FakeClouddeployV1alpha1
-	ns   string
 }
 
-var clouddeployautomationsResource = v1alpha1.SchemeGroupVersion.WithResource("clouddeployautomations")
-
-var clouddeployautomationsKind = v1alpha1.SchemeGroupVersion.WithKind("CloudDeployAutomation")
-
-// Get takes name of the cloudDeployAutomation, and returns the corresponding cloudDeployAutomation object, and an error if there is any.
-func (c *FakeCloudDeployAutomations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudDeployAutomation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(clouddeployautomationsResource, c.ns, name), &v1alpha1.CloudDeployAutomation{})
-
-	if obj == nil {
-		return nil, err
+func newFakeCloudDeployAutomations(fake *FakeClouddeployV1alpha1, namespace string) clouddeployv1alpha1.CloudDeployAutomationInterface {
+	return &fakeCloudDeployAutomations{
+		gentype.NewFakeClientWithList[*v1alpha1.CloudDeployAutomation, *v1alpha1.CloudDeployAutomationList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("clouddeployautomations"),
+			v1alpha1.SchemeGroupVersion.WithKind("CloudDeployAutomation"),
+			func() *v1alpha1.CloudDeployAutomation { return &v1alpha1.CloudDeployAutomation{} },
+			func() *v1alpha1.CloudDeployAutomationList { return &v1alpha1.CloudDeployAutomationList{} },
+			func(dst, src *v1alpha1.CloudDeployAutomationList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.CloudDeployAutomationList) []*v1alpha1.CloudDeployAutomation {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.CloudDeployAutomationList, items []*v1alpha1.CloudDeployAutomation) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.CloudDeployAutomation), err
-}
-
-// List takes label and field selectors, and returns the list of CloudDeployAutomations that match those selectors.
-func (c *FakeCloudDeployAutomations) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudDeployAutomationList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(clouddeployautomationsResource, clouddeployautomationsKind, c.ns, opts), &v1alpha1.CloudDeployAutomationList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.CloudDeployAutomationList{ListMeta: obj.(*v1alpha1.CloudDeployAutomationList).ListMeta}
-	for _, item := range obj.(*v1alpha1.CloudDeployAutomationList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested cloudDeployAutomations.
-func (c *FakeCloudDeployAutomations) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(clouddeployautomationsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a cloudDeployAutomation and creates it.  Returns the server's representation of the cloudDeployAutomation, and an error, if there is any.
-func (c *FakeCloudDeployAutomations) Create(ctx context.Context, cloudDeployAutomation *v1alpha1.CloudDeployAutomation, opts v1.CreateOptions) (result *v1alpha1.CloudDeployAutomation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(clouddeployautomationsResource, c.ns, cloudDeployAutomation), &v1alpha1.CloudDeployAutomation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.CloudDeployAutomation), err
-}
-
-// Update takes the representation of a cloudDeployAutomation and updates it. Returns the server's representation of the cloudDeployAutomation, and an error, if there is any.
-func (c *FakeCloudDeployAutomations) Update(ctx context.Context, cloudDeployAutomation *v1alpha1.CloudDeployAutomation, opts v1.UpdateOptions) (result *v1alpha1.CloudDeployAutomation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(clouddeployautomationsResource, c.ns, cloudDeployAutomation), &v1alpha1.CloudDeployAutomation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.CloudDeployAutomation), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeCloudDeployAutomations) UpdateStatus(ctx context.Context, cloudDeployAutomation *v1alpha1.CloudDeployAutomation, opts v1.UpdateOptions) (*v1alpha1.CloudDeployAutomation, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(clouddeployautomationsResource, "status", c.ns, cloudDeployAutomation), &v1alpha1.CloudDeployAutomation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.CloudDeployAutomation), err
-}
-
-// Delete takes name of the cloudDeployAutomation and deletes it. Returns an error if one occurs.
-func (c *FakeCloudDeployAutomations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(clouddeployautomationsResource, c.ns, name, opts), &v1alpha1.CloudDeployAutomation{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeCloudDeployAutomations) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(clouddeployautomationsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.CloudDeployAutomationList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched cloudDeployAutomation.
-func (c *FakeCloudDeployAutomations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudDeployAutomation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(clouddeployautomationsResource, c.ns, name, pt, data, subresources...), &v1alpha1.CloudDeployAutomation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.CloudDeployAutomation), err
 }

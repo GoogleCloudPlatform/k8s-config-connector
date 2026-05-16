@@ -32,11 +32,11 @@ type FakeContainerV1beta1 struct {
 }
 
 func (c *FakeContainerV1beta1) ContainerClusters(namespace string) v1beta1.ContainerClusterInterface {
-	return &FakeContainerClusters{c, namespace}
+	return newFakeContainerClusters(c, namespace)
 }
 
 func (c *FakeContainerV1beta1) ContainerNodePools(namespace string) v1beta1.ContainerNodePoolInterface {
-	return &FakeContainerNodePools{c, namespace}
+	return newFakeContainerNodePools(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
