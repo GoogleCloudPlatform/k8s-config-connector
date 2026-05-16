@@ -21,6 +21,7 @@ package mockstorage
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -29,6 +30,7 @@ import (
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -194,4 +196,112 @@ func (s *StorageControlService) DisableAnywhereCache(ctx context.Context, req *p
 	}
 
 	return obj, nil
+}
+
+func (s *StorageControlService) GetFolder(ctx context.Context, req *pb.GetFolderRequest) (*pb.Folder, error) {
+	fqn := req.GetName()
+	ret := &pb.Folder{}
+	if err := s.storage.Get(ctx, fqn, ret); err != nil {
+		return nil, err
+	}
+	return ret, nil
+}
+
+func (s *StorageControlService) CreateFolder(ctx context.Context, req *pb.CreateFolderRequest) (*pb.Folder, error) {
+	folderID := req.GetFolderId()
+	fqn := fmt.Sprintf("%s/folders/%s", req.GetParent(), strings.TrimSuffix(folderID, "/"))
+
+	now := time.Now()
+
+	obj := proto.Clone(req.GetFolder()).(*pb.Folder)
+	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.Metageneration = 1
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (s *StorageControlService) DeleteFolder(ctx context.Context, req *pb.DeleteFolderRequest) (*emptypb.Empty, error) {
+	fqn := req.GetName()
+	deleted := &pb.Folder{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
+
+func (s *StorageControlService) ListFolders(ctx context.Context, req *pb.ListFoldersRequest) (*pb.ListFoldersResponse, error) {
+	var folders []*pb.Folder
+	fqn_parent := req.GetParent()
+
+	kind := (&pb.Folder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: fqn_parent}, func(obj proto.Message) error {
+		folder := obj.(*pb.Folder)
+		folders = append(folders, folder)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListFoldersResponse{
+		Folders: folders,
+	}, nil
+}
+
+func (s *StorageControlService) GetManagedFolder(ctx context.Context, req *pb.GetManagedFolderRequest) (*pb.ManagedFolder, error) {
+	fqn := req.GetName()
+	ret := &pb.ManagedFolder{}
+	if err := s.storage.Get(ctx, fqn, ret); err != nil {
+		return nil, err
+	}
+	return ret, nil
+}
+
+func (s *StorageControlService) CreateManagedFolder(ctx context.Context, req *pb.CreateManagedFolderRequest) (*pb.ManagedFolder, error) {
+	managedFolderID := req.GetManagedFolderId()
+	fqn := fmt.Sprintf("%s/managedFolders/%s", req.GetParent(), strings.TrimSuffix(managedFolderID, "/"))
+
+	now := time.Now()
+
+	obj := proto.Clone(req.GetManagedFolder()).(*pb.ManagedFolder)
+	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.Metageneration = 1
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (s *StorageControlService) DeleteManagedFolder(ctx context.Context, req *pb.DeleteManagedFolderRequest) (*emptypb.Empty, error) {
+	fqn := req.GetName()
+	deleted := &pb.ManagedFolder{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
+
+func (s *StorageControlService) ListManagedFolders(ctx context.Context, req *pb.ListManagedFoldersRequest) (*pb.ListManagedFoldersResponse, error) {
+	var managedFolders []*pb.ManagedFolder
+	fqn_parent := req.GetParent()
+
+	kind := (&pb.ManagedFolder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: fqn_parent}, func(obj proto.Message) error {
+		managedFolder := obj.(*pb.ManagedFolder)
+		managedFolders = append(managedFolders, managedFolder)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListManagedFoldersResponse{
+		ManagedFolders: managedFolders,
+	}, nil
 }

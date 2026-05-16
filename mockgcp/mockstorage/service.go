@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
+	controlpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/storage/control/v2"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -77,6 +78,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterNotificationsServerHandler,
 		pb.RegisterFoldersServerHandler,
 		pb.RegisterManagedFoldersServerHandler,
+		controlpb.RegisterStorageControlHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {
