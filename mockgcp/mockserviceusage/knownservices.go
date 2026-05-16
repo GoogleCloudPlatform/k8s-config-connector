@@ -24,6 +24,7 @@ var allServices = []string{
 	"pubsub.googleapis.com",
 	"runtimeconfig.googleapis.com",
 	"storage.googleapis.com",
+	"memcache.googleapis.com",
 	"gkehub.googleapis.com",
 	"anthos.googleapis.com",
 	"anthosconfigmanagement.googleapis.com",
