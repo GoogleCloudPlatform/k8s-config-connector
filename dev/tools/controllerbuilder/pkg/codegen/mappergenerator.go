@@ -324,9 +324,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				continue
 			}
 
-			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
-			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
-
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
+			                        isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice -> krm single
 				var fromProtoElemFunc string
 				switch protoField.Kind() {
@@ -510,27 +509,31 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					protoAccessor,
 				)
 			case protoreflect.StringKind,
-				protoreflect.FloatKind,
-				protoreflect.DoubleKind,
-				protoreflect.BoolKind,
-				protoreflect.Int64Kind,
-				protoreflect.Int32Kind,
-				protoreflect.Uint32Kind,
-				protoreflect.Uint64Kind,
-				protoreflect.Fixed64Kind,
-				protoreflect.BytesKind:
-				if protoIsPointerInGo(protoField) {
-					fmt.Fprintf(out, "\tout.%s = in.%s\n",
-						krmFieldName,
-						protoFieldName,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
-						krmFieldName,
-						protoAccessor,
-					)
-				}
-
+			                                protoreflect.FloatKind,
+			                                protoreflect.DoubleKind,
+			                                protoreflect.BoolKind,
+			                                protoreflect.Int64Kind,
+			                                protoreflect.Int32Kind,
+			                                protoreflect.Uint32Kind,
+			                                protoreflect.Uint64Kind,
+			                                protoreflect.Fixed64Kind,
+			                                protoreflect.BytesKind:
+			                                if protoIsPointerInGo(protoField) {
+			                                        fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			                                                krmFieldName,
+			                                                protoFieldName,
+			                                        )
+			                                } else if krmField.Type == "[]byte" {
+			                                        fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			                                                krmFieldName,
+			                                                protoAccessor,
+			                                        )
+			                                } else {
+			                                        fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
+			                                                krmFieldName,
+			                                                protoAccessor,
+			                                        )
+			                                }
 			default:
 				klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
 			}
@@ -607,9 +610,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				continue
 			}
 
-			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
-			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
-
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
+			                        isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if !isProtoFieldSlice && isKRMFieldSlice { // proto single <- krm slice
 				krmElemType := strings.TrimPrefix(krmField.Type, "[]")
 				krmElemTypeName := strings.TrimPrefix(krmElemType, "*")

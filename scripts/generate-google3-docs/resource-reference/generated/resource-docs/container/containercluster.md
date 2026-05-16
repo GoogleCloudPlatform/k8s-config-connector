@@ -12,6 +12,13 @@ Note: The ContainerCluster annotation can include
 If set to <code>true</code>, the <code>remove-default-node-pool</code> directive
 removes the default node pool created during cluster creation.
 
+If set to <code>true</code>, the <code>strip-default-node-pool-config-on-update</code>
+directive strips the <code>nodeConfig</code> from the desired state during updates,
+while preserving it during initial cluster creation. This unblocks users who need
+to specify <code>nodeConfig</code> for the temporary default pool (e.g. for custom
+network tags) without causing a permanent reconciliation loop after the
+default pool is removed by GKE.
+
 Note: In <code>maintenancePolicy</code>, specify <code>startTime</code> and
 <code>endTime</code> in RFC3339 Zulu date format. Specify <code>recurrence</code>
 in RFC5545 RRULE format. GKE may accept other formats, but will return values in UTC,
@@ -85,6 +92,9 @@ could lead to a permanent diff, please refer to the
     </tr>
     <tr>
         <td><code>cnrm.cloud.google.com/remove-default-node-pool</code></td>
+    </tr>
+    <tr>
+        <td><code>cnrm.cloud.google.com/strip-default-node-pool-config-on-update</code></td>
     </tr>
 </tbody>
 </table>

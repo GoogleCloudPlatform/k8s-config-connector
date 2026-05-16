@@ -87,10 +87,7 @@ func (r *kmsServer) CreateCryptoKey(ctx context.Context, req *pb.CreateCryptoKey
 				ProtectionLevel: pb.ProtectionLevel_SOFTWARE,
 			}
 		} else {
-			primary = &pb.CryptoKeyVersion{
-				// Algorithm is required
-				Algorithm: obj.VersionTemplate.Algorithm,
-			}
+			return nil, status.Errorf(codes.InvalidArgument, "versionTemplate is required for purpose %v", req.GetCryptoKey().Purpose)
 		}
 		createVersionReq := &pb.CreateCryptoKeyVersionRequest{
 			Parent:           fqn,
