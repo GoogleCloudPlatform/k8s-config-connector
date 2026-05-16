@@ -49,12 +49,12 @@ func instanceFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".MaintenanceUpdatePolicy")
 	f.Unimplemented_NotYetTriaged(".ScheduledMaintenance")
 	f.Unimplemented_NotYetTriaged(".IsVersionLocked")
-	f.Unimplemented_NotYetTriaged(".Name")
-	f.Unimplemented_NotYetTriaged(".ForceSendFields")
-	f.Unimplemented_NotYetTriaged(".NullFields")
-	f.Unimplemented_NotYetTriaged(".ServerResponse")
-	f.Unimplemented_NotYetTriaged(".AccessLoggingConfig.ForceSendFields")
-	f.Unimplemented_NotYetTriaged(".AccessLoggingConfig.NullFields")
+	f.IdentityField(".Name")
+	f.Ignore_JSONBookkeeping(".ForceSendFields")
+	f.Ignore_JSONBookkeeping(".NullFields")
+	f.Ignore_JSONBookkeeping(".ServerResponse")
+	f.Ignore_JSONBookkeeping(".AccessLoggingConfig.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".AccessLoggingConfig.NullFields")
 
 	return f
 }
