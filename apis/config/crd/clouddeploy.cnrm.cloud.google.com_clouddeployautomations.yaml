@@ -1,0 +1,640 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: clouddeployautomations.clouddeploy.cnrm.cloud.google.com
+spec:
+  group: clouddeploy.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: CloudDeployAutomation
+    listKind: CloudDeployAutomationList
+    plural: clouddeployautomations
+    shortNames:
+    - gcpclouddeployautomation
+    - gcpclouddeployautomations
+    singular: clouddeployautomation
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: CloudDeployAutomation is the Schema for the CloudDeployAutomation
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CloudDeployAutomationSpec defines the desired state of CloudDeployAutomation
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. User annotations. These attributes can only be set and used by
+                  the user, and not by Cloud Deploy. See
+                  https://google.aip.dev/128#annotations for more details such as format and
+                  size limitations.
+                type: object
+              deliveryPipelineRef:
+                description: Immutable. Required. The DeliveryPipeline that this automation
+                  belongs to.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed DeployDeliveryPipeline resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/deliverypipelines/{{deliverypipelineID}}".
+                    type: string
+                  name:
+                    description: The name of a DeployDeliveryPipeline resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DeployDeliveryPipeline resource.
+                    type: string
+                type: object
+              description:
+                description: Optional. Description of the `Automation`. Max length
+                  is 255 characters.
+                type: string
+              location:
+                description: Immutable. The location of this resource.
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The GCP resource identifier. If not given, the metadata.name
+                  will be used.
+                type: string
+              rules:
+                description: Required. List of Automation rules associated with the
+                  Automation resource.
+                items:
+                  properties:
+                    advanceRolloutRule:
+                      description: |-
+                        Optional. The `AdvanceRolloutRule` will automatically advance a
+                         successful Rollout.
+                      properties:
+                        id:
+                          description: Required. ID of the rule.
+                          type: string
+                        sourcePhases:
+                          description: Optional. Proceeds only after phase name matched
+                            any one in the list.
+                          items:
+                            type: string
+                          type: array
+                        wait:
+                          description: Optional. How long to wait after a rollout
+                            is finished.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                    promoteReleaseRule:
+                      description: |-
+                        Optional. `PromoteReleaseRule` will automatically promote a release from
+                         the current target to a specified target.
+                      properties:
+                        destinationPhase:
+                          description: |-
+                            Optional. The starting phase of the rollout created by this operation.
+                             Default to the first phase.
+                          type: string
+                        destinationTargetRef:
+                          description: |-
+                            Optional. The ID of the stage in the pipeline to which this `Release` is
+                             deploying.
+                          properties:
+                            external:
+                              description: |-
+                                A reference to an externally managed CloudDeployTarget resource.
+                                Should be in the format "projects/{{projectID}}/locations/{{location}}/targets/{{targetID}}".
+                              type: string
+                            name:
+                              description: The name of a CloudDeployTarget resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a CloudDeployTarget resource.
+                              type: string
+                          type: object
+                        id:
+                          description: Required. ID of the rule.
+                          type: string
+                        wait:
+                          description: |-
+                            Optional. How long the release need to be paused until being promoted to
+                             the next target.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                    repairRolloutRule:
+                      description: |-
+                        Optional. The `RepairRolloutRule` will automatically repair a failed
+                         rollout.
+                      properties:
+                        id:
+                          description: Required. ID of the rule.
+                          type: string
+                        jobs:
+                          description: Optional. Jobs to repair.
+                          items:
+                            type: string
+                          type: array
+                        phases:
+                          description: |-
+                            Optional. Phases within which jobs are subject to automatic repair actions
+                             on failure.
+                          items:
+                            type: string
+                          type: array
+                        repairPhases:
+                          description: Required. Defines the types of automatic repair
+                            phases for failed jobs.
+                          items:
+                            properties:
+                              retry:
+                                description: Optional. Retries a failed job.
+                                properties:
+                                  attempts:
+                                    description: Required. Total number of retries.
+                                    format: int64
+                                    type: integer
+                                  backoffMode:
+                                    description: Optional. The pattern of how wait
+                                      time will be increased.
+                                    type: string
+                                  wait:
+                                    description: Optional. How long to wait for the
+                                      first retry.
+                                    type: string
+                                required:
+                                - attempts
+                                type: object
+                              rollback:
+                                description: Optional. Rolls back a `Rollout`.
+                                properties:
+                                  destinationPhase:
+                                    description: Optional. The starting phase ID for
+                                      the `Rollout`.
+                                    type: string
+                                  disableRollbackIfRolloutPending:
+                                    description: |-
+                                      Optional. If pending rollout exists on the target, the rollback operation
+                                       will be aborted.
+                                    type: boolean
+                                type: object
+                            type: object
+                          type: array
+                      required:
+                      - id
+                      - repairPhases
+                      type: object
+                    timedPromoteReleaseRule:
+                      description: |-
+                        Optional. The `TimedPromoteReleaseRule` will automatically promote a
+                         release from the current target(s) to the specified target(s) on a
+                         configured schedule.
+                      properties:
+                        destinationPhase:
+                          description: Optional. The starting phase of the rollout
+                            created by this rule.
+                          type: string
+                        destinationTargetRef:
+                          description: |-
+                            Optional. The ID of the stage in the pipeline to which this `Release` is
+                             deploying.
+                          properties:
+                            external:
+                              description: |-
+                                A reference to an externally managed CloudDeployTarget resource.
+                                Should be in the format "projects/{{projectID}}/locations/{{location}}/targets/{{targetID}}".
+                              type: string
+                            name:
+                              description: The name of a CloudDeployTarget resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a CloudDeployTarget resource.
+                              type: string
+                          type: object
+                        id:
+                          description: Required. ID of the rule.
+                          type: string
+                        schedule:
+                          description: Required. Schedule in crontab format.
+                          type: string
+                        timeZone:
+                          description: Required. The time zone in IANA format.
+                          type: string
+                      required:
+                      - id
+                      - schedule
+                      - timeZone
+                      type: object
+                  type: object
+                type: array
+              selector:
+                description: Required. Selected resources to which the automation
+                  will be applied.
+                properties:
+                  targets:
+                    description: Optional. Contains attributes about a target.
+                    items:
+                      properties:
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: Target labels.
+                          type: object
+                        targetRef:
+                          description: Optional. The Target to which the rule applies.
+                          properties:
+                            external:
+                              description: |-
+                                A reference to an externally managed CloudDeployTarget resource.
+                                Should be in the format "projects/{{projectID}}/locations/{{location}}/targets/{{targetID}}".
+                              type: string
+                            name:
+                              description: The name of a CloudDeployTarget resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a CloudDeployTarget resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              serviceAccountRef:
+                description: |-
+                  Required. Email address of the user-managed IAM service account that
+                   creates Cloud Deploy release and rollout resources.
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              suspended:
+                description: Optional. When Suspended, automation is deactivated from
+                  execution.
+                type: boolean
+            required:
+            - deliveryPipelineRef
+            - location
+            - projectRef
+            - rules
+            - selector
+            - serviceAccountRef
+            type: object
+          status:
+            description: CloudDeployAutomationStatus defines the config connector
+              machine state of CloudDeployAutomation
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the CloudDeployAutomation resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time at which the automation was created.
+                    type: string
+                  etag:
+                    description: Optional. The weak etag of the `Automation` resource.
+                    type: string
+                  rules:
+                    description: Required. List of Automation rules associated with
+                      the Automation resource.
+                    items:
+                      properties:
+                        advanceRolloutRule:
+                          description: |-
+                            Optional. The `AdvanceRolloutRule` will automatically advance a
+                             successful Rollout.
+                          properties:
+                            condition:
+                              description: Output only. Information around the state
+                                of the Automation rule.
+                              properties:
+                                targetsPresentCondition:
+                                  description: Optional. Details around targets enumerated
+                                    in the rule.
+                                  properties:
+                                    missingTargets:
+                                      description: The list of Target names that do
+                                        not exist.
+                                      items:
+                                        type: string
+                                      type: array
+                                    status:
+                                      description: True if there aren't any missing
+                                        Targets.
+                                      type: boolean
+                                    updateTime:
+                                      description: Last time the condition was updated.
+                                      type: string
+                                  type: object
+                                timedPromoteReleaseCondition:
+                                  description: |-
+                                    Optional. TimedPromoteReleaseCondition contains rule conditions specific
+                                     to a an Automation with a timed promote release rule defined.
+                                  properties:
+                                    nextPromotionTime:
+                                      description: Output only. When the next scheduled
+                                        promotion(s) will occur.
+                                      type: string
+                                    targetsList:
+                                      description: Output only. A list of targets
+                                        involved in the upcoming timed promotion(s).
+                                      items:
+                                        properties:
+                                          destinationTargetID:
+                                            description: Optional. The destination
+                                              target ID.
+                                            type: string
+                                          sourceTargetID:
+                                            description: Optional. The source target
+                                              ID.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                              type: object
+                          type: object
+                        promoteReleaseRule:
+                          description: |-
+                            Optional. `PromoteReleaseRule` will automatically promote a release from
+                             the current target to a specified target.
+                          properties:
+                            condition:
+                              description: Output only. Information around the state
+                                of the Automation rule.
+                              properties:
+                                targetsPresentCondition:
+                                  description: Optional. Details around targets enumerated
+                                    in the rule.
+                                  properties:
+                                    missingTargets:
+                                      description: The list of Target names that do
+                                        not exist.
+                                      items:
+                                        type: string
+                                      type: array
+                                    status:
+                                      description: True if there aren't any missing
+                                        Targets.
+                                      type: boolean
+                                    updateTime:
+                                      description: Last time the condition was updated.
+                                      type: string
+                                  type: object
+                                timedPromoteReleaseCondition:
+                                  description: |-
+                                    Optional. TimedPromoteReleaseCondition contains rule conditions specific
+                                     to a an Automation with a timed promote release rule defined.
+                                  properties:
+                                    nextPromotionTime:
+                                      description: Output only. When the next scheduled
+                                        promotion(s) will occur.
+                                      type: string
+                                    targetsList:
+                                      description: Output only. A list of targets
+                                        involved in the upcoming timed promotion(s).
+                                      items:
+                                        properties:
+                                          destinationTargetID:
+                                            description: Optional. The destination
+                                              target ID.
+                                            type: string
+                                          sourceTargetID:
+                                            description: Optional. The source target
+                                              ID.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                              type: object
+                          type: object
+                        repairRolloutRule:
+                          description: |-
+                            Optional. The `RepairRolloutRule` will automatically repair a failed
+                             rollout.
+                          properties:
+                            condition:
+                              description: Output only. Information around the state
+                                of the 'Automation' rule.
+                              properties:
+                                targetsPresentCondition:
+                                  description: Optional. Details around targets enumerated
+                                    in the rule.
+                                  properties:
+                                    missingTargets:
+                                      description: The list of Target names that do
+                                        not exist.
+                                      items:
+                                        type: string
+                                      type: array
+                                    status:
+                                      description: True if there aren't any missing
+                                        Targets.
+                                      type: boolean
+                                    updateTime:
+                                      description: Last time the condition was updated.
+                                      type: string
+                                  type: object
+                                timedPromoteReleaseCondition:
+                                  description: |-
+                                    Optional. TimedPromoteReleaseCondition contains rule conditions specific
+                                     to a an Automation with a timed promote release rule defined.
+                                  properties:
+                                    nextPromotionTime:
+                                      description: Output only. When the next scheduled
+                                        promotion(s) will occur.
+                                      type: string
+                                    targetsList:
+                                      description: Output only. A list of targets
+                                        involved in the upcoming timed promotion(s).
+                                      items:
+                                        properties:
+                                          destinationTargetID:
+                                            description: Optional. The destination
+                                              target ID.
+                                            type: string
+                                          sourceTargetID:
+                                            description: Optional. The source target
+                                              ID.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                              type: object
+                          type: object
+                        timedPromoteReleaseRule:
+                          description: |-
+                            Optional. The `TimedPromoteReleaseRule` will automatically promote a
+                             release from the current target(s) to the specified target(s) on a
+                             configured schedule.
+                          properties:
+                            condition:
+                              description: Output only. Information around the state
+                                of the Automation rule.
+                              properties:
+                                targetsPresentCondition:
+                                  description: Optional. Details around targets enumerated
+                                    in the rule.
+                                  properties:
+                                    missingTargets:
+                                      description: The list of Target names that do
+                                        not exist.
+                                      items:
+                                        type: string
+                                      type: array
+                                    status:
+                                      description: True if there aren't any missing
+                                        Targets.
+                                      type: boolean
+                                    updateTime:
+                                      description: Last time the condition was updated.
+                                      type: string
+                                  type: object
+                                timedPromoteReleaseCondition:
+                                  description: |-
+                                    Optional. TimedPromoteReleaseCondition contains rule conditions specific
+                                     to a an Automation with a timed promote release rule defined.
+                                  properties:
+                                    nextPromotionTime:
+                                      description: Output only. When the next scheduled
+                                        promotion(s) will occur.
+                                      type: string
+                                    targetsList:
+                                      description: Output only. A list of targets
+                                        involved in the upcoming timed promotion(s).
+                                      items:
+                                        properties:
+                                          destinationTargetID:
+                                            description: Optional. The destination
+                                              target ID.
+                                            type: string
+                                          sourceTargetID:
+                                            description: Optional. The source target
+                                              ID.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                              type: object
+                          type: object
+                      type: object
+                    type: array
+                  uid:
+                    description: Output only. Unique identifier of the `Automation`.
+                    type: string
+                  updateTime:
+                    description: Output only. Time at which the automation was updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
