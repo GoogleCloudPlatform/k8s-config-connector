@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeApigeeNATAddresses implements ApigeeNATAddressInterface
-type FakeApigeeNATAddresses struct {
+// fakeApigeeNATAddresses implements ApigeeNATAddressInterface
+type fakeApigeeNATAddresses struct {
+	*gentype.FakeClientWithList[*v1alpha1.ApigeeNATAddress, *v1alpha1.ApigeeNATAddressList]
 	Fake *FakeApigeeV1alpha1
-	ns   string
 }
 
-var apigeenataddressesResource = v1alpha1.SchemeGroupVersion.WithResource("apigeenataddresses")
-
-var apigeenataddressesKind = v1alpha1.SchemeGroupVersion.WithKind("ApigeeNATAddress")
-
-// Get takes name of the apigeeNATAddress, and returns the corresponding apigeeNATAddress object, and an error if there is any.
-func (c *FakeApigeeNATAddresses) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ApigeeNATAddress, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(apigeenataddressesResource, c.ns, name), &v1alpha1.ApigeeNATAddress{})
-
-	if obj == nil {
-		return nil, err
+func newFakeApigeeNATAddresses(fake *FakeApigeeV1alpha1, namespace string) apigeev1alpha1.ApigeeNATAddressInterface {
+	return &fakeApigeeNATAddresses{
+		gentype.NewFakeClientWithList[*v1alpha1.ApigeeNATAddress, *v1alpha1.ApigeeNATAddressList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("apigeenataddresses"),
+			v1alpha1.SchemeGroupVersion.WithKind("ApigeeNATAddress"),
+			func() *v1alpha1.ApigeeNATAddress { return &v1alpha1.ApigeeNATAddress{} },
+			func() *v1alpha1.ApigeeNATAddressList { return &v1alpha1.ApigeeNATAddressList{} },
+			func(dst, src *v1alpha1.ApigeeNATAddressList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.ApigeeNATAddressList) []*v1alpha1.ApigeeNATAddress {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.ApigeeNATAddressList, items []*v1alpha1.ApigeeNATAddress) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.ApigeeNATAddress), err
-}
-
-// List takes label and field selectors, and returns the list of ApigeeNATAddresses that match those selectors.
-func (c *FakeApigeeNATAddresses) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ApigeeNATAddressList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(apigeenataddressesResource, apigeenataddressesKind, c.ns, opts), &v1alpha1.ApigeeNATAddressList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.ApigeeNATAddressList{ListMeta: obj.(*v1alpha1.ApigeeNATAddressList).ListMeta}
-	for _, item := range obj.(*v1alpha1.ApigeeNATAddressList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested apigeeNATAddresses.
-func (c *FakeApigeeNATAddresses) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(apigeenataddressesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a apigeeNATAddress and creates it.  Returns the server's representation of the apigeeNATAddress, and an error, if there is any.
-func (c *FakeApigeeNATAddresses) Create(ctx context.Context, apigeeNATAddress *v1alpha1.ApigeeNATAddress, opts v1.CreateOptions) (result *v1alpha1.ApigeeNATAddress, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(apigeenataddressesResource, c.ns, apigeeNATAddress), &v1alpha1.ApigeeNATAddress{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeNATAddress), err
-}
-
-// Update takes the representation of a apigeeNATAddress and updates it. Returns the server's representation of the apigeeNATAddress, and an error, if there is any.
-func (c *FakeApigeeNATAddresses) Update(ctx context.Context, apigeeNATAddress *v1alpha1.ApigeeNATAddress, opts v1.UpdateOptions) (result *v1alpha1.ApigeeNATAddress, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(apigeenataddressesResource, c.ns, apigeeNATAddress), &v1alpha1.ApigeeNATAddress{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeNATAddress), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeApigeeNATAddresses) UpdateStatus(ctx context.Context, apigeeNATAddress *v1alpha1.ApigeeNATAddress, opts v1.UpdateOptions) (*v1alpha1.ApigeeNATAddress, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(apigeenataddressesResource, "status", c.ns, apigeeNATAddress), &v1alpha1.ApigeeNATAddress{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeNATAddress), err
-}
-
-// Delete takes name of the apigeeNATAddress and deletes it. Returns an error if one occurs.
-func (c *FakeApigeeNATAddresses) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(apigeenataddressesResource, c.ns, name, opts), &v1alpha1.ApigeeNATAddress{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeApigeeNATAddresses) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(apigeenataddressesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.ApigeeNATAddressList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched apigeeNATAddress.
-func (c *FakeApigeeNATAddresses) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ApigeeNATAddress, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(apigeenataddressesResource, c.ns, name, pt, data, subresources...), &v1alpha1.ApigeeNATAddress{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeNATAddress), err
 }

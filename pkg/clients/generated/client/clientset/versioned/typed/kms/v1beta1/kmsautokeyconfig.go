@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // KMSAutokeyConfigsGetter has a method to return a KMSAutokeyConfigInterface.
@@ -41,158 +40,34 @@ type KMSAutokeyConfigsGetter interface {
 
 // KMSAutokeyConfigInterface has methods to work with KMSAutokeyConfig resources.
 type KMSAutokeyConfigInterface interface {
-	Create(ctx context.Context, kMSAutokeyConfig *v1beta1.KMSAutokeyConfig, opts v1.CreateOptions) (*v1beta1.KMSAutokeyConfig, error)
-	Update(ctx context.Context, kMSAutokeyConfig *v1beta1.KMSAutokeyConfig, opts v1.UpdateOptions) (*v1beta1.KMSAutokeyConfig, error)
-	UpdateStatus(ctx context.Context, kMSAutokeyConfig *v1beta1.KMSAutokeyConfig, opts v1.UpdateOptions) (*v1beta1.KMSAutokeyConfig, error)
+	Create(ctx context.Context, kMSAutokeyConfig *kmsv1beta1.KMSAutokeyConfig, opts v1.CreateOptions) (*kmsv1beta1.KMSAutokeyConfig, error)
+	Update(ctx context.Context, kMSAutokeyConfig *kmsv1beta1.KMSAutokeyConfig, opts v1.UpdateOptions) (*kmsv1beta1.KMSAutokeyConfig, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, kMSAutokeyConfig *kmsv1beta1.KMSAutokeyConfig, opts v1.UpdateOptions) (*kmsv1beta1.KMSAutokeyConfig, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.KMSAutokeyConfig, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.KMSAutokeyConfigList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*kmsv1beta1.KMSAutokeyConfig, error)
+	List(ctx context.Context, opts v1.ListOptions) (*kmsv1beta1.KMSAutokeyConfigList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.KMSAutokeyConfig, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *kmsv1beta1.KMSAutokeyConfig, err error)
 	KMSAutokeyConfigExpansion
 }
 
 // kMSAutokeyConfigs implements KMSAutokeyConfigInterface
 type kMSAutokeyConfigs struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*kmsv1beta1.KMSAutokeyConfig, *kmsv1beta1.KMSAutokeyConfigList]
 }
 
 // newKMSAutokeyConfigs returns a KMSAutokeyConfigs
 func newKMSAutokeyConfigs(c *KmsV1beta1Client, namespace string) *kMSAutokeyConfigs {
 	return &kMSAutokeyConfigs{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*kmsv1beta1.KMSAutokeyConfig, *kmsv1beta1.KMSAutokeyConfigList](
+			"kmsautokeyconfigs",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *kmsv1beta1.KMSAutokeyConfig { return &kmsv1beta1.KMSAutokeyConfig{} },
+			func() *kmsv1beta1.KMSAutokeyConfigList { return &kmsv1beta1.KMSAutokeyConfigList{} },
+		),
 	}
-}
-
-// Get takes name of the kMSAutokeyConfig, and returns the corresponding kMSAutokeyConfig object, and an error if there is any.
-func (c *kMSAutokeyConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.KMSAutokeyConfig, err error) {
-	result = &v1beta1.KMSAutokeyConfig{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("kmsautokeyconfigs").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of KMSAutokeyConfigs that match those selectors.
-func (c *kMSAutokeyConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.KMSAutokeyConfigList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.KMSAutokeyConfigList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("kmsautokeyconfigs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested kMSAutokeyConfigs.
-func (c *kMSAutokeyConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("kmsautokeyconfigs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a kMSAutokeyConfig and creates it.  Returns the server's representation of the kMSAutokeyConfig, and an error, if there is any.
-func (c *kMSAutokeyConfigs) Create(ctx context.Context, kMSAutokeyConfig *v1beta1.KMSAutokeyConfig, opts v1.CreateOptions) (result *v1beta1.KMSAutokeyConfig, err error) {
-	result = &v1beta1.KMSAutokeyConfig{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("kmsautokeyconfigs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(kMSAutokeyConfig).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a kMSAutokeyConfig and updates it. Returns the server's representation of the kMSAutokeyConfig, and an error, if there is any.
-func (c *kMSAutokeyConfigs) Update(ctx context.Context, kMSAutokeyConfig *v1beta1.KMSAutokeyConfig, opts v1.UpdateOptions) (result *v1beta1.KMSAutokeyConfig, err error) {
-	result = &v1beta1.KMSAutokeyConfig{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("kmsautokeyconfigs").
-		Name(kMSAutokeyConfig.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(kMSAutokeyConfig).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *kMSAutokeyConfigs) UpdateStatus(ctx context.Context, kMSAutokeyConfig *v1beta1.KMSAutokeyConfig, opts v1.UpdateOptions) (result *v1beta1.KMSAutokeyConfig, err error) {
-	result = &v1beta1.KMSAutokeyConfig{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("kmsautokeyconfigs").
-		Name(kMSAutokeyConfig.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(kMSAutokeyConfig).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the kMSAutokeyConfig and deletes it. Returns an error if one occurs.
-func (c *kMSAutokeyConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("kmsautokeyconfigs").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *kMSAutokeyConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("kmsautokeyconfigs").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched kMSAutokeyConfig.
-func (c *kMSAutokeyConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.KMSAutokeyConfig, err error) {
-	result = &v1beta1.KMSAutokeyConfig{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("kmsautokeyconfigs").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

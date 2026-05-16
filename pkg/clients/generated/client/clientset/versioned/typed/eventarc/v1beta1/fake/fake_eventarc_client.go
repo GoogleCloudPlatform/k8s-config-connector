@@ -32,7 +32,7 @@ type FakeEventarcV1beta1 struct {
 }
 
 func (c *FakeEventarcV1beta1) EventarcTriggers(namespace string) v1beta1.EventarcTriggerInterface {
-	return &FakeEventarcTriggers{c, namespace}
+	return newFakeEventarcTriggers(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

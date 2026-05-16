@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1beta1"
+	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // NetworkSecurityAuthorizationPoliciesGetter has a method to return a NetworkSecurityAuthorizationPolicyInterface.
@@ -41,158 +40,38 @@ type NetworkSecurityAuthorizationPoliciesGetter interface {
 
 // NetworkSecurityAuthorizationPolicyInterface has methods to work with NetworkSecurityAuthorizationPolicy resources.
 type NetworkSecurityAuthorizationPolicyInterface interface {
-	Create(ctx context.Context, networkSecurityAuthorizationPolicy *v1beta1.NetworkSecurityAuthorizationPolicy, opts v1.CreateOptions) (*v1beta1.NetworkSecurityAuthorizationPolicy, error)
-	Update(ctx context.Context, networkSecurityAuthorizationPolicy *v1beta1.NetworkSecurityAuthorizationPolicy, opts v1.UpdateOptions) (*v1beta1.NetworkSecurityAuthorizationPolicy, error)
-	UpdateStatus(ctx context.Context, networkSecurityAuthorizationPolicy *v1beta1.NetworkSecurityAuthorizationPolicy, opts v1.UpdateOptions) (*v1beta1.NetworkSecurityAuthorizationPolicy, error)
+	Create(ctx context.Context, networkSecurityAuthorizationPolicy *networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, opts v1.CreateOptions) (*networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, error)
+	Update(ctx context.Context, networkSecurityAuthorizationPolicy *networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, opts v1.UpdateOptions) (*networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, networkSecurityAuthorizationPolicy *networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, opts v1.UpdateOptions) (*networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.NetworkSecurityAuthorizationPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.NetworkSecurityAuthorizationPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*networksecurityv1beta1.NetworkSecurityAuthorizationPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NetworkSecurityAuthorizationPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, err error)
 	NetworkSecurityAuthorizationPolicyExpansion
 }
 
 // networkSecurityAuthorizationPolicies implements NetworkSecurityAuthorizationPolicyInterface
 type networkSecurityAuthorizationPolicies struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, *networksecurityv1beta1.NetworkSecurityAuthorizationPolicyList]
 }
 
 // newNetworkSecurityAuthorizationPolicies returns a NetworkSecurityAuthorizationPolicies
 func newNetworkSecurityAuthorizationPolicies(c *NetworksecurityV1beta1Client, namespace string) *networkSecurityAuthorizationPolicies {
 	return &networkSecurityAuthorizationPolicies{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*networksecurityv1beta1.NetworkSecurityAuthorizationPolicy, *networksecurityv1beta1.NetworkSecurityAuthorizationPolicyList](
+			"networksecurityauthorizationpolicies",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *networksecurityv1beta1.NetworkSecurityAuthorizationPolicy {
+				return &networksecurityv1beta1.NetworkSecurityAuthorizationPolicy{}
+			},
+			func() *networksecurityv1beta1.NetworkSecurityAuthorizationPolicyList {
+				return &networksecurityv1beta1.NetworkSecurityAuthorizationPolicyList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the networkSecurityAuthorizationPolicy, and returns the corresponding networkSecurityAuthorizationPolicy object, and an error if there is any.
-func (c *networkSecurityAuthorizationPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.NetworkSecurityAuthorizationPolicy, err error) {
-	result = &v1beta1.NetworkSecurityAuthorizationPolicy{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("networksecurityauthorizationpolicies").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of NetworkSecurityAuthorizationPolicies that match those selectors.
-func (c *networkSecurityAuthorizationPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.NetworkSecurityAuthorizationPolicyList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.NetworkSecurityAuthorizationPolicyList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("networksecurityauthorizationpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested networkSecurityAuthorizationPolicies.
-func (c *networkSecurityAuthorizationPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("networksecurityauthorizationpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a networkSecurityAuthorizationPolicy and creates it.  Returns the server's representation of the networkSecurityAuthorizationPolicy, and an error, if there is any.
-func (c *networkSecurityAuthorizationPolicies) Create(ctx context.Context, networkSecurityAuthorizationPolicy *v1beta1.NetworkSecurityAuthorizationPolicy, opts v1.CreateOptions) (result *v1beta1.NetworkSecurityAuthorizationPolicy, err error) {
-	result = &v1beta1.NetworkSecurityAuthorizationPolicy{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("networksecurityauthorizationpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(networkSecurityAuthorizationPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a networkSecurityAuthorizationPolicy and updates it. Returns the server's representation of the networkSecurityAuthorizationPolicy, and an error, if there is any.
-func (c *networkSecurityAuthorizationPolicies) Update(ctx context.Context, networkSecurityAuthorizationPolicy *v1beta1.NetworkSecurityAuthorizationPolicy, opts v1.UpdateOptions) (result *v1beta1.NetworkSecurityAuthorizationPolicy, err error) {
-	result = &v1beta1.NetworkSecurityAuthorizationPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("networksecurityauthorizationpolicies").
-		Name(networkSecurityAuthorizationPolicy.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(networkSecurityAuthorizationPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *networkSecurityAuthorizationPolicies) UpdateStatus(ctx context.Context, networkSecurityAuthorizationPolicy *v1beta1.NetworkSecurityAuthorizationPolicy, opts v1.UpdateOptions) (result *v1beta1.NetworkSecurityAuthorizationPolicy, err error) {
-	result = &v1beta1.NetworkSecurityAuthorizationPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("networksecurityauthorizationpolicies").
-		Name(networkSecurityAuthorizationPolicy.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(networkSecurityAuthorizationPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the networkSecurityAuthorizationPolicy and deletes it. Returns an error if one occurs.
-func (c *networkSecurityAuthorizationPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("networksecurityauthorizationpolicies").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *networkSecurityAuthorizationPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("networksecurityauthorizationpolicies").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched networkSecurityAuthorizationPolicy.
-func (c *networkSecurityAuthorizationPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NetworkSecurityAuthorizationPolicy, err error) {
-	result = &v1beta1.NetworkSecurityAuthorizationPolicy{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("networksecurityauthorizationpolicies").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

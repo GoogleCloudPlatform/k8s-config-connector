@@ -32,7 +32,7 @@ type FakeBinaryauthorizationV1alpha1 struct {
 }
 
 func (c *FakeBinaryauthorizationV1alpha1) BinaryAuthorizationPlatformPolicies(namespace string) v1alpha1.BinaryAuthorizationPlatformPolicyInterface {
-	return &FakeBinaryAuthorizationPlatformPolicies{c, namespace}
+	return newFakeBinaryAuthorizationPlatformPolicies(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

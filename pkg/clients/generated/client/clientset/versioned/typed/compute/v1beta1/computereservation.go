@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // ComputeReservationsGetter has a method to return a ComputeReservationInterface.
@@ -41,158 +40,34 @@ type ComputeReservationsGetter interface {
 
 // ComputeReservationInterface has methods to work with ComputeReservation resources.
 type ComputeReservationInterface interface {
-	Create(ctx context.Context, computeReservation *v1beta1.ComputeReservation, opts v1.CreateOptions) (*v1beta1.ComputeReservation, error)
-	Update(ctx context.Context, computeReservation *v1beta1.ComputeReservation, opts v1.UpdateOptions) (*v1beta1.ComputeReservation, error)
-	UpdateStatus(ctx context.Context, computeReservation *v1beta1.ComputeReservation, opts v1.UpdateOptions) (*v1beta1.ComputeReservation, error)
+	Create(ctx context.Context, computeReservation *computev1beta1.ComputeReservation, opts v1.CreateOptions) (*computev1beta1.ComputeReservation, error)
+	Update(ctx context.Context, computeReservation *computev1beta1.ComputeReservation, opts v1.UpdateOptions) (*computev1beta1.ComputeReservation, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, computeReservation *computev1beta1.ComputeReservation, opts v1.UpdateOptions) (*computev1beta1.ComputeReservation, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeReservation, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeReservationList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeReservation, error)
+	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeReservationList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeReservation, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeReservation, err error)
 	ComputeReservationExpansion
 }
 
 // computeReservations implements ComputeReservationInterface
 type computeReservations struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*computev1beta1.ComputeReservation, *computev1beta1.ComputeReservationList]
 }
 
 // newComputeReservations returns a ComputeReservations
 func newComputeReservations(c *ComputeV1beta1Client, namespace string) *computeReservations {
 	return &computeReservations{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*computev1beta1.ComputeReservation, *computev1beta1.ComputeReservationList](
+			"computereservations",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *computev1beta1.ComputeReservation { return &computev1beta1.ComputeReservation{} },
+			func() *computev1beta1.ComputeReservationList { return &computev1beta1.ComputeReservationList{} },
+		),
 	}
-}
-
-// Get takes name of the computeReservation, and returns the corresponding computeReservation object, and an error if there is any.
-func (c *computeReservations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeReservation, err error) {
-	result = &v1beta1.ComputeReservation{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computereservations").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ComputeReservations that match those selectors.
-func (c *computeReservations) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeReservationList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.ComputeReservationList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computereservations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested computeReservations.
-func (c *computeReservations) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("computereservations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a computeReservation and creates it.  Returns the server's representation of the computeReservation, and an error, if there is any.
-func (c *computeReservations) Create(ctx context.Context, computeReservation *v1beta1.ComputeReservation, opts v1.CreateOptions) (result *v1beta1.ComputeReservation, err error) {
-	result = &v1beta1.ComputeReservation{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("computereservations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeReservation).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a computeReservation and updates it. Returns the server's representation of the computeReservation, and an error, if there is any.
-func (c *computeReservations) Update(ctx context.Context, computeReservation *v1beta1.ComputeReservation, opts v1.UpdateOptions) (result *v1beta1.ComputeReservation, err error) {
-	result = &v1beta1.ComputeReservation{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computereservations").
-		Name(computeReservation.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeReservation).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *computeReservations) UpdateStatus(ctx context.Context, computeReservation *v1beta1.ComputeReservation, opts v1.UpdateOptions) (result *v1beta1.ComputeReservation, err error) {
-	result = &v1beta1.ComputeReservation{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computereservations").
-		Name(computeReservation.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeReservation).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the computeReservation and deletes it. Returns an error if one occurs.
-func (c *computeReservations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computereservations").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *computeReservations) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computereservations").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched computeReservation.
-func (c *computeReservations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeReservation, err error) {
-	result = &v1beta1.ComputeReservation{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("computereservations").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

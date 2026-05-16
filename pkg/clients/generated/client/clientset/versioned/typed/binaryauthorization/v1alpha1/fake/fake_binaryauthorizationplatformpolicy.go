@@ -22,123 +22,38 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBinaryAuthorizationPlatformPolicies implements BinaryAuthorizationPlatformPolicyInterface
-type FakeBinaryAuthorizationPlatformPolicies struct {
+// fakeBinaryAuthorizationPlatformPolicies implements BinaryAuthorizationPlatformPolicyInterface
+type fakeBinaryAuthorizationPlatformPolicies struct {
+	*gentype.FakeClientWithList[*v1alpha1.BinaryAuthorizationPlatformPolicy, *v1alpha1.BinaryAuthorizationPlatformPolicyList]
 	Fake *FakeBinaryauthorizationV1alpha1
-	ns   string
 }
 
-var binaryauthorizationplatformpoliciesResource = v1alpha1.SchemeGroupVersion.WithResource("binaryauthorizationplatformpolicies")
-
-var binaryauthorizationplatformpoliciesKind = v1alpha1.SchemeGroupVersion.WithKind("BinaryAuthorizationPlatformPolicy")
-
-// Get takes name of the binaryAuthorizationPlatformPolicy, and returns the corresponding binaryAuthorizationPlatformPolicy object, and an error if there is any.
-func (c *FakeBinaryAuthorizationPlatformPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(binaryauthorizationplatformpoliciesResource, c.ns, name), &v1alpha1.BinaryAuthorizationPlatformPolicy{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBinaryAuthorizationPlatformPolicies(fake *FakeBinaryauthorizationV1alpha1, namespace string) binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicyInterface {
+	return &fakeBinaryAuthorizationPlatformPolicies{
+		gentype.NewFakeClientWithList[*v1alpha1.BinaryAuthorizationPlatformPolicy, *v1alpha1.BinaryAuthorizationPlatformPolicyList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("binaryauthorizationplatformpolicies"),
+			v1alpha1.SchemeGroupVersion.WithKind("BinaryAuthorizationPlatformPolicy"),
+			func() *v1alpha1.BinaryAuthorizationPlatformPolicy {
+				return &v1alpha1.BinaryAuthorizationPlatformPolicy{}
+			},
+			func() *v1alpha1.BinaryAuthorizationPlatformPolicyList {
+				return &v1alpha1.BinaryAuthorizationPlatformPolicyList{}
+			},
+			func(dst, src *v1alpha1.BinaryAuthorizationPlatformPolicyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.BinaryAuthorizationPlatformPolicyList) []*v1alpha1.BinaryAuthorizationPlatformPolicy {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.BinaryAuthorizationPlatformPolicyList, items []*v1alpha1.BinaryAuthorizationPlatformPolicy) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.BinaryAuthorizationPlatformPolicy), err
-}
-
-// List takes label and field selectors, and returns the list of BinaryAuthorizationPlatformPolicies that match those selectors.
-func (c *FakeBinaryAuthorizationPlatformPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BinaryAuthorizationPlatformPolicyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(binaryauthorizationplatformpoliciesResource, binaryauthorizationplatformpoliciesKind, c.ns, opts), &v1alpha1.BinaryAuthorizationPlatformPolicyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.BinaryAuthorizationPlatformPolicyList{ListMeta: obj.(*v1alpha1.BinaryAuthorizationPlatformPolicyList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BinaryAuthorizationPlatformPolicyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested binaryAuthorizationPlatformPolicies.
-func (c *FakeBinaryAuthorizationPlatformPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(binaryauthorizationplatformpoliciesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a binaryAuthorizationPlatformPolicy and creates it.  Returns the server's representation of the binaryAuthorizationPlatformPolicy, and an error, if there is any.
-func (c *FakeBinaryAuthorizationPlatformPolicies) Create(ctx context.Context, binaryAuthorizationPlatformPolicy *v1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.CreateOptions) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(binaryauthorizationplatformpoliciesResource, c.ns, binaryAuthorizationPlatformPolicy), &v1alpha1.BinaryAuthorizationPlatformPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BinaryAuthorizationPlatformPolicy), err
-}
-
-// Update takes the representation of a binaryAuthorizationPlatformPolicy and updates it. Returns the server's representation of the binaryAuthorizationPlatformPolicy, and an error, if there is any.
-func (c *FakeBinaryAuthorizationPlatformPolicies) Update(ctx context.Context, binaryAuthorizationPlatformPolicy *v1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.UpdateOptions) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(binaryauthorizationplatformpoliciesResource, c.ns, binaryAuthorizationPlatformPolicy), &v1alpha1.BinaryAuthorizationPlatformPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BinaryAuthorizationPlatformPolicy), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBinaryAuthorizationPlatformPolicies) UpdateStatus(ctx context.Context, binaryAuthorizationPlatformPolicy *v1alpha1.BinaryAuthorizationPlatformPolicy, opts v1.UpdateOptions) (*v1alpha1.BinaryAuthorizationPlatformPolicy, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(binaryauthorizationplatformpoliciesResource, "status", c.ns, binaryAuthorizationPlatformPolicy), &v1alpha1.BinaryAuthorizationPlatformPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BinaryAuthorizationPlatformPolicy), err
-}
-
-// Delete takes name of the binaryAuthorizationPlatformPolicy and deletes it. Returns an error if one occurs.
-func (c *FakeBinaryAuthorizationPlatformPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(binaryauthorizationplatformpoliciesResource, c.ns, name, opts), &v1alpha1.BinaryAuthorizationPlatformPolicy{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBinaryAuthorizationPlatformPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(binaryauthorizationplatformpoliciesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.BinaryAuthorizationPlatformPolicyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched binaryAuthorizationPlatformPolicy.
-func (c *FakeBinaryAuthorizationPlatformPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BinaryAuthorizationPlatformPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(binaryauthorizationplatformpoliciesResource, c.ns, name, pt, data, subresources...), &v1alpha1.BinaryAuthorizationPlatformPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BinaryAuthorizationPlatformPolicy), err
 }
