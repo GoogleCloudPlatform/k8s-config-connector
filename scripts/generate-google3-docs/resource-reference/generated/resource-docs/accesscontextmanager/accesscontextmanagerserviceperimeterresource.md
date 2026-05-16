@@ -33,8 +33,10 @@
 <td>{{product_name_short}} Resource Short Names</td>
 <td>gcpaccesscontextmanagerserviceperimeterresource<br>gcpaccesscontextmanagerserviceperimeterresources<br>accesscontextmanagerserviceperimeterresource</td>
 </tr>
+<tr>
 <td>{{product_name_short}} Service Name</td>
 <td>accesscontextmanager.googleapis.com</td>
+</tr>
 <tr>
 <td>{{product_name_short}} Resource Fully Qualified Name</td>
 <td>accesscontextmanagerserviceperimeterresources.accesscontextmanager.cnrm.cloud.google.com</td>

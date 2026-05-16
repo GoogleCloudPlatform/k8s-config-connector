@@ -34,8 +34,10 @@
 <td>{{product_name_short}} Resource Short Names</td>
 <td>gcpaccesscontextmanageraccesslevel<br>gcpaccesscontextmanageraccesslevels<br>accesscontextmanageraccesslevel</td>
 </tr>
+<tr>
 <td>{{product_name_short}} Service Name</td>
 <td>accesscontextmanager.googleapis.com</td>
+</tr>
 <tr>
 <td>{{product_name_short}} Resource Fully Qualified Name</td>
 <td>accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com</td>
