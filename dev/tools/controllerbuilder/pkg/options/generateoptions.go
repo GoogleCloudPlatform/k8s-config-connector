@@ -23,6 +23,7 @@ import (
 
 type GenerateOptions struct {
 	ProtoSourcePath      string
+	ProtoOverlayPath     string
 	APIVersion           string
 	ConfigFilePath       string
 	IncludeSkippedOutput bool
@@ -39,11 +40,11 @@ func (o *GenerateOptions) InitDefaults() error {
 
 func (o *GenerateOptions) BindPersistentFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringVar(&o.ProtoSourcePath, "proto-source-path", o.ProtoSourcePath, "path to (compiled) proto for APIs")
+	cmd.PersistentFlags().StringVar(&o.ProtoOverlayPath, "overlay", o.ProtoOverlayPath, "path to a proto overlay file")
 	cmd.PersistentFlags().StringVarP(&o.APIVersion, "api-version", "v", o.APIVersion, "the KRM API version. used to import the KRM API")
 	cmd.PersistentFlags().StringVar(&o.ConfigFilePath, "config", "", "path to service config file, the config file will override other flags")
 	cmd.PersistentFlags().BoolVar(&o.IncludeSkippedOutput, "include-skipped-output", false, "output skipped types and mappers as commented-out code")
 }
-
 func RepoRoot() (string, error) {
 	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
 	output, err := cmd.Output()
