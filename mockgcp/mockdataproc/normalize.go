@@ -22,19 +22,19 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// Cluster
-	replacements.ReplacePath(".status.stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".response.status.stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".clusters[].status.stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".metadata.status.stateStartTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".clusters[].status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 
-	replacements.ReplacePath(".statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".response.statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".clusters[].statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".metadata.statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".clusters[].statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// Job
-	replacements.ReplacePath(".statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".status.stateStartTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// metrics are volatile and more "data plane"
 	for _, metric := range []string{

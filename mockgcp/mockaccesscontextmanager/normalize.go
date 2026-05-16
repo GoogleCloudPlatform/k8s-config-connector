@@ -20,18 +20,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
-const TimePlaceholder = "2024-04-01T12:34:56.123456Z"
-
 const EtagPlaceholder = "abcdef0123A="
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// accessPolicy
-	replacements.ReplacePath(".response.createTime", TimePlaceholder)
-	replacements.ReplacePath(".createTime", TimePlaceholder)
-	replacements.ReplacePath(".response.updateTime", TimePlaceholder)
-	replacements.ReplacePath(".updateTime", TimePlaceholder)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.ReplacePath(".etag", EtagPlaceholder)
 	replacements.ReplacePath(".accessPolicies[].etag", EtagPlaceholder)
