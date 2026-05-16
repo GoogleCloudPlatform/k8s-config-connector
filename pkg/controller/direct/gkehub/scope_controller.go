@@ -35,8 +35,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.GKEHubScopeGVK, getGkeHubScopeModel)
-	registry.RegisterModel(krmv1beta1.GKEHubScopeGVK, getGkeHubScopeModelV1Beta1)
+	registry.RegisterModel(krmv1beta1.GKEHubScopeGVK, getGkeHubScopeModel)
 }
 
 func getGkeHubScopeModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -50,17 +49,21 @@ type gkeHubScopeModel struct {
 // model implements the Model interface.
 var _ directbase.Model = &gkeHubScopeModel{}
 
-type gkeHubScopeAdapter struct {
-	id        *krm.GKEHubScopeIdentity
-	desired   *krm.GKEHubScope
-	actual    *gkehubapi.Scope
-	hubClient *gkeHubClient
-}
-
-var _ directbase.Adapter = &gkeHubScopeAdapter{}
-
 // AdapterForObject implements the Model interface.
 func (m *gkeHubScopeModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.Object
+	apiVersion := u.GetAPIVersion()
+	switch apiVersion {
+	case krm.GKEHubScopeGVK.GroupVersion().String():
+		return m.adapterForV1Alpha1(ctx, op)
+	case krmv1beta1.GKEHubScopeGVK.GroupVersion().String():
+		return m.adapterForV1Beta1(ctx, op)
+	default:
+		return nil, fmt.Errorf("unsupported apiVersion: %q", apiVersion)
+	}
+}
+
+func (m *gkeHubScopeModel) adapterForV1Alpha1(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.Object
 	reader := op.Reader
 	gcpClient, err := newGCPClient(m.config)
@@ -88,9 +91,47 @@ func (m *gkeHubScopeModel) AdapterForObject(ctx context.Context, op *directbase.
 	}, nil
 }
 
+func (m *gkeHubScopeModel) adapterForV1Beta1(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.Object
+	reader := op.Reader
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, err
+	}
+	hubClient, err := gcpClient.newGkeHubClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	obj := &krmv1beta1.GKEHubScope{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	id, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+
+	return &gkeHubScopeAdapterV1Beta1{
+		id:        id.(*krmv1beta1.GKEHubScopeIdentity),
+		labels:    label.NewGCPLabelsFromK8sLabels(u.GetLabels()),
+		desired:   obj,
+		hubClient: hubClient,
+	}, nil
+}
+
 func (m *gkeHubScopeModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	return nil, nil
 }
+
+type gkeHubScopeAdapter struct {
+	id        *krm.GKEHubScopeIdentity
+	desired   *krm.GKEHubScope
+	actual    *gkehubapi.Scope
+	hubClient *gkeHubClient
+}
+
+var _ directbase.Adapter = &gkeHubScopeAdapter{}
 
 func (a *gkeHubScopeAdapter) Find(ctx context.Context) (bool, error) {
 	if a.id == nil {
@@ -240,17 +281,6 @@ func (a *gkeHubScopeAdapter) waitForOp(ctx context.Context, op *gkehubapi.Operat
 
 // v1beta1 support
 
-func getGkeHubScopeModelV1Beta1(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &gkeHubScopeModelV1Beta1{config: config}, nil
-}
-
-type gkeHubScopeModelV1Beta1 struct {
-	config *config.ControllerConfig
-}
-
-// model implements the Model interface.
-var _ directbase.Model = &gkeHubScopeModelV1Beta1{}
-
 type gkeHubScopeAdapterV1Beta1 struct {
 	id        *krmv1beta1.GKEHubScopeIdentity
 	labels    map[string]string
@@ -260,40 +290,6 @@ type gkeHubScopeAdapterV1Beta1 struct {
 }
 
 var _ directbase.Adapter = &gkeHubScopeAdapterV1Beta1{}
-
-// AdapterForObject implements the Model interface.
-func (m *gkeHubScopeModelV1Beta1) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
-	u := op.Object
-	reader := op.Reader
-	gcpClient, err := newGCPClient(m.config)
-	if err != nil {
-		return nil, err
-	}
-	hubClient, err := gcpClient.newGkeHubClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-	obj := &krmv1beta1.GKEHubScope{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
-	}
-
-	id, err := obj.GetIdentity(ctx, reader)
-	if err != nil {
-		return nil, err
-	}
-
-	return &gkeHubScopeAdapterV1Beta1{
-		id:        id.(*krmv1beta1.GKEHubScopeIdentity),
-		labels:    label.NewGCPLabelsFromK8sLabels(u.GetLabels()),
-		desired:   obj,
-		hubClient: hubClient,
-	}, nil
-}
-
-func (m *gkeHubScopeModelV1Beta1) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
-}
 
 func (a *gkeHubScopeAdapterV1Beta1) Find(ctx context.Context) (bool, error) {
 	if a.id == nil {
