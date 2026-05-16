@@ -32,11 +32,11 @@ type FakeDataflowV1beta1 struct {
 }
 
 func (c *FakeDataflowV1beta1) DataflowFlexTemplateJobs(namespace string) v1beta1.DataflowFlexTemplateJobInterface {
-	return &FakeDataflowFlexTemplateJobs{c, namespace}
+	return newFakeDataflowFlexTemplateJobs(c, namespace)
 }
 
 func (c *FakeDataflowV1beta1) DataflowJobs(namespace string) v1beta1.DataflowJobInterface {
-	return &FakeDataflowJobs{c, namespace}
+	return newFakeDataflowJobs(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

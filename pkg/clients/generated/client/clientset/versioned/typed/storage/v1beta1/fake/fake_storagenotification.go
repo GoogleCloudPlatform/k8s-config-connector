@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeStorageNotifications implements StorageNotificationInterface
-type FakeStorageNotifications struct {
+// fakeStorageNotifications implements StorageNotificationInterface
+type fakeStorageNotifications struct {
+	*gentype.FakeClientWithList[*v1beta1.StorageNotification, *v1beta1.StorageNotificationList]
 	Fake *FakeStorageV1beta1
-	ns   string
 }
 
-var storagenotificationsResource = v1beta1.SchemeGroupVersion.WithResource("storagenotifications")
-
-var storagenotificationsKind = v1beta1.SchemeGroupVersion.WithKind("StorageNotification")
-
-// Get takes name of the storageNotification, and returns the corresponding storageNotification object, and an error if there is any.
-func (c *FakeStorageNotifications) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.StorageNotification, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(storagenotificationsResource, c.ns, name), &v1beta1.StorageNotification{})
-
-	if obj == nil {
-		return nil, err
+func newFakeStorageNotifications(fake *FakeStorageV1beta1, namespace string) storagev1beta1.StorageNotificationInterface {
+	return &fakeStorageNotifications{
+		gentype.NewFakeClientWithList[*v1beta1.StorageNotification, *v1beta1.StorageNotificationList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("storagenotifications"),
+			v1beta1.SchemeGroupVersion.WithKind("StorageNotification"),
+			func() *v1beta1.StorageNotification { return &v1beta1.StorageNotification{} },
+			func() *v1beta1.StorageNotificationList { return &v1beta1.StorageNotificationList{} },
+			func(dst, src *v1beta1.StorageNotificationList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.StorageNotificationList) []*v1beta1.StorageNotification {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.StorageNotificationList, items []*v1beta1.StorageNotification) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.StorageNotification), err
-}
-
-// List takes label and field selectors, and returns the list of StorageNotifications that match those selectors.
-func (c *FakeStorageNotifications) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.StorageNotificationList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(storagenotificationsResource, storagenotificationsKind, c.ns, opts), &v1beta1.StorageNotificationList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.StorageNotificationList{ListMeta: obj.(*v1beta1.StorageNotificationList).ListMeta}
-	for _, item := range obj.(*v1beta1.StorageNotificationList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested storageNotifications.
-func (c *FakeStorageNotifications) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(storagenotificationsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a storageNotification and creates it.  Returns the server's representation of the storageNotification, and an error, if there is any.
-func (c *FakeStorageNotifications) Create(ctx context.Context, storageNotification *v1beta1.StorageNotification, opts v1.CreateOptions) (result *v1beta1.StorageNotification, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(storagenotificationsResource, c.ns, storageNotification), &v1beta1.StorageNotification{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.StorageNotification), err
-}
-
-// Update takes the representation of a storageNotification and updates it. Returns the server's representation of the storageNotification, and an error, if there is any.
-func (c *FakeStorageNotifications) Update(ctx context.Context, storageNotification *v1beta1.StorageNotification, opts v1.UpdateOptions) (result *v1beta1.StorageNotification, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(storagenotificationsResource, c.ns, storageNotification), &v1beta1.StorageNotification{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.StorageNotification), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeStorageNotifications) UpdateStatus(ctx context.Context, storageNotification *v1beta1.StorageNotification, opts v1.UpdateOptions) (*v1beta1.StorageNotification, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(storagenotificationsResource, "status", c.ns, storageNotification), &v1beta1.StorageNotification{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.StorageNotification), err
-}
-
-// Delete takes name of the storageNotification and deletes it. Returns an error if one occurs.
-func (c *FakeStorageNotifications) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(storagenotificationsResource, c.ns, name, opts), &v1beta1.StorageNotification{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeStorageNotifications) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(storagenotificationsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.StorageNotificationList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched storageNotification.
-func (c *FakeStorageNotifications) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.StorageNotification, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(storagenotificationsResource, c.ns, name, pt, data, subresources...), &v1beta1.StorageNotification{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.StorageNotification), err
 }

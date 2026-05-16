@@ -32,19 +32,19 @@ type FakeGkehubV1alpha1 struct {
 }
 
 func (c *FakeGkehubV1alpha1) GKEHubMembershipBindings(namespace string) v1alpha1.GKEHubMembershipBindingInterface {
-	return &FakeGKEHubMembershipBindings{c, namespace}
+	return newFakeGKEHubMembershipBindings(c, namespace)
 }
 
 func (c *FakeGkehubV1alpha1) GKEHubNamespaces(namespace string) v1alpha1.GKEHubNamespaceInterface {
-	return &FakeGKEHubNamespaces{c, namespace}
+	return newFakeGKEHubNamespaces(c, namespace)
 }
 
 func (c *FakeGkehubV1alpha1) GKEHubScopes(namespace string) v1alpha1.GKEHubScopeInterface {
-	return &FakeGKEHubScopes{c, namespace}
+	return newFakeGKEHubScopes(c, namespace)
 }
 
 func (c *FakeGkehubV1alpha1) GKEHubScopeRBACRoleBindings(namespace string) v1alpha1.GKEHubScopeRBACRoleBindingInterface {
-	return &FakeGKEHubScopeRBACRoleBindings{c, namespace}
+	return newFakeGKEHubScopeRBACRoleBindings(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

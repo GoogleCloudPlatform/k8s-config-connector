@@ -32,11 +32,11 @@ type FakeDocumentaiV1alpha1 struct {
 }
 
 func (c *FakeDocumentaiV1alpha1) DocumentAIProcessors(namespace string) v1alpha1.DocumentAIProcessorInterface {
-	return &FakeDocumentAIProcessors{c, namespace}
+	return newFakeDocumentAIProcessors(c, namespace)
 }
 
 func (c *FakeDocumentaiV1alpha1) DocumentAIProcessorDefaultVersions(namespace string) v1alpha1.DocumentAIProcessorDefaultVersionInterface {
-	return &FakeDocumentAIProcessorDefaultVersions{c, namespace}
+	return newFakeDocumentAIProcessorDefaultVersions(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

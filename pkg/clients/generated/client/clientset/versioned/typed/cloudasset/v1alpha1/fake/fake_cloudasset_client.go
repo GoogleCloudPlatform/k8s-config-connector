@@ -32,15 +32,15 @@ type FakeCloudassetV1alpha1 struct {
 }
 
 func (c *FakeCloudassetV1alpha1) CloudAssetFolderFeeds(namespace string) v1alpha1.CloudAssetFolderFeedInterface {
-	return &FakeCloudAssetFolderFeeds{c, namespace}
+	return newFakeCloudAssetFolderFeeds(c, namespace)
 }
 
 func (c *FakeCloudassetV1alpha1) CloudAssetOrganizationFeeds(namespace string) v1alpha1.CloudAssetOrganizationFeedInterface {
-	return &FakeCloudAssetOrganizationFeeds{c, namespace}
+	return newFakeCloudAssetOrganizationFeeds(c, namespace)
 }
 
 func (c *FakeCloudassetV1alpha1) CloudAssetProjectFeeds(namespace string) v1alpha1.CloudAssetProjectFeedInterface {
-	return &FakeCloudAssetProjectFeeds{c, namespace}
+	return newFakeCloudAssetProjectFeeds(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

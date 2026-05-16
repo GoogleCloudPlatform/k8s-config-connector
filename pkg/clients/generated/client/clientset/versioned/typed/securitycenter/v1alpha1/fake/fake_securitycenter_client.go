@@ -32,11 +32,11 @@ type FakeSecuritycenterV1alpha1 struct {
 }
 
 func (c *FakeSecuritycenterV1alpha1) SecurityCenterNotificationConfigs(namespace string) v1alpha1.SecurityCenterNotificationConfigInterface {
-	return &FakeSecurityCenterNotificationConfigs{c, namespace}
+	return newFakeSecurityCenterNotificationConfigs(c, namespace)
 }
 
 func (c *FakeSecuritycenterV1alpha1) SecurityCenterSources(namespace string) v1alpha1.SecurityCenterSourceInterface {
-	return &FakeSecurityCenterSources{c, namespace}
+	return newFakeSecurityCenterSources(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

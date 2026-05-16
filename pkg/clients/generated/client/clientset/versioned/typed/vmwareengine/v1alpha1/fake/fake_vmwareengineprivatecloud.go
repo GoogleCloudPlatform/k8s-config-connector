@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeVMwareEnginePrivateClouds implements VMwareEnginePrivateCloudInterface
-type FakeVMwareEnginePrivateClouds struct {
+// fakeVMwareEnginePrivateClouds implements VMwareEnginePrivateCloudInterface
+type fakeVMwareEnginePrivateClouds struct {
+	*gentype.FakeClientWithList[*v1alpha1.VMwareEnginePrivateCloud, *v1alpha1.VMwareEnginePrivateCloudList]
 	Fake *FakeVmwareengineV1alpha1
-	ns   string
 }
 
-var vmwareengineprivatecloudsResource = v1alpha1.SchemeGroupVersion.WithResource("vmwareengineprivateclouds")
-
-var vmwareengineprivatecloudsKind = v1alpha1.SchemeGroupVersion.WithKind("VMwareEnginePrivateCloud")
-
-// Get takes name of the vMwareEnginePrivateCloud, and returns the corresponding vMwareEnginePrivateCloud object, and an error if there is any.
-func (c *FakeVMwareEnginePrivateClouds) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VMwareEnginePrivateCloud, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(vmwareengineprivatecloudsResource, c.ns, name), &v1alpha1.VMwareEnginePrivateCloud{})
-
-	if obj == nil {
-		return nil, err
+func newFakeVMwareEnginePrivateClouds(fake *FakeVmwareengineV1alpha1, namespace string) vmwareenginev1alpha1.VMwareEnginePrivateCloudInterface {
+	return &fakeVMwareEnginePrivateClouds{
+		gentype.NewFakeClientWithList[*v1alpha1.VMwareEnginePrivateCloud, *v1alpha1.VMwareEnginePrivateCloudList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("vmwareengineprivateclouds"),
+			v1alpha1.SchemeGroupVersion.WithKind("VMwareEnginePrivateCloud"),
+			func() *v1alpha1.VMwareEnginePrivateCloud { return &v1alpha1.VMwareEnginePrivateCloud{} },
+			func() *v1alpha1.VMwareEnginePrivateCloudList { return &v1alpha1.VMwareEnginePrivateCloudList{} },
+			func(dst, src *v1alpha1.VMwareEnginePrivateCloudList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.VMwareEnginePrivateCloudList) []*v1alpha1.VMwareEnginePrivateCloud {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.VMwareEnginePrivateCloudList, items []*v1alpha1.VMwareEnginePrivateCloud) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.VMwareEnginePrivateCloud), err
-}
-
-// List takes label and field selectors, and returns the list of VMwareEnginePrivateClouds that match those selectors.
-func (c *FakeVMwareEnginePrivateClouds) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VMwareEnginePrivateCloudList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(vmwareengineprivatecloudsResource, vmwareengineprivatecloudsKind, c.ns, opts), &v1alpha1.VMwareEnginePrivateCloudList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.VMwareEnginePrivateCloudList{ListMeta: obj.(*v1alpha1.VMwareEnginePrivateCloudList).ListMeta}
-	for _, item := range obj.(*v1alpha1.VMwareEnginePrivateCloudList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested vMwareEnginePrivateClouds.
-func (c *FakeVMwareEnginePrivateClouds) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(vmwareengineprivatecloudsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a vMwareEnginePrivateCloud and creates it.  Returns the server's representation of the vMwareEnginePrivateCloud, and an error, if there is any.
-func (c *FakeVMwareEnginePrivateClouds) Create(ctx context.Context, vMwareEnginePrivateCloud *v1alpha1.VMwareEnginePrivateCloud, opts v1.CreateOptions) (result *v1alpha1.VMwareEnginePrivateCloud, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(vmwareengineprivatecloudsResource, c.ns, vMwareEnginePrivateCloud), &v1alpha1.VMwareEnginePrivateCloud{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VMwareEnginePrivateCloud), err
-}
-
-// Update takes the representation of a vMwareEnginePrivateCloud and updates it. Returns the server's representation of the vMwareEnginePrivateCloud, and an error, if there is any.
-func (c *FakeVMwareEnginePrivateClouds) Update(ctx context.Context, vMwareEnginePrivateCloud *v1alpha1.VMwareEnginePrivateCloud, opts v1.UpdateOptions) (result *v1alpha1.VMwareEnginePrivateCloud, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(vmwareengineprivatecloudsResource, c.ns, vMwareEnginePrivateCloud), &v1alpha1.VMwareEnginePrivateCloud{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VMwareEnginePrivateCloud), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeVMwareEnginePrivateClouds) UpdateStatus(ctx context.Context, vMwareEnginePrivateCloud *v1alpha1.VMwareEnginePrivateCloud, opts v1.UpdateOptions) (*v1alpha1.VMwareEnginePrivateCloud, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(vmwareengineprivatecloudsResource, "status", c.ns, vMwareEnginePrivateCloud), &v1alpha1.VMwareEnginePrivateCloud{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VMwareEnginePrivateCloud), err
-}
-
-// Delete takes name of the vMwareEnginePrivateCloud and deletes it. Returns an error if one occurs.
-func (c *FakeVMwareEnginePrivateClouds) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(vmwareengineprivatecloudsResource, c.ns, name, opts), &v1alpha1.VMwareEnginePrivateCloud{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeVMwareEnginePrivateClouds) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(vmwareengineprivatecloudsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.VMwareEnginePrivateCloudList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched vMwareEnginePrivateCloud.
-func (c *FakeVMwareEnginePrivateClouds) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VMwareEnginePrivateCloud, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(vmwareengineprivatecloudsResource, c.ns, name, pt, data, subresources...), &v1alpha1.VMwareEnginePrivateCloud{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VMwareEnginePrivateCloud), err
 }

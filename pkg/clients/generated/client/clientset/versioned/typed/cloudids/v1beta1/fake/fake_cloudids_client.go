@@ -32,7 +32,7 @@ type FakeCloudidsV1beta1 struct {
 }
 
 func (c *FakeCloudidsV1beta1) CloudIDSEndpoints(namespace string) v1beta1.CloudIDSEndpointInterface {
-	return &FakeCloudIDSEndpoints{c, namespace}
+	return newFakeCloudIDSEndpoints(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

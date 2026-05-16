@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/discoveryengine/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDiscoveryEngineDataStores implements DiscoveryEngineDataStoreInterface
-type FakeDiscoveryEngineDataStores struct {
+// fakeDiscoveryEngineDataStores implements DiscoveryEngineDataStoreInterface
+type fakeDiscoveryEngineDataStores struct {
+	*gentype.FakeClientWithList[*v1alpha1.DiscoveryEngineDataStore, *v1alpha1.DiscoveryEngineDataStoreList]
 	Fake *FakeDiscoveryengineV1alpha1
-	ns   string
 }
 
-var discoveryenginedatastoresResource = v1alpha1.SchemeGroupVersion.WithResource("discoveryenginedatastores")
-
-var discoveryenginedatastoresKind = v1alpha1.SchemeGroupVersion.WithKind("DiscoveryEngineDataStore")
-
-// Get takes name of the discoveryEngineDataStore, and returns the corresponding discoveryEngineDataStore object, and an error if there is any.
-func (c *FakeDiscoveryEngineDataStores) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DiscoveryEngineDataStore, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(discoveryenginedatastoresResource, c.ns, name), &v1alpha1.DiscoveryEngineDataStore{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDiscoveryEngineDataStores(fake *FakeDiscoveryengineV1alpha1, namespace string) discoveryenginev1alpha1.DiscoveryEngineDataStoreInterface {
+	return &fakeDiscoveryEngineDataStores{
+		gentype.NewFakeClientWithList[*v1alpha1.DiscoveryEngineDataStore, *v1alpha1.DiscoveryEngineDataStoreList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("discoveryenginedatastores"),
+			v1alpha1.SchemeGroupVersion.WithKind("DiscoveryEngineDataStore"),
+			func() *v1alpha1.DiscoveryEngineDataStore { return &v1alpha1.DiscoveryEngineDataStore{} },
+			func() *v1alpha1.DiscoveryEngineDataStoreList { return &v1alpha1.DiscoveryEngineDataStoreList{} },
+			func(dst, src *v1alpha1.DiscoveryEngineDataStoreList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DiscoveryEngineDataStoreList) []*v1alpha1.DiscoveryEngineDataStore {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DiscoveryEngineDataStoreList, items []*v1alpha1.DiscoveryEngineDataStore) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DiscoveryEngineDataStore), err
-}
-
-// List takes label and field selectors, and returns the list of DiscoveryEngineDataStores that match those selectors.
-func (c *FakeDiscoveryEngineDataStores) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DiscoveryEngineDataStoreList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(discoveryenginedatastoresResource, discoveryenginedatastoresKind, c.ns, opts), &v1alpha1.DiscoveryEngineDataStoreList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DiscoveryEngineDataStoreList{ListMeta: obj.(*v1alpha1.DiscoveryEngineDataStoreList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DiscoveryEngineDataStoreList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested discoveryEngineDataStores.
-func (c *FakeDiscoveryEngineDataStores) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(discoveryenginedatastoresResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a discoveryEngineDataStore and creates it.  Returns the server's representation of the discoveryEngineDataStore, and an error, if there is any.
-func (c *FakeDiscoveryEngineDataStores) Create(ctx context.Context, discoveryEngineDataStore *v1alpha1.DiscoveryEngineDataStore, opts v1.CreateOptions) (result *v1alpha1.DiscoveryEngineDataStore, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(discoveryenginedatastoresResource, c.ns, discoveryEngineDataStore), &v1alpha1.DiscoveryEngineDataStore{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DiscoveryEngineDataStore), err
-}
-
-// Update takes the representation of a discoveryEngineDataStore and updates it. Returns the server's representation of the discoveryEngineDataStore, and an error, if there is any.
-func (c *FakeDiscoveryEngineDataStores) Update(ctx context.Context, discoveryEngineDataStore *v1alpha1.DiscoveryEngineDataStore, opts v1.UpdateOptions) (result *v1alpha1.DiscoveryEngineDataStore, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(discoveryenginedatastoresResource, c.ns, discoveryEngineDataStore), &v1alpha1.DiscoveryEngineDataStore{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DiscoveryEngineDataStore), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDiscoveryEngineDataStores) UpdateStatus(ctx context.Context, discoveryEngineDataStore *v1alpha1.DiscoveryEngineDataStore, opts v1.UpdateOptions) (*v1alpha1.DiscoveryEngineDataStore, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(discoveryenginedatastoresResource, "status", c.ns, discoveryEngineDataStore), &v1alpha1.DiscoveryEngineDataStore{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DiscoveryEngineDataStore), err
-}
-
-// Delete takes name of the discoveryEngineDataStore and deletes it. Returns an error if one occurs.
-func (c *FakeDiscoveryEngineDataStores) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(discoveryenginedatastoresResource, c.ns, name, opts), &v1alpha1.DiscoveryEngineDataStore{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDiscoveryEngineDataStores) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(discoveryenginedatastoresResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DiscoveryEngineDataStoreList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched discoveryEngineDataStore.
-func (c *FakeDiscoveryEngineDataStores) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DiscoveryEngineDataStore, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(discoveryenginedatastoresResource, c.ns, name, pt, data, subresources...), &v1alpha1.DiscoveryEngineDataStore{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DiscoveryEngineDataStore), err
 }
