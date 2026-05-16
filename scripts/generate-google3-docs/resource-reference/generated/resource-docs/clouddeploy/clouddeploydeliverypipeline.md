@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpdeploydeliverypipeline<br>gcpdeploydeliverypipelines<br>clouddeploydeliverypipeline</td>
+<td>clouddeploydeliverypipeline<br>gcpdeploydeliverypipeline<br>gcpdeploydeliverypipelines</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>

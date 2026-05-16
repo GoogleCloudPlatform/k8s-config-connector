@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpcomposerenvironment<br>gcpcomposerenvironments<br>composerenvironment</td>
+<td>composerenvironment<br>gcpcomposerenvironment<br>gcpcomposerenvironments</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
