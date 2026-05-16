@@ -265,16 +265,6 @@ func Field_ToProto(mapCtx *direct.MapContext, in any) *pb.Value {
 	}
 }
 
-func Value_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Value) *krm.Value {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func Value_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Value) *pb.Value {
-	mapCtx.NotImplemented()
-	return nil
-}
-
 // This mapper is unused and the default generator generates incorrect code (that does not compile).
 // We provide a stub implementation to avoid the generation of incorrect code.
 func Value_BytesValue_ToProto(mapCtx *direct.MapContext, in []byte) *pb.Value_BytesValue {
