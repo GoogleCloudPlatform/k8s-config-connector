@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpcertificatemanagercertificate<br>gcpcertificatemanagercertificates<br>certificatemanagercertificate</td>
+<td>certificatemanagercertificate<br>gcpcertificatemanagercertificate<br>gcpcertificatemanagercertificates</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -674,6 +674,17 @@ conditions:
   status: string
   type: string
 observedGeneration: integer
+observedState:
+  managed:
+    authorizationAttemptInfo:
+    - details: string
+      domain: string
+      failureReason: string
+      state: string
+    provisioningIssue:
+    - details: string
+      reason: string
+    state: string
 ```
 
 <table class="properties responsive">
@@ -739,6 +750,104 @@ observedGeneration: integer
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
         </td>
     </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration and state of a Managed Certificate.
+Certificate Manager provisions and renews Managed Certificates
+automatically, for as long as it's authorized to do so.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.authorizationAttemptInfo</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Detailed state of the latest authorization attempt for each domain
+specified for this Managed Certificate.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.authorizationAttemptInfo[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.authorizationAttemptInfo[].details</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Human readable explanation for reaching the state. Provided to help
+address the configuration issues.
+Not guaranteed to be stable. For programmatic access use 'failure_reason' field.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.authorizationAttemptInfo[].domain</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Domain name of the authorization attempt.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.authorizationAttemptInfo[].failureReason</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Reason for failure of the authorization attempt for the domain.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.authorizationAttemptInfo[].state</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}State of the domain for managed certificate issuance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.provisioningIssue</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Information about issues with provisioning this Managed Certificate.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.provisioningIssue[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.provisioningIssue[].details</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Human readable explanation about the issue. Provided to help address
+the configuration issues.
+Not guaranteed to be stable. For programmatic access use 'reason' field.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.provisioningIssue[].reason</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Reason for provisioning failures.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.state</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A state of this Managed Certificate.{% endverbatim %}</p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
@@ -746,20 +855,6 @@ observedGeneration: integer
 
 ### Managed DNS Certificate
 ```yaml
-# Copyright 2023 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
 kind: CertificateManagerCertificate
 metadata:
@@ -804,20 +899,6 @@ spec:
 
 ### Self Managed Certificate
 ```yaml
-# Copyright 2023 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
 kind: CertificateManagerCertificate
 metadata:

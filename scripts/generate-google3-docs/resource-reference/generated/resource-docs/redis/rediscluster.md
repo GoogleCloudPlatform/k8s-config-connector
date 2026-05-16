@@ -434,6 +434,7 @@ observedState:
     network: string
     projectID: string
     pscConnectionID: string
+    serviceAttachment: string
   sizeGb: integer
   state: string
   stateInfo:
@@ -594,35 +595,42 @@ observedState:
         <td><code>observedState.pscConnections[].address</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The IP allocated on the consumer network for the PSC forwarding rule.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The IP allocated on the consumer network for the PSC forwarding rule.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.pscConnections[].forwardingRule</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.pscConnections[].network</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.pscConnections[].projectID</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The consumer project_id where the forwarding rule is created from.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Project ID of the consumer project where the forwarding rule is created in.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.pscConnections[].pscConnectionID</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The PSC connection id of the forwarding rule connected to the service attachment.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The PSC connection id of the forwarding rule connected to the service attachment.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscConnections[].serviceAttachment</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -681,20 +689,6 @@ observedState:
 
 ### Typical Use Case
 ```yaml
-# Copyright 2024 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: redis.cnrm.cloud.google.com/v1beta1
 kind: RedisCluster
 metadata:

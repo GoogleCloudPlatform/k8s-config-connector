@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpcomputetargethttpsproxy<br>gcpcomputetargethttpsproxies<br>computetargethttpsproxy</td>
+<td>computetargethttpsproxy<br>gcpcomputetargethttpsproxies<br>gcpcomputetargethttpsproxy</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -123,7 +123,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer. Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED. sslCertificates and certificateManagerCertificates fields cannot be defined together.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -133,9 +133,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
-Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
-sslCertificates and certificateManagerCertificates fields cannot be defined together.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to a CertificateManagerCertificate resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -145,7 +143,7 @@ sslCertificates and certificateManagerCertificates fields cannot be defined toge
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/global/certificates/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificate` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `externalRef` field of a `CertificateManagerCertificate` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -175,12 +173,7 @@ sslCertificates and certificateManagerCertificates fields cannot be defined toge
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A reference to the CertificateMap resource uri that identifies a
-certificate map associated with the given target proxy. This field
-can only be set for global target proxies. This field is only supported
-for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
-For INTERNAL_MANAGED, use certificateManagerCertificates instead.
-sslCertificates and certificateMap fields cannot be defined together.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to the CertificateMap resource uri that identifies a certificate map associated with the given target proxy. This field can only be set for global target proxies. This field is only supported for EXTERNAL and EXTERNAL_MANAGED load balancing schemes. For INTERNAL_MANAGED, use certificateManagerCertificates instead. sslCertificates and certificateMap fields cannot be defined together.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -230,12 +223,7 @@ sslCertificates and certificateMap fields cannot be defined together.{% endverba
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Specifies how long to keep a connection open, after completing a response,
-while there is no matching traffic (in seconds). If an HTTP keepalive is
-not specified, a default value (610 seconds) will be used. For Global
-external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
-the maximum allowed value is 1200 seconds. For Global external HTTP(S)
-load balancer (classic), this option is not available publicly.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds). If an HTTP keepalive is not specified, a default value (610 seconds) will be used. For Global external HTTP(S) load balancer, the minimum allowed value is 5 seconds and the maximum allowed value is 1200 seconds. For Global external HTTP(S) load balancer (classic), this option is not available publicly.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -255,8 +243,7 @@ load balancer (classic), this option is not available publicly.{% endverbatim %}
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. This field only applies when the forwarding rule that references
-this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -266,10 +253,7 @@ this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endv
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the QUIC override policy for this resource. This determines
-whether the load balancer will attempt to negotiate QUIC with clients
-or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is
-specified, Google manages whether QUIC is used. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"].{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the QUIC override policy for this resource. This determines whether the load balancer will attempt to negotiate QUIC with clients or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is specified, Google manages whether QUIC is used. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -289,15 +273,7 @@ specified, Google manages whether QUIC is used. Default value: "NONE" Possible v
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. A URL referring to a networksecurity.ServerTlsPolicy
-resource that describes how the proxy should authenticate inbound
-traffic. serverTlsPolicy only applies to a global TargetHttpsProxy
-attached to globalForwardingRules with the loadBalancingScheme
-set to INTERNAL_SELF_MANAGED or EXTERNAL or EXTERNAL_MANAGED.
-For details which ServerTlsPolicy resources are accepted with
-INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED
-loadBalancingScheme consult ServerTlsPolicy documentation.
-If left blank, communications are not encrypted.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. A URL referring to a networksecurity.ServerTlsPolicy resource that describes how the proxy should authenticate inbound traffic. serverTlsPolicy only applies to a global TargetHttpsProxy attached to globalForwardingRules with the loadBalancingScheme set to INTERNAL_SELF_MANAGED or EXTERNAL or EXTERNAL_MANAGED. For details which ServerTlsPolicy resources are accepted with INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED loadBalancingScheme consult ServerTlsPolicy documentation. If left blank, communications are not encrypted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -337,7 +313,7 @@ If left blank, communications are not encrypted.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}A list of ComputeSSLCertificate resources that are used to authenticate connections between users and the load balancer. At least one SSL certificate must be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -347,9 +323,7 @@ If left blank, communications are not encrypted.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A list of ComputeSSLCertificate resources that are used to
-authenticate connections between users and the load balancer. At
-least one SSL certificate must be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to a ComputeSSLCertificate resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -359,7 +333,7 @@ least one SSL certificate must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSSLCertificate` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/global/sslCertificates/{{value}}` or `projects/{{project}}/regions/{{region}}/sslCertificates/{{value}}`, where {{value}} is the `name` field of a `ComputeSSLCertificate` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -389,10 +363,7 @@ least one SSL certificate must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A reference to the ComputeSSLPolicy resource that will be
-associated with the ComputeTargetHTTPSProxy resource. If not set,
-the ComputeTargetHTTPSProxy resource will not have any SSL policy
-configured.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to the ComputeSSLPolicy resource that will be associated with the ComputeTargetHTTPSProxy resource. If not set, the ComputeTargetHTTPSProxy resource will not have any SSL policy configured.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -432,8 +403,7 @@ configured.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A reference to the ComputeURLMap resource that defines the mapping
-from URL to the BackendService.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to the ComputeURLMap resource that defines the mapping from URL to the BackendService.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -481,7 +451,10 @@ conditions:
   status: string
   type: string
 creationTimestamp: string
+externalRef: string
 observedGeneration: integer
+observedState:
+  fingerprint: string
 proxyId: integer
 selfLink: string
 ```
@@ -497,7 +470,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -550,10 +523,31 @@ selfLink: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the ComputeTargetHTTPSProxy resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.fingerprint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -567,7 +561,7 @@ selfLink: string
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The SelfLink for the resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -577,20 +571,6 @@ selfLink: string
 
 ### Target Https Proxy With Certificate Manager Certificates
 ```yaml
-# Copyright 2024 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetHTTPSProxy
 metadata:
@@ -717,20 +697,6 @@ stringData:
 
 ### Target Https Proxy With Ssl Certificates
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetHTTPSProxy
 metadata:

@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpcontainernodepool<br>gcpcontainernodepools<br>containernodepool</td>
+<td>containernodepool<br>gcpcontainernodepool<br>gcpcontainernodepools</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -117,6 +117,10 @@ networkConfig:
     disabled: boolean
   podIpv4CidrBlock: string
   podRange: string
+  subnetworkRef:
+    external: string
+    name: string
+    namespace: string
 nodeConfig:
   advancedMachineFeatures:
     enableNestedVirtualization: boolean
@@ -132,6 +136,7 @@ nodeConfig:
   ephemeralStorageConfig:
     localSsdCount: integer
   ephemeralStorageLocalSsdConfig:
+    dataCacheCount: integer
     localSsdCount: integer
   fastSocket:
     enabled: boolean
@@ -662,6 +667,46 @@ version: string
     </tr>
     <tr>
         <td>
+            <p><code>networkConfig.subnetworkRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. If not set, the provider/API will choose the subnetwork (e.g. based on IP utilization) and report it here.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.subnetworkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.subnetworkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.subnetworkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -808,6 +853,16 @@ version: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.ephemeralStorageLocalSsdConfig.dataCacheCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1937,20 +1992,6 @@ operation: string
 
 ### Basic Node Pool
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerNodePool
 metadata:
@@ -1998,20 +2039,6 @@ spec:
 
 ### Sole Tenant Node Pool
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerNodePool
 metadata:

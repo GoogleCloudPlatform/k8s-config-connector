@@ -33,7 +33,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpdatacatalogpolicytag<br>gcpdatacatalogpolicytags<br>datacatalogpolicytag</td>
+<td>datacatalogpolicytag<br>gcpdatacatalogpolicytag<br>gcpdatacatalogpolicytags</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -46,7 +46,25 @@
 
 <tr>
     <td>Can Be Referenced by IAMPolicy/IAMPolicyMember</td>
+    <td>Yes</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Conditions</td>
     <td>No</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Audit Configs</td>
+    <td>No</td>
+</tr>
+<tr>
+    <td>IAM External Reference Format</td>
+    <td>
+        
+        <p>{% verbatim %}{{name}}{% endverbatim %}</p>
+        
+    </td>
 </tr>
 
 
@@ -59,20 +77,6 @@
 
 ## Custom Resource Definition Properties
 
-
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/project-id</code></td>
-    </tr>
-</tbody>
-</table>
 
 
 ### Spec
@@ -105,7 +109,7 @@ taxonomyRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Description of this policy tag. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description. If not set, defaults to an empty description.{% endverbatim %}</p>
+            <p>{% verbatim %}Description of this policy tag. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -338,12 +342,26 @@ observedState: {}
 apiVersion: datacatalog.cnrm.cloud.google.com/v1beta1
 kind: DataCatalogPolicyTag
 metadata:
-  name: datacatalogpolicytag-${uniqueId}
+  name: datacatalogpolicytag-sample
 spec:
   description: A policy tag normally associated with low security items
   displayName: Low security
   taxonomyRef:
-    name: datacatalogtaxonomy-${uniqueId}
+    name: datacatalogtaxonomy-dep
+---
+apiVersion: datacatalog.cnrm.cloud.google.com/v1beta1
+kind: DataCatalogTaxonomy
+metadata:
+  name: datacatalogtaxonomy-dep
+spec:
+  activatedPolicyTypes:
+  - FINE_GRAINED_ACCESS_CONTROL
+  description: A collection of policy tags
+  displayName: my_taxonomy
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
+  region: us
 ```
 
 

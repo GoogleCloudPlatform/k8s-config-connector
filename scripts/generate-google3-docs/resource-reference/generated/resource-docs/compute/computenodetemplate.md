@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpcomputenodetemplate<br>gcpcomputenodetemplates<br>computenodetemplate</td>
+<td>computenodetemplate<br>gcpcomputenodetemplate<br>gcpcomputenodetemplates</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -124,8 +124,7 @@ serverBinding:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Node type to use for nodes group that are created from this template.
-Only one of nodeTypeFlexibility and nodeType can be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Node type to use for nodes group that are created from this template. Only one of nodeTypeFlexibility and nodeType can be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -135,10 +134,7 @@ Only one of nodeTypeFlexibility and nodeType can be specified.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Flexible properties for the desired node type. Node groups that
-use this node template will create nodes of a type that matches
-these properties. Only one of nodeTypeFlexibility and nodeType can
-be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Flexible properties for the desired node type. Node groups that use this node template will create nodes of a type that matches these properties. Only one of nodeTypeFlexibility and nodeType can be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -178,8 +174,7 @@ be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Region where nodes using the node template will be created.
-If it is not provided, the provider region is used.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Region where nodes using the node template will be created.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -199,8 +194,7 @@ If it is not provided, the provider region is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The server binding policy for nodes using this template. Determines
-where the nodes should restart following a maintenance event.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The server binding policy for nodes using this template. Determines where the nodes should restart following a maintenance event.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -241,6 +235,7 @@ conditions:
   status: string
   type: string
 creationTimestamp: string
+externalRef: string
 observedGeneration: integer
 selfLink: string
 ```
@@ -256,7 +251,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -309,6 +304,13 @@ selfLink: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the ComputeNodeTemplate resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -319,7 +321,7 @@ selfLink: string
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Server-defined URL for the resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -329,20 +331,6 @@ selfLink: string
 
 ### Flexible Node Template
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNodeTemplate
 metadata:
@@ -360,20 +348,6 @@ spec:
 
 ### Typed Node Template
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNodeTemplate
 metadata:

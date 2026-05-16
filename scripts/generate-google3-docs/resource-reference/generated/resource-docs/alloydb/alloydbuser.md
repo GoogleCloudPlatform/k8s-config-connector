@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpalloydbuser<br>gcpalloydbusers<br>alloydbuser</td>
+<td>alloydbuser<br>gcpalloydbuser<br>gcpalloydbusers</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -93,7 +93,7 @@ userType: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -103,7 +103,7 @@ userType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed AlloyDBCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -113,7 +113,7 @@ userType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -123,7 +123,7 @@ userType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -257,7 +257,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -323,20 +323,6 @@ observedGeneration: integer
 
 ### Database User
 ```yaml
-# Copyright 2023 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBUser
 metadata:
@@ -408,20 +394,6 @@ spec:
 
 ### IAM User
 ```yaml
-# Copyright 2023 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBUser
 metadata:

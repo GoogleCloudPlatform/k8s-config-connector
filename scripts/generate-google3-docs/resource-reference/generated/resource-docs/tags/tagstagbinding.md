@@ -289,13 +289,34 @@ observedGeneration: integer
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagBinding
 metadata:
-  name: tagstagbinding-${uniqueId}
+  name: tagstagbinding-sample
 spec:
   parentRef:
-    #  external: //cloudresourcemanager.googleapis.com/projects/938492827514 # If parent is project, This is the full resource name of a GCP project number not ID! 
-    external: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
+    # If parent is project, This is the full resource name of a GCP project number not ID!
+    # Replace ${PROJECT_NUMBER?} with your project number.
+    external: //cloudresourcemanager.googleapis.com/projects/${PROJECT_NUMBER?}
   tagValueRef:
-    name: tagstagvalue-${uniqueId}
+    name: tagstagvalue-dep
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagKey
+metadata:
+  name: tagstagkey-dep
+spec:
+  description: For keyname resources.
+  # Replace ${ORG_ID?} with your organization ID.
+  parent: organizations/${ORG_ID?}
+  shortName: keynamedep
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagValue
+metadata:
+  name: tagstagvalue-dep
+spec:
+  description: For valuename resources.
+  parentRef:
+    name: tagstagkey-dep
+  shortName: valuename
 ```
 
 

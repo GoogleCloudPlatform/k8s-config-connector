@@ -33,7 +33,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpbigqueryroutine<br>gcpbigqueryroutines<br>bigqueryroutine</td>
+<td>bigqueryroutine<br>gcpbigqueryroutine<br>gcpbigqueryroutines</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -59,20 +59,6 @@
 
 ## Custom Resource Definition Properties
 
-
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/project-id</code></td>
-    </tr>
-</tbody>
-</table>
 
 
 ### Spec
@@ -475,33 +461,49 @@ epoch.{% endverbatim %}</p>
 
 ### Typical Use Case
 ```yaml
-# Copyright 2023 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryRoutine
 metadata:
-  name: bigqueryroutine-${uniqueId}
+  name: bigqueryroutine-sample
 spec:
   datasetRef:
-    name: bigquerydataset${uniqueId}
+    name: bigquerydatasetdep
   definitionBody: CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x
     + y);
   projectRef:
-    external: ${projectId}
-  resourceID: bigqueryroutine${uniqueId}
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
+  resourceID: bigqueryroutinesample
   routineType: PROCEDURE
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/delete-contents-on-destroy: "false"
+  name: bigquerydatasetdep
+spec:
+  defaultTableExpirationMs: 3600000
+  description: "BigQuery Dataset Dep"
+  friendlyName: bigquerydataset-dep
+  location: US
+  access:
+    - role: OWNER
+      # Replace ${PROJECT_ID?} with the ID of the project where your service
+      # account lives.
+      userByEmail: bigquerydataset-dep@${PROJECT_ID?}.iam.gserviceaccount.com
+    - role: WRITER
+      specialGroup: projectWriters
+    - role: READER
+      domain: google.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID.
+    cnrm.cloud.google.com/project-id: "${PROJECT_ID?}"
+  name: bigquerydataset-dep
 ```
 
 

@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpcomputereservation<br>gcpcomputereservations<br>computereservation</td>
+<td>computereservation<br>gcpcomputereservation<br>gcpcomputereservations</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -189,8 +189,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The number of the guest accelerator cards exposed to
-this instance.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The number of the guest accelerator cards exposed to this instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -200,11 +199,7 @@ this instance.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The full or partial URL of the accelerator type to
-attach to this instance. For example:
-'projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100'
-
-If you are creating an instance template, specify only the accelerator name.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The full or partial URL of the accelerator type to attach to this instance. For example: 'projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100' If you are creating an instance template, specify only the accelerator name.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -214,8 +209,7 @@ If you are creating an instance template, specify only the accelerator name.{% e
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. The amount of local ssd to reserve with each instance. This
-reserves disks of type 'local-ssd'.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The amount of local ssd to reserve with each instance. This reserves disks of type 'local-ssd'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -265,10 +259,7 @@ reserves disks of type 'local-ssd'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The minimum CPU platform for the reservation. For example,
-'"Intel Skylake"'. See
-the CPU platform availability reference](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform#availablezones)
-for information on available CPU platforms.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The minimum CPU platform for the reservation. For example, '"Intel Skylake"'. See the CPU platform availability reference](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform#availablezones) for information on available CPU platforms.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -278,9 +269,7 @@ for information on available CPU platforms.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. When set to true, only VMs that target this reservation by name can
-consume this reservation. Otherwise, it can be consumed by VMs with
-affinity for any reservation. Defaults to false.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. When set to true, only VMs that target this reservation by name can consume this reservation. Otherwise, it can be consumed by VMs with affinity for any reservation. Defaults to false.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -311,6 +300,7 @@ conditions:
   status: string
   type: string
 creationTimestamp: string
+externalRef: string
 observedGeneration: integer
 selfLink: string
 status: string
@@ -327,15 +317,14 @@ status: string
         <td><code>commitment</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Full or partial URL to a parent commitment. This field displays for
-reservations that are tied to a commitment.{% endverbatim %}</p>
+            <p>{% verbatim %}Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -388,6 +377,13 @@ reservations that are tied to a commitment.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the ComputeReservation resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -398,7 +394,7 @@ reservations that are tied to a commitment.{% endverbatim %}</p>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Server-defined URL for the resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -415,20 +411,6 @@ reservations that are tied to a commitment.{% endverbatim %}</p>
 
 ### Bulk Compute Reservation
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeReservation
 metadata:
@@ -445,20 +427,6 @@ spec:
 
 ### Specialized Compute Reservation
 ```yaml
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeReservation
 metadata:

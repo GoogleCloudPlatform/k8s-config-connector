@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpbackupdrbackupplan<br>gcpbackupdrbackupplans<br>backupdrbackupplan</td>
+<td>backupdrbackupplan<br>gcpbackupdrbackupplan<br>gcpbackupdrbackupplans</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>

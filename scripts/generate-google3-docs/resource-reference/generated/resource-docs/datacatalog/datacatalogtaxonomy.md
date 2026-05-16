@@ -33,7 +33,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpdatacatalogtaxonomy<br>gcpdatacatalogtaxonomies<br>datacatalogtaxonomy</td>
+<td>datacatalogtaxonomy<br>gcpdatacatalogtaxonomies<br>gcpdatacatalogtaxonomy</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -46,7 +46,25 @@
 
 <tr>
     <td>Can Be Referenced by IAMPolicy/IAMPolicyMember</td>
+    <td>Yes</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Conditions</td>
     <td>No</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Audit Configs</td>
+    <td>No</td>
+</tr>
+<tr>
+    <td>IAM External Reference Format</td>
+    <td>
+        
+        <p>{% verbatim %}{{name}}{% endverbatim %}</p>
+        
+    </td>
 </tr>
 
 
@@ -59,20 +77,6 @@
 
 ## Custom Resource Definition Properties
 
-
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/project-id</code></td>
-    </tr>
-</tbody>
-</table>
 
 
 ### Spec
@@ -394,14 +398,15 @@ Currently only applicable to BigQuery resources.{% endverbatim %}</p>
 apiVersion: datacatalog.cnrm.cloud.google.com/v1beta1
 kind: DataCatalogTaxonomy
 metadata:
-  name: datacatalogtaxonomy-${uniqueId}
+  name: datacatalogtaxonomy-sample
 spec:
   activatedPolicyTypes:
   - FINE_GRAINED_ACCESS_CONTROL
   description: A collection of policy tags
   displayName: my_taxonomy
   projectRef:
-    external: ${projectId}
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
   region: us
 ```
 

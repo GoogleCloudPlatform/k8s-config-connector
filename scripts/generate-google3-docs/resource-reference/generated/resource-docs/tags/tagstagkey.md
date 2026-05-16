@@ -46,7 +46,25 @@
 
 <tr>
     <td>Can Be Referenced by IAMPolicy/IAMPolicyMember</td>
+    <td>Yes</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Conditions</td>
     <td>No</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Audit Configs</td>
+    <td>No</td>
+</tr>
+<tr>
+    <td>IAM External Reference Format</td>
+    <td>
+        
+        <p>{% verbatim %}tagKeys/{{name}}{% endverbatim %}</p>
+        
+    </td>
 </tr>
 
 
@@ -282,16 +300,30 @@ updateTime: string
 
 ## Sample YAML(s)
 
-### Typical Use Case
+### TagsTagKey Org
 ```yaml
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagKey
 metadata:
-  name: tagstagkey-${uniqueId}
+  name: tagstagkey-sample-org
 spec:
   description: For keyname resources.
-  parent: projects/${projectId}
-  shortName: keyname${uniqueId}
+  # Replace ${ORG_ID?} with your organization ID.
+  parent: organizations/${ORG_ID?}
+  shortName: keynamesampleorg
+```
+
+### TagsTagKey Project
+```yaml
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagKey
+metadata:
+  name: tagstagkey-sample-project
+spec:
+  description: For keyname resources.
+  # Replace ${PROJECT_ID?} with your project ID.
+  parent: projects/${PROJECT_ID?}
+  shortName: keynamesampleproject
 ```
 
 

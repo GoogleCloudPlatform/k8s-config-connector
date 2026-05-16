@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpapiquotapreference<br>gcpapiquotapreferences<br>apiquotapreference</td>
+<td>apiquotapreference<br>gcpapiquotapreference<br>gcpapiquotapreferences</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
