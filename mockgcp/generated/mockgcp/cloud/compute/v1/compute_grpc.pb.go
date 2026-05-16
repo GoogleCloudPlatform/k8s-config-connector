@@ -1029,6 +1029,12 @@ type BackendBucketsClient interface {
 	// Adds a key for validating requests with signed URLs for this backend
 	// bucket.
 	AddSignedUrlKey(ctx context.Context, in *AddSignedUrlKeyBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Retrieves the list of all BackendBucket resources, regional and global,
+	// available to the specified project.
+	//
+	// To prevent failure, it is recommended that you set the
+	// `returnPartialSuccess` parameter to `true`.
+	AggregatedList(ctx context.Context, in *AggregatedListBackendBucketsRequest, opts ...grpc.CallOption) (*BackendBucketAggregatedList, error)
 	// Deletes the specified BackendBucket resource.
 	Delete(ctx context.Context, in *DeleteBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes a key for validating requests with signed URLs for this backend
@@ -1045,6 +1051,8 @@ type BackendBucketsClient interface {
 	// Retrieves the list of BackendBucket resources available to the specified
 	// project.
 	List(ctx context.Context, in *ListBackendBucketsRequest, opts ...grpc.CallOption) (*BackendBucketList, error)
+	// Retrieves a list of all usable backend buckets in the specified project.
+	ListUsable(ctx context.Context, in *ListUsableBackendBucketsRequest, opts ...grpc.CallOption) (*BackendBucketListUsable, error)
 	// Updates the specified BackendBucket resource with the data included in the
 	// request. This method supportsPATCH
 	// semantics and uses theJSON merge
@@ -1073,6 +1081,15 @@ func NewBackendBucketsClient(cc grpc.ClientConnInterface) BackendBucketsClient {
 func (c *backendBucketsClient) AddSignedUrlKey(ctx context.Context, in *AddSignedUrlKeyBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendBuckets/AddSignedUrlKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backendBucketsClient) AggregatedList(ctx context.Context, in *AggregatedListBackendBucketsRequest, opts ...grpc.CallOption) (*BackendBucketAggregatedList, error) {
+	out := new(BackendBucketAggregatedList)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendBuckets/AggregatedList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1133,6 +1150,15 @@ func (c *backendBucketsClient) List(ctx context.Context, in *ListBackendBucketsR
 	return out, nil
 }
 
+func (c *backendBucketsClient) ListUsable(ctx context.Context, in *ListUsableBackendBucketsRequest, opts ...grpc.CallOption) (*BackendBucketListUsable, error) {
+	out := new(BackendBucketListUsable)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendBuckets/ListUsable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backendBucketsClient) Patch(ctx context.Context, in *PatchBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendBuckets/Patch", in, out, opts...)
@@ -1185,6 +1211,12 @@ type BackendBucketsServer interface {
 	// Adds a key for validating requests with signed URLs for this backend
 	// bucket.
 	AddSignedUrlKey(context.Context, *AddSignedUrlKeyBackendBucketRequest) (*Operation, error)
+	// Retrieves the list of all BackendBucket resources, regional and global,
+	// available to the specified project.
+	//
+	// To prevent failure, it is recommended that you set the
+	// `returnPartialSuccess` parameter to `true`.
+	AggregatedList(context.Context, *AggregatedListBackendBucketsRequest) (*BackendBucketAggregatedList, error)
 	// Deletes the specified BackendBucket resource.
 	Delete(context.Context, *DeleteBackendBucketRequest) (*Operation, error)
 	// Deletes a key for validating requests with signed URLs for this backend
@@ -1201,6 +1233,8 @@ type BackendBucketsServer interface {
 	// Retrieves the list of BackendBucket resources available to the specified
 	// project.
 	List(context.Context, *ListBackendBucketsRequest) (*BackendBucketList, error)
+	// Retrieves a list of all usable backend buckets in the specified project.
+	ListUsable(context.Context, *ListUsableBackendBucketsRequest) (*BackendBucketListUsable, error)
 	// Updates the specified BackendBucket resource with the data included in the
 	// request. This method supportsPATCH
 	// semantics and uses theJSON merge
@@ -1226,6 +1260,9 @@ type UnimplementedBackendBucketsServer struct {
 func (UnimplementedBackendBucketsServer) AddSignedUrlKey(context.Context, *AddSignedUrlKeyBackendBucketRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddSignedUrlKey not implemented")
 }
+func (UnimplementedBackendBucketsServer) AggregatedList(context.Context, *AggregatedListBackendBucketsRequest) (*BackendBucketAggregatedList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AggregatedList not implemented")
+}
 func (UnimplementedBackendBucketsServer) Delete(context.Context, *DeleteBackendBucketRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
@@ -1243,6 +1280,9 @@ func (UnimplementedBackendBucketsServer) Insert(context.Context, *InsertBackendB
 }
 func (UnimplementedBackendBucketsServer) List(context.Context, *ListBackendBucketsRequest) (*BackendBucketList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedBackendBucketsServer) ListUsable(context.Context, *ListUsableBackendBucketsRequest) (*BackendBucketListUsable, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUsable not implemented")
 }
 func (UnimplementedBackendBucketsServer) Patch(context.Context, *PatchBackendBucketRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
@@ -1286,6 +1326,24 @@ func _BackendBuckets_AddSignedUrlKey_Handler(srv interface{}, ctx context.Contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BackendBucketsServer).AddSignedUrlKey(ctx, req.(*AddSignedUrlKeyBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackendBuckets_AggregatedList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AggregatedListBackendBucketsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackendBucketsServer).AggregatedList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.BackendBuckets/AggregatedList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackendBucketsServer).AggregatedList(ctx, req.(*AggregatedListBackendBucketsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1398,6 +1456,24 @@ func _BackendBuckets_List_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackendBuckets_ListUsable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUsableBackendBucketsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackendBucketsServer).ListUsable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.BackendBuckets/ListUsable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackendBucketsServer).ListUsable(ctx, req.(*ListUsableBackendBucketsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackendBuckets_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PatchBackendBucketRequest)
 	if err := dec(in); err != nil {
@@ -1500,6 +1576,10 @@ var BackendBuckets_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BackendBuckets_AddSignedUrlKey_Handler,
 		},
 		{
+			MethodName: "AggregatedList",
+			Handler:    _BackendBuckets_AggregatedList_Handler,
+		},
+		{
 			MethodName: "Delete",
 			Handler:    _BackendBuckets_Delete_Handler,
 		},
@@ -1522,6 +1602,10 @@ var BackendBuckets_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _BackendBuckets_List_Handler,
+		},
+		{
+			MethodName: "ListUsable",
+			Handler:    _BackendBuckets_ListUsable_Handler,
 		},
 		{
 			MethodName: "Patch",
@@ -2785,6 +2869,9 @@ type DisksClient interface {
 	// The update is performed only on selected fields included as part
 	// of update-mask.
 	Update(ctx context.Context, in *UpdateDiskRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Rotates the customer-managed
+	// encryption key to the latest version for the specified persistent disk.
+	UpdateKmsKey(ctx context.Context, in *UpdateKmsKeyDiskRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type disksClient struct {
@@ -2966,6 +3053,15 @@ func (c *disksClient) Update(ctx context.Context, in *UpdateDiskRequest, opts ..
 	return out, nil
 }
 
+func (c *disksClient) UpdateKmsKey(ctx context.Context, in *UpdateKmsKeyDiskRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Disks/UpdateKmsKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DisksServer is the server API for Disks service.
 // All implementations must embed UnimplementedDisksServer
 // for forward compatibility
@@ -3035,6 +3131,9 @@ type DisksServer interface {
 	// The update is performed only on selected fields included as part
 	// of update-mask.
 	Update(context.Context, *UpdateDiskRequest) (*Operation, error)
+	// Rotates the customer-managed
+	// encryption key to the latest version for the specified persistent disk.
+	UpdateKmsKey(context.Context, *UpdateKmsKeyDiskRequest) (*Operation, error)
 	mustEmbedUnimplementedDisksServer()
 }
 
@@ -3098,6 +3197,9 @@ func (UnimplementedDisksServer) TestIamPermissions(context.Context, *TestIamPerm
 }
 func (UnimplementedDisksServer) Update(context.Context, *UpdateDiskRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedDisksServer) UpdateKmsKey(context.Context, *UpdateKmsKeyDiskRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateKmsKey not implemented")
 }
 func (UnimplementedDisksServer) mustEmbedUnimplementedDisksServer() {}
 
@@ -3454,6 +3556,24 @@ func _Disks_Update_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Disks_UpdateKmsKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateKmsKeyDiskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DisksServer).UpdateKmsKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Disks/UpdateKmsKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DisksServer).UpdateKmsKey(ctx, req.(*UpdateKmsKeyDiskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Disks_ServiceDesc is the grpc.ServiceDesc for Disks service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -3536,6 +3656,10 @@ var Disks_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _Disks_Update_Handler,
+		},
+		{
+			MethodName: "UpdateKmsKey",
+			Handler:    _Disks_UpdateKmsKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -7301,6 +7425,303 @@ var GlobalPublicDelegatedPrefixes_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Patch",
 			Handler:    _GlobalPublicDelegatedPrefixes_Patch_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
+// GlobalVmExtensionPoliciesClient is the client API for GlobalVmExtensionPolicies service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type GlobalVmExtensionPoliciesClient interface {
+	// Retrieves the list of all VM Extension Policy resources
+	// available to the specified project.
+	//
+	// To prevent failure, it's recommended that you set the
+	// `returnPartialSuccess` parameter to `true`.
+	AggregatedList(ctx context.Context, in *AggregatedListGlobalVmExtensionPoliciesRequest, opts ...grpc.CallOption) (*VmExtensionPolicyAggregatedListResponse, error)
+	// Purge scoped resources (zonal policies) from a global VM extension
+	// policy, and then delete the global VM extension policy. Purge of the scoped
+	// resources is a pre-condition of the global VM extension policy deletion.
+	// The deletion of the global VM extension policy happens after the purge
+	// rollout is done, so it's not a part of the LRO. It's an automatic process
+	// that triggers in the backend.
+	Delete(ctx context.Context, in *DeleteGlobalVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Gets details of a global VM extension policy.
+	Get(ctx context.Context, in *GetGlobalVmExtensionPolicyRequest, opts ...grpc.CallOption) (*GlobalVmExtensionPolicy, error)
+	// Creates a new project level GlobalVmExtensionPolicy.
+	Insert(ctx context.Context, in *InsertGlobalVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Lists global VM extension policies.
+	List(ctx context.Context, in *ListGlobalVmExtensionPoliciesRequest, opts ...grpc.CallOption) (*GlobalVmExtensionPolicyList, error)
+	// Updates a global VM extension policy.
+	Update(ctx context.Context, in *UpdateGlobalVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+}
+
+type globalVmExtensionPoliciesClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewGlobalVmExtensionPoliciesClient(cc grpc.ClientConnInterface) GlobalVmExtensionPoliciesClient {
+	return &globalVmExtensionPoliciesClient{cc}
+}
+
+func (c *globalVmExtensionPoliciesClient) AggregatedList(ctx context.Context, in *AggregatedListGlobalVmExtensionPoliciesRequest, opts ...grpc.CallOption) (*VmExtensionPolicyAggregatedListResponse, error) {
+	out := new(VmExtensionPolicyAggregatedListResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/AggregatedList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *globalVmExtensionPoliciesClient) Delete(ctx context.Context, in *DeleteGlobalVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *globalVmExtensionPoliciesClient) Get(ctx context.Context, in *GetGlobalVmExtensionPolicyRequest, opts ...grpc.CallOption) (*GlobalVmExtensionPolicy, error) {
+	out := new(GlobalVmExtensionPolicy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *globalVmExtensionPoliciesClient) Insert(ctx context.Context, in *InsertGlobalVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *globalVmExtensionPoliciesClient) List(ctx context.Context, in *ListGlobalVmExtensionPoliciesRequest, opts ...grpc.CallOption) (*GlobalVmExtensionPolicyList, error) {
+	out := new(GlobalVmExtensionPolicyList)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *globalVmExtensionPoliciesClient) Update(ctx context.Context, in *UpdateGlobalVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// GlobalVmExtensionPoliciesServer is the server API for GlobalVmExtensionPolicies service.
+// All implementations must embed UnimplementedGlobalVmExtensionPoliciesServer
+// for forward compatibility
+type GlobalVmExtensionPoliciesServer interface {
+	// Retrieves the list of all VM Extension Policy resources
+	// available to the specified project.
+	//
+	// To prevent failure, it's recommended that you set the
+	// `returnPartialSuccess` parameter to `true`.
+	AggregatedList(context.Context, *AggregatedListGlobalVmExtensionPoliciesRequest) (*VmExtensionPolicyAggregatedListResponse, error)
+	// Purge scoped resources (zonal policies) from a global VM extension
+	// policy, and then delete the global VM extension policy. Purge of the scoped
+	// resources is a pre-condition of the global VM extension policy deletion.
+	// The deletion of the global VM extension policy happens after the purge
+	// rollout is done, so it's not a part of the LRO. It's an automatic process
+	// that triggers in the backend.
+	Delete(context.Context, *DeleteGlobalVmExtensionPolicyRequest) (*Operation, error)
+	// Gets details of a global VM extension policy.
+	Get(context.Context, *GetGlobalVmExtensionPolicyRequest) (*GlobalVmExtensionPolicy, error)
+	// Creates a new project level GlobalVmExtensionPolicy.
+	Insert(context.Context, *InsertGlobalVmExtensionPolicyRequest) (*Operation, error)
+	// Lists global VM extension policies.
+	List(context.Context, *ListGlobalVmExtensionPoliciesRequest) (*GlobalVmExtensionPolicyList, error)
+	// Updates a global VM extension policy.
+	Update(context.Context, *UpdateGlobalVmExtensionPolicyRequest) (*Operation, error)
+	mustEmbedUnimplementedGlobalVmExtensionPoliciesServer()
+}
+
+// UnimplementedGlobalVmExtensionPoliciesServer must be embedded to have forward compatible implementations.
+type UnimplementedGlobalVmExtensionPoliciesServer struct {
+}
+
+func (UnimplementedGlobalVmExtensionPoliciesServer) AggregatedList(context.Context, *AggregatedListGlobalVmExtensionPoliciesRequest) (*VmExtensionPolicyAggregatedListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AggregatedList not implemented")
+}
+func (UnimplementedGlobalVmExtensionPoliciesServer) Delete(context.Context, *DeleteGlobalVmExtensionPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedGlobalVmExtensionPoliciesServer) Get(context.Context, *GetGlobalVmExtensionPolicyRequest) (*GlobalVmExtensionPolicy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedGlobalVmExtensionPoliciesServer) Insert(context.Context, *InsertGlobalVmExtensionPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedGlobalVmExtensionPoliciesServer) List(context.Context, *ListGlobalVmExtensionPoliciesRequest) (*GlobalVmExtensionPolicyList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedGlobalVmExtensionPoliciesServer) Update(context.Context, *UpdateGlobalVmExtensionPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedGlobalVmExtensionPoliciesServer) mustEmbedUnimplementedGlobalVmExtensionPoliciesServer() {
+}
+
+// UnsafeGlobalVmExtensionPoliciesServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GlobalVmExtensionPoliciesServer will
+// result in compilation errors.
+type UnsafeGlobalVmExtensionPoliciesServer interface {
+	mustEmbedUnimplementedGlobalVmExtensionPoliciesServer()
+}
+
+func RegisterGlobalVmExtensionPoliciesServer(s grpc.ServiceRegistrar, srv GlobalVmExtensionPoliciesServer) {
+	s.RegisterService(&GlobalVmExtensionPolicies_ServiceDesc, srv)
+}
+
+func _GlobalVmExtensionPolicies_AggregatedList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AggregatedListGlobalVmExtensionPoliciesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GlobalVmExtensionPoliciesServer).AggregatedList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/AggregatedList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GlobalVmExtensionPoliciesServer).AggregatedList(ctx, req.(*AggregatedListGlobalVmExtensionPoliciesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GlobalVmExtensionPolicies_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteGlobalVmExtensionPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GlobalVmExtensionPoliciesServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GlobalVmExtensionPoliciesServer).Delete(ctx, req.(*DeleteGlobalVmExtensionPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GlobalVmExtensionPolicies_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGlobalVmExtensionPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GlobalVmExtensionPoliciesServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GlobalVmExtensionPoliciesServer).Get(ctx, req.(*GetGlobalVmExtensionPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GlobalVmExtensionPolicies_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertGlobalVmExtensionPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GlobalVmExtensionPoliciesServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GlobalVmExtensionPoliciesServer).Insert(ctx, req.(*InsertGlobalVmExtensionPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GlobalVmExtensionPolicies_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGlobalVmExtensionPoliciesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GlobalVmExtensionPoliciesServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GlobalVmExtensionPoliciesServer).List(ctx, req.(*ListGlobalVmExtensionPoliciesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GlobalVmExtensionPolicies_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateGlobalVmExtensionPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GlobalVmExtensionPoliciesServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies/Update",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GlobalVmExtensionPoliciesServer).Update(ctx, req.(*UpdateGlobalVmExtensionPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// GlobalVmExtensionPolicies_ServiceDesc is the grpc.ServiceDesc for GlobalVmExtensionPolicies service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var GlobalVmExtensionPolicies_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.GlobalVmExtensionPolicies",
+	HandlerType: (*GlobalVmExtensionPoliciesServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "AggregatedList",
+			Handler:    _GlobalVmExtensionPolicies_AggregatedList_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _GlobalVmExtensionPolicies_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _GlobalVmExtensionPolicies_Get_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _GlobalVmExtensionPolicies_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _GlobalVmExtensionPolicies_List_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _GlobalVmExtensionPolicies_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -13033,6 +13454,328 @@ var Instances_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
 }
 
+// InstantSnapshotGroupsClient is the client API for InstantSnapshotGroups service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type InstantSnapshotGroupsClient interface {
+	// deletes a Zonal InstantSnapshotGroup resource
+	Delete(ctx context.Context, in *DeleteInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Operation, error)
+	// returns the specified InstantSnapshotGroup resource in the specified zone.
+	Get(ctx context.Context, in *GetInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*InstantSnapshotGroup, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	GetIamPolicy(ctx context.Context, in *GetIamPolicyInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Policy, error)
+	// inserts a Zonal InstantSnapshotGroup resource
+	Insert(ctx context.Context, in *InsertInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Operation, error)
+	// retrieves the list of InstantSnapshotGroup resources contained within
+	// the specified zone.
+	List(ctx context.Context, in *ListInstantSnapshotGroupsRequest, opts ...grpc.CallOption) (*ListInstantSnapshotGroups, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	SetIamPolicy(ctx context.Context, in *SetIamPolicyInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
+}
+
+type instantSnapshotGroupsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewInstantSnapshotGroupsClient(cc grpc.ClientConnInterface) InstantSnapshotGroupsClient {
+	return &instantSnapshotGroupsClient{cc}
+}
+
+func (c *instantSnapshotGroupsClient) Delete(ctx context.Context, in *DeleteInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotGroupsClient) Get(ctx context.Context, in *GetInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*InstantSnapshotGroup, error) {
+	out := new(InstantSnapshotGroup)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotGroupsClient) GetIamPolicy(ctx context.Context, in *GetIamPolicyInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/GetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotGroupsClient) Insert(ctx context.Context, in *InsertInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotGroupsClient) List(ctx context.Context, in *ListInstantSnapshotGroupsRequest, opts ...grpc.CallOption) (*ListInstantSnapshotGroups, error) {
+	out := new(ListInstantSnapshotGroups)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotGroupsClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/SetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotGroupsClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error) {
+	out := new(TestPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// InstantSnapshotGroupsServer is the server API for InstantSnapshotGroups service.
+// All implementations must embed UnimplementedInstantSnapshotGroupsServer
+// for forward compatibility
+type InstantSnapshotGroupsServer interface {
+	// deletes a Zonal InstantSnapshotGroup resource
+	Delete(context.Context, *DeleteInstantSnapshotGroupRequest) (*Operation, error)
+	// returns the specified InstantSnapshotGroup resource in the specified zone.
+	Get(context.Context, *GetInstantSnapshotGroupRequest) (*InstantSnapshotGroup, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	GetIamPolicy(context.Context, *GetIamPolicyInstantSnapshotGroupRequest) (*Policy, error)
+	// inserts a Zonal InstantSnapshotGroup resource
+	Insert(context.Context, *InsertInstantSnapshotGroupRequest) (*Operation, error)
+	// retrieves the list of InstantSnapshotGroup resources contained within
+	// the specified zone.
+	List(context.Context, *ListInstantSnapshotGroupsRequest) (*ListInstantSnapshotGroups, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	SetIamPolicy(context.Context, *SetIamPolicyInstantSnapshotGroupRequest) (*Policy, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(context.Context, *TestIamPermissionsInstantSnapshotGroupRequest) (*TestPermissionsResponse, error)
+	mustEmbedUnimplementedInstantSnapshotGroupsServer()
+}
+
+// UnimplementedInstantSnapshotGroupsServer must be embedded to have forward compatible implementations.
+type UnimplementedInstantSnapshotGroupsServer struct {
+}
+
+func (UnimplementedInstantSnapshotGroupsServer) Delete(context.Context, *DeleteInstantSnapshotGroupRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedInstantSnapshotGroupsServer) Get(context.Context, *GetInstantSnapshotGroupRequest) (*InstantSnapshotGroup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedInstantSnapshotGroupsServer) GetIamPolicy(context.Context, *GetIamPolicyInstantSnapshotGroupRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
+func (UnimplementedInstantSnapshotGroupsServer) Insert(context.Context, *InsertInstantSnapshotGroupRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedInstantSnapshotGroupsServer) List(context.Context, *ListInstantSnapshotGroupsRequest) (*ListInstantSnapshotGroups, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedInstantSnapshotGroupsServer) SetIamPolicy(context.Context, *SetIamPolicyInstantSnapshotGroupRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+func (UnimplementedInstantSnapshotGroupsServer) TestIamPermissions(context.Context, *TestIamPermissionsInstantSnapshotGroupRequest) (*TestPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedInstantSnapshotGroupsServer) mustEmbedUnimplementedInstantSnapshotGroupsServer() {}
+
+// UnsafeInstantSnapshotGroupsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to InstantSnapshotGroupsServer will
+// result in compilation errors.
+type UnsafeInstantSnapshotGroupsServer interface {
+	mustEmbedUnimplementedInstantSnapshotGroupsServer()
+}
+
+func RegisterInstantSnapshotGroupsServer(s grpc.ServiceRegistrar, srv InstantSnapshotGroupsServer) {
+	s.RegisterService(&InstantSnapshotGroups_ServiceDesc, srv)
+}
+
+func _InstantSnapshotGroups_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotGroupsServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotGroupsServer).Delete(ctx, req.(*DeleteInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshotGroups_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotGroupsServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotGroupsServer).Get(ctx, req.(*GetInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshotGroups_GetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIamPolicyInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotGroupsServer).GetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/GetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotGroupsServer).GetIamPolicy(ctx, req.(*GetIamPolicyInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshotGroups_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotGroupsServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotGroupsServer).Insert(ctx, req.(*InsertInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshotGroups_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInstantSnapshotGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotGroupsServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotGroupsServer).List(ctx, req.(*ListInstantSnapshotGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshotGroups_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetIamPolicyInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotGroupsServer).SetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/SetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotGroupsServer).SetIamPolicy(ctx, req.(*SetIamPolicyInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshotGroups_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotGroupsServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshotGroups/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotGroupsServer).TestIamPermissions(ctx, req.(*TestIamPermissionsInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// InstantSnapshotGroups_ServiceDesc is the grpc.ServiceDesc for InstantSnapshotGroups service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var InstantSnapshotGroups_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.InstantSnapshotGroups",
+	HandlerType: (*InstantSnapshotGroupsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Delete",
+			Handler:    _InstantSnapshotGroups_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _InstantSnapshotGroups_Get_Handler,
+		},
+		{
+			MethodName: "GetIamPolicy",
+			Handler:    _InstantSnapshotGroups_GetIamPolicy_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _InstantSnapshotGroups_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _InstantSnapshotGroups_List_Handler,
+		},
+		{
+			MethodName: "SetIamPolicy",
+			Handler:    _InstantSnapshotGroups_SetIamPolicy_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _InstantSnapshotGroups_TestIamPermissions_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
 // InstantSnapshotsClient is the client API for InstantSnapshots service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
@@ -15308,6 +16051,22 @@ type LicenseCodesClient interface {
 	// for use only by third-party partners who are creatingCloud Marketplace
 	// images.
 	Get(ctx context.Context, in *GetLicenseCodeRequest, opts ...grpc.CallOption) (*LicenseCode, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	//
+	//	*Caution* This resource is intended
+	//
+	// for use only by third-party partners who are creatingCloud Marketplace
+	// images.
+	GetIamPolicy(ctx context.Context, in *GetIamPolicyLicenseCodeRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	//
+	//	*Caution* This resource is intended
+	//
+	// for use only by third-party partners who are creatingCloud Marketplace
+	// images.
+	SetIamPolicy(ctx context.Context, in *SetIamPolicyLicenseCodeRequest, opts ...grpc.CallOption) (*Policy, error)
 	// Returns permissions that a caller has on the specified resource.
 	//
 	//	*Caution* This resource is intended
@@ -15328,6 +16087,24 @@ func NewLicenseCodesClient(cc grpc.ClientConnInterface) LicenseCodesClient {
 func (c *licenseCodesClient) Get(ctx context.Context, in *GetLicenseCodeRequest, opts ...grpc.CallOption) (*LicenseCode, error) {
 	out := new(LicenseCode)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.LicenseCodes/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *licenseCodesClient) GetIamPolicy(ctx context.Context, in *GetIamPolicyLicenseCodeRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.LicenseCodes/GetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *licenseCodesClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyLicenseCodeRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.LicenseCodes/SetIamPolicy", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -15355,6 +16132,22 @@ type LicenseCodesServer interface {
 	// for use only by third-party partners who are creatingCloud Marketplace
 	// images.
 	Get(context.Context, *GetLicenseCodeRequest) (*LicenseCode, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	//
+	//	*Caution* This resource is intended
+	//
+	// for use only by third-party partners who are creatingCloud Marketplace
+	// images.
+	GetIamPolicy(context.Context, *GetIamPolicyLicenseCodeRequest) (*Policy, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	//
+	//	*Caution* This resource is intended
+	//
+	// for use only by third-party partners who are creatingCloud Marketplace
+	// images.
+	SetIamPolicy(context.Context, *SetIamPolicyLicenseCodeRequest) (*Policy, error)
 	// Returns permissions that a caller has on the specified resource.
 	//
 	//	*Caution* This resource is intended
@@ -15371,6 +16164,12 @@ type UnimplementedLicenseCodesServer struct {
 
 func (UnimplementedLicenseCodesServer) Get(context.Context, *GetLicenseCodeRequest) (*LicenseCode, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedLicenseCodesServer) GetIamPolicy(context.Context, *GetIamPolicyLicenseCodeRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
+func (UnimplementedLicenseCodesServer) SetIamPolicy(context.Context, *SetIamPolicyLicenseCodeRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
 }
 func (UnimplementedLicenseCodesServer) TestIamPermissions(context.Context, *TestIamPermissionsLicenseCodeRequest) (*TestPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
@@ -15406,6 +16205,42 @@ func _LicenseCodes_Get_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LicenseCodes_GetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIamPolicyLicenseCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LicenseCodesServer).GetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.LicenseCodes/GetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LicenseCodesServer).GetIamPolicy(ctx, req.(*GetIamPolicyLicenseCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LicenseCodes_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetIamPolicyLicenseCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LicenseCodesServer).SetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.LicenseCodes/SetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LicenseCodesServer).SetIamPolicy(ctx, req.(*SetIamPolicyLicenseCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _LicenseCodes_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TestIamPermissionsLicenseCodeRequest)
 	if err := dec(in); err != nil {
@@ -15434,6 +16269,14 @@ var LicenseCodes_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _LicenseCodes_Get_Handler,
+		},
+		{
+			MethodName: "GetIamPolicy",
+			Handler:    _LicenseCodes_GetIamPolicy_Handler,
+		},
+		{
+			MethodName: "SetIamPolicy",
+			Handler:    _LicenseCodes_SetIamPolicy_Handler,
 		},
 		{
 			MethodName: "TestIamPermissions",
@@ -18536,6 +19379,10 @@ var NetworkProfiles_ServiceDesc = grpc.ServiceDesc{
 type NetworksClient interface {
 	// Adds a peering to the specified network.
 	AddPeering(ctx context.Context, in *AddPeeringNetworkRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Cancel requests to remove a peering from the specified network. Applicable
+	// only for PeeringConnection with update_strategy=CONSENSUS.  Cancels a
+	// request to remove a peering from the specified network.
+	CancelRequestRemovePeering(ctx context.Context, in *CancelRequestRemovePeeringNetworkRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes the specified network.
 	Delete(ctx context.Context, in *DeleteNetworkRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified network.
@@ -18576,6 +19423,15 @@ func NewNetworksClient(cc grpc.ClientConnInterface) NetworksClient {
 func (c *networksClient) AddPeering(ctx context.Context, in *AddPeeringNetworkRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Networks/AddPeering", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networksClient) CancelRequestRemovePeering(ctx context.Context, in *CancelRequestRemovePeeringNetworkRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Networks/CancelRequestRemovePeering", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -18687,6 +19543,10 @@ func (c *networksClient) UpdatePeering(ctx context.Context, in *UpdatePeeringNet
 type NetworksServer interface {
 	// Adds a peering to the specified network.
 	AddPeering(context.Context, *AddPeeringNetworkRequest) (*Operation, error)
+	// Cancel requests to remove a peering from the specified network. Applicable
+	// only for PeeringConnection with update_strategy=CONSENSUS.  Cancels a
+	// request to remove a peering from the specified network.
+	CancelRequestRemovePeering(context.Context, *CancelRequestRemovePeeringNetworkRequest) (*Operation, error)
 	// Deletes the specified network.
 	Delete(context.Context, *DeleteNetworkRequest) (*Operation, error)
 	// Returns the specified network.
@@ -18723,6 +19583,9 @@ type UnimplementedNetworksServer struct {
 
 func (UnimplementedNetworksServer) AddPeering(context.Context, *AddPeeringNetworkRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddPeering not implemented")
+}
+func (UnimplementedNetworksServer) CancelRequestRemovePeering(context.Context, *CancelRequestRemovePeeringNetworkRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelRequestRemovePeering not implemented")
 }
 func (UnimplementedNetworksServer) Delete(context.Context, *DeleteNetworkRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -18784,6 +19647,24 @@ func _Networks_AddPeering_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NetworksServer).AddPeering(ctx, req.(*AddPeeringNetworkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Networks_CancelRequestRemovePeering_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelRequestRemovePeeringNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworksServer).CancelRequestRemovePeering(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Networks/CancelRequestRemovePeering",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworksServer).CancelRequestRemovePeering(ctx, req.(*CancelRequestRemovePeeringNetworkRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -18996,6 +19877,10 @@ var Networks_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddPeering",
 			Handler:    _Networks_AddPeering_Handler,
+		},
+		{
+			MethodName: "CancelRequestRemovePeering",
+			Handler:    _Networks_CancelRequestRemovePeering_Handler,
 		},
 		{
 			MethodName: "Delete",
@@ -23223,6 +24108,414 @@ var RegionAutoscalers_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
 }
 
+// RegionBackendBucketsClient is the client API for RegionBackendBuckets service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RegionBackendBucketsClient interface {
+	// Deletes the specified regional BackendBucket resource.
+	Delete(ctx context.Context, in *DeleteRegionBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns the specified regional BackendBucket resource.
+	Get(ctx context.Context, in *GetRegionBackendBucketRequest, opts ...grpc.CallOption) (*BackendBucket, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	GetIamPolicy(ctx context.Context, in *GetIamPolicyRegionBackendBucketRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Creates a RegionBackendBucket in the specified project in the given scope
+	// using the parameters that are included in the request.
+	Insert(ctx context.Context, in *InsertRegionBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Retrieves the list of BackendBucket resources available to the specified
+	// project in the given region.
+	List(ctx context.Context, in *ListRegionBackendBucketsRequest, opts ...grpc.CallOption) (*BackendBucketList, error)
+	// Retrieves a list of all usable backend buckets in the specified project in
+	// the given region.
+	ListUsable(ctx context.Context, in *ListUsableRegionBackendBucketsRequest, opts ...grpc.CallOption) (*BackendBucketListUsable, error)
+	// Updates the specified  BackendBucket resource with the data included in the
+	// request. This method supportsPATCH
+	// semantics and uses theJSON merge
+	// patch format and processing rules.
+	Patch(ctx context.Context, in *PatchRegionBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionBackendBucketRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionBackendBucketRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
+}
+
+type regionBackendBucketsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRegionBackendBucketsClient(cc grpc.ClientConnInterface) RegionBackendBucketsClient {
+	return &regionBackendBucketsClient{cc}
+}
+
+func (c *regionBackendBucketsClient) Delete(ctx context.Context, in *DeleteRegionBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendBuckets/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendBucketsClient) Get(ctx context.Context, in *GetRegionBackendBucketRequest, opts ...grpc.CallOption) (*BackendBucket, error) {
+	out := new(BackendBucket)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendBuckets/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendBucketsClient) GetIamPolicy(ctx context.Context, in *GetIamPolicyRegionBackendBucketRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendBuckets/GetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendBucketsClient) Insert(ctx context.Context, in *InsertRegionBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendBuckets/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendBucketsClient) List(ctx context.Context, in *ListRegionBackendBucketsRequest, opts ...grpc.CallOption) (*BackendBucketList, error) {
+	out := new(BackendBucketList)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendBuckets/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendBucketsClient) ListUsable(ctx context.Context, in *ListUsableRegionBackendBucketsRequest, opts ...grpc.CallOption) (*BackendBucketListUsable, error) {
+	out := new(BackendBucketListUsable)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendBuckets/ListUsable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendBucketsClient) Patch(ctx context.Context, in *PatchRegionBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendBuckets/Patch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendBucketsClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionBackendBucketRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendBuckets/SetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendBucketsClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionBackendBucketRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error) {
+	out := new(TestPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendBuckets/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RegionBackendBucketsServer is the server API for RegionBackendBuckets service.
+// All implementations must embed UnimplementedRegionBackendBucketsServer
+// for forward compatibility
+type RegionBackendBucketsServer interface {
+	// Deletes the specified regional BackendBucket resource.
+	Delete(context.Context, *DeleteRegionBackendBucketRequest) (*Operation, error)
+	// Returns the specified regional BackendBucket resource.
+	Get(context.Context, *GetRegionBackendBucketRequest) (*BackendBucket, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	GetIamPolicy(context.Context, *GetIamPolicyRegionBackendBucketRequest) (*Policy, error)
+	// Creates a RegionBackendBucket in the specified project in the given scope
+	// using the parameters that are included in the request.
+	Insert(context.Context, *InsertRegionBackendBucketRequest) (*Operation, error)
+	// Retrieves the list of BackendBucket resources available to the specified
+	// project in the given region.
+	List(context.Context, *ListRegionBackendBucketsRequest) (*BackendBucketList, error)
+	// Retrieves a list of all usable backend buckets in the specified project in
+	// the given region.
+	ListUsable(context.Context, *ListUsableRegionBackendBucketsRequest) (*BackendBucketListUsable, error)
+	// Updates the specified  BackendBucket resource with the data included in the
+	// request. This method supportsPATCH
+	// semantics and uses theJSON merge
+	// patch format and processing rules.
+	Patch(context.Context, *PatchRegionBackendBucketRequest) (*Operation, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	SetIamPolicy(context.Context, *SetIamPolicyRegionBackendBucketRequest) (*Policy, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(context.Context, *TestIamPermissionsRegionBackendBucketRequest) (*TestPermissionsResponse, error)
+	mustEmbedUnimplementedRegionBackendBucketsServer()
+}
+
+// UnimplementedRegionBackendBucketsServer must be embedded to have forward compatible implementations.
+type UnimplementedRegionBackendBucketsServer struct {
+}
+
+func (UnimplementedRegionBackendBucketsServer) Delete(context.Context, *DeleteRegionBackendBucketRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRegionBackendBucketsServer) Get(context.Context, *GetRegionBackendBucketRequest) (*BackendBucket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegionBackendBucketsServer) GetIamPolicy(context.Context, *GetIamPolicyRegionBackendBucketRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
+func (UnimplementedRegionBackendBucketsServer) Insert(context.Context, *InsertRegionBackendBucketRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedRegionBackendBucketsServer) List(context.Context, *ListRegionBackendBucketsRequest) (*BackendBucketList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRegionBackendBucketsServer) ListUsable(context.Context, *ListUsableRegionBackendBucketsRequest) (*BackendBucketListUsable, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUsable not implemented")
+}
+func (UnimplementedRegionBackendBucketsServer) Patch(context.Context, *PatchRegionBackendBucketRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
+}
+func (UnimplementedRegionBackendBucketsServer) SetIamPolicy(context.Context, *SetIamPolicyRegionBackendBucketRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+func (UnimplementedRegionBackendBucketsServer) TestIamPermissions(context.Context, *TestIamPermissionsRegionBackendBucketRequest) (*TestPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedRegionBackendBucketsServer) mustEmbedUnimplementedRegionBackendBucketsServer() {}
+
+// UnsafeRegionBackendBucketsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RegionBackendBucketsServer will
+// result in compilation errors.
+type UnsafeRegionBackendBucketsServer interface {
+	mustEmbedUnimplementedRegionBackendBucketsServer()
+}
+
+func RegisterRegionBackendBucketsServer(s grpc.ServiceRegistrar, srv RegionBackendBucketsServer) {
+	s.RegisterService(&RegionBackendBuckets_ServiceDesc, srv)
+}
+
+func _RegionBackendBuckets_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRegionBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendBucketsServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendBuckets/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendBucketsServer).Delete(ctx, req.(*DeleteRegionBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendBuckets_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRegionBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendBucketsServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendBuckets/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendBucketsServer).Get(ctx, req.(*GetRegionBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendBuckets_GetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIamPolicyRegionBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendBucketsServer).GetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendBuckets/GetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendBucketsServer).GetIamPolicy(ctx, req.(*GetIamPolicyRegionBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendBuckets_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertRegionBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendBucketsServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendBuckets/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendBucketsServer).Insert(ctx, req.(*InsertRegionBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendBuckets_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRegionBackendBucketsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendBucketsServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendBuckets/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendBucketsServer).List(ctx, req.(*ListRegionBackendBucketsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendBuckets_ListUsable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUsableRegionBackendBucketsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendBucketsServer).ListUsable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendBuckets/ListUsable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendBucketsServer).ListUsable(ctx, req.(*ListUsableRegionBackendBucketsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendBuckets_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchRegionBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendBucketsServer).Patch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendBuckets/Patch",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendBucketsServer).Patch(ctx, req.(*PatchRegionBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendBuckets_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetIamPolicyRegionBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendBucketsServer).SetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendBuckets/SetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendBucketsServer).SetIamPolicy(ctx, req.(*SetIamPolicyRegionBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendBuckets_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsRegionBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendBucketsServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendBuckets/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendBucketsServer).TestIamPermissions(ctx, req.(*TestIamPermissionsRegionBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RegionBackendBuckets_ServiceDesc is the grpc.ServiceDesc for RegionBackendBuckets service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RegionBackendBuckets_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.RegionBackendBuckets",
+	HandlerType: (*RegionBackendBucketsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Delete",
+			Handler:    _RegionBackendBuckets_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _RegionBackendBuckets_Get_Handler,
+		},
+		{
+			MethodName: "GetIamPolicy",
+			Handler:    _RegionBackendBuckets_GetIamPolicy_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _RegionBackendBuckets_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _RegionBackendBuckets_List_Handler,
+		},
+		{
+			MethodName: "ListUsable",
+			Handler:    _RegionBackendBuckets_ListUsable_Handler,
+		},
+		{
+			MethodName: "Patch",
+			Handler:    _RegionBackendBuckets_Patch_Handler,
+		},
+		{
+			MethodName: "SetIamPolicy",
+			Handler:    _RegionBackendBuckets_SetIamPolicy_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _RegionBackendBuckets_TestIamPermissions_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
 // RegionBackendServicesClient is the client API for RegionBackendServices service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
@@ -24029,6 +25322,9 @@ type RegionCompositeHealthChecksClient interface {
 	Delete(ctx context.Context, in *DeleteRegionCompositeHealthCheckRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified CompositeHealthCheck resource in the given region.
 	Get(ctx context.Context, in *GetRegionCompositeHealthCheckRequest, opts ...grpc.CallOption) (*CompositeHealthCheck, error)
+	// Gets the most recent health check results for this
+	// regional CompositeHealthCheck.
+	GetHealth(ctx context.Context, in *GetHealthRegionCompositeHealthCheckRequest, opts ...grpc.CallOption) (*CompositeHealthCheckHealth, error)
 	// Create a CompositeHealthCheck in the specified project in the given region
 	// using the parameters that are included in the request.
 	Insert(ctx context.Context, in *InsertRegionCompositeHealthCheckRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -24072,6 +25368,15 @@ func (c *regionCompositeHealthChecksClient) Delete(ctx context.Context, in *Dele
 func (c *regionCompositeHealthChecksClient) Get(ctx context.Context, in *GetRegionCompositeHealthCheckRequest, opts ...grpc.CallOption) (*CompositeHealthCheck, error) {
 	out := new(CompositeHealthCheck)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionCompositeHealthChecks/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionCompositeHealthChecksClient) GetHealth(ctx context.Context, in *GetHealthRegionCompositeHealthCheckRequest, opts ...grpc.CallOption) (*CompositeHealthCheckHealth, error) {
+	out := new(CompositeHealthCheckHealth)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionCompositeHealthChecks/GetHealth", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -24128,6 +25433,9 @@ type RegionCompositeHealthChecksServer interface {
 	Delete(context.Context, *DeleteRegionCompositeHealthCheckRequest) (*Operation, error)
 	// Returns the specified CompositeHealthCheck resource in the given region.
 	Get(context.Context, *GetRegionCompositeHealthCheckRequest) (*CompositeHealthCheck, error)
+	// Gets the most recent health check results for this
+	// regional CompositeHealthCheck.
+	GetHealth(context.Context, *GetHealthRegionCompositeHealthCheckRequest) (*CompositeHealthCheckHealth, error)
 	// Create a CompositeHealthCheck in the specified project in the given region
 	// using the parameters that are included in the request.
 	Insert(context.Context, *InsertRegionCompositeHealthCheckRequest) (*Operation, error)
@@ -24155,6 +25463,9 @@ func (UnimplementedRegionCompositeHealthChecksServer) Delete(context.Context, *D
 }
 func (UnimplementedRegionCompositeHealthChecksServer) Get(context.Context, *GetRegionCompositeHealthCheckRequest) (*CompositeHealthCheck, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegionCompositeHealthChecksServer) GetHealth(context.Context, *GetHealthRegionCompositeHealthCheckRequest) (*CompositeHealthCheckHealth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetHealth not implemented")
 }
 func (UnimplementedRegionCompositeHealthChecksServer) Insert(context.Context, *InsertRegionCompositeHealthCheckRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
@@ -24232,6 +25543,24 @@ func _RegionCompositeHealthChecks_Get_Handler(srv interface{}, ctx context.Conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegionCompositeHealthChecksServer).Get(ctx, req.(*GetRegionCompositeHealthCheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionCompositeHealthChecks_GetHealth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHealthRegionCompositeHealthCheckRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionCompositeHealthChecksServer).GetHealth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionCompositeHealthChecks/GetHealth",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionCompositeHealthChecksServer).GetHealth(ctx, req.(*GetHealthRegionCompositeHealthCheckRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -24326,6 +25655,10 @@ var RegionCompositeHealthChecks_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _RegionCompositeHealthChecks_Get_Handler,
+		},
+		{
+			MethodName: "GetHealth",
+			Handler:    _RegionCompositeHealthChecks_GetHealth_Handler,
 		},
 		{
 			MethodName: "Insert",
@@ -24529,6 +25862,9 @@ type RegionDisksClient interface {
 	// Update the specified disk with the data included in the request. Update is
 	// performed only on selected fields included as part of update-mask.
 	Update(ctx context.Context, in *UpdateRegionDiskRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Rotates the customer-managed
+	// encryption key to the latest version for the specified persistent disk.
+	UpdateKmsKey(ctx context.Context, in *UpdateKmsKeyRegionDiskRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type regionDisksClient struct {
@@ -24692,6 +26028,15 @@ func (c *regionDisksClient) Update(ctx context.Context, in *UpdateRegionDiskRequ
 	return out, nil
 }
 
+func (c *regionDisksClient) UpdateKmsKey(ctx context.Context, in *UpdateKmsKeyRegionDiskRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionDisks/UpdateKmsKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RegionDisksServer is the server API for RegionDisks service.
 // All implementations must embed UnimplementedRegionDisksServer
 // for forward compatibility
@@ -24747,6 +26092,9 @@ type RegionDisksServer interface {
 	// Update the specified disk with the data included in the request. Update is
 	// performed only on selected fields included as part of update-mask.
 	Update(context.Context, *UpdateRegionDiskRequest) (*Operation, error)
+	// Rotates the customer-managed
+	// encryption key to the latest version for the specified persistent disk.
+	UpdateKmsKey(context.Context, *UpdateKmsKeyRegionDiskRequest) (*Operation, error)
 	mustEmbedUnimplementedRegionDisksServer()
 }
 
@@ -24804,6 +26152,9 @@ func (UnimplementedRegionDisksServer) TestIamPermissions(context.Context, *TestI
 }
 func (UnimplementedRegionDisksServer) Update(context.Context, *UpdateRegionDiskRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedRegionDisksServer) UpdateKmsKey(context.Context, *UpdateKmsKeyRegionDiskRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateKmsKey not implemented")
 }
 func (UnimplementedRegionDisksServer) mustEmbedUnimplementedRegionDisksServer() {}
 
@@ -25124,6 +26475,24 @@ func _RegionDisks_Update_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RegionDisks_UpdateKmsKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateKmsKeyRegionDiskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionDisksServer).UpdateKmsKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionDisks/UpdateKmsKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionDisksServer).UpdateKmsKey(ctx, req.(*UpdateKmsKeyRegionDiskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RegionDisks_ServiceDesc is the grpc.ServiceDesc for RegionDisks service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -25198,6 +26567,10 @@ var RegionDisks_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _RegionDisks_Update_Handler,
+		},
+		{
+			MethodName: "UpdateKmsKey",
+			Handler:    _RegionDisks_UpdateKmsKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -26214,6 +27587,9 @@ type RegionHealthSourcesClient interface {
 	Delete(ctx context.Context, in *DeleteRegionHealthSourceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified HealthSource resource in the given region.
 	Get(ctx context.Context, in *GetRegionHealthSourceRequest, opts ...grpc.CallOption) (*HealthSource, error)
+	// Gets the most recent health check results for this
+	// regional HealthSource.
+	GetHealth(ctx context.Context, in *GetHealthRegionHealthSourceRequest, opts ...grpc.CallOption) (*HealthSourceHealth, error)
 	// Create a HealthSource in the specified project in the given region
 	// using the parameters that are included in the request.
 	Insert(ctx context.Context, in *InsertRegionHealthSourceRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -26257,6 +27633,15 @@ func (c *regionHealthSourcesClient) Delete(ctx context.Context, in *DeleteRegion
 func (c *regionHealthSourcesClient) Get(ctx context.Context, in *GetRegionHealthSourceRequest, opts ...grpc.CallOption) (*HealthSource, error) {
 	out := new(HealthSource)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionHealthSources/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionHealthSourcesClient) GetHealth(ctx context.Context, in *GetHealthRegionHealthSourceRequest, opts ...grpc.CallOption) (*HealthSourceHealth, error) {
+	out := new(HealthSourceHealth)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionHealthSources/GetHealth", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -26313,6 +27698,9 @@ type RegionHealthSourcesServer interface {
 	Delete(context.Context, *DeleteRegionHealthSourceRequest) (*Operation, error)
 	// Returns the specified HealthSource resource in the given region.
 	Get(context.Context, *GetRegionHealthSourceRequest) (*HealthSource, error)
+	// Gets the most recent health check results for this
+	// regional HealthSource.
+	GetHealth(context.Context, *GetHealthRegionHealthSourceRequest) (*HealthSourceHealth, error)
 	// Create a HealthSource in the specified project in the given region
 	// using the parameters that are included in the request.
 	Insert(context.Context, *InsertRegionHealthSourceRequest) (*Operation, error)
@@ -26340,6 +27728,9 @@ func (UnimplementedRegionHealthSourcesServer) Delete(context.Context, *DeleteReg
 }
 func (UnimplementedRegionHealthSourcesServer) Get(context.Context, *GetRegionHealthSourceRequest) (*HealthSource, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegionHealthSourcesServer) GetHealth(context.Context, *GetHealthRegionHealthSourceRequest) (*HealthSourceHealth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetHealth not implemented")
 }
 func (UnimplementedRegionHealthSourcesServer) Insert(context.Context, *InsertRegionHealthSourceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
@@ -26416,6 +27807,24 @@ func _RegionHealthSources_Get_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegionHealthSourcesServer).Get(ctx, req.(*GetRegionHealthSourceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionHealthSources_GetHealth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHealthRegionHealthSourceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionHealthSourcesServer).GetHealth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionHealthSources/GetHealth",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionHealthSourcesServer).GetHealth(ctx, req.(*GetHealthRegionHealthSourceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -26512,6 +27921,10 @@ var RegionHealthSources_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _RegionHealthSources_Get_Handler,
 		},
 		{
+			MethodName: "GetHealth",
+			Handler:    _RegionHealthSources_GetHealth_Handler,
+		},
+		{
 			MethodName: "Insert",
 			Handler:    _RegionHealthSources_Insert_Handler,
 		},
@@ -26526,6 +27939,261 @@ var RegionHealthSources_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TestIamPermissions",
 			Handler:    _RegionHealthSources_TestIamPermissions_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
+// RegionInstanceGroupManagerResizeRequestsClient is the client API for RegionInstanceGroupManagerResizeRequests service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RegionInstanceGroupManagerResizeRequestsClient interface {
+	// Cancels the specified resize request.
+	// Cancelled resize request no longer waits for the resources to be
+	// provisioned. Cancel is only possible for requests that are in accepted
+	// state.
+	Cancel(ctx context.Context, in *CancelRegionInstanceGroupManagerResizeRequestRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Deletes the specified, inactive resize request. Requests that are still
+	// active cannot be deleted. Deleting request does not delete instances that
+	// were provisioned previously.
+	Delete(ctx context.Context, in *DeleteRegionInstanceGroupManagerResizeRequestRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns all of the details about the specified resize request.
+	Get(ctx context.Context, in *GetRegionInstanceGroupManagerResizeRequestRequest, opts ...grpc.CallOption) (*InstanceGroupManagerResizeRequest, error)
+	// Creates a new Resize Request that starts provisioning VMs immediately
+	// or queues VM creation.
+	Insert(ctx context.Context, in *InsertRegionInstanceGroupManagerResizeRequestRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Retrieves a list of Resize Requests that are contained in the
+	// managed instance group.
+	List(ctx context.Context, in *ListRegionInstanceGroupManagerResizeRequestsRequest, opts ...grpc.CallOption) (*RegionInstanceGroupManagerResizeRequestsListResponse, error)
+}
+
+type regionInstanceGroupManagerResizeRequestsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRegionInstanceGroupManagerResizeRequestsClient(cc grpc.ClientConnInterface) RegionInstanceGroupManagerResizeRequestsClient {
+	return &regionInstanceGroupManagerResizeRequestsClient{cc}
+}
+
+func (c *regionInstanceGroupManagerResizeRequestsClient) Cancel(ctx context.Context, in *CancelRegionInstanceGroupManagerResizeRequestRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/Cancel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstanceGroupManagerResizeRequestsClient) Delete(ctx context.Context, in *DeleteRegionInstanceGroupManagerResizeRequestRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstanceGroupManagerResizeRequestsClient) Get(ctx context.Context, in *GetRegionInstanceGroupManagerResizeRequestRequest, opts ...grpc.CallOption) (*InstanceGroupManagerResizeRequest, error) {
+	out := new(InstanceGroupManagerResizeRequest)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstanceGroupManagerResizeRequestsClient) Insert(ctx context.Context, in *InsertRegionInstanceGroupManagerResizeRequestRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstanceGroupManagerResizeRequestsClient) List(ctx context.Context, in *ListRegionInstanceGroupManagerResizeRequestsRequest, opts ...grpc.CallOption) (*RegionInstanceGroupManagerResizeRequestsListResponse, error) {
+	out := new(RegionInstanceGroupManagerResizeRequestsListResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RegionInstanceGroupManagerResizeRequestsServer is the server API for RegionInstanceGroupManagerResizeRequests service.
+// All implementations must embed UnimplementedRegionInstanceGroupManagerResizeRequestsServer
+// for forward compatibility
+type RegionInstanceGroupManagerResizeRequestsServer interface {
+	// Cancels the specified resize request.
+	// Cancelled resize request no longer waits for the resources to be
+	// provisioned. Cancel is only possible for requests that are in accepted
+	// state.
+	Cancel(context.Context, *CancelRegionInstanceGroupManagerResizeRequestRequest) (*Operation, error)
+	// Deletes the specified, inactive resize request. Requests that are still
+	// active cannot be deleted. Deleting request does not delete instances that
+	// were provisioned previously.
+	Delete(context.Context, *DeleteRegionInstanceGroupManagerResizeRequestRequest) (*Operation, error)
+	// Returns all of the details about the specified resize request.
+	Get(context.Context, *GetRegionInstanceGroupManagerResizeRequestRequest) (*InstanceGroupManagerResizeRequest, error)
+	// Creates a new Resize Request that starts provisioning VMs immediately
+	// or queues VM creation.
+	Insert(context.Context, *InsertRegionInstanceGroupManagerResizeRequestRequest) (*Operation, error)
+	// Retrieves a list of Resize Requests that are contained in the
+	// managed instance group.
+	List(context.Context, *ListRegionInstanceGroupManagerResizeRequestsRequest) (*RegionInstanceGroupManagerResizeRequestsListResponse, error)
+	mustEmbedUnimplementedRegionInstanceGroupManagerResizeRequestsServer()
+}
+
+// UnimplementedRegionInstanceGroupManagerResizeRequestsServer must be embedded to have forward compatible implementations.
+type UnimplementedRegionInstanceGroupManagerResizeRequestsServer struct {
+}
+
+func (UnimplementedRegionInstanceGroupManagerResizeRequestsServer) Cancel(context.Context, *CancelRegionInstanceGroupManagerResizeRequestRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Cancel not implemented")
+}
+func (UnimplementedRegionInstanceGroupManagerResizeRequestsServer) Delete(context.Context, *DeleteRegionInstanceGroupManagerResizeRequestRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRegionInstanceGroupManagerResizeRequestsServer) Get(context.Context, *GetRegionInstanceGroupManagerResizeRequestRequest) (*InstanceGroupManagerResizeRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegionInstanceGroupManagerResizeRequestsServer) Insert(context.Context, *InsertRegionInstanceGroupManagerResizeRequestRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedRegionInstanceGroupManagerResizeRequestsServer) List(context.Context, *ListRegionInstanceGroupManagerResizeRequestsRequest) (*RegionInstanceGroupManagerResizeRequestsListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRegionInstanceGroupManagerResizeRequestsServer) mustEmbedUnimplementedRegionInstanceGroupManagerResizeRequestsServer() {
+}
+
+// UnsafeRegionInstanceGroupManagerResizeRequestsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RegionInstanceGroupManagerResizeRequestsServer will
+// result in compilation errors.
+type UnsafeRegionInstanceGroupManagerResizeRequestsServer interface {
+	mustEmbedUnimplementedRegionInstanceGroupManagerResizeRequestsServer()
+}
+
+func RegisterRegionInstanceGroupManagerResizeRequestsServer(s grpc.ServiceRegistrar, srv RegionInstanceGroupManagerResizeRequestsServer) {
+	s.RegisterService(&RegionInstanceGroupManagerResizeRequests_ServiceDesc, srv)
+}
+
+func _RegionInstanceGroupManagerResizeRequests_Cancel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelRegionInstanceGroupManagerResizeRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).Cancel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/Cancel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).Cancel(ctx, req.(*CancelRegionInstanceGroupManagerResizeRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstanceGroupManagerResizeRequests_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRegionInstanceGroupManagerResizeRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).Delete(ctx, req.(*DeleteRegionInstanceGroupManagerResizeRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstanceGroupManagerResizeRequests_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRegionInstanceGroupManagerResizeRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).Get(ctx, req.(*GetRegionInstanceGroupManagerResizeRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstanceGroupManagerResizeRequests_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertRegionInstanceGroupManagerResizeRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).Insert(ctx, req.(*InsertRegionInstanceGroupManagerResizeRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstanceGroupManagerResizeRequests_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRegionInstanceGroupManagerResizeRequestsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstanceGroupManagerResizeRequestsServer).List(ctx, req.(*ListRegionInstanceGroupManagerResizeRequestsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RegionInstanceGroupManagerResizeRequests_ServiceDesc is the grpc.ServiceDesc for RegionInstanceGroupManagerResizeRequests service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RegionInstanceGroupManagerResizeRequests_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.RegionInstanceGroupManagerResizeRequests",
+	HandlerType: (*RegionInstanceGroupManagerResizeRequestsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Cancel",
+			Handler:    _RegionInstanceGroupManagerResizeRequests_Cancel_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _RegionInstanceGroupManagerResizeRequests_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _RegionInstanceGroupManagerResizeRequests_Get_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _RegionInstanceGroupManagerResizeRequests_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _RegionInstanceGroupManagerResizeRequests_List_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -28344,6 +30012,331 @@ var RegionInstances_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BulkInsert",
 			Handler:    _RegionInstances_BulkInsert_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
+// RegionInstantSnapshotGroupsClient is the client API for RegionInstantSnapshotGroups service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RegionInstantSnapshotGroupsClient interface {
+	// deletes a Regional InstantSnapshotGroup resource
+	Delete(ctx context.Context, in *DeleteRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Operation, error)
+	// returns the specified InstantSnapshotGroup resource in the specified
+	// region.
+	Get(ctx context.Context, in *GetRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*InstantSnapshotGroup, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	GetIamPolicy(ctx context.Context, in *GetIamPolicyRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Policy, error)
+	// creates a Regional InstantSnapshotGroup resource
+	Insert(ctx context.Context, in *InsertRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Operation, error)
+	// retrieves the list of InstantSnapshotGroup resources contained within
+	// the specified region.
+	List(ctx context.Context, in *ListRegionInstantSnapshotGroupsRequest, opts ...grpc.CallOption) (*ListInstantSnapshotGroups, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
+}
+
+type regionInstantSnapshotGroupsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRegionInstantSnapshotGroupsClient(cc grpc.ClientConnInterface) RegionInstantSnapshotGroupsClient {
+	return &regionInstantSnapshotGroupsClient{cc}
+}
+
+func (c *regionInstantSnapshotGroupsClient) Delete(ctx context.Context, in *DeleteRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotGroupsClient) Get(ctx context.Context, in *GetRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*InstantSnapshotGroup, error) {
+	out := new(InstantSnapshotGroup)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotGroupsClient) GetIamPolicy(ctx context.Context, in *GetIamPolicyRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/GetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotGroupsClient) Insert(ctx context.Context, in *InsertRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotGroupsClient) List(ctx context.Context, in *ListRegionInstantSnapshotGroupsRequest, opts ...grpc.CallOption) (*ListInstantSnapshotGroups, error) {
+	out := new(ListInstantSnapshotGroups)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotGroupsClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/SetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotGroupsClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionInstantSnapshotGroupRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error) {
+	out := new(TestPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RegionInstantSnapshotGroupsServer is the server API for RegionInstantSnapshotGroups service.
+// All implementations must embed UnimplementedRegionInstantSnapshotGroupsServer
+// for forward compatibility
+type RegionInstantSnapshotGroupsServer interface {
+	// deletes a Regional InstantSnapshotGroup resource
+	Delete(context.Context, *DeleteRegionInstantSnapshotGroupRequest) (*Operation, error)
+	// returns the specified InstantSnapshotGroup resource in the specified
+	// region.
+	Get(context.Context, *GetRegionInstantSnapshotGroupRequest) (*InstantSnapshotGroup, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	GetIamPolicy(context.Context, *GetIamPolicyRegionInstantSnapshotGroupRequest) (*Policy, error)
+	// creates a Regional InstantSnapshotGroup resource
+	Insert(context.Context, *InsertRegionInstantSnapshotGroupRequest) (*Operation, error)
+	// retrieves the list of InstantSnapshotGroup resources contained within
+	// the specified region.
+	List(context.Context, *ListRegionInstantSnapshotGroupsRequest) (*ListInstantSnapshotGroups, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	SetIamPolicy(context.Context, *SetIamPolicyRegionInstantSnapshotGroupRequest) (*Policy, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(context.Context, *TestIamPermissionsRegionInstantSnapshotGroupRequest) (*TestPermissionsResponse, error)
+	mustEmbedUnimplementedRegionInstantSnapshotGroupsServer()
+}
+
+// UnimplementedRegionInstantSnapshotGroupsServer must be embedded to have forward compatible implementations.
+type UnimplementedRegionInstantSnapshotGroupsServer struct {
+}
+
+func (UnimplementedRegionInstantSnapshotGroupsServer) Delete(context.Context, *DeleteRegionInstantSnapshotGroupRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRegionInstantSnapshotGroupsServer) Get(context.Context, *GetRegionInstantSnapshotGroupRequest) (*InstantSnapshotGroup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegionInstantSnapshotGroupsServer) GetIamPolicy(context.Context, *GetIamPolicyRegionInstantSnapshotGroupRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
+func (UnimplementedRegionInstantSnapshotGroupsServer) Insert(context.Context, *InsertRegionInstantSnapshotGroupRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedRegionInstantSnapshotGroupsServer) List(context.Context, *ListRegionInstantSnapshotGroupsRequest) (*ListInstantSnapshotGroups, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRegionInstantSnapshotGroupsServer) SetIamPolicy(context.Context, *SetIamPolicyRegionInstantSnapshotGroupRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+func (UnimplementedRegionInstantSnapshotGroupsServer) TestIamPermissions(context.Context, *TestIamPermissionsRegionInstantSnapshotGroupRequest) (*TestPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedRegionInstantSnapshotGroupsServer) mustEmbedUnimplementedRegionInstantSnapshotGroupsServer() {
+}
+
+// UnsafeRegionInstantSnapshotGroupsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RegionInstantSnapshotGroupsServer will
+// result in compilation errors.
+type UnsafeRegionInstantSnapshotGroupsServer interface {
+	mustEmbedUnimplementedRegionInstantSnapshotGroupsServer()
+}
+
+func RegisterRegionInstantSnapshotGroupsServer(s grpc.ServiceRegistrar, srv RegionInstantSnapshotGroupsServer) {
+	s.RegisterService(&RegionInstantSnapshotGroups_ServiceDesc, srv)
+}
+
+func _RegionInstantSnapshotGroups_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRegionInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotGroupsServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotGroupsServer).Delete(ctx, req.(*DeleteRegionInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshotGroups_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRegionInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotGroupsServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotGroupsServer).Get(ctx, req.(*GetRegionInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshotGroups_GetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIamPolicyRegionInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotGroupsServer).GetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/GetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotGroupsServer).GetIamPolicy(ctx, req.(*GetIamPolicyRegionInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshotGroups_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertRegionInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotGroupsServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotGroupsServer).Insert(ctx, req.(*InsertRegionInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshotGroups_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRegionInstantSnapshotGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotGroupsServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotGroupsServer).List(ctx, req.(*ListRegionInstantSnapshotGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshotGroups_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetIamPolicyRegionInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotGroupsServer).SetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/SetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotGroupsServer).SetIamPolicy(ctx, req.(*SetIamPolicyRegionInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshotGroups_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsRegionInstantSnapshotGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotGroupsServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotGroupsServer).TestIamPermissions(ctx, req.(*TestIamPermissionsRegionInstantSnapshotGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RegionInstantSnapshotGroups_ServiceDesc is the grpc.ServiceDesc for RegionInstantSnapshotGroups service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RegionInstantSnapshotGroups_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.RegionInstantSnapshotGroups",
+	HandlerType: (*RegionInstantSnapshotGroupsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Delete",
+			Handler:    _RegionInstantSnapshotGroups_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _RegionInstantSnapshotGroups_Get_Handler,
+		},
+		{
+			MethodName: "GetIamPolicy",
+			Handler:    _RegionInstantSnapshotGroups_GetIamPolicy_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _RegionInstantSnapshotGroups_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _RegionInstantSnapshotGroups_List_Handler,
+		},
+		{
+			MethodName: "SetIamPolicy",
+			Handler:    _RegionInstantSnapshotGroups_SetIamPolicy_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _RegionInstantSnapshotGroups_TestIamPermissions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -30741,6 +32734,553 @@ var RegionSecurityPolicies_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetLabels",
 			Handler:    _RegionSecurityPolicies_SetLabels_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
+// RegionSnapshotSettingsClient is the client API for RegionSnapshotSettings service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RegionSnapshotSettingsClient interface {
+	// Get region snapshot settings.
+	Get(ctx context.Context, in *GetRegionSnapshotSettingRequest, opts ...grpc.CallOption) (*SnapshotSettings, error)
+	// Patch region snapshot settings.
+	Patch(ctx context.Context, in *PatchRegionSnapshotSettingRequest, opts ...grpc.CallOption) (*Operation, error)
+}
+
+type regionSnapshotSettingsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRegionSnapshotSettingsClient(cc grpc.ClientConnInterface) RegionSnapshotSettingsClient {
+	return &regionSnapshotSettingsClient{cc}
+}
+
+func (c *regionSnapshotSettingsClient) Get(ctx context.Context, in *GetRegionSnapshotSettingRequest, opts ...grpc.CallOption) (*SnapshotSettings, error) {
+	out := new(SnapshotSettings)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshotSettings/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSnapshotSettingsClient) Patch(ctx context.Context, in *PatchRegionSnapshotSettingRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshotSettings/Patch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RegionSnapshotSettingsServer is the server API for RegionSnapshotSettings service.
+// All implementations must embed UnimplementedRegionSnapshotSettingsServer
+// for forward compatibility
+type RegionSnapshotSettingsServer interface {
+	// Get region snapshot settings.
+	Get(context.Context, *GetRegionSnapshotSettingRequest) (*SnapshotSettings, error)
+	// Patch region snapshot settings.
+	Patch(context.Context, *PatchRegionSnapshotSettingRequest) (*Operation, error)
+	mustEmbedUnimplementedRegionSnapshotSettingsServer()
+}
+
+// UnimplementedRegionSnapshotSettingsServer must be embedded to have forward compatible implementations.
+type UnimplementedRegionSnapshotSettingsServer struct {
+}
+
+func (UnimplementedRegionSnapshotSettingsServer) Get(context.Context, *GetRegionSnapshotSettingRequest) (*SnapshotSettings, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegionSnapshotSettingsServer) Patch(context.Context, *PatchRegionSnapshotSettingRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
+}
+func (UnimplementedRegionSnapshotSettingsServer) mustEmbedUnimplementedRegionSnapshotSettingsServer() {
+}
+
+// UnsafeRegionSnapshotSettingsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RegionSnapshotSettingsServer will
+// result in compilation errors.
+type UnsafeRegionSnapshotSettingsServer interface {
+	mustEmbedUnimplementedRegionSnapshotSettingsServer()
+}
+
+func RegisterRegionSnapshotSettingsServer(s grpc.ServiceRegistrar, srv RegionSnapshotSettingsServer) {
+	s.RegisterService(&RegionSnapshotSettings_ServiceDesc, srv)
+}
+
+func _RegionSnapshotSettings_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRegionSnapshotSettingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotSettingsServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshotSettings/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotSettingsServer).Get(ctx, req.(*GetRegionSnapshotSettingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSnapshotSettings_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchRegionSnapshotSettingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotSettingsServer).Patch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshotSettings/Patch",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotSettingsServer).Patch(ctx, req.(*PatchRegionSnapshotSettingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RegionSnapshotSettings_ServiceDesc is the grpc.ServiceDesc for RegionSnapshotSettings service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RegionSnapshotSettings_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.RegionSnapshotSettings",
+	HandlerType: (*RegionSnapshotSettingsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Get",
+			Handler:    _RegionSnapshotSettings_Get_Handler,
+		},
+		{
+			MethodName: "Patch",
+			Handler:    _RegionSnapshotSettings_Patch_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
+// RegionSnapshotsClient is the client API for RegionSnapshots service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RegionSnapshotsClient interface {
+	// Deletes the specified Snapshot resource. Keep in mind that deleting
+	// a single snapshot might not necessarily delete all the data on that
+	// snapshot. If any data on the snapshot that is marked for deletion is
+	// needed for subsequent snapshots, the data will be moved to the next
+	// corresponding snapshot.
+	//
+	// For more information, seeDeleting
+	// snapshots.
+	Delete(ctx context.Context, in *DeleteRegionSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns the specified Snapshot resource.
+	Get(ctx context.Context, in *GetRegionSnapshotRequest, opts ...grpc.CallOption) (*Snapshot, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	GetIamPolicy(ctx context.Context, in *GetIamPolicyRegionSnapshotRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Creates a snapshot in the specified region using the data included
+	// in the request.
+	Insert(ctx context.Context, in *InsertRegionSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Retrieves the list of Snapshot resources contained within
+	// the specified region.
+	List(ctx context.Context, in *ListRegionSnapshotsRequest, opts ...grpc.CallOption) (*SnapshotList, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionSnapshotRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Sets the labels on a regional snapshot. To learn more about labels, read
+	// the Labeling Resources
+	// documentation.
+	SetLabels(ctx context.Context, in *SetLabelsRegionSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionSnapshotRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
+	// Rotates the customer-managed
+	// encryption key to the latest version for the specified snapshot.
+	UpdateKmsKey(ctx context.Context, in *UpdateKmsKeyRegionSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+}
+
+type regionSnapshotsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRegionSnapshotsClient(cc grpc.ClientConnInterface) RegionSnapshotsClient {
+	return &regionSnapshotsClient{cc}
+}
+
+func (c *regionSnapshotsClient) Delete(ctx context.Context, in *DeleteRegionSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshots/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSnapshotsClient) Get(ctx context.Context, in *GetRegionSnapshotRequest, opts ...grpc.CallOption) (*Snapshot, error) {
+	out := new(Snapshot)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshots/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSnapshotsClient) GetIamPolicy(ctx context.Context, in *GetIamPolicyRegionSnapshotRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshots/GetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSnapshotsClient) Insert(ctx context.Context, in *InsertRegionSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshots/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSnapshotsClient) List(ctx context.Context, in *ListRegionSnapshotsRequest, opts ...grpc.CallOption) (*SnapshotList, error) {
+	out := new(SnapshotList)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshots/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSnapshotsClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionSnapshotRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshots/SetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSnapshotsClient) SetLabels(ctx context.Context, in *SetLabelsRegionSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshots/SetLabels", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSnapshotsClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionSnapshotRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error) {
+	out := new(TestPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshots/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSnapshotsClient) UpdateKmsKey(ctx context.Context, in *UpdateKmsKeyRegionSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSnapshots/UpdateKmsKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RegionSnapshotsServer is the server API for RegionSnapshots service.
+// All implementations must embed UnimplementedRegionSnapshotsServer
+// for forward compatibility
+type RegionSnapshotsServer interface {
+	// Deletes the specified Snapshot resource. Keep in mind that deleting
+	// a single snapshot might not necessarily delete all the data on that
+	// snapshot. If any data on the snapshot that is marked for deletion is
+	// needed for subsequent snapshots, the data will be moved to the next
+	// corresponding snapshot.
+	//
+	// For more information, seeDeleting
+	// snapshots.
+	Delete(context.Context, *DeleteRegionSnapshotRequest) (*Operation, error)
+	// Returns the specified Snapshot resource.
+	Get(context.Context, *GetRegionSnapshotRequest) (*Snapshot, error)
+	// Gets the access control policy for a resource. May be empty if no such
+	// policy or resource exists.
+	GetIamPolicy(context.Context, *GetIamPolicyRegionSnapshotRequest) (*Policy, error)
+	// Creates a snapshot in the specified region using the data included
+	// in the request.
+	Insert(context.Context, *InsertRegionSnapshotRequest) (*Operation, error)
+	// Retrieves the list of Snapshot resources contained within
+	// the specified region.
+	List(context.Context, *ListRegionSnapshotsRequest) (*SnapshotList, error)
+	// Sets the access control policy on the specified resource.
+	// Replaces any existing policy.
+	SetIamPolicy(context.Context, *SetIamPolicyRegionSnapshotRequest) (*Policy, error)
+	// Sets the labels on a regional snapshot. To learn more about labels, read
+	// the Labeling Resources
+	// documentation.
+	SetLabels(context.Context, *SetLabelsRegionSnapshotRequest) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(context.Context, *TestIamPermissionsRegionSnapshotRequest) (*TestPermissionsResponse, error)
+	// Rotates the customer-managed
+	// encryption key to the latest version for the specified snapshot.
+	UpdateKmsKey(context.Context, *UpdateKmsKeyRegionSnapshotRequest) (*Operation, error)
+	mustEmbedUnimplementedRegionSnapshotsServer()
+}
+
+// UnimplementedRegionSnapshotsServer must be embedded to have forward compatible implementations.
+type UnimplementedRegionSnapshotsServer struct {
+}
+
+func (UnimplementedRegionSnapshotsServer) Delete(context.Context, *DeleteRegionSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRegionSnapshotsServer) Get(context.Context, *GetRegionSnapshotRequest) (*Snapshot, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegionSnapshotsServer) GetIamPolicy(context.Context, *GetIamPolicyRegionSnapshotRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
+func (UnimplementedRegionSnapshotsServer) Insert(context.Context, *InsertRegionSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedRegionSnapshotsServer) List(context.Context, *ListRegionSnapshotsRequest) (*SnapshotList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRegionSnapshotsServer) SetIamPolicy(context.Context, *SetIamPolicyRegionSnapshotRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+func (UnimplementedRegionSnapshotsServer) SetLabels(context.Context, *SetLabelsRegionSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetLabels not implemented")
+}
+func (UnimplementedRegionSnapshotsServer) TestIamPermissions(context.Context, *TestIamPermissionsRegionSnapshotRequest) (*TestPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedRegionSnapshotsServer) UpdateKmsKey(context.Context, *UpdateKmsKeyRegionSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateKmsKey not implemented")
+}
+func (UnimplementedRegionSnapshotsServer) mustEmbedUnimplementedRegionSnapshotsServer() {}
+
+// UnsafeRegionSnapshotsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RegionSnapshotsServer will
+// result in compilation errors.
+type UnsafeRegionSnapshotsServer interface {
+	mustEmbedUnimplementedRegionSnapshotsServer()
+}
+
+func RegisterRegionSnapshotsServer(s grpc.ServiceRegistrar, srv RegionSnapshotsServer) {
+	s.RegisterService(&RegionSnapshots_ServiceDesc, srv)
+}
+
+func _RegionSnapshots_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRegionSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotsServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshots/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotsServer).Delete(ctx, req.(*DeleteRegionSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSnapshots_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRegionSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotsServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshots/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotsServer).Get(ctx, req.(*GetRegionSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSnapshots_GetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIamPolicyRegionSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotsServer).GetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshots/GetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotsServer).GetIamPolicy(ctx, req.(*GetIamPolicyRegionSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSnapshots_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertRegionSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotsServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshots/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotsServer).Insert(ctx, req.(*InsertRegionSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSnapshots_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRegionSnapshotsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotsServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshots/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotsServer).List(ctx, req.(*ListRegionSnapshotsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSnapshots_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetIamPolicyRegionSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotsServer).SetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshots/SetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotsServer).SetIamPolicy(ctx, req.(*SetIamPolicyRegionSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSnapshots_SetLabels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetLabelsRegionSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotsServer).SetLabels(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshots/SetLabels",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotsServer).SetLabels(ctx, req.(*SetLabelsRegionSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSnapshots_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsRegionSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotsServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshots/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotsServer).TestIamPermissions(ctx, req.(*TestIamPermissionsRegionSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSnapshots_UpdateKmsKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateKmsKeyRegionSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSnapshotsServer).UpdateKmsKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSnapshots/UpdateKmsKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSnapshotsServer).UpdateKmsKey(ctx, req.(*UpdateKmsKeyRegionSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RegionSnapshots_ServiceDesc is the grpc.ServiceDesc for RegionSnapshots service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RegionSnapshots_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.RegionSnapshots",
+	HandlerType: (*RegionSnapshotsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Delete",
+			Handler:    _RegionSnapshots_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _RegionSnapshots_Get_Handler,
+		},
+		{
+			MethodName: "GetIamPolicy",
+			Handler:    _RegionSnapshots_GetIamPolicy_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _RegionSnapshots_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _RegionSnapshots_List_Handler,
+		},
+		{
+			MethodName: "SetIamPolicy",
+			Handler:    _RegionSnapshots_SetIamPolicy_Handler,
+		},
+		{
+			MethodName: "SetLabels",
+			Handler:    _RegionSnapshots_SetLabels_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _RegionSnapshots_TestIamPermissions_Handler,
+		},
+		{
+			MethodName: "UpdateKmsKey",
+			Handler:    _RegionSnapshots_UpdateKmsKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -34374,6 +36914,410 @@ var ResourcePolicies_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
 }
 
+// RolloutPlansClient is the client API for RolloutPlans service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RolloutPlansClient interface {
+	// Deletes a RolloutPlan.
+	Delete(ctx context.Context, in *DeleteRolloutPlanRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Gets details of a single project-scoped RolloutPlan.
+	Get(ctx context.Context, in *GetRolloutPlanRequest, opts ...grpc.CallOption) (*RolloutPlan, error)
+	// Creates a new RolloutPlan in a given project and location.
+	Insert(ctx context.Context, in *InsertRolloutPlanRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Lists RolloutPlans in a given project and location.
+	List(ctx context.Context, in *ListRolloutPlansRequest, opts ...grpc.CallOption) (*RolloutPlansListResponse, error)
+}
+
+type rolloutPlansClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRolloutPlansClient(cc grpc.ClientConnInterface) RolloutPlansClient {
+	return &rolloutPlansClient{cc}
+}
+
+func (c *rolloutPlansClient) Delete(ctx context.Context, in *DeleteRolloutPlanRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RolloutPlans/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rolloutPlansClient) Get(ctx context.Context, in *GetRolloutPlanRequest, opts ...grpc.CallOption) (*RolloutPlan, error) {
+	out := new(RolloutPlan)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RolloutPlans/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rolloutPlansClient) Insert(ctx context.Context, in *InsertRolloutPlanRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RolloutPlans/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rolloutPlansClient) List(ctx context.Context, in *ListRolloutPlansRequest, opts ...grpc.CallOption) (*RolloutPlansListResponse, error) {
+	out := new(RolloutPlansListResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RolloutPlans/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RolloutPlansServer is the server API for RolloutPlans service.
+// All implementations must embed UnimplementedRolloutPlansServer
+// for forward compatibility
+type RolloutPlansServer interface {
+	// Deletes a RolloutPlan.
+	Delete(context.Context, *DeleteRolloutPlanRequest) (*Operation, error)
+	// Gets details of a single project-scoped RolloutPlan.
+	Get(context.Context, *GetRolloutPlanRequest) (*RolloutPlan, error)
+	// Creates a new RolloutPlan in a given project and location.
+	Insert(context.Context, *InsertRolloutPlanRequest) (*Operation, error)
+	// Lists RolloutPlans in a given project and location.
+	List(context.Context, *ListRolloutPlansRequest) (*RolloutPlansListResponse, error)
+	mustEmbedUnimplementedRolloutPlansServer()
+}
+
+// UnimplementedRolloutPlansServer must be embedded to have forward compatible implementations.
+type UnimplementedRolloutPlansServer struct {
+}
+
+func (UnimplementedRolloutPlansServer) Delete(context.Context, *DeleteRolloutPlanRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRolloutPlansServer) Get(context.Context, *GetRolloutPlanRequest) (*RolloutPlan, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRolloutPlansServer) Insert(context.Context, *InsertRolloutPlanRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedRolloutPlansServer) List(context.Context, *ListRolloutPlansRequest) (*RolloutPlansListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRolloutPlansServer) mustEmbedUnimplementedRolloutPlansServer() {}
+
+// UnsafeRolloutPlansServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RolloutPlansServer will
+// result in compilation errors.
+type UnsafeRolloutPlansServer interface {
+	mustEmbedUnimplementedRolloutPlansServer()
+}
+
+func RegisterRolloutPlansServer(s grpc.ServiceRegistrar, srv RolloutPlansServer) {
+	s.RegisterService(&RolloutPlans_ServiceDesc, srv)
+}
+
+func _RolloutPlans_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRolloutPlanRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RolloutPlansServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RolloutPlans/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RolloutPlansServer).Delete(ctx, req.(*DeleteRolloutPlanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RolloutPlans_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRolloutPlanRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RolloutPlansServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RolloutPlans/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RolloutPlansServer).Get(ctx, req.(*GetRolloutPlanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RolloutPlans_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertRolloutPlanRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RolloutPlansServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RolloutPlans/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RolloutPlansServer).Insert(ctx, req.(*InsertRolloutPlanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RolloutPlans_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRolloutPlansRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RolloutPlansServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RolloutPlans/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RolloutPlansServer).List(ctx, req.(*ListRolloutPlansRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RolloutPlans_ServiceDesc is the grpc.ServiceDesc for RolloutPlans service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RolloutPlans_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.RolloutPlans",
+	HandlerType: (*RolloutPlansServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Delete",
+			Handler:    _RolloutPlans_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _RolloutPlans_Get_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _RolloutPlans_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _RolloutPlans_List_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
+// RolloutsClient is the client API for Rollouts service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RolloutsClient interface {
+	// Cancels a Rollout.
+	Cancel(ctx context.Context, in *CancelRolloutRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Deletes a Rollout.
+	Delete(ctx context.Context, in *DeleteRolloutRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Gets details of a single project-scoped Rollout.
+	Get(ctx context.Context, in *GetRolloutRequest, opts ...grpc.CallOption) (*Rollout, error)
+	// Lists Rollouts in a given project and location.
+	List(ctx context.Context, in *ListRolloutsRequest, opts ...grpc.CallOption) (*RolloutsListResponse, error)
+}
+
+type rolloutsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRolloutsClient(cc grpc.ClientConnInterface) RolloutsClient {
+	return &rolloutsClient{cc}
+}
+
+func (c *rolloutsClient) Cancel(ctx context.Context, in *CancelRolloutRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Rollouts/Cancel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rolloutsClient) Delete(ctx context.Context, in *DeleteRolloutRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Rollouts/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rolloutsClient) Get(ctx context.Context, in *GetRolloutRequest, opts ...grpc.CallOption) (*Rollout, error) {
+	out := new(Rollout)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Rollouts/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rolloutsClient) List(ctx context.Context, in *ListRolloutsRequest, opts ...grpc.CallOption) (*RolloutsListResponse, error) {
+	out := new(RolloutsListResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Rollouts/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RolloutsServer is the server API for Rollouts service.
+// All implementations must embed UnimplementedRolloutsServer
+// for forward compatibility
+type RolloutsServer interface {
+	// Cancels a Rollout.
+	Cancel(context.Context, *CancelRolloutRequest) (*Operation, error)
+	// Deletes a Rollout.
+	Delete(context.Context, *DeleteRolloutRequest) (*Operation, error)
+	// Gets details of a single project-scoped Rollout.
+	Get(context.Context, *GetRolloutRequest) (*Rollout, error)
+	// Lists Rollouts in a given project and location.
+	List(context.Context, *ListRolloutsRequest) (*RolloutsListResponse, error)
+	mustEmbedUnimplementedRolloutsServer()
+}
+
+// UnimplementedRolloutsServer must be embedded to have forward compatible implementations.
+type UnimplementedRolloutsServer struct {
+}
+
+func (UnimplementedRolloutsServer) Cancel(context.Context, *CancelRolloutRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Cancel not implemented")
+}
+func (UnimplementedRolloutsServer) Delete(context.Context, *DeleteRolloutRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRolloutsServer) Get(context.Context, *GetRolloutRequest) (*Rollout, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRolloutsServer) List(context.Context, *ListRolloutsRequest) (*RolloutsListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRolloutsServer) mustEmbedUnimplementedRolloutsServer() {}
+
+// UnsafeRolloutsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RolloutsServer will
+// result in compilation errors.
+type UnsafeRolloutsServer interface {
+	mustEmbedUnimplementedRolloutsServer()
+}
+
+func RegisterRolloutsServer(s grpc.ServiceRegistrar, srv RolloutsServer) {
+	s.RegisterService(&Rollouts_ServiceDesc, srv)
+}
+
+func _Rollouts_Cancel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelRolloutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RolloutsServer).Cancel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Rollouts/Cancel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RolloutsServer).Cancel(ctx, req.(*CancelRolloutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Rollouts_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRolloutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RolloutsServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Rollouts/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RolloutsServer).Delete(ctx, req.(*DeleteRolloutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Rollouts_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRolloutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RolloutsServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Rollouts/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RolloutsServer).Get(ctx, req.(*GetRolloutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Rollouts_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRolloutsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RolloutsServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Rollouts/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RolloutsServer).List(ctx, req.(*ListRolloutsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Rollouts_ServiceDesc is the grpc.ServiceDesc for Rollouts service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var Rollouts_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.Rollouts",
+	HandlerType: (*RolloutsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Cancel",
+			Handler:    _Rollouts_Cancel_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _Rollouts_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _Rollouts_Get_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _Rollouts_List_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
 // RoutersClient is the client API for Routers service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
@@ -36442,6 +39386,9 @@ type SnapshotsClient interface {
 	SetLabels(ctx context.Context, in *SetLabelsSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns permissions that a caller has on the specified resource.
 	TestIamPermissions(ctx context.Context, in *TestIamPermissionsSnapshotRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
+	// Rotates the customer-managed
+	// encryption key to the latest version for the specified snapshot.
+	UpdateKmsKey(ctx context.Context, in *UpdateKmsKeySnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type snapshotsClient struct {
@@ -36524,6 +39471,15 @@ func (c *snapshotsClient) TestIamPermissions(ctx context.Context, in *TestIamPer
 	return out, nil
 }
 
+func (c *snapshotsClient) UpdateKmsKey(ctx context.Context, in *UpdateKmsKeySnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Snapshots/UpdateKmsKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SnapshotsServer is the server API for Snapshots service.
 // All implementations must embed UnimplementedSnapshotsServer
 // for forward compatibility
@@ -36559,6 +39515,9 @@ type SnapshotsServer interface {
 	SetLabels(context.Context, *SetLabelsSnapshotRequest) (*Operation, error)
 	// Returns permissions that a caller has on the specified resource.
 	TestIamPermissions(context.Context, *TestIamPermissionsSnapshotRequest) (*TestPermissionsResponse, error)
+	// Rotates the customer-managed
+	// encryption key to the latest version for the specified snapshot.
+	UpdateKmsKey(context.Context, *UpdateKmsKeySnapshotRequest) (*Operation, error)
 	mustEmbedUnimplementedSnapshotsServer()
 }
 
@@ -36589,6 +39548,9 @@ func (UnimplementedSnapshotsServer) SetLabels(context.Context, *SetLabelsSnapsho
 }
 func (UnimplementedSnapshotsServer) TestIamPermissions(context.Context, *TestIamPermissionsSnapshotRequest) (*TestPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedSnapshotsServer) UpdateKmsKey(context.Context, *UpdateKmsKeySnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateKmsKey not implemented")
 }
 func (UnimplementedSnapshotsServer) mustEmbedUnimplementedSnapshotsServer() {}
 
@@ -36747,6 +39709,24 @@ func _Snapshots_TestIamPermissions_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Snapshots_UpdateKmsKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateKmsKeySnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SnapshotsServer).UpdateKmsKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Snapshots/UpdateKmsKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SnapshotsServer).UpdateKmsKey(ctx, req.(*UpdateKmsKeySnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Snapshots_ServiceDesc is the grpc.ServiceDesc for Snapshots service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -36785,6 +39765,10 @@ var Snapshots_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TestIamPermissions",
 			Handler:    _Snapshots_TestIamPermissions_Handler,
+		},
+		{
+			MethodName: "UpdateKmsKey",
+			Handler:    _Snapshots_UpdateKmsKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -43189,6 +46173,247 @@ var ZoneOperations_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Wait",
 			Handler:    _ZoneOperations_Wait_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
+// ZoneVmExtensionPoliciesClient is the client API for ZoneVmExtensionPolicies service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ZoneVmExtensionPoliciesClient interface {
+	// Deletes a specified zone VM extension policy within a project.
+	Delete(ctx context.Context, in *DeleteZoneVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Retrieves details of a specific zone VM extension policy within a project.
+	Get(ctx context.Context, in *GetZoneVmExtensionPolicyRequest, opts ...grpc.CallOption) (*VmExtensionPolicy, error)
+	// Creates a new zone-level VM extension policy within a project.
+	Insert(ctx context.Context, in *InsertZoneVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Lists all VM extension policies within a specific zone for a project.
+	List(ctx context.Context, in *ListZoneVmExtensionPoliciesRequest, opts ...grpc.CallOption) (*VmExtensionPolicyList, error)
+	// Modifies an existing zone VM extension policy within a project.
+	Update(ctx context.Context, in *UpdateZoneVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+}
+
+type zoneVmExtensionPoliciesClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewZoneVmExtensionPoliciesClient(cc grpc.ClientConnInterface) ZoneVmExtensionPoliciesClient {
+	return &zoneVmExtensionPoliciesClient{cc}
+}
+
+func (c *zoneVmExtensionPoliciesClient) Delete(ctx context.Context, in *DeleteZoneVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *zoneVmExtensionPoliciesClient) Get(ctx context.Context, in *GetZoneVmExtensionPolicyRequest, opts ...grpc.CallOption) (*VmExtensionPolicy, error) {
+	out := new(VmExtensionPolicy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *zoneVmExtensionPoliciesClient) Insert(ctx context.Context, in *InsertZoneVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *zoneVmExtensionPoliciesClient) List(ctx context.Context, in *ListZoneVmExtensionPoliciesRequest, opts ...grpc.CallOption) (*VmExtensionPolicyList, error) {
+	out := new(VmExtensionPolicyList)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *zoneVmExtensionPoliciesClient) Update(ctx context.Context, in *UpdateZoneVmExtensionPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ZoneVmExtensionPoliciesServer is the server API for ZoneVmExtensionPolicies service.
+// All implementations must embed UnimplementedZoneVmExtensionPoliciesServer
+// for forward compatibility
+type ZoneVmExtensionPoliciesServer interface {
+	// Deletes a specified zone VM extension policy within a project.
+	Delete(context.Context, *DeleteZoneVmExtensionPolicyRequest) (*Operation, error)
+	// Retrieves details of a specific zone VM extension policy within a project.
+	Get(context.Context, *GetZoneVmExtensionPolicyRequest) (*VmExtensionPolicy, error)
+	// Creates a new zone-level VM extension policy within a project.
+	Insert(context.Context, *InsertZoneVmExtensionPolicyRequest) (*Operation, error)
+	// Lists all VM extension policies within a specific zone for a project.
+	List(context.Context, *ListZoneVmExtensionPoliciesRequest) (*VmExtensionPolicyList, error)
+	// Modifies an existing zone VM extension policy within a project.
+	Update(context.Context, *UpdateZoneVmExtensionPolicyRequest) (*Operation, error)
+	mustEmbedUnimplementedZoneVmExtensionPoliciesServer()
+}
+
+// UnimplementedZoneVmExtensionPoliciesServer must be embedded to have forward compatible implementations.
+type UnimplementedZoneVmExtensionPoliciesServer struct {
+}
+
+func (UnimplementedZoneVmExtensionPoliciesServer) Delete(context.Context, *DeleteZoneVmExtensionPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedZoneVmExtensionPoliciesServer) Get(context.Context, *GetZoneVmExtensionPolicyRequest) (*VmExtensionPolicy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedZoneVmExtensionPoliciesServer) Insert(context.Context, *InsertZoneVmExtensionPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedZoneVmExtensionPoliciesServer) List(context.Context, *ListZoneVmExtensionPoliciesRequest) (*VmExtensionPolicyList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedZoneVmExtensionPoliciesServer) Update(context.Context, *UpdateZoneVmExtensionPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedZoneVmExtensionPoliciesServer) mustEmbedUnimplementedZoneVmExtensionPoliciesServer() {
+}
+
+// UnsafeZoneVmExtensionPoliciesServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ZoneVmExtensionPoliciesServer will
+// result in compilation errors.
+type UnsafeZoneVmExtensionPoliciesServer interface {
+	mustEmbedUnimplementedZoneVmExtensionPoliciesServer()
+}
+
+func RegisterZoneVmExtensionPoliciesServer(s grpc.ServiceRegistrar, srv ZoneVmExtensionPoliciesServer) {
+	s.RegisterService(&ZoneVmExtensionPolicies_ServiceDesc, srv)
+}
+
+func _ZoneVmExtensionPolicies_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteZoneVmExtensionPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZoneVmExtensionPoliciesServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZoneVmExtensionPoliciesServer).Delete(ctx, req.(*DeleteZoneVmExtensionPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ZoneVmExtensionPolicies_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetZoneVmExtensionPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZoneVmExtensionPoliciesServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZoneVmExtensionPoliciesServer).Get(ctx, req.(*GetZoneVmExtensionPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ZoneVmExtensionPolicies_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertZoneVmExtensionPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZoneVmExtensionPoliciesServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZoneVmExtensionPoliciesServer).Insert(ctx, req.(*InsertZoneVmExtensionPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ZoneVmExtensionPolicies_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListZoneVmExtensionPoliciesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZoneVmExtensionPoliciesServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZoneVmExtensionPoliciesServer).List(ctx, req.(*ListZoneVmExtensionPoliciesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ZoneVmExtensionPolicies_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateZoneVmExtensionPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZoneVmExtensionPoliciesServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies/Update",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZoneVmExtensionPoliciesServer).Update(ctx, req.(*UpdateZoneVmExtensionPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ZoneVmExtensionPolicies_ServiceDesc is the grpc.ServiceDesc for ZoneVmExtensionPolicies service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ZoneVmExtensionPolicies_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.ZoneVmExtensionPolicies",
+	HandlerType: (*ZoneVmExtensionPoliciesServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Delete",
+			Handler:    _ZoneVmExtensionPolicies_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _ZoneVmExtensionPolicies_Get_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _ZoneVmExtensionPolicies_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _ZoneVmExtensionPolicies_List_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _ZoneVmExtensionPolicies_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
