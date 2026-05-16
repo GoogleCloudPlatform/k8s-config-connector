@@ -161,6 +161,10 @@ We have custom linters in `dev/linters`.
 
 When asked to work with github issues, use the `gh issue` tool to read/update issues.
 
+# Github Pull Requests
+
+When asked to send or update a pull request, please use the `send-pr` skill. It provides a script that handles formatting and git pushing safely.
+
 # Import Alias Convention
 
 When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as the import alias for `v1alpha1` and use `krmv1beta1` for `v1beta1`. This is to minimize the code changes.
