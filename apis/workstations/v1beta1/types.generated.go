@@ -531,6 +531,7 @@ type WorkstationConfig_ReadinessCheck struct {
 }
 */
 
+/* unreachable type Any
 // +kcc:proto=google.protobuf.Any
 type Any struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
@@ -567,6 +568,7 @@ type Any struct {
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.rpc.Status", skipping
 

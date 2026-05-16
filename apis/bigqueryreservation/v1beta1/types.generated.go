@@ -22,10 +22,13 @@
 
 package v1beta1
 
+/* unreachable type Reservation_ReplicationStatus
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
 type Reservation_ReplicationStatus struct {
 }
+*/
 
+/* unreachable type Any
 // +kcc:proto=google.protobuf.Any
 type Any struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
@@ -62,7 +65,9 @@ type Any struct {
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }
+*/
 
+/* unreachable type Status
 // +kcc:proto=google.rpc.Status
 type Status struct {
 	// The status code, which should be an enum value of
@@ -82,7 +87,9 @@ type Status struct {
 	// +kcc:proto:field=google.rpc.Status.details
 	Details []Any `json:"details,omitempty"`
 }
+*/
 
+/* unreachable type Reservation_ReplicationStatusObservedState
 // +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
 type Reservation_ReplicationStatusObservedState struct {
 	// Output only. The last error encountered while trying to replicate changes
@@ -102,3 +109,4 @@ type Reservation_ReplicationStatusObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.last_replication_time
 	LastReplicationTime *string `json:"lastReplicationTime,omitempty"`
 }
+*/
