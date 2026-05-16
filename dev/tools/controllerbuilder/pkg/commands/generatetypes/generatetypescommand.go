@@ -106,7 +106,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return fmt.Errorf("APIVersion %q is not valid: %w", o.APIVersion, err)
 	}
 
-	api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath)
+	api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath, o.GenerateOptions.ProtoOverlayPath)
 	if err != nil {
 		return fmt.Errorf("loading proto: %w", err)
 	}
@@ -212,6 +212,13 @@ func (o *GenerateCRDOptions) loadAndApplyConfig() error {
 
 	o.ServiceName = config.Service
 	o.APIVersion = config.APIVersion
+	if o.ProtoOverlayPath == "" && config.ProtoOverlay != "" {
+		if filepath.IsAbs(config.ProtoOverlay) {
+			o.ProtoOverlayPath = config.ProtoOverlay
+		} else {
+			o.ProtoOverlayPath = filepath.Join(filepath.Dir(o.ConfigFilePath), config.ProtoOverlay)
+		}
+	}
 	for _, res := range config.Resources {
 		o.Resources = append(o.Resources, options.Resource{
 			Kind:              res.Kind,
