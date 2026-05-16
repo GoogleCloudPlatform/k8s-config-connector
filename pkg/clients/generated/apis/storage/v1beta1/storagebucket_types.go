@@ -55,7 +55,7 @@ type BucketAutoclass struct {
 type BucketCondition struct {
 	/* Minimum age of an object in days to satisfy this condition. */
 	// +optional
-	Age *int32 `json:"age,omitempty"`
+	Age *int64 `json:"age,omitempty"`
 
 	/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
 	// +optional
@@ -67,11 +67,11 @@ type BucketCondition struct {
 
 	/* Number of days elapsed since the user-specified timestamp set on an object. */
 	// +optional
-	DaysSinceCustomTime *int32 `json:"daysSinceCustomTime,omitempty"`
+	DaysSinceCustomTime *int64 `json:"daysSinceCustomTime,omitempty"`
 
 	/* Number of days elapsed since the noncurrent timestamp of an object. This condition is relevant only for versioned objects. */
 	// +optional
-	DaysSinceNoncurrentTime *int32 `json:"daysSinceNoncurrentTime,omitempty"`
+	DaysSinceNoncurrentTime *int64 `json:"daysSinceNoncurrentTime,omitempty"`
 
 	/* One or more matching name prefixes to satisfy this condition. */
 	// +optional
@@ -91,7 +91,7 @@ type BucketCondition struct {
 
 	/* Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition. */
 	// +optional
-	NumNewerVersions *int32 `json:"numNewerVersions,omitempty"`
+	NumNewerVersions *int64 `json:"numNewerVersions,omitempty"`
 
 	/* Match to live and/or archived objects. Unversioned buckets have only live objects. Supported values include: "LIVE", "ARCHIVED", "ANY". */
 	// +optional
@@ -101,7 +101,7 @@ type BucketCondition struct {
 type BucketCors struct {
 	/* The value, in seconds, to return in the Access-Control-Max-Age header used in preflight responses. */
 	// +optional
-	MaxAgeSeconds *int32 `json:"maxAgeSeconds,omitempty"`
+	MaxAgeSeconds *int64 `json:"maxAgeSeconds,omitempty"`
 
 	/* The list of HTTP methods on which to include CORS response headers, (GET, OPTIONS, POST, etc) Note: "*" is permitted in the list of methods, and means "any method". */
 	// +optional
@@ -155,7 +155,7 @@ type BucketRetentionPolicy struct {
 type BucketSoftDeletePolicy struct {
 	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
 	// +optional
-	RetentionDurationSeconds *int32 `json:"retentionDurationSeconds,omitempty"`
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
 }
 
 type BucketVersioning struct {
@@ -260,7 +260,7 @@ type BucketSoftDeletePolicyStatus struct {
 
 	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
 	// +optional
-	RetentionDurationSeconds *int32 `json:"retentionDurationSeconds,omitempty"`
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
 }
 
 type StorageBucketStatus struct {
