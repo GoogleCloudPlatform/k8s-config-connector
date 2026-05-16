@@ -169,8 +169,7 @@ snapshotSchedulePolicy:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The number of availability domains instances will be spread across. If two instances are in different
-availability domain, they will not be put in the same low latency network.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The number of availability domains instances will be spread across. If two instances are in different availability domain, they will not be put in the same low latency network.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -180,10 +179,7 @@ availability domain, they will not be put in the same low latency network.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network.
-Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
-with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
-attached. Possible values: ["COLLOCATED"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network. Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy attached. Possible values: ["COLLOCATED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -203,9 +199,7 @@ attached. Possible values: ["COLLOCATED"].{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Number of VMs in this placement group. Google does not recommend that you use this field
-unless you use a compact policy and you want your policy to work only if it contains this
-exact number of VMs.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Number of VMs in this placement group. Google does not recommend that you use this field unless you use a compact policy and you want your policy to work only if it contains this exact number of VMs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -245,8 +239,7 @@ exact number of VMs.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Specifies the time zone to be used in interpreting the schedule. The value of this field must be a time zone name
-from the tz database: http://en.wikipedia.org/wiki/Tz_database.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Specifies the time zone to be used in interpreting the schedule. The value of this field must be a time zone name from the tz database: http://en.wikipedia.org/wiki/Tz_database.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -346,8 +339,7 @@ from the tz database: http://en.wikipedia.org/wiki/Tz_database.{% endverbatim %}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Specifies the behavior to apply to scheduled snapshots when
-the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Specifies the behavior to apply to scheduled snapshots when the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -387,9 +379,7 @@ the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. This must be in UTC format that resolves to one of
-00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example,
-both 13:00-5 and 08:00 are valid.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -419,10 +409,7 @@ both 13:00-5 and 08:00 are valid.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Time within the window to start the operations.
-It must be in an hourly format "HH:MM",
-where HH : [00-23] and MM : [00] GMT.
-eg: 21:00.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Time within the window to start the operations. It must be in an hourly format "HH:MM", where HH : [00-23] and MM : [00] GMT. eg: 21:00.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -472,8 +459,7 @@ eg: 21:00.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Time within the window to start the operations.
-It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Time within the window to start the operations. It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -493,9 +479,7 @@ It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.{% endverb
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Creates the new snapshot in the snapshot chain labeled with the
-specified name. The chain name must be 1-63 characters long and comply
-with RFC1035.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Chain name that the snapshot is created in.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -525,8 +509,7 @@ with RFC1035.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Cloud Storage bucket location to store the auto snapshot
-(regional or multi-regional).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Cloud Storage bucket location to store the auto snapshot (regional or multi-regional).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -555,7 +538,12 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
+observedState:
+  creationTimestamp: string
+  id: integer
+  status: string
 selfLink: string
 ```
 
@@ -570,7 +558,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -616,6 +604,13 @@ selfLink: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the ComputeResourcePolicy resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -623,10 +618,38 @@ selfLink: string
         </td>
     </tr>
     <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.creationTimestamp</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}[Output Only] Creation timestamp in RFC3339 text format.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.id</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}[Output Only] The unique identifier for the resource. This identifier is defined by the server.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.status</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}[Output Only] The status of resource policy creation.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The server-defined URL of this resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
