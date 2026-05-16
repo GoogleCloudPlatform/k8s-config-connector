@@ -23,6 +23,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -30,44 +31,22 @@ func ResolveComputeFutureReservationRefs(ctx context.Context, reader client.Read
 	if obj.Spec.ShareSettings == nil {
 		return nil
 	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return err
+	}
+
 	for i := range obj.Spec.ShareSettings.ProjectMap {
 		entry := &obj.Spec.ShareSettings.ProjectMap[i]
-		if entry.KeyRef != nil {
-			kind := entry.KeyRef.Kind
-			switch kind {
-			// If Kind is not specified, default to "Project"
-			case "Project", "":
-				projectRef := &refs.ProjectRef{
-					External:  entry.KeyRef.External,
-					Name:      entry.KeyRef.Name,
-					Namespace: entry.KeyRef.Namespace,
-				}
-				project, err := refs.ResolveProject(ctx, reader, obj.Namespace, projectRef)
-				if err != nil {
-					return err
-				}
-				projectID := project.ProjectID
-				projectNumber, err := projectMapper.LookupProjectNumber(ctx, projectID)
-				if err != nil {
-					return err
-				}
-				entry.KeyRef.External = fmt.Sprintf("%d", projectNumber)
-
-			default:
-				return fmt.Errorf("unsupported kind %q for ExtendedProjectRef", kind)
+		if entry.KeyRef != nil && (entry.KeyRef.Kind == "" || entry.KeyRef.Kind == "Project") {
+			if err := convertToProjectNumber(ctx, projectMapper, &entry.KeyRef.External); err != nil {
+				return err
 			}
 		}
 		if entry.Value != nil && entry.Value.ProjectIDRef != nil {
-			project, err := refs.ResolveProject(ctx, reader, obj.Namespace, entry.Value.ProjectIDRef)
-			if err != nil {
+			if err := convertToProjectNumber(ctx, projectMapper, &entry.Value.ProjectIDRef.External); err != nil {
 				return err
 			}
-			projectID := project.ProjectID
-			projectNumber, err := projectMapper.LookupProjectNumber(ctx, projectID)
-			if err != nil {
-				return err
-			}
-			entry.Value.ProjectIDRef.External = fmt.Sprintf("%d", projectNumber)
 		}
 	}
 
@@ -88,5 +67,18 @@ func ResolveComputeFutureReservationRefs(ctx context.Context, reader client.Read
 		return iKeyRef.External < jKeyRef.External
 	})
 
+	return nil
+}
+
+func convertToProjectNumber(ctx context.Context, projectMapper *projects.ProjectMapper, external *string) error {
+	id := &refs.ProjectIdentity{}
+	if err := id.FromExternal(*external); err != nil {
+		return err
+	}
+	projectNumber, err := projectMapper.LookupProjectNumber(ctx, id.ProjectID)
+	if err != nil {
+		return err
+	}
+	*external = fmt.Sprintf("%d", projectNumber)
 	return nil
 }
