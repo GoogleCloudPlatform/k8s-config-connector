@@ -24,7 +24,7 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 const (
 	emailPlaceholder = "user@example.com"
-	timePlaceholder  = "2024-04-01T12:34:56.123456Z"
+	timePlaceholder  = mockgcpregistry.PlaceholderTimestamp
 )
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {

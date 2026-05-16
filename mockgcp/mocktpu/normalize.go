@@ -22,10 +22,10 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// Node
-	replacements.ReplacePath(".createTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".response.createTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".updateTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".response.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".id", "000000000000000000000")
 	replacements.ReplacePath(".response.id", "000000000000000000000")
 
