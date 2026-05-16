@@ -21,9 +21,11 @@
 
 package v1beta1
 
+/* unreachable type BigQueryDataset
 // +kcc:proto=google.logging.v2.BigQueryDataset
 type BigQueryDataset struct {
 }
+*/
 
 // +kcc:observedstate:proto=google.logging.v2.BigQueryDataset
 type BigQueryDatasetObservedState struct {
