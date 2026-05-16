@@ -60,7 +60,12 @@ func (s *AlloyDBAdminV1) GetCluster(ctx context.Context, req *pb.GetClusterReque
 func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	// Remove unreadable field.
 	obj.InitialUser = nil
-	obj.DisplayName = ""
+
+	if obj.DisplayName == "" {
+		obj.DisplayName = name.ClusterName
+	}
+
+
 	// Set default values to optional fields when unset.
 	if obj.AutomatedBackupPolicy == nil {
 		obj.AutomatedBackupPolicy = &pb.AutomatedBackupPolicy{}
@@ -116,6 +121,11 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	if obj.SubscriptionType == pb.SubscriptionType_SUBSCRIPTION_TYPE_UNSPECIFIED {
 		obj.SubscriptionType = pb.SubscriptionType_STANDARD
 	}
+	if obj.PscConfig == nil {
+		obj.PscConfig = &pb.Cluster_PscConfig{}
+	}
+	obj.Etag = "abcdef0123A="
+
 	// Set output-only fields.
 	now := timestamppb.Now()
 	obj.CreateTime = now
@@ -157,6 +167,7 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	obj.Reconciling = false
 	obj.State = pb.Cluster_READY
 	obj.Uid = "111111111111111111111"
+	obj.SatisfiesPzs = true
 	// TODO: Validate the logic for PrimaryConfig.
 	// PrimaryConfig is probably set when the primary cluster has a secondary
 	// cluster associated with it.

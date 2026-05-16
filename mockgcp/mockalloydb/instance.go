@@ -17,7 +17,6 @@ package mockalloydb
 import (
 	"context"
 	"fmt"
-	"log"
 	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -44,11 +43,15 @@ func (s *AlloyDBAdminV1) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 		}
 		return nil, err
 	}
-
+	updateInstanceNetworkInResponse(obj)
 	return obj, nil
 }
 
 func setInstanceFields(name *instanceName, obj *pb.Instance) {
+	if obj.DisplayName == "" {
+		obj.DisplayName = name.InstanceName
+	}
+
 	// Set default values to optional fields when unset.
 	if obj.ClientConnectionConfig == nil {
 		obj.ClientConnectionConfig = &pb.Instance_ClientConnectionConfig{
@@ -110,6 +113,11 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	if obj.ConnectionPoolConfig != nil && obj.ConnectionPoolConfig.Enabled {
 		obj.ConnectionPoolConfig.PoolerCount = 1
 	}
+	if obj.PscInstanceConfig == nil {
+		obj.PscInstanceConfig = &pb.Instance_PscInstanceConfig{
+			ServiceAttachmentLink: fmt.Sprintf("projects/518915279/regions/%s/serviceAttachments/sa-%s-%s", name.Location, name.ClusterName, name.InstanceName),
+		}
+	}
 
 	// Set output-only fields.
 	now := timestamppb.Now()
@@ -152,7 +160,6 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	obj := proto.Clone(req.Instance).(*pb.Instance)
 	obj.Name = fqn
-	log.Printf("vkanishk: Creating instance with name: %s", fqn)
 	setInstanceFields(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -162,6 +169,7 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	metadata := constructOperationMetadata(fqn, "create")
 	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
 		result := proto.Clone(obj).(*pb.Instance)
+		updateInstanceNetworkInResponse(result)
 		metadata.EndTime = timestamppb.Now()
 		return result, nil
 	})
@@ -187,6 +195,7 @@ func (s *AlloyDBAdminV1) CreateSecondaryInstance(ctx context.Context, req *pb.Cr
 	metadata := constructOperationMetadata(fqn, "createsecondary")
 	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
 		result := proto.Clone(obj).(*pb.Instance)
+		updateInstanceNetworkInResponse(result)
 		metadata.EndTime = timestamppb.Now()
 		return result, nil
 	})
@@ -258,6 +267,7 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 		result := proto.Clone(obj).(*pb.Instance)
+		updateInstanceNetworkInResponse(result)
 		return result, nil
 	})
 }
@@ -311,5 +321,11 @@ func applyDefaultInsightsConfig(obj *pb.Instance) {
 			RecordApplicationTags: PtrTo(false),
 			RecordClientAddress:   PtrTo(false),
 		}
+	}
+}
+
+func updateInstanceNetworkInResponse(obj *pb.Instance) {
+	if obj.NetworkConfig != nil {
+		obj.NetworkConfig.Network = strings.ReplaceAll(obj.NetworkConfig.Network, "mock-project", "518915279")
 	}
 }
