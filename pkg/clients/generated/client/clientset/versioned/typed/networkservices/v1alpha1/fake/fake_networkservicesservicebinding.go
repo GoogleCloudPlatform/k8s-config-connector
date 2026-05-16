@@ -22,123 +22,36 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeNetworkServicesServiceBindings implements NetworkServicesServiceBindingInterface
-type FakeNetworkServicesServiceBindings struct {
+// fakeNetworkServicesServiceBindings implements NetworkServicesServiceBindingInterface
+type fakeNetworkServicesServiceBindings struct {
+	*gentype.FakeClientWithList[*v1alpha1.NetworkServicesServiceBinding, *v1alpha1.NetworkServicesServiceBindingList]
 	Fake *FakeNetworkservicesV1alpha1
-	ns   string
 }
 
-var networkservicesservicebindingsResource = v1alpha1.SchemeGroupVersion.WithResource("networkservicesservicebindings")
-
-var networkservicesservicebindingsKind = v1alpha1.SchemeGroupVersion.WithKind("NetworkServicesServiceBinding")
-
-// Get takes name of the networkServicesServiceBinding, and returns the corresponding networkServicesServiceBinding object, and an error if there is any.
-func (c *FakeNetworkServicesServiceBindings) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkServicesServiceBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(networkservicesservicebindingsResource, c.ns, name), &v1alpha1.NetworkServicesServiceBinding{})
-
-	if obj == nil {
-		return nil, err
+func newFakeNetworkServicesServiceBindings(fake *FakeNetworkservicesV1alpha1, namespace string) networkservicesv1alpha1.NetworkServicesServiceBindingInterface {
+	return &fakeNetworkServicesServiceBindings{
+		gentype.NewFakeClientWithList[*v1alpha1.NetworkServicesServiceBinding, *v1alpha1.NetworkServicesServiceBindingList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("networkservicesservicebindings"),
+			v1alpha1.SchemeGroupVersion.WithKind("NetworkServicesServiceBinding"),
+			func() *v1alpha1.NetworkServicesServiceBinding { return &v1alpha1.NetworkServicesServiceBinding{} },
+			func() *v1alpha1.NetworkServicesServiceBindingList {
+				return &v1alpha1.NetworkServicesServiceBindingList{}
+			},
+			func(dst, src *v1alpha1.NetworkServicesServiceBindingList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.NetworkServicesServiceBindingList) []*v1alpha1.NetworkServicesServiceBinding {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.NetworkServicesServiceBindingList, items []*v1alpha1.NetworkServicesServiceBinding) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.NetworkServicesServiceBinding), err
-}
-
-// List takes label and field selectors, and returns the list of NetworkServicesServiceBindings that match those selectors.
-func (c *FakeNetworkServicesServiceBindings) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetworkServicesServiceBindingList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(networkservicesservicebindingsResource, networkservicesservicebindingsKind, c.ns, opts), &v1alpha1.NetworkServicesServiceBindingList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.NetworkServicesServiceBindingList{ListMeta: obj.(*v1alpha1.NetworkServicesServiceBindingList).ListMeta}
-	for _, item := range obj.(*v1alpha1.NetworkServicesServiceBindingList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested networkServicesServiceBindings.
-func (c *FakeNetworkServicesServiceBindings) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(networkservicesservicebindingsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a networkServicesServiceBinding and creates it.  Returns the server's representation of the networkServicesServiceBinding, and an error, if there is any.
-func (c *FakeNetworkServicesServiceBindings) Create(ctx context.Context, networkServicesServiceBinding *v1alpha1.NetworkServicesServiceBinding, opts v1.CreateOptions) (result *v1alpha1.NetworkServicesServiceBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(networkservicesservicebindingsResource, c.ns, networkServicesServiceBinding), &v1alpha1.NetworkServicesServiceBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkServicesServiceBinding), err
-}
-
-// Update takes the representation of a networkServicesServiceBinding and updates it. Returns the server's representation of the networkServicesServiceBinding, and an error, if there is any.
-func (c *FakeNetworkServicesServiceBindings) Update(ctx context.Context, networkServicesServiceBinding *v1alpha1.NetworkServicesServiceBinding, opts v1.UpdateOptions) (result *v1alpha1.NetworkServicesServiceBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(networkservicesservicebindingsResource, c.ns, networkServicesServiceBinding), &v1alpha1.NetworkServicesServiceBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkServicesServiceBinding), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeNetworkServicesServiceBindings) UpdateStatus(ctx context.Context, networkServicesServiceBinding *v1alpha1.NetworkServicesServiceBinding, opts v1.UpdateOptions) (*v1alpha1.NetworkServicesServiceBinding, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(networkservicesservicebindingsResource, "status", c.ns, networkServicesServiceBinding), &v1alpha1.NetworkServicesServiceBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkServicesServiceBinding), err
-}
-
-// Delete takes name of the networkServicesServiceBinding and deletes it. Returns an error if one occurs.
-func (c *FakeNetworkServicesServiceBindings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(networkservicesservicebindingsResource, c.ns, name, opts), &v1alpha1.NetworkServicesServiceBinding{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeNetworkServicesServiceBindings) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(networkservicesservicebindingsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.NetworkServicesServiceBindingList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched networkServicesServiceBinding.
-func (c *FakeNetworkServicesServiceBindings) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkServicesServiceBinding, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(networkservicesservicebindingsResource, c.ns, name, pt, data, subresources...), &v1alpha1.NetworkServicesServiceBinding{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkServicesServiceBinding), err
 }

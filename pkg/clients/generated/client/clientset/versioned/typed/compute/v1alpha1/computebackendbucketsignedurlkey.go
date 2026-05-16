@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // ComputeBackendBucketSignedURLKeysGetter has a method to return a ComputeBackendBucketSignedURLKeyInterface.
@@ -41,158 +40,38 @@ type ComputeBackendBucketSignedURLKeysGetter interface {
 
 // ComputeBackendBucketSignedURLKeyInterface has methods to work with ComputeBackendBucketSignedURLKey resources.
 type ComputeBackendBucketSignedURLKeyInterface interface {
-	Create(ctx context.Context, computeBackendBucketSignedURLKey *v1alpha1.ComputeBackendBucketSignedURLKey, opts v1.CreateOptions) (*v1alpha1.ComputeBackendBucketSignedURLKey, error)
-	Update(ctx context.Context, computeBackendBucketSignedURLKey *v1alpha1.ComputeBackendBucketSignedURLKey, opts v1.UpdateOptions) (*v1alpha1.ComputeBackendBucketSignedURLKey, error)
-	UpdateStatus(ctx context.Context, computeBackendBucketSignedURLKey *v1alpha1.ComputeBackendBucketSignedURLKey, opts v1.UpdateOptions) (*v1alpha1.ComputeBackendBucketSignedURLKey, error)
+	Create(ctx context.Context, computeBackendBucketSignedURLKey *computev1alpha1.ComputeBackendBucketSignedURLKey, opts v1.CreateOptions) (*computev1alpha1.ComputeBackendBucketSignedURLKey, error)
+	Update(ctx context.Context, computeBackendBucketSignedURLKey *computev1alpha1.ComputeBackendBucketSignedURLKey, opts v1.UpdateOptions) (*computev1alpha1.ComputeBackendBucketSignedURLKey, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, computeBackendBucketSignedURLKey *computev1alpha1.ComputeBackendBucketSignedURLKey, opts v1.UpdateOptions) (*computev1alpha1.ComputeBackendBucketSignedURLKey, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.ComputeBackendBucketSignedURLKey, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.ComputeBackendBucketSignedURLKeyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1alpha1.ComputeBackendBucketSignedURLKey, error)
+	List(ctx context.Context, opts v1.ListOptions) (*computev1alpha1.ComputeBackendBucketSignedURLKeyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeBackendBucketSignedURLKey, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1alpha1.ComputeBackendBucketSignedURLKey, err error)
 	ComputeBackendBucketSignedURLKeyExpansion
 }
 
 // computeBackendBucketSignedURLKeys implements ComputeBackendBucketSignedURLKeyInterface
 type computeBackendBucketSignedURLKeys struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*computev1alpha1.ComputeBackendBucketSignedURLKey, *computev1alpha1.ComputeBackendBucketSignedURLKeyList]
 }
 
 // newComputeBackendBucketSignedURLKeys returns a ComputeBackendBucketSignedURLKeys
 func newComputeBackendBucketSignedURLKeys(c *ComputeV1alpha1Client, namespace string) *computeBackendBucketSignedURLKeys {
 	return &computeBackendBucketSignedURLKeys{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*computev1alpha1.ComputeBackendBucketSignedURLKey, *computev1alpha1.ComputeBackendBucketSignedURLKeyList](
+			"computebackendbucketsignedurlkeys",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *computev1alpha1.ComputeBackendBucketSignedURLKey {
+				return &computev1alpha1.ComputeBackendBucketSignedURLKey{}
+			},
+			func() *computev1alpha1.ComputeBackendBucketSignedURLKeyList {
+				return &computev1alpha1.ComputeBackendBucketSignedURLKeyList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the computeBackendBucketSignedURLKey, and returns the corresponding computeBackendBucketSignedURLKey object, and an error if there is any.
-func (c *computeBackendBucketSignedURLKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeBackendBucketSignedURLKey, err error) {
-	result = &v1alpha1.ComputeBackendBucketSignedURLKey{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computebackendbucketsignedurlkeys").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ComputeBackendBucketSignedURLKeys that match those selectors.
-func (c *computeBackendBucketSignedURLKeys) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeBackendBucketSignedURLKeyList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.ComputeBackendBucketSignedURLKeyList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computebackendbucketsignedurlkeys").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested computeBackendBucketSignedURLKeys.
-func (c *computeBackendBucketSignedURLKeys) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("computebackendbucketsignedurlkeys").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a computeBackendBucketSignedURLKey and creates it.  Returns the server's representation of the computeBackendBucketSignedURLKey, and an error, if there is any.
-func (c *computeBackendBucketSignedURLKeys) Create(ctx context.Context, computeBackendBucketSignedURLKey *v1alpha1.ComputeBackendBucketSignedURLKey, opts v1.CreateOptions) (result *v1alpha1.ComputeBackendBucketSignedURLKey, err error) {
-	result = &v1alpha1.ComputeBackendBucketSignedURLKey{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("computebackendbucketsignedurlkeys").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeBackendBucketSignedURLKey).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a computeBackendBucketSignedURLKey and updates it. Returns the server's representation of the computeBackendBucketSignedURLKey, and an error, if there is any.
-func (c *computeBackendBucketSignedURLKeys) Update(ctx context.Context, computeBackendBucketSignedURLKey *v1alpha1.ComputeBackendBucketSignedURLKey, opts v1.UpdateOptions) (result *v1alpha1.ComputeBackendBucketSignedURLKey, err error) {
-	result = &v1alpha1.ComputeBackendBucketSignedURLKey{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computebackendbucketsignedurlkeys").
-		Name(computeBackendBucketSignedURLKey.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeBackendBucketSignedURLKey).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *computeBackendBucketSignedURLKeys) UpdateStatus(ctx context.Context, computeBackendBucketSignedURLKey *v1alpha1.ComputeBackendBucketSignedURLKey, opts v1.UpdateOptions) (result *v1alpha1.ComputeBackendBucketSignedURLKey, err error) {
-	result = &v1alpha1.ComputeBackendBucketSignedURLKey{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computebackendbucketsignedurlkeys").
-		Name(computeBackendBucketSignedURLKey.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeBackendBucketSignedURLKey).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the computeBackendBucketSignedURLKey and deletes it. Returns an error if one occurs.
-func (c *computeBackendBucketSignedURLKeys) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computebackendbucketsignedurlkeys").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *computeBackendBucketSignedURLKeys) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computebackendbucketsignedurlkeys").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched computeBackendBucketSignedURLKey.
-func (c *computeBackendBucketSignedURLKeys) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeBackendBucketSignedURLKey, err error) {
-	result = &v1alpha1.ComputeBackendBucketSignedURLKey{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("computebackendbucketsignedurlkeys").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
+	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // MonitoringAlertPoliciesGetter has a method to return a MonitoringAlertPolicyInterface.
@@ -41,158 +40,36 @@ type MonitoringAlertPoliciesGetter interface {
 
 // MonitoringAlertPolicyInterface has methods to work with MonitoringAlertPolicy resources.
 type MonitoringAlertPolicyInterface interface {
-	Create(ctx context.Context, monitoringAlertPolicy *v1beta1.MonitoringAlertPolicy, opts v1.CreateOptions) (*v1beta1.MonitoringAlertPolicy, error)
-	Update(ctx context.Context, monitoringAlertPolicy *v1beta1.MonitoringAlertPolicy, opts v1.UpdateOptions) (*v1beta1.MonitoringAlertPolicy, error)
-	UpdateStatus(ctx context.Context, monitoringAlertPolicy *v1beta1.MonitoringAlertPolicy, opts v1.UpdateOptions) (*v1beta1.MonitoringAlertPolicy, error)
+	Create(ctx context.Context, monitoringAlertPolicy *monitoringv1beta1.MonitoringAlertPolicy, opts v1.CreateOptions) (*monitoringv1beta1.MonitoringAlertPolicy, error)
+	Update(ctx context.Context, monitoringAlertPolicy *monitoringv1beta1.MonitoringAlertPolicy, opts v1.UpdateOptions) (*monitoringv1beta1.MonitoringAlertPolicy, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, monitoringAlertPolicy *monitoringv1beta1.MonitoringAlertPolicy, opts v1.UpdateOptions) (*monitoringv1beta1.MonitoringAlertPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.MonitoringAlertPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.MonitoringAlertPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*monitoringv1beta1.MonitoringAlertPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*monitoringv1beta1.MonitoringAlertPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.MonitoringAlertPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *monitoringv1beta1.MonitoringAlertPolicy, err error)
 	MonitoringAlertPolicyExpansion
 }
 
 // monitoringAlertPolicies implements MonitoringAlertPolicyInterface
 type monitoringAlertPolicies struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*monitoringv1beta1.MonitoringAlertPolicy, *monitoringv1beta1.MonitoringAlertPolicyList]
 }
 
 // newMonitoringAlertPolicies returns a MonitoringAlertPolicies
 func newMonitoringAlertPolicies(c *MonitoringV1beta1Client, namespace string) *monitoringAlertPolicies {
 	return &monitoringAlertPolicies{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*monitoringv1beta1.MonitoringAlertPolicy, *monitoringv1beta1.MonitoringAlertPolicyList](
+			"monitoringalertpolicies",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *monitoringv1beta1.MonitoringAlertPolicy { return &monitoringv1beta1.MonitoringAlertPolicy{} },
+			func() *monitoringv1beta1.MonitoringAlertPolicyList {
+				return &monitoringv1beta1.MonitoringAlertPolicyList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the monitoringAlertPolicy, and returns the corresponding monitoringAlertPolicy object, and an error if there is any.
-func (c *monitoringAlertPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.MonitoringAlertPolicy, err error) {
-	result = &v1beta1.MonitoringAlertPolicy{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("monitoringalertpolicies").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of MonitoringAlertPolicies that match those selectors.
-func (c *monitoringAlertPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.MonitoringAlertPolicyList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.MonitoringAlertPolicyList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("monitoringalertpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested monitoringAlertPolicies.
-func (c *monitoringAlertPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("monitoringalertpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a monitoringAlertPolicy and creates it.  Returns the server's representation of the monitoringAlertPolicy, and an error, if there is any.
-func (c *monitoringAlertPolicies) Create(ctx context.Context, monitoringAlertPolicy *v1beta1.MonitoringAlertPolicy, opts v1.CreateOptions) (result *v1beta1.MonitoringAlertPolicy, err error) {
-	result = &v1beta1.MonitoringAlertPolicy{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("monitoringalertpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(monitoringAlertPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a monitoringAlertPolicy and updates it. Returns the server's representation of the monitoringAlertPolicy, and an error, if there is any.
-func (c *monitoringAlertPolicies) Update(ctx context.Context, monitoringAlertPolicy *v1beta1.MonitoringAlertPolicy, opts v1.UpdateOptions) (result *v1beta1.MonitoringAlertPolicy, err error) {
-	result = &v1beta1.MonitoringAlertPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("monitoringalertpolicies").
-		Name(monitoringAlertPolicy.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(monitoringAlertPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *monitoringAlertPolicies) UpdateStatus(ctx context.Context, monitoringAlertPolicy *v1beta1.MonitoringAlertPolicy, opts v1.UpdateOptions) (result *v1beta1.MonitoringAlertPolicy, err error) {
-	result = &v1beta1.MonitoringAlertPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("monitoringalertpolicies").
-		Name(monitoringAlertPolicy.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(monitoringAlertPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the monitoringAlertPolicy and deletes it. Returns an error if one occurs.
-func (c *monitoringAlertPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("monitoringalertpolicies").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *monitoringAlertPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("monitoringalertpolicies").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched monitoringAlertPolicy.
-func (c *monitoringAlertPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.MonitoringAlertPolicy, err error) {
-	result = &v1beta1.MonitoringAlertPolicy{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("monitoringalertpolicies").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

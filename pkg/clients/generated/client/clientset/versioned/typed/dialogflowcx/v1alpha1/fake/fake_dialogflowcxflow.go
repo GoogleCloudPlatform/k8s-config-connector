@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDialogflowCXFlows implements DialogflowCXFlowInterface
-type FakeDialogflowCXFlows struct {
+// fakeDialogflowCXFlows implements DialogflowCXFlowInterface
+type fakeDialogflowCXFlows struct {
+	*gentype.FakeClientWithList[*v1alpha1.DialogflowCXFlow, *v1alpha1.DialogflowCXFlowList]
 	Fake *FakeDialogflowcxV1alpha1
-	ns   string
 }
 
-var dialogflowcxflowsResource = v1alpha1.SchemeGroupVersion.WithResource("dialogflowcxflows")
-
-var dialogflowcxflowsKind = v1alpha1.SchemeGroupVersion.WithKind("DialogflowCXFlow")
-
-// Get takes name of the dialogflowCXFlow, and returns the corresponding dialogflowCXFlow object, and an error if there is any.
-func (c *FakeDialogflowCXFlows) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowCXFlow, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(dialogflowcxflowsResource, c.ns, name), &v1alpha1.DialogflowCXFlow{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDialogflowCXFlows(fake *FakeDialogflowcxV1alpha1, namespace string) dialogflowcxv1alpha1.DialogflowCXFlowInterface {
+	return &fakeDialogflowCXFlows{
+		gentype.NewFakeClientWithList[*v1alpha1.DialogflowCXFlow, *v1alpha1.DialogflowCXFlowList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("dialogflowcxflows"),
+			v1alpha1.SchemeGroupVersion.WithKind("DialogflowCXFlow"),
+			func() *v1alpha1.DialogflowCXFlow { return &v1alpha1.DialogflowCXFlow{} },
+			func() *v1alpha1.DialogflowCXFlowList { return &v1alpha1.DialogflowCXFlowList{} },
+			func(dst, src *v1alpha1.DialogflowCXFlowList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DialogflowCXFlowList) []*v1alpha1.DialogflowCXFlow {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DialogflowCXFlowList, items []*v1alpha1.DialogflowCXFlow) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DialogflowCXFlow), err
-}
-
-// List takes label and field selectors, and returns the list of DialogflowCXFlows that match those selectors.
-func (c *FakeDialogflowCXFlows) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DialogflowCXFlowList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(dialogflowcxflowsResource, dialogflowcxflowsKind, c.ns, opts), &v1alpha1.DialogflowCXFlowList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DialogflowCXFlowList{ListMeta: obj.(*v1alpha1.DialogflowCXFlowList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DialogflowCXFlowList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dialogflowCXFlows.
-func (c *FakeDialogflowCXFlows) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(dialogflowcxflowsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dialogflowCXFlow and creates it.  Returns the server's representation of the dialogflowCXFlow, and an error, if there is any.
-func (c *FakeDialogflowCXFlows) Create(ctx context.Context, dialogflowCXFlow *v1alpha1.DialogflowCXFlow, opts v1.CreateOptions) (result *v1alpha1.DialogflowCXFlow, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(dialogflowcxflowsResource, c.ns, dialogflowCXFlow), &v1alpha1.DialogflowCXFlow{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXFlow), err
-}
-
-// Update takes the representation of a dialogflowCXFlow and updates it. Returns the server's representation of the dialogflowCXFlow, and an error, if there is any.
-func (c *FakeDialogflowCXFlows) Update(ctx context.Context, dialogflowCXFlow *v1alpha1.DialogflowCXFlow, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXFlow, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(dialogflowcxflowsResource, c.ns, dialogflowCXFlow), &v1alpha1.DialogflowCXFlow{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXFlow), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDialogflowCXFlows) UpdateStatus(ctx context.Context, dialogflowCXFlow *v1alpha1.DialogflowCXFlow, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXFlow, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(dialogflowcxflowsResource, "status", c.ns, dialogflowCXFlow), &v1alpha1.DialogflowCXFlow{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXFlow), err
-}
-
-// Delete takes name of the dialogflowCXFlow and deletes it. Returns an error if one occurs.
-func (c *FakeDialogflowCXFlows) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(dialogflowcxflowsResource, c.ns, name, opts), &v1alpha1.DialogflowCXFlow{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDialogflowCXFlows) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(dialogflowcxflowsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DialogflowCXFlowList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dialogflowCXFlow.
-func (c *FakeDialogflowCXFlows) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXFlow, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(dialogflowcxflowsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DialogflowCXFlow{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXFlow), err
 }
