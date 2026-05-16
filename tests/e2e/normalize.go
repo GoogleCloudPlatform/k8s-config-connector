@@ -28,7 +28,6 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -733,16 +732,6 @@ func (o *objectWalker) TransformString(targetPath string, transform func(string)
 			return transform(s)
 		}
 		return s
-	})
-}
-
-func (o *objectWalker) ReplaceProjectWithProjectNumberTemplate(targetPath string) {
-	o.TransformString(targetPath, func(s string) string {
-		val, err := projects.ReplaceProjectWithProjectNumberTemplate(s)
-		if err != nil {
-			panic(fmt.Sprintf("failed to replace project with project number template in %q: %v", targetPath, err))
-		}
-		return val
 	})
 }
 
