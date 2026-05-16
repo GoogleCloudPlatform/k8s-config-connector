@@ -49,15 +49,15 @@ func fuzzGKEHubScopeRBACRoleBinding() fuzztesting.KRMFuzzer_NoProto {
 	f.StatusField(".Uid")
 	f.StatusField(".State")
 
-	f.Unimplemented_NotYetTriaged(".Name")
-	f.Unimplemented_NotYetTriaged(".ForceSendFields")
-	f.Unimplemented_NotYetTriaged(".NullFields")
-	f.Unimplemented_NotYetTriaged(".ServerResponse")
+	f.IdentityField(".Name")
+	f.Ignore_JSONBookkeeping(".ForceSendFields")
+	f.Ignore_JSONBookkeeping(".NullFields")
+	f.Ignore_JSONBookkeeping(".ServerResponse")
 
-	f.Unimplemented_NotYetTriaged(".Role.ForceSendFields")
-	f.Unimplemented_NotYetTriaged(".Role.NullFields")
-	f.Unimplemented_NotYetTriaged(".State.ForceSendFields")
-	f.Unimplemented_NotYetTriaged(".State.NullFields")
+	f.Ignore_JSONBookkeeping(".Role.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".Role.NullFields")
+	f.Ignore_JSONBookkeeping(".State.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".State.NullFields")
 
 	return f
 }
