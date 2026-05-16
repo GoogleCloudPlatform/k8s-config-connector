@@ -21,6 +21,7 @@
 
 package v1alpha1
 
+/* unreachable type Workload_KMSSettings
 // +kcc:proto=google.cloud.assuredworkloads.v1.Workload.KMSSettings
 type Workload_KMSSettings struct {
 	// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
@@ -34,6 +35,7 @@ type Workload_KMSSettings struct {
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.KMSSettings.rotation_period
 	RotationPeriod *string `json:"rotationPeriod,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.assuredworkloads.v1.Workload.ResourceInfo
 type Workload_ResourceInfo struct {

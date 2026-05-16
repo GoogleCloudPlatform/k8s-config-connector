@@ -123,6 +123,7 @@ type RebalanceConfig struct {
 	Mode *string `json:"mode,omitempty"`
 }
 
+/* unreachable type TLSConfig
 // +kcc:proto=google.cloud.managedkafka.v1.TlsConfig
 type TLSConfig struct {
 	// Optional. The configuration of the broker truststore. If specified, clients
@@ -142,6 +143,7 @@ type TLSConfig struct {
 	// +kcc:proto:field=google.cloud.managedkafka.v1.TlsConfig.ssl_principal_mapping_rules
 	SSLPrincipalMappingRules *string `json:"sslPrincipalMappingRules,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Topic", skipping
 
@@ -173,6 +175,7 @@ type Topic struct {
 }
 */
 
+/* unreachable type TrustConfig
 // +kcc:proto=google.cloud.managedkafka.v1.TrustConfig
 type TrustConfig struct {
 	// Optional. Configuration for the Google Certificate Authority Service.
@@ -180,7 +183,9 @@ type TrustConfig struct {
 	// +kcc:proto:field=google.cloud.managedkafka.v1.TrustConfig.cas_configs
 	CasConfigs []TrustConfig_CertificateAuthorityServiceConfig `json:"casConfigs,omitempty"`
 }
+*/
 
+/* unreachable type TrustConfig_CertificateAuthorityServiceConfig
 // +kcc:proto=google.cloud.managedkafka.v1.TrustConfig.CertificateAuthorityServiceConfig
 type TrustConfig_CertificateAuthorityServiceConfig struct {
 	// Required. The name of the CA pool to pull CA certificates from.
@@ -191,6 +196,7 @@ type TrustConfig_CertificateAuthorityServiceConfig struct {
 	// +kcc:proto:field=google.cloud.managedkafka.v1.TrustConfig.CertificateAuthorityServiceConfig.ca_pool
 	CAPool *string `json:"caPool,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Cluster", skipping
 
