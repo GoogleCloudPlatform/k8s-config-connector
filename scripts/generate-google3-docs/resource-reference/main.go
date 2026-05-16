@@ -325,7 +325,9 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind, crd 
 	r.FullyQualifiedName = crd.Name
 	r.Kind = crd.Spec.Names.Kind
 	crd.Spec.Names.ShortNames = append(crd.Spec.Names.ShortNames, strings.ToLower(r.Kind))
-	r.ShortNames = strings.Join(crd.Spec.Names.ShortNames, "<br>")
+
+	deduplicatedShortNames := DeduplicateAndSort(crd.Spec.Names.ShortNames)
+	r.ShortNames = strings.Join(deduplicatedShortNames, "<br>")
 	specYaml, err := crdtemplate.SpecToYAML(crd)
 	if err != nil {
 		return nil, fmt.Errorf("error converting spec to YAML: %w", err)
@@ -579,9 +581,9 @@ func buildSampleYAML(kind, sampleDir string) (string, error) {
 		// We want the object for this kind to be at the top. The file will
 		// contain the lowercase name of the kind, so use this to find the
 		// right one and put it at the front. Strip the Apache2 header from
-		// all other objects.
+		// all objects.
 		if strings.Contains(f.Name(), strings.ToLower(kind)+".yaml") {
-			objectYAMLs = append([]string{objectYAML}, objectYAMLs...)
+			objectYAMLs = append([]string{stripHeader(objectYAML)}, objectYAMLs...)
 		} else {
 			objectYAMLs = append(objectYAMLs, stripHeader(objectYAML))
 		}
@@ -928,4 +930,17 @@ func generatedDocPathForGVK(gvk schema.GroupVersionKind) string {
 
 func groupName(gvk schema.GroupVersionKind) string {
 	return strings.SplitN(gvk.Group, ".", 2)[0]
+}
+
+func DeduplicateAndSort(in []string) []string {
+	shortNamesSet := make(map[string]bool)
+	for _, name := range in {
+		shortNamesSet[name] = true
+	}
+	var deduplicatedShortNames []string
+	for name := range shortNamesSet {
+		deduplicatedShortNames = append(deduplicatedShortNames, name)
+	}
+	sort.Strings(deduplicatedShortNames)
+	return deduplicatedShortNames
 }

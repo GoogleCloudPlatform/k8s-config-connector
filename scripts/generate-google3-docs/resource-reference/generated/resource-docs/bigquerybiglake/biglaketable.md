@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpbiglaketable<br>gcpbiglaketables<br>biglaketable</td>
+<td>biglaketable<br>gcpbiglaketable<br>gcpbiglaketables</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
