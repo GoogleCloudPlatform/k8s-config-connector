@@ -30,6 +30,7 @@ In `mockgcp/mock<service_name>/service.go`, update the `NewHTTPMux` method.
 
 - Replace `"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"` with `"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"`
 - Remove the `httpmux.NewServeMux` call and replace it with `httptogrpc.NewGRPCMux(conn)`.
+- If the old code used `mux.RewriteError`, you should safely delete it. `httptogrpc` does not support it (and handles errors differently).
 
 Example:
 
