@@ -56,6 +56,14 @@ func membershipFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Ignore_JSONBookkeeping(".Roles.RestrictionEvaluations.NullFields")
 	f.Ignore_JSONBookkeeping(".Roles.RestrictionEvaluations.MemberRestrictionEvaluation.ForceSendFields")
 	f.Ignore_JSONBookkeeping(".Roles.RestrictionEvaluations.MemberRestrictionEvaluation.NullFields")
+	f.Ignore_JSONBookkeeping(".ExpiryDetail.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".ExpiryDetail.NullFields")
+	f.Ignore_JSONBookkeeping(".RestrictionEvaluations.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".RestrictionEvaluations.NullFields")
+	f.Ignore_JSONBookkeeping(".RestrictionEvaluations.MemberRestrictionEvaluation.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".RestrictionEvaluations.MemberRestrictionEvaluation.NullFields")
+	f.Ignore_JSONBookkeeping(".RestrictionEvaluations.MemberRestrictionEvaluation.State.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".RestrictionEvaluations.MemberRestrictionEvaluation.State.NullFields")
 
 	return f
 }
