@@ -15,13 +15,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "topic \"projects/${projectId}/locations/us-central1-a/topics/pubsublitetopic${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "topic \"projects/${projectId}/locations/us-central1-a/topics/pubsublitetopic${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
@@ -119,13 +112,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "subscription \"projects/${projectId}/locations/us-central1-a/subscriptions/pubsublitesubscription${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "subscription \"projects/${projectId}/locations/us-central1-a/subscriptions/pubsublitesubscription${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
