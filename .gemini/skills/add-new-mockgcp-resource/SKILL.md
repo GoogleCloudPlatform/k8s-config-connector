@@ -14,7 +14,9 @@ MockGCP uses `grpc-gateway` to provide an HTTP interface for mocked GCP services
 *   Locate the relevant `.proto` files in the `googleapis` repository.
 *   Identify the corresponding Go packages in `cloud.google.com/go`.
 
-### 2. Update MockGCP Makefile (if needed)
+### 2. Update MockGCP Makefile (Only if needed)
+
+**Note: We should only do this if we cannot use `cloud.google.com/go` / `httptogrpc`. Generating protos manually should be avoided whenever possible.**
 
 *   If the proto is not already being generated, add it to the `Makefile` in the `mockgcp` directory.
 *   Run `make gen-proto` in the `mockgcp` directory to generate the Go code.
@@ -99,6 +101,11 @@ Create `mockgcp/mock<servicename>/<resource>.go`. Implement the CRUD methods def
 *   Use `s.operations` for long-running operations (LROs).
 *   Parse resource names using a helper (e.g., `parseResourceName`).
 *   Populate default values in a `populateDefaultsFor<Resource>` function.
+
+Example implementations to look at for these patterns:
+*   `mockfirestore` (Recent and shows the patterns nicely)
+*   `mockmemorystore` (Recent and shows the patterns nicely)
+*   `mockmemcache` (Good example of httptogrpc usage)
 
 ### 6. Implement `normalize.go`
 
