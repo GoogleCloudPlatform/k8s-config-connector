@@ -27,6 +27,7 @@ import (
 
 	pb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 func (s *orgPolicyV2) ListPolicies(ctx context.Context, req *pb.ListPoliciesRequest) (*pb.ListPoliciesResponse, error) {
