@@ -29,7 +29,8 @@ go run . generate-types \
   --api-version sql.cnrm.cloud.google.com/v1beta1  \
   --resource SQLInstance:DatabaseInstance \
   --skip-scaffold-files \
-  --include-skipped-output
+  --include-skipped-output \
+  --prune-unused-types=false
 
 go run . generate-mapper \
   --service google.cloud.sql.v1beta4 \
