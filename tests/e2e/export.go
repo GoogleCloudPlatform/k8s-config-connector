@@ -85,7 +85,11 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		exportURI = "//cloudbuild.googleapis.com/projects/" + projectID + "/locations/" + location + "/workerPools/" + resourceID
 
 	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
-		exportURI = "//secretmanager.googleapis.com/projects/" + projectID + "/secrets/" + resourceID
+		if found {
+			exportURI = "" // Avoid export for regional secrets
+		} else {
+			exportURI = "//secretmanager.googleapis.com/projects/" + projectID + "/secrets/" + resourceID
+		}
 
 	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
 		network := resolveNetwork(h, obj)

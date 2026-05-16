@@ -19,14 +19,13 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type SecretVersionIdentity struct {
 	id                      string
-	parent                  *SecretVersionParent
+	parent                  *SecretIdentity
 	serviceGeneratedIDKnown *bool
 }
 
@@ -41,7 +40,7 @@ func (i *SecretVersionIdentity) String() string {
 	return i.parent.String() + "/versions/" + i.id
 }
 
-func (r *SecretVersionIdentity) Parent() *SecretVersionParent {
+func (r *SecretVersionIdentity) Parent() *SecretIdentity {
 	return r.parent
 }
 
@@ -49,21 +48,7 @@ func (r *SecretVersionIdentity) ID() string {
 	return r.id
 }
 
-type SecretVersionParent struct {
-	ProjectID string
-	SecretID  string
-}
-
-func (p *SecretVersionParent) String() string {
-	return "projects/" + p.ProjectID + "/secrets/" + p.SecretID
-}
-
 func NewSecretVersionIdentity(ctx context.Context, reader client.Reader, obj *SecretManagerSecretVersion, u *unstructured.Unstructured) (*SecretVersionIdentity, error) {
-	// Get Parent
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-	if err != nil {
-		return nil, err
-	}
 	secretExternal, err := obj.Spec.SecretRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
@@ -72,7 +57,6 @@ func NewSecretVersionIdentity(ctx context.Context, reader client.Reader, obj *Se
 	if err != nil {
 		return nil, err
 	}
-	secretID := secretIdentity.ID()
 
 	// If `spec.resourceID` is not empty, it means user wants to acquire the object.
 	desiredVersionID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +67,8 @@ func NewSecretVersionIdentity(ctx context.Context, reader client.Reader, obj *Se
 		if err != nil {
 			return nil, err
 		}
-		if actualIdentity.parent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID, projectID)
-		}
-		if actualIdentity.parent.SecretID != secretID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID, projectID)
+		if actualIdentity.parent.String() != secretIdentity.String() {
+			return nil, fmt.Errorf("spec.SecretRef changed, expect %s, got %s", actualIdentity.parent, secretIdentity)
 		}
 		if desiredVersionID != "" && actualIdentity.id != desiredVersionID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -104,10 +85,7 @@ func NewSecretVersionIdentity(ctx context.Context, reader client.Reader, obj *Se
 		known = true
 	}
 	return &SecretVersionIdentity{
-		parent: &SecretVersionParent{
-			ProjectID: projectID,
-			SecretID:  secretID,
-		},
+		parent:                  secretIdentity,
 		id:                      desiredVersionID,
 		serviceGeneratedIDKnown: &known,
 	}, nil

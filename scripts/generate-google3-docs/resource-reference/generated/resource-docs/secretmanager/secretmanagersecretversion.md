@@ -552,6 +552,36 @@ data:
   secretData: SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=
 ---
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: regionalsecret-kcc-asia-south1-version # kubectl name
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  enabled: true
+  secretData: 
+    value: test-secret-asia-south1
+  secretRef:
+    name: regionalsecret-kcc-asia-south1 # kubectl name of secret
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: regionalsecret-kcc-us-central1-version # kubectl name
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  enabled: true
+  secretData: 
+    value: test-secret-us-central1
+  secretRef:
+    name: regionalsecret-kcc-us-central1 # kubectl name of secret
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecret
 metadata:
   name: secretmanagersecretversion-dep

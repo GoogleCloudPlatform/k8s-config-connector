@@ -87,17 +87,48 @@ func (r *SecretVersionRef) NormalizedExternal(ctx context.Context, reader client
 	return r.External, nil
 }
 
+// ParseSecretVersionExternal parses an external reference to a Secret Manager secret version.
+// Supports both global secret versions (projects/{{project}}/secrets/{{secretID}}/versions/{{versionID}})
+// and regional secret versions (projects/{{project}}/locations/{{location}}/secrets/{{secretID}}/versions/{{versionID}})
 func ParseSecretVersionExternal(external string) (*SecretVersionIdentity, error) {
 	if external == "" {
 		return nil, fmt.Errorf("missing external value")
 	}
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "secrets" || tokens[4] != "versions" {
-		return nil, fmt.Errorf("format of SecretManagerSecretVersion external=%q was not known (use projects/{{projectId}}/secrets/{{secretID}}/versions/{{versionID}})", external)
+
+	// Check for global secret version format: projects/{{projectId}}/secrets/{{secretID}}/versions/{{versionID}}
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "secrets" && tokens[4] == "versions" {
+		secretParent := &SecretParent{
+			ProjectID: tokens[1],
+			Location:  "global",
+		}
+		secretIdentity := &SecretIdentity{
+			parent: secretParent,
+			id:     tokens[3],
+		}
+		return &SecretVersionIdentity{
+			parent: secretIdentity,
+			id:     tokens[5],
+		}, nil
 	}
-	return &SecretVersionIdentity{
-		parent: &SecretVersionParent{ProjectID: tokens[1], SecretID: tokens[3]},
-		id:     tokens[5],
-	}, nil
+
+	// Check for regional secret version format: projects/{{projectId}}/locations/{{location}}/secrets/{{secretID}}/versions/{{versionID}}
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" &&
+		tokens[4] == "secrets" && tokens[6] == "versions" {
+		secretParent := &SecretParent{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		}
+		secretIdentity := &SecretIdentity{
+			parent: secretParent,
+			id:     tokens[5],
+		}
+		return &SecretVersionIdentity{
+			parent: secretIdentity,
+			id:     tokens[7],
+		}, nil
+	}
+
+	return nil, fmt.Errorf("format of SecretManagerSecretVersion external=%q was not known (use projects/{{projectId}}/secrets/{{secretID}}/versions/{{versionID}} or projects/{{projectId}}/locations/{{location}}/secrets/{{secretID}}/versions/{{versionID}})", external)
 }

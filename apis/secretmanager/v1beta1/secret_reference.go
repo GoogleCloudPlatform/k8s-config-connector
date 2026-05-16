@@ -94,11 +94,21 @@ func ParseSecretExternal(external string) (*SecretIdentity, error) {
 	}
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "secrets" {
-		return nil, fmt.Errorf("format of SecretManagerSecret external=%q was not known (use projects/{{projectId}}/secrets/{{secretID}})", external)
+
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "secrets" {
+		return &SecretIdentity{
+			parent: &SecretParent{ProjectID: tokens[1], Location: "global"},
+			id:     tokens[3],
+		}, nil
 	}
-	return &SecretIdentity{
-		parent: &SecretParent{ProjectID: tokens[1]},
-		id:     tokens[3],
-	}, nil
+
+	// Check for regional secret format: projects/{{projectId}}/locations/{{location}}/secrets/{{secretID}}
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "secrets" {
+		return &SecretIdentity{
+			parent: &SecretParent{ProjectID: tokens[1], Location: tokens[3]},
+			id:     tokens[5],
+		}, nil
+	}
+
+	return nil, fmt.Errorf("format of SecretManagerSecret external=%q was not known (use projects/{{projectId}}/secrets/{{secretID}} or projects/{{projectId}}/locations/{{location}}/secrets/{{secretID}})", external)
 }
