@@ -735,7 +735,6 @@ func (o *objectWalker) TransformString(targetPath string, transform func(string)
 	})
 }
 
-
 func (o *objectWalker) TransformLRO(transform func(map[string]any)) {
 	o.objectTransforms = append(o.objectTransforms, func(path string, m map[string]any) {
 		selfLink, _ := m["selfLink"].(string)
