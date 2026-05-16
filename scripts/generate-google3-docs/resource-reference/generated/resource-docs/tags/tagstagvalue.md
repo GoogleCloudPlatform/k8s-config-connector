@@ -46,7 +46,25 @@
 
 <tr>
     <td>Can Be Referenced by IAMPolicy/IAMPolicyMember</td>
+    <td>Yes</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Conditions</td>
     <td>No</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Audit Configs</td>
+    <td>No</td>
+</tr>
+<tr>
+    <td>IAM External Reference Format</td>
+    <td>
+        
+        <p>{% verbatim %}tagValues/{{name}}{% endverbatim %}</p>
+        
+    </td>
 </tr>
 
 
@@ -283,17 +301,78 @@ updateTime: string
 
 ## Sample YAML(s)
 
-### Typical Use Case
+### TagsTagValue Org
 ```yaml
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagValue
 metadata:
-  name: tagstagvalue-${uniqueId}
+  name: tagstagvalue-sample-org
 spec:
   description: For valuename resources.
   parentRef:
-    name: tagstagkey-${uniqueId}
+    name: tagstagkey-dep-org
   shortName: valuename
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagKey
+metadata:
+  name: tagstagkey-dep-org
+spec:
+  description: For keyname resources.
+  # Replace ${ORG_ID?} with your organization ID.
+  parent: organizations/${ORG_ID?}
+  shortName: keynamedeporg
+```
+
+### TagsTagValue Project
+```yaml
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagValue
+metadata:
+  name: tagstagvalue-sample-project
+spec:
+  description: For valuename resources.
+  parentRef:
+    name: tagstagkey-dep-project
+  shortName: valuename
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagKey
+metadata:
+  name: tagstagkey-dep-project
+spec:
+  description: For keyname resources.
+  # Replace ${PROJECT_ID?} with your project ID.
+  parent: projects/${PROJECT_ID?}
+  shortName: keynamedepproject
 ```
 
 
