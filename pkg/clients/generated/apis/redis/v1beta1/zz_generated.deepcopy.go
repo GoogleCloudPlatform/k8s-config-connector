@@ -218,6 +218,11 @@ func (in *ClusterPscConnectionsStatus) DeepCopyInto(out *ClusterPscConnectionsSt
 		*out = new(string)
 		**out = **in
 	}
+	if in.ConnectionType != nil {
+		in, out := &in.ConnectionType, &out.ConnectionType
+		*out = new(string)
+		**out = **in
+	}
 	if in.ForwardingRule != nil {
 		in, out := &in.ForwardingRule, &out.ForwardingRule
 		*out = new(string)
@@ -235,6 +240,11 @@ func (in *ClusterPscConnectionsStatus) DeepCopyInto(out *ClusterPscConnectionsSt
 	}
 	if in.PscConnectionID != nil {
 		in, out := &in.PscConnectionID, &out.PscConnectionID
+		*out = new(string)
+		**out = **in
+	}
+	if in.PscConnectionStatus != nil {
+		in, out := &in.PscConnectionStatus, &out.PscConnectionStatus
 		*out = new(string)
 		**out = **in
 	}

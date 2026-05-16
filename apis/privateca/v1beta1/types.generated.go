@@ -204,6 +204,7 @@ type KeyUsage_KeyUsageOptions struct {
 	DecipherOnly *bool `json:"decipherOnly,omitempty"`
 }
 
+/* unreachable type X509Parameters_NameConstraints
 // +kcc:proto=google.cloud.security.privateca.v1.X509Parameters.NameConstraints
 type X509Parameters_NameConstraints struct {
 	// Indicates whether or not the name constraints are marked critical.
@@ -266,6 +267,7 @@ type X509Parameters_NameConstraints struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.NameConstraints.excluded_uris
 	ExcludedUris []string `json:"excludedUris,omitempty"`
 }
+*/
 
 // +kcc:proto=google.type.Expr
 type Expr struct {

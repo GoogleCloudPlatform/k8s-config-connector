@@ -65,6 +65,12 @@ type EntrygroupDataCatalogTimestampsStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
+	/* Output only. Expiration timestamp of the resource within the given system.
+
+	Currently only applicable to BigQuery resources. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
+
 	/* Timestamp of the last modification of the resource or its metadata within
 	a given system.
 

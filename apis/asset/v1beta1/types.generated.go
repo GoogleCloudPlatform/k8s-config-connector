@@ -193,3 +193,9 @@ type Expr struct {
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
 }
+
+/* unreachable type FeedObservedState
+// +kcc:observedstate:proto=google.cloud.asset.v1.Feed
+type FeedObservedState struct {
+}
+*/

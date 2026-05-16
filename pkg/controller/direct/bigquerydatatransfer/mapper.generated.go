@@ -122,15 +122,15 @@ func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSched
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func UserInfo_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfo {
+func UserInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.UserInfo{}
+	out := &krm.UserInfoObservedState{}
 	out.Email = in.Email
 	return out
 }
-func UserInfo_ToProto(mapCtx *direct.MapContext, in *krm.UserInfo) *pb.UserInfo {
+func UserInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UserInfoObservedState) *pb.UserInfo {
 	if in == nil {
 		return nil
 	}

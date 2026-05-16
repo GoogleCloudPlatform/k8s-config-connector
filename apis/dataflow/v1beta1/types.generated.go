@@ -20,3 +20,9 @@
 // resource: DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment
 
 package v1beta1
+
+/* unreachable type FlexTemplateRuntimeEnvironmentObservedState
+// +kcc:observedstate:proto=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment
+type FlexTemplateRuntimeEnvironmentObservedState struct {
+}
+*/

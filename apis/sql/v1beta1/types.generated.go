@@ -49,22 +49,6 @@ type AdvancedMachineFeatures struct {
 	ThreadsPerCore *int32 `json:"threadsPerCore,omitempty"`
 }
 
-// +kcc:proto=google.cloud.sql.v1beta4.AvailableDatabaseVersion
-type AvailableDatabaseVersion struct {
-	// The version's major version name.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.major_version
-	MajorVersion *string `json:"majorVersion,omitempty"`
-
-	// The database version name. For MySQL 8.0, this string provides the database
-	//  major and minor version.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.name
-	Name *string `json:"name,omitempty"`
-
-	// The database version's display name.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-}
-
 // +kcc:proto=google.cloud.sql.v1beta4.BackupConfiguration
 type BackupConfiguration struct {
 	// Start time for the daily backup configuration in UTC timezone in the 24
@@ -1075,6 +1059,22 @@ type Int32Value struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.AvailableDatabaseVersion
+type AvailableDatabaseVersionObservedState struct {
+	// The version's major version name.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.major_version
+	MajorVersion *string `json:"majorVersion,omitempty"`
+
+	// The database version name. For MySQL 8.0, this string provides the database
+	//  major and minor version.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.name
+	Name *string `json:"name,omitempty"`
+
+	// The database version's display name.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.AvailableDatabaseVersion.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.BackupConfiguration
 type BackupConfigurationObservedState struct {
 	// Output only. This value contains the storage location of transactional logs
@@ -1106,7 +1106,7 @@ type DatabaseInstanceObservedState struct {
 
 	// Output only. All database versions that are available for upgrade.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.upgradable_database_versions
-	UpgradableDatabaseVersions []AvailableDatabaseVersion `json:"upgradableDatabaseVersions,omitempty"`
+	UpgradableDatabaseVersions []AvailableDatabaseVersionObservedState `json:"upgradableDatabaseVersions,omitempty"`
 
 	// Output only. The link to service attachment of PSC instance.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.psc_service_attachment_link

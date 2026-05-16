@@ -949,12 +949,9 @@
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.featureOnlineStoreSpec" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesetSpec.dataplexFileset.dataplexSpec.asset" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesetSpec.dataplexFileset.dataplexSpec.compressionFormat" is not set in unstructured objects
-[missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesetSpec.dataplexFileset.dataplexSpec.dataFormat.avro.text" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesetSpec.dataplexFileset.dataplexSpec.dataFormat.csv" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesetSpec.dataplexFileset.dataplexSpec.dataFormat.orc" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesetSpec.dataplexFileset.dataplexSpec.dataFormat.parquet" is not set in unstructured objects
-[missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesetSpec.dataplexFileset.dataplexSpec.dataFormat.protobuf.text" is not set in unstructured objects
-[missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesetSpec.dataplexFileset.dataplexSpec.dataFormat.thrift.text" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesetSpec.dataplexFileset.dataplexSpec.projectID" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.lookerSystemSpec.parentInstanceDisplayName" is not set in unstructured objects

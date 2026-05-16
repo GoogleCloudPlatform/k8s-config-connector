@@ -21,19 +21,12 @@
 
 package v1beta1
 
-// +kcc:proto=google.cloud.dataform.v1beta1.DataEncryptionState
-type DataEncryptionState struct {
-	// Required. The KMS key version name with which data of a resource is
-	//  encrypted.
-	// +kcc:proto:field=google.cloud.dataform.v1beta1.DataEncryptionState.kms_key_version_name
-	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
-}
-
+/* unreachable type Repository_GitRemoteSettings_SSHAuthenticationConfig
 // +kcc:proto=google.cloud.dataform.v1beta1.Repository.GitRemoteSettings.SshAuthenticationConfig
 type Repository_GitRemoteSettings_SSHAuthenticationConfig struct {
 	// Required. The name of the Secret Manager secret version to use as a
 	//  ssh private key for Git operations.
-	//  Must be in the format `projects/*/secrets/*/versions/*`.
+	//  Must be in the format `projects/* /secrets/* /versions/*`.
 	// +kcc:proto:field=google.cloud.dataform.v1beta1.Repository.GitRemoteSettings.SshAuthenticationConfig.user_private_key_secret_version
 	UserPrivateKeySecretVersion *string `json:"userPrivateKeySecretVersion,omitempty"`
 
@@ -42,3 +35,25 @@ type Repository_GitRemoteSettings_SSHAuthenticationConfig struct {
 	// +kcc:proto:field=google.cloud.dataform.v1beta1.Repository.GitRemoteSettings.SshAuthenticationConfig.host_public_key
 	HostPublicKey *string `json:"hostPublicKey,omitempty"`
 }
+*/
+
+/* unreachable type DataEncryptionStateObservedState
+// +kcc:observedstate:proto=google.cloud.dataform.v1beta1.DataEncryptionState
+type DataEncryptionStateObservedState struct {
+	// Required. The KMS key version name with which data of a resource is
+	//  encrypted.
+	// +kcc:proto:field=google.cloud.dataform.v1beta1.DataEncryptionState.kms_key_version_name
+	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+}
+*/
+
+/* unreachable type Repository_GitRemoteSettingsObservedState
+// +kcc:observedstate:proto=google.cloud.dataform.v1beta1.Repository.GitRemoteSettings
+type Repository_GitRemoteSettingsObservedState struct {
+	// Output only. Deprecated: The field does not contain any token status
+	//  information. Instead use
+	//  https://cloud.google.com/dataform/reference/rest/v1beta1/projects.locations.repositories/computeAccessTokenStatus
+	// +kcc:proto:field=google.cloud.dataform.v1beta1.Repository.GitRemoteSettings.token_status
+	TokenStatus *string `json:"tokenStatus,omitempty"`
+}
+*/

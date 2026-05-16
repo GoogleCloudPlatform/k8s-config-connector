@@ -236,7 +236,7 @@ func BatchJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroupObservedState_FromProto)
 	// MISSING: Labels
-	out.Status = JobStatus_FromProto(mapCtx, in.GetStatus())
+	out.Status = JobStatusObservedState_FromProto(mapCtx, in.GetStatus())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
@@ -250,7 +250,7 @@ func BatchJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobOb
 	out.Uid = direct.ValueOf(in.Uid)
 	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroupObservedState_ToProto)
 	// MISSING: Labels
-	out.Status = JobStatus_ToProto(mapCtx, in.Status)
+	out.Status = JobStatusObservedState_ToProto(mapCtx, in.Status)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
@@ -287,7 +287,7 @@ func BatchTaskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task) *k
 	}
 	out := &krm.BatchTaskObservedState{}
 	// MISSING: Name
-	out.Status = TaskStatus_FromProto(mapCtx, in.GetStatus())
+	out.Status = TaskStatusObservedState_FromProto(mapCtx, in.GetStatus())
 	return out
 }
 func BatchTaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchTaskObservedState) *pb.Task {
@@ -296,7 +296,7 @@ func BatchTaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchTask
 	}
 	out := &pb.Task{}
 	// MISSING: Name
-	out.Status = TaskStatus_ToProto(mapCtx, in.Status)
+	out.Status = TaskStatusObservedState_ToProto(mapCtx, in.Status)
 	return out
 }
 func BatchTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.BatchTaskSpec {
@@ -435,66 +435,26 @@ func JobNotification_Message_ToProto(mapCtx *direct.MapContext, in *krm.JobNotif
 	out.NewTaskState = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.NewTaskState)
 	return out
 }
-func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatus {
+func JobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.JobStatus{}
+	out := &krm.JobStatusObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_FromProto)
+	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEventObservedState_FromProto)
 	// MISSING: TaskGroups
 	out.RunDuration = direct.StringDuration_FromProto(mapCtx, in.GetRunDuration())
 	return out
 }
-func JobStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus) *pb.JobStatus {
+func JobStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobStatusObservedState) *pb.JobStatus {
 	if in == nil {
 		return nil
 	}
 	out := &pb.JobStatus{}
 	out.State = direct.Enum_ToProto[pb.JobStatus_State](mapCtx, in.State)
-	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_ToProto)
+	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEventObservedState_ToProto)
 	// MISSING: TaskGroups
 	out.RunDuration = direct.StringDuration_ToProto(mapCtx, in.RunDuration)
-	return out
-}
-func JobStatus_InstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_InstanceStatus) *krm.JobStatus_InstanceStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krm.JobStatus_InstanceStatus{}
-	out.MachineType = direct.LazyPtr(in.GetMachineType())
-	out.ProvisioningModel = direct.Enum_FromProto(mapCtx, in.GetProvisioningModel())
-	out.TaskPack = direct.LazyPtr(in.GetTaskPack())
-	out.BootDisk = AllocationPolicy_Disk_FromProto(mapCtx, in.GetBootDisk())
-	return out
-}
-func JobStatus_InstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_InstanceStatus) *pb.JobStatus_InstanceStatus {
-	if in == nil {
-		return nil
-	}
-	out := &pb.JobStatus_InstanceStatus{}
-	out.MachineType = direct.ValueOf(in.MachineType)
-	out.ProvisioningModel = direct.Enum_ToProto[pb.AllocationPolicy_ProvisioningModel](mapCtx, in.ProvisioningModel)
-	out.TaskPack = direct.ValueOf(in.TaskPack)
-	out.BootDisk = AllocationPolicy_Disk_ToProto(mapCtx, in.BootDisk)
-	return out
-}
-func JobStatus_TaskGroupStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_TaskGroupStatus) *krm.JobStatus_TaskGroupStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krm.JobStatus_TaskGroupStatus{}
-	out.Counts = in.Counts
-	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, JobStatus_InstanceStatus_FromProto)
-	return out
-}
-func JobStatus_TaskGroupStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_TaskGroupStatus) *pb.JobStatus_TaskGroupStatus {
-	if in == nil {
-		return nil
-	}
-	out := &pb.JobStatus_TaskGroupStatus{}
-	out.Counts = in.Counts
-	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, JobStatus_InstanceStatus_ToProto)
 	return out
 }
 func LifecyclePolicy_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy) *krm.LifecyclePolicy {
@@ -707,37 +667,19 @@ func Runnable_Script_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Run
 	}
 	return &pb.Runnable_Script_Text{Text: *in}
 }
-func ServiceAccount_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krm.ServiceAccount {
+func StatusEventObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StatusEvent) *krm.StatusEventObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ServiceAccount{}
-	out.Email = direct.LazyPtr(in.GetEmail())
-	out.Scopes = in.Scopes
-	return out
-}
-func ServiceAccount_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccount) *pb.ServiceAccount {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceAccount{}
-	out.Email = direct.ValueOf(in.Email)
-	out.Scopes = in.Scopes
-	return out
-}
-func StatusEvent_FromProto(mapCtx *direct.MapContext, in *pb.StatusEvent) *krm.StatusEvent {
-	if in == nil {
-		return nil
-	}
-	out := &krm.StatusEvent{}
+	out := &krm.StatusEventObservedState{}
 	out.Type = direct.LazyPtr(in.GetType())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.EventTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEventTime())
-	out.TaskExecution = TaskExecution_FromProto(mapCtx, in.GetTaskExecution())
+	out.TaskExecution = TaskExecutionObservedState_FromProto(mapCtx, in.GetTaskExecution())
 	out.TaskState = direct.Enum_FromProto(mapCtx, in.GetTaskState())
 	return out
 }
-func StatusEvent_ToProto(mapCtx *direct.MapContext, in *krm.StatusEvent) *pb.StatusEvent {
+func StatusEventObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StatusEventObservedState) *pb.StatusEvent {
 	if in == nil {
 		return nil
 	}
@@ -745,19 +687,19 @@ func StatusEvent_ToProto(mapCtx *direct.MapContext, in *krm.StatusEvent) *pb.Sta
 	out.Type = direct.ValueOf(in.Type)
 	out.Description = direct.ValueOf(in.Description)
 	out.EventTime = direct.StringTimestamp_ToProto(mapCtx, in.EventTime)
-	out.TaskExecution = TaskExecution_ToProto(mapCtx, in.TaskExecution)
+	out.TaskExecution = TaskExecutionObservedState_ToProto(mapCtx, in.TaskExecution)
 	out.TaskState = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.TaskState)
 	return out
 }
-func TaskExecution_FromProto(mapCtx *direct.MapContext, in *pb.TaskExecution) *krm.TaskExecution {
+func TaskExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TaskExecution) *krm.TaskExecutionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TaskExecution{}
+	out := &krm.TaskExecutionObservedState{}
 	out.ExitCode = direct.LazyPtr(in.GetExitCode())
 	return out
 }
-func TaskExecution_ToProto(mapCtx *direct.MapContext, in *krm.TaskExecution) *pb.TaskExecution {
+func TaskExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskExecutionObservedState) *pb.TaskExecution {
 	if in == nil {
 		return nil
 	}
@@ -863,22 +805,22 @@ func TaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.TaskSpec) *pb.TaskSpec 
 	out.Environment = Environment_ToProto(mapCtx, in.Environment)
 	return out
 }
-func TaskStatus_FromProto(mapCtx *direct.MapContext, in *pb.TaskStatus) *krm.TaskStatus {
+func TaskStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TaskStatus) *krm.TaskStatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TaskStatus{}
+	out := &krm.TaskStatusObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_FromProto)
+	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEventObservedState_FromProto)
 	return out
 }
-func TaskStatus_ToProto(mapCtx *direct.MapContext, in *krm.TaskStatus) *pb.TaskStatus {
+func TaskStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskStatusObservedState) *pb.TaskStatus {
 	if in == nil {
 		return nil
 	}
 	out := &pb.TaskStatus{}
 	out.State = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.State)
-	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_ToProto)
+	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEventObservedState_ToProto)
 	return out
 }
 func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {

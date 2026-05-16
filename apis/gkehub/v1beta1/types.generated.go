@@ -21,12 +21,14 @@
 
 package v1beta1
 
+/* unreachable type BinauthzConfig
 // +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.BinauthzConfig
 type BinauthzConfig struct {
 	// Whether binauthz is enabled in this cluster.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.BinauthzConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.ConfigSync
 type ConfigSync struct {
@@ -106,6 +108,7 @@ type GitConfig struct {
 	GcpServiceAccountEmail *string `json:"gcpServiceAccountEmail,omitempty"`
 }
 
+/* unreachable type HierarchyControllerConfig
 // +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.HierarchyControllerConfig
 type HierarchyControllerConfig struct {
 	// Whether Hierarchy Controller is enabled in this cluster.
@@ -120,6 +123,7 @@ type HierarchyControllerConfig struct {
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.HierarchyControllerConfig.enable_hierarchical_resource_quota
 	EnableHierarchicalResourceQuota *bool `json:"enableHierarchicalResourceQuota,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.OciConfig
 type OciConfig struct {
@@ -199,13 +203,16 @@ type PolicyControllerMonitoring struct {
 	Backends []string `json:"backends,omitempty"`
 }
 
+/* unreachable type BundleInstallSpec
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.BundleInstallSpec
 type BundleInstallSpec struct {
 	// The set of namespaces to be exempted from the bundle.
 	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.BundleInstallSpec.exempted_namespaces
 	ExemptedNamespaces []string `json:"exemptedNamespaces,omitempty"`
 }
+*/
 
+/* unreachable type MonitoringConfig
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.MonitoringConfig
 type MonitoringConfig struct {
 	// Specifies the list of backends Policy Controller will export to.
@@ -213,7 +220,9 @@ type MonitoringConfig struct {
 	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.MonitoringConfig.backends
 	Backends []string `json:"backends,omitempty"`
 }
+*/
 
+/* unreachable type PolicyContentSpec
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec
 type PolicyContentSpec struct {
 
@@ -223,6 +232,7 @@ type PolicyContentSpec struct {
 	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec.template_library
 	TemplateLibrary *TemplateLibraryConfig `json:"templateLibrary,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.Toleration
 type PolicyControllerDeploymentConfig_Toleration struct {
@@ -267,6 +277,7 @@ type ResourceRequirements struct {
 	Requests *ResourceList `json:"requests,omitempty"`
 }
 
+/* unreachable type TemplateLibraryConfig
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.TemplateLibraryConfig
 type TemplateLibraryConfig struct {
 	// Configures the manner in which the template library is installed on the
@@ -274,7 +285,9 @@ type TemplateLibraryConfig struct {
 	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.TemplateLibraryConfig.installation
 	Installation *string `json:"installation,omitempty"`
 }
+*/
 
+/* unreachable type MembershipSpec
 // +kcc:proto=google.cloud.gkehub.servicemesh.v1beta.MembershipSpec
 type MembershipSpec struct {
 	// Deprecated: use `management` instead
@@ -286,10 +299,24 @@ type MembershipSpec struct {
 	// +kcc:proto:field=google.cloud.gkehub.servicemesh.v1beta.MembershipSpec.management
 	Management *string `json:"management,omitempty"`
 }
+*/
 
+/* unreachable type MembershipSpecObservedState
+// +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec
+type MembershipSpecObservedState struct {
+	// Optional. Policy Controller configuration for the cluster.
+	//  Deprecated: Configuring Policy Controller through the configmanagement
+	//  feature is no longer recommended. Use the policycontroller feature instead.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.policy_controller
+	PolicyController *PolicyControllerObservedState `json:"policyController,omitempty"`
+}
+*/
+
+/* unreachable type PolicyControllerObservedState
 // +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.PolicyController
 type PolicyControllerObservedState struct {
 	// Output only. Last time this membership spec was updated.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.PolicyController.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
+*/

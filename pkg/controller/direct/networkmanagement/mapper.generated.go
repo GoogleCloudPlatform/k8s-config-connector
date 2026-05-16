@@ -164,30 +164,6 @@ func DeliverInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Deliver
 	out.PscGoogleApiTarget = direct.ValueOf(in.PSCGoogleAPITarget)
 	return out
 }
-func DirectVPCEgressConnectionInfo_FromProto(mapCtx *direct.MapContext, in *pb.DirectVpcEgressConnectionInfo) *krm.DirectVPCEgressConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DirectVPCEgressConnectionInfo{}
-	out.NetworkURI = direct.LazyPtr(in.GetNetworkUri())
-	out.SubnetworkURI = direct.LazyPtr(in.GetSubnetworkUri())
-	out.SelectedIPRange = direct.LazyPtr(in.GetSelectedIpRange())
-	out.SelectedIPAddress = direct.LazyPtr(in.GetSelectedIpAddress())
-	out.Region = direct.LazyPtr(in.GetRegion())
-	return out
-}
-func DirectVPCEgressConnectionInfo_ToProto(mapCtx *direct.MapContext, in *krm.DirectVPCEgressConnectionInfo) *pb.DirectVpcEgressConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DirectVpcEgressConnectionInfo{}
-	out.NetworkUri = direct.ValueOf(in.NetworkURI)
-	out.SubnetworkUri = direct.ValueOf(in.SubnetworkURI)
-	out.SelectedIpRange = direct.ValueOf(in.SelectedIPRange)
-	out.SelectedIpAddress = direct.ValueOf(in.SelectedIPAddress)
-	out.Region = direct.ValueOf(in.Region)
-	return out
-}
 func DropInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DropInfo) *krm.DropInfoObservedState {
 	if in == nil {
 		return nil
@@ -902,22 +878,6 @@ func RouteInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RouteInfo
 	// MISSING: OriginatingRouteURI
 	// MISSING: OriginatingRouteDisplayName
 	// MISSING: NccHubRouteURI
-	return out
-}
-func ServerlessExternalConnectionInfo_FromProto(mapCtx *direct.MapContext, in *pb.ServerlessExternalConnectionInfo) *krm.ServerlessExternalConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServerlessExternalConnectionInfo{}
-	out.SelectedIPAddress = direct.LazyPtr(in.GetSelectedIpAddress())
-	return out
-}
-func ServerlessExternalConnectionInfo_ToProto(mapCtx *direct.MapContext, in *krm.ServerlessExternalConnectionInfo) *pb.ServerlessExternalConnectionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServerlessExternalConnectionInfo{}
-	out.SelectedIpAddress = direct.ValueOf(in.SelectedIPAddress)
 	return out
 }
 func ServerlessNegInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServerlessNegInfo) *krm.ServerlessNegInfoObservedState {

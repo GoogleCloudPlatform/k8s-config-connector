@@ -209,7 +209,7 @@ type BigQueryDataTransferConfigObservedState struct {
 	//  transfer data. Populated only for `transferConfigs.get` requests. In case
 	//  the user information is not available, this field will not be populated.
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.owner_info
-	OwnerInfo *UserInfo `json:"ownerInfo,omitempty"`
+	OwnerInfo *UserInfoObservedState `json:"ownerInfo,omitempty"`
 
 	// Output only. State of the most recently updated transfer run.
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.state

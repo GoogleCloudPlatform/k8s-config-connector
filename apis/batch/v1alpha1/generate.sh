@@ -28,7 +28,8 @@ go run . generate-types \
     --service google.cloud.batch.v1 \
     --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
     --resource BatchJob:Job \
-    --resource BatchTask:Task
+    --resource BatchTask:Task \
+    --proto-output google.cloud.batch.v1.Task:status
 
 
 go run . generate-mapper \

@@ -66,7 +66,7 @@ type BatchTaskStatus struct {
 type BatchTaskObservedState struct {
 	// Task Status.
 	// +kcc:proto:field=google.cloud.batch.v1.Task.status
-	Status *TaskStatus `json:"status,omitempty"`
+	Status *TaskStatusObservedState `json:"status,omitempty"`
 }
 
 // +genclient

@@ -82,6 +82,15 @@ type PscConfigSpec struct {
 	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscConfig
+type PSCConfigObservedState struct {
+	// The network where the IP address of the discovery endpoint will
+	//  be reserved, in the form of
+	//  projects/{network_project}/global/networks/{network_id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConfig.network
+	Network *string `json:"network,omitempty"`
+}
+
 // RedisClusterStatus defines the config connector machine state of RedisCluster
 type RedisClusterStatus struct {
 	/* Conditions represent the latest available observations of the
@@ -121,17 +130,66 @@ type RedisClusterObservedState struct {
 
 	// Output only. Endpoints created on each given network, for Redis clients to
 	//  connect to the cluster. Currently only one discovery endpoint is supported.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.discovery_endpoints
 	DiscoveryEndpoints []DiscoveryEndpointObservedState `json:"discoveryEndpoints,omitempty"`
 
-	// Output only. PSC connections for discovery of the cluster topology and
-	//  accessing the cluster.
-	PSCConnections []PSCConnection `json:"pscConnections,omitempty"`
+	// Output only. The list of PSC connections that are auto-created through
+	//  service connectivity automation.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.psc_connections
+	PSCConnections []PSCConnectionObservedState `json:"pscConnections,omitempty"`
+
 	// Output only. Additional information about the current state of the cluster.
-	StateInfo *Cluster_StateInfo `json:"stateInfo,omitempty"`
+	StateInfo *Cluster_StateInfoObservedState `json:"stateInfo,omitempty"`
 
 	// Output only. Precise value of redis memory size in GB for the entire
 	//  cluster.
 	PreciseSizeGB *float64 `json:"preciseSizeGb,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscConnection
+type PSCConnectionObservedState struct {
+	// Required. The PSC connection id of the forwarding rule connected to the
+	//  service attachment.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.psc_connection_id
+	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	// Required. The IP allocated on the consumer network for the PSC forwarding
+	//  rule.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.address
+	Address *string `json:"address,omitempty"`
+
+	// Required. The URI of the consumer side forwarding rule.
+	//  Example:
+	//  projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.forwarding_rule
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	// Optional. Project ID of the consumer project where the forwarding rule is
+	//  created in.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Required. The consumer network where the IP address resides, in the form of
+	//  projects/{project_id}/global/networks/{network_id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.network
+	Network *string `json:"network,omitempty"`
+
+	// Required. The service attachment which is the target of the PSC connection,
+	//  in the form of
+	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.service_attachment
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+
+	// Output only. The status of the PSC connection.
+	//  Please note that this value is updated periodically.
+	//  To get the latest status of a PSC connection, follow
+	//  https://cloud.google.com/vpc/docs/configure-private-service-connect-services#endpoint-details.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.psc_connection_status
+	PSCConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+
+	// Output only. Type of the PSC connection.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.connection_type
+	ConnectionType *string `json:"connectionType,omitempty"`
 }
 
 // +genclient

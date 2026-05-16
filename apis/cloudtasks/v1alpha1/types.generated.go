@@ -402,3 +402,10 @@ type StackdriverLoggingConfig struct {
 	// +kcc:proto:field=google.cloud.tasks.v2.StackdriverLoggingConfig.sampling_ratio
 	SamplingRatio *float64 `json:"samplingRatio,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.tasks.v2.Queue", skipping
+
+// +kcc:observedstate:proto=google.cloud.tasks.v2.Queue
+type QueueObservedState struct {
+}
+*/

@@ -26,15 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AutoscaleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutoscaleObservedState) *pb.Reservation_Autoscale {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Reservation_Autoscale{}
-	out.CurrentSlots = direct.ValueOf(in.CurrentSlots)
-	// MISSING: MaxSlots
-	return out
-}
 func BigQueryReservationAssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentObservedState {
 	if in == nil {
 		return nil
@@ -55,43 +46,21 @@ func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: EnableGeminiInBigquery
 	return out
 }
-func Reservation_ReplicationStatus_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_ReplicationStatus) *krm.Reservation_ReplicationStatus {
+func Reservation_AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.Reservation_AutoscaleObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Reservation_ReplicationStatus{}
-	// MISSING: Error
-	// MISSING: LastErrorTime
-	// MISSING: LastReplicationTime
+	out := &krm.Reservation_AutoscaleObservedState{}
+	out.CurrentSlots = direct.LazyPtr(in.GetCurrentSlots())
+	// MISSING: MaxSlots
 	return out
 }
-func Reservation_ReplicationStatus_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_ReplicationStatus) *pb.Reservation_ReplicationStatus {
+func Reservation_AutoscaleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_AutoscaleObservedState) *pb.Reservation_Autoscale {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Reservation_ReplicationStatus{}
-	// MISSING: Error
-	// MISSING: LastErrorTime
-	// MISSING: LastReplicationTime
-	return out
-}
-func Reservation_ReplicationStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_ReplicationStatus) *krm.Reservation_ReplicationStatusObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Reservation_ReplicationStatusObservedState{}
-	out.Error = Status_FromProto(mapCtx, in.GetError())
-	out.LastErrorTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastErrorTime())
-	out.LastReplicationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastReplicationTime())
-	return out
-}
-func Reservation_ReplicationStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_ReplicationStatusObservedState) *pb.Reservation_ReplicationStatus {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Reservation_ReplicationStatus{}
-	out.Error = Status_ToProto(mapCtx, in.Error)
-	out.LastErrorTime = direct.StringTimestamp_ToProto(mapCtx, in.LastErrorTime)
-	out.LastReplicationTime = direct.StringTimestamp_ToProto(mapCtx, in.LastReplicationTime)
+	out := &pb.Reservation_Autoscale{}
+	out.CurrentSlots = direct.ValueOf(in.CurrentSlots)
+	// MISSING: MaxSlots
 	return out
 }

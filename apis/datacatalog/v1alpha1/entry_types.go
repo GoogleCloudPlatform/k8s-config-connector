@@ -37,7 +37,7 @@ type DataSourceObservedState struct {
 
 	// Detailed properties of the underlying storage.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.storage_properties
-	StorageProperties *StorageProperties `json:"storageProperties,omitempty"`
+	StorageProperties *StoragePropertiesObservedState `json:"storageProperties,omitempty"`
 }
 
 // Parent defines the potential parent resources for a DataCatalogEntry.
@@ -368,7 +368,7 @@ type DataCatalogEntryObservedState struct {
 	// Output only. Additional information related to the entry. Private to the
 	//  current user.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Entry.personal_details
-	PersonalDetails *PersonalDetails `json:"personalDetails,omitempty"`
+	PersonalDetails *PersonalDetailsObservedState `json:"personalDetails,omitempty"`
 }
 
 // +genclient

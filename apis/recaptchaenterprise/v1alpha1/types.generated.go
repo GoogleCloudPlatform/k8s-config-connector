@@ -133,3 +133,9 @@ type FirewallPolicy struct {
 	Actions []FirewallAction `json:"actions,omitempty"`
 }
 */
+
+/* unreachable type FirewallPolicyObservedState
+// +kcc:observedstate:proto=google.cloud.recaptchaenterprise.v1.FirewallPolicy
+type FirewallPolicyObservedState struct {
+}
+*/

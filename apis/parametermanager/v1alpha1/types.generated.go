@@ -22,10 +22,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.iam.v1.ResourcePolicyMember
-type ResourcePolicyMember struct {
-}
-
 // +kcc:observedstate:proto=google.iam.v1.ResourcePolicyMember
 type ResourcePolicyMemberObservedState struct {
 	// IAM policy binding member referring to a Google Cloud resource by

@@ -21,8 +21,84 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo
-type DirectVPCEgressConnectionInfo struct {
+// +kcc:proto=google.cloud.networkmanagement.v1.Endpoint.AppEngineVersionEndpoint
+type Endpoint_AppEngineVersionEndpoint struct {
+	// An [App Engine](https://cloud.google.com/appengine) [service
+	//  version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions)
+	//  name.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.AppEngineVersionEndpoint.uri
+	URI *string `json:"uri,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkmanagement.v1.Endpoint.CloudFunctionEndpoint
+type Endpoint_CloudFunctionEndpoint struct {
+	// A [Cloud Function](https://cloud.google.com/functions) name.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.CloudFunctionEndpoint.uri
+	URI *string `json:"uri,omitempty"`
+}
+
+/* unreachable type ConnectivityTestObservedState
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ConnectivityTest
+type ConnectivityTestObservedState struct {
+	// Required. Source specification of the Connectivity Test.
+	//
+	//  You can use a combination of source IP address, URI of a supported
+	//  endpoint, project ID, or VPC network to identify the source location.
+	//
+	//  Reachability analysis might proceed even if the source location is
+	//  ambiguous. However, the test result might include endpoints or use a source
+	//  that you don't intend to test.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.source
+	Source *EndpointObservedState `json:"source,omitempty"`
+
+	// Required. Destination specification of the Connectivity Test.
+	//
+	//  You can use a combination of destination IP address, URI of a supported
+	//  endpoint, project ID, or VPC network to identify the destination location.
+	//
+	//  Reachability analysis proceeds even if the destination location is
+	//  ambiguous. However, the test result might include endpoints or use a
+	//  destination that you don't intend to test.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.destination
+	Destination *EndpointObservedState `json:"destination,omitempty"`
+
+	// Output only. The display name of a Connectivity Test.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Output only. The time the test was created.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time the test's configuration was updated.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The reachability details of this test from the latest run.
+	//  The details are updated when creating a new test, updating an
+	//  existing test, or triggering a one-time rerun of an existing test.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.reachability_details
+	ReachabilityDetails *ReachabilityDetailsObservedState `json:"reachabilityDetails,omitempty"`
+
+	// Output only. The probing details of this test from the latest run, present
+	//  for applicable tests only. The details are updated when creating a new
+	//  test, updating an existing test, or triggering a one-time rerun of an
+	//  existing test.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.probing_details
+	ProbingDetails *ProbingDetailsObservedState `json:"probingDetails,omitempty"`
+
+	// Output only. The reachability details of this test from the latest run for
+	//  the return path. The details are updated when creating a new test,
+	//  updating an existing test, or triggering a one-time rerun of an existing
+	//  test.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.return_reachability_details
+	ReturnReachabilityDetails *ReachabilityDetailsObservedState `json:"returnReachabilityDetails,omitempty"`
+}
+*/
+
+/* unreachable type DirectVPCEgressConnectionInfoObservedState
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo
+type DirectVPCEgressConnectionInfoObservedState struct {
 	// URI of direct access network.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo.network_uri
 	NetworkURI *string `json:"networkURI,omitempty"`
@@ -43,26 +119,63 @@ type DirectVPCEgressConnectionInfo struct {
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo.region
 	Region *string `json:"region,omitempty"`
 }
+*/
 
-// +kcc:proto=google.cloud.networkmanagement.v1.Endpoint.AppEngineVersionEndpoint
-type Endpoint_AppEngineVersionEndpoint struct {
-	// An [App Engine](https://cloud.google.com/appengine) [service
-	//  version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions)
-	//  name.
-	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.AppEngineVersionEndpoint.uri
-	URI *string `json:"uri,omitempty"`
+/* unreachable type Endpoint_CloudRunRevisionEndpointObservedState
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.Endpoint.CloudRunRevisionEndpoint
+type Endpoint_CloudRunRevisionEndpointObservedState struct {
+	// Output only. The URI of the Cloud Run service that the revision belongs
+	//  to. The format is:
+	//  `projects/{project}/locations/{location}/services/{service}`
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.CloudRunRevisionEndpoint.service_uri
+	ServiceURI *string `json:"serviceURI,omitempty"`
 }
+*/
 
-// +kcc:proto=google.cloud.networkmanagement.v1.Endpoint.CloudFunctionEndpoint
-type Endpoint_CloudFunctionEndpoint struct {
-	// A [Cloud Function](https://cloud.google.com/functions) name.
-	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.CloudFunctionEndpoint.uri
-	URI *string `json:"uri,omitempty"`
-}
-
-// +kcc:proto=google.cloud.networkmanagement.v1.ServerlessExternalConnectionInfo
-type ServerlessExternalConnectionInfo struct {
+/* unreachable type ServerlessExternalConnectionInfoObservedState
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ServerlessExternalConnectionInfo
+type ServerlessExternalConnectionInfoObservedState struct {
 	// Selected starting IP address, from the Google dynamic address pool.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ServerlessExternalConnectionInfo.selected_ip_address
 	SelectedIPAddress *string `json:"selectedIPAddress,omitempty"`
 }
+*/
+
+/* unreachable type AnyObservedState
+// +kcc:observedstate:proto=google.protobuf.Any
+type AnyObservedState struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+*/

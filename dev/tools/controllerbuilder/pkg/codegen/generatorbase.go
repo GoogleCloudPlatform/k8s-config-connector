@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -212,7 +213,7 @@ func (g *generatorBase) findTypeDeclaration(goTypeName string, srcDir string, sk
 	return nil, nil
 }
 
-func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
+func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool, annotationKeys []string) (*string, error) {
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
@@ -232,7 +233,12 @@ func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir 
 		}
 
 		for _, line := range strings.Split(string(b), "\n") {
-			if proto, ok := GetProtoMessageFromAnnotation(line); ok {
+			if foundKey, proto, ok := GetProtoAnnotation(line); ok {
+				if len(annotationKeys) != 0 {
+					if !slices.Contains(annotationKeys, foundKey) {
+						continue
+					}
+				}
 				if proto == protoTag {
 					return &line, nil
 				}

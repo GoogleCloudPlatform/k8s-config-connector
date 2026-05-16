@@ -38,9 +38,6 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".backup_collection")
 	f.UnimplementedFields.Insert(".managed_backup_source")
 	f.UnimplementedFields.Insert(".psc_service_attachments")
-	f.UnimplementedFields.Insert(".psc_connections[].psc_connection_status")
-	f.UnimplementedFields.Insert(".psc_connections[].service_attachment")
-	f.UnimplementedFields.Insert(".psc_connections[].connection_type")
 	f.UnimplementedFields.Insert(".cross_cluster_replication_config")
 	f.UnimplementedFields.Insert(".kms_key")
 	f.UnimplementedFields.Insert(".maintenance_policy")
@@ -55,9 +52,6 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".backup_collection")
 	f.UnimplementedFields.Insert(".managed_backup_source")
 	f.UnimplementedFields.Insert(".psc_service_attachments")
-	f.UnimplementedFields.Insert(".psc_connections[].psc_connection_status")
-	f.UnimplementedFields.Insert(".psc_connections[].service_attachment")
-	f.UnimplementedFields.Insert(".psc_connections[].connection_type")
 	f.UnimplementedFields.Insert(".cross_cluster_replication_config")
 	f.UnimplementedFields.Insert(".kms_key")
 	f.UnimplementedFields.Insert(".maintenance_policy")
@@ -87,6 +81,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".psc_connections")
 	f.StatusFields.Insert(".state_info")
 	f.StatusFields.Insert(".precise_size_gb")
+	f.StatusField(".psc_connections[]")
 
 	return f
 }

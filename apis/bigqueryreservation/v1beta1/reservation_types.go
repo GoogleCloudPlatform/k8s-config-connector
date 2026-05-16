@@ -107,8 +107,8 @@ type BigQueryReservationReservationStatus struct {
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation
 // BigQueryReservationReservationObservedState is the state of the BigQueryReservationReservation resource as most recently observed in GCP.
 type BigQueryReservationReservationObservedState struct {
-	FailOver  *FailoverObservedState  `json:"failover,omitempty"`
-	Autoscale *AutoscaleObservedState `json:"autoscale,omitempty"`
+	FailOver  *FailoverObservedState              `json:"failover,omitempty"`
+	Autoscale *Reservation_AutoscaleObservedState `json:"autoscale,omitempty"`
 }
 
 // +genclient
@@ -187,7 +187,7 @@ type FailoverObservedState struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.Reservation.Autoscale
-type AutoscaleObservedState struct {
+type Reservation_AutoscaleObservedState struct {
 	// The slot capacity added to this reservation when autoscale
 	//  happens. Will be between [0, max_slots]. Note: after users reduce
 	//  max_slots, it may take a while before it can be propagated, so

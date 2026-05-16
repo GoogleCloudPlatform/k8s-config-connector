@@ -38,12 +38,6 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type EntryAvro struct {
-	/* JSON source of the Avro schema. */
-	// +optional
-	Text *string `json:"text,omitempty"`
-}
-
 type EntryBigqueryConnectionSpec struct {
 	/* Specification for the BigQuery connection to a Cloud SQL instance. */
 	// +optional
@@ -184,10 +178,6 @@ type EntryCsv struct {
 }
 
 type EntryDataFormat struct {
-	/* Schema in Avro JSON format. */
-	// +optional
-	Avro *EntryAvro `json:"avro,omitempty"`
-
 	/* Marks a CSV-encoded data source. */
 	// +optional
 	Csv *EntryCsv `json:"csv,omitempty"`
@@ -199,14 +189,6 @@ type EntryDataFormat struct {
 	/* Marks a Parquet-encoded data source. */
 	// +optional
 	Parquet *EntryParquet `json:"parquet,omitempty"`
-
-	/* Schema in protocol buffer format. */
-	// +optional
-	Protobuf *EntryProtobuf `json:"protobuf,omitempty"`
-
-	/* Schema in Thrift format. */
-	// +optional
-	Thrift *EntryThrift `json:"thrift,omitempty"`
 }
 
 type EntryDataSourceConnectionSpec struct {
@@ -378,12 +360,6 @@ type EntryPeople struct {
 	Email *string `json:"email,omitempty"`
 }
 
-type EntryProtobuf struct {
-	/* Protocol buffer source of the schema. */
-	// +optional
-	Text *string `json:"text,omitempty"`
-}
-
 type EntryRangeElementType struct {
 	/* Required. The type of a field element. See [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type]. */
 	// +optional
@@ -477,12 +453,6 @@ type EntrySqlDatabaseSystemSpec struct {
 	/* SQL Database Engine. enum SqlEngine { UNDEFINED = 0; MY_SQL = 1; POSTGRE_SQL = 2; SQL_SERVER = 3; } Engine of the enclosing database instance. */
 	// +optional
 	SqlEngine *string `json:"sqlEngine,omitempty"`
-}
-
-type EntryThrift struct {
-	/* Thrift IDL source of the schema. */
-	// +optional
-	Text *string `json:"text,omitempty"`
 }
 
 type EntryUsageSignal struct {
@@ -675,12 +645,6 @@ type DataCatalogEntrySpec struct {
 	UserSpecifiedType *string `json:"userSpecifiedType,omitempty"`
 }
 
-type EntryAvroStatus struct {
-	/* JSON source of the Avro schema. */
-	// +optional
-	Text *string `json:"text,omitempty"`
-}
-
 type EntryBigqueryDateShardedSpecStatus struct {
 	/* Output only. The Data Catalog resource name of the dataset entry the
 	current table belongs to. For example:
@@ -720,35 +684,6 @@ type EntryBigqueryTableSpecStatus struct {
 	ViewSpec *EntryViewSpecStatus `json:"viewSpec,omitempty"`
 }
 
-type EntryCsvStatus struct {
-}
-
-type EntryDataFormatStatus struct {
-	/* Schema in Avro JSON format. */
-	// +optional
-	Avro *EntryAvroStatus `json:"avro,omitempty"`
-
-	/* Marks a CSV-encoded data source. */
-	// +optional
-	Csv *EntryCsvStatus `json:"csv,omitempty"`
-
-	/* Marks an ORC-encoded data source. */
-	// +optional
-	Orc *EntryOrcStatus `json:"orc,omitempty"`
-
-	/* Marks a Parquet-encoded data source. */
-	// +optional
-	Parquet *EntryParquetStatus `json:"parquet,omitempty"`
-
-	/* Schema in protocol buffer format. */
-	// +optional
-	Protobuf *EntryProtobufStatus `json:"protobuf,omitempty"`
-
-	/* Schema in Thrift format. */
-	// +optional
-	Thrift *EntryThriftStatus `json:"thrift,omitempty"`
-}
-
 type EntryDataSourceStatus struct {
 	/* Full name of a resource as defined by the service. For example:
 
@@ -776,21 +711,6 @@ type EntryDatabaseTableSpecStatus struct {
 }
 
 type EntryDataplexSpecStatus struct {
-	/* Fully qualified resource name of an asset in Dataplex, to which the underlying data source (Cloud Storage bucket or BigQuery dataset) of the entity is attached. */
-	// +optional
-	Asset *string `json:"asset,omitempty"`
-
-	/* Compression format of the data, e.g., zip, gzip etc. */
-	// +optional
-	CompressionFormat *string `json:"compressionFormat,omitempty"`
-
-	/* Format of the data. */
-	// +optional
-	DataFormat *EntryDataFormatStatus `json:"dataFormat,omitempty"`
-
-	/* Project ID of the underlying Cloud Storage or BigQuery data. Note that this may not be the same project as the correspondingly Dataplex lake / zone / asset. */
-	// +optional
-	ProjectID *string `json:"projectID,omitempty"`
 }
 
 type EntryDataplexTableStatus struct {
@@ -838,6 +758,28 @@ type EntryGcsFilesetSpecStatus struct {
 	/* Output only. Sample files contained in this fileset, not all files contained in this fileset are represented here. */
 	// +optional
 	SampleGCSFileSpecs []EntrySampleGCSFileSpecsStatus `json:"sampleGCSFileSpecs,omitempty"`
+}
+
+type EntryGcsTimestampsStatus struct {
+	/* Creation timestamp of the resource within the given system. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. Expiration timestamp of the resource within the given system.
+
+	Currently only applicable to BigQuery resources. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	/* Timestamp of the last modification of the resource or its metadata within
+	a given system.
+
+	Note: Depending on the source system, not every modification updates this
+	timestamp.
+	For example, BigQuery timestamps every metadata modification but not data
+	or permission changes. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type EntryObservedStateStatus struct {
@@ -900,12 +842,6 @@ type EntryObservedStateStatus struct {
 	UsageSignal *EntryUsageSignalStatus `json:"usageSignal,omitempty"`
 }
 
-type EntryOrcStatus struct {
-}
-
-type EntryParquetStatus struct {
-}
-
 type EntryPersonalDetailsStatus struct {
 	/* Set if the entry is starred; unset otherwise. */
 	// +optional
@@ -916,16 +852,18 @@ type EntryPersonalDetailsStatus struct {
 	Starred *bool `json:"starred,omitempty"`
 }
 
-type EntryProtobufStatus struct {
-	/* Protocol buffer source of the schema. */
-	// +optional
-	Text *string `json:"text,omitempty"`
-}
-
 type EntrySampleGCSFileSpecsStatus struct {
 	/* Required. Full file path. Example: `gs://bucket_name/a/b.txt`. */
 	// +optional
 	FilePath *string `json:"filePath,omitempty"`
+
+	/* Output only. Creation, modification, and expiration timestamps of a Cloud Storage file. */
+	// +optional
+	GcsTimestamps *EntryGcsTimestampsStatus `json:"gcsTimestamps,omitempty"`
+
+	/* Output only. File size in bytes. */
+	// +optional
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
 }
 
 type EntryStoragePropertiesStatus struct {
@@ -967,12 +905,6 @@ type EntryTableSpecStatus struct {
 	Otherwise, `grouped_entry` is empty. */
 	// +optional
 	GroupedEntry *string `json:"groupedEntry,omitempty"`
-}
-
-type EntryThriftStatus struct {
-	/* Thrift IDL source of the schema. */
-	// +optional
-	Text *string `json:"text,omitempty"`
 }
 
 type EntryUsageSignalStatus struct {

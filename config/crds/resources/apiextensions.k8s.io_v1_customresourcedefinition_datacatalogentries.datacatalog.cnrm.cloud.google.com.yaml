@@ -250,13 +250,6 @@ spec:
                           dataFormat:
                             description: Format of the data.
                             properties:
-                              avro:
-                                description: Schema in Avro JSON format.
-                                properties:
-                                  text:
-                                    description: JSON source of the Avro schema.
-                                    type: string
-                                type: object
                               csv:
                                 description: Marks a CSV-encoded data source.
                                 type: object
@@ -265,20 +258,6 @@ spec:
                                 type: object
                               parquet:
                                 description: Marks a Parquet-encoded data source.
-                                type: object
-                              protobuf:
-                                description: Schema in protocol buffer format.
-                                properties:
-                                  text:
-                                    description: Protocol buffer source of the schema.
-                                    type: string
-                                type: object
-                              thrift:
-                                description: Schema in Thrift format.
-                                properties:
-                                  text:
-                                    description: Thrift IDL source of the schema.
-                                    type: string
                                 type: object
                             type: object
                           projectID:
@@ -826,58 +805,6 @@ spec:
                         properties:
                           dataplexSpec:
                             description: Common Dataplex fields.
-                            properties:
-                              asset:
-                                description: Fully qualified resource name of an asset
-                                  in Dataplex, to which the underlying data source
-                                  (Cloud Storage bucket or BigQuery dataset) of the
-                                  entity is attached.
-                                type: string
-                              compressionFormat:
-                                description: Compression format of the data, e.g.,
-                                  zip, gzip etc.
-                                type: string
-                              dataFormat:
-                                description: Format of the data.
-                                properties:
-                                  avro:
-                                    description: Schema in Avro JSON format.
-                                    properties:
-                                      text:
-                                        description: JSON source of the Avro schema.
-                                        type: string
-                                    type: object
-                                  csv:
-                                    description: Marks a CSV-encoded data source.
-                                    type: object
-                                  orc:
-                                    description: Marks an ORC-encoded data source.
-                                    type: object
-                                  parquet:
-                                    description: Marks a Parquet-encoded data source.
-                                    type: object
-                                  protobuf:
-                                    description: Schema in protocol buffer format.
-                                    properties:
-                                      text:
-                                        description: Protocol buffer source of the
-                                          schema.
-                                        type: string
-                                    type: object
-                                  thrift:
-                                    description: Schema in Thrift format.
-                                    properties:
-                                      text:
-                                        description: Thrift IDL source of the schema.
-                                        type: string
-                                    type: object
-                                type: object
-                              projectID:
-                                description: Project ID of the underlying Cloud Storage
-                                  or BigQuery data. Note that this may not be the
-                                  same project as the correspondingly Dataplex lake
-                                  / zone / asset.
-                                type: string
                             type: object
                           externalTables:
                             description: |-
@@ -932,6 +859,35 @@ spec:
                             filePath:
                               description: 'Required. Full file path. Example: `gs://bucket_name/a/b.txt`.'
                               type: string
+                            gcsTimestamps:
+                              description: Output only. Creation, modification, and
+                                expiration timestamps of a Cloud Storage file.
+                              properties:
+                                createTime:
+                                  description: Creation timestamp of the resource
+                                    within the given system.
+                                  type: string
+                                expireTime:
+                                  description: |-
+                                    Output only. Expiration timestamp of the resource within the given system.
+
+                                     Currently only applicable to BigQuery resources.
+                                  type: string
+                                updateTime:
+                                  description: |-
+                                    Timestamp of the last modification of the resource or its metadata within
+                                     a given system.
+
+                                     Note: Depending on the source system, not every modification updates this
+                                     timestamp.
+                                     For example, BigQuery timestamps every metadata modification but not data
+                                     or permission changes.
+                                  type: string
+                              type: object
+                            sizeBytes:
+                              description: Output only. File size in bytes.
+                              format: int64
+                              type: integer
                           type: object
                         type: array
                     type: object

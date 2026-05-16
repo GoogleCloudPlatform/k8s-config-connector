@@ -64,17 +64,17 @@ func AdvancedMachineFeatures_ToProto(mapCtx *direct.MapContext, in *krm.Advanced
 	out.ThreadsPerCore = direct.ValueOf(in.ThreadsPerCore)
 	return out
 }
-func AvailableDatabaseVersion_FromProto(mapCtx *direct.MapContext, in *pb.AvailableDatabaseVersion) *krm.AvailableDatabaseVersion {
+func AvailableDatabaseVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AvailableDatabaseVersion) *krm.AvailableDatabaseVersionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AvailableDatabaseVersion{}
+	out := &krm.AvailableDatabaseVersionObservedState{}
 	out.MajorVersion = in.MajorVersion
 	out.Name = in.Name
 	out.DisplayName = in.DisplayName
 	return out
 }
-func AvailableDatabaseVersion_ToProto(mapCtx *direct.MapContext, in *krm.AvailableDatabaseVersion) *pb.AvailableDatabaseVersion {
+func AvailableDatabaseVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AvailableDatabaseVersionObservedState) *pb.AvailableDatabaseVersion {
 	if in == nil {
 		return nil
 	}
@@ -351,7 +351,7 @@ func DatabaseInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	// MISSING: MaintenanceVersion
-	out.UpgradableDatabaseVersions = direct.Slice_FromProto(mapCtx, in.UpgradableDatabaseVersions, AvailableDatabaseVersion_FromProto)
+	out.UpgradableDatabaseVersions = direct.Slice_FromProto(mapCtx, in.UpgradableDatabaseVersions, AvailableDatabaseVersionObservedState_FromProto)
 	// MISSING: SQLNetworkArchitecture
 	out.PSCServiceAttachmentLink = in.PscServiceAttachmentLink
 	out.DNSName = in.DnsName
@@ -402,7 +402,7 @@ func DatabaseInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	// MISSING: MaintenanceVersion
-	out.UpgradableDatabaseVersions = direct.Slice_ToProto(mapCtx, in.UpgradableDatabaseVersions, AvailableDatabaseVersion_ToProto)
+	out.UpgradableDatabaseVersions = direct.Slice_ToProto(mapCtx, in.UpgradableDatabaseVersions, AvailableDatabaseVersionObservedState_ToProto)
 	// MISSING: SQLNetworkArchitecture
 	out.PscServiceAttachmentLink = in.PSCServiceAttachmentLink
 	out.DnsName = in.DNSName

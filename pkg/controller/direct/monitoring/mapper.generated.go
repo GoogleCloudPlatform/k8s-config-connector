@@ -94,21 +94,3 @@ func MonitoringNotificationChannelStatus_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: MutationRecords
 	return out
 }
-func MutationRecord_FromProto(mapCtx *direct.MapContext, in *pb.MutationRecord) *krm.MutationRecord {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MutationRecord{}
-	out.MutateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetMutateTime())
-	out.MutatedBy = direct.LazyPtr(in.GetMutatedBy())
-	return out
-}
-func MutationRecord_ToProto(mapCtx *direct.MapContext, in *krm.MutationRecord) *pb.MutationRecord {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MutationRecord{}
-	out.MutateTime = direct.StringTimestamp_ToProto(mapCtx, in.MutateTime)
-	out.MutatedBy = direct.ValueOf(in.MutatedBy)
-	return out
-}
