@@ -81,7 +81,17 @@ To ensure stability and reproducibility, this task is pinned to the following re
    - run `scripts/validate-prereqs.sh`, if the script fails the output will contain agent hints for fixing the errors.
    - run `./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>`
 
-4. **Journal Findings**: Use skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` to capture quirks and update knowledge.
+4. **Run local validations**:
+   - run `scripts/validate-prereqs.sh`, if the script fails the output will contain agent hints for fixing the errors.
+   - run `./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>`
+
+5. **Journal Findings**: Use skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` to capture quirks and update knowledge.
+
+6. **Create PR**:
+   - create a Pull Request with your changes.
+   - apply the same labels to the PR as are on this issue.
+   - include a link to the chore file (`.agents/greenfield-direct-new-resource-types.md`) in the PR description.
+   - include `Fixes #<issue-number>` in the PR description.
 
 5. **Create PR**:
    - create a Pull Request with your changes.
