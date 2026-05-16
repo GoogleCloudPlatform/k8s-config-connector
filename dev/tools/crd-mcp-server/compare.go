@@ -395,8 +395,8 @@ func isAllowedTypeChange(path, oldType, newType string) bool {
 	if oldType == "integer" && newType == "int32" {
 		return true
 	}
-	// If it is changed from integer to int64, it should be an allowed change if this happens to a status field.
-	if oldType == "integer" && newType == "int64" && isUnderStatus(path) {
+	// If it is changed from integer to int64, it should be an allowed change.
+	if oldType == "integer" && newType == "int64" {
 		return true
 	}
 	return false
