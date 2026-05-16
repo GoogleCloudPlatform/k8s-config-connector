@@ -29,7 +29,7 @@ require (
 	cloud.google.com/go/kms v1.26.0
 	cloud.google.com/go/logging v1.13.2
 	cloud.google.com/go/longrunning v0.9.0
-	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/managedkafka v1.0.0
 	cloud.google.com/go/memcache v1.11.7
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/netapp v1.12.0
@@ -38,6 +38,7 @@ require (
 	cloud.google.com/go/notebooks v1.12.7
 	cloud.google.com/go/orgpolicy v1.15.1
 	cloud.google.com/go/osconfig v1.16.0
+	cloud.google.com/go/pubsublite v1.8.2
 	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
 	cloud.google.com/go/storage v1.59.2
 	cloud.google.com/go/workflows v1.14.3

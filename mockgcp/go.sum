@@ -88,8 +88,8 @@ cloud.google.com/go/logging v1.13.2 h1:qqlHCBvieJT9Cdq4QqYx1KPadCQ2noD4FK02eNqHA
 cloud.google.com/go/logging v1.13.2/go.mod h1:zaybliM3yun1J8mU2dVQ1/qDzjbOqEijZCn6hSBtKak=
 cloud.google.com/go/longrunning v0.9.0 h1:0EzbDEGsAvOZNbqXopgniY0w0a1phvu5IdUFq8grmqY=
 cloud.google.com/go/longrunning v0.9.0/go.mod h1:pkTz846W7bF4o2SzdWJ40Hu0Re+UoNT6Q5t+igIcb8E=
-cloud.google.com/go/managedkafka v0.8.1 h1:Bd5KPCg/TkknTyHYh/tYqGhmSJmINDBK0QGL/CoBZfg=
-cloud.google.com/go/managedkafka v0.8.1/go.mod h1:avX/DyZA0vPVlhJjt0wQ4q36kh6Ex/zEpScKyWBJdhg=
+cloud.google.com/go/managedkafka v1.0.0 h1:wKZdHCPUr3mQDo/9sbPI2+vhXXw9AgC9EfSsZnxbUvY=
+cloud.google.com/go/managedkafka v1.0.0/go.mod h1:Phh9R6RQhGCNq36Uifsi+HHFIOlRFUE8Z3Xl2fYelBo=
 cloud.google.com/go/memcache v1.11.7 h1:ZDIfIMZsKKPzwdbvTMOL1il0shX24J7B9DC+sEt4Yj4=
 cloud.google.com/go/memcache v1.11.7/go.mod h1:AU1jYlUqCihxapcJ1GGMtlMWDVhzjbfUWBXqsXa4rBg=
 cloud.google.com/go/memorystore v0.9.0 h1:CPIW9v7XGjcpwJtLaJUjDohep47tI5c2zP0R3v8rldw=
@@ -121,6 +121,8 @@ cloud.google.com/go/privilegedaccessmanager v0.3.1/go.mod h1:liYHa55U6nlwfca5OvJ
 cloud.google.com/go/pubsub v1.50.1 h1:fzbXpPyJnSGvWXF1jabhQeXyxdbCIkXTpjXHy7xviBM=
 cloud.google.com/go/pubsub/v2 v2.3.0 h1:DgAN907x+sP0nScYfBzneRiIhWoXcpCD8ZAut8WX9vs=
 cloud.google.com/go/pubsub/v2 v2.3.0/go.mod h1:O5f0KHG9zDheZAd3z5rlCRhxt2JQtB+t/IYLKK3Bpvw=
+cloud.google.com/go/pubsublite v1.8.2 h1:jLQozsEVr+c6tOU13vDugtnaBSUy/PD5zK6mhm+uF1Y=
+cloud.google.com/go/pubsublite v1.8.2/go.mod h1:4r8GSa9NznExjuLPEJlF1VjOPOpgf3IT6k8x/YgaOPI=
 cloud.google.com/go/recaptchaenterprise/v2 v2.21.0 h1:zHaPdgmV3LmzaUfn9Xiiqp5zE1Y16f0O8XCwERrAs2E=
 cloud.google.com/go/recaptchaenterprise/v2 v2.21.0/go.mod h1:HxQYqZC2/zl2CvKN7jJEv71vEdDi1GMGNUiZxnpiuVI=
 cloud.google.com/go/redis v1.18.3 h1:6LI8zSt+vmE3WQ7hE5GsJ13CbJBLV1qUw6B7CY31Wcw=
