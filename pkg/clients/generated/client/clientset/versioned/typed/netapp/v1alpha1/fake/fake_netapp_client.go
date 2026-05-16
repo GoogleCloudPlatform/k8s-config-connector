@@ -32,11 +32,11 @@ type FakeNetappV1alpha1 struct {
 }
 
 func (c *FakeNetappV1alpha1) NetAppBackupPolicies(namespace string) v1alpha1.NetAppBackupPolicyInterface {
-	return &FakeNetAppBackupPolicies{c, namespace}
+	return newFakeNetAppBackupPolicies(c, namespace)
 }
 
 func (c *FakeNetappV1alpha1) NetAppBackupVaults(namespace string) v1alpha1.NetAppBackupVaultInterface {
-	return &FakeNetAppBackupVaults{c, namespace}
+	return newFakeNetAppBackupVaults(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

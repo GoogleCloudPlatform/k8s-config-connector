@@ -32,7 +32,7 @@ type FakeEssentialcontactsV1beta1 struct {
 }
 
 func (c *FakeEssentialcontactsV1beta1) EssentialContactsContacts(namespace string) v1beta1.EssentialContactsContactInterface {
-	return &FakeEssentialContactsContacts{c, namespace}
+	return newFakeEssentialContactsContacts(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

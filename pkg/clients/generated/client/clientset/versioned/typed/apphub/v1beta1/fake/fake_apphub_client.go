@@ -32,7 +32,7 @@ type FakeApphubV1beta1 struct {
 }
 
 func (c *FakeApphubV1beta1) AppHubApplications(namespace string) v1beta1.AppHubApplicationInterface {
-	return &FakeAppHubApplications{c, namespace}
+	return newFakeAppHubApplications(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

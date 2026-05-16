@@ -32,7 +32,7 @@ type FakeMetastoreV1beta1 struct {
 }
 
 func (c *FakeMetastoreV1beta1) MetastoreBackups(namespace string) v1beta1.MetastoreBackupInterface {
-	return &FakeMetastoreBackups{c, namespace}
+	return newFakeMetastoreBackups(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

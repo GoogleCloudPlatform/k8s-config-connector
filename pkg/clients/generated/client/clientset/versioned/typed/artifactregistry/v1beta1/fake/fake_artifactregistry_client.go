@@ -32,7 +32,7 @@ type FakeArtifactregistryV1beta1 struct {
 }
 
 func (c *FakeArtifactregistryV1beta1) ArtifactRegistryRepositories(namespace string) v1beta1.ArtifactRegistryRepositoryInterface {
-	return &FakeArtifactRegistryRepositories{c, namespace}
+	return newFakeArtifactRegistryRepositories(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
