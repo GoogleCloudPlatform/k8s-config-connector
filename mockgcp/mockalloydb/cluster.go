@@ -65,7 +65,6 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 		obj.DisplayName = name.ClusterName
 	}
 
-
 	// Set default values to optional fields when unset.
 	if obj.AutomatedBackupPolicy == nil {
 		obj.AutomatedBackupPolicy = &pb.AutomatedBackupPolicy{}
