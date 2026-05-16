@@ -828,7 +828,8 @@ func ComputeNetworkObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: IPv4Range
 	// MISSING: CreationTimestamp
 	// MISSING: FirewallPolicy
-	out.GatewayIPv4 = in.GatewayIPv4
+	// MISSING: GatewayIPv4
+	// (near miss): "GatewayIPv4" vs "GatewayIPV4"
 	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: Name
@@ -849,7 +850,8 @@ func ComputeNetworkObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: IPv4Range
 	// MISSING: CreationTimestamp
 	// MISSING: FirewallPolicy
-	out.GatewayIPv4 = in.GatewayIPv4
+	// MISSING: GatewayIPv4
+	// (near miss): "GatewayIPv4" vs "GatewayIPV4"
 	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: Name
@@ -873,6 +875,7 @@ func ComputeNetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Netw
 	out.Description = in.Description
 	out.EnableUlaInternalIPV6 = in.EnableUlaInternalIpv6
 	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
 	// MISSING: ID
 	out.InternalIPV6Range = in.InternalIpv6Range
 	// MISSING: Kind
@@ -898,6 +901,7 @@ func ComputeNetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compu
 	out.Description = in.Description
 	out.EnableUlaInternalIpv6 = in.EnableUlaInternalIPV6
 	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
 	// MISSING: ID
 	out.InternalIpv6Range = in.InternalIPV6Range
 	// MISSING: Kind
