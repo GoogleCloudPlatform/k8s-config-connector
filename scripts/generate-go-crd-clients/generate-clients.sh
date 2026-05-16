@@ -50,14 +50,13 @@ printf -v JOINED '%s,' "${API_VERSIONS[@]:1}"
 JOINED="${JOINED}${API_VERSIONS[0]}"
 
 cd ${REPO_ROOT}
-go run k8s.io/code-generator/cmd/client-gen@v0.29.0 \
+go run k8s.io/code-generator/cmd/client-gen@v0.36.1 \
   --clientset-name versioned \
   --input-base github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis \
   --input ${JOINED} \
-  --output-base ./ \
-  --output-package github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset \
-  --trim-path-prefix github.com/GoogleCloudPlatform/k8s-config-connector \
-  -h ${REPO_ROOT}/hack/boilerplate_client_alpha.go.txt
+  --output-dir ./pkg/clients/generated/client/clientset \
+  --output-pkg github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset \
+  --go-header-file ${REPO_ROOT}/hack/boilerplate_client_alpha.go.txt
 
 echo "Applying gofmt"
 cd ${REPO_ROOT}
