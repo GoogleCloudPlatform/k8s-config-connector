@@ -29,6 +29,10 @@ package google.cloud.batch.v1;
 
 message Task {
   TaskStatus status = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+  
+  message Inner {
+      map<string, string> labels = 1 [(google.api.field_behavior) = OPTIONAL];
+  }
 }
 `
 	fds := &descriptorpb.FileDescriptorSet{
@@ -41,6 +45,16 @@ message Task {
 						Field: []*descriptorpb.FieldDescriptorProto{
 							{
 								Name: proto.String("status"),
+							},
+						},
+						NestedType: []*descriptorpb.DescriptorProto{
+							{
+								Name: proto.String("Inner"),
+								Field: []*descriptorpb.FieldDescriptorProto{
+									{
+										Name: proto.String("labels"),
+									},
+								},
 							},
 						},
 					},
@@ -63,5 +77,16 @@ message Task {
 	behaviors, ok := ext.([]annotations.FieldBehavior)
 	if !ok || len(behaviors) != 1 || behaviors[0] != annotations.FieldBehavior_OUTPUT_ONLY {
 		t.Fatalf("expected OUTPUT_ONLY, got %v", ext)
+	}
+
+	innerField := fds.File[0].MessageType[0].NestedType[0].Field[0]
+	if innerField.Options == nil {
+		t.Fatalf("innerField.Options is nil")
+	}
+
+	ext2 := proto.GetExtension(innerField.Options, annotations.E_FieldBehavior)
+	behaviors2, ok := ext2.([]annotations.FieldBehavior)
+	if !ok || len(behaviors2) != 1 || behaviors2[0] != annotations.FieldBehavior_OPTIONAL {
+		t.Fatalf("expected OPTIONAL, got %v", ext2)
 	}
 }
