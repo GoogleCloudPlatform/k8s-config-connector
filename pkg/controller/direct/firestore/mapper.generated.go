@@ -662,7 +662,7 @@ func MapValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.MapV
 		return nil
 	}
 	out := &krmfirestorev1alpha1.MapValue{}
-	// MISSING: Fields
+	// TODO: map type string message for field Fields
 	return out
 }
 func MapValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.MapValue) *firestorepb.MapValue {
@@ -670,7 +670,7 @@ func MapValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alph
 		return nil
 	}
 	out := &firestorepb.MapValue{}
-	// MISSING: Fields
+	// TODO: map type string message for field Fields
 	return out
 }
 func Value_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_NullValue {

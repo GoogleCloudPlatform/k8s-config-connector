@@ -442,7 +442,7 @@ func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobSt
 	out := &krm.JobStatus{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_FromProto)
-	// MISSING: TaskGroups
+	// TODO: map type string message for field TaskGroups
 	out.RunDuration = direct.StringDuration_FromProto(mapCtx, in.GetRunDuration())
 	return out
 }
@@ -453,7 +453,7 @@ func JobStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus) *pb.JobStat
 	out := &pb.JobStatus{}
 	out.State = direct.Enum_ToProto[pb.JobStatus_State](mapCtx, in.State)
 	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_ToProto)
-	// MISSING: TaskGroups
+	// TODO: map type string message for field TaskGroups
 	out.RunDuration = direct.StringDuration_ToProto(mapCtx, in.RunDuration)
 	return out
 }
