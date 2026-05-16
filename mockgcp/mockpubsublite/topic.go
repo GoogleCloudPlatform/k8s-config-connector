@@ -27,8 +27,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "cloud.google.com/go/pubsublite/apiv1/pubsublitepb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
 func (s *PubSubLiteV1) GetTopic(ctx context.Context, req *pb.GetTopicRequest) (*pb.Topic, error) {
