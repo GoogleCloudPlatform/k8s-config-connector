@@ -26,8 +26,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	if !strings.Contains(url, "memcache.googleapis.com") {
 		return
 	}
-	replacements.ReplacePath("createTime", "1970-01-01T00:00:00Z")
-	replacements.ReplacePath("updateTime", "1970-01-01T00:00:00Z")
+	replacements.ReplacePath("createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath("updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("discoveryEndpoint", "10.0.0.1:11211")
 	replacements.ReplacePath("memcacheNodes[].host", "10.0.0.1")
 }
