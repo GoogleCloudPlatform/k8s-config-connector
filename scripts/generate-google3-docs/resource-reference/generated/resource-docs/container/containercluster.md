@@ -213,6 +213,14 @@ identityServiceConfig:
   enabled: boolean
 initialNodeCount: integer
 ipAllocationPolicy:
+  additionalIpRangesConfigs:
+  - podIpv4RangeNames:
+    - string
+    status: string
+    subnetworkRef:
+      external: string
+      name: string
+      namespace: string
   additionalPodRangesConfig:
     podRangeNames:
     - string
@@ -295,6 +303,7 @@ nodeConfig:
   ephemeralStorageConfig:
     localSsdCount: integer
   ephemeralStorageLocalSsdConfig:
+    dataCacheCount: integer
     localSsdCount: integer
   fastSocket:
     enabled: boolean
@@ -1357,7 +1366,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key.{% endverbatim %}</p>
+            <p>{% verbatim %}Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "ALL_OBJECTS_ENCRYPTION_ENABLED"; "DECRYPTED". key_name is the name of a CloudKMS key.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1377,7 +1386,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}ENCRYPTED or DECRYPTED.{% endverbatim %}</p>
+            <p>{% verbatim %}ENCRYPTED, ALL_OBJECTS_ENCRYPTION_ENABLED or DECRYPTED.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1668,6 +1677,96 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}AdditionalIpRangesConfigs is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. Each AdditionalIPRangesConfig corresponds to a single subnetwork.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].podIpv4RangeNames</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}List of secondary ranges names within this subnetwork that can be used for pod IPs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].podIpv4RangeNames[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].status</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Status of the subnetwork, If in draining status, subnet will not be selected for new node pools.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].subnetworkRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The subnetwork path for the additional IP range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].subnetworkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].subnetworkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalIpRangesConfigs[].subnetworkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2518,6 +2617,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.ephemeralStorageLocalSsdConfig.dataCacheCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

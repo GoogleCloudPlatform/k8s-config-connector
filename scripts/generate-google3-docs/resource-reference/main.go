@@ -53,6 +53,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/apimachinery/pkg/version"
 	"k8s.io/klog/v2"
 )
 
@@ -130,6 +131,10 @@ type resource struct {
 	StatusDescriptions                             []HumanReadableFieldDescription
 	IsAlphaResource                                bool
 	DefaultReconcileInterval                       uint32
+	ServiceName                                    string
+	ServiceDocumentation                           string
+	RESTResourceName                               string
+	RESTResourceDocumentation                      string
 }
 
 // some approved spellings in Google public doc
@@ -159,9 +164,31 @@ func main() {
 		log.Fatal(fmt.Errorf("error creating a DCL schema loader: %w", err))
 	}
 	serviceMetadataLoader := dclmetadata.New()
-	manualResources, err := supportedgvks.ManualResources(smLoader, serviceMetadataLoader)
+
+	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
-		log.Fatalf("error getting manual resources: %v", err)
+		log.Fatalf("error loading CRDs: %v", err)
+	}
+
+	crdMap := make(map[schema.GroupVersionKind]*apiextensions.CustomResourceDefinition)
+	var allResources []schema.GroupVersionKind
+	for i := range crds {
+		crd := crds[i]
+		highestVersion := ""
+		for _, v := range crd.Spec.Versions {
+			if highestVersion == "" || version.CompareKubeAwareVersionStrings(highestVersion, v.Name) < 0 {
+				highestVersion = v.Name
+			}
+		}
+		if highestVersion != "" {
+			gvk := schema.GroupVersionKind{
+				Group:   crd.Spec.Group,
+				Version: highestVersion,
+				Kind:    crd.Spec.Names.Kind,
+			}
+			allResources = append(allResources, gvk)
+			crdMap[gvk] = &crd
+		}
 	}
 
 	directGVKs := supportedgvks.DirectResources()
@@ -171,7 +198,15 @@ func main() {
 		serviceMetadataLoader: serviceMetadataLoader,
 		directGVKs:            directGVKs,
 	}
-	for _, gvk := range manualResources {
+	for _, gvk := range allResources {
+		// Skip operator CRDs
+		if gvk.Group == "core.cnrm.cloud.google.com" ||
+			gvk.Group == "addon.cnrm.cloud.google.com" ||
+			gvk.Group == "customize.core.cnrm.cloud.google.com" {
+			klog.Infof("skipping operator resource %v", gvk)
+			continue
+		}
+
 		// TODO: Identify highest supported version for direct resource.
 		if strings.HasPrefix(gvk.Version, "v1alpha") &&
 			!(gvk.Kind == "BigQueryAnalyticsHubDataExchange" ||
@@ -181,7 +216,7 @@ func main() {
 			continue
 		}
 		// TODO: Add resource docs for all the v1beta1 resources and remove exceptions.
-		if err := docGenerator.generateDocForGVK(gvk); err != nil {
+		if err := docGenerator.generateDocForGVK(gvk, crdMap[gvk]); err != nil {
 			log.Fatal(fmt.Errorf("error generating doc for GVK %v: %w", gvk, err))
 		}
 	}
@@ -193,12 +228,12 @@ type DocGenerator struct {
 	directGVKs            map[schema.GroupVersionKind]bool
 }
 
-func (d *DocGenerator) generateDocForGVK(gvk schema.GroupVersionKind) error {
+func (d *DocGenerator) generateDocForGVK(gvk schema.GroupVersionKind, crd *apiextensions.CustomResourceDefinition) error {
 	template, err := templateForGVK(gvk)
 	if err != nil {
 		return fmt.Errorf("error creating template: %w", err)
 	}
-	templateData, err := d.templateDataForGVK(gvk)
+	templateData, err := d.templateDataForGVK(gvk, crd)
 	if err != nil {
 		return fmt.Errorf("error preparing template data: %w", err)
 	}
@@ -215,8 +250,14 @@ func (d *DocGenerator) generateDocForGVK(gvk schema.GroupVersionKind) error {
 func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 	templatesPath := repo.GetG3ResourceReferenceTemplatesPath()
 	templateFileName := templateFileNameForGVK(gvk)
+	primaryTemplatePath := filepath.Join(templatesPath, templateFileName)
+	if _, err := os.Stat(primaryTemplatePath); os.IsNotExist(err) {
+		primaryTemplatePath = filepath.Join(templatesPath, "_default.tmpl")
+		templateFileName = "_default.tmpl"
+	}
+
 	templateFiles := []string{
-		filepath.Join(templatesPath, templateFileName),
+		primaryTemplatePath,
 		filepath.Join(templatesPath, "shared/headercomment.tmpl"),
 		filepath.Join(templatesPath, "shared/alphadisclaimer.tmpl"),
 		filepath.Join(templatesPath, "shared/bigquerydatasetiamnote.tmpl"),
@@ -232,8 +273,8 @@ func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 	return template, nil
 }
 
-func (d *DocGenerator) templateDataForGVK(gvk schema.GroupVersionKind) (interface{}, error) {
-	resource, err := d.constructResourceForGVK(gvk)
+func (d *DocGenerator) templateDataForGVK(gvk schema.GroupVersionKind, crd *apiextensions.CustomResourceDefinition) (interface{}, error) {
+	resource, err := d.constructResourceForGVK(gvk, crd)
 	if err != nil {
 		return nil, fmt.Errorf("error constructing resource data: %w", err)
 	}
@@ -278,14 +319,9 @@ func (d *DocGenerator) templateDataForGVK(gvk schema.GroupVersionKind) (interfac
 	}
 }
 
-func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*resource, error) {
+func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind, crd *apiextensions.CustomResourceDefinition) (*resource, error) {
 	r := &resource{}
 
-	// crd properties
-	crd, err := crdloader.FileToCRD(crdFilePathForGVK(gvk))
-	if err != nil {
-		return nil, fmt.Errorf("error loading CRD: %w", err)
-	}
 	r.FullyQualifiedName = crd.Name
 	r.Kind = crd.Spec.Names.Kind
 	crd.Spec.Names.ShortNames = append(crd.Spec.Names.ShortNames, strings.ToLower(r.Kind))
@@ -308,7 +344,6 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*re
 		return nil, fmt.Errorf("buildFieldDescriptions: %w", err)
 	}
 	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, d.smLoader, d.serviceMetadataLoader).Seconds())
-	isDirectGVK := d.directGVKs[gvk]
 	if err != nil {
 		return nil, fmt.Errorf("error checking whether GVK is direct: %w", err)
 	}
@@ -324,9 +359,8 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*re
 	} else {
 		if err := d.handleAnnotationsAndIAMSettingsForTFBasedResource(r, gvk); err != nil {
 			// TODO: Add annotation and IAM settings handling logic for direct GKs.
-			if isDirectGVK &&
-				strings.Contains(err.Error(), fmt.Sprintf("unable to get service mapping: no mapping with name '%s' found", gvk.Group)) {
-				log.Printf("reference doc for direct GK '%v' doesn't cover annotations and IAM settings", gvk.GroupKind().String())
+			if strings.Contains(err.Error(), fmt.Sprintf("unable to get service mapping: no mapping with name '%s' found", gvk.Group)) {
+				log.Printf("reference doc for GK '%v' doesn't cover annotations and IAM settings", gvk.GroupKind().String())
 			} else {
 				return nil, fmt.Errorf("error processing the TF based resource %v: %w", gvk, err)
 			}
@@ -336,9 +370,8 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*re
 	r.SampleYamls, err = d.buildSamples(r.Kind, sampleDirPathForGVK(gvk))
 	if err != nil {
 		// TODO: Samples should also be required for direct CRDs.
-		if isDirectGVK &&
-			strings.Contains(err.Error(), fmt.Sprintf("/config/samples/resources/%s: no such file or directory", strings.ToLower(gvk.Kind))) {
-			log.Printf("direct GK '%v' doesn't have samples", gvk.GroupKind().String())
+		if strings.Contains(err.Error(), fmt.Sprintf("/config/samples/resources/%s: no such file or directory", strings.ToLower(gvk.Kind))) {
+			log.Printf("GK '%v' doesn't have samples", gvk.GroupKind().String())
 		} else {
 			return nil, fmt.Errorf("error building samples: %w", err)
 		}
