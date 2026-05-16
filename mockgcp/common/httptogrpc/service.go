@@ -281,6 +281,22 @@ func (s *grpcService) addGRPCMethod(goMethod reflect.Value, goMethodType reflect
 				errs = append(errs, fmt.Errorf("unhandled annotation string %q", fd.JSONName()))
 			}
 
+		case protoreflect.BoolKind:
+			switch fd.JSONName() {
+			case "deprecated":
+				// ignore
+			default:
+				errs = append(errs, fmt.Errorf("unhandled annotation bool %q", fd.JSONName()))
+			}
+
+		case protoreflect.EnumKind:
+			switch fd.JSONName() {
+			case "idempotency_level":
+				// ignore
+			default:
+				errs = append(errs, fmt.Errorf("unhandled annotation enum %q", fd.JSONName()))
+			}
+
 		default:
 			errs = append(errs, fmt.Errorf("unhandled option kind in %v", fd))
 		}
