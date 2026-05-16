@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1alpha1"
+	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // GKEHubNamespacesGetter has a method to return a GKEHubNamespaceInterface.
@@ -41,158 +40,34 @@ type GKEHubNamespacesGetter interface {
 
 // GKEHubNamespaceInterface has methods to work with GKEHubNamespace resources.
 type GKEHubNamespaceInterface interface {
-	Create(ctx context.Context, gKEHubNamespace *v1alpha1.GKEHubNamespace, opts v1.CreateOptions) (*v1alpha1.GKEHubNamespace, error)
-	Update(ctx context.Context, gKEHubNamespace *v1alpha1.GKEHubNamespace, opts v1.UpdateOptions) (*v1alpha1.GKEHubNamespace, error)
-	UpdateStatus(ctx context.Context, gKEHubNamespace *v1alpha1.GKEHubNamespace, opts v1.UpdateOptions) (*v1alpha1.GKEHubNamespace, error)
+	Create(ctx context.Context, gKEHubNamespace *gkehubv1alpha1.GKEHubNamespace, opts v1.CreateOptions) (*gkehubv1alpha1.GKEHubNamespace, error)
+	Update(ctx context.Context, gKEHubNamespace *gkehubv1alpha1.GKEHubNamespace, opts v1.UpdateOptions) (*gkehubv1alpha1.GKEHubNamespace, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, gKEHubNamespace *gkehubv1alpha1.GKEHubNamespace, opts v1.UpdateOptions) (*gkehubv1alpha1.GKEHubNamespace, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.GKEHubNamespace, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.GKEHubNamespaceList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*gkehubv1alpha1.GKEHubNamespace, error)
+	List(ctx context.Context, opts v1.ListOptions) (*gkehubv1alpha1.GKEHubNamespaceList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.GKEHubNamespace, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *gkehubv1alpha1.GKEHubNamespace, err error)
 	GKEHubNamespaceExpansion
 }
 
 // gKEHubNamespaces implements GKEHubNamespaceInterface
 type gKEHubNamespaces struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*gkehubv1alpha1.GKEHubNamespace, *gkehubv1alpha1.GKEHubNamespaceList]
 }
 
 // newGKEHubNamespaces returns a GKEHubNamespaces
 func newGKEHubNamespaces(c *GkehubV1alpha1Client, namespace string) *gKEHubNamespaces {
 	return &gKEHubNamespaces{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*gkehubv1alpha1.GKEHubNamespace, *gkehubv1alpha1.GKEHubNamespaceList](
+			"gkehubnamespaces",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *gkehubv1alpha1.GKEHubNamespace { return &gkehubv1alpha1.GKEHubNamespace{} },
+			func() *gkehubv1alpha1.GKEHubNamespaceList { return &gkehubv1alpha1.GKEHubNamespaceList{} },
+		),
 	}
-}
-
-// Get takes name of the gKEHubNamespace, and returns the corresponding gKEHubNamespace object, and an error if there is any.
-func (c *gKEHubNamespaces) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.GKEHubNamespace, err error) {
-	result = &v1alpha1.GKEHubNamespace{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("gkehubnamespaces").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of GKEHubNamespaces that match those selectors.
-func (c *gKEHubNamespaces) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.GKEHubNamespaceList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.GKEHubNamespaceList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("gkehubnamespaces").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested gKEHubNamespaces.
-func (c *gKEHubNamespaces) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("gkehubnamespaces").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a gKEHubNamespace and creates it.  Returns the server's representation of the gKEHubNamespace, and an error, if there is any.
-func (c *gKEHubNamespaces) Create(ctx context.Context, gKEHubNamespace *v1alpha1.GKEHubNamespace, opts v1.CreateOptions) (result *v1alpha1.GKEHubNamespace, err error) {
-	result = &v1alpha1.GKEHubNamespace{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("gkehubnamespaces").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(gKEHubNamespace).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a gKEHubNamespace and updates it. Returns the server's representation of the gKEHubNamespace, and an error, if there is any.
-func (c *gKEHubNamespaces) Update(ctx context.Context, gKEHubNamespace *v1alpha1.GKEHubNamespace, opts v1.UpdateOptions) (result *v1alpha1.GKEHubNamespace, err error) {
-	result = &v1alpha1.GKEHubNamespace{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("gkehubnamespaces").
-		Name(gKEHubNamespace.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(gKEHubNamespace).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *gKEHubNamespaces) UpdateStatus(ctx context.Context, gKEHubNamespace *v1alpha1.GKEHubNamespace, opts v1.UpdateOptions) (result *v1alpha1.GKEHubNamespace, err error) {
-	result = &v1alpha1.GKEHubNamespace{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("gkehubnamespaces").
-		Name(gKEHubNamespace.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(gKEHubNamespace).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the gKEHubNamespace and deletes it. Returns an error if one occurs.
-func (c *gKEHubNamespaces) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("gkehubnamespaces").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *gKEHubNamespaces) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("gkehubnamespaces").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched gKEHubNamespace.
-func (c *gKEHubNamespaces) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.GKEHubNamespace, err error) {
-	result = &v1alpha1.GKEHubNamespace{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("gkehubnamespaces").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

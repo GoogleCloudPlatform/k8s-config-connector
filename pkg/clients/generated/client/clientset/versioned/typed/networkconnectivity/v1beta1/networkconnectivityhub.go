@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1beta1"
+	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // NetworkConnectivityHubsGetter has a method to return a NetworkConnectivityHubInterface.
@@ -41,158 +40,38 @@ type NetworkConnectivityHubsGetter interface {
 
 // NetworkConnectivityHubInterface has methods to work with NetworkConnectivityHub resources.
 type NetworkConnectivityHubInterface interface {
-	Create(ctx context.Context, networkConnectivityHub *v1beta1.NetworkConnectivityHub, opts v1.CreateOptions) (*v1beta1.NetworkConnectivityHub, error)
-	Update(ctx context.Context, networkConnectivityHub *v1beta1.NetworkConnectivityHub, opts v1.UpdateOptions) (*v1beta1.NetworkConnectivityHub, error)
-	UpdateStatus(ctx context.Context, networkConnectivityHub *v1beta1.NetworkConnectivityHub, opts v1.UpdateOptions) (*v1beta1.NetworkConnectivityHub, error)
+	Create(ctx context.Context, networkConnectivityHub *networkconnectivityv1beta1.NetworkConnectivityHub, opts v1.CreateOptions) (*networkconnectivityv1beta1.NetworkConnectivityHub, error)
+	Update(ctx context.Context, networkConnectivityHub *networkconnectivityv1beta1.NetworkConnectivityHub, opts v1.UpdateOptions) (*networkconnectivityv1beta1.NetworkConnectivityHub, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, networkConnectivityHub *networkconnectivityv1beta1.NetworkConnectivityHub, opts v1.UpdateOptions) (*networkconnectivityv1beta1.NetworkConnectivityHub, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.NetworkConnectivityHub, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.NetworkConnectivityHubList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*networkconnectivityv1beta1.NetworkConnectivityHub, error)
+	List(ctx context.Context, opts v1.ListOptions) (*networkconnectivityv1beta1.NetworkConnectivityHubList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NetworkConnectivityHub, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *networkconnectivityv1beta1.NetworkConnectivityHub, err error)
 	NetworkConnectivityHubExpansion
 }
 
 // networkConnectivityHubs implements NetworkConnectivityHubInterface
 type networkConnectivityHubs struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*networkconnectivityv1beta1.NetworkConnectivityHub, *networkconnectivityv1beta1.NetworkConnectivityHubList]
 }
 
 // newNetworkConnectivityHubs returns a NetworkConnectivityHubs
 func newNetworkConnectivityHubs(c *NetworkconnectivityV1beta1Client, namespace string) *networkConnectivityHubs {
 	return &networkConnectivityHubs{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*networkconnectivityv1beta1.NetworkConnectivityHub, *networkconnectivityv1beta1.NetworkConnectivityHubList](
+			"networkconnectivityhubs",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *networkconnectivityv1beta1.NetworkConnectivityHub {
+				return &networkconnectivityv1beta1.NetworkConnectivityHub{}
+			},
+			func() *networkconnectivityv1beta1.NetworkConnectivityHubList {
+				return &networkconnectivityv1beta1.NetworkConnectivityHubList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the networkConnectivityHub, and returns the corresponding networkConnectivityHub object, and an error if there is any.
-func (c *networkConnectivityHubs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.NetworkConnectivityHub, err error) {
-	result = &v1beta1.NetworkConnectivityHub{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("networkconnectivityhubs").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of NetworkConnectivityHubs that match those selectors.
-func (c *networkConnectivityHubs) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.NetworkConnectivityHubList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.NetworkConnectivityHubList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("networkconnectivityhubs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested networkConnectivityHubs.
-func (c *networkConnectivityHubs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("networkconnectivityhubs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a networkConnectivityHub and creates it.  Returns the server's representation of the networkConnectivityHub, and an error, if there is any.
-func (c *networkConnectivityHubs) Create(ctx context.Context, networkConnectivityHub *v1beta1.NetworkConnectivityHub, opts v1.CreateOptions) (result *v1beta1.NetworkConnectivityHub, err error) {
-	result = &v1beta1.NetworkConnectivityHub{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("networkconnectivityhubs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(networkConnectivityHub).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a networkConnectivityHub and updates it. Returns the server's representation of the networkConnectivityHub, and an error, if there is any.
-func (c *networkConnectivityHubs) Update(ctx context.Context, networkConnectivityHub *v1beta1.NetworkConnectivityHub, opts v1.UpdateOptions) (result *v1beta1.NetworkConnectivityHub, err error) {
-	result = &v1beta1.NetworkConnectivityHub{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("networkconnectivityhubs").
-		Name(networkConnectivityHub.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(networkConnectivityHub).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *networkConnectivityHubs) UpdateStatus(ctx context.Context, networkConnectivityHub *v1beta1.NetworkConnectivityHub, opts v1.UpdateOptions) (result *v1beta1.NetworkConnectivityHub, err error) {
-	result = &v1beta1.NetworkConnectivityHub{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("networkconnectivityhubs").
-		Name(networkConnectivityHub.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(networkConnectivityHub).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the networkConnectivityHub and deletes it. Returns an error if one occurs.
-func (c *networkConnectivityHubs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("networkconnectivityhubs").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *networkConnectivityHubs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("networkconnectivityhubs").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched networkConnectivityHub.
-func (c *networkConnectivityHubs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NetworkConnectivityHub, err error) {
-	result = &v1beta1.NetworkConnectivityHub{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("networkconnectivityhubs").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

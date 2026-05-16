@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDataprocWorkflowTemplates implements DataprocWorkflowTemplateInterface
-type FakeDataprocWorkflowTemplates struct {
+// fakeDataprocWorkflowTemplates implements DataprocWorkflowTemplateInterface
+type fakeDataprocWorkflowTemplates struct {
+	*gentype.FakeClientWithList[*v1beta1.DataprocWorkflowTemplate, *v1beta1.DataprocWorkflowTemplateList]
 	Fake *FakeDataprocV1beta1
-	ns   string
 }
 
-var dataprocworkflowtemplatesResource = v1beta1.SchemeGroupVersion.WithResource("dataprocworkflowtemplates")
-
-var dataprocworkflowtemplatesKind = v1beta1.SchemeGroupVersion.WithKind("DataprocWorkflowTemplate")
-
-// Get takes name of the dataprocWorkflowTemplate, and returns the corresponding dataprocWorkflowTemplate object, and an error if there is any.
-func (c *FakeDataprocWorkflowTemplates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataprocWorkflowTemplate, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(dataprocworkflowtemplatesResource, c.ns, name), &v1beta1.DataprocWorkflowTemplate{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDataprocWorkflowTemplates(fake *FakeDataprocV1beta1, namespace string) dataprocv1beta1.DataprocWorkflowTemplateInterface {
+	return &fakeDataprocWorkflowTemplates{
+		gentype.NewFakeClientWithList[*v1beta1.DataprocWorkflowTemplate, *v1beta1.DataprocWorkflowTemplateList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("dataprocworkflowtemplates"),
+			v1beta1.SchemeGroupVersion.WithKind("DataprocWorkflowTemplate"),
+			func() *v1beta1.DataprocWorkflowTemplate { return &v1beta1.DataprocWorkflowTemplate{} },
+			func() *v1beta1.DataprocWorkflowTemplateList { return &v1beta1.DataprocWorkflowTemplateList{} },
+			func(dst, src *v1beta1.DataprocWorkflowTemplateList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.DataprocWorkflowTemplateList) []*v1beta1.DataprocWorkflowTemplate {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.DataprocWorkflowTemplateList, items []*v1beta1.DataprocWorkflowTemplate) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.DataprocWorkflowTemplate), err
-}
-
-// List takes label and field selectors, and returns the list of DataprocWorkflowTemplates that match those selectors.
-func (c *FakeDataprocWorkflowTemplates) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.DataprocWorkflowTemplateList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(dataprocworkflowtemplatesResource, dataprocworkflowtemplatesKind, c.ns, opts), &v1beta1.DataprocWorkflowTemplateList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.DataprocWorkflowTemplateList{ListMeta: obj.(*v1beta1.DataprocWorkflowTemplateList).ListMeta}
-	for _, item := range obj.(*v1beta1.DataprocWorkflowTemplateList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dataprocWorkflowTemplates.
-func (c *FakeDataprocWorkflowTemplates) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(dataprocworkflowtemplatesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dataprocWorkflowTemplate and creates it.  Returns the server's representation of the dataprocWorkflowTemplate, and an error, if there is any.
-func (c *FakeDataprocWorkflowTemplates) Create(ctx context.Context, dataprocWorkflowTemplate *v1beta1.DataprocWorkflowTemplate, opts v1.CreateOptions) (result *v1beta1.DataprocWorkflowTemplate, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(dataprocworkflowtemplatesResource, c.ns, dataprocWorkflowTemplate), &v1beta1.DataprocWorkflowTemplate{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DataprocWorkflowTemplate), err
-}
-
-// Update takes the representation of a dataprocWorkflowTemplate and updates it. Returns the server's representation of the dataprocWorkflowTemplate, and an error, if there is any.
-func (c *FakeDataprocWorkflowTemplates) Update(ctx context.Context, dataprocWorkflowTemplate *v1beta1.DataprocWorkflowTemplate, opts v1.UpdateOptions) (result *v1beta1.DataprocWorkflowTemplate, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(dataprocworkflowtemplatesResource, c.ns, dataprocWorkflowTemplate), &v1beta1.DataprocWorkflowTemplate{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DataprocWorkflowTemplate), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDataprocWorkflowTemplates) UpdateStatus(ctx context.Context, dataprocWorkflowTemplate *v1beta1.DataprocWorkflowTemplate, opts v1.UpdateOptions) (*v1beta1.DataprocWorkflowTemplate, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(dataprocworkflowtemplatesResource, "status", c.ns, dataprocWorkflowTemplate), &v1beta1.DataprocWorkflowTemplate{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DataprocWorkflowTemplate), err
-}
-
-// Delete takes name of the dataprocWorkflowTemplate and deletes it. Returns an error if one occurs.
-func (c *FakeDataprocWorkflowTemplates) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(dataprocworkflowtemplatesResource, c.ns, name, opts), &v1beta1.DataprocWorkflowTemplate{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDataprocWorkflowTemplates) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(dataprocworkflowtemplatesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.DataprocWorkflowTemplateList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dataprocWorkflowTemplate.
-func (c *FakeDataprocWorkflowTemplates) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DataprocWorkflowTemplate, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(dataprocworkflowtemplatesResource, c.ns, name, pt, data, subresources...), &v1beta1.DataprocWorkflowTemplate{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DataprocWorkflowTemplate), err
 }

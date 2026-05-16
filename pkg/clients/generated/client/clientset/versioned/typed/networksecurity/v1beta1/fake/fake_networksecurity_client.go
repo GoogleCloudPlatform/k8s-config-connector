@@ -32,15 +32,15 @@ type FakeNetworksecurityV1beta1 struct {
 }
 
 func (c *FakeNetworksecurityV1beta1) NetworkSecurityAuthorizationPolicies(namespace string) v1beta1.NetworkSecurityAuthorizationPolicyInterface {
-	return &FakeNetworkSecurityAuthorizationPolicies{c, namespace}
+	return newFakeNetworkSecurityAuthorizationPolicies(c, namespace)
 }
 
 func (c *FakeNetworksecurityV1beta1) NetworkSecurityClientTLSPolicies(namespace string) v1beta1.NetworkSecurityClientTLSPolicyInterface {
-	return &FakeNetworkSecurityClientTLSPolicies{c, namespace}
+	return newFakeNetworkSecurityClientTLSPolicies(c, namespace)
 }
 
 func (c *FakeNetworksecurityV1beta1) NetworkSecurityServerTLSPolicies(namespace string) v1beta1.NetworkSecurityServerTLSPolicyInterface {
-	return &FakeNetworkSecurityServerTLSPolicies{c, namespace}
+	return newFakeNetworkSecurityServerTLSPolicies(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

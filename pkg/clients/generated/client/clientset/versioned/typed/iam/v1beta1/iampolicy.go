@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // IAMPoliciesGetter has a method to return a IAMPolicyInterface.
@@ -41,158 +40,34 @@ type IAMPoliciesGetter interface {
 
 // IAMPolicyInterface has methods to work with IAMPolicy resources.
 type IAMPolicyInterface interface {
-	Create(ctx context.Context, iAMPolicy *v1beta1.IAMPolicy, opts v1.CreateOptions) (*v1beta1.IAMPolicy, error)
-	Update(ctx context.Context, iAMPolicy *v1beta1.IAMPolicy, opts v1.UpdateOptions) (*v1beta1.IAMPolicy, error)
-	UpdateStatus(ctx context.Context, iAMPolicy *v1beta1.IAMPolicy, opts v1.UpdateOptions) (*v1beta1.IAMPolicy, error)
+	Create(ctx context.Context, iAMPolicy *iamv1beta1.IAMPolicy, opts v1.CreateOptions) (*iamv1beta1.IAMPolicy, error)
+	Update(ctx context.Context, iAMPolicy *iamv1beta1.IAMPolicy, opts v1.UpdateOptions) (*iamv1beta1.IAMPolicy, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, iAMPolicy *iamv1beta1.IAMPolicy, opts v1.UpdateOptions) (*iamv1beta1.IAMPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.IAMPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.IAMPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*iamv1beta1.IAMPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*iamv1beta1.IAMPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAMPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *iamv1beta1.IAMPolicy, err error)
 	IAMPolicyExpansion
 }
 
 // iAMPolicies implements IAMPolicyInterface
 type iAMPolicies struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*iamv1beta1.IAMPolicy, *iamv1beta1.IAMPolicyList]
 }
 
 // newIAMPolicies returns a IAMPolicies
 func newIAMPolicies(c *IamV1beta1Client, namespace string) *iAMPolicies {
 	return &iAMPolicies{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*iamv1beta1.IAMPolicy, *iamv1beta1.IAMPolicyList](
+			"iampolicies",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *iamv1beta1.IAMPolicy { return &iamv1beta1.IAMPolicy{} },
+			func() *iamv1beta1.IAMPolicyList { return &iamv1beta1.IAMPolicyList{} },
+		),
 	}
-}
-
-// Get takes name of the iAMPolicy, and returns the corresponding iAMPolicy object, and an error if there is any.
-func (c *iAMPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IAMPolicy, err error) {
-	result = &v1beta1.IAMPolicy{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("iampolicies").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of IAMPolicies that match those selectors.
-func (c *iAMPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.IAMPolicyList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.IAMPolicyList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("iampolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested iAMPolicies.
-func (c *iAMPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("iampolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a iAMPolicy and creates it.  Returns the server's representation of the iAMPolicy, and an error, if there is any.
-func (c *iAMPolicies) Create(ctx context.Context, iAMPolicy *v1beta1.IAMPolicy, opts v1.CreateOptions) (result *v1beta1.IAMPolicy, err error) {
-	result = &v1beta1.IAMPolicy{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("iampolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(iAMPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a iAMPolicy and updates it. Returns the server's representation of the iAMPolicy, and an error, if there is any.
-func (c *iAMPolicies) Update(ctx context.Context, iAMPolicy *v1beta1.IAMPolicy, opts v1.UpdateOptions) (result *v1beta1.IAMPolicy, err error) {
-	result = &v1beta1.IAMPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("iampolicies").
-		Name(iAMPolicy.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(iAMPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *iAMPolicies) UpdateStatus(ctx context.Context, iAMPolicy *v1beta1.IAMPolicy, opts v1.UpdateOptions) (result *v1beta1.IAMPolicy, err error) {
-	result = &v1beta1.IAMPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("iampolicies").
-		Name(iAMPolicy.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(iAMPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the iAMPolicy and deletes it. Returns an error if one occurs.
-func (c *iAMPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("iampolicies").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *iAMPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("iampolicies").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched iAMPolicy.
-func (c *iAMPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAMPolicy, err error) {
-	result = &v1beta1.IAMPolicy{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("iampolicies").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }
