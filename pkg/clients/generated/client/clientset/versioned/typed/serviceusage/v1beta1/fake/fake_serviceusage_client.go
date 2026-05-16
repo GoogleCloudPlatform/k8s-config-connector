@@ -32,11 +32,11 @@ type FakeServiceusageV1beta1 struct {
 }
 
 func (c *FakeServiceusageV1beta1) Services(namespace string) v1beta1.ServiceInterface {
-	return &FakeServices{c, namespace}
+	return newFakeServices(c, namespace)
 }
 
 func (c *FakeServiceusageV1beta1) ServiceIdentities(namespace string) v1beta1.ServiceIdentityInterface {
-	return &FakeServiceIdentities{c, namespace}
+	return newFakeServiceIdentities(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

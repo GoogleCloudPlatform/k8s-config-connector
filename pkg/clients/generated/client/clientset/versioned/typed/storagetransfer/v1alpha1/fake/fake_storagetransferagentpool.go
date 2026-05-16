@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeStorageTransferAgentPools implements StorageTransferAgentPoolInterface
-type FakeStorageTransferAgentPools struct {
+// fakeStorageTransferAgentPools implements StorageTransferAgentPoolInterface
+type fakeStorageTransferAgentPools struct {
+	*gentype.FakeClientWithList[*v1alpha1.StorageTransferAgentPool, *v1alpha1.StorageTransferAgentPoolList]
 	Fake *FakeStoragetransferV1alpha1
-	ns   string
 }
 
-var storagetransferagentpoolsResource = v1alpha1.SchemeGroupVersion.WithResource("storagetransferagentpools")
-
-var storagetransferagentpoolsKind = v1alpha1.SchemeGroupVersion.WithKind("StorageTransferAgentPool")
-
-// Get takes name of the storageTransferAgentPool, and returns the corresponding storageTransferAgentPool object, and an error if there is any.
-func (c *FakeStorageTransferAgentPools) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.StorageTransferAgentPool, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(storagetransferagentpoolsResource, c.ns, name), &v1alpha1.StorageTransferAgentPool{})
-
-	if obj == nil {
-		return nil, err
+func newFakeStorageTransferAgentPools(fake *FakeStoragetransferV1alpha1, namespace string) storagetransferv1alpha1.StorageTransferAgentPoolInterface {
+	return &fakeStorageTransferAgentPools{
+		gentype.NewFakeClientWithList[*v1alpha1.StorageTransferAgentPool, *v1alpha1.StorageTransferAgentPoolList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("storagetransferagentpools"),
+			v1alpha1.SchemeGroupVersion.WithKind("StorageTransferAgentPool"),
+			func() *v1alpha1.StorageTransferAgentPool { return &v1alpha1.StorageTransferAgentPool{} },
+			func() *v1alpha1.StorageTransferAgentPoolList { return &v1alpha1.StorageTransferAgentPoolList{} },
+			func(dst, src *v1alpha1.StorageTransferAgentPoolList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.StorageTransferAgentPoolList) []*v1alpha1.StorageTransferAgentPool {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.StorageTransferAgentPoolList, items []*v1alpha1.StorageTransferAgentPool) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.StorageTransferAgentPool), err
-}
-
-// List takes label and field selectors, and returns the list of StorageTransferAgentPools that match those selectors.
-func (c *FakeStorageTransferAgentPools) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.StorageTransferAgentPoolList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(storagetransferagentpoolsResource, storagetransferagentpoolsKind, c.ns, opts), &v1alpha1.StorageTransferAgentPoolList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.StorageTransferAgentPoolList{ListMeta: obj.(*v1alpha1.StorageTransferAgentPoolList).ListMeta}
-	for _, item := range obj.(*v1alpha1.StorageTransferAgentPoolList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested storageTransferAgentPools.
-func (c *FakeStorageTransferAgentPools) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(storagetransferagentpoolsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a storageTransferAgentPool and creates it.  Returns the server's representation of the storageTransferAgentPool, and an error, if there is any.
-func (c *FakeStorageTransferAgentPools) Create(ctx context.Context, storageTransferAgentPool *v1alpha1.StorageTransferAgentPool, opts v1.CreateOptions) (result *v1alpha1.StorageTransferAgentPool, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(storagetransferagentpoolsResource, c.ns, storageTransferAgentPool), &v1alpha1.StorageTransferAgentPool{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageTransferAgentPool), err
-}
-
-// Update takes the representation of a storageTransferAgentPool and updates it. Returns the server's representation of the storageTransferAgentPool, and an error, if there is any.
-func (c *FakeStorageTransferAgentPools) Update(ctx context.Context, storageTransferAgentPool *v1alpha1.StorageTransferAgentPool, opts v1.UpdateOptions) (result *v1alpha1.StorageTransferAgentPool, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(storagetransferagentpoolsResource, c.ns, storageTransferAgentPool), &v1alpha1.StorageTransferAgentPool{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageTransferAgentPool), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeStorageTransferAgentPools) UpdateStatus(ctx context.Context, storageTransferAgentPool *v1alpha1.StorageTransferAgentPool, opts v1.UpdateOptions) (*v1alpha1.StorageTransferAgentPool, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(storagetransferagentpoolsResource, "status", c.ns, storageTransferAgentPool), &v1alpha1.StorageTransferAgentPool{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageTransferAgentPool), err
-}
-
-// Delete takes name of the storageTransferAgentPool and deletes it. Returns an error if one occurs.
-func (c *FakeStorageTransferAgentPools) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(storagetransferagentpoolsResource, c.ns, name, opts), &v1alpha1.StorageTransferAgentPool{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeStorageTransferAgentPools) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(storagetransferagentpoolsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.StorageTransferAgentPoolList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched storageTransferAgentPool.
-func (c *FakeStorageTransferAgentPools) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.StorageTransferAgentPool, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(storagetransferagentpoolsResource, c.ns, name, pt, data, subresources...), &v1alpha1.StorageTransferAgentPool{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageTransferAgentPool), err
 }

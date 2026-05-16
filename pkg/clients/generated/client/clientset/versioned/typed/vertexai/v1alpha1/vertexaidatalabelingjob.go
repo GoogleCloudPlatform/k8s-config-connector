@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
+	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // VertexAIDataLabelingJobsGetter has a method to return a VertexAIDataLabelingJobInterface.
@@ -41,158 +40,36 @@ type VertexAIDataLabelingJobsGetter interface {
 
 // VertexAIDataLabelingJobInterface has methods to work with VertexAIDataLabelingJob resources.
 type VertexAIDataLabelingJobInterface interface {
-	Create(ctx context.Context, vertexAIDataLabelingJob *v1alpha1.VertexAIDataLabelingJob, opts v1.CreateOptions) (*v1alpha1.VertexAIDataLabelingJob, error)
-	Update(ctx context.Context, vertexAIDataLabelingJob *v1alpha1.VertexAIDataLabelingJob, opts v1.UpdateOptions) (*v1alpha1.VertexAIDataLabelingJob, error)
-	UpdateStatus(ctx context.Context, vertexAIDataLabelingJob *v1alpha1.VertexAIDataLabelingJob, opts v1.UpdateOptions) (*v1alpha1.VertexAIDataLabelingJob, error)
+	Create(ctx context.Context, vertexAIDataLabelingJob *vertexaiv1alpha1.VertexAIDataLabelingJob, opts v1.CreateOptions) (*vertexaiv1alpha1.VertexAIDataLabelingJob, error)
+	Update(ctx context.Context, vertexAIDataLabelingJob *vertexaiv1alpha1.VertexAIDataLabelingJob, opts v1.UpdateOptions) (*vertexaiv1alpha1.VertexAIDataLabelingJob, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, vertexAIDataLabelingJob *vertexaiv1alpha1.VertexAIDataLabelingJob, opts v1.UpdateOptions) (*vertexaiv1alpha1.VertexAIDataLabelingJob, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.VertexAIDataLabelingJob, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.VertexAIDataLabelingJobList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*vertexaiv1alpha1.VertexAIDataLabelingJob, error)
+	List(ctx context.Context, opts v1.ListOptions) (*vertexaiv1alpha1.VertexAIDataLabelingJobList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VertexAIDataLabelingJob, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *vertexaiv1alpha1.VertexAIDataLabelingJob, err error)
 	VertexAIDataLabelingJobExpansion
 }
 
 // vertexAIDataLabelingJobs implements VertexAIDataLabelingJobInterface
 type vertexAIDataLabelingJobs struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*vertexaiv1alpha1.VertexAIDataLabelingJob, *vertexaiv1alpha1.VertexAIDataLabelingJobList]
 }
 
 // newVertexAIDataLabelingJobs returns a VertexAIDataLabelingJobs
 func newVertexAIDataLabelingJobs(c *VertexaiV1alpha1Client, namespace string) *vertexAIDataLabelingJobs {
 	return &vertexAIDataLabelingJobs{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*vertexaiv1alpha1.VertexAIDataLabelingJob, *vertexaiv1alpha1.VertexAIDataLabelingJobList](
+			"vertexaidatalabelingjobs",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *vertexaiv1alpha1.VertexAIDataLabelingJob { return &vertexaiv1alpha1.VertexAIDataLabelingJob{} },
+			func() *vertexaiv1alpha1.VertexAIDataLabelingJobList {
+				return &vertexaiv1alpha1.VertexAIDataLabelingJobList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the vertexAIDataLabelingJob, and returns the corresponding vertexAIDataLabelingJob object, and an error if there is any.
-func (c *vertexAIDataLabelingJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VertexAIDataLabelingJob, err error) {
-	result = &v1alpha1.VertexAIDataLabelingJob{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("vertexaidatalabelingjobs").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of VertexAIDataLabelingJobs that match those selectors.
-func (c *vertexAIDataLabelingJobs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VertexAIDataLabelingJobList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.VertexAIDataLabelingJobList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("vertexaidatalabelingjobs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested vertexAIDataLabelingJobs.
-func (c *vertexAIDataLabelingJobs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("vertexaidatalabelingjobs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a vertexAIDataLabelingJob and creates it.  Returns the server's representation of the vertexAIDataLabelingJob, and an error, if there is any.
-func (c *vertexAIDataLabelingJobs) Create(ctx context.Context, vertexAIDataLabelingJob *v1alpha1.VertexAIDataLabelingJob, opts v1.CreateOptions) (result *v1alpha1.VertexAIDataLabelingJob, err error) {
-	result = &v1alpha1.VertexAIDataLabelingJob{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("vertexaidatalabelingjobs").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(vertexAIDataLabelingJob).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a vertexAIDataLabelingJob and updates it. Returns the server's representation of the vertexAIDataLabelingJob, and an error, if there is any.
-func (c *vertexAIDataLabelingJobs) Update(ctx context.Context, vertexAIDataLabelingJob *v1alpha1.VertexAIDataLabelingJob, opts v1.UpdateOptions) (result *v1alpha1.VertexAIDataLabelingJob, err error) {
-	result = &v1alpha1.VertexAIDataLabelingJob{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("vertexaidatalabelingjobs").
-		Name(vertexAIDataLabelingJob.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(vertexAIDataLabelingJob).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *vertexAIDataLabelingJobs) UpdateStatus(ctx context.Context, vertexAIDataLabelingJob *v1alpha1.VertexAIDataLabelingJob, opts v1.UpdateOptions) (result *v1alpha1.VertexAIDataLabelingJob, err error) {
-	result = &v1alpha1.VertexAIDataLabelingJob{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("vertexaidatalabelingjobs").
-		Name(vertexAIDataLabelingJob.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(vertexAIDataLabelingJob).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the vertexAIDataLabelingJob and deletes it. Returns an error if one occurs.
-func (c *vertexAIDataLabelingJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("vertexaidatalabelingjobs").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *vertexAIDataLabelingJobs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("vertexaidatalabelingjobs").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched vertexAIDataLabelingJob.
-func (c *vertexAIDataLabelingJobs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VertexAIDataLabelingJob, err error) {
-	result = &v1alpha1.VertexAIDataLabelingJob{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("vertexaidatalabelingjobs").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

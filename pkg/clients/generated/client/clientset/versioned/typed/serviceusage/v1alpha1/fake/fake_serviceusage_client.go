@@ -32,7 +32,7 @@ type FakeServiceusageV1alpha1 struct {
 }
 
 func (c *FakeServiceusageV1alpha1) ServiceUsageConsumerQuotaOverrides(namespace string) v1alpha1.ServiceUsageConsumerQuotaOverrideInterface {
-	return &FakeServiceUsageConsumerQuotaOverrides{c, namespace}
+	return newFakeServiceUsageConsumerQuotaOverrides(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

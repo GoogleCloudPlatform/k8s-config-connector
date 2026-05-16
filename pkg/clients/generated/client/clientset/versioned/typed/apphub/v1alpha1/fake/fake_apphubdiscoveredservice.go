@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeAppHubDiscoveredServices implements AppHubDiscoveredServiceInterface
-type FakeAppHubDiscoveredServices struct {
+// fakeAppHubDiscoveredServices implements AppHubDiscoveredServiceInterface
+type fakeAppHubDiscoveredServices struct {
+	*gentype.FakeClientWithList[*v1alpha1.AppHubDiscoveredService, *v1alpha1.AppHubDiscoveredServiceList]
 	Fake *FakeApphubV1alpha1
-	ns   string
 }
 
-var apphubdiscoveredservicesResource = v1alpha1.SchemeGroupVersion.WithResource("apphubdiscoveredservices")
-
-var apphubdiscoveredservicesKind = v1alpha1.SchemeGroupVersion.WithKind("AppHubDiscoveredService")
-
-// Get takes name of the appHubDiscoveredService, and returns the corresponding appHubDiscoveredService object, and an error if there is any.
-func (c *FakeAppHubDiscoveredServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AppHubDiscoveredService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(apphubdiscoveredservicesResource, c.ns, name), &v1alpha1.AppHubDiscoveredService{})
-
-	if obj == nil {
-		return nil, err
+func newFakeAppHubDiscoveredServices(fake *FakeApphubV1alpha1, namespace string) apphubv1alpha1.AppHubDiscoveredServiceInterface {
+	return &fakeAppHubDiscoveredServices{
+		gentype.NewFakeClientWithList[*v1alpha1.AppHubDiscoveredService, *v1alpha1.AppHubDiscoveredServiceList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("apphubdiscoveredservices"),
+			v1alpha1.SchemeGroupVersion.WithKind("AppHubDiscoveredService"),
+			func() *v1alpha1.AppHubDiscoveredService { return &v1alpha1.AppHubDiscoveredService{} },
+			func() *v1alpha1.AppHubDiscoveredServiceList { return &v1alpha1.AppHubDiscoveredServiceList{} },
+			func(dst, src *v1alpha1.AppHubDiscoveredServiceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.AppHubDiscoveredServiceList) []*v1alpha1.AppHubDiscoveredService {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.AppHubDiscoveredServiceList, items []*v1alpha1.AppHubDiscoveredService) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.AppHubDiscoveredService), err
-}
-
-// List takes label and field selectors, and returns the list of AppHubDiscoveredServices that match those selectors.
-func (c *FakeAppHubDiscoveredServices) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.AppHubDiscoveredServiceList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(apphubdiscoveredservicesResource, apphubdiscoveredservicesKind, c.ns, opts), &v1alpha1.AppHubDiscoveredServiceList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.AppHubDiscoveredServiceList{ListMeta: obj.(*v1alpha1.AppHubDiscoveredServiceList).ListMeta}
-	for _, item := range obj.(*v1alpha1.AppHubDiscoveredServiceList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested appHubDiscoveredServices.
-func (c *FakeAppHubDiscoveredServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(apphubdiscoveredservicesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a appHubDiscoveredService and creates it.  Returns the server's representation of the appHubDiscoveredService, and an error, if there is any.
-func (c *FakeAppHubDiscoveredServices) Create(ctx context.Context, appHubDiscoveredService *v1alpha1.AppHubDiscoveredService, opts v1.CreateOptions) (result *v1alpha1.AppHubDiscoveredService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(apphubdiscoveredservicesResource, c.ns, appHubDiscoveredService), &v1alpha1.AppHubDiscoveredService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppHubDiscoveredService), err
-}
-
-// Update takes the representation of a appHubDiscoveredService and updates it. Returns the server's representation of the appHubDiscoveredService, and an error, if there is any.
-func (c *FakeAppHubDiscoveredServices) Update(ctx context.Context, appHubDiscoveredService *v1alpha1.AppHubDiscoveredService, opts v1.UpdateOptions) (result *v1alpha1.AppHubDiscoveredService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(apphubdiscoveredservicesResource, c.ns, appHubDiscoveredService), &v1alpha1.AppHubDiscoveredService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppHubDiscoveredService), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeAppHubDiscoveredServices) UpdateStatus(ctx context.Context, appHubDiscoveredService *v1alpha1.AppHubDiscoveredService, opts v1.UpdateOptions) (*v1alpha1.AppHubDiscoveredService, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(apphubdiscoveredservicesResource, "status", c.ns, appHubDiscoveredService), &v1alpha1.AppHubDiscoveredService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppHubDiscoveredService), err
-}
-
-// Delete takes name of the appHubDiscoveredService and deletes it. Returns an error if one occurs.
-func (c *FakeAppHubDiscoveredServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(apphubdiscoveredservicesResource, c.ns, name, opts), &v1alpha1.AppHubDiscoveredService{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeAppHubDiscoveredServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(apphubdiscoveredservicesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.AppHubDiscoveredServiceList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched appHubDiscoveredService.
-func (c *FakeAppHubDiscoveredServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppHubDiscoveredService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(apphubdiscoveredservicesResource, c.ns, name, pt, data, subresources...), &v1alpha1.AppHubDiscoveredService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppHubDiscoveredService), err
 }

@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeFirestoreDatabases implements FirestoreDatabaseInterface
-type FakeFirestoreDatabases struct {
+// fakeFirestoreDatabases implements FirestoreDatabaseInterface
+type fakeFirestoreDatabases struct {
+	*gentype.FakeClientWithList[*v1beta1.FirestoreDatabase, *v1beta1.FirestoreDatabaseList]
 	Fake *FakeFirestoreV1beta1
-	ns   string
 }
 
-var firestoredatabasesResource = v1beta1.SchemeGroupVersion.WithResource("firestoredatabases")
-
-var firestoredatabasesKind = v1beta1.SchemeGroupVersion.WithKind("FirestoreDatabase")
-
-// Get takes name of the firestoreDatabase, and returns the corresponding firestoreDatabase object, and an error if there is any.
-func (c *FakeFirestoreDatabases) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.FirestoreDatabase, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(firestoredatabasesResource, c.ns, name), &v1beta1.FirestoreDatabase{})
-
-	if obj == nil {
-		return nil, err
+func newFakeFirestoreDatabases(fake *FakeFirestoreV1beta1, namespace string) firestorev1beta1.FirestoreDatabaseInterface {
+	return &fakeFirestoreDatabases{
+		gentype.NewFakeClientWithList[*v1beta1.FirestoreDatabase, *v1beta1.FirestoreDatabaseList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("firestoredatabases"),
+			v1beta1.SchemeGroupVersion.WithKind("FirestoreDatabase"),
+			func() *v1beta1.FirestoreDatabase { return &v1beta1.FirestoreDatabase{} },
+			func() *v1beta1.FirestoreDatabaseList { return &v1beta1.FirestoreDatabaseList{} },
+			func(dst, src *v1beta1.FirestoreDatabaseList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.FirestoreDatabaseList) []*v1beta1.FirestoreDatabase {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.FirestoreDatabaseList, items []*v1beta1.FirestoreDatabase) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.FirestoreDatabase), err
-}
-
-// List takes label and field selectors, and returns the list of FirestoreDatabases that match those selectors.
-func (c *FakeFirestoreDatabases) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.FirestoreDatabaseList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(firestoredatabasesResource, firestoredatabasesKind, c.ns, opts), &v1beta1.FirestoreDatabaseList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.FirestoreDatabaseList{ListMeta: obj.(*v1beta1.FirestoreDatabaseList).ListMeta}
-	for _, item := range obj.(*v1beta1.FirestoreDatabaseList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested firestoreDatabases.
-func (c *FakeFirestoreDatabases) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(firestoredatabasesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a firestoreDatabase and creates it.  Returns the server's representation of the firestoreDatabase, and an error, if there is any.
-func (c *FakeFirestoreDatabases) Create(ctx context.Context, firestoreDatabase *v1beta1.FirestoreDatabase, opts v1.CreateOptions) (result *v1beta1.FirestoreDatabase, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(firestoredatabasesResource, c.ns, firestoreDatabase), &v1beta1.FirestoreDatabase{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.FirestoreDatabase), err
-}
-
-// Update takes the representation of a firestoreDatabase and updates it. Returns the server's representation of the firestoreDatabase, and an error, if there is any.
-func (c *FakeFirestoreDatabases) Update(ctx context.Context, firestoreDatabase *v1beta1.FirestoreDatabase, opts v1.UpdateOptions) (result *v1beta1.FirestoreDatabase, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(firestoredatabasesResource, c.ns, firestoreDatabase), &v1beta1.FirestoreDatabase{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.FirestoreDatabase), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeFirestoreDatabases) UpdateStatus(ctx context.Context, firestoreDatabase *v1beta1.FirestoreDatabase, opts v1.UpdateOptions) (*v1beta1.FirestoreDatabase, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(firestoredatabasesResource, "status", c.ns, firestoreDatabase), &v1beta1.FirestoreDatabase{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.FirestoreDatabase), err
-}
-
-// Delete takes name of the firestoreDatabase and deletes it. Returns an error if one occurs.
-func (c *FakeFirestoreDatabases) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(firestoredatabasesResource, c.ns, name, opts), &v1beta1.FirestoreDatabase{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeFirestoreDatabases) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(firestoredatabasesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.FirestoreDatabaseList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched firestoreDatabase.
-func (c *FakeFirestoreDatabases) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.FirestoreDatabase, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(firestoredatabasesResource, c.ns, name, pt, data, subresources...), &v1beta1.FirestoreDatabase{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.FirestoreDatabase), err
 }
