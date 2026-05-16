@@ -31,9 +31,24 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datastream/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
+
+func (s *DatastreamV1) ListPrivateConnections(ctx context.Context, req *pb.ListPrivateConnectionsRequest) (*pb.ListPrivateConnectionsResponse, error) {
+	parent := req.GetParent() // projects/*/locations/*
+
+	res := &pb.ListPrivateConnectionsResponse{}
+	err := s.storage.List(ctx, (&pb.PrivateConnection{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: parent + "/"}, func(obj proto.Message) error {
+		res.PrivateConnections = append(res.PrivateConnections, obj.(*pb.PrivateConnection))
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
 
 func (s *DatastreamV1) GetPrivateConnection(ctx context.Context, req *pb.GetPrivateConnectionRequest) (*pb.PrivateConnection, error) {
 	name, err := s.parsePrivateConnectionName(req.Name)

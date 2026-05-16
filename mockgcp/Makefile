@@ -30,6 +30,7 @@ gen-proto: tools sync-repo
 
 	./apply-proto-patches.sh
 	./fixup-third-party.sh
+	rm -rf ./third_party/googleapis/mockgcp/cloud/datastream
 
 	make gen-proto-no-fixup
 
@@ -174,7 +175,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/datastream/v1/*.proto \
+		./apis/mockgcp/cloud/datastream/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/modelarmor/v1/service.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \

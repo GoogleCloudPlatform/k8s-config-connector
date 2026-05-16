@@ -45,6 +45,12 @@ type DatastreamV1 struct {
 	pb.UnimplementedDatastreamServer
 }
 
+func (s *DatastreamV1) FetchStaticIps(ctx context.Context, req *pb.FetchStaticIpsRequest) (*pb.FetchStaticIpsResponse, error) {
+	return &pb.FetchStaticIpsResponse{
+		StaticIps: []string{"1.2.3.4", "5.6.7.8"},
+	}, nil
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{

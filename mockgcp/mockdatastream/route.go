@@ -31,9 +31,24 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datastream/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
+
+func (s *DatastreamV1) ListRoutes(ctx context.Context, req *pb.ListRoutesRequest) (*pb.ListRoutesResponse, error) {
+	parent := req.GetParent() // projects/*/locations/*/privateConnections/*
+
+	res := &pb.ListRoutesResponse{}
+	err := s.storage.List(ctx, (&pb.Route{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: parent + "/"}, func(obj proto.Message) error {
+		res.Routes = append(res.Routes, obj.(*pb.Route))
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
 
 func (s *DatastreamV1) GetRoute(ctx context.Context, req *pb.GetRouteRequest) (*pb.Route, error) {
 	name, err := s.parseRouteName(req.Name)

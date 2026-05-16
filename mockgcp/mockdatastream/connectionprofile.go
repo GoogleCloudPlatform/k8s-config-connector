@@ -31,9 +31,25 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datastream/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
+
+func (s *DatastreamV1) ListConnectionProfiles(ctx context.Context, req *pb.ListConnectionProfilesRequest) (*pb.ListConnectionProfilesResponse, error) {
+	parent := req.GetParent() // projects/*/locations/*
+
+	res := &pb.ListConnectionProfilesResponse{}
+	err := s.storage.List(ctx, (&pb.ConnectionProfile{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: parent + "/"}, func(obj proto.Message) error {
+		res.ConnectionProfiles = append(res.ConnectionProfiles, obj.(*pb.ConnectionProfile))
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
 
 func (s *DatastreamV1) GetConnectionProfile(ctx context.Context, req *pb.GetConnectionProfileRequest) (*pb.ConnectionProfile, error) {
 	name, err := s.parseConnectionProfileName(req.Name)
@@ -109,12 +125,9 @@ func (s *DatastreamV1) UpdateConnectionProfile(ctx context.Context, req *pb.Upda
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	for _, path := range paths {
-		switch path {
-		case "displayName":
-			obj.DisplayName = req.GetConnectionProfile().GetDisplayName()
-		}
-		// TODO: handle other fields
+	// Use UpdateByFieldMask to update the object
+	if err := fields.UpdateByFieldMask(obj, req.GetConnectionProfile(), paths); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating connection profile: %v", err)
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
