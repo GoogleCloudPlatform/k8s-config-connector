@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}' was not found",
+    "message": "certificate \"projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
