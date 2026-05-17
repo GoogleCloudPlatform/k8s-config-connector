@@ -7,29 +7,29 @@
 ---
 > User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 > X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
-32c33
+25c26
 < POST https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys?alt=json&keyId=apikeyskey${uniqueId}
 ---
 > POST https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys?%24alt=json%3Benum-encoding%3Dint&keyId=apikeyskey${uniqueId}
-34c35,36
+27c28,29
 < User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 ---
 > User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 > X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
-67c69
+60c62
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
 ---
 > GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-69c71,72
+62c64,65
 < User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 ---
 > User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 > X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
-98c101
+91c94
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
 ---
 > PATCH https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Crestrictions
-100,375c103,104
+93,368c96,97
 < User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 < 
 < 200 OK
@@ -309,9 +309,9 @@
 ---
 > User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 > X-Goog-Request-Params: key.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
-378a108
+371a101
 >   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
-409,441c139
+402,434c132
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
 < Content-Type: application/json
 < User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
@@ -347,7 +347,7 @@
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
 ---
 > GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-443,463c141,142
+436,456c134,135
 < User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 < 
 < 200 OK
@@ -372,11 +372,9 @@
 ---
 > User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 > X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
-493c172
+486,610c165
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
----
-> DELETE https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-495,619c174,175
+< Content-Type: application/json
 < User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 < 
 < 200 OK
@@ -500,22 +498,19 @@
 < ---
 < 
 < DELETE https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
-< Content-Type: application/json
+---
+> DELETE https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+612c167,168
 < User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 ---
 > User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 > X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
-637c193
+630c186
 < GET https://apikeys.googleapis.com/v2/operations/${operationID}?alt=json
 ---
 > GET https://apikeys.googleapis.com/v2/operations/${operationID}
-639c195,196
+632c188,189
 < User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 ---
 > User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 > X-Goog-Request-Params: name=operations%2F${operationID}
-670c227
-< }
-\ No newline at end of file
----
-> }
