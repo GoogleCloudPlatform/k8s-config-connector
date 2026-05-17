@@ -180,6 +180,7 @@ func (s *cloudDeploy) UpdateAutomation(ctx context.Context, req *pb.UpdateAutoma
 			if err := fields.UpdateByFieldMask(obj, req.Automation, req.UpdateMask.Paths); err != nil {
 				return nil, fmt.Errorf("update field_mask.paths: %w", err)
 			}
+			s.populateAutomationDefaults(obj)
 		}
 
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
