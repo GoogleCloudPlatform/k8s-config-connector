@@ -5,7 +5,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fprocessor
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Processor with id 'documentaiprocessor-${uniqueId}' not found.",
+    "message": "processor \"projects/${projectId}/locations/us/processors/documentaiprocessor-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -35,7 +35,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -80,7 +80,7 @@ X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fproce
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -125,7 +125,7 @@ X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fproce
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -134,64 +134,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.documentai.v1.DeleteProcessorMetadata",
-    "commonMetadata": {
-      "createTime": "2025-01-01T12:34:56.123456Z",
-      "resource": "projects/${projectNumber}/locations/us/processors/${processorID}",
-      "state": 1,
-      "updateTime": "2025-01-02T12:34:56.123456Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us/operations/${operationID}"
-}
-
----
-
-GET https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F${processorID}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Processor with id '${processorID}' not found.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-DELETE https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F${processorID}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Processor with id '${processorID}' not found.",
-    "status": "NOT_FOUND"
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }

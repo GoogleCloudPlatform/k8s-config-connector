@@ -21,14 +21,15 @@ import (
 	"time"
 
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+	"google.golang.org/genproto/googleapis/longrunning"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/documentai/v1"
+	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
 )
 
 func (s *DocumentProcessorV1) GetProcessor(ctx context.Context, req *pb.GetProcessorRequest) (*pb.Processor, error) {
@@ -41,6 +42,9 @@ func (s *DocumentProcessorV1) GetProcessor(ctx context.Context, req *pb.GetProce
 
 	obj := &pb.Processor{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "processor %q not found", req.GetName())
+		}
 		return nil, err
 	}
 
@@ -48,27 +52,56 @@ func (s *DocumentProcessorV1) GetProcessor(ctx context.Context, req *pb.GetProce
 }
 
 func (s *DocumentProcessorV1) CreateProcessor(ctx context.Context, req *pb.CreateProcessorRequest) (*pb.Processor, error) {
-	name, err := s.ParseProcessorName(req.GetProcessor().GetName())
+	processorID := fmt.Sprintf("%x", time.Now().UnixNano())
+
+	// documentai uses project number in the name
+	parentTokens := strings.Split(req.GetParent(), "/")
+	if len(parentTokens) != 4 || parentTokens[0] != "projects" || parentTokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid parent %q", req.GetParent())
+	}
+	projectID := parentTokens[1]
+	location := parentTokens[3]
+
+	project, err := s.Projects.GetProjectByID(projectID)
+	if err != nil {
+		return nil, err
+	}
+
+	projectNumber := fmt.Sprintf("%d", project.Number)
+
+	reqName := fmt.Sprintf("projects/%s/locations/%s/processors/%s", projectNumber, location, processorID)
+	name, err := s.ParseProcessorName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	processorVersion := proto.CloneOf(req.GetProcessor())
-	processorVersion.Name = fqn
+	obj := proto.CloneOf(req.GetProcessor())
+	obj.Name = fqn
 	now := time.Now()
-	req.Processor.CreateTime = timestamppb.New(now)
-	req.Processor.State = pb.Processor_ENABLED
+	obj.CreateTime = timestamppb.New(now)
+	obj.State = pb.Processor_ENABLED
 
-	if err := s.storage.Create(ctx, fqn, req.Processor); err != nil {
+	processorVersionID := "stable"
+	obj.DefaultProcessorVersion = fmt.Sprintf("%s/processorVersions/%s", fqn, processorVersionID)
+	obj.ProcessEndpoint = fmt.Sprintf("https://%s-documentai.googleapis.com/v1/%s:process", location, fqn)
+
+	for _, alias := range []string{"pretrained", "pretrained-next", "rc", "stable"} {
+		obj.ProcessorVersionAliases = append(obj.ProcessorVersionAliases, &pb.ProcessorVersionAlias{
+			Alias:            fmt.Sprintf("%s/processorVersions/%s", fqn, alias),
+			ProcessorVersion: fmt.Sprintf("%s/processorVersions/%s", fqn, processorVersionID),
+		})
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return req.Processor, nil
+	return obj, nil
 }
 
-func (s *DocumentProcessorV1) DeleteProcessor(ctx context.Context, req *pb.DeleteProcessorRequest) (*longrunningpb.Operation, error) {
+func (s *DocumentProcessorV1) DeleteProcessor(ctx context.Context, req *pb.DeleteProcessorRequest) (*longrunning.Operation, error) {
 	name, err := s.ParseProcessorName(req.GetName())
 	if err != nil {
 		return nil, err
@@ -78,10 +111,13 @@ func (s *DocumentProcessorV1) DeleteProcessor(ctx context.Context, req *pb.Delet
 
 	deletedObject := &pb.Processor{}
 	if err := s.storage.Delete(ctx, fqn, deletedObject); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "processor %q not found", req.GetName())
+		}
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	return s.operations.DoneLRO(ctx, "", nil, &emptypb.Empty{})
 }
 
 // ProcessorName format: `projects/{project}/locations/{location}/processors/{processor}`
