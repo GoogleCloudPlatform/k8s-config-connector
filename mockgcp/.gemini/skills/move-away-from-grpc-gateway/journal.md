@@ -5,3 +5,8 @@
 ## 2026-05-16 - datastream migration
 
 - When migrating `mockdatastream` away from `httpmux` to `httptogrpc`, I found that `httptogrpc.grpcMux` does not support `RewriteError`. Previously, `mux.RewriteError` was used to manipulate the error response (e.g., removing `error.Errors` on a 404). This can be safely removed when using `httptogrpc`.
+
+## 2026-05-17
+- Moved mockgcp dataplex to httptogrpc.
+- Observed that dataplex protos were under `google/cloud/dataplex` instead of `mockgcp/cloud/dataplex`. Updated the skill to reflect this possibility.
+- Dataplex has multiple services (`DataplexService`, `CatalogService`, etc.). `NewHTTPMux` should register all services that were previously registered.
