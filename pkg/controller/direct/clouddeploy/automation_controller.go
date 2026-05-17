@@ -105,6 +105,23 @@ func (m *modelAutomation) AdapterForURL(ctx context.Context, url string) (direct
 	return nil, nil
 }
 
+func clearRuleCondition(rule *clouddeploypb.AutomationRule) {
+	if rule == nil {
+		return
+	}
+	ruleMsg := rule.ProtoReflect()
+	ruleMsg.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		if fd.Kind() == protoreflect.MessageKind {
+			innerMsg := v.Message()
+			conditionFD := innerMsg.Descriptor().Fields().ByName("condition")
+			if conditionFD != nil && innerMsg.Has(conditionFD) {
+				innerMsg.Clear(conditionFD)
+			}
+		}
+		return true
+	})
+}
+
 type AutomationAdapter struct {
 	id        *krm.CloudDeployAutomationIdentity
 	gcpClient *gcp.CloudDeployClient
@@ -243,6 +260,25 @@ func (a *AutomationAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	// We skip the diff when it shows up in path to avoid unnecessary drift.
 	paths, err := common.CompareProtoMessage(a.desiredPb, a.actual, func(fieldName protoreflect.Name, a, b proto.Message) (bool, error) {
 		if fieldName == "etag" {
+			return false, nil
+		}
+		// KCC's CompareProtoMessage delegates slice comparisons entirely to proto.Equal,
+		// which does not filter OUTPUT_ONLY fields inside list elements. We clone actual
+		// and strip output-only Condition structs from rules to prevent infinite update loops.
+		if fieldName == "rules" {
+			actualClone := proto.Clone(b.(*clouddeploypb.Automation)).(*clouddeploypb.Automation)
+			for _, rule := range actualClone.Rules {
+				clearRuleCondition(rule)
+			}
+			desired := a.(*clouddeploypb.Automation)
+			if len(desired.Rules) != len(actualClone.Rules) {
+				return true, nil
+			}
+			for i := range desired.Rules {
+				if !proto.Equal(desired.Rules[i], actualClone.Rules[i]) {
+					return true, nil
+				}
+			}
 			return false, nil
 		}
 		return common.BasicDiff(fieldName, a, b)
