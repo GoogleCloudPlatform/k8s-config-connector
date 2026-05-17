@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
 func (s *ComposerV1) GetEnvironment(ctx context.Context, req *pb.GetEnvironmentRequest) (*pb.Environment, error) {
