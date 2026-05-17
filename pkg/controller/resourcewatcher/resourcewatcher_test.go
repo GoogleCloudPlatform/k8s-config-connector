@@ -35,6 +35,7 @@ import (
 )
 
 func TestWatchResourceTimeout(t *testing.T) {
+	t.Parallel()
 	unreadyResourceUnstructured := newResourceUnstructured(newStatus(corev1.ConditionFalse))
 	gvk, nn, err := getResourceInformation(unreadyResourceUnstructured)
 	if err != nil {
@@ -54,6 +55,7 @@ func TestWatchResourceTimeout(t *testing.T) {
 }
 
 func TestWatchResourceSuccess(t *testing.T) {
+	t.Parallel()
 	readyResourceUnstructured := newResourceUnstructured(newStatus(corev1.ConditionTrue))
 	gvk, nn, err := getResourceInformation(readyResourceUnstructured)
 	if err != nil {
@@ -78,6 +80,7 @@ func TestWatchResourceSuccess(t *testing.T) {
 }
 
 func TestWatchResourceDeleted(t *testing.T) {
+	t.Parallel()
 	ctx := context.TODO()
 
 	notReadyResourceUnstructured := newResourceUnstructured(newStatus(corev1.ConditionFalse))
