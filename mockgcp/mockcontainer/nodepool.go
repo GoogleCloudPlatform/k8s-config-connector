@@ -27,7 +27,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	computepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	pb "cloud.google.com/go/container/apiv1/containerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 )
 
