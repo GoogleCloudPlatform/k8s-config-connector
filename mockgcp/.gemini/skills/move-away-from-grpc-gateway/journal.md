@@ -10,3 +10,8 @@
 - Moved mockgcp dataplex to httptogrpc.
 - Observed that dataplex protos were under `google/cloud/dataplex` instead of `mockgcp/cloud/dataplex`. Updated the skill to reflect this possibility.
 - Dataplex has multiple services (`DataplexService`, `CatalogService`, etc.). `NewHTTPMux` should register all services that were previously registered.
+
+## 2026-05-17 - essentialcontacts migration
+- Moved mockgcp essentialcontacts to httptogrpc.
+- The service was straightforward and did not require long-running operations support (`AddOperationsPath`).
+- Updated imports in `contact.go` and `service.go` to use `cloud.google.com/go/essentialcontacts/apiv1/essentialcontactspb`.
