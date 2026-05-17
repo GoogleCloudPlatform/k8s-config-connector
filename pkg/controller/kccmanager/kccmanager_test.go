@@ -273,7 +273,7 @@ func waitForReconcile(t *testing.T, kubeClient client.Client, resource *unstruct
 }
 
 func TestMain(m *testing.M) {
-        managers := []*manager.Manager{		&clusterModeManager,
+	managers := []*manager.Manager{&clusterModeManager,
 		&namespacedModeManager,
 	}
 	testmain.SetupMultipleEnvironments(m, test.IntegrationTestType, nil, managers)
