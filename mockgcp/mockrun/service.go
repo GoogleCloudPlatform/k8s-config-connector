@@ -19,12 +19,13 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/run/v2"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
+
+	pb "cloud.google.com/go/run/apiv2/runpb"
 )
 
 func init() {
@@ -66,20 +67,15 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterJobsHandler,
-		pb.RegisterServicesHandler,
-		pb.RegisterWorkerPoolsHandler,
-		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"))
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	mux.AddService(pb.NewJobsClient(conn))
+	mux.AddService(pb.NewServicesClient(conn))
+	mux.AddService(pb.NewWorkerPoolsClient(conn))
+	mux.AddOperationsPath("/v2/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }

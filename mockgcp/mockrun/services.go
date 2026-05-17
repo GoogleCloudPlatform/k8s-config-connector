@@ -21,7 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/run/v2"
 	"github.com/golang/protobuf/ptypes/duration"
 	"github.com/google/uuid"
 	api "google.golang.org/genproto/googleapis/api"
@@ -31,6 +30,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	pb "cloud.google.com/go/run/apiv2/runpb"
 )
 
 type ServicesV2 struct {
