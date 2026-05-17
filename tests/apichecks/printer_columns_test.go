@@ -27,6 +27,7 @@ import (
 )
 
 func TestAdditionalPrinterColumns(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
