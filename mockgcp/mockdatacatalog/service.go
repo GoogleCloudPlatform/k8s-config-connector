@@ -24,10 +24,10 @@ import (
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
