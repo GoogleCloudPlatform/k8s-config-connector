@@ -348,6 +348,9 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": "POSTGRES_16",
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
@@ -1125,6 +1128,9 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": 4,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -1189,6 +1195,9 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
     "recoveryWindowDays": 14
   },
   "databaseVersion": 4,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
@@ -1400,6 +1409,9 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": 4,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -1908,6 +1920,9 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": "POSTGRES_16",
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },

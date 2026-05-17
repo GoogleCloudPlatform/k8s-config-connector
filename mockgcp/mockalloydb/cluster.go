@@ -116,6 +116,11 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	if obj.SubscriptionType == pb.SubscriptionType_SUBSCRIPTION_TYPE_UNSPECIFIED {
 		obj.SubscriptionType = pb.SubscriptionType_STANDARD
 	}
+	if obj.DataplexConfig == nil {
+		obj.DataplexConfig = &pb.Cluster_DataplexConfig{
+			Enabled: PtrTo(true),
+		}
+	}
 	// Set output-only fields.
 	now := timestamppb.Now()
 	obj.CreateTime = now
@@ -309,6 +314,8 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 			obj.Labels = req.Cluster.GetLabels()
 		case "maintenanceUpdatePolicy":
 			obj.MaintenanceUpdatePolicy = req.Cluster.GetMaintenanceUpdatePolicy()
+		case "dataplexConfig":
+			obj.DataplexConfig = req.Cluster.GetDataplexConfig()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}

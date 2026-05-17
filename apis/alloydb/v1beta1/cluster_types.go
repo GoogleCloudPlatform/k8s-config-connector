@@ -146,6 +146,10 @@ type AlloyDBClusterSpec struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.maintenance_update_policy
 	MaintenanceUpdatePolicy *MaintenanceUpdatePolicy `json:"maintenanceUpdatePolicy,omitempty"`
 
+	// Optional. The configuration for Dataplex integration.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.dataplex_config
+	DataplexConfig *Cluster_DataplexConfig `json:"dataplexConfig,omitempty"`
+
 	/* NOTYET
 	// Optional. Configuration parameters related to the Gemini in Databases
 	//  add-on.
@@ -268,6 +272,15 @@ type Cluster_NetworkConfig struct {
 	//  Field name is intended to be consistent with Cloud SQL.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.NetworkConfig.allocated_ip_range
 	AllocatedIPRange *string `json:"allocatedIpRange,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.DataplexConfig
+type Cluster_DataplexConfig struct {
+	// Optional. Dataplex is enabled by default for resources such as clusters and
+	//  instances. This flag controls the integration of AlloyDB PG
+	//  resources (like databases, schemas, and tables) with Dataplex."
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.DataplexConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.BackupSource

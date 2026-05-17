@@ -94,6 +94,12 @@ type ClusterContinuousBackupConfig struct {
 	RecoveryWindowDays *int32 `json:"recoveryWindowDays,omitempty"`
 }
 
+type ClusterDataplexConfig struct {
+	/* Optional. Dataplex is enabled by default for resources such as clusters and instances. This flag controls the integration of AlloyDB PG resources (like databases, schemas, and tables) with Dataplex." */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type ClusterEncryptionConfig struct {
 	/* The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME] */
 	// +optional
@@ -253,6 +259,10 @@ type AlloyDBClusterSpec struct {
 	/* Optional. The database engine major version. This is an optional field and it is populated at the Cluster creation time. If a database version is not supplied at cluster creation time, then a default database version will be used. */
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	/* Optional. The configuration for Dataplex integration. */
+	// +optional
+	DataplexConfig *ClusterDataplexConfig `json:"dataplexConfig,omitempty"`
 
 	/* Policy to determine if the cluster should be deleted forcefully. Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster. Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance. */
 	// +optional

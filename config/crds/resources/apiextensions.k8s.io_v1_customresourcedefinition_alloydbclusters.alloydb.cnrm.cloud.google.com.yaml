@@ -261,6 +261,16 @@ spec:
                   If a database version is not supplied at cluster creation time,
                   then a default database version will be used.
                 type: string
+              dataplexConfig:
+                description: Optional. The configuration for Dataplex integration.
+                properties:
+                  enabled:
+                    description: Optional. Dataplex is enabled by default for resources
+                      such as clusters and instances. This flag controls the integration
+                      of AlloyDB PG resources (like databases, schemas, and tables)
+                      with Dataplex."
+                    type: boolean
+                type: object
               deletionPolicy:
                 description: Policy to determine if the cluster should be deleted
                   forcefully. Deleting a cluster forcefully, deletes the cluster and
@@ -1033,6 +1043,16 @@ spec:
                   If a database version is not supplied at cluster creation time,
                   then a default database version will be used.
                 type: string
+              dataplexConfig:
+                description: Optional. The configuration for Dataplex integration.
+                properties:
+                  enabled:
+                    description: Optional. Dataplex is enabled by default for resources
+                      such as clusters and instances. This flag controls the integration
+                      of AlloyDB PG resources (like databases, schemas, and tables)
+                      with Dataplex."
+                    type: boolean
+                type: object
               deletionPolicy:
                 description: Policy to determine if the cluster should be deleted
                   forcefully. Deleting a cluster forcefully, deletes the cluster and
