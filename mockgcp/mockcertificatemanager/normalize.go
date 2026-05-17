@@ -22,23 +22,21 @@ import (
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
-const NormalizedTimestamp = "2024-04-01T12:34:56.123456Z"
-
 func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(url, "certificatemanager.googleapis.com") {
 		return
 	}
-	visitor.ReplacePath(".createTime", NormalizedTimestamp)
-	visitor.ReplacePath(".updateTime", NormalizedTimestamp)
-	visitor.ReplacePath(".response.createTime", NormalizedTimestamp)
-	visitor.ReplacePath(".response.updateTime", NormalizedTimestamp)
+	visitor.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
 
-	visitor.ReplacePath(".metadata.createTime", NormalizedTimestamp)
-	visitor.ReplacePath(".metadata.endTime", NormalizedTimestamp)
+	visitor.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".done", true)
 
-	visitor.ReplacePath(".certificateIssuanceConfigs[].createTime", NormalizedTimestamp)
-	visitor.ReplacePath(".certificateIssuanceConfigs[].updateTime", NormalizedTimestamp)
+	visitor.ReplacePath(".certificateIssuanceConfigs[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".certificateIssuanceConfigs[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, visitor mockgcpregistry.NormalizingVisitor) {

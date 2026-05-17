@@ -21,7 +21,6 @@ import (
 )
 
 const EtagPlaceholder = "abcdef0123A="
-const TimePlaceholder = "2024-04-01T12:34:56.123456Z"
 const UIDPlaceholder = "111111111111111111111"
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
@@ -34,12 +33,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// Deny Policies
 	replacements.ReplacePath(".policy.etag", EtagPlaceholder)
 	replacements.ReplacePath(".policies[].etag", EtagPlaceholder)
-	replacements.ReplacePath(".policies[].createTime", TimePlaceholder)
-	replacements.ReplacePath(".policies[].updateTime", TimePlaceholder)
-	replacements.ReplacePath(".policies[].deleteTime", TimePlaceholder)
-	replacements.ReplacePath(".response.createTime", TimePlaceholder)
-	replacements.ReplacePath(".response.updateTime", TimePlaceholder)
-	replacements.ReplacePath(".response.deleteTime", TimePlaceholder)
+	replacements.ReplacePath(".policies[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".policies[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".policies[].deleteTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.deleteTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".policies[].uid", UIDPlaceholder)
 	replacements.ReplacePath(".uid", UIDPlaceholder)
 }
