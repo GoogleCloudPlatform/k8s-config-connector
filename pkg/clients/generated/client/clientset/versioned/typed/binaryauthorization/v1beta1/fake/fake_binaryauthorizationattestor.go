@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBinaryAuthorizationAttestors implements BinaryAuthorizationAttestorInterface
-type FakeBinaryAuthorizationAttestors struct {
+// fakeBinaryAuthorizationAttestors implements BinaryAuthorizationAttestorInterface
+type fakeBinaryAuthorizationAttestors struct {
+	*gentype.FakeClientWithList[*v1beta1.BinaryAuthorizationAttestor, *v1beta1.BinaryAuthorizationAttestorList]
 	Fake *FakeBinaryauthorizationV1beta1
-	ns   string
 }
 
-var binaryauthorizationattestorsResource = v1beta1.SchemeGroupVersion.WithResource("binaryauthorizationattestors")
-
-var binaryauthorizationattestorsKind = v1beta1.SchemeGroupVersion.WithKind("BinaryAuthorizationAttestor")
-
-// Get takes name of the binaryAuthorizationAttestor, and returns the corresponding binaryAuthorizationAttestor object, and an error if there is any.
-func (c *FakeBinaryAuthorizationAttestors) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BinaryAuthorizationAttestor, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(binaryauthorizationattestorsResource, c.ns, name), &v1beta1.BinaryAuthorizationAttestor{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBinaryAuthorizationAttestors(fake *FakeBinaryauthorizationV1beta1, namespace string) binaryauthorizationv1beta1.BinaryAuthorizationAttestorInterface {
+	return &fakeBinaryAuthorizationAttestors{
+		gentype.NewFakeClientWithList[*v1beta1.BinaryAuthorizationAttestor, *v1beta1.BinaryAuthorizationAttestorList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("binaryauthorizationattestors"),
+			v1beta1.SchemeGroupVersion.WithKind("BinaryAuthorizationAttestor"),
+			func() *v1beta1.BinaryAuthorizationAttestor { return &v1beta1.BinaryAuthorizationAttestor{} },
+			func() *v1beta1.BinaryAuthorizationAttestorList { return &v1beta1.BinaryAuthorizationAttestorList{} },
+			func(dst, src *v1beta1.BinaryAuthorizationAttestorList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.BinaryAuthorizationAttestorList) []*v1beta1.BinaryAuthorizationAttestor {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.BinaryAuthorizationAttestorList, items []*v1beta1.BinaryAuthorizationAttestor) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.BinaryAuthorizationAttestor), err
-}
-
-// List takes label and field selectors, and returns the list of BinaryAuthorizationAttestors that match those selectors.
-func (c *FakeBinaryAuthorizationAttestors) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BinaryAuthorizationAttestorList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(binaryauthorizationattestorsResource, binaryauthorizationattestorsKind, c.ns, opts), &v1beta1.BinaryAuthorizationAttestorList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.BinaryAuthorizationAttestorList{ListMeta: obj.(*v1beta1.BinaryAuthorizationAttestorList).ListMeta}
-	for _, item := range obj.(*v1beta1.BinaryAuthorizationAttestorList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested binaryAuthorizationAttestors.
-func (c *FakeBinaryAuthorizationAttestors) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(binaryauthorizationattestorsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a binaryAuthorizationAttestor and creates it.  Returns the server's representation of the binaryAuthorizationAttestor, and an error, if there is any.
-func (c *FakeBinaryAuthorizationAttestors) Create(ctx context.Context, binaryAuthorizationAttestor *v1beta1.BinaryAuthorizationAttestor, opts v1.CreateOptions) (result *v1beta1.BinaryAuthorizationAttestor, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(binaryauthorizationattestorsResource, c.ns, binaryAuthorizationAttestor), &v1beta1.BinaryAuthorizationAttestor{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BinaryAuthorizationAttestor), err
-}
-
-// Update takes the representation of a binaryAuthorizationAttestor and updates it. Returns the server's representation of the binaryAuthorizationAttestor, and an error, if there is any.
-func (c *FakeBinaryAuthorizationAttestors) Update(ctx context.Context, binaryAuthorizationAttestor *v1beta1.BinaryAuthorizationAttestor, opts v1.UpdateOptions) (result *v1beta1.BinaryAuthorizationAttestor, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(binaryauthorizationattestorsResource, c.ns, binaryAuthorizationAttestor), &v1beta1.BinaryAuthorizationAttestor{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BinaryAuthorizationAttestor), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBinaryAuthorizationAttestors) UpdateStatus(ctx context.Context, binaryAuthorizationAttestor *v1beta1.BinaryAuthorizationAttestor, opts v1.UpdateOptions) (*v1beta1.BinaryAuthorizationAttestor, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(binaryauthorizationattestorsResource, "status", c.ns, binaryAuthorizationAttestor), &v1beta1.BinaryAuthorizationAttestor{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BinaryAuthorizationAttestor), err
-}
-
-// Delete takes name of the binaryAuthorizationAttestor and deletes it. Returns an error if one occurs.
-func (c *FakeBinaryAuthorizationAttestors) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(binaryauthorizationattestorsResource, c.ns, name, opts), &v1beta1.BinaryAuthorizationAttestor{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBinaryAuthorizationAttestors) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(binaryauthorizationattestorsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.BinaryAuthorizationAttestorList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched binaryAuthorizationAttestor.
-func (c *FakeBinaryAuthorizationAttestors) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BinaryAuthorizationAttestor, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(binaryauthorizationattestorsResource, c.ns, name, pt, data, subresources...), &v1beta1.BinaryAuthorizationAttestor{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BinaryAuthorizationAttestor), err
 }

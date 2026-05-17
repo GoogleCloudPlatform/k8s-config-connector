@@ -26,6 +26,7 @@ Generated files do not need a copyright header (and it's easier not to include o
 # Formatting
 
 Before sending a PR, you MUST run `make fmt` to ensure all code is properly formatted and passes the presubmit validations.
+You MUST also run `go vet ./...` to catch any simple compilation issues (like unused imports or missing variables).
 
 # GCP Projects and Namespaces
 
@@ -160,6 +161,10 @@ We have custom linters in `dev/linters`.
 # Github Issues
 
 When asked to work with github issues, use the `gh issue` tool to read/update issues.
+
+# Github Pull Requests
+
+When asked to send or update a pull request, please use the `send-pr` skill. It provides a script that handles formatting and git pushing safely.
 
 # Import Alias Convention
 

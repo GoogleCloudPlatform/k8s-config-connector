@@ -24,7 +24,7 @@ Gemini will handle the necessary code generation and test updates to integrate t
 
 ### What Gemini Will Do for You
 
-1.  **Update API Types:** Gemini will run the `update-types` tool to add the new field and any of its nested message types to the resource's API definition in the `/apis` directory.
+1.  **Update API Types:** Gemini will add the new field and any of its nested message types to the resource's API definition in the `/apis` directory.
 2.  **Update Mapper:** It will regenerate the KRM-to-Proto mapper to include functions for the new field.
 3.  **Update Test Suites:** It will add the new field to the `create.yaml` and `update.yaml` files in the relevant MockGCP test suites to ensure it is covered.
 4.  **Update MockGCP Server:** If necessary, it will update the MockGCP server logic to handle the new field in its simulated API responses.

@@ -32,15 +32,15 @@ type FakeFirebaseV1alpha1 struct {
 }
 
 func (c *FakeFirebaseV1alpha1) FirebaseAndroidApps(namespace string) v1alpha1.FirebaseAndroidAppInterface {
-	return &FakeFirebaseAndroidApps{c, namespace}
+	return newFakeFirebaseAndroidApps(c, namespace)
 }
 
 func (c *FakeFirebaseV1alpha1) FirebaseProjects(namespace string) v1alpha1.FirebaseProjectInterface {
-	return &FakeFirebaseProjects{c, namespace}
+	return newFakeFirebaseProjects(c, namespace)
 }
 
 func (c *FakeFirebaseV1alpha1) FirebaseWebApps(namespace string) v1alpha1.FirebaseWebAppInterface {
-	return &FakeFirebaseWebApps{c, namespace}
+	return newFakeFirebaseWebApps(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

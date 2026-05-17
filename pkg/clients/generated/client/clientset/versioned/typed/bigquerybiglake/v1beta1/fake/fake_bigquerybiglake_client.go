@@ -32,7 +32,7 @@ type FakeBigquerybiglakeV1beta1 struct {
 }
 
 func (c *FakeBigquerybiglakeV1beta1) BigLakeTables(namespace string) v1beta1.BigLakeTableInterface {
-	return &FakeBigLakeTables{c, namespace}
+	return newFakeBigLakeTables(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

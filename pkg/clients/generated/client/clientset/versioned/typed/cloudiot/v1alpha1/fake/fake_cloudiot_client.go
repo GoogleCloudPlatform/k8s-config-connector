@@ -32,11 +32,11 @@ type FakeCloudiotV1alpha1 struct {
 }
 
 func (c *FakeCloudiotV1alpha1) CloudIOTDevices(namespace string) v1alpha1.CloudIOTDeviceInterface {
-	return &FakeCloudIOTDevices{c, namespace}
+	return newFakeCloudIOTDevices(c, namespace)
 }
 
 func (c *FakeCloudiotV1alpha1) CloudIOTDeviceRegistries(namespace string) v1alpha1.CloudIOTDeviceRegistryInterface {
-	return &FakeCloudIOTDeviceRegistries{c, namespace}
+	return newFakeCloudIOTDeviceRegistries(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

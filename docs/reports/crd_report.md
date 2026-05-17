@@ -80,6 +80,7 @@
 | billing.cnrm.cloud.google.com                 | BillingAccount                                  | True         | False       | False  | Direct     | True        |
 | billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        | False       |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        | False       |
+| binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPlatformPolicy               | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        | False       |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateIssuanceConfig     | True         | False       | False  | Direct     | True        |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMapEntry           | True         | True        | False  | Terraform  | False       |
@@ -447,6 +448,7 @@
 | tpu.cnrm.cloud.google.com                     | TPUVirtualMachine                               | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAIDataLabelingJob                         | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAIDataset                                 | True         | True        | False  | Terraform  | False       |
+| vertexai.cnrm.cloud.google.com                | VertexAIDeploymentResourcePool                  | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAIEndpoint                                | True         | True        | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                | VertexAIFeaturestoreEntityTypeFeature           | True         | False       | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                | VertexAIFeaturestoreEntityType                  | True         | False       | False  | Terraform  | False       |

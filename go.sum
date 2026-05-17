@@ -904,6 +904,8 @@ cloud.google.com/go/memcache v1.10.2/go.mod h1:f9ZzJHLBrmd4BkguIAa/l/Vle6uTHzHok
 cloud.google.com/go/memcache v1.10.3/go.mod h1:6z89A41MT2DVAW0P4iIRdu5cmRTsbsFn4cyiIx8gbwo=
 cloud.google.com/go/memcache v1.10.4/go.mod h1:v/d8PuC8d1gD6Yn5+I3INzLR01IDn0N4Ym56RgikSI0=
 cloud.google.com/go/memcache v1.10.5/go.mod h1:/FcblbNd0FdMsx4natdj+2GWzTq+cjZvMa1I+9QsuMA=
+cloud.google.com/go/memcache v1.11.7 h1:ZDIfIMZsKKPzwdbvTMOL1il0shX24J7B9DC+sEt4Yj4=
+cloud.google.com/go/memcache v1.11.7/go.mod h1:AU1jYlUqCihxapcJ1GGMtlMWDVhzjbfUWBXqsXa4rBg=
 cloud.google.com/go/memorystore v0.9.0 h1:CPIW9v7XGjcpwJtLaJUjDohep47tI5c2zP0R3v8rldw=
 cloud.google.com/go/memorystore v0.9.0/go.mod h1:fgbTd26uERz7dvH5KklyXU9/pcNdMtjNKfEZZ6slRLA=
 cloud.google.com/go/metastore v1.5.0/go.mod h1:2ZNrDcQwghfdtCwJ33nM0+GrBGlVuh8rakL3vdPY3XY=
@@ -1095,6 +1097,8 @@ cloud.google.com/go/pubsublite v1.5.0/go.mod h1:xapqNQ1CuLfGi23Yda/9l4bBCKz/wC3K
 cloud.google.com/go/pubsublite v1.6.0/go.mod h1:1eFCS0U11xlOuMFV/0iBqw3zP12kddMeCbj/F3FSj9k=
 cloud.google.com/go/pubsublite v1.7.0/go.mod h1:8hVMwRXfDfvGm3fahVbtDbiLePT3gpoiJYJY+vxWxVM=
 cloud.google.com/go/pubsublite v1.8.1/go.mod h1:fOLdU4f5xldK4RGJrBMm+J7zMWNj/k4PxwEZXy39QS0=
+cloud.google.com/go/pubsublite v1.8.2 h1:jLQozsEVr+c6tOU13vDugtnaBSUy/PD5zK6mhm+uF1Y=
+cloud.google.com/go/pubsublite v1.8.2/go.mod h1:4r8GSa9NznExjuLPEJlF1VjOPOpgf3IT6k8x/YgaOPI=
 cloud.google.com/go/recaptchaenterprise v1.3.1/go.mod h1:OdD+q+y4XGeAlxRaMn1Y7/GveP6zmq76byL6tjPE7d4=
 cloud.google.com/go/recaptchaenterprise/v2 v2.1.0/go.mod h1:w9yVqajwroDNTfGuhmOjPDN//rZGySaf6PtFVcSCa7o=
 cloud.google.com/go/recaptchaenterprise/v2 v2.2.0/go.mod h1:/Zu5jisWGeERrd5HnlS3EUGb/D335f9k51B/FVil0jk=

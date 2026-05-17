@@ -32,19 +32,19 @@ type FakePubsubV1beta1 struct {
 }
 
 func (c *FakePubsubV1beta1) PubSubSchemas(namespace string) v1beta1.PubSubSchemaInterface {
-	return &FakePubSubSchemas{c, namespace}
+	return newFakePubSubSchemas(c, namespace)
 }
 
 func (c *FakePubsubV1beta1) PubSubSnapshots(namespace string) v1beta1.PubSubSnapshotInterface {
-	return &FakePubSubSnapshots{c, namespace}
+	return newFakePubSubSnapshots(c, namespace)
 }
 
 func (c *FakePubsubV1beta1) PubSubSubscriptions(namespace string) v1beta1.PubSubSubscriptionInterface {
-	return &FakePubSubSubscriptions{c, namespace}
+	return newFakePubSubSubscriptions(c, namespace)
 }
 
 func (c *FakePubsubV1beta1) PubSubTopics(namespace string) v1beta1.PubSubTopicInterface {
-	return &FakePubSubTopics{c, namespace}
+	return newFakePubSubTopics(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

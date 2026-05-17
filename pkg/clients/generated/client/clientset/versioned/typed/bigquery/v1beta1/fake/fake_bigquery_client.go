@@ -32,19 +32,19 @@ type FakeBigqueryV1beta1 struct {
 }
 
 func (c *FakeBigqueryV1beta1) BigQueryDatasets(namespace string) v1beta1.BigQueryDatasetInterface {
-	return &FakeBigQueryDatasets{c, namespace}
+	return newFakeBigQueryDatasets(c, namespace)
 }
 
 func (c *FakeBigqueryV1beta1) BigQueryJobs(namespace string) v1beta1.BigQueryJobInterface {
-	return &FakeBigQueryJobs{c, namespace}
+	return newFakeBigQueryJobs(c, namespace)
 }
 
 func (c *FakeBigqueryV1beta1) BigQueryRoutines(namespace string) v1beta1.BigQueryRoutineInterface {
-	return &FakeBigQueryRoutines{c, namespace}
+	return newFakeBigQueryRoutines(c, namespace)
 }
 
 func (c *FakeBigqueryV1beta1) BigQueryTables(namespace string) v1beta1.BigQueryTableInterface {
-	return &FakeBigQueryTables{c, namespace}
+	return newFakeBigQueryTables(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

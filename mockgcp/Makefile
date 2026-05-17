@@ -135,7 +135,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/orgpolicy/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/parametermanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/cluster/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/resourcemanager/v3/*.proto \
@@ -173,9 +172,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/netapp/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/datastream/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/modelarmor/v1/service.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
@@ -213,7 +210,6 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
-		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
 		./third_party/googleapis/google/logging/v2/*.proto \

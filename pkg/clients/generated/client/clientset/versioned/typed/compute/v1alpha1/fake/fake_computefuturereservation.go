@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeComputeFutureReservations implements ComputeFutureReservationInterface
-type FakeComputeFutureReservations struct {
+// fakeComputeFutureReservations implements ComputeFutureReservationInterface
+type fakeComputeFutureReservations struct {
+	*gentype.FakeClientWithList[*v1alpha1.ComputeFutureReservation, *v1alpha1.ComputeFutureReservationList]
 	Fake *FakeComputeV1alpha1
-	ns   string
 }
 
-var computefuturereservationsResource = v1alpha1.SchemeGroupVersion.WithResource("computefuturereservations")
-
-var computefuturereservationsKind = v1alpha1.SchemeGroupVersion.WithKind("ComputeFutureReservation")
-
-// Get takes name of the computeFutureReservation, and returns the corresponding computeFutureReservation object, and an error if there is any.
-func (c *FakeComputeFutureReservations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeFutureReservation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(computefuturereservationsResource, c.ns, name), &v1alpha1.ComputeFutureReservation{})
-
-	if obj == nil {
-		return nil, err
+func newFakeComputeFutureReservations(fake *FakeComputeV1alpha1, namespace string) computev1alpha1.ComputeFutureReservationInterface {
+	return &fakeComputeFutureReservations{
+		gentype.NewFakeClientWithList[*v1alpha1.ComputeFutureReservation, *v1alpha1.ComputeFutureReservationList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("computefuturereservations"),
+			v1alpha1.SchemeGroupVersion.WithKind("ComputeFutureReservation"),
+			func() *v1alpha1.ComputeFutureReservation { return &v1alpha1.ComputeFutureReservation{} },
+			func() *v1alpha1.ComputeFutureReservationList { return &v1alpha1.ComputeFutureReservationList{} },
+			func(dst, src *v1alpha1.ComputeFutureReservationList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.ComputeFutureReservationList) []*v1alpha1.ComputeFutureReservation {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.ComputeFutureReservationList, items []*v1alpha1.ComputeFutureReservation) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.ComputeFutureReservation), err
-}
-
-// List takes label and field selectors, and returns the list of ComputeFutureReservations that match those selectors.
-func (c *FakeComputeFutureReservations) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeFutureReservationList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(computefuturereservationsResource, computefuturereservationsKind, c.ns, opts), &v1alpha1.ComputeFutureReservationList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.ComputeFutureReservationList{ListMeta: obj.(*v1alpha1.ComputeFutureReservationList).ListMeta}
-	for _, item := range obj.(*v1alpha1.ComputeFutureReservationList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested computeFutureReservations.
-func (c *FakeComputeFutureReservations) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(computefuturereservationsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a computeFutureReservation and creates it.  Returns the server's representation of the computeFutureReservation, and an error, if there is any.
-func (c *FakeComputeFutureReservations) Create(ctx context.Context, computeFutureReservation *v1alpha1.ComputeFutureReservation, opts v1.CreateOptions) (result *v1alpha1.ComputeFutureReservation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(computefuturereservationsResource, c.ns, computeFutureReservation), &v1alpha1.ComputeFutureReservation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeFutureReservation), err
-}
-
-// Update takes the representation of a computeFutureReservation and updates it. Returns the server's representation of the computeFutureReservation, and an error, if there is any.
-func (c *FakeComputeFutureReservations) Update(ctx context.Context, computeFutureReservation *v1alpha1.ComputeFutureReservation, opts v1.UpdateOptions) (result *v1alpha1.ComputeFutureReservation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(computefuturereservationsResource, c.ns, computeFutureReservation), &v1alpha1.ComputeFutureReservation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeFutureReservation), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeComputeFutureReservations) UpdateStatus(ctx context.Context, computeFutureReservation *v1alpha1.ComputeFutureReservation, opts v1.UpdateOptions) (*v1alpha1.ComputeFutureReservation, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(computefuturereservationsResource, "status", c.ns, computeFutureReservation), &v1alpha1.ComputeFutureReservation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeFutureReservation), err
-}
-
-// Delete takes name of the computeFutureReservation and deletes it. Returns an error if one occurs.
-func (c *FakeComputeFutureReservations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(computefuturereservationsResource, c.ns, name, opts), &v1alpha1.ComputeFutureReservation{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeComputeFutureReservations) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(computefuturereservationsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.ComputeFutureReservationList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched computeFutureReservation.
-func (c *FakeComputeFutureReservations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeFutureReservation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(computefuturereservationsResource, c.ns, name, pt, data, subresources...), &v1alpha1.ComputeFutureReservation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeFutureReservation), err
 }

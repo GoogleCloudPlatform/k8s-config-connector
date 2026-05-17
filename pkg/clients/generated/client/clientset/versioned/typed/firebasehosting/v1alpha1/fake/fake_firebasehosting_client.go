@@ -32,11 +32,11 @@ type FakeFirebasehostingV1alpha1 struct {
 }
 
 func (c *FakeFirebasehostingV1alpha1) FirebaseHostingChannels(namespace string) v1alpha1.FirebaseHostingChannelInterface {
-	return &FakeFirebaseHostingChannels{c, namespace}
+	return newFakeFirebaseHostingChannels(c, namespace)
 }
 
 func (c *FakeFirebasehostingV1alpha1) FirebaseHostingSites(namespace string) v1alpha1.FirebaseHostingSiteInterface {
-	return &FakeFirebaseHostingSites{c, namespace}
+	return newFakeFirebaseHostingSites(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

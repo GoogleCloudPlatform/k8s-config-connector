@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1alpha1"
+	clouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // CloudDeployDeployPoliciesGetter has a method to return a CloudDeployDeployPolicyInterface.
@@ -41,158 +40,38 @@ type CloudDeployDeployPoliciesGetter interface {
 
 // CloudDeployDeployPolicyInterface has methods to work with CloudDeployDeployPolicy resources.
 type CloudDeployDeployPolicyInterface interface {
-	Create(ctx context.Context, cloudDeployDeployPolicy *v1alpha1.CloudDeployDeployPolicy, opts v1.CreateOptions) (*v1alpha1.CloudDeployDeployPolicy, error)
-	Update(ctx context.Context, cloudDeployDeployPolicy *v1alpha1.CloudDeployDeployPolicy, opts v1.UpdateOptions) (*v1alpha1.CloudDeployDeployPolicy, error)
-	UpdateStatus(ctx context.Context, cloudDeployDeployPolicy *v1alpha1.CloudDeployDeployPolicy, opts v1.UpdateOptions) (*v1alpha1.CloudDeployDeployPolicy, error)
+	Create(ctx context.Context, cloudDeployDeployPolicy *clouddeployv1alpha1.CloudDeployDeployPolicy, opts v1.CreateOptions) (*clouddeployv1alpha1.CloudDeployDeployPolicy, error)
+	Update(ctx context.Context, cloudDeployDeployPolicy *clouddeployv1alpha1.CloudDeployDeployPolicy, opts v1.UpdateOptions) (*clouddeployv1alpha1.CloudDeployDeployPolicy, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, cloudDeployDeployPolicy *clouddeployv1alpha1.CloudDeployDeployPolicy, opts v1.UpdateOptions) (*clouddeployv1alpha1.CloudDeployDeployPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.CloudDeployDeployPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.CloudDeployDeployPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*clouddeployv1alpha1.CloudDeployDeployPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*clouddeployv1alpha1.CloudDeployDeployPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudDeployDeployPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *clouddeployv1alpha1.CloudDeployDeployPolicy, err error)
 	CloudDeployDeployPolicyExpansion
 }
 
 // cloudDeployDeployPolicies implements CloudDeployDeployPolicyInterface
 type cloudDeployDeployPolicies struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*clouddeployv1alpha1.CloudDeployDeployPolicy, *clouddeployv1alpha1.CloudDeployDeployPolicyList]
 }
 
 // newCloudDeployDeployPolicies returns a CloudDeployDeployPolicies
 func newCloudDeployDeployPolicies(c *ClouddeployV1alpha1Client, namespace string) *cloudDeployDeployPolicies {
 	return &cloudDeployDeployPolicies{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*clouddeployv1alpha1.CloudDeployDeployPolicy, *clouddeployv1alpha1.CloudDeployDeployPolicyList](
+			"clouddeploydeploypolicies",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *clouddeployv1alpha1.CloudDeployDeployPolicy {
+				return &clouddeployv1alpha1.CloudDeployDeployPolicy{}
+			},
+			func() *clouddeployv1alpha1.CloudDeployDeployPolicyList {
+				return &clouddeployv1alpha1.CloudDeployDeployPolicyList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the cloudDeployDeployPolicy, and returns the corresponding cloudDeployDeployPolicy object, and an error if there is any.
-func (c *cloudDeployDeployPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudDeployDeployPolicy, err error) {
-	result = &v1alpha1.CloudDeployDeployPolicy{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("clouddeploydeploypolicies").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of CloudDeployDeployPolicies that match those selectors.
-func (c *cloudDeployDeployPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudDeployDeployPolicyList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.CloudDeployDeployPolicyList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("clouddeploydeploypolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested cloudDeployDeployPolicies.
-func (c *cloudDeployDeployPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("clouddeploydeploypolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a cloudDeployDeployPolicy and creates it.  Returns the server's representation of the cloudDeployDeployPolicy, and an error, if there is any.
-func (c *cloudDeployDeployPolicies) Create(ctx context.Context, cloudDeployDeployPolicy *v1alpha1.CloudDeployDeployPolicy, opts v1.CreateOptions) (result *v1alpha1.CloudDeployDeployPolicy, err error) {
-	result = &v1alpha1.CloudDeployDeployPolicy{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("clouddeploydeploypolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(cloudDeployDeployPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a cloudDeployDeployPolicy and updates it. Returns the server's representation of the cloudDeployDeployPolicy, and an error, if there is any.
-func (c *cloudDeployDeployPolicies) Update(ctx context.Context, cloudDeployDeployPolicy *v1alpha1.CloudDeployDeployPolicy, opts v1.UpdateOptions) (result *v1alpha1.CloudDeployDeployPolicy, err error) {
-	result = &v1alpha1.CloudDeployDeployPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("clouddeploydeploypolicies").
-		Name(cloudDeployDeployPolicy.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(cloudDeployDeployPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *cloudDeployDeployPolicies) UpdateStatus(ctx context.Context, cloudDeployDeployPolicy *v1alpha1.CloudDeployDeployPolicy, opts v1.UpdateOptions) (result *v1alpha1.CloudDeployDeployPolicy, err error) {
-	result = &v1alpha1.CloudDeployDeployPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("clouddeploydeploypolicies").
-		Name(cloudDeployDeployPolicy.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(cloudDeployDeployPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the cloudDeployDeployPolicy and deletes it. Returns an error if one occurs.
-func (c *cloudDeployDeployPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("clouddeploydeploypolicies").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *cloudDeployDeployPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("clouddeploydeploypolicies").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched cloudDeployDeployPolicy.
-func (c *cloudDeployDeployPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudDeployDeployPolicy, err error) {
-	result = &v1alpha1.CloudDeployDeployPolicy{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("clouddeploydeploypolicies").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }
