@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}' was not found",
+    "message": "dnsAuthorization \"projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -121,7 +121,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}' was not found",
+    "message": "dnsAuthorization \"projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -225,7 +225,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}' was not found",
+    "message": "certificate \"projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
