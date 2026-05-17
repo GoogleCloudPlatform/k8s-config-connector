@@ -11,6 +11,8 @@ This skill outlines the steps to transition a mockgcp service from using `grpc-g
 
 In `mockgcp/Makefile`, remove the service from the `gen-proto-no-fixup` target. Find the line that looks like `./third_party/googleapis/google/cloud/<service_name>/v1/*.proto \` (or `./third_party/googleapis/mockgcp/cloud/...`) and delete it.
 
+Also, check `mockgcp/fixup-third-party.sh` and remove any entries that move or rewrite the service's protos.
+
 ## Step 2: Delete generated files
 
 Delete the generated code for the service located in:
