@@ -24,9 +24,9 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkebackup/v1"
+	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -66,11 +66,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterBackupForGKEHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
-	return mux, nil
+
+	grpcMux.AddService(pb.NewBackupForGKEClient(conn))
+	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
+	return grpcMux, nil
 }

@@ -32,7 +32,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkebackup/v1"
+	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
