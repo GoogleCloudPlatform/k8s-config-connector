@@ -40,6 +40,9 @@ mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
 
+rm -rf mockgcp/cloud/memorystore
+
+
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
 mv google/api/cloudquotas/ mockgcp/api/

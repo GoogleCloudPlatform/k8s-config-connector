@@ -148,10 +148,11 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/workflows/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/workflows/executions/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/workstations/v1/*.proto \
+		./apis/mockgcp/cloud/memorystore/v1/*.proto \
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
 		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
-		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto	 \
+		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/v1/resource_policy_member.proto \
 		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
