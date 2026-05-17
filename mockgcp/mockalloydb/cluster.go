@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/alloydb/v1beta"
+	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 )
 
 type AlloyDBAdminV1 struct {
