@@ -22,7 +22,7 @@ Run `rm -rf` on the directory to remove the `.pb.go`, `.pb.gw.go`, and `_grpc.pb
 Update the Go files in `mockgcp/mock<service_name>/` (typically `service.go`, `instance.go`, etc.):
 
 - Remove the local generated import: `pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/<service_name>/<version>"`
-- Add the official client library import: `pb "cloud.google.com/go/<service_name>/apiv1/<service_name>pb"`
+- Add the official client library import: `pb "cloud.google.com/go/<service_name>/apiv1/<service_name>pb"` (or `apiv1beta` if the service is only in beta).
 
 ## Step 4: Switch HTTP Multiplexer to httptogrpc
 

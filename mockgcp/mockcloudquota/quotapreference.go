@@ -28,9 +28,9 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
-	"github.com/golang/protobuf/ptypes/wrappers"
+	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
 	"github.com/google/uuid"
 )
 
@@ -68,7 +68,7 @@ func (s *CloudQuotasV1) CreateQuotaPreference(ctx context.Context, req *pb.Creat
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.Etag = uuid.New().String()
-	obj.QuotaConfig.GrantedValue = &wrappers.Int64Value{Value: obj.QuotaConfig.PreferredValue}
+	obj.QuotaConfig.GrantedValue = wrapperspb.Int64(obj.QuotaConfig.PreferredValue)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -121,7 +121,7 @@ func (s *CloudQuotasV1) UpdateQuotaPreference(ctx context.Context, req *pb.Updat
 			return nil, status.Errorf(codes.InvalidArgument, "unsupported update path: %q", path)
 		}
 	}
-	obj.QuotaConfig.GrantedValue = &wrappers.Int64Value{Value: obj.QuotaConfig.PreferredValue}
+	obj.QuotaConfig.GrantedValue = wrapperspb.Int64(obj.QuotaConfig.PreferredValue)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
+	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
 	"github.com/google/uuid"
 )
 
@@ -90,8 +90,6 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) UpdateQuotaAdjusterSettings(ctx con
 			updated.Enablement = req.GetQuotaAdjusterSettings().GetEnablement()
 		case "name":
 			updated.Name = req.GetQuotaAdjusterSettings().GetName()
-		case "inherited":
-			updated.Inherited = req.GetQuotaAdjusterSettings().GetInherited()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
