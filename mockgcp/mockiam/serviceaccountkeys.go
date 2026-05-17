@@ -22,22 +22,22 @@ import (
 	"strings"
 	"time"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/iam/admin/v1"
+	"cloud.google.com/go/iam/admin/apiv1/adminpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (s *IAMServer) GetServiceAccountKey(ctx context.Context, req *pb.GetServiceAccountKeyRequest) (*pb.ServiceAccountKey, error) {
+func (s *IAMServer) GetServiceAccountKey(ctx context.Context, req *adminpb.GetServiceAccountKeyRequest) (*adminpb.ServiceAccountKey, error) {
 	name, err := s.parseServiceAccountKeyName(ctx, req.Name)
 	if err != nil {
 		return nil, err
 	}
 
-	obj := &pb.ServiceAccountKey{}
+	obj := &adminpb.ServiceAccountKey{}
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
@@ -47,14 +47,14 @@ func (s *IAMServer) GetServiceAccountKey(ctx context.Context, req *pb.GetService
 	}
 
 	// Don't return key after initial creation
-	ret := proto.CloneOf(obj)
+	ret := proto.Clone(obj).(*adminpb.ServiceAccountKey)
 	ret.PrivateKeyData = nil
-	ret.PrivateKeyType = pb.ServiceAccountPrivateKeyType_TYPE_UNSPECIFIED
+	ret.PrivateKeyType = adminpb.ServiceAccountPrivateKeyType_TYPE_UNSPECIFIED
 
 	return ret, nil
 }
 
-func (s *IAMServer) ListServiceAccountKeys(ctx context.Context, req *pb.ListServiceAccountKeysRequest) (*pb.ListServiceAccountKeysResponse, error) {
+func (s *IAMServer) ListServiceAccountKeys(ctx context.Context, req *adminpb.ListServiceAccountKeysRequest) (*adminpb.ListServiceAccountKeysResponse, error) {
 	parent, err := s.parseServiceAccountName(ctx, req.GetName())
 	if err != nil {
 		return nil, err
@@ -66,19 +66,19 @@ func (s *IAMServer) ListServiceAccountKeys(ctx context.Context, req *pb.ListServ
 
 	prefix := parent.String() + "/keys/"
 
-	var keys []*pb.ServiceAccountKey
-	keyKind := (&pb.ServiceAccountKey{}).ProtoReflect().Descriptor()
+	var keys []*adminpb.ServiceAccountKey
+	keyKind := (&adminpb.ServiceAccountKey{}).ProtoReflect().Descriptor()
 
 	if err := s.storage.List(ctx, keyKind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
-		key, ok := obj.(*pb.ServiceAccountKey)
+		key, ok := obj.(*adminpb.ServiceAccountKey)
 		if !ok {
 			return status.Errorf(codes.Internal, "unexpected resource type: %T", obj)
 		}
 
 		// Don't return key after initial creation
-		ret := proto.CloneOf(key)
+		ret := proto.Clone(key).(*adminpb.ServiceAccountKey)
 		ret.PrivateKeyData = nil
-		ret.PrivateKeyType = pb.ServiceAccountPrivateKeyType_TYPE_UNSPECIFIED
+		ret.PrivateKeyType = adminpb.ServiceAccountPrivateKeyType_TYPE_UNSPECIFIED
 
 		keys = append(keys, ret)
 		return nil
@@ -86,12 +86,12 @@ func (s *IAMServer) ListServiceAccountKeys(ctx context.Context, req *pb.ListServ
 		return nil, err
 	}
 
-	return &pb.ListServiceAccountKeysResponse{
+	return &adminpb.ListServiceAccountKeysResponse{
 		Keys: keys,
 	}, nil
 }
 
-func (s *IAMServer) CreateServiceAccountKey(ctx context.Context, req *pb.CreateServiceAccountKeyRequest) (*pb.ServiceAccountKey, error) {
+func (s *IAMServer) CreateServiceAccountKey(ctx context.Context, req *adminpb.CreateServiceAccountKeyRequest) (*adminpb.ServiceAccountKey, error) {
 	parent, err := s.parseServiceAccountName(ctx, req.Name)
 	if err != nil {
 		return nil, err
@@ -107,13 +107,13 @@ func (s *IAMServer) CreateServiceAccountKey(ctx context.Context, req *pb.CreateS
 	hash := sha256.Sum256([]byte(fmt.Sprintf("%d", now.UnixNano())))
 	name.Key = hex.EncodeToString(hash[:])
 
-	key := &pb.ServiceAccountKey{}
-	key.KeyAlgorithm = pb.ServiceAccountKeyAlgorithm_KEY_ALG_RSA_2048
-	key.KeyOrigin = pb.ServiceAccountKeyOrigin_GOOGLE_PROVIDED
-	key.KeyType = pb.ListServiceAccountKeysRequest_USER_MANAGED
+	key := &adminpb.ServiceAccountKey{}
+	key.KeyAlgorithm = adminpb.ServiceAccountKeyAlgorithm_KEY_ALG_RSA_2048
+	key.KeyOrigin = adminpb.ServiceAccountKeyOrigin_GOOGLE_PROVIDED
+	key.KeyType = adminpb.ListServiceAccountKeysRequest_USER_MANAGED
 	key.Name = name.String()
 	key.PrivateKeyData = []byte("This should really be a key, but instead we just use a placeholder value.  I don't think it matters for our tests.")
-	key.PrivateKeyType = pb.ServiceAccountPrivateKeyType_TYPE_GOOGLE_CREDENTIALS_FILE
+	key.PrivateKeyType = adminpb.ServiceAccountPrivateKeyType_TYPE_GOOGLE_CREDENTIALS_FILE
 	key.ValidBeforeTime = timestamppb.New(time.Date(9999, time.December, 31, 23, 59, 59, 0, time.UTC))
 	key.ValidAfterTime = timestamppb.New(now.Truncate(time.Second))
 
@@ -125,19 +125,19 @@ func (s *IAMServer) CreateServiceAccountKey(ctx context.Context, req *pb.CreateS
 	return key, nil
 }
 
-func (s *IAMServer) DeleteServiceAccountKey(ctx context.Context, req *pb.DeleteServiceAccountKeyRequest) (*empty.Empty, error) {
+func (s *IAMServer) DeleteServiceAccountKey(ctx context.Context, req *adminpb.DeleteServiceAccountKeyRequest) (*emptypb.Empty, error) {
 	name, err := s.parseServiceAccountKeyName(ctx, req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	deletedObj := &pb.ServiceAccountKey{}
+	deletedObj := &adminpb.ServiceAccountKey{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
 
-	return &empty.Empty{}, nil
+	return &emptypb.Empty{}, nil
 }
 
 type serviceAccountKeyName struct {
