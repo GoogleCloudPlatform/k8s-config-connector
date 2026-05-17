@@ -25,9 +25,9 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/biglake/v1"
+	pb "cloud.google.com/go/bigquery/biglake/apiv1/biglakepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -54,15 +54,17 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterMetastoreServiceServer(grpcServer, &bigLakeService{MockService: s})
+	s.operations.RegisterGRPCServices(grpcServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterMetastoreServiceHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
+
+	mux.AddService(pb.NewMetastoreServiceClient(conn))
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }

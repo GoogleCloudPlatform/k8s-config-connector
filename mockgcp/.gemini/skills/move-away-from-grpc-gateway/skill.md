@@ -75,6 +75,15 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 }
 ```
 
+**Note on Operations:** If your service uses `AddOperationsPath`, ensure that the operations service is registered in the gRPC server within the `Register` method:
+
+```go
+func (s *MockService) Register(grpcServer *grpc.Server) {
+    pb.RegisterMyServiceClientServer(grpcServer, &myService{MockService: s})
+    s.operations.RegisterGRPCServices(grpcServer)
+}
+```
+
 ## Step 5: Fix type mismatches
 
 The official client library proto types might differ slightly from the old grpc-gateway types:
