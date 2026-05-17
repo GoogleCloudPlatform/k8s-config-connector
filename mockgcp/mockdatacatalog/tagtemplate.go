@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datacatalog/v1"
+	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 )
 
 func (s *DataCatalogV1) GetTagTemplate(ctx context.Context, req *pb.GetTagTemplateRequest) (*pb.TagTemplate, error) {
