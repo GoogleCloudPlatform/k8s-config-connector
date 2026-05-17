@@ -25,8 +25,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"k8s.io/klog/v2"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 )
