@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/europe-west1/certificates/certificatemanagercertificate${uniqueId}' was not found",
+    "message": "certificate \"projects/${projectId}/locations/europe-west1/certificates/certificatemanagercertificate${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
