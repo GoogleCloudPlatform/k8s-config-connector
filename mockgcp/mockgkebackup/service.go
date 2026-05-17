@@ -23,10 +23,10 @@ import (
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
