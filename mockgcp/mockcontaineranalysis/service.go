@@ -24,8 +24,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "google.golang.org/genproto/googleapis/grafeas/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	pb "google.golang.org/genproto/googleapis/grafeas/v1"
 )
 
 // MockService represents a mocked containeranalysis service.
