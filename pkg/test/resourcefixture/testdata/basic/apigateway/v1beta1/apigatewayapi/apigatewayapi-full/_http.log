@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "API \"projects/${projectId}/locations/global/apis/apigatewayapi-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "API \"projects/${projectId}/locations/global/apis/apigatewayapi-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
