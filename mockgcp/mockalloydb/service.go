@@ -23,9 +23,9 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/alloydb/v1beta"
+	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -61,18 +61,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterAlloyDBAdminHandler,
-		s.operations.RegisterOperationsPath("/v1beta/{prefix=**}/operations/{name}"))
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	grpcMux.AddService(pb.NewAlloyDBAdminClient(conn))
+	grpcMux.AddOperationsPath("/v1beta/{prefix=**}/operations/{name}", conn)
 
-	return mux, nil
+	return grpcMux, nil
 }
