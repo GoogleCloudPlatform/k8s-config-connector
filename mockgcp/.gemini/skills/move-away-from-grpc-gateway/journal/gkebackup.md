@@ -1,0 +1,3 @@
+- Moved mockgcp gkebackup to httptogrpc.
+- Verified that gkebackup only has a single service `BackupForGKE`.
+- Confirmed that type mismatches were minimal and the build passed without additional fixes.
