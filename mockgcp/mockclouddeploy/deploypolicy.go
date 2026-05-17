@@ -30,8 +30,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
