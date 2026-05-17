@@ -23,6 +23,17 @@ Update the Go files in `mockgcp/mock<service_name>/` (typically `service.go`, `i
 
 - Remove the local generated import: `pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/<service_name>/<version>"`
 - Add the official client library import: `pb "cloud.google.com/go/<service_name>/apiv1/<service_name>pb"` (or `apiv1beta` if the service is only in beta).
+- Register the service with `mockgcpregistry` by adding an `init` function and updating the `New` function signature in `service.go`:
+  ```go
+  func init() {
+      mockgcpregistry.Register(New)
+  }
+  func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
+      // ...
+  }
+  ```
+- Update `mockgcp/register.go` to include the new service package in the anonymous imports.
+- Remove the manual registration of the service in `mockgcp/mock_http_roundtrip.go`.
 
 ## Step 4: Switch HTTP Multiplexer to httptogrpc
 
@@ -66,4 +77,7 @@ The official client library proto types might differ slightly from the old grpc-
 
 ## Journaling
 
-If you discover any new patterns, edge cases, or workarounds during migration, document them in the `mockgcp/.gemini/skills/move-away-from-grpc-gateway/journal/` directory. Create a new file with a descriptive, topic-based name (e.g., `netapp_leftover_generated_files.md` or `datastream_rewriteerror_not_needed.md`) to capture the learning for future reference.
+If you discover any new patterns, edge cases, or workarounds during migration, you MUST document them in the `mockgcp/.gemini/skills/move-away-from-grpc-gateway/journal/` directory.
+
+- **CRITICAL RULE:** Always create a new file with a descriptive, topic-based name (e.g., `netapp_leftover_generated_files.md` or `datastream_rewriteerror_not_needed.md`) to capture your findings, or **append** to an existing relevant file.
+- **NEVER** overwrite, truncate, or delete any existing journal files or entries. All records must be preserved to prevent losing valuable historical migration context.
