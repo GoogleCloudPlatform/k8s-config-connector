@@ -445,7 +445,6 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": false,
   "schema": {
     "fields": [
       {
@@ -518,7 +517,6 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": false,
   "schema": {
     "fields": [
       {

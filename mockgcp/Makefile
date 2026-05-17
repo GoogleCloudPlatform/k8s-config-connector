@@ -49,7 +49,6 @@ gen-proto-no-fixup:
 		./apis/google/apps/cloudidentity/v1beta1/*.proto \
 		./apis/google/cloud/dns/v1/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
-		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
@@ -196,10 +195,6 @@ generate-protos-from-openapi:
 	wget -O temp/cloudresourcemanager-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudresourcemanager/v1/cloudresourcemanager-api.json
 	mkdir -p apis/mockgcp/cloud/resourcemanager/v1
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloudresourcemanager.v1 ../../temp/cloudresourcemanager-v1.json > ../../apis/mockgcp/cloud/resourcemanager/v1/api.proto
-
-	wget -O temp/bigquery-v2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/bigquery/v2/bigquery-api.json
-	mkdir -p apis/mockgcp/cloud/bigquery/v2/
-	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.bigquery.v2 ../../temp/bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
 
 	wget -O temp/networkconnectivity-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/networkconnectivity/v1/networkconnectivity-api.json
 	mkdir -p apis/mockgcp/cloud/networkconnectivity/v1/

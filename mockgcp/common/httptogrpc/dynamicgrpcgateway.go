@@ -209,6 +209,8 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 		} else if inTypeName == "[]google.golang.org/grpc.CallOption" {
 			// Do we need to pass any CallOptions?
 			var callOptions []grpc.CallOption
+			callOptions = append(callOptions, grpc.Header(&call.header))
+			callOptions = append(callOptions, grpc.Trailer(&call.trailer))
 			if method.goMethodType.Type.IsVariadic() {
 				for _, callOption := range callOptions {
 					inArgs = append(inArgs, reflect.ValueOf(callOption))

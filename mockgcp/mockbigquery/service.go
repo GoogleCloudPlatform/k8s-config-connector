@@ -20,12 +20,12 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
+	pb "cloud.google.com/go/bigquery/v2/apiv2/bigquerypb"
 )
 
 // MockService represents a mocked bigquery service.
@@ -51,26 +51,20 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDatasetsServerServer(grpcServer, &datasetsServer{MockService: s})
-	pb.RegisterTablesServerServer(grpcServer, &tablesServer{MockService: s})
-	pb.RegisterRoutinesServerServer(grpcServer, &routinesServer{MockService: s})
+	pb.RegisterDatasetServiceServer(grpcServer, &datasetsServer{MockService: s})
+	pb.RegisterTableServiceServer(grpcServer, &tablesServer{MockService: s})
+	pb.RegisterRoutineServiceServer(grpcServer, &routinesServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, pb.RegisterDatasetsServerHandler, pb.RegisterTablesServerHandler, pb.RegisterRoutinesServerHandler)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-		// set http status code
-		if code, found := httpmux.GetStatusCode(ctx); found {
-			// delete(response.Header(), "Grpc-Metadata-X-Http-Code")
-			response.WriteHeader(code)
-			response.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			response.Header().Del("Cache-Control")
-		}
-	}
+	mux.AddService(pb.NewDatasetServiceClient(conn))
+	mux.AddService(pb.NewTableServiceClient(conn))
+	mux.AddService(pb.NewRoutineServiceClient(conn))
 
 	// To be compatible with the real BigQuery API, we need to serve a 204 on DELETE
 	return httpmux.FilterBodyOn204(mux)

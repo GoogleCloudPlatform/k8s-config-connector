@@ -17,8 +17,11 @@ package httptogrpc
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -31,6 +34,9 @@ type httpMethodCall struct {
 	grpcMethod *grpcMethod
 	r          *http.Request
 	w          http.ResponseWriter
+
+	header  metadata.MD
+	trailer metadata.MD
 }
 
 // SendErrorResponse sends an error response for a GRPC method call over HTTP.
@@ -46,15 +52,33 @@ func (c *httpMethodCall) SendErrorResponse(err error) {
 
 		httpErrorResponse := &httpErrorResponse{
 			Error: &httpError{
-				Code:    http.StatusInternalServerError,
+				Code:    runtime.HTTPStatusFromCode(statusErr.Code()),
 				Message: response.Message,
 			},
 		}
 
+		if vals := c.header.Get("x-http-code"); len(vals) > 0 {
+			code, err := strconv.Atoi(vals[0])
+			if err == nil {
+				httpErrorResponse.Error.Code = code
+			}
+		}
+
 		switch statusErr.Code() {
+		case codes.PermissionDenied:
+			httpErrorResponse.Error.Status = "PERMISSION_DENIED"
+		case codes.AlreadyExists:
+			httpErrorResponse.Error.Status = "ALREADY_EXISTS"
+		case codes.InvalidArgument:
+			httpErrorResponse.Error.Status = "INVALID_ARGUMENT"
 		case codes.NotFound:
 			httpErrorResponse.Error.Code = http.StatusNotFound
 			httpErrorResponse.Error.Status = "NOT_FOUND"
+			httpErrorResponse.Error.Errors = append(httpErrorResponse.Error.Errors, httpErrorDetails{
+				Domain:  "global",
+				Message: httpErrorResponse.Error.Message,
+				Reason:  "notFound",
+			})
 		}
 
 		body, err := json.Marshal(httpErrorResponse)
@@ -106,6 +130,17 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 	ctx := c.r.Context()
 
 	httpCode := http.StatusOK
+
+	if vals := c.header.Get("x-http-code"); len(vals) > 0 {
+		code, err := strconv.Atoi(vals[0])
+		if err != nil {
+			klog.Fatalf("error parsing x-http-code %q", vals[0])
+		}
+		httpCode = code
+	}
+	if vals := c.header.Get("x-expires"); len(vals) > 0 {
+		c.w.Header().Set("Expires", vals[0])
+	}
 
 	c.w.Header().Set("Content-Type", "application/json")
 
