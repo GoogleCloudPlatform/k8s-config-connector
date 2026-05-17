@@ -28,19 +28,19 @@ import (
 )
 
 func TestAllCRDsShouldConvertToYAML(t *testing.T) {
-        t.Parallel()
-        crds, err := crdloader.LoadCRDs()
-        if err != nil {
-                t.Fatalf("error loading crds: %v", err)
-        }
-        for _, crd := range crds {
-                crd := crd
-                t.Run(crd.Name, func(t *testing.T) {
-                        t.Parallel()
-                        specToYAML(t, &crd)
-                        statusToYAML(t, &crd)
-                })
-        }
+	t.Parallel()
+	crds, err := crdloader.LoadCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+	for _, crd := range crds {
+		crd := crd
+		t.Run(crd.Name, func(t *testing.T) {
+			t.Parallel()
+			specToYAML(t, &crd)
+			statusToYAML(t, &crd)
+		})
+	}
 }
 func TestSpecAndStatusToYAML(t *testing.T) {
 	t.Parallel()
