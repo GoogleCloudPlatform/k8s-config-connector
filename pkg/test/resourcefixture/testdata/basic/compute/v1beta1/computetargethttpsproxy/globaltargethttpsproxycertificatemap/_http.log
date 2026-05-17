@@ -478,7 +478,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}' was not found",
+    "message": "certificateMap \"projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
