@@ -1,0 +1,1 @@
+- When using `httptogrpc.AddOperationsPath`, ensure that the operations service is registered on the gRPC server by calling `s.operations.RegisterGRPCServices(grpcServer)` in the `Register` method. This is because `AddOperationsPath` calls `GetOperation` via gRPC, and it will fail if the service is not registered.

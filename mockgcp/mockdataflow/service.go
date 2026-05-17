@@ -16,14 +16,15 @@ package mockdataflow
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/dataflow/v1beta3"
+	pb "cloud.google.com/go/dataflow/apiv1beta3/dataflowpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -56,24 +57,18 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterFlexTemplatesServiceServer(grpcServer, &flexTemplatesServer{MockService: s})
 	pb.RegisterJobsV1Beta3Server(grpcServer, &jobsServer{MockService: s})
+	s.operations.RegisterGRPCServices(grpcServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterFlexTemplatesServiceHandler,
-		pb.RegisterJobsV1Beta3Handler,
-		s.operations.RegisterOperationsPath("/v1beta3/{prefix=**}/operations/{name}"),
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	grpcMux.AddService(pb.NewFlexTemplatesServiceClient(conn))
+	grpcMux.AddService(pb.NewJobsV1Beta3Client(conn))
+	grpcMux.AddOperationsPath("/v1beta3/{prefix=**}/operations/{name}", conn)
 
-	return mux, nil
+	return grpcMux, nil
 }

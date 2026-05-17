@@ -24,10 +24,12 @@ Update the Go files in `mockgcp/mock<service_name>/` (typically `service.go`, `i
 - Remove the local generated import: `pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/<service_name>/<version>"`
 - Add the official client library import: `pb "cloud.google.com/go/<service_name>/apiv1/<service_name>pb"`
 
-## Step 4: Switch HTTP Multiplexer to httptogrpc
+## Step 4: Update Register and NewHTTPMux
 
-In `mockgcp/mock<service_name>/service.go`, update the `NewHTTPMux` method.
+In `mockgcp/mock<service_name>/service.go`:
 
+- In the `Register` method, call `s.operations.RegisterGRPCServices(grpcServer)` if the service uses long-running operations.
+- Update the `NewHTTPMux` method.
 - Replace `"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"` with `"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"`
 - Remove the `httpmux.NewServeMux` call and replace it with `httptogrpc.NewGRPCMux(conn)`.
 - If the old code used `mux.RewriteError`, you should safely delete it. `httptogrpc` does not support it (and handles errors differently).
@@ -36,6 +38,11 @@ In `mockgcp/mock<service_name>/service.go`, update the `NewHTTPMux` method.
 Example:
 
 ```go
+func (s *MockService) Register(grpcServer *grpc.Server) {
+	pb.RegisterMemorystoreServer(grpcServer, &instanceServer{MockService: s})
+	s.operations.RegisterGRPCServices(grpcServer) // Add this if the service uses LROs
+}
+
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
