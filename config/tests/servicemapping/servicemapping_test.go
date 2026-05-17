@@ -165,7 +165,7 @@ func TestIAMPolicyMappings(t *testing.T) {
 				continue
 			}
 			t.Run(rc.Kind, func(t *testing.T) {
-				t.Parallel()
+			t.Parallel()
 				// IAMConfig is not supported for the auto-generated v1alpha1 CRDs.
 				if isAutogenAlphaResource(&sm, &rc) {
 					return
@@ -194,7 +194,7 @@ func TestIAMPolicyMappingsForKindsWithMultipleResourceConfigs(t *testing.T) {
 				kind := kind
 				rcs := rcs
 				t.Run(kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					assertAllHaveEmptyOrNonEmptyIAMConfigButNotBoth(t, kind, rcs)
 					assertAllHaveSameValueForSupportsConditions(t, kind, rcs)
 					assertAllOrNoneSupportAuditConfigs(t, kind, rcs)
@@ -222,7 +222,7 @@ func TestKindsWithMultipleResourceConfigsHaveSameDescriptionsForSameReferences(t
 				kind := kind
 				rcs := rcs
 				t.Run(kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					assertAllHaveSameDescriptionsForSameReferences(t, kind, rcs)
 				})
 			}
@@ -337,7 +337,7 @@ func TestReferencedTargetFieldsAreInReferencedResourceSchema(t *testing.T) {
 			for _, rc := range sm.Spec.Resources {
 				rc := rc
 				t.Run(rc.Kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					testReferencedTargetFieldsAreInReferencedResourceSchema(t, rc, provider, kindToTFResources)
 				})
 			}
@@ -384,7 +384,7 @@ func TestResourceReferencesAreValid(t *testing.T) {
 		for _, rc := range sm.Spec.Resources {
 			rc := rc
 			t.Run(rc.Kind, func(t *testing.T) {
-				t.Parallel()
+			t.Parallel()
 				if isAutogenAlphaResource(&sm, &rc) {
 					return
 				}
@@ -547,7 +547,7 @@ func TestHierarchicalReferences(t *testing.T) {
 			for _, rc := range sm.Spec.Resources {
 				rc := rc
 				t.Run(rc.Kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					testHierarchicalReferences(t, rc)
 				})
 			}
@@ -627,7 +627,7 @@ func TestHierarchicalReferencesForKindsWithMultipleResourceConfigs(t *testing.T)
 				kind := kind
 				rcs := rcs
 				t.Run(kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					assertAllHaveSameHierarchicalReferences(t, kind, rcs)
 				})
 			}
@@ -655,7 +655,7 @@ func TestMustHaveIDTemplateOrServerGeneratedId(t *testing.T) {
 		for _, rc := range sm.Spec.Resources {
 			rc := rc
 			t.Run(rc.Kind, func(t *testing.T) {
-				t.Parallel()
+			t.Parallel()
 				assertIDTemplateOrServerGeneratedID(t, rc)
 			})
 		}
@@ -683,7 +683,7 @@ func TestIDTemplate(t *testing.T) {
 			for _, rc := range sm.Spec.Resources {
 				rc := rc
 				t.Run(rc.Kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					if rc.IDTemplate == "" {
 						return
 					}
@@ -734,7 +734,7 @@ func TestMutableButUnreadableFields(t *testing.T) {
 			for _, rc := range sm.Spec.Resources {
 				rc := rc
 				t.Run(rc.Kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					testMutableButUnreadableFields(t, rc, provider)
 				})
 			}
@@ -945,7 +945,7 @@ func TestIAMMemberReferenceConfig(t *testing.T) {
 			for _, rc := range sm.Spec.Resources {
 				rc := rc
 				t.Run(rc.Kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					iamMemberRefConfig := rc.IAMMemberReferenceConfig
 					if iamMemberRefConfig.TargetField != "" {
 						testIAMMemberReferenceConfig(t, rc, provider)
@@ -984,7 +984,7 @@ func TestResourceIDForKindsWithMultipleResourceConfigs(t *testing.T) {
 				kind := kind
 				rcs := rcs
 				t.Run(kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					assertAllHaveSameResourceIDConfigs(t, kind, rcs)
 				})
 			}
@@ -1025,7 +1025,7 @@ func TestVersionForKindsWithMultipleResourceConfigs(t *testing.T) {
 				kind := kind
 				rcs := rcs
 				t.Run(kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					assertAllHaveSameVersion(t, kind, rcs, &sm)
 				})
 			}
@@ -1098,7 +1098,7 @@ func TestResourceID(t *testing.T) {
 			for _, rc := range sm.Spec.Resources {
 				rc := rc
 				t.Run(rc.Kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					if rc.ResourceID.TargetField == "" {
 						// Resource ID field is not supported so no test is
 						// needed.
@@ -1170,7 +1170,7 @@ func TestUnreadableResourcesShouldHaveZeroReconciliationInterval(t *testing.T) {
 			for _, rc := range sm.Spec.Resources {
 				rc := rc
 				t.Run(rc.Kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					if rc.Unreadable == nil || *rc.Unreadable == false {
 						return
 					}
@@ -1370,7 +1370,7 @@ func TestObservedFields(t *testing.T) {
 				tfResource := provider.ResourcesMap[rc.Name]
 				rc := rc
 				t.Run(rc.Kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					if rc.ObservedFields == nil {
 						return
 					}
@@ -1485,7 +1485,7 @@ func TestAlphaResourceAreNotReferencedByStableResource(t *testing.T) {
 		for _, rc := range sm.Spec.Resources {
 			rc := rc
 			t.Run(rc.Kind, func(t *testing.T) {
-				t.Parallel()
+			t.Parallel()
 				if sm.GetVersionFor(&rc) == k8s.KCCAPIVersionV1Alpha1 {
 					return
 				}
@@ -1523,7 +1523,7 @@ func TestIgnoredOutputOnlySpecFields(t *testing.T) {
 				tfResource := provider.ResourcesMap[rc.Name]
 				rc := rc
 				t.Run(rc.Kind, func(t *testing.T) {
-					t.Parallel()
+			t.Parallel()
 					if rc.IgnoredOutputOnlySpecFields == nil {
 						return
 					}
