@@ -25,8 +25,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgrafeas/v1"
-	"github.com/golang/protobuf/ptypes/empty"
+	pb "google.golang.org/genproto/googleapis/grafeas/v1"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -120,7 +119,7 @@ func (s *ContainerAnalysisV1) UpdateNote(ctx context.Context, req *pb.UpdateNote
 	return obj, nil
 }
 
-func (s *ContainerAnalysisV1) DeleteNote(ctx context.Context, req *pb.DeleteNoteRequest) (*empty.Empty, error) {
+func (s *ContainerAnalysisV1) DeleteNote(ctx context.Context, req *pb.DeleteNoteRequest) (*emptypb.Empty, error) {
 	name, err := s.parseNoteName(req.Name)
 	if err != nil {
 		return nil, err
