@@ -17,17 +17,15 @@ package mockcompute
 import (
 	"context"
 	"net/http"
-	"net/url"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 )
 
 func init() {
@@ -131,190 +129,63 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterRoutesHandler)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := pb.RegisterFutureReservationsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
+	grpcMux.AddService(pb.NewFutureReservationsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.FutureReservations"))
+	grpcMux.AddService(pb.NewBackendBucketsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.BackendBuckets"))
+	grpcMux.AddService(pb.NewExternalVpnGatewaysClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.ExternalVpnGateways"))
+	grpcMux.AddService(pb.NewNetworkEdgeSecurityServicesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.NetworkEdgeSecurityServices"))
+	grpcMux.AddService(pb.NewNetworksClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.Networks"))
+	grpcMux.AddService(pb.NewNetworkAttachmentsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.NetworkAttachments"))
+	grpcMux.AddService(pb.NewSubnetworksClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.Subnetworks"))
+	grpcMux.AddService(pb.NewVpnGatewaysClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.VpnGateways"))
+	grpcMux.AddService(pb.NewTargetVpnGatewaysClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.TargetVpnGateways"))
+	grpcMux.AddService(pb.NewTargetGrpcProxiesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.TargetGrpcProxies"))
+	grpcMux.AddService(pb.NewTargetHttpProxiesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.TargetHttpProxies"))
+	grpcMux.AddService(pb.NewRegionTargetHttpProxiesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionTargetHttpProxies"))
+	grpcMux.AddService(pb.NewTargetHttpsProxiesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.TargetHttpsProxies"))
+	grpcMux.AddService(pb.NewRegionTargetHttpsProxiesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionTargetHttpsProxies"))
+	grpcMux.AddService(pb.NewSslPoliciesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.SslPolicies"))
+	grpcMux.AddService(pb.NewTargetSslProxiesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.TargetSslProxies"))
+	grpcMux.AddService(pb.NewTargetTcpProxiesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.TargetTcpProxies"))
+	grpcMux.AddService(pb.NewRegionTargetTcpProxiesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionTargetTcpProxies"))
+	grpcMux.AddService(pb.NewUrlMapsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.UrlMaps"))
+	grpcMux.AddService(pb.NewRegionUrlMapsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionUrlMaps"))
+	grpcMux.AddService(pb.NewNodeGroupsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.NodeGroups"))
+	grpcMux.AddService(pb.NewNodeTemplatesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.NodeTemplates"))
+	grpcMux.AddService(pb.NewDisksClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.Disks"))
+	grpcMux.AddService(pb.NewRegionDisksClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionDisks"))
+	grpcMux.AddService(pb.NewFirewallPoliciesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.FirewallPolicies"))
+	grpcMux.AddService(pb.NewForwardingRulesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.ForwardingRules"))
+	grpcMux.AddService(pb.NewGlobalForwardingRulesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.GlobalForwardingRules"))
+	grpcMux.AddService(pb.NewRegionOperationsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionOperations"))
+	grpcMux.AddService(pb.NewZoneOperationsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.ZoneOperations"))
+	grpcMux.AddService(pb.NewGlobalOperationsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.GlobalOperations"))
+	grpcMux.AddService(pb.NewGlobalOrganizationOperationsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.GlobalOrganizationOperations"))
+	grpcMux.AddService(pb.NewAddressesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.Addresses"))
+	grpcMux.AddService(pb.NewGlobalAddressesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.GlobalAddresses"))
+	grpcMux.AddService(pb.NewRegionHealthChecksClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionHealthChecks"))
+	grpcMux.AddService(pb.NewHealthChecksClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.HealthChecks"))
+	grpcMux.AddService(pb.NewSslCertificatesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.SslCertificates"))
+	grpcMux.AddService(pb.NewRegionSslCertificatesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionSslCertificates"))
+	grpcMux.AddService(pb.NewRegionNetworkEndpointGroupsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionNetworkEndpointGroups"))
+	grpcMux.AddService(pb.NewServiceAttachmentsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.ServiceAttachments"))
+	grpcMux.AddService(pb.NewImagesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.Images"))
+	grpcMux.AddService(pb.NewInstancesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.Instances"))
+	grpcMux.AddService(pb.NewInstanceTemplatesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.InstanceTemplates"))
+	grpcMux.AddService(pb.NewZonesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.Zones"))
+	grpcMux.AddService(pb.NewInstanceGroupManagersClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.InstanceGroupManagers"))
+	grpcMux.AddService(pb.NewReservationsClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.Reservations"))
+	grpcMux.AddService(pb.NewBackendServicesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.BackendServices"))
+	grpcMux.AddService(pb.NewRegionBackendServicesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.RegionBackendServices"))
+	grpcMux.AddService(pb.NewRoutesClient(conn), httptogrpc.WithServiceName("google.cloud.compute.v1.Routes"))
 
-	if err := pb.RegisterInstanceGroupManagersHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterReservationsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterBackendBucketsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterBackendServicesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterRegionBackendServicesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterExternalVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterNetworkEdgeSecurityServicesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterNetworksHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterNetworkAttachmentsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterSubnetworksHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterTargetVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterTargetGrpcProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterRegionTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterTargetHttpsProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterRegionTargetHttpsProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterSslPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterTargetSslProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterTargetTcpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterRegionTargetTcpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterUrlMapsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterRegionUrlMapsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterNodeGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterNodeTemplatesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterDisksHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterRegionDisksHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterFirewallPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterForwardingRulesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterGlobalForwardingRulesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterRegionOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterZoneOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterGlobalOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterGlobalOrganizationOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterAddressesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterGlobalAddressesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterRegionHealthChecksHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterHealthChecksHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	// for ssl certs and the managedsslcerts
-	if err := pb.RegisterSslCertificatesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterRegionSslCertificatesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterRegionNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterServiceAttachmentsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterImagesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterInstancesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterInstanceTemplatesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterZonesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		// Does not return status (at least for 404)
-		error.Status = ""
-	}
-
-	// Does not return Cache-Control header
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-		response.Header().Del("Cache-Control")
-	}
+	grpcMux.OverrideHeaders(func(w http.ResponseWriter) {
+		w.Header().Del("Cache-Control")
+	})
 
 	// Terraform uses the /beta/ endpoints, but we have protos only for v1.
 	// Also, we probably want to be implementing the newer versions
@@ -323,49 +194,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	// I'm sure eventually we'll find something that needs special handling.
 	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
 		u := r.URL
-		u2 := *u
-		changed := false
 		if strings.HasPrefix(u.Path, "/compute/beta/") {
-			u2.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
-			changed = true
-		}
-		if changed {
-			r = httpmux.RewriteRequest(r, &u2)
+			u.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
 		}
 
-		// Merge multiple 'paths' query parameters into a single comma-separated 'paths' parameter.
-		// This is needed because the Compute API (and Terraform) can send multiple 'paths' parameters,
-		// but our generated proto has 'paths' as a single string field, and grpc-gateway fails
-		// if it sees multiple values for a non-repeated field.
-		if r.URL.Query().Has("paths") {
-			q := r.URL.Query()
-			if paths := q["paths"]; len(paths) > 1 {
-				u2 := *r.URL
-				// We avoid q.Encode() because it sorts query parameters alphabetically,
-				// which would cause diffs in the HTTP logs for many tests.
-				// Instead we rebuild the RawQuery while maintaining the order.
-				var newParts []string
-				pathsHandled := false
-				for _, part := range strings.Split(u2.RawQuery, "&") {
-					key := part
-					if i := strings.Index(part, "="); i >= 0 {
-						key = part[:i]
-					}
-					if key == "paths" {
-						if !pathsHandled {
-							newParts = append(newParts, "paths="+url.QueryEscape(strings.Join(paths, ",")))
-							pathsHandled = true
-						}
-						continue
-					}
-					newParts = append(newParts, part)
-				}
-				u2.RawQuery = strings.Join(newParts, "&")
-				r = httpmux.RewriteRequest(r, &u2)
-			}
-		}
-
-		mux.ServeHTTP(w, r)
+		grpcMux.ServeHTTP(w, r)
 	}
 
 	return http.HandlerFunc(rewriteBetaToV1), nil

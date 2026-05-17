@@ -26,7 +26,7 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	computepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 )
