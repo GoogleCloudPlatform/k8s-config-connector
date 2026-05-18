@@ -32,8 +32,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/metastore/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
