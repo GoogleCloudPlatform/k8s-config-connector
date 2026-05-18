@@ -79,7 +79,7 @@ func (s *envgroupsAttachmentsServer) GetOrganizationsEnvgroupsAttachment(ctx con
 }
 
 func (s *envgroupsAttachmentsServer) CreateOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.CreateOrganizationsEnvgroupsAttachmentRequest) (*longrunningpb.Operation, error) {
-	obj := proto.Clone(req.OrganizationsEnvgroupsAttachment).(*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment)
+	obj := proto.CloneOf(req.OrganizationsEnvgroupsAttachment)
 	populateDefaultsForOrganizationsEnvgroupsAttachment(obj)
 
 	reqName := req.Parent + "/attachments/" + obj.Name
@@ -111,7 +111,7 @@ func (s *envgroupsAttachmentsServer) CreateOrganizationsEnvgroupsAttachment(ctx 
 			PercentDone: 100,
 		}
 		metadata.State = "FINISHED"
-		result := proto.Clone(obj).(*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment)
+		result := proto.CloneOf(obj)
 		populateOutputsForOrganizationsEnvgroupsAttachment(result)
 		s.storage.Update(ctx, fqn, result)
 		return result, nil

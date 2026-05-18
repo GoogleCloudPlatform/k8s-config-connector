@@ -55,7 +55,7 @@ func (s *NotebookServiceV1beta1) CreateEnvironment(ctx context.Context, req *pb_
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.GetEnvironment()).(*pb_v1beta1.Environment)
+	obj := proto.CloneOf(req.GetEnvironment())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 

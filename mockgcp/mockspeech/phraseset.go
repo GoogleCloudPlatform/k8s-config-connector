@@ -65,7 +65,7 @@ func (s *SpeechV2) CreatePhraseSet(ctx context.Context, req *pb.CreatePhraseSetR
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetPhraseSet()).(*pb.PhraseSet)
+	obj := proto.CloneOf(req.GetPhraseSet())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

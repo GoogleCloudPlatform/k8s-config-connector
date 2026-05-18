@@ -66,7 +66,7 @@ func (s *DataMigrationServiceV1) CreateMigrationJob(ctx context.Context, req *pb
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetMigrationJob()).(*pb.MigrationJob)
+	obj := proto.CloneOf(req.GetMigrationJob())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -105,7 +105,7 @@ func (s *DataMigrationServiceV1) UpdateMigrationJob(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.MigrationJob)
+	updated := proto.CloneOf(existing)
 	updated.UpdateTime = timestamppb.New(now)
 
 	if err := fields.UpdateByFieldMask(updated, req.MigrationJob, req.UpdateMask.Paths); err != nil {

@@ -51,7 +51,7 @@ func (s *modelService) UploadModel(ctx context.Context, req *pb.UploadModelReque
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Model).(*pb.Model)
+	obj := proto.CloneOf(req.Model)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
@@ -69,7 +69,7 @@ func (s *modelService) UploadModel(ctx context.Context, req *pb.UploadModelReque
 	opPrefix := name.String()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.Model)
+		result := proto.CloneOf(obj)
 		result.CreateTime = nil
 		result.UpdateTime = nil
 		return result, nil

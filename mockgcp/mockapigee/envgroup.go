@@ -63,7 +63,7 @@ func (s *EnvgroupV1) CreateOrganizationsEnvgroup(ctx context.Context, req *pb.Cr
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.OrganizationsEnvgroup).(*pb.GoogleCloudApigeeV1EnvironmentGroup)
+	obj := proto.CloneOf(req.OrganizationsEnvgroup)
 
 	now := timestamppb.Now().GetSeconds()
 	obj.CreatedAt = now
@@ -83,7 +83,7 @@ func (s *EnvgroupV1) CreateOrganizationsEnvgroup(ctx context.Context, req *pb.Cr
 	opPrefix := fmt.Sprintf("organizations/%s", name.Organization)
 
 	return s.operations.DoneLRO(ctx, opPrefix, opMetadata, func() *pb.GoogleCloudApigeeV1EnvironmentGroup {
-		retObj := proto.Clone(obj).(*pb.GoogleCloudApigeeV1EnvironmentGroup)
+		retObj := proto.CloneOf(obj)
 		retObj.State = "ACTIVE"
 		retObj.CreatedAt = 0
 		retObj.LastModifiedAt = 0
@@ -131,7 +131,7 @@ func (s *EnvgroupV1) PatchOrganizationsEnvgroup(ctx context.Context, req *pb.Pat
 	opPrefix := fmt.Sprintf("organizations/%s", name.Organization)
 
 	return s.operations.DoneLRO(ctx, opPrefix, opMetadata, func() *pb.GoogleCloudApigeeV1EnvironmentGroup {
-		retObj := proto.Clone(obj).(*pb.GoogleCloudApigeeV1EnvironmentGroup)
+		retObj := proto.CloneOf(obj)
 		return retObj
 	}())
 }

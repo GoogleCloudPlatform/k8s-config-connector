@@ -79,7 +79,7 @@ func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureR
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetFutureReservationResource()).(*pb.FutureReservation)
+	obj := proto.CloneOf(req.GetFutureReservationResource())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, name.String()))

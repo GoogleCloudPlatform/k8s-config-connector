@@ -64,7 +64,7 @@ func (s *recaptchaEnterpriseService) CreateFirewallPolicy(ctx context.Context, r
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetFirewallPolicy()).(*pb.FirewallPolicy)
+	obj := proto.CloneOf(req.GetFirewallPolicy())
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

@@ -46,7 +46,7 @@ func (s *DataCatalogV1) CreateTag(ctx context.Context, req *pb.CreateTagRequest)
 
 	fqn := parentName.String() + "/tags/" + tagID
 
-	obj := proto.Clone(req.Tag).(*pb.Tag)
+	obj := proto.CloneOf(req.Tag)
 	obj.Name = fqn
 
 	// Validate the TagTemplate reference

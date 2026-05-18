@@ -33,7 +33,7 @@ type UpdateMask struct {
 
 // NewUpdateMask creates a new UpdateMask from the given FieldMask.
 func NewUpdateMask(mask *fieldmaskpb.FieldMask) *UpdateMask {
-	mask = proto.Clone(mask).(*fieldmaskpb.FieldMask)
+	mask = proto.CloneOf(mask)
 
 	// Ensure the paths are in JSON format
 	for i := range mask.Paths {

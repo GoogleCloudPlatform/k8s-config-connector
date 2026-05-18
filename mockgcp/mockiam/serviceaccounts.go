@@ -116,7 +116,7 @@ func (s *IAMServer) CreateServiceAccount(ctx context.Context, req *pb.CreateServ
 	uniqueID <<= 32
 	uniqueID |= id
 
-	sa := proto.Clone(req.GetServiceAccount()).(*pb.ServiceAccount)
+	sa := proto.CloneOf(req.GetServiceAccount())
 	sa.Name = name.String()
 	sa.ProjectId = project.ID
 	sa.UniqueId = strconv.FormatInt(uniqueID, 10)

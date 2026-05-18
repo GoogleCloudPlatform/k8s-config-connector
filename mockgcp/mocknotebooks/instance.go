@@ -201,7 +201,7 @@ func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Instance).(*pb.Instance)
+	obj := proto.CloneOf(req.Instance)
 	obj.Name = fqn
 	obj.Environment = req.Instance.Environment
 	obj.CreateTime = timestamppb.New(time.Now())

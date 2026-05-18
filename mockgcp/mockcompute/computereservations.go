@@ -67,7 +67,7 @@ func (s *ReservationsV1) Insert(ctx context.Context, req *pb.InsertReservationRe
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetReservationResource()).(*pb.Reservation)
+	obj := proto.CloneOf(req.GetReservationResource())
 
 	if obj.GetShareSettings() != nil && obj.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {
 		if len(obj.GetShareSettings().GetProjectMap()) == 0 {
@@ -139,7 +139,7 @@ func (s *ReservationsV1) Update(ctx context.Context, req *pb.UpdateReservationRe
 	}
 
 	// For other fields, we use proto.Merge
-	updateCopy := proto.Clone(update).(*pb.Reservation)
+	updateCopy := proto.CloneOf(update)
 	// Preserve immutable fields
 	updateCopy.Zone = nil
 	updateCopy.SelfLink = nil
@@ -297,7 +297,7 @@ func (s *ReservationsV1) convertProjectMap(ctx context.Context, projectMap map[s
 			return nil, err
 		}
 		projectNumber := strconv.FormatInt(project.Number, 10)
-		newConfig := proto.Clone(config).(*pb.ShareSettingsProjectConfig)
+		newConfig := proto.CloneOf(config)
 		newConfig.ProjectId = &projectNumber
 		newMap[projectNumber] = newConfig
 	}

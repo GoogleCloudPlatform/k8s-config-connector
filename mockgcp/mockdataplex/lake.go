@@ -66,7 +66,7 @@ func (s *DataplexService) CreateLake(ctx context.Context, req *pb.CreateLakeRequ
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Lake).(*pb.Lake)
+	obj := proto.CloneOf(req.Lake)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())

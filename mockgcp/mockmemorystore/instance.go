@@ -55,7 +55,7 @@ func (r *instanceServer) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 		return nil, err
 	}
 
-	retObj := proto.Clone(obj).(*pb.Instance)
+	retObj := proto.CloneOf(obj)
 	return retObj, nil
 }
 
@@ -70,7 +70,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstance())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -94,7 +94,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		retObj := proto.Clone(obj).(*pb.Instance)
+		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
 		r.storage.Update(ctx, fqn, retObj)
 		return retObj, nil
@@ -164,7 +164,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 				if autoConnection != nil {
 					obj.Endpoints[0].Connections = append(obj.Endpoints[0].Connections, &pb.Instance_ConnectionDetail{
 						Connection: &pb.Instance_ConnectionDetail_PscAutoConnection{
-							PscAutoConnection: proto.Clone(autoConnection).(*pb.PscAutoConnection),
+							PscAutoConnection: proto.CloneOf(autoConnection),
 						},
 					})
 				}
@@ -440,7 +440,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		retObj := proto.Clone(obj).(*pb.Instance)
+		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
 		retObj.UpdateTime = timestamppb.New(time.Now())
 		r.storage.Update(ctx, fqn, retObj)
@@ -521,7 +521,7 @@ func (r *instanceServer) GetBackup(ctx context.Context, req *pb.GetBackupRequest
 		return nil, err
 	}
 
-	retObj := proto.Clone(obj).(*pb.Backup)
+	retObj := proto.CloneOf(obj)
 	return retObj, nil
 }
 
@@ -614,7 +614,7 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 		metadata.EndTime = timestamppb.Now()
 		obj.State = pb.Backup_ACTIVE
 		r.storage.Update(ctx, fqn, obj)
-		return proto.Clone(instanceObj).(*pb.Instance), nil
+		return proto.CloneOf(instanceObj), nil
 	})
 }
 

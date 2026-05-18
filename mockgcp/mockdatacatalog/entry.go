@@ -66,7 +66,7 @@ func (s *DataCatalogV1) CreateEntry(ctx context.Context, req *pb.CreateEntryRequ
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetEntry()).(*pb.Entry)
+	obj := proto.CloneOf(req.GetEntry())
 	obj.Name = fqn
 	obj.LinkedResource = fmt.Sprintf("//datacatalog.googleapis.com/%s", fqn)
 	now := time.Now().UTC()

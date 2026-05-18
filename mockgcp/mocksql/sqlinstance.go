@@ -64,7 +64,7 @@ func (s *sqlInstancesService) Clone(ctx context.Context, req *pb.SqlInstancesClo
 	}
 
 	cloneName := req.Body.CloneContext.DestinationInstanceName
-	clone := proto.Clone(source).(*pb.DatabaseInstance)
+	clone := proto.CloneOf(source)
 	clone.Name = cloneName
 
 	// the REAL SQL instance server handles setting maintenanceVersion (likely thhrough	subsequent patch calls).
@@ -104,7 +104,7 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetBody()).(*pb.DatabaseInstance)
+	obj := proto.CloneOf(req.GetBody())
 	obj.Name = name.InstanceName
 	obj.Project = name.Project.ID
 
@@ -1016,7 +1016,7 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 		}
 	}
 
-	obj := proto.Clone(req.GetBody()).(*pb.DatabaseInstance)
+	obj := proto.CloneOf(req.GetBody())
 	obj.Name = existing.Name
 	obj.Region = existing.Region
 	obj.Project = existing.Project

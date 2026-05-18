@@ -102,12 +102,12 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 		reqCluster.Name = ""
 	}
 
-	originalRequest := proto.Clone(req).(*pb.CreateInstanceRequest)
+	originalRequest := proto.CloneOf(req)
 
 	now := time.Now()
 	instanceFQN := name.String()
 
-	obj := proto.Clone(req.Instance).(*pb.Instance)
+	obj := proto.CloneOf(req.Instance)
 	obj.Name = instanceFQN
 
 	obj.State = pb.Instance_READY
@@ -125,7 +125,7 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 	// If this was production, we'd probably want a transaction etc
 	for clusterID, cluster := range req.GetClusters() {
 		clusterFQN := instanceFQN + "/clusters/" + clusterID
-		obj := proto.Clone(cluster).(*pb.Cluster)
+		obj := proto.CloneOf(cluster)
 		obj.Name = clusterFQN
 		if err := s.populateDefaultsForCluster(obj); err != nil {
 			return nil, err
@@ -177,7 +177,7 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.FinishTime = timestamppb.New(time.Now())
 
-		returnObj := proto.Clone(obj).(*pb.Instance)
+		returnObj := proto.CloneOf(obj)
 		returnObj.CreateTime = nil // For some reason, not populated here
 		return returnObj, nil
 	})
