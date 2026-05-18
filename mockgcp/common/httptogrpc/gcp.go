@@ -112,9 +112,9 @@ type HTTPErrorResponse struct {
 }
 
 type HTTPError struct {
-	Code    int                  `json:"code,omitempty"`
-	Message string               `json:"message,omitempty"`
-	Status  string               `json:"status,omitempty"`
+	Code    int                `json:"code,omitempty"`
+	Message string             `json:"message,omitempty"`
+	Status  string             `json:"status,omitempty"`
 	Errors  []HTTPErrorDetails `json:"errors,omitempty"`
 }
 

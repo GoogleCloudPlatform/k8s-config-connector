@@ -16,8 +16,8 @@ package mockstorage
 
 import (
 	"context"
-	"net/http"
 	"fmt"
+	"net/http"
 	"strings"
 
 	"google.golang.org/grpc"
