@@ -15,7 +15,7 @@
 package cloudidentity
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1alpha1"
 	api "google.golang.org/api/cloudidentity/v1beta1"
 )
 

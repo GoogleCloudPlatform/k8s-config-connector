@@ -23,6 +23,22 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
+go run . generate-types \
+  --service google.apps.cloudidentity.devices.v1alpha1 \
+  --api-version cloudidentity.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource CloudIdentityDevice:Device || \
+go run . generate-types \
+  --service google.apps.cloudidentity.v1alpha1 \
+  --api-version cloudidentity.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource CloudIdentityDevice:Device || \
+go run . generate-types \
+  --service google.apps.cloudidentity.v1beta1 \
+  --api-version cloudidentity.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource CloudIdentityDevice:Device
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

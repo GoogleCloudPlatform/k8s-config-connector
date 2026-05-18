@@ -119,6 +119,8 @@ import (
 	fakecloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1/fake"
 	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1"
 	fakecloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1/fake"
+	cloudidentityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1alpha1"
+	fakecloudidentityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1alpha1/fake"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	fakecloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1/fake"
 	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1"
@@ -686,6 +688,11 @@ func (c *Clientset) CloudfunctionsV1beta1() cloudfunctionsv1beta1.Cloudfunctions
 // Cloudfunctions2V1alpha1 retrieves the Cloudfunctions2V1alpha1Client
 func (c *Clientset) Cloudfunctions2V1alpha1() cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Interface {
 	return &fakecloudfunctions2v1alpha1.FakeCloudfunctions2V1alpha1{Fake: &c.Fake}
+}
+
+// CloudidentityV1alpha1 retrieves the CloudidentityV1alpha1Client
+func (c *Clientset) CloudidentityV1alpha1() cloudidentityv1alpha1.CloudidentityV1alpha1Interface {
+	return &fakecloudidentityv1alpha1.FakeCloudidentityV1alpha1{Fake: &c.Fake}
 }
 
 // CloudidentityV1beta1 retrieves the CloudidentityV1beta1Client
