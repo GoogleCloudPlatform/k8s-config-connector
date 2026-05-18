@@ -20,11 +20,11 @@ import (
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
+	pbcluster "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pbcluster "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
-	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
