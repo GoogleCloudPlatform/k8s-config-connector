@@ -33,7 +33,7 @@ echo "Running unit tests..."
 gcloud config set project foobar --quiet
 
 GITHUB_ACTION=1 \
-make test
+./scripts/unit-test.sh
 
 # Move artifact to where the generator expects it
 mkdir -p /tmp/artifacts
