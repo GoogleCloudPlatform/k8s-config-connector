@@ -62,6 +62,8 @@ The official client library proto types might differ slightly from the old grpc-
 - Check and fix compilation errors by running `go build` or `go test` in the service directory.
 - Update `uuid` generation or default field behaviors to match the strict types in the official client.
 
+- Mocks often handle FieldMask paths manually with a switch statement. The official client library via `httptogrpc` may send camelCase paths (matching JSON names) instead of snake_case (matching proto names). You should update your `switch` statements to support both formats.
+
 ## Journaling
 
 If you discover any new patterns, edge cases, or workarounds during migration, document them in the `mockgcp/.gemini/skills/move-away-from-grpc-gateway/journal/` directory. Create a new file with a descriptive, topic-based name (e.g., `netapp_leftover_generated_files.md` or `datastream_rewriteerror_not_needed.md`) to capture the learning for future reference.

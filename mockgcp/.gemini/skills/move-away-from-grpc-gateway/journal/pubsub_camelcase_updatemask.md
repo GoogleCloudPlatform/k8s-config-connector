@@ -1,0 +1,4 @@
+- Moved mockgcp pubsub to httptogrpc.
+- Enountered an issue where `UpdateTopic` and `UpdateSubscription` failed because the `updateMask` paths were sent as camelCase by the client/httptogrpc, but the mock expected snake_case.
+- Updated the mocks to support both camelCase and snake_case paths in the `switch` statements.
+- PubSub has multiple services (`Publisher`, `Subscriber`, `SchemaService`), all were registered in `NewHTTPMux`.
