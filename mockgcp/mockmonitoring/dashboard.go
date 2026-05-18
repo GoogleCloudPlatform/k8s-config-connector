@@ -26,8 +26,8 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"k8s.io/klog/v2"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/google/uuid"
 )
