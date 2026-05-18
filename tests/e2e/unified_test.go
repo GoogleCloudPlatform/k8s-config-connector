@@ -81,12 +81,26 @@ func TestAllInSeries(t *testing.T) {
 	t.Run("samples", func(t *testing.T) {
 		samples := create.ListAllSamples(t)
 
+		targetGCP := os.Getenv("E2E_GCP_TARGET")
+		if targetGCP == "" {
+			targetGCP = "mock"
+		}
+
+		var sharedHarness *create.Harness
+		if targetGCP == "mock" {
+			sharedCtx, sharedCancel := context.WithCancel(ctx)
+			t.Cleanup(func() { sharedCancel() })
+			sharedHarness = create.NewHarness(sharedCtx, t)
+		}
+
 		for _, sampleKey := range samples {
 			sampleKey := sampleKey
-			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
-				ctx := addTestTimeout(ctx, t, subtestTimeout, sampleKey.TestKey)
+				if sharedHarness != nil {
+					t.Parallel()
+				}
+				subCtx := addTestTimeout(ctx, t, subtestTimeout, sampleKey.TestKey)
 				var harnessOptions []create.HarnessOption
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
@@ -119,17 +133,31 @@ func TestAllInSeries(t *testing.T) {
 						t.Skip(skipTestReason)
 					}
 
-					// Record the CRDs we will use, for faster testing
-					keepCRDs := map[schema.GroupKind]bool{}
-					for _, obj := range dummySample.Resources {
-						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					if sharedHarness == nil {
+						// Record the CRDs we will use, for faster testing
+						keepCRDs := map[schema.GroupKind]bool{}
+						for _, obj := range dummySample.Resources {
+							keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+						}
+						harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
 					}
-					harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
-
 				}
 
-				h := create.NewHarness(ctx, t, harnessOptions...)
-				project := h.Project
+				var h *create.Harness
+				var project testgcp.GCPProject
+				if sharedHarness != nil {
+					h = &create.Harness{}
+					*h = *sharedHarness
+					h.T = t
+					h.Ctx = subCtx
+					projectID := fmt.Sprintf("test-%d", time.Now().UnixNano())
+					project = h.CreateMockProject(subCtx, projectID)
+					h.Project = project
+				} else {
+					h = create.NewHarness(subCtx, t, harnessOptions...)
+					project = h.Project
+				}
+
 				s := create.LoadSample(t, sampleKey, project)
 
 				create.SetupNamespacesAndApplyDefaults(h, s.Resources, project)
