@@ -27,7 +27,7 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
+	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/google/uuid"
 )
