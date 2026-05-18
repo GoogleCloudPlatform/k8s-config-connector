@@ -28,17 +28,22 @@ import (
 )
 
 func TestAllCRDsShouldConvertToYAML(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
 	}
 	for _, crd := range crds {
-		specToYAML(t, &crd)
-		statusToYAML(t, &crd)
+		crd := crd
+		t.Run(crd.Name, func(t *testing.T) {
+			t.Parallel()
+			specToYAML(t, &crd)
+			statusToYAML(t, &crd)
+		})
 	}
 }
-
 func TestSpecAndStatusToYAML(t *testing.T) {
+	t.Parallel()
 	// when adding a new type or updating the test data file run this test with the 'WRITE_GOLDEN_OUTPUT' env var to update the 'golden files'
 	testToYAML(t, "ComputeInstance")
 	testToYAML(t, "ComputeBackendService")
@@ -48,6 +53,7 @@ func TestSpecAndStatusToYAML(t *testing.T) {
 }
 
 func TestAllLoadedCRDHaveManagedByKCCLabel(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)

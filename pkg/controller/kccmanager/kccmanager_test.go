@@ -54,6 +54,7 @@ var (
 // The scheme is not thread-safe due to its use and modification of its internal maps. Different managers should not
 // share a scheme.
 func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
+	t.Parallel()
 	ctx := context.TODO()
 
 	controllersCfg := kccmanager.Config{
@@ -81,6 +82,7 @@ func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
 }
 
 func TestSkipNameValidation(t *testing.T) {
+	t.Parallel()
 	ctx := context.TODO()
 
 	controllersCfg := kccmanager.Config{
@@ -115,6 +117,7 @@ func TestSkipNameValidation(t *testing.T) {
 }
 
 func TestClusterModeManager(t *testing.T) {
+	t.Parallel()
 	ctx := context.TODO()
 	mgr, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1, SkipNameValidation: true})
 	if err != nil {
@@ -138,6 +141,7 @@ func TestClusterModeManager(t *testing.T) {
 // not started controllers. Verify that only the first is reconciled, then start a second set of controllers and verify
 // the second is reconciled.
 func TestNamespacedModeManager(t *testing.T) {
+	t.Parallel()
 	ctx := context.TODO()
 	basicPubSubFixture := getBasicPubSubSchemaFixture(t)
 	project := testgcp.GetDefaultProject(t)
@@ -269,8 +273,7 @@ func waitForReconcile(t *testing.T, kubeClient client.Client, resource *unstruct
 }
 
 func TestMain(m *testing.M) {
-	managers := []*manager.Manager{
-		&clusterModeManager,
+	managers := []*manager.Manager{&clusterModeManager,
 		&namespacedModeManager,
 	}
 	testmain.SetupMultipleEnvironments(m, test.IntegrationTestType, nil, managers)
