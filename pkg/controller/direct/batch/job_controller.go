@@ -42,7 +42,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 func init() {
@@ -179,7 +179,7 @@ func (a *jobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	log := klog.FromContext(ctx)
 	log.Info("updating batch job", "name", a.id)
 
-	desiredpb := proto.Clone(a.desired).(*batchpb.Job)
+	desiredpb := proto.CloneOf(a.desired)
 	paths, err := common.CompareProtoMessage(desiredpb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
