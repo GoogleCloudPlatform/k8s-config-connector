@@ -27,6 +27,7 @@ require (
 	cloud.google.com/go/discoveryengine v1.22.0
 	cloud.google.com/go/edgecontainer v1.4.4
 	cloud.google.com/go/essentialcontacts v1.7.7
+	cloud.google.com/go/eventarc v1.18.0
 	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/iam v1.7.0
 	cloud.google.com/go/iap v1.12.0
@@ -36,7 +37,9 @@ require (
 	cloud.google.com/go/managedkafka v0.8.1
 	cloud.google.com/go/memcache v1.11.7
 	cloud.google.com/go/memorystore v0.9.0
+	cloud.google.com/go/modelarmor v1.0.0
 	cloud.google.com/go/netapp v1.12.0
+	cloud.google.com/go/networkmanagement v1.23.0
 	cloud.google.com/go/networksecurity v0.15.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.12.7
