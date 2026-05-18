@@ -285,7 +285,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 	actual := a.actual
-	resource := proto.Clone(a.actual).(*bigquerydatatransferpb.TransferConfig) // this is the proto resource we are passing to GCP API update call.
+	resource := proto.CloneOf(a.actual) // this is the proto resource we are passing to GCP API update call.
 
 	// Check for immutable fields
 	if !reflect.DeepEqual(desired.DataSourceId, a.actual.DataSourceId) {
