@@ -158,7 +158,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/api/cloudquotas/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/datacatalog/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/eventarc/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
