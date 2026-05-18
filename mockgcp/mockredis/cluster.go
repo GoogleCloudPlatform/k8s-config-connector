@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/cluster/v1"
+	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
 )
 
