@@ -22,7 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -840,32 +840,29 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 			settings.AvailabilityType = pb.SqlAvailabilityType_ZONAL
 		}
 
-		if settings.BackupConfiguration.BackupTier == nil {
-			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
-		}
 		// 	if settings.BackupConfiguration.BackupLogEnabled == nil {
 		// 		settings.BackupConfiguration.BackupLogEnabled = asRef(true)
 		// 	}
 	}
 
 	if isSqlServer(obj) {
-		if settings.BackupConfiguration.BackupTier == nil {
-			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
-		}
-		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
-			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
-		}
-		if settings.ReplicationLagMaxSeconds == nil {
-			settings.ReplicationLagMaxSeconds = PtrTo(int32(31536000))
-		}
-		if obj.IncludeReplicasForMajorVersionUpgrade == nil {
-			obj.IncludeReplicasForMajorVersionUpgrade = PtrTo(false)
-		}
+		// if settings.BackupConfiguration.BackupTier == nil {
+		// 	settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
+		// }
+		// if settings.IpConfiguration.ServerCertificateRotationMode == nil {
+		// 	settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
+		// }
+		// if settings.ReplicationLagMaxSeconds == nil {
+		// 	settings.ReplicationLagMaxSeconds = PtrTo(int32(31536000))
+		// }
+		// if obj.IncludeReplicasForMajorVersionUpgrade == nil {
+		// 	obj.IncludeReplicasForMajorVersionUpgrade = PtrTo(false)
+		// }
 	}
 
-	if obj.SatisfiesPzi == nil {
-		obj.SatisfiesPzi = PtrTo(true)
-	}
+	// if obj.SatisfiesPzi == nil {
+	// 	obj.SatisfiesPzi = PtrTo(true)
+	// }
 }
 
 func isMysql(obj *pb.DatabaseInstance) bool {
