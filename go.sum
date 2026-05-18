@@ -657,6 +657,8 @@ cloud.google.com/go/edgecontainer v1.1.4/go.mod h1:AvFdVuZuVGdgaE5YvlL1faAoa1ndR
 cloud.google.com/go/edgecontainer v1.1.5/go.mod h1:rgcjrba3DEDEQAidT4yuzaKWTbkTI5zAMu3yy6ZWS0M=
 cloud.google.com/go/edgecontainer v1.4.4 h1:6KTQo6Qf0iEtfPVotlG7orazEO1I93Ham0PMlkHYpdQ=
 cloud.google.com/go/edgecontainer v1.4.4/go.mod h1:yyNVHsCKtsX/0mqFdbljQw0Uo660q2dlMPaiqYiC2Tg=
+cloud.google.com/go/edgenetwork v1.8.0 h1:NqbeFQF9jB6Mwf1bGyZhAn4QrgVk+dhhciA4sj6md8I=
+cloud.google.com/go/edgenetwork v1.8.0/go.mod h1:KRH/rJAmkj/dTZj9xxuhp2NFFdN9CkgRrCk4diTEqrQ=
 cloud.google.com/go/errorreporting v0.3.0/go.mod h1:xsP2yaAp+OAW4OIm60An2bbLpqIhKXdWR/tawvl7QzU=
 cloud.google.com/go/essentialcontacts v1.3.0/go.mod h1:r+OnHa5jfj90qIfZDO/VztSFqbQan7HV75p8sA+mdGI=
 cloud.google.com/go/essentialcontacts v1.4.0/go.mod h1:8tRldvHYsmnBCHdFpvU+GL75oWiBKl80BiqlFh9tp+8=

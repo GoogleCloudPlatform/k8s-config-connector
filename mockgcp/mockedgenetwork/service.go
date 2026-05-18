@@ -16,14 +16,15 @@ package mockedgenetwork
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgenetwork/v1"
+	pb "cloud.google.com/go/edgenetwork/apiv1/edgenetworkpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -62,11 +63,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
-
-	if err := pb.RegisterEdgeNetworkHandler(ctx, mux, conn); err != nil {
-		return nil, err
+	mux, err := httptogrpc.NewGRPCMux(conn)
+	if err != nil {
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
+
+	mux.AddService(pb.NewEdgeNetworkClient(conn))
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }
