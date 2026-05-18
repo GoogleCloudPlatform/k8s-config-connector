@@ -21,6 +21,7 @@
 // resource: VertexAIMetadataStore:MetadataStore
 // resource: VertexAIDataLabelingJob:DataLabelingJob
 // resource: VertexAIDeploymentResourcePool:DeploymentResourcePool
+// resource: VertexAIExampleStore:ExampleStore
 
 package v1alpha1
 
@@ -429,4 +430,49 @@ type Money struct {
 	//  For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
 	// +kcc:proto:field=google.type.Money.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStore
+type ExampleStore struct {
+	// Identifier. The resource name of the ExampleStore. This is a unique
+	//  identifier. Format:
+	//  projects/{project}/locations/{location}/exampleStores/{example_store}
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Display name of the ExampleStore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Description of the ExampleStore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Example Store config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.example_store_config
+	ExampleStoreConfig *ExampleStoreConfig `json:"exampleStoreConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
+type ExampleStoreConfig struct {
+	// Required. The embedding model to be used for vector embedding.
+	//  Immutable.
+	//  Supported models:
+	//  * "textembedding-gecko@003"
+	//  * "text-embedding-004"
+	//  * "text-embedding-005"
+	//  * "text-multilingual-embedding-002"
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
+	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ExampleStore
+type ExampleStoreObservedState struct {
+	// Output only. Timestamp when this ExampleStore was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when this ExampleStore was most recently updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
