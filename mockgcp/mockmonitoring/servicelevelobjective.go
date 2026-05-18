@@ -60,7 +60,7 @@ func (s *serviceMonitoringService) CreateServiceLevelObjective(ctx context.Conte
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetServiceLevelObjective()).(*pb.ServiceLevelObjective)
+	obj := proto.CloneOf(req.GetServiceLevelObjective())
 	obj.Name = fqn
 	s.populateDefaultsForServiceLevelObjective(obj)
 

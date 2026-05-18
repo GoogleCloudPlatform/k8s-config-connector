@@ -63,7 +63,7 @@ func (s *ServicesV2) CreateService(ctx context.Context, req *pb.CreateServiceReq
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Service).(*pb.Service)
+	obj := proto.CloneOf(req.Service)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	obj.UpdateTime = timestamppb.Now()

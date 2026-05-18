@@ -84,7 +84,7 @@ func (s *CatalogService) CreateEntryType(ctx context.Context, req *pb.CreateEntr
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetEntryType()).(*pb.EntryType)
+	obj := proto.CloneOf(req.GetEntryType())
 	obj.Name = fqn
 	obj.Uid = uuid.NewString()
 	obj.CreateTime = timestamppb.New(now)

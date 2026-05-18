@@ -65,7 +65,7 @@ func (s *networkAttachmentsV1) Insert(ctx context.Context, req *pb.InsertNetwork
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetNetworkAttachmentResource()).(*pb.NetworkAttachment)
+	obj := proto.CloneOf(req.GetNetworkAttachmentResource())
 	obj.Id = proto.Uint64(s.generateID())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.Kind = PtrTo("compute#networkAttachment")

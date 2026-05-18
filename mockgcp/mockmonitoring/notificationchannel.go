@@ -95,7 +95,7 @@ func (s *NotificationChannelService) CreateNotificationChannel(ctx context.Conte
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.NotificationChannel).(*pb.NotificationChannel)
+	obj := proto.CloneOf(req.NotificationChannel)
 	obj.CreationRecord = &pb.MutationRecord{
 		MutateTime: timestamppb.New(now),
 	}
@@ -125,7 +125,7 @@ func (s *NotificationChannelService) UpdateNotificationChannel(ctx context.Conte
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.NotificationChannel)
+	updated := proto.CloneOf(existing)
 	for _, path := range req.GetUpdateMask().GetPaths() {
 		switch path {
 		case "description":

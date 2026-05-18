@@ -59,7 +59,7 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 	fqn := name.String()
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.Resource).(*pb.Feature)
+	obj := proto.CloneOf(req.Resource)
 	obj.Name = fqn
 
 	// Mimic the GCP API validation logic.
@@ -81,7 +81,7 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Feature)
+		result := proto.CloneOf(obj)
 		result.CreateTime = now
 		result.UpdateTime = now
 		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
@@ -132,7 +132,7 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Feature)
+		result := proto.CloneOf(obj)
 		result.UpdateTime = now
 		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
 		return result, nil

@@ -76,7 +76,7 @@ func (s *VMwareEngineV1) CreateExternalAccessRule(ctx context.Context, req *pb.C
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetExternalAccessRule()).(*pb.ExternalAccessRule)
+	obj := proto.CloneOf(req.GetExternalAccessRule())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

@@ -47,7 +47,7 @@ func (s *publisherService) CreateTopic(ctx context.Context, req *pb.Topic) (*pb.
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req).(*pb.Topic)
+	obj := proto.CloneOf(req)
 	obj.Name = name.String()
 
 	s.populateDefaultsForTopic(obj)

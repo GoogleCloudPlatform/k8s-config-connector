@@ -159,7 +159,7 @@ func (s *AppHubV1Service) CreateApplication(ctx context.Context, req *pb.CreateA
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Application).(*pb.Application)
+	obj := proto.CloneOf(req.Application)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())

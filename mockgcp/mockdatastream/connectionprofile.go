@@ -65,7 +65,7 @@ func (s *DatastreamV1) CreateConnectionProfile(ctx context.Context, req *pb.Crea
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetConnectionProfile()).(*pb.ConnectionProfile)
+	obj := proto.CloneOf(req.GetConnectionProfile())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

@@ -163,7 +163,7 @@ func (s *TagKeys) CreateTagKey(ctx context.Context, req *pb.CreateTagKeyRequest)
 	fqn := name.String()
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.TagKey).(*pb.TagKey)
+	obj := proto.CloneOf(req.TagKey)
 
 	obj.CreateTime = now
 	obj.UpdateTime = now

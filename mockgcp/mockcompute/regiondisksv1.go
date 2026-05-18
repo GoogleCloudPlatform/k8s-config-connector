@@ -60,7 +60,7 @@ func (s *RegionalDisksV1) Insert(ctx context.Context, req *pb.InsertRegionDiskRe
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetDiskResource()).(*pb.Disk)
+	obj := proto.CloneOf(req.GetDiskResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

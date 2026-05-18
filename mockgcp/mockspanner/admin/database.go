@@ -97,7 +97,7 @@ func (s *SpannerDatabaseV1) CreateDatabase(ctx context.Context, req *pb.CreateDa
 	}
 	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.Database)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }
@@ -146,7 +146,7 @@ func (s *SpannerDatabaseV1) UpdateDatabaseDdl(ctx context.Context, req *pb.Updat
 	}
 	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.Database)
+		result := proto.CloneOf(obj)
 		result.Name = fqn
 		return result, nil
 	})

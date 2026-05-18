@@ -90,7 +90,7 @@ func (s *NetworkServicesServer) CreateLbRouteExtension(ctx context.Context, req 
 
 	now := time.Now()
 
-	obj := proto.Clone(req.LbRouteExtension).(*pb.LbRouteExtension)
+	obj := proto.CloneOf(req.LbRouteExtension)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

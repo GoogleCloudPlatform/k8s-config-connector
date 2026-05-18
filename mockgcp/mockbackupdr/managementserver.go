@@ -69,7 +69,7 @@ func (s *BackupDRV1) CreateManagementServer(ctx context.Context, req *pb.CreateM
 
 	now := time.Now()
 
-	obj := proto.Clone(req.ManagementServer).(*pb.ManagementServer)
+	obj := proto.CloneOf(req.ManagementServer)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.ManagementServer_CREATING

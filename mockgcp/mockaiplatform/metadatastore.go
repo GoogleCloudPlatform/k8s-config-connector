@@ -73,7 +73,7 @@ func (s *metadataStoreService) CreateMetadataStore(ctx context.Context, req *pb.
 
 	now := time.Now()
 
-	obj := proto.Clone(req.MetadataStore).(*pb.MetadataStore)
+	obj := proto.CloneOf(req.MetadataStore)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
@@ -91,7 +91,7 @@ func (s *metadataStoreService) CreateMetadataStore(ctx context.Context, req *pb.
 	opPrefix := name.String()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.MetadataStore)
+		result := proto.CloneOf(obj)
 		result.CreateTime = nil
 		result.UpdateTime = nil
 		return result, nil

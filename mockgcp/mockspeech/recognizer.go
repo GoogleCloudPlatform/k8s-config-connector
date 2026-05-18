@@ -103,7 +103,7 @@ func (s *SpeechV2) CreateRecognizer(ctx context.Context, req *pb.CreateRecognize
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetRecognizer()).(*pb.Recognizer)
+	obj := proto.CloneOf(req.GetRecognizer())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -136,7 +136,7 @@ func (s *SpeechV2) CreateRecognizer(ctx context.Context, req *pb.CreateRecognize
 	}
 
 	// Ensure parent in metadata request uses project number
-	metadataReq := proto.Clone(req).(*pb.CreateRecognizerRequest)
+	metadataReq := proto.CloneOf(req)
 	parentProjectID := strings.Split(metadataReq.GetParent(), "/")[1]
 	if _, err := strconv.ParseInt(parentProjectID, 10, 64); err != nil { // if not a number, it's an ID
 		metadataReq.Parent = strings.Replace(metadataReq.GetParent(), "projects/"+parentProjectID, "projects/"+strconv.FormatInt(name.Project.Number, 10), 1)
@@ -219,7 +219,7 @@ func (s *SpeechV2) UpdateRecognizer(ctx context.Context, req *pb.UpdateRecognize
 		ProgressPercent: 100,
 	}
 
-	metadataReq := proto.Clone(req).(*pb.UpdateRecognizerRequest)
+	metadataReq := proto.CloneOf(req)
 	parsedReqRecognizerNameForMeta, _ := s.parseRecognizerName(metadataReq.GetRecognizer().GetName())
 	if parsedReqRecognizerNameForMeta != nil { // Use parsed name if successful
 		metadataReq.GetRecognizer().Name = parsedReqRecognizerNameForMeta.String()
@@ -243,7 +243,7 @@ func (s *SpeechV2) DeleteRecognizer(ctx context.Context, req *pb.DeleteRecognize
 
 	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 
-	metadataReq := proto.Clone(req).(*pb.DeleteRecognizerRequest)
+	metadataReq := proto.CloneOf(req)
 	metadataReq.Name = name.String() // Use name with project number for metadata
 
 	obj := &pb.Recognizer{}
@@ -298,7 +298,7 @@ func (s *SpeechV2) UndeleteRecognizer(ctx context.Context, req *pb.UndeleteRecog
 	now := time.Now()
 	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 
-	metadataReq := proto.Clone(req).(*pb.UndeleteRecognizerRequest)
+	metadataReq := proto.CloneOf(req)
 	metadataReq.Name = name.String()
 
 	obj := &pb.Recognizer{}

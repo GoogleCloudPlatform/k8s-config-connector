@@ -66,7 +66,7 @@ func (s *groupsServer) CreateGroup(ctx context.Context, req *pb.CreateGroupReque
 
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.Group).(*pb.Group)
+	obj := proto.CloneOf(req.Group)
 	obj.Name = PtrTo(fmt.Sprintf("groups/%s", name.Name))
 	obj.CreateTime = now
 	obj.UpdateTime = now
@@ -82,7 +82,7 @@ func (s *groupsServer) CreateGroup(ctx context.Context, req *pb.CreateGroupReque
 	// return s.operations.DoneLRO(ctx, "", lro, obj)
 
 	// additionalGroupKeys are not populated in the LRO
-	retObj := proto.Clone(obj).(*pb.Group)
+	retObj := proto.CloneOf(obj)
 	retObj.AdditionalGroupKeys = nil
 	go func() {
 		// realGCP adds the additional key very quickly(under 1s)
@@ -171,7 +171,7 @@ func (s *groupsServer) PatchGroup(ctx context.Context, req *pb.PatchGroupRequest
 	}
 
 	// additionalGroupKeys and groupKey are not populated in the LRO response
-	retObj := proto.Clone(obj).(*pb.Group)
+	retObj := proto.CloneOf(obj)
 	retObj.AdditionalGroupKeys = nil
 	retObj.GroupKey = &pb.EntityKey{}
 	return buildLRO(retObj)

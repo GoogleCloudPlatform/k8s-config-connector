@@ -63,7 +63,7 @@ func (r *kmsServer) CreateCryptoKey(ctx context.Context, req *pb.CreateCryptoKey
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetCryptoKey()).(*pb.CryptoKey)
+	obj := proto.CloneOf(req.GetCryptoKey())
 	if obj == nil {
 		obj = &pb.CryptoKey{}
 	}
