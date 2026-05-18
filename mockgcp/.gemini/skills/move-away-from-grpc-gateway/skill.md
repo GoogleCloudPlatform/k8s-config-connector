@@ -59,6 +59,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 The official client library proto types might differ slightly from the old grpc-gateway types:
 
 - You may need to replace pointer field assignments with `new(bool)` or specific constant types.
+- Replace type-casted `proto.Clone(x).(*pb.Message)` with `proto.CloneOf(x)`, which is available in recent versions of `google.golang.org/protobuf/proto`.
+- Replace legacy protobuf types with their modern equivalents:
+    - `github.com/golang/protobuf/ptypes/empty` -> `google.golang.org/protobuf/types/known/emptypb`
+    - `github.com/golang/protobuf/ptypes/timestamp` -> `google.golang.org/protobuf/types/known/timestamppb`
 - Check and fix compilation errors by running `go build` or `go test` in the service directory.
 - Update `uuid` generation or default field behaviors to match the strict types in the official client.
 
