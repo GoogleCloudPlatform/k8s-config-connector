@@ -54,6 +54,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockparametermanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrecaptchaenterprise"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockredis"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrun"
