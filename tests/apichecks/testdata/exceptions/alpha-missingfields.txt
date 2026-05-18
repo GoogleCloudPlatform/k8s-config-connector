@@ -2280,7 +2280,7 @@
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].description" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].name" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].parameters.additionalProperties" is not set in unstructured objects
-[missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].parameters.anyOf[]" is not set in unstructured objects
+[missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].parameters.anyOf" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].parameters.default" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].parameters.description" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].parameters.enum[]" is not set in unstructured objects
@@ -2304,7 +2304,7 @@
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].parameters.type" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].parametersJsonSchema" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].response.additionalProperties" is not set in unstructured objects
-[missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].response.anyOf[]" is not set in unstructured objects
+[missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].response.anyOf" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].response.default" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].response.description" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].response.enum[]" is not set in unstructured objects

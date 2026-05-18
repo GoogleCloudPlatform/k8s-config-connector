@@ -30,8 +30,10 @@ type VertexAICachedContentSpec struct {
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
+	// Immutable.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The VertexAICachedContent name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
