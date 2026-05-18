@@ -23,9 +23,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
+	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -283,7 +283,7 @@ func (a *serviceConnectionPolicyAdapter) Update(ctx context.Context, updateOp *d
 
 	fqn := a.fullyQualifiedName()
 
-	if monitoring.ShouldReconcileBasedOnEtag(ctx, u, a.actual.Etag) {
+	if monitoring.ShouldReconcileBasedOnEtag(ctx, u, direct.ValueOf(a.actual.Etag)) {
 		req := &api.ServiceConnectionPolicy{}
 		if err := convertProtoToAPI(a.desired, req); err != nil {
 			return err

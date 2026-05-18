@@ -20,10 +20,10 @@ import (
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -49,28 +49,21 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterProjectsLocationsServiceConnectionPoliciesServerServer(grpcServer, &serviceConnectionPolicies{MockService: s})
-	pb.RegisterProjectsLocationsInternalRangesServerServer(grpcServer, &internalRanges{MockService: s})
-	pb.RegisterProjectsLocationsRegionalEndpointsServerServer(grpcServer, &regionalEndpoints{MockService: s})
+	pb.RegisterCrossNetworkAutomationServiceServer(grpcServer, &serviceConnectionPolicies{MockService: s})
+	pb.RegisterInternalRangeServiceServer(grpcServer, &internalRanges{MockService: s})
+	// pb.RegisterProjectsLocationsRegionalEndpointsServerServer(grpcServer, &regionalEndpoints{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterProjectsLocationsServiceConnectionPoliciesServerHandler,
-		pb.RegisterProjectsLocationsInternalRangesServerHandler,
-		pb.RegisterProjectsLocationsRegionalEndpointsServerHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	mux.AddService(pb.NewCrossNetworkAutomationServiceClient(conn))
+	mux.AddService(pb.NewInternalRangeServiceClient(conn))
+
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }

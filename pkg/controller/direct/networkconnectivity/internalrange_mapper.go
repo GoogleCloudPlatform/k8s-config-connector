@@ -15,13 +15,13 @@
 package networkconnectivity
 
 import (
+	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Migration_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.Migration {
+func Migration_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange_Migration) *krm.Migration {
 	if in == nil {
 		return nil
 	}
@@ -30,11 +30,11 @@ func Migration_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.Migra
 	out.Target = direct.LazyPtr(in.GetTarget())
 	return out
 }
-func Migration_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.Migration {
+func Migration_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.InternalRange_Migration {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Migration{}
+	out := &pb.InternalRange_Migration{}
 	out.Source = direct.ValueOf(in.Source)
 	out.Target = direct.ValueOf(in.Target)
 	return out
@@ -71,11 +71,11 @@ func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, i
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
-	out.Overlaps = in.Overlaps
-	out.Peering = direct.LazyPtr(in.GetPeering())
+	out.Overlaps = direct.EnumSlice_FromProto(mapCtx, in.Overlaps)
+	out.Peering = direct.Enum_FromProto(mapCtx, in.GetPeering())
 	out.PrefixLength = direct.LazyPtr(in.GetPrefixLength())
 	out.TargetCIDRRange = in.TargetCidrRange
-	out.Usage = direct.LazyPtr(in.GetUsage())
+	out.Usage = direct.Enum_FromProto(mapCtx, in.GetUsage())
 	return out
 }
 func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
@@ -90,10 +90,10 @@ func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in 
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}
-	out.Overlaps = in.Overlaps
-	out.Peering = direct.ValueOf(in.Peering)
+	out.Overlaps = direct.EnumSlice_ToProto[pb.InternalRange_Overlap](mapCtx, in.Overlaps)
+	out.Peering = direct.Enum_ToProto[pb.InternalRange_Peering](mapCtx, in.Peering)
 	out.PrefixLength = direct.ValueOf(in.PrefixLength)
 	out.TargetCidrRange = in.TargetCIDRRange
-	out.Usage = direct.ValueOf(in.Usage)
+	out.Usage = direct.Enum_ToProto[pb.InternalRange_Usage](mapCtx, in.Usage)
 	return out
 }

@@ -27,7 +27,7 @@ import (
 	"strings"
 	"time"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
 	api "google.golang.org/api/networkconnectivity/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
