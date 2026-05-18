@@ -17,7 +17,7 @@
 // krm.group: apigee.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: mockgcp.cloud.apigee.v1
-// resource: ApigeeApiProduct:GoogleCloudApigeeV1ApiProduct
+// resource: ApigeeAPIProduct:GoogleCloudApigeeV1ApiProduct
 
 package v1alpha1
 

@@ -20,15 +20,15 @@ import (
 	api "google.golang.org/api/apigee/v1"
 )
 
-func ApigeeApiProductObservedState_FromAPI(mapCtx *direct.MapContext, in *api.GoogleCloudApigeeV1ApiProduct) *krm.ApigeeApiProductObservedState {
+func ApigeeAPIProductObservedState_FromAPI(mapCtx *direct.MapContext, in *api.GoogleCloudApigeeV1ApiProduct) *krm.ApigeeAPIProductObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApigeeApiProductObservedState{}
+	out := &krm.ApigeeAPIProductObservedState{}
 	return out
 }
 
-func ApigeeApiProductObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeApiProductObservedState) *api.GoogleCloudApigeeV1ApiProduct {
+func ApigeeAPIProductObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeAPIProductObservedState) *api.GoogleCloudApigeeV1ApiProduct {
 	if in == nil {
 		return nil
 	}
@@ -36,16 +36,16 @@ func ApigeeApiProductObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.Apig
 	return out
 }
 
-func ApigeeApiProductSpec_FromAPI(mapCtx *direct.MapContext, in *api.GoogleCloudApigeeV1ApiProduct) *krm.ApigeeApiProductSpec {
+func ApigeeAPIProductSpec_FromAPI(mapCtx *direct.MapContext, in *api.GoogleCloudApigeeV1ApiProduct) *krm.ApigeeAPIProductSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApigeeApiProductSpec{}
+	out := &krm.ApigeeAPIProductSpec{}
 	// Not fully implemented, as mock mappings are often stubbed out if not needed.
 	return out
 }
 
-func ApigeeApiProductSpec_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeApiProductSpec) *api.GoogleCloudApigeeV1ApiProduct {
+func ApigeeAPIProductSpec_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeAPIProductSpec) *api.GoogleCloudApigeeV1ApiProduct {
 	if in == nil {
 		return nil
 	}

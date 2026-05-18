@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type ApigeeAPIProductExpansion interface{}
+
 type ApigeeAddonsConfigExpansion interface{}
 
 type ApigeeNATAddressExpansion interface{}

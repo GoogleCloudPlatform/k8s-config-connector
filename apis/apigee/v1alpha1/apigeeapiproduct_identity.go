@@ -27,40 +27,40 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &ApigeeApiProductIdentity{}
-	_ identity.Resource   = &ApigeeApiProduct{}
+	_ identity.IdentityV2 = &ApigeeAPIProductIdentity{}
+	_ identity.Resource   = &ApigeeAPIProduct{}
 )
 
-var ApigeeApiProductIdentityFormat = gcpurls.Template[ApigeeApiProductIdentity]("apigee.googleapis.com", "organizations/{organization}/apiproducts/{apiproduct}")
+var ApigeeAPIProductIdentityFormat = gcpurls.Template[ApigeeAPIProductIdentity]("apigee.googleapis.com", "organizations/{organization}/apiproducts/{apiproduct}")
 
 // +k8s:deepcopy-gen=false
-type ApigeeApiProductIdentity struct {
+type ApigeeAPIProductIdentity struct {
 	Organization string
 	Apiproduct   string
 }
 
-func (i *ApigeeApiProductIdentity) String() string {
-	return ApigeeApiProductIdentityFormat.ToString(*i)
+func (i *ApigeeAPIProductIdentity) String() string {
+	return ApigeeAPIProductIdentityFormat.ToString(*i)
 }
 
-func (i *ApigeeApiProductIdentity) FromExternal(ref string) error {
-	parsed, match, err := ApigeeApiProductIdentityFormat.Parse(ref)
+func (i *ApigeeAPIProductIdentity) FromExternal(ref string) error {
+	parsed, match, err := ApigeeAPIProductIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of ApigeeApiProduct external=%q was not known (use %s): %w", ref, ApigeeApiProductIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of ApigeeAPIProduct external=%q was not known (use %s): %w", ref, ApigeeAPIProductIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of ApigeeApiProduct external=%q was not known (use %s)", ref, ApigeeApiProductIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of ApigeeAPIProduct external=%q was not known (use %s)", ref, ApigeeAPIProductIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *ApigeeApiProductIdentity) Host() string {
-	return ApigeeApiProductIdentityFormat.Host()
+func (i *ApigeeAPIProductIdentity) Host() string {
+	return ApigeeAPIProductIdentityFormat.Host()
 }
 
-func getIdentityFromApigeeApiProductSpec(ctx context.Context, reader client.Reader, obj *ApigeeApiProduct) (*ApigeeApiProductIdentity, error) {
+func getIdentityFromApigeeAPIProductSpec(ctx context.Context, reader client.Reader, obj *ApigeeAPIProduct) (*ApigeeAPIProductIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -81,15 +81,15 @@ func getIdentityFromApigeeApiProductSpec(ctx context.Context, reader client.Read
 		return nil, fmt.Errorf("organization external reference %q is invalid", orgExternal)
 	}
 
-	identity := &ApigeeApiProductIdentity{
+	identity := &ApigeeAPIProductIdentity{
 		Organization: tokens[1],
 		Apiproduct:   resourceID,
 	}
 	return identity, nil
 }
 
-func (obj *ApigeeApiProduct) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromApigeeApiProductSpec(ctx, reader, obj)
+func (obj *ApigeeAPIProduct) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromApigeeAPIProductSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -98,13 +98,13 @@ func (obj *ApigeeApiProduct) GetIdentity(ctx context.Context, reader client.Read
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &ApigeeApiProductIdentity{}
+		statusIdentity := &ApigeeAPIProductIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change ApigeeApiProduct identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change ApigeeAPIProduct identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 

@@ -29,6 +29,6 @@ PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 go run . generate-types \
     --service mockgcp.cloud.apigee.v1 \
     --api-version apigee.cnrm.cloud.google.com/v1alpha1 \
-    --resource ApigeeApiProduct:GoogleCloudApigeeV1ApiProduct \
+    --resource ApigeeAPIProduct:GoogleCloudApigeeV1ApiProduct \
     --proto-source-path ${PROTO_OUT} \
     --skip-scaffold-files

@@ -26,67 +26,67 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &ApigeeApiProductRef{}
+var _ refs.Ref = &ApigeeAPIProductRef{}
 
-// ApigeeApiProductRef is a reference to an ApigeeApiProduct.
-type ApigeeApiProductRef struct {
-	// A reference to an externally managed ApigeeApiProduct resource.
+// ApigeeAPIProductRef is a reference to an ApigeeAPIProduct.
+type ApigeeAPIProductRef struct {
+	// A reference to an externally managed ApigeeAPIProduct resource.
 	// Should be in the format "organizations/{{organizationID}}/apiproducts/{{apiproductID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ApigeeApiProduct resource.
+	// The name of a ApigeeAPIProduct resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ApigeeApiProduct resource.
+	// The namespace of a ApigeeAPIProduct resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&ApigeeApiProductRef{})
+	refs.Register(&ApigeeAPIProductRef{})
 }
 
-func (r *ApigeeApiProductRef) GetGVK() schema.GroupVersionKind {
-	return ApigeeApiProductGVK
+func (r *ApigeeAPIProductRef) GetGVK() schema.GroupVersionKind {
+	return ApigeeAPIProductGVK
 }
 
-func (r *ApigeeApiProductRef) GetNamespacedName() types.NamespacedName {
+func (r *ApigeeAPIProductRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *ApigeeApiProductRef) GetExternal() string {
+func (r *ApigeeAPIProductRef) GetExternal() string {
 	return r.External
 }
 
-func (r *ApigeeApiProductRef) SetExternal(ref string) {
+func (r *ApigeeAPIProductRef) SetExternal(ref string) {
 	r.External = ref
 }
 
-func (r *ApigeeApiProductRef) ValidateExternal(ref string) error {
-	id := &ApigeeApiProductIdentity{}
+func (r *ApigeeAPIProductRef) ValidateExternal(ref string) error {
+	id := &ApigeeAPIProductIdentity{}
 	if err := id.FromExternal(r.GetExternal()); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ApigeeApiProductRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &ApigeeApiProductIdentity{}
+func (r *ApigeeAPIProductRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ApigeeAPIProductIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *ApigeeApiProductRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *ApigeeAPIProductRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
-		obj := &ApigeeApiProduct{}
+		obj := &ApigeeAPIProduct{}
 		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
 			return ""
 		}
-		id, err := getIdentityFromApigeeApiProductSpec(ctx, reader, obj)
+		id, err := getIdentityFromApigeeAPIProductSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}

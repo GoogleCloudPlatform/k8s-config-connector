@@ -34,20 +34,20 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.ApigeeApiProductGVK, NewApigeeApiProductModel)
+	registry.RegisterModel(krm.ApigeeAPIProductGVK, NewApigeeAPIProductModel)
 }
 
-func NewApigeeApiProductModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &modelApigeeApiProduct{config: config}, nil
+func NewApigeeAPIProductModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelApigeeAPIProduct{config: config}, nil
 }
 
-var _ directbase.Model = &modelApigeeApiProduct{}
+var _ directbase.Model = &modelApigeeAPIProduct{}
 
-type modelApigeeApiProduct struct {
+type modelApigeeAPIProduct struct {
 	config *config.ControllerConfig
 }
 
-func (m *modelApigeeApiProduct) client(ctx context.Context) (*api.OrganizationsApiproductsService, error) {
+func (m *modelApigeeAPIProduct) client(ctx context.Context) (*api.OrganizationsApiproductsService, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
@@ -59,10 +59,10 @@ func (m *modelApigeeApiProduct) client(ctx context.Context) (*api.OrganizationsA
 	return api.NewOrganizationsApiproductsService(gcpClient), nil
 }
 
-func (m *modelApigeeApiProduct) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+func (m *modelApigeeAPIProduct) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
-	obj := &krm.ApigeeApiProduct{}
+	obj := &krm.ApigeeAPIProduct{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -71,13 +71,13 @@ func (m *modelApigeeApiProduct) AdapterForObject(ctx context.Context, op *direct
 	if err != nil {
 		return nil, err
 	}
-	id := i.(*krm.ApigeeApiProductIdentity)
+	id := i.(*krm.ApigeeAPIProductIdentity)
 
 	productsClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &ApigeeApiProductAdapter{
+	return &ApigeeAPIProductAdapter{
 		id:             id,
 		k8sClient:      reader,
 		productsClient: productsClient,
@@ -85,44 +85,44 @@ func (m *modelApigeeApiProduct) AdapterForObject(ctx context.Context, op *direct
 	}, nil
 }
 
-func (m *modelApigeeApiProduct) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *modelApigeeAPIProduct) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	return nil, nil
 }
 
-type ApigeeApiProductAdapter struct {
-	id             *krm.ApigeeApiProductIdentity
+type ApigeeAPIProductAdapter struct {
+	id             *krm.ApigeeAPIProductIdentity
 	k8sClient      client.Reader
 	productsClient *api.OrganizationsApiproductsService
-	desired        *krm.ApigeeApiProduct
+	desired        *krm.ApigeeAPIProduct
 	actual         *api.GoogleCloudApigeeV1ApiProduct
 }
 
-var _ directbase.Adapter = &ApigeeApiProductAdapter{}
+var _ directbase.Adapter = &ApigeeAPIProductAdapter{}
 
-func (a *ApigeeApiProductAdapter) Find(ctx context.Context) (bool, error) {
+func (a *ApigeeAPIProductAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting ApigeeApiProduct", "name", a.id)
+	log.V(2).Info("getting ApigeeAPIProduct", "name", a.id)
 
 	actual, err := a.productsClient.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting ApigeeApiProduct %q: %w", a.id, err)
+		return false, fmt.Errorf("getting ApigeeAPIProduct %q: %w", a.id, err)
 	}
 
 	a.actual = actual
 	return true, nil
 }
 
-func (a *ApigeeApiProductAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+func (a *ApigeeAPIProductAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating ApigeeApiProduct", "name", a.id)
+	log.V(2).Info("creating ApigeeAPIProduct", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
 
-	resource := ApigeeApiProductSpec_ToAPI(mapCtx, &desired.Spec)
+	resource := ApigeeAPIProductSpec_ToAPI(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -132,13 +132,13 @@ func (a *ApigeeApiProductAdapter) Create(ctx context.Context, createOp *directba
 
 	created, err := a.productsClient.Create(parent, resource).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("creating ApigeeApiProduct %s: %w", a.id, err)
+		return fmt.Errorf("creating ApigeeAPIProduct %s: %w", a.id, err)
 	}
 
-	log.V(2).Info("successfully created ApigeeApiProduct", "name", a.id)
+	log.V(2).Info("successfully created ApigeeAPIProduct", "name", a.id)
 
-	status := &krm.ApigeeApiProductStatus{}
-	status.ObservedState = ApigeeApiProductObservedState_FromAPI(mapCtx, created)
+	status := &krm.ApigeeAPIProductStatus{}
+	status.ObservedState = ApigeeAPIProductObservedState_FromAPI(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -146,41 +146,41 @@ func (a *ApigeeApiProductAdapter) Create(ctx context.Context, createOp *directba
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *ApigeeApiProductAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *ApigeeAPIProductAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating ApigeeApiProduct", "name", a.id)
+	log.V(2).Info("updating ApigeeAPIProduct", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
 
-	resource := ApigeeApiProductSpec_ToAPI(mapCtx, &desired.Spec)
+	resource := ApigeeAPIProductSpec_ToAPI(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	updated, err := a.productsClient.Update(a.id.String(), resource).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("updating ApigeeApiProduct %s: %w", a.id, err)
+		return fmt.Errorf("updating ApigeeAPIProduct %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully updated ApigeeApiProduct", "name", a.id)
+	log.V(2).Info("successfully updated ApigeeAPIProduct", "name", a.id)
 
-	status := &krm.ApigeeApiProductStatus{}
-	status.ObservedState = ApigeeApiProductObservedState_FromAPI(mapCtx, updated)
+	status := &krm.ApigeeAPIProductStatus{}
+	status.ObservedState = ApigeeAPIProductObservedState_FromAPI(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *ApigeeApiProductAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *ApigeeAPIProductAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.ApigeeApiProduct{}
+	obj := &krm.ApigeeAPIProduct{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ApigeeApiProductSpec_FromAPI(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ApigeeAPIProductSpec_FromAPI(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -191,25 +191,25 @@ func (a *ApigeeApiProductAdapter) Export(ctx context.Context) (*unstructured.Uns
 	}
 
 	u.SetName(a.id.Apiproduct)
-	u.SetGroupVersionKind(krm.ApigeeApiProductGVK)
+	u.SetGroupVersionKind(krm.ApigeeAPIProductGVK)
 
 	u.Object = uObj
 	return u, nil
 }
 
-func (a *ApigeeApiProductAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *ApigeeAPIProductAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting ApigeeApiProduct", "name", a.id)
+	log.V(2).Info("deleting ApigeeAPIProduct", "name", a.id)
 
 	_, err := a.productsClient.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
-			log.V(2).Info("skipping delete for non-existent ApigeeApiProduct, assuming it was already deleted", "name", a.id.String())
+			log.V(2).Info("skipping delete for non-existent ApigeeAPIProduct, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting ApigeeApiProduct %s: %w", a.id, err)
+		return false, fmt.Errorf("deleting ApigeeAPIProduct %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted ApigeeApiProduct", "name", a.id)
+	log.V(2).Info("successfully deleted ApigeeAPIProduct", "name", a.id)
 
 	return true, nil
 }
