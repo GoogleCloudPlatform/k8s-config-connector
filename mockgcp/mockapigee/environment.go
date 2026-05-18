@@ -84,7 +84,7 @@ func (s *environmentsServer) CreateOrganizationsEnvironment(ctx context.Context,
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.OrganizationsEnvironment).(*pb.GoogleCloudApigeeV1Environment)
+	obj := proto.CloneOf(req.OrganizationsEnvironment)
 	obj.Name = req.OrganizationsEnvironment.Name
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

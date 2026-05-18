@@ -93,7 +93,7 @@ func (s *cloudDeploy) CreateAutomation(ctx context.Context, req *pb.CreateAutoma
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.Automation).(*pb.Automation)
+	obj := proto.CloneOf(req.Automation)
 	obj.Name = fqn
 
 	obj.Uid = uuid.NewString()
@@ -132,7 +132,7 @@ func (s *cloudDeploy) UpdateAutomation(ctx context.Context, req *pb.UpdateAutoma
 	obj := &pb.Automation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound && req.AllowMissing {
-			obj = proto.Clone(req.Automation).(*pb.Automation)
+			obj = proto.CloneOf(req.Automation)
 			obj.Name = fqn
 			obj.Uid = uuid.NewString()
 			obj.CreateTime = timestamppb.New(time.Now())
@@ -171,7 +171,7 @@ func (s *cloudDeploy) UpdateAutomation(ctx context.Context, req *pb.UpdateAutoma
 		}
 
 		if hasWildcard {
-			obj = proto.Clone(req.Automation).(*pb.Automation)
+			obj = proto.CloneOf(req.Automation)
 			obj.Name = fqn
 			obj.Uid = req.Automation.Uid
 			obj.CreateTime = req.Automation.CreateTime

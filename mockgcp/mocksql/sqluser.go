@@ -96,7 +96,7 @@ func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequ
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetBody()).(*pb.User)
+	obj := proto.CloneOf(req.GetBody())
 	obj.Name = name.UserName
 	obj.Project = name.Project.ID
 	obj.Instance = name.Instance
@@ -134,7 +134,7 @@ func (s *sqlUsersService) Update(ctx context.Context, req *pb.SqlUsersUpdateRequ
 		return nil, err
 	}
 
-	obj = proto.Clone(req.GetBody()).(*pb.User)
+	obj = proto.CloneOf(req.GetBody())
 	populateUserDefaults(obj)
 	obj.Etag = fields.ComputeWeakEtag(obj)
 

@@ -51,7 +51,7 @@ func (s *managedKafka) CreateCluster(ctx context.Context, req *pb.CreateClusterR
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetCluster()).(*pb.Cluster)
+	obj := proto.CloneOf(req.GetCluster())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.Cluster_CREATING

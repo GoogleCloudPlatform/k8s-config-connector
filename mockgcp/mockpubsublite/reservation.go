@@ -57,7 +57,7 @@ func (s *PubSubLiteV1) CreateReservation(ctx context.Context, req *pb.CreateRese
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Reservation).(*pb.Reservation)
+	obj := proto.CloneOf(req.Reservation)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

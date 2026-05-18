@@ -121,7 +121,7 @@ func (s *DataCatalogV1) CreateEntryGroup(ctx context.Context, req *pb.CreateEntr
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.EntryGroup).(*pb.EntryGroup)
+	obj := proto.CloneOf(req.EntryGroup)
 	obj.Name = fqn
 
 	// Add timestamps for creation

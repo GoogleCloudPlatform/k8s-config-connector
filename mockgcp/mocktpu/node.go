@@ -91,7 +91,7 @@ func (s *TpuServer) CreateNode(ctx context.Context, req *pb.CreateNodeRequest) (
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetNode()).(*pb.Node)
+	obj := proto.CloneOf(req.GetNode())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.Node_CREATING

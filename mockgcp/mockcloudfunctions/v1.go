@@ -55,7 +55,7 @@ func (s *CloudFunctionsV1) CreateFunction(ctx context.Context, req *pb.CreateFun
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Function).(*pb.CloudFunction)
+	obj := proto.CloneOf(req.Function)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

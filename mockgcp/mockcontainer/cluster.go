@@ -63,7 +63,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj := proto.CloneOf(req.Cluster)
 
 	obj.Status = pb.Cluster_RUNNING
 
@@ -135,7 +135,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	}
 
 	for i, nodePool := range obj.NodePools {
-		nodePoolObj := proto.Clone(nodePool).(*pb.NodePool)
+		nodePoolObj := proto.CloneOf(nodePool)
 		if err := s.populateNodePoolDefaults(name.Project, obj, nodePoolObj); err != nil {
 			return nil, err
 		}
@@ -226,7 +226,7 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 
 	klog.Infof("UpdateCluster %v", prototext.Format(req))
 
-	update := proto.Clone(req.GetUpdate()).(*pb.ClusterUpdate)
+	update := proto.CloneOf(req.GetUpdate())
 
 	// We clear each field of the update as we go, so we know if we've missed one!
 
@@ -400,7 +400,7 @@ func (s *ClusterManagerV1) SetLabels(ctx context.Context, req *pb.SetLabelsReque
 		return nil, status.Errorf(codes.FailedPrecondition, "label fingerprint does not match")
 	}
 
-	update := proto.Clone(existing).(*pb.Cluster)
+	update := proto.CloneOf(existing)
 	update.ResourceLabels = req.ResourceLabels
 
 	if err := s.storage.Update(ctx, fqn, update); err != nil {

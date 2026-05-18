@@ -73,7 +73,7 @@ func (s *DashboardsService) CreateDashboard(ctx context.Context, req *pb.CreateD
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Dashboard).(*pb.Dashboard)
+	obj := proto.CloneOf(req.Dashboard)
 
 	defaulter := &dashboardDefaulter{}
 	defaulter.visitDashboard(obj)
@@ -369,7 +369,7 @@ func (s *DashboardsService) UpdateDashboard(ctx context.Context, req *pb.UpdateD
 		return nil, err
 	}
 
-	updated := proto.Clone(req.Dashboard).(*pb.Dashboard)
+	updated := proto.CloneOf(req.Dashboard)
 
 	defaulter := &dashboardDefaulter{}
 	defaulter.visitDashboard(updated)

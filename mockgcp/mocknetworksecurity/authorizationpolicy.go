@@ -40,7 +40,7 @@ func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, r
 
 	fqn := name
 
-	obj := proto.Clone(req.AuthorizationPolicy).(*pb.AuthorizationPolicy)
+	obj := proto.CloneOf(req.AuthorizationPolicy)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
@@ -59,7 +59,7 @@ func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, r
 	}
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(obj).(*pb.AuthorizationPolicy)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }
@@ -96,7 +96,7 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 		return nil, err
 	}
 
-	updated := proto.Clone(req.GetAuthorizationPolicy()).(*pb.AuthorizationPolicy)
+	updated := proto.CloneOf(req.GetAuthorizationPolicy())
 	updated.CreateTime = obj.CreateTime
 	updated.UpdateTime = timestamppb.New(time.Now())
 	switch req.GetUpdateMask().GetPaths()[0] {
@@ -122,7 +122,7 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(updated).(*pb.AuthorizationPolicy)
+		result := proto.CloneOf(updated)
 		return result, nil
 	})
 }

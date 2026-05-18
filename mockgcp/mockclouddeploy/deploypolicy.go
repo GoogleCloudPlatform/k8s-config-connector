@@ -61,7 +61,7 @@ func (s *cloudDeploy) CreateDeployPolicy(ctx context.Context, req *pb.CreateDepl
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetDeployPolicy()).(*pb.DeployPolicy)
+	obj := proto.CloneOf(req.GetDeployPolicy())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

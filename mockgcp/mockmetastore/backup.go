@@ -65,7 +65,7 @@ func (s *DataprocMetastoreV1) CreateBackup(ctx context.Context, req *pb.CreateBa
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetBackup()).(*pb.Backup)
+	obj := proto.CloneOf(req.GetBackup())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.EndTime = obj.CreateTime // Set EndTime to CreateTime based on diff
@@ -75,7 +75,7 @@ func (s *DataprocMetastoreV1) CreateBackup(ctx context.Context, req *pb.CreateBa
 	if err := s.storage.Get(ctx, req.Parent, service); err != nil {
 		return nil, fmt.Errorf("failed to get service: %w", err)
 	}
-	serviceCopy := proto.Clone(service).(*pb.Service)
+	serviceCopy := proto.CloneOf(service)
 	serviceCopy.State = pb.Service_STATE_UNSPECIFIED
 	serviceCopy.StateMessage = ""
 	serviceCopy.Name = ""

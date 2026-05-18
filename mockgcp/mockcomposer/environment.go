@@ -70,7 +70,7 @@ func (s *ComposerV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnviro
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.Environment).(*pb.Environment)
+	obj := proto.CloneOf(req.Environment)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -111,7 +111,7 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 		return nil, err
 	}
 	now := time.Now()
-	updated := proto.Clone(existing).(*pb.Environment)
+	updated := proto.CloneOf(existing)
 
 	// Required. The update mask applies to the resource.
 	paths := req.GetUpdateMask().GetPaths()
@@ -136,7 +136,7 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	// // Returns with no createTime
-	// lroRet := proto.Clone(obj).(*pb.Workflow)
+	// lroRet := proto.CloneOf(obj)
 	// lroRet.CreateTime = nil
 	// lroRet.UpdateTime = nil
 	// lroRet.RevisionCreateTime = nil

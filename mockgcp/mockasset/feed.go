@@ -56,7 +56,7 @@ func (s *AssetService) CreateFeed(ctx context.Context, req *pb.CreateFeedRequest
 	}
 	fqn := name.String()
 
-	feed := proto.Clone(req.Feed).(*pb.Feed)
+	feed := proto.CloneOf(req.Feed)
 	feed.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, feed); err != nil {

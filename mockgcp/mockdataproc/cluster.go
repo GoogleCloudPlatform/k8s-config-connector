@@ -96,7 +96,7 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetCluster()).(*pb.Cluster)
+	obj := proto.CloneOf(req.GetCluster())
 	obj.ProjectId = name.Project.ID
 	obj.ClusterName = name.ClusterName
 	s.setStatus(obj, pb.ClusterStatus_CREATING)
@@ -172,7 +172,7 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 		}
 
 		// Not all fields are returned in the LRO
-		ret := proto.Clone(updated).(*pb.Cluster)
+		ret := proto.CloneOf(updated)
 		ret.Status = nil
 		ret.StatusHistory = nil
 		ret.Config.WorkerConfig.InstanceNames = nil
@@ -317,7 +317,7 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 
 	description := ""
 
-	updated := proto.Clone(obj).(*pb.Cluster)
+	updated := proto.CloneOf(obj)
 	for _, field := range req.GetUpdateMask().GetPaths() {
 		switch field {
 		case "config.worker_config.num_instances":
@@ -373,7 +373,7 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 		}
 
 		// Not all fields are returned in the LRO
-		ret := proto.Clone(updated).(*pb.Cluster)
+		ret := proto.CloneOf(updated)
 		ret.Status = nil
 		ret.StatusHistory = nil
 		ret.Config.WorkerConfig.InstanceNames = nil

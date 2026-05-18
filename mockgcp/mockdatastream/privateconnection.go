@@ -65,7 +65,7 @@ func (s *DatastreamV1) CreatePrivateConnection(ctx context.Context, req *pb.Crea
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetPrivateConnection()).(*pb.PrivateConnection)
+	obj := proto.CloneOf(req.GetPrivateConnection())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

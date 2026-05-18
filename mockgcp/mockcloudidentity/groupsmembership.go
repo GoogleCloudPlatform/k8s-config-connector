@@ -70,7 +70,7 @@ func (s *groupsMembershipsServer) CreateGroupsMembership(ctx context.Context, re
 
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.GroupsMembership).(*pb.Membership)
+	obj := proto.CloneOf(req.GroupsMembership)
 	obj.Name = PtrTo(fmt.Sprintf("%s", name.String()))
 	obj.CreateTime = now
 	obj.UpdateTime = now
@@ -82,7 +82,7 @@ func (s *groupsMembershipsServer) CreateGroupsMembership(ctx context.Context, re
 		return nil, err
 	}
 
-	retObj := proto.Clone(obj).(*pb.Membership)
+	retObj := proto.CloneOf(obj)
 	// output-only fields are not populated in LRO
 	retObj.CreateTime = nil
 	retObj.UpdateTime = nil
@@ -165,7 +165,7 @@ func (s *groupsMembershipsServer) ModifyMembershipRolesGroupsMembership(ctx cont
 
 		for j, role := range obj.Roles {
 			if *umr.Name == *obj.Roles[j].Name {
-				obj.Roles[j].ExpiryDetail = proto.Clone(umr.ExpiryDetail).(*pb.ExpiryDetail)
+				obj.Roles[j].ExpiryDetail = proto.CloneOf(umr.ExpiryDetail)
 				modifiedRoles = append(modifiedRoles, role)
 				break
 			}

@@ -61,7 +61,7 @@ func (s *secureSourceManagerServer) CreateInstance(ctx context.Context, req *pb.
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Instance).(*pb.Instance)
+	obj := proto.CloneOf(req.Instance)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
