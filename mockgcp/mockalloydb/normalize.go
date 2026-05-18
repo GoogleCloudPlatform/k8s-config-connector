@@ -21,12 +21,12 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	replacements.ReplacePath(".continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".continuousBackupInfo.enabledTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.continuousBackupInfo.enabledTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".ipAddress", "10.1.2.3")
 	replacements.ReplacePath(".response.ipAddress", "10.1.2.3")
-	replacements.ReplacePath(".primary.createTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".primary.generateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".primary.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".primary.generateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".backupSource.backupUid", "1a1a1a-222b-3cc3-d444-e555ee555555")
 	replacements.ReplacePath(".response.backupSource.backupUid", "1a1a1a-222b-3cc3-d444-e555ee555555")
 }

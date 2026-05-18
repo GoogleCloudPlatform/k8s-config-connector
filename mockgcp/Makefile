@@ -111,10 +111,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/vertex_rag_data.proto \
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/apphub/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/bigquery/connection/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/certificatemanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
@@ -131,7 +129,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
 		./third_party/googleapis/mockgcp/cloud/gkemulticloud/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/deploy/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orgpolicy/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/parametermanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
@@ -170,7 +167,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/eventarc/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/modelarmor/v1/service.proto \
@@ -201,14 +197,12 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/discoveryengine/v1/data_store_service.proto \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
-		./third_party/googleapis/google/cloud/dataproc/v1/*.proto \
 		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
 		./third_party/googleapis/google/storage/control/v2/*.proto \
 		./third_party/googleapis/google/cloud/batch/v1/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
-		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \

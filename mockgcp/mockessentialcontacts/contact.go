@@ -23,8 +23,8 @@ import (
 	"fmt"
 	"strings"
 
+	pb "cloud.google.com/go/essentialcontacts/apiv1/essentialcontactspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/essentialcontacts/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

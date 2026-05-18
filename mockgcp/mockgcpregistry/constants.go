@@ -12,18 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package sql
+package mockgcpregistry
 
-import (
-	"math/rand"
-	"testing"
+const (
+	// PlaceholderTime is commonly used for normalization of generic timestamps.
+	PlaceholderTime = "1970-01-01T00:00:00Z"
+
+	// PlaceholderTimestamp is commonly used for normalization of API timestamps.
+	PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 )
-
-func TestSQLInstanceLegacyFuzzer(t *testing.T) {
-	t.Parallel()
-	fuzzer := sqlInstanceLegacyFuzzer()
-	for i := int64(0); i < 10000; i++ {
-		seed := rand.Int63()
-		fuzzer.FuzzSpec(t, seed)
-	}
-}

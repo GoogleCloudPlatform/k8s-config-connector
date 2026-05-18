@@ -15,17 +15,22 @@
 package mockanalytics
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "analyticsadmin.googleapis.com") {
+		return
+	}
 	replacements.ReplacePath("accountTicketId", "ASDFGHJKL123456")
-	replacements.ReplacePath("createTime", "2025-10-13T10:54:55.445887715Z")
-	replacements.ReplacePath("updateTime", "2025-10-13T10:58:19.612207875Z")
-	replacements.ReplacePath(".accounts[].createTime", "2025-10-13T10:54:55.445887715Z")
-	replacements.ReplacePath(".accounts[].updateTime", "2025-10-13T10:58:19.612207875Z")
+	replacements.ReplacePath("createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath("updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".accounts[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".accounts[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
