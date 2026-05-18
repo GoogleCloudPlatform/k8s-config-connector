@@ -56,8 +56,6 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
-		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
-		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/annotation*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/data_item.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/dataset*.proto \

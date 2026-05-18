@@ -19,6 +19,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
@@ -29,7 +30,7 @@ import (
 
 const (
 	// MetadataKeyHttpRequestQuery is the gRPC metadata key for the HTTP request query string
-	MetadataKeyHttpRequestQuery = "http.request.query"
+	MetadataKeyHttpRequestQuery = common.MetadataKeyHttpRequestQuery
 )
 
 type Options struct {

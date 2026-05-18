@@ -26,11 +26,14 @@ import (
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/klog/v2"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 )
 
 // Mux is the primary interface for mapping HTTP requests to gRPC method calls.
@@ -161,6 +164,10 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method *grpcMethod, pathValues map[string]string) {
 	ctx := r.Context()
 	log := klog.FromContext(ctx)
+
+	// Set the query string in the metadata, so it can be used for field filtering
+	md := metadata.Pairs(common.MetadataKeyHttpRequestQuery, r.URL.RawQuery)
+	ctx = metadata.NewIncomingContext(ctx, md)
 
 	call := &httpMethodCall{
 		parent:     m,

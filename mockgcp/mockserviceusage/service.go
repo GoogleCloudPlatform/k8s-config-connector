@@ -20,15 +20,14 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 
+	pb_v1 "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/serviceusage/v1"
-	pb_v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/serviceusage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	pb_v1beta1 "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
 )
 
 func init() {
@@ -68,20 +67,16 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb_v1.RegisterServiceUsageHandler,
-		pb_v1beta1.RegisterServiceUsageHandler,
-		s.operations.RegisterOperationsPath("/v1/operations/{name}"),
-		s.operations.RegisterOperationsPath("/v1beta1/operations/{name}"),
-		s.operations.RegisterOperationsPath("/v1/operations/{name}"),
-	)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, fmt.Errorf("creating http mux: %w", err)
 	}
 
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-		response.Header().Del("Cache-Control")
-	}
+	mux.AddService(pb_v1.NewServiceUsageClient(conn))
+	mux.AddService(pb_v1beta1.NewServiceUsageClient(conn))
+
+	mux.AddOperationsPath("/v1/operations/{name}", conn)
+	mux.AddOperationsPath("/v1beta1/operations/{name}", conn)
 
 	return mux, nil
 }
