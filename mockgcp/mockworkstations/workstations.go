@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workstations/v1"
+	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
 )
 
 type WorkstationsService struct {

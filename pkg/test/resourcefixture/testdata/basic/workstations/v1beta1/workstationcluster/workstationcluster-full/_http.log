@@ -289,13 +289,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Requested entity was not found.",
-        "reason": "notFound"
-      }
-    ],
     "message": "Requested entity was not found.",
     "status": "NOT_FOUND"
   }
@@ -487,7 +480,7 @@ X-Xss-Protection: 0
 {
   "name": "projects/${projectId}/locations/us-central1/workstationClusters/workstationcluster-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.cloud.workstations.v1.WorkstationCluster",
+    "@type": "type.googleapis.com/google.cloud.workstations.v1.WorkstationCluster",
     "annotations": {
       "a-key1": "a-value1",
       "a-key2": "a-value2"
