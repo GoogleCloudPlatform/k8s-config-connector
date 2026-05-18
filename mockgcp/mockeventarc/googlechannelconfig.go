@@ -30,8 +30,8 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/eventarc/v1"
 )
 
 func (s *EventarcV1) GetGoogleChannelConfig(ctx context.Context, req *pb.GetGoogleChannelConfigRequest) (*pb.GoogleChannelConfig, error) {
