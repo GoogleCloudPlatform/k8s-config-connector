@@ -818,6 +818,39 @@ func (h *Harness) ExportParams() exportparameters.Parameters {
 	return exportParams
 }
 
+func (h *Harness) CreateMockProject(ctx context.Context, projectID string) testgcp.GCPProject {
+	crm := h.getCloudResourceManagerClient(h.kccConfig.HTTPClient)
+	req := &cloudresourcemanagerv1.Project{
+		ProjectId: projectID,
+	}
+	op, err := crm.Projects.Create(req).Context(ctx).Do()
+	if err != nil {
+		h.Fatalf("error creating project: %v", err)
+	}
+	for i := 0; i < 100; i++ {
+		if op.Done {
+			break
+		}
+		time.Sleep(100 * time.Millisecond)
+		latest, err := crm.Operations.Get(op.Name).Context(ctx).Do()
+		if err != nil {
+			h.Fatalf("error getting operation %q: %v", op.Name, err)
+		}
+		op = latest
+	}
+	if !op.Done {
+		h.Fatalf("FAIL: expected mock create project operation to be done; operation state was %+v", op)
+	}
+	found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
+	if err != nil {
+		h.Fatalf("FAIL: error reading created project: %v", err)
+	}
+	return testgcp.GCPProject{
+		ProjectID:     found.ProjectId,
+		ProjectNumber: found.ProjectNumber,
+	}
+}
+
 func (h *Harness) getCloudResourceManagerClient(httpClient *http.Client) *cloudresourcemanagerv1.Service {
 	s, err := cloudresourcemanagerv1.NewService(h.Ctx, option.WithHTTPClient(httpClient), option.WithUserAgent(gcp.KCCUserAgent()))
 	if err != nil {
