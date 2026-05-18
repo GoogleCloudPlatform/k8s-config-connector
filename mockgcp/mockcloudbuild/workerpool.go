@@ -63,7 +63,7 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 	fqn := name.String()
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.GetWorkerPool()).(*pb.WorkerPool)
+	obj := proto.CloneOf(req.GetWorkerPool())
 	obj.Name = fqn
 	obj.CreateTime = now
 

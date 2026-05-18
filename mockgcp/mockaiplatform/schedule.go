@@ -93,7 +93,7 @@ func (s *scheduleService) CreateSchedule(ctx context.Context, req *pb.CreateSche
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Schedule).(*pb.Schedule)
+	obj := proto.CloneOf(req.Schedule)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())

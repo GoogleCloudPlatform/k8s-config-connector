@@ -62,7 +62,7 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetNetworkResource()).(*pb.Network)
+	obj := proto.CloneOf(req.GetNetworkResource())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, name.String()))

@@ -109,7 +109,7 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 
 	clusterFQN := clusterName.String()
 
-	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj := proto.CloneOf(req.Cluster)
 	obj.Name = clusterFQN
 
 	lroMetadata := &pb.CreateClusterMetadata{

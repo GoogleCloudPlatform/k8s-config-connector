@@ -68,7 +68,7 @@ func (s *FilestoreV1) CreateInstance(ctx context.Context, req *pb.CreateInstance
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstance())
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
@@ -150,7 +150,7 @@ func (s *FilestoreV1) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	updatedObj := proto.Clone(obj).(*pb.Instance)
+	updatedObj := proto.CloneOf(obj)
 	updatedObj.CreateTime = nil
 	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 

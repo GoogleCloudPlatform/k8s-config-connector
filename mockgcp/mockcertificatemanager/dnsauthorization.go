@@ -53,7 +53,7 @@ func (s *CertificateManagerV1) CreateDnsAuthorization(ctx context.Context, req *
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.DnsAuthorization).(*pb.DnsAuthorization)
+	obj := proto.CloneOf(req.DnsAuthorization)
 	obj.Name = fqn
 	now := timestamppb.Now()
 	obj.CreateTime = now
@@ -79,7 +79,7 @@ func (s *CertificateManagerV1) CreateDnsAuthorization(ctx context.Context, req *
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.DnsAuthorization)
+		result := proto.CloneOf(obj)
 		result.Labels = nil
 		lroMetadata.RequestedCancellation = false
 		return result, nil
@@ -132,7 +132,7 @@ func (s *CertificateManagerV1) UpdateDnsAuthorization(ctx context.Context, req *
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.DnsAuthorization)
+		result := proto.CloneOf(obj)
 		result.Labels = nil
 		return result, nil
 	})

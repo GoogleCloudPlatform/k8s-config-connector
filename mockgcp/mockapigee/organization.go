@@ -61,7 +61,7 @@ func (s *organizationsServer) CreateOrganization(ctx context.Context, req *pb.Cr
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetOrganization()).(*pb.GoogleCloudApigeeV1Organization)
+	obj := proto.CloneOf(req.GetOrganization())
 	obj.Name = name.ID
 	obj.CreatedAt = now.UnixMilli()
 	obj.LastModifiedAt = now.UnixMilli()
@@ -110,7 +110,7 @@ func (s *organizationsServer) SetAddonsOrganization(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.GoogleCloudApigeeV1Organization)
+	updated := proto.CloneOf(existing)
 	updated.AddonsConfig = req.Organization.AddonsConfig
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
@@ -142,7 +142,7 @@ func (s *organizationsServer) UpdateOrganization(ctx context.Context, req *pb.Up
 
 	// Updates the properties for an Apigee organization. No other fields in the organization profile will be updated.
 
-	updated := proto.Clone(existing).(*pb.GoogleCloudApigeeV1Organization)
+	updated := proto.CloneOf(existing)
 	props := req.Organization.Properties
 	sort.Slice(props.Property, func(i, j int) bool {
 		return props.Property[i].Name < props.Property[j].GetName()

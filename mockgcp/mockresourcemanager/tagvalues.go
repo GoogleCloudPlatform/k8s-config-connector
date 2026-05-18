@@ -165,7 +165,7 @@ func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRe
 	fqn := name.String()
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.TagValue).(*pb.TagValue)
+	obj := proto.CloneOf(req.TagValue)
 
 	obj.CreateTime = now
 	obj.UpdateTime = now

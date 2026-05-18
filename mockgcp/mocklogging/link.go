@@ -64,7 +64,7 @@ func (s *configServiceV2) CreateLink(ctx context.Context, req *pb.CreateLinkRequ
 	fqn := name.String()
 
 	now := time.Now()
-	obj := proto.Clone(req.GetLink()).(*pb.Link)
+	obj := proto.CloneOf(req.GetLink())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.BigqueryDataset = &pb.BigQueryDataset{

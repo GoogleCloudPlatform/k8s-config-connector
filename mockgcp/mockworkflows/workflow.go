@@ -62,7 +62,7 @@ func (s *WorkflowsV1) CreateWorkflow(ctx context.Context, req *pb.CreateWorkflow
 	fqn := name.String()
 
 	now := time.Now()
-	obj := proto.Clone(req.GetWorkflow()).(*pb.Workflow)
+	obj := proto.CloneOf(req.GetWorkflow())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -78,7 +78,7 @@ func (s *WorkflowsV1) CreateWorkflow(ctx context.Context, req *pb.CreateWorkflow
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	// // Returns with no createTime
-	// lroRet := proto.Clone(obj).(*pb.Workflow)
+	// lroRet := proto.CloneOf(obj)
 	// lroRet.CreateTime = nil
 	// lroRet.UpdateTime = nil
 	// lroRet.RevisionCreateTime = nil
@@ -135,7 +135,7 @@ func (s *WorkflowsV1) UpdateWorkflow(ctx context.Context, req *pb.UpdateWorkflow
 		return nil, err
 	}
 	now := time.Now()
-	updated := proto.Clone(existing).(*pb.Workflow)
+	updated := proto.CloneOf(existing)
 
 	updated.UpdateTime = timestamppb.New(now)
 	updated.RevisionCreateTime = timestamppb.New(now)
@@ -177,7 +177,7 @@ func (s *WorkflowsV1) UpdateWorkflow(ctx context.Context, req *pb.UpdateWorkflow
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	// // Returns with no createTime
-	// lroRet := proto.Clone(obj).(*pb.Workflow)
+	// lroRet := proto.CloneOf(obj)
 	// lroRet.CreateTime = nil
 	// lroRet.UpdateTime = nil
 	// lroRet.RevisionCreateTime = nil

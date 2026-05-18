@@ -60,7 +60,7 @@ func (s *EssentialContactsV1) CreateContact(ctx context.Context, req *pb.CreateC
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetContact()).(*pb.Contact)
+	obj := proto.CloneOf(req.GetContact())
 	obj.Name = name.GetName()
 	obj.ValidateTime = timestamppb.Now()
 	obj.ValidationState = pb.ValidationState_VALID

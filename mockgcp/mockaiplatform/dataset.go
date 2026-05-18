@@ -66,7 +66,7 @@ func (s *datasetService) CreateDataset(ctx context.Context, req *pb.CreateDatase
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Dataset).(*pb.Dataset)
+	obj := proto.CloneOf(req.Dataset)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
@@ -96,7 +96,7 @@ func (s *datasetService) CreateDataset(ctx context.Context, req *pb.CreateDatase
 	opPrefix := name.String()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.Dataset)
+		result := proto.CloneOf(obj)
 		result.CreateTime = nil
 		result.UpdateTime = nil
 		result.Etag = ""

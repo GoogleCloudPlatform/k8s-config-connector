@@ -55,7 +55,7 @@ func (s *UptimeCheckService) GetUptimeCheckConfig(ctx context.Context, req *pb.G
 
 func redactUptimeCheckConfig(obj *pb.UptimeCheckConfig) *pb.UptimeCheckConfig {
 	// Fields containing sensitive information like authentication tokens or contact info are only partially populated on retrieval.
-	redacted := proto.Clone(obj).(*pb.UptimeCheckConfig)
+	redacted := proto.CloneOf(obj)
 	if authInfo := redacted.GetHttpCheck().GetAuthInfo(); authInfo != nil {
 		authInfo.Password = strings.Repeat("*", 6)
 	}
@@ -103,7 +103,7 @@ func (s *UptimeCheckService) CreateUptimeCheckConfig(ctx context.Context, req *p
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.UptimeCheckConfig).(*pb.UptimeCheckConfig)
+	obj := proto.CloneOf(req.UptimeCheckConfig)
 	obj.Name = fqn
 
 	populateDefaultsForUptimeCheckConfig(obj)
@@ -128,7 +128,7 @@ func (s *UptimeCheckService) UpdateUptimeCheckConfig(ctx context.Context, req *p
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.UptimeCheckConfig)
+	updated := proto.CloneOf(existing)
 
 	for _, path := range req.GetUpdateMask().GetPaths() {
 		// TODO: Validate path?

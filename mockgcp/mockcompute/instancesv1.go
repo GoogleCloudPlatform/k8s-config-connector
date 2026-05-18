@@ -59,7 +59,7 @@ func (s *InstancesV1) Insert(ctx context.Context, req *pb.InsertInstanceRequest)
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetInstanceResource()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstanceResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
@@ -118,7 +118,7 @@ func (s *InstancesV1) AttachDisk(ctx context.Context, req *pb.AttachDiskInstance
 		return nil, err
 	}
 
-	attachedDisk := proto.Clone(req.GetAttachedDiskResource()).(*pb.AttachedDisk)
+	attachedDisk := proto.CloneOf(req.GetAttachedDiskResource())
 	attachedDisk.Kind = PtrTo("compute#attachedDisk")
 	attachedDisk.Index = PtrTo(int32(len(obj.Disks)))
 

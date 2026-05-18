@@ -76,7 +76,7 @@ func (s *BillingV1) UpdateProjectBillingInfo(ctx context.Context, req *pb.Update
 
 	fqn := projectName.String() + "/billingInfo"
 
-	obj := proto.Clone(req.GetProjectBillingInfo()).(*pb.ProjectBillingInfo)
+	obj := proto.CloneOf(req.GetProjectBillingInfo())
 	obj.BillingAccountName = billingAccountName.String()
 	obj.Name = fqn
 	obj.BillingEnabled = true

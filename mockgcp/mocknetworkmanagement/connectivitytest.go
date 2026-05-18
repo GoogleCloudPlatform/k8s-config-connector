@@ -76,7 +76,7 @@ func (s *reachabilityService) CreateConnectivityTest(ctx context.Context, req *p
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Resource).(*pb.ConnectivityTest)
+	obj := proto.CloneOf(req.Resource)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
