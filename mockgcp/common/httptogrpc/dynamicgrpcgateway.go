@@ -15,6 +15,7 @@
 package httptogrpc
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -26,6 +27,7 @@ import (
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -49,8 +51,11 @@ type grpcMux struct {
 	// services are the gRPC services registered with the mux
 	services []*grpcService
 
-	// overrideHeaders allows changing headers before they are sent
-	overrideHeaders func(response http.ResponseWriter)
+	// RewriteHeaders allows changing headers before they are sent.
+	RewriteHeaders func(ctx context.Context, response http.ResponseWriter, payload proto.Message)
+
+	// RewriteError allows customizing the error response.
+	RewriteError func(ctx context.Context, error *HTTPError)
 }
 
 var _ Mux = (*grpcMux)(nil)
@@ -61,8 +66,11 @@ func NewGRPCMux(conn *grpc.ClientConn) (*grpcMux, error) {
 }
 
 // OverrideHeaders allows changing headers before they are sent.
+// Deprecated: use RewriteHeaders instead.
 func (m *grpcMux) OverrideHeaders(headers func(response http.ResponseWriter)) {
-	m.overrideHeaders = headers
+	m.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+		headers(response)
+	}
 }
 
 // grpcMethods holds state for a single gRPC method.
@@ -183,9 +191,12 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 	}
 	var responseOptions ResponseOptions
 
+	var headerMD metadata.MD
+	var trailerMD metadata.MD
+
 	// Build the input arguments for the gRPC method call
 	var inArgs []reflect.Value
-	for i := range method.goMethodType.Type.NumIn() {
+	for i := 0; i < method.goMethodType.Type.NumIn(); i++ {
 		if i == 0 {
 			// Skip receiver
 			continue
@@ -207,8 +218,10 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 			inArgs = append(inArgs, reflect.ValueOf(ctx))
 
 		} else if inTypeName == "[]google.golang.org/grpc.CallOption" {
-			// Do we need to pass any CallOptions?
-			var callOptions []grpc.CallOption
+			callOptions := []grpc.CallOption{
+				grpc.Header(&headerMD),
+				grpc.Trailer(&trailerMD),
+			}
 			if method.goMethodType.Type.IsVariadic() {
 				for _, callOption := range callOptions {
 					inArgs = append(inArgs, reflect.ValueOf(callOption))
@@ -292,6 +305,9 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 	if len(out) != 2 {
 		klog.Fatalf("output format not handled, expected two output parameters")
 	}
+
+	call.headerMD = headerMD
+	call.trailerMD = trailerMD
 
 	// Check if the gRPC method returned an error
 	if !out[1].IsNil() {

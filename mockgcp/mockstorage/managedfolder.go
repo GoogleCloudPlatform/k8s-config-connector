@@ -33,7 +33,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -55,7 +55,7 @@ func (s *managedFolders) GetManagedFolder(ctx context.Context, req *pb.GetManage
 		return nil, err
 	}
 
-	httpmux.SetExpiresHeader(ctx, time.Now())
+	httptogrpc.SetExpiresHeader(ctx, time.Now())
 
 	return obj, nil
 }
@@ -76,7 +76,7 @@ func (s *managedFolders) ListManagedFolders(ctx context.Context, req *pb.ListMan
 		return nil, err
 	}
 
-	httpmux.SetExpiresHeader(ctx, time.Now())
+	httptogrpc.SetExpiresHeader(ctx, time.Now())
 	return response, nil
 }
 
@@ -135,7 +135,7 @@ func (s *managedFolders) DeleteManagedFolder(ctx context.Context, req *pb.Delete
 		return nil, err
 	}
 
-	httpmux.SetStatusCode(ctx, http.StatusNoContent)
+	httptogrpc.SetStatusCode(ctx, http.StatusNoContent)
 
 	return &emptypb.Empty{}, nil
 }

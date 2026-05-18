@@ -27,11 +27,11 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/golang/protobuf/ptypes/empty"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type buckets struct {
@@ -71,7 +71,7 @@ func (s *buckets) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.
 		return nil, status.Errorf(codes.InvalidArgument, "invalid projection: %s", projection)
 	}
 
-	httpmux.SetExpiresHeader(ctx, time.Now())
+	httptogrpc.SetExpiresHeader(ctx, time.Now())
 
 	return ret, nil
 }
@@ -100,7 +100,7 @@ func (s *buckets) ListBuckets(ctx context.Context, req *pb.ListBucketsRequest) (
 		return nil, err
 	}
 
-	httpmux.SetExpiresHeader(ctx, time.Now())
+	httptogrpc.SetExpiresHeader(ctx, time.Now())
 
 	return &pb.Buckets{
 		Items:         buckets,
@@ -332,7 +332,7 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 	return obj, nil
 }
 
-func (s *buckets) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest) (*empty.Empty, error) {
+func (s *buckets) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest) (*emptypb.Empty, error) {
 	name, err := s.parseBucketName("buckets/" + req.GetName())
 	if err != nil {
 		return nil, err
@@ -344,9 +344,9 @@ func (s *buckets) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest)
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
-	httpmux.SetStatusCode(ctx, http.StatusNoContent)
+	httptogrpc.SetStatusCode(ctx, http.StatusNoContent)
 
-	return &empty.Empty{}, nil
+	return &emptypb.Empty{}, nil
 }
 
 type bucketName struct {

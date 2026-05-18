@@ -17,6 +17,7 @@ package mockstorage
 import (
 	"context"
 	"net/http"
+	"fmt"
 	"strings"
 
 	"google.golang.org/grpc"
@@ -26,12 +27,11 @@ import (
 	grpcpb "cloud.google.com/go/storage/control/apiv2/controlpb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
 
 func init() {
@@ -69,23 +69,23 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{
-		UnescapingMode: runtime.UnescapingModeAllExceptReserved,
-	},
-		pb.RegisterBucketsServerHandler,
-		pb.RegisterObjectsServerHandler,
-		pb.RegisterNotificationsServerHandler,
-		pb.RegisterFoldersServerHandler,
-		pb.RegisterManagedFoldersServerHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
+	grpcMux.AddService(pb.NewBucketsServerClient(conn))
+	grpcMux.AddService(pb.NewObjectsServerClient(conn))
+	grpcMux.AddService(pb.NewNotificationsServerClient(conn))
+	grpcMux.AddService(pb.NewFoldersServerClient(conn))
+	grpcMux.AddService(pb.NewManagedFoldersServerClient(conn))
+	grpcMux.AddService(grpcpb.NewStorageControlClient(conn))
+
+	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
 	// GCS has a different set of headers from most other APIs
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-		expires, found := httpmux.GetExpiresHeader(ctx)
+	grpcMux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+		expires, found := httptogrpc.GetExpiresHeader(ctx)
 		if found {
 			response.Header().Set("Cache-Control", "private, max-age=0, must-revalidate, no-transform")
 			response.Header().Set("Expires", expires)
@@ -106,7 +106,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		response.Header().Del("X-Xss-Protection")
 
 		// set http status code
-		if code, found := httpmux.GetStatusCode(ctx); found {
+		if code, found := httptogrpc.GetStatusCode(ctx); found {
 			delete(response.Header(), "Grpc-Metadata-X-Http-Code")
 			response.WriteHeader(code)
 			if code == 204 {
@@ -118,12 +118,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 	}
 
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+	grpcMux.RewriteError = func(ctx context.Context, error *httptogrpc.HTTPError) {
 		if error.Code == http.StatusNotFound {
 			if strings.HasPrefix(error.Message, "bucket") {
 				error.Status = ""
 				error.Message = "The specified bucket does not exist."
-				error.Errors = []httpmux.ErrorResponseDetails{
+				error.Errors = []httptogrpc.HTTPErrorDetails{
 					{
 						Domain:  "global",
 						Reason:  "notFound",
@@ -135,5 +135,5 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 	}
 
-	return httpmux.FilterBodyOn204(mux)
+	return grpcMux, nil
 }

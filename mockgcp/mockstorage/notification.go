@@ -20,10 +20,10 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
-	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type notifications struct {
@@ -63,14 +63,14 @@ func (n *notifications) InsertNotification(ctx context.Context, req *pb.InsertNo
 	return obj, nil
 }
 
-func (n *notifications) DeleteNotification(ctx context.Context, req *pb.DeleteNotificationRequest) (*empty.Empty, error) {
+func (n *notifications) DeleteNotification(ctx context.Context, req *pb.DeleteNotificationRequest) (*emptypb.Empty, error) {
 	fqn := fullyQualifiedName(req.GetBucket(), ValueOf(req.Name))
 	deletedObj := &pb.Notification{}
 	if err := n.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
-	httpmux.SetStatusCode(ctx, http.StatusNoContent)
-	return &empty.Empty{}, nil
+	httptogrpc.SetStatusCode(ctx, http.StatusNoContent)
+	return &emptypb.Empty{}, nil
 }
 
 func fullyQualifiedName(bucket, notification string) string {
