@@ -24,6 +24,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
@@ -32,7 +34,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -175,30 +176,15 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	desiredPb.Name = direct.LazyPtr(a.id.Reservation)
 
-	report := &structuredreporting.Diff{
-		Object: updateOp.GetUnstructured(),
+	// Handle output-only fields from GCP
+	a.assignGCPDefaults(desiredPb, a.actual)
+
+	paths, report, err := common.CompareProtoMessageStructuredDiff(desiredPb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
 
-	// Check for immutable field changes during resource acquisition (not guaranteed by KCC webhook)
-	if desiredPb.GetDescription() != a.actual.GetDescription() {
-		return fmt.Errorf("attempting to update immutable field 'description' for Compute Reservation %q", a.id)
-	}
-	if desiredPb.GetSpecificReservationRequired() != a.actual.GetSpecificReservationRequired() {
-		return fmt.Errorf("attempting to update immutable field 'specificReservationRequired' for Compute Reservation %q", a.id)
-	}
-	if !proto.Equal(desiredPb.GetSpecificReservation().GetInstanceProperties(), a.actual.GetSpecificReservation().GetInstanceProperties()) {
-		return fmt.Errorf("attempting to update immutable field 'specificReservation.instanceProperties' for Compute Reservation %q", a.id)
-	}
-	// spec.zone's immutability is handled in reservation_identity.go
-
-	// spec.specificReservation.count is the only mutable field
-	desiredCount := desiredPb.GetSpecificReservation().GetCount()
-	actualCount := a.actual.GetSpecificReservation().GetCount()
-	if desiredCount != actualCount {
-		report.AddField("specific_reservation.count", actualCount, desiredCount)
-	}
-
-	if len(report.Fields) == 0 {
+	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		if a.desired.Status.ExternalRef == nil {
 			status := ComputeReservationStatus_v1beta1_FromProto(mapCtx, a.actual)
@@ -208,6 +194,13 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return nil
 	}
 
+	for path := range paths {
+		if path != "specific_reservation.count" {
+			return fmt.Errorf("field %q is immutable", path)
+		}
+	}
+
+	report.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, report)
 
 	updateOp.RecordUpdatingEvent()
@@ -312,4 +305,29 @@ func (a *ReservationAdapter) get(ctx context.Context) (*computepb.Reservation, e
 		return nil, fmt.Errorf("getting ComputeReservation %s: %w", a.id, err)
 	}
 	return resource, nil
+}
+
+func (a *ReservationAdapter) assignGCPDefaults(desired *computepb.Reservation, actual *computepb.Reservation) {
+	// Output-only fields
+	desired.SelfLink = actual.SelfLink
+	desired.CreationTimestamp = actual.CreationTimestamp
+	desired.Status = actual.Status
+	desired.Kind = actual.Kind
+	desired.Id = actual.Id
+	desired.Commitment = actual.Commitment
+	desired.ResourceStatus = actual.ResourceStatus
+
+	// Convert Zone to match GCP API, the immutability is handled in reservation_identity.go
+	desired.Zone = actual.Zone
+
+	// GCP default fields if not specified by user
+	if desired.ReservationSharingPolicy == nil {
+		desired.ReservationSharingPolicy = actual.ReservationSharingPolicy
+	}
+	if desired.ShareSettings == nil {
+		desired.ShareSettings = actual.ShareSettings
+	}
+	if desired.SpecificReservation != nil && desired.SpecificReservation.AssuredCount == nil {
+		desired.SpecificReservation.AssuredCount = actual.SpecificReservation.AssuredCount
+	}
 }
