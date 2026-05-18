@@ -75,7 +75,7 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	fqn := name.String()
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstance())
 	// Value of ReplicaComputeCapacity during creation is determined by raw
 	// input so it needs to be processed first.
 	s.populateReplicaComputeCapacityForSpannerInstance(obj)
@@ -93,7 +93,7 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	}
 	obj.Name = fqn
 
-	cloneObj := proto.Clone(obj).(*pb.Instance)
+	cloneObj := proto.CloneOf(obj)
 
 	obj.CreateTime = now
 	obj.UpdateTime = now
@@ -110,7 +110,7 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 		metadata.Instance.CreateTime = now
 		metadata.Instance.UpdateTime = now
 		metadata.Instance.Name = fqn
-		retObj := proto.Clone(obj).(*pb.Instance)
+		retObj := proto.CloneOf(obj)
 		retObj.Name = fqn
 		return retObj, nil
 	})
@@ -260,7 +260,7 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 	// Value of ReplicaComputeCapacity during update is determined by processed
 	// input so it needs to be handled after defaults are populated.
 	s.populateReplicaComputeCapacityForSpannerInstance(obj)
-	cloneObj := proto.Clone(obj).(*pb.Instance)
+	cloneObj := proto.CloneOf(obj)
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -272,7 +272,7 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 		metadata.ExpectedFulfillmentPeriod = pb.FulfillmentPeriod_FULFILLMENT_PERIOD_NORMAL
 		metadata.EndTime = now
 		metadata.Instance.UpdateTime = now
-		retObj := proto.Clone(obj).(*pb.Instance)
+		retObj := proto.CloneOf(obj)
 		return retObj, nil
 	})
 }

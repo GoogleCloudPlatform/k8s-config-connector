@@ -62,7 +62,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.NodePool).(*pb.NodePool)
+	obj := proto.CloneOf(req.NodePool)
 
 	obj.SelfLink = buildSelfLink(ctx, fqn)
 
@@ -343,7 +343,7 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	klog.Infof("UpdateNodePool %v", prototext.Format(req))
 
-	update := proto.Clone(req).(*pb.UpdateNodePoolRequest)
+	update := proto.CloneOf(req)
 	update.Name = ""
 
 	if update.Taints != nil {

@@ -57,7 +57,7 @@ func (s *ReservationV1) CreateReservation(ctx context.Context, req *pb.CreateRes
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.Reservation).(*pb.Reservation)
+	obj := proto.CloneOf(req.Reservation)
 	obj.Name = fqn
 	obj.CreationTime = &timestamppb.Timestamp{
 		Seconds: now.Unix(),
@@ -268,7 +268,7 @@ func (s *ReservationV1) CreateAssignment(ctx context.Context, req *pb.CreateAssi
 		name = req.Parent + "/assignments/" + req.AssignmentId
 	}
 
-	obj := proto.Clone(req.Assignment).(*pb.Assignment)
+	obj := proto.CloneOf(req.Assignment)
 	obj.Name = name
 	obj.State = pb.Assignment_ACTIVE
 

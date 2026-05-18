@@ -76,7 +76,7 @@ func (s *ClusterManagerV1) startLRO(ctx context.Context, project *projects.Proje
 
 	// Clone the operation so that we don't have a race condition
 	// between the callback modifying op and the return value being serialized.
-	ret := proto.Clone(op).(*pb.Operation)
+	ret := proto.CloneOf(op)
 
 	go func() {
 		_, err := callback()

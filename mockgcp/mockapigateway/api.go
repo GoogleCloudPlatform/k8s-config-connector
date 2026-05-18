@@ -65,7 +65,7 @@ func (s *ApiGatewayV1) CreateApi(ctx context.Context, req *pb.CreateApiRequest) 
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetApi()).(*pb.Api)
+	obj := proto.CloneOf(req.GetApi())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

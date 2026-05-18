@@ -79,7 +79,7 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) UpdateQuotaAdjusterSettings(ctx con
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	updated := proto.Clone(existing).(*pb.QuotaAdjusterSettings)
+	updated := proto.CloneOf(existing)
 	updated.UpdateTime = timestamppb.Now()
 	updated.Etag = uuid.New().String()
 

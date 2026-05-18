@@ -150,7 +150,7 @@ func (s *IAMV2PoliciesServer) ListPolicies(ctx context.Context, req *pb.ListPoli
 	if err := s.storage.List(ctx, policyKind, storage.ListOptions{Prefix: prefixToList}, func(objproto proto.Message) error {
 		obj := objproto.(*pb.Policy)
 		// Omit rules in list response as per documentation.
-		policyToList := proto.Clone(obj).(*pb.Policy)
+		policyToList := proto.CloneOf(obj)
 		policyToList.Rules = nil
 		response.Policies = append(response.Policies, policyToList)
 		return nil
@@ -181,7 +181,7 @@ func (s *IAMV2PoliciesServer) CreatePolicy(ctx context.Context, req *pb.CreatePo
 	fqn := name.String()
 
 	now := time.Now()
-	obj := proto.Clone(req.GetPolicy()).(*pb.Policy)
+	obj := proto.CloneOf(req.GetPolicy())
 
 	obj.Name = fqn
 	obj.Uid = uuid.NewString()
@@ -230,7 +230,7 @@ func (s *IAMV2PoliciesServer) UpdatePolicy(ctx context.Context, req *pb.UpdatePo
 		return nil, status.Errorf(codes.Aborted, "etag mismatch for policy %q", fqn)
 	}
 
-	updatedPolicy := proto.Clone(existing).(*pb.Policy)
+	updatedPolicy := proto.CloneOf(existing)
 
 	// Only 'display_name' and 'rules' can be updated.
 	updateRequestPolicy := req.GetPolicy()
@@ -283,7 +283,7 @@ func (s *IAMV2PoliciesServer) DeletePolicy(ctx context.Context, req *pb.DeletePo
 	}
 
 	// The LRO response type is Policy. Return the policy as it was, but mark it as deleted.
-	deletedPolicy := proto.Clone(existing).(*pb.Policy)
+	deletedPolicy := proto.CloneOf(existing)
 	deletedPolicy.DeleteTime = timestamppb.New(now)
 	deletedPolicy.UpdateTime = deletedPolicy.GetDeleteTime()   // Update time is also set to delete time
 	deletedPolicy.Etag = computeIAMV2PolicyEtag(deletedPolicy) // Etag changes upon deletion
@@ -297,7 +297,7 @@ func (s *IAMV2PoliciesServer) DeletePolicy(ctx context.Context, req *pb.DeletePo
 // computeIAMV2PolicyEtag computes a simple etag for a Policy object.
 func computeIAMV2PolicyEtag(obj *pb.Policy) string {
 	// Create a copy and clear output-only or server-set fields that shouldn't affect etag
-	temp := proto.Clone(obj).(*pb.Policy)
+	temp := proto.CloneOf(obj)
 	temp.Name = ""
 	temp.Uid = ""
 	temp.CreateTime = nil

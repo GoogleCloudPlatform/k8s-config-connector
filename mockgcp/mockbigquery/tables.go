@@ -103,7 +103,7 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetTable()).(*pb.Table)
+	obj := proto.CloneOf(req.GetTable())
 
 	datasetServer := &datasetsServer{MockService: s.MockService}
 	datasetName, err := datasetServer.buildDatasetName(req.GetProjectId(), req.GetDatasetId())

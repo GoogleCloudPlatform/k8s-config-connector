@@ -54,7 +54,7 @@ func (s *GlobalHealthCheckV1) Insert(ctx context.Context, req *pb.InsertHealthCh
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetHealthCheckResource()).(*pb.HealthCheck)
+	obj := proto.CloneOf(req.GetHealthCheckResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

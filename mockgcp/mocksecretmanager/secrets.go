@@ -59,7 +59,7 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.Secret).(*pb.Secret)
+	obj := proto.CloneOf(req.Secret)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	if obj.Replication == nil {

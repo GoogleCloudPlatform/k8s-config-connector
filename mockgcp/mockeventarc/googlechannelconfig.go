@@ -74,7 +74,7 @@ func (s *EventarcV1) UpdateGoogleChannelConfig(ctx context.Context, req *pb.Upda
 	if existing.Name == "" {
 		updated.Name = reqName
 	} else {
-		updated = proto.Clone(existing).(*pb.GoogleChannelConfig)
+		updated = proto.CloneOf(existing)
 	}
 
 	if req.GetUpdateMask() == nil || len(req.GetUpdateMask().GetPaths()) == 0 {

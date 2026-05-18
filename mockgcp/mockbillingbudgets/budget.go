@@ -44,7 +44,7 @@ func (s *BudgetServiceServer) CreateBudget(ctx context.Context, req *pb.CreateBu
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetBudget()).(*pb.Budget)
+	obj := proto.CloneOf(req.GetBudget())
 	obj.Name = fqn
 
 	s.populateDefaultsForBudget(obj)

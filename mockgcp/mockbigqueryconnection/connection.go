@@ -75,7 +75,7 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.Connection).(*pb.Connection)
+	obj := proto.CloneOf(req.Connection)
 
 	obj.Name = name.String()
 	obj.CreationTime = now.Unix()

@@ -64,7 +64,7 @@ func (s *VMwareEngineV1) CreatePrivateCloud(ctx context.Context, req *pb.CreateP
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetPrivateCloud()).(*pb.PrivateCloud)
+	obj := proto.CloneOf(req.GetPrivateCloud())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.PrivateCloud_CREATING

@@ -55,7 +55,7 @@ func (s *NetworkServicesServer) CreateMesh(ctx context.Context, req *pb.CreateMe
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Mesh).(*pb.Mesh)
+	obj := proto.CloneOf(req.Mesh)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

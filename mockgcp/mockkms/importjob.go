@@ -83,7 +83,7 @@ func (s *kmsServer) CreateImportJob(ctx context.Context, req *pb.CreateImportJob
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetImportJob()).(*pb.ImportJob)
+	obj := proto.CloneOf(req.GetImportJob())
 	if obj == nil {
 		obj = &pb.ImportJob{}
 	}
@@ -93,7 +93,7 @@ func (s *kmsServer) CreateImportJob(ctx context.Context, req *pb.CreateImportJob
 	obj.ImportMethod = pb.ImportJob_RSA_OAEP_3072_SHA1_AES_256
 	obj.State = pb.ImportJob_PENDING_GENERATION
 
-	result := proto.Clone(obj).(*pb.ImportJob)
+	result := proto.CloneOf(obj)
 
 	obj.GenerateTime = timestamppb.New(now)
 	obj.State = pb.ImportJob_ACTIVE

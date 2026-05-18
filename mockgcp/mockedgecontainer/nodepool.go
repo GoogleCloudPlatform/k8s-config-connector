@@ -47,7 +47,7 @@ func (s *EdgeContainerV1) CreateNodePool(ctx context.Context, req *pb.CreateNode
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.NodePool).(*pb.NodePool)
+	obj := proto.CloneOf(req.NodePool)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
