@@ -22,7 +22,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -130,7 +130,12 @@ func (s *UptimeCheckService) UpdateUptimeCheckConfig(ctx context.Context, req *p
 
 	updated := proto.CloneOf(existing)
 
-	for _, path := range req.GetUpdateMask().GetPaths() {
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		paths = []string{"display_name", "period", "timeout", "content_matchers", "checker_type", "resource_group", "monitored_resource", "http_check", "tcp_check", "selected_regions"}
+	}
+
+	for _, path := range paths {
 		// TODO: Validate path?
 		if err := setField(updated, req.GetUptimeCheckConfig(), path); err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "error setting field %q: %v", path, err)

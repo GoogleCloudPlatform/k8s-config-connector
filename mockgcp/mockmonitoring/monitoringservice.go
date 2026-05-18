@@ -25,7 +25,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"github.com/golang/protobuf/ptypes/empty"
 )
 
@@ -93,7 +93,11 @@ func (s *serviceMonitoringService) UpdateService(ctx context.Context, req *pb.Up
 	}
 
 	updated := proto.CloneOf(existing)
-	for _, path := range req.GetUpdateMask().GetPaths() {
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		paths = []string{"displayName", "telemetry.resourceName", "userLabels"}
+	}
+	for _, path := range paths {
 		switch path {
 		case "displayName":
 			updated.DisplayName = req.GetService().GetDisplayName()
