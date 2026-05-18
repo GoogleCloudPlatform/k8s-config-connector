@@ -21,10 +21,10 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pbcluster "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/cluster/v1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/v1beta1"
+	pbcluster "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
+	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -61,22 +61,16 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterCloudRedisHandler,
-		pbcluster.RegisterCloudRedisClusterHandler,
-		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	grpcMux.AddService(pb.NewCloudRedisClient(conn))
+	grpcMux.AddService(pbcluster.NewCloudRedisClusterClient(conn))
 
-	return mux, nil
+	grpcMux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
+	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
+	return grpcMux, nil
 }
