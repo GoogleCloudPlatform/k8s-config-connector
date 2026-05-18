@@ -159,7 +159,7 @@ func (s *cloudTasks) CreateQueue(ctx context.Context, req *pb.CreateQueueRequest
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Queue).(*pb.Queue)
+	obj := proto.CloneOf(req.Queue)
 	obj.Name = fqn
 	obj.RateLimits = &pb.RateLimits{
 		MaxBurstSize:            100,

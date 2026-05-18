@@ -60,7 +60,7 @@ func (s *resourceRecordSetsService) CreateResourceRecordSet(ctx context.Context,
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.ResourceRecordSet).(*pb.ResourceRecordSet)
+	obj := proto.CloneOf(req.ResourceRecordSet)
 	obj.Kind = PtrTo("dns#resourceRecordSet")
 
 	if obj.SignatureRrdatas == nil {
@@ -89,7 +89,7 @@ func (s *resourceRecordSetsService) PatchResourceRecordSet(ctx context.Context, 
 		return nil, err
 	}
 
-	updated := proto.Clone(&existing).(*pb.ResourceRecordSet)
+	updated := proto.CloneOf(&existing)
 	if req.GetResourceRecordSet().GetTtl() != 0 {
 		updated.Ttl = req.GetResourceRecordSet().Ttl
 	}

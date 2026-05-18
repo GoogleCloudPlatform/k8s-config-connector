@@ -49,7 +49,7 @@ func (s *EdgenetworkV1) CreateSubnet(ctx context.Context, req *pb.CreateSubnetRe
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Subnet).(*pb.Subnet)
+	obj := proto.CloneOf(req.Subnet)
 	obj.Name = fqn
 
 	// Network reference must exist

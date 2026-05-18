@@ -60,7 +60,7 @@ func (s *StorageControlService) CreateAnywhereCache(ctx context.Context, req *pb
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetAnywhereCache()).(*pb.AnywhereCache)
+	obj := proto.CloneOf(req.GetAnywhereCache())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -70,7 +70,7 @@ func (s *StorageControlService) CreateAnywhereCache(ctx context.Context, req *pb
 		return nil, err
 	}
 	op, err := s.operations.StartLRO(ctx, fqn, &pb.CreateAnywhereCacheMetadata{AnywhereCacheId: &zone}, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.AnywhereCache)
+		result := proto.CloneOf(obj)
 		result.State = anywhereCacheStateRunning
 		if err := s.storage.Update(ctx, fqn, result); err != nil {
 			return nil, err
@@ -109,7 +109,7 @@ func (s *StorageControlService) UpdateAnywhereCache(ctx context.Context, req *pb
 	}
 
 	op, err := s.operations.StartLRO(ctx, fqn, &pb.AnywhereCache{}, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.AnywhereCache)
+		result := proto.CloneOf(obj)
 		if err := s.storage.Update(ctx, fqn, result); err != nil {
 			return nil, err
 		}

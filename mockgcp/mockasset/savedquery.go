@@ -87,7 +87,7 @@ func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSaved
 		}
 	}
 
-	obj := proto.Clone(req.GetSavedQuery()).(*pb.SavedQuery)
+	obj := proto.CloneOf(req.GetSavedQuery())
 	obj.Name = reqName
 	obj.CreateTime = timestamppb.New(now)
 	obj.LastUpdateTime = timestamppb.New(now)

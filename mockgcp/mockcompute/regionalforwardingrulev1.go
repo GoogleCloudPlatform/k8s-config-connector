@@ -62,7 +62,7 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetForwardingRuleResource()).(*pb.ForwardingRule)
+	obj := proto.CloneOf(req.GetForwardingRuleResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

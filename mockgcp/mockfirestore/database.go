@@ -67,7 +67,7 @@ func (s *firestoreAdminServer) CreateDatabase(ctx context.Context, req *pb.Creat
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.Database).(*pb.Database)
+	obj := proto.CloneOf(req.Database)
 	populateDefaultsForDatabase(obj)
 	t := timestamppb.New(time.Now())
 	obj.CreateTime = t
@@ -84,7 +84,7 @@ func (s *firestoreAdminServer) CreateDatabase(ctx context.Context, req *pb.Creat
 	metadata := &pb.CreateDatabaseMetadata{}
 	lroPrefix := fqn
 	op, err := s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Database)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 	if err != nil {
@@ -148,7 +148,7 @@ func (s *firestoreAdminServer) UpdateDatabase(ctx context.Context, req *pb.Updat
 
 	metadata := &pb.UpdateDatabaseMetadata{}
 	op, err := s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Database)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 	if err != nil {

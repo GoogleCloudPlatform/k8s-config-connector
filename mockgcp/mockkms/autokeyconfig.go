@@ -64,7 +64,7 @@ func (r *autokeyAdminServer) UpdateAutokeyConfig(ctx context.Context, req *pb.Up
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetAutokeyConfig()).(*pb.AutokeyConfig)
+	obj := proto.CloneOf(req.GetAutokeyConfig())
 	if obj == nil {
 		obj = &pb.AutokeyConfig{}
 	}

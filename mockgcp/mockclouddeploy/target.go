@@ -70,7 +70,7 @@ func (s *cloudDeploy) CreateTarget(ctx context.Context, req *pb.CreateTargetRequ
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.Target).(*pb.Target)
+	obj := proto.CloneOf(req.Target)
 	obj.Name = fqn
 	obj.TargetId = name.Target
 
@@ -116,7 +116,7 @@ func (s *cloudDeploy) UpdateTarget(ctx context.Context, req *pb.UpdateTargetRequ
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound && req.GetAllowMissing() {
 			exists = false
-			obj = proto.Clone(req.Target).(*pb.Target)
+			obj = proto.CloneOf(req.Target)
 			obj.Name = fqn
 			obj.TargetId = name.Target
 			obj.Uid = uuid.NewString()

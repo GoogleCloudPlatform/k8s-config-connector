@@ -96,7 +96,7 @@ func (s *AlertPolicyService) CreateAlertPolicy(ctx context.Context, req *pb.Crea
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.AlertPolicy).(*pb.AlertPolicy)
+	obj := proto.CloneOf(req.AlertPolicy)
 	obj.CreationRecord = &pb.MutationRecord{
 		MutatedBy:  "user@example.com",
 		MutateTime: timestamppb.New(now),
@@ -133,7 +133,7 @@ func (s *AlertPolicyService) UpdateAlertPolicy(ctx context.Context, req *pb.Upda
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.AlertPolicy)
+	updated := proto.CloneOf(existing)
 	for _, path := range req.GetUpdateMask().GetPaths() {
 		switch path {
 		case "displayName", "display_name":

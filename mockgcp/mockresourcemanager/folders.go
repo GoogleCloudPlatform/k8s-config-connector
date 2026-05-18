@@ -85,7 +85,7 @@ func (s *Folders) CreateFolder(ctx context.Context, req *pb.CreateFolderRequest)
 	fqn := name.String()
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.Folder).(*pb.Folder)
+	obj := proto.CloneOf(req.Folder)
 
 	obj.CreateTime = now
 	obj.UpdateTime = now

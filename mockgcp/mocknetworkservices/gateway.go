@@ -89,7 +89,7 @@ func (s *NetworkServicesServer) CreateGateway(ctx context.Context, req *pb.Creat
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Gateway).(*pb.Gateway)
+	obj := proto.CloneOf(req.Gateway)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -108,7 +108,7 @@ func (s *NetworkServicesServer) CreateGateway(ctx context.Context, req *pb.Creat
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(obj).(*pb.Gateway)
+		result := proto.CloneOf(obj)
 		result.SelfLink = "" // Not populated here
 		return result, nil
 	})
@@ -176,7 +176,7 @@ func (s *NetworkServicesServer) UpdateGateway(ctx context.Context, req *pb.Updat
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 
-		result := proto.Clone(obj).(*pb.Gateway)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }

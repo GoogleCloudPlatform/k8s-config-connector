@@ -61,7 +61,7 @@ func (s *secureSourceManagerServer) CreateRepository(ctx context.Context, req *p
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Repository).(*pb.Repository)
+	obj := proto.CloneOf(req.Repository)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)

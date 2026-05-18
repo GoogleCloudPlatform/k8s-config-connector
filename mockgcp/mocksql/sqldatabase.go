@@ -41,7 +41,7 @@ func (s *sqlDatabaseServer) Insert(ctx context.Context, req *pb.SqlDatabasesInse
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetBody()).(*pb.Database)
+	obj := proto.CloneOf(req.GetBody())
 	obj.Name = name.DatabaseName
 	obj.Project = name.Project.ID
 	obj.Kind = "sql#database"

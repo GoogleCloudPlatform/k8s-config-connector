@@ -55,7 +55,7 @@ func (s *DocumentProcessorV1) CreateProcessor(ctx context.Context, req *pb.Creat
 
 	fqn := name.String()
 
-	processorVersion := proto.Clone(req.GetProcessor()).(*pb.ProcessorVersion)
+	processorVersion := proto.CloneOf(req.GetProcessor())
 	processorVersion.Name = fqn
 	now := time.Now()
 	req.Processor.CreateTime = timestamppb.New(now)

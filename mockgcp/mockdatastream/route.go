@@ -65,7 +65,7 @@ func (s *DatastreamV1) CreateRoute(ctx context.Context, req *pb.CreateRouteReque
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetRoute()).(*pb.Route)
+	obj := proto.CloneOf(req.GetRoute())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

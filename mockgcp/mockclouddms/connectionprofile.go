@@ -65,7 +65,7 @@ func (s *DataMigrationServiceV1) CreateConnectionProfile(ctx context.Context, re
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetConnectionProfile()).(*pb.ConnectionProfile)
+	obj := proto.CloneOf(req.GetConnectionProfile())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -103,7 +103,7 @@ func (s *DataMigrationServiceV1) UpdateConnectionProfile(ctx context.Context, re
 		return nil, err
 	}
 	now := time.Now()
-	updated := proto.Clone(existing).(*pb.ConnectionProfile)
+	updated := proto.CloneOf(existing)
 
 	updated.UpdateTime = timestamppb.New(now)
 	updated.DisplayName = req.GetConnectionProfile().GetDisplayName()
