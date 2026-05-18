@@ -46,7 +46,7 @@ func (s *vpcAccessService) CreateConnector(ctx context.Context, req *pb.CreateCo
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetConnector()).(*pb.Connector)
+	obj := proto.CloneOf(req.GetConnector())
 	obj.Name = fqn
 
 	if obj.MinInstances == 0 {

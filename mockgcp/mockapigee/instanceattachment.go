@@ -79,7 +79,7 @@ func (s *instancesAttachmentsServer) GetOrganizationsInstancesAttachment(ctx con
 }
 
 func (s *instancesAttachmentsServer) CreateOrganizationsInstancesAttachment(ctx context.Context, req *pb.CreateOrganizationsInstancesAttachmentRequest) (*longrunningpb.Operation, error) {
-	obj := proto.Clone(req.OrganizationsInstancesAttachment).(*pb.GoogleCloudApigeeV1InstanceAttachment)
+	obj := proto.CloneOf(req.OrganizationsInstancesAttachment)
 	populateDefaultsForOrganizationsInstancesAttachment(obj)
 
 	reqName := req.Parent + "/attachments/" + obj.Name
@@ -111,7 +111,7 @@ func (s *instancesAttachmentsServer) CreateOrganizationsInstancesAttachment(ctx 
 			PercentDone: 100,
 		}
 		metadata.State = "FINISHED"
-		result := proto.Clone(obj).(*pb.GoogleCloudApigeeV1InstanceAttachment)
+		result := proto.CloneOf(obj)
 		populateOutputsForOrganizationsInstancesAttachment(result)
 		s.storage.Update(ctx, fqn, result)
 		return result, nil

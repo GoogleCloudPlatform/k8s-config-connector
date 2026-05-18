@@ -56,7 +56,7 @@ func (s *PubSubLiteV1) CreateTopic(ctx context.Context, req *pb.CreateTopicReque
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Topic).(*pb.Topic)
+	obj := proto.CloneOf(req.Topic)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

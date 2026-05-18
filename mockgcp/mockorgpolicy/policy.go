@@ -57,7 +57,7 @@ func (s *orgPolicyV2) CreatePolicy(ctx context.Context, req *pb.CreatePolicyRequ
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Policy).(*pb.Policy)
+	obj := proto.CloneOf(req.Policy)
 	obj.Name = fqn
 	if obj.Spec != nil {
 		obj.Spec.UpdateTime = timestamppb.New(time.Now())
@@ -90,7 +90,7 @@ func (s *orgPolicyV2) UpdatePolicy(ctx context.Context, req *pb.UpdatePolicyRequ
 	}
 
 	// use the new object from update request
-	obj = proto.Clone(req.GetPolicy()).(*pb.Policy)
+	obj = proto.CloneOf(req.GetPolicy())
 	if obj.Spec != nil {
 		obj.Spec.UpdateTime = timestamppb.New(time.Now())
 		obj.Spec.Etag = fields.ComputeWeakEtag(obj.Spec)

@@ -71,7 +71,7 @@ func (r *autokeyServer) CreateKeyHandle(ctx context.Context, req *pb.CreateKeyHa
 	}
 	fqn := keyHandleName.String()
 
-	obj := proto.Clone(req.GetKeyHandle()).(*pb.KeyHandle)
+	obj := proto.CloneOf(req.GetKeyHandle())
 	if obj == nil {
 		obj = &pb.KeyHandle{}
 	}

@@ -79,7 +79,7 @@ func (s *APIKeysV2) CreateKey(ctx context.Context, req *pb.CreateKeyRequest) (*l
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Key).(*pb.Key)
+	obj := proto.CloneOf(req.Key)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

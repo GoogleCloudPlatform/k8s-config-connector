@@ -49,7 +49,7 @@ func (s *autoscalingPolicyServiceServer) CreateAutoscalingPolicy(ctx context.Con
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetPolicy()).(*pb.AutoscalingPolicy)
+	obj := proto.CloneOf(req.GetPolicy())
 	obj.Name = fqn
 	s.populateDefaultsForAutoscalingPolicy(obj)
 

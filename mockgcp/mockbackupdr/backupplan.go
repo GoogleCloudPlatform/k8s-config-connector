@@ -63,7 +63,7 @@ func (s *BackupDRV1) CreateBackupPlan(ctx context.Context, req *pb.CreateBackupP
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.GetBackupPlan()).(*pb.BackupPlan)
+	obj := proto.CloneOf(req.GetBackupPlan())
 	obj.Name = fqn
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)

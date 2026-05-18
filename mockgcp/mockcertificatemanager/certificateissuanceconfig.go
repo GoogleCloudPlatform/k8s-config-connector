@@ -56,7 +56,7 @@ func (s *CertificateManagerV1) CreateCertificateIssuanceConfig(ctx context.Conte
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.CertificateIssuanceConfig).(*pb.CertificateIssuanceConfig)
+	obj := proto.CloneOf(req.CertificateIssuanceConfig)
 	obj.Name = fqn
 
 	// Normalize CAPool name to use project number
@@ -85,7 +85,7 @@ func (s *CertificateManagerV1) CreateCertificateIssuanceConfig(ctx context.Conte
 
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		result := proto.Clone(obj).(*pb.CertificateIssuanceConfig)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }

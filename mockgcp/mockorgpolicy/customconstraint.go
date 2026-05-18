@@ -61,7 +61,7 @@ func (s *orgPolicyV2) CreateCustomConstraint(ctx context.Context, req *pb.Create
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.CustomConstraint).(*pb.CustomConstraint)
+	obj := proto.CloneOf(req.CustomConstraint)
 	obj.Name = fqn
 	obj.UpdateTime = timestamppb.New(time.Now())
 
@@ -86,7 +86,7 @@ func (s *orgPolicyV2) UpdateCustomConstraint(ctx context.Context, req *pb.Update
 	}
 
 	// use the new object from update request
-	obj = proto.Clone(req.GetCustomConstraint()).(*pb.CustomConstraint)
+	obj = proto.CloneOf(req.GetCustomConstraint())
 	obj.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

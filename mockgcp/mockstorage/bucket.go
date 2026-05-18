@@ -52,7 +52,7 @@ func (s *buckets) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	ret := proto.Clone(obj).(*pb.Bucket)
+	ret := proto.CloneOf(obj)
 
 	projection := req.GetProjection()
 	if projection == "" {
@@ -126,7 +126,7 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	}
 	now := timestamppb.Now()
 
-	obj := proto.Clone(req.GetBucket()).(*pb.Bucket)
+	obj := proto.CloneOf(req.GetBucket())
 	obj.Id = PtrTo(name.Bucket)
 	obj.Kind = PtrTo("storage#bucket")
 	obj.Name = PtrTo(name.Bucket)

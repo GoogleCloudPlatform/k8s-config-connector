@@ -150,7 +150,7 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Instance).(*pb.Instance)
+	obj := proto.CloneOf(req.Instance)
 	obj.Name = fqn
 	log.Printf("vkanishk: Creating instance with name: %s", fqn)
 	setInstanceFields(name, obj)
@@ -161,7 +161,7 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	metadata := constructOperationMetadata(fqn, "create")
 	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Instance)
+		result := proto.CloneOf(obj)
 		metadata.EndTime = timestamppb.Now()
 		return result, nil
 	})
@@ -176,7 +176,7 @@ func (s *AlloyDBAdminV1) CreateSecondaryInstance(ctx context.Context, req *pb.Cr
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Instance).(*pb.Instance)
+	obj := proto.CloneOf(req.Instance)
 	obj.Name = fqn
 	setInstanceFields(name, obj)
 
@@ -186,7 +186,7 @@ func (s *AlloyDBAdminV1) CreateSecondaryInstance(ctx context.Context, req *pb.Cr
 
 	metadata := constructOperationMetadata(fqn, "createsecondary")
 	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Instance)
+		result := proto.CloneOf(obj)
 		metadata.EndTime = timestamppb.Now()
 		return result, nil
 	})
@@ -257,7 +257,7 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	metadata := constructOperationMetadata(fqn, "update")
 	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
-		result := proto.Clone(obj).(*pb.Instance)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }

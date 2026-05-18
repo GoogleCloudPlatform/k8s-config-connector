@@ -158,7 +158,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetSubnetworkResource()).(*pb.Subnetwork)
+	obj := proto.CloneOf(req.GetSubnetworkResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

@@ -66,7 +66,7 @@ func (s *DataplexService) CreateZone(ctx context.Context, req *pb.CreateZoneRequ
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Zone).(*pb.Zone)
+	obj := proto.CloneOf(req.Zone)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())

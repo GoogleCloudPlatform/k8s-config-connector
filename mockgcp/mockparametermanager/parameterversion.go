@@ -46,7 +46,7 @@ func (s *ParameterManagerV1) CreateParameterVersion(ctx context.Context, req *pb
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.ParameterVersion).(*pb.ParameterVersion)
+	obj := proto.CloneOf(req.ParameterVersion)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	obj.UpdateTime = timestamppb.Now()
@@ -114,7 +114,7 @@ func (s *ParameterManagerV1) UpdateParameterVersion(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.ParameterVersion)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 	updated.UpdateTime = timestamppb.Now()
 

@@ -87,7 +87,7 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstance())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 

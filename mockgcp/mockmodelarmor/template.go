@@ -65,7 +65,7 @@ func (s *ModelArmorV1) CreateTemplate(ctx context.Context, req *pb.CreateTemplat
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Template).(*pb.Template)
+	obj := proto.CloneOf(req.Template)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

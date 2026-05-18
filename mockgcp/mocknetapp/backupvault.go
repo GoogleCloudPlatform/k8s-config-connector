@@ -61,7 +61,7 @@ func (s *backupVaultsService) CreateBackupVault(ctx context.Context, req *pb.Cre
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetBackupVault()).(*pb.BackupVault)
+	obj := proto.CloneOf(req.GetBackupVault())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.BackupVault_READY
