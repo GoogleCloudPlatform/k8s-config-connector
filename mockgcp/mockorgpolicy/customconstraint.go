@@ -22,10 +22,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/orgpolicy/v2"
-	"github.com/golang/protobuf/ptypes/empty"
+	pb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
 )
 
 type orgPolicyV2 struct {
@@ -96,7 +96,7 @@ func (s *orgPolicyV2) UpdateCustomConstraint(ctx context.Context, req *pb.Update
 	return obj, nil
 }
 
-func (s *orgPolicyV2) DeleteCustomConstraint(ctx context.Context, req *pb.DeleteCustomConstraintRequest) (*empty.Empty, error) {
+func (s *orgPolicyV2) DeleteCustomConstraint(ctx context.Context, req *pb.DeleteCustomConstraintRequest) (*emptypb.Empty, error) {
 	name, err := s.parseCustomConstraintName(req.Name)
 	if err != nil {
 		return nil, err
@@ -109,7 +109,7 @@ func (s *orgPolicyV2) DeleteCustomConstraint(ctx context.Context, req *pb.Delete
 		return nil, err
 	}
 
-	return &empty.Empty{}, nil
+	return &emptypb.Empty{}, nil
 }
 
 type CustomConstraintName struct {
