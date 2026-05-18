@@ -24,8 +24,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/privilegedaccessmanager/apiv1/privilegedaccessmanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/privilegedaccessmanager/v1"
 )
 
 type PrivilegedAccessManager struct {
