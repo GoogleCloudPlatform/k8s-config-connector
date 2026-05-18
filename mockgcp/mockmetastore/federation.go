@@ -65,7 +65,7 @@ func (s *DataprocMetastoreFederationV1) CreateFederation(ctx context.Context, re
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Federation).(*pb.Federation)
+	obj := proto.CloneOf(req.Federation)
 
 	obj.Name = fqn
 

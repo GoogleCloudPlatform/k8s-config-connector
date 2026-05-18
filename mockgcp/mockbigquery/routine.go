@@ -71,7 +71,7 @@ func (s *routinesServer) InsertRoutine(ctx context.Context, req *pb.InsertRoutin
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetRoutine()).(*pb.Routine)
+	obj := proto.CloneOf(req.GetRoutine())
 
 	if obj.RoutineReference == nil {
 		obj.RoutineReference = &pb.RoutineReference{}

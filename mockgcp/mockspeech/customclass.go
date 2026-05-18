@@ -64,7 +64,7 @@ func (s *SpeechV2) CreateCustomClass(ctx context.Context, req *pb.CreateCustomCl
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetCustomClass()).(*pb.CustomClass)
+	obj := proto.CloneOf(req.GetCustomClass())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

@@ -62,7 +62,7 @@ func (s *PrivilegedAccessManager) CreateEntitlement(ctx context.Context, req *pb
 	now := timestamppb.New(time.Now())
 	fqn := name.String()
 
-	obj := proto.Clone(req.Entitlement).(*pb.Entitlement)
+	obj := proto.CloneOf(req.Entitlement)
 	obj.Name = fqn
 	obj.CreateTime = now
 	obj.UpdateTime = now
@@ -74,7 +74,7 @@ func (s *PrivilegedAccessManager) CreateEntitlement(ctx context.Context, req *pb
 
 	metadata := constructOperationMetadata(fqn, "create")
 	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Entitlement)
+		result := proto.CloneOf(obj)
 		metadata.EndTime = now
 		return result, nil
 	})
@@ -122,7 +122,7 @@ func (s *PrivilegedAccessManager) UpdateEntitlement(ctx context.Context, req *pb
 
 	metadata := constructOperationMetadata(fqn, "update")
 	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Entitlement)
+		result := proto.CloneOf(obj)
 		now := timestamppb.New(time.Now())
 		metadata.EndTime = now
 		return result, nil
@@ -143,7 +143,7 @@ func (s *PrivilegedAccessManager) DeleteEntitlement(ctx context.Context, req *pb
 	}
 	metadata := constructOperationMetadata(fqn, "delete")
 	return s.operations.StartLRO(ctx, name.parent(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(oldObj).(*pb.Entitlement)
+		result := proto.CloneOf(oldObj)
 		result.State = pb.Entitlement_DELETED
 		now := timestamppb.New(time.Now())
 		metadata.EndTime = now

@@ -64,7 +64,7 @@ func (s *backendBuckets) Insert(ctx context.Context, req *pb.InsertBackendBucket
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetBackendBucketResource()).(*pb.BackendBucket)
+	obj := proto.CloneOf(req.GetBackendBucketResource())
 	obj.Id = proto.Uint64(s.generateID())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.Kind = PtrTo("compute#backendBucket")

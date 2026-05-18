@@ -305,8 +305,8 @@ func (a *dataprocJobAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Create copies for comparison, normalizing potential output-only fields
-	desiredComparable := proto.Clone(desired).(*pb.Job)
-	actualComparable := proto.Clone(a.actual).(*pb.Job)
+	desiredComparable := proto.CloneOf(desired)
+	actualComparable := proto.CloneOf(a.actual)
 
 	// Clear fields that are not part of the spec or are output-only before comparison
 	clearOutputOnlyJobFields(desiredComparable)

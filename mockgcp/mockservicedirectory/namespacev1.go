@@ -60,7 +60,7 @@ func (s *RegistrationServiceV1) CreateNamespace(ctx context.Context, req *pb.Cre
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Namespace).(*pb.Namespace)
+	obj := proto.CloneOf(req.Namespace)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

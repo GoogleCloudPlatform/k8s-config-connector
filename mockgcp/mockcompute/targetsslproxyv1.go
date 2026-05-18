@@ -58,7 +58,7 @@ func (s *TargetSslProxyV1) Insert(ctx context.Context, req *pb.InsertTargetSslPr
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetTargetSslProxyResource()).(*pb.TargetSslProxy)
+	obj := proto.CloneOf(req.GetTargetSslProxyResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

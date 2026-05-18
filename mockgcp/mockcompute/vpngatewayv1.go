@@ -58,7 +58,7 @@ func (s *VPNGatewaysV1) Insert(ctx context.Context, req *pb.InsertVpnGatewayRequ
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetVpnGatewayResource()).(*pb.VpnGateway)
+	obj := proto.CloneOf(req.GetVpnGatewayResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

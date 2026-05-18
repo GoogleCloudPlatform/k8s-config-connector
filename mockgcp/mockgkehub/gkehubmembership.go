@@ -57,7 +57,7 @@ func (s *GKEHubMembership) CreateMembership(ctx context.Context, req *pb.CreateM
 
 	fqn := name.String()
 	now := timestamppb.Now()
-	obj := proto.Clone(req.Resource).(*pb.Membership)
+	obj := proto.CloneOf(req.Resource)
 	obj.Name = fqn
 	// The real gcp generated the values below
 	obj.InfrastructureType = 2
@@ -81,7 +81,7 @@ func (s *GKEHubMembership) CreateMembership(ctx context.Context, req *pb.CreateM
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Membership)
+		result := proto.CloneOf(obj)
 		result.CreateTime = now
 		result.UpdateTime = now
 		result.State = &pb.MembershipState{Code: pb.MembershipState_READY}
@@ -127,7 +127,7 @@ func (s *GKEHubMembership) UpdateMembership(ctx context.Context, req *pb.UpdateM
 		EndTime:    now,
 	}
 	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Membership)
+		result := proto.CloneOf(obj)
 		result.UpdateTime = now
 		result.State = &pb.MembershipState{Code: pb.MembershipState_READY}
 		return result, nil

@@ -68,7 +68,7 @@ func (s *GroupService) CreateGroup(ctx context.Context, req *pb.CreateGroupReque
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Group).(*pb.Group)
+	obj := proto.CloneOf(req.Group)
 	obj.Name = fqn
 
 	populateDefaultsForGroup(obj)
@@ -94,7 +94,7 @@ func (s *GroupService) UpdateGroup(ctx context.Context, req *pb.UpdateGroupReque
 	}
 
 	// All fields are replaced except name
-	updated := proto.Clone(req.GetGroup()).(*pb.Group)
+	updated := proto.CloneOf(req.GetGroup())
 	updated.Name = existing.Name
 
 	populateDefaultsForGroup(updated)

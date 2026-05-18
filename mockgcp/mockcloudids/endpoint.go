@@ -94,7 +94,7 @@ func (c *CloudIDSEndpointV1) CreateProjectsLocationsEndpoint(ctx context.Context
 	}
 
 	fqn := endpoint.String()
-	obj := proto.Clone(request.ProjectsLocationsEndpoint).(*pb.Endpoint)
+	obj := proto.CloneOf(request.ProjectsLocationsEndpoint)
 	if err := c.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

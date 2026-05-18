@@ -66,7 +66,7 @@ func (s *ContainerAnalysisV1) CreateNote(ctx context.Context, req *pb.CreateNote
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Note).(*pb.Note)
+	obj := proto.CloneOf(req.Note)
 	obj.Name = fqn
 	obj.Kind = pb.NoteKind_ATTESTATION
 	now := timestamppb.Now()

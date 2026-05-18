@@ -85,7 +85,7 @@ func (s *DocumentProcessorV1) TrainProcessorVersion(ctx context.Context, req *pb
 
 	fqn := versionName.String()
 
-	processorVersion := proto.Clone(req.GetProcessorVersion()).(*pb.ProcessorVersion)
+	processorVersion := proto.CloneOf(req.GetProcessorVersion())
 	processorVersion.Name = fqn
 	processorVersion.State = pb.ProcessorVersion_FAILED
 	processorVersion.CreateTime = timestamppb.New(time.Now())

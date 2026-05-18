@@ -62,7 +62,7 @@ func (s *VMwareEngineV1) CreateNetworkPeering(ctx context.Context, req *pb.Creat
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetNetworkPeering()).(*pb.NetworkPeering)
+	obj := proto.CloneOf(req.GetNetworkPeering())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	obj.State = pb.NetworkPeering_ACTIVE

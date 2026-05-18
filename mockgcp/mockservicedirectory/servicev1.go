@@ -54,7 +54,7 @@ func (s *RegistrationServiceV1) CreateService(ctx context.Context, req *pb.Creat
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Service).(*pb.Service)
+	obj := proto.CloneOf(req.Service)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

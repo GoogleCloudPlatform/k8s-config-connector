@@ -70,7 +70,7 @@ func (s *VMwareEngineV1) CreateNetworkPolicy(ctx context.Context, req *pb.Create
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetNetworkPolicy()).(*pb.NetworkPolicy)
+	obj := proto.CloneOf(req.GetNetworkPolicy())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

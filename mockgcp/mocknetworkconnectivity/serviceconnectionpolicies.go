@@ -67,7 +67,7 @@ func (r *serviceConnectionPolicies) CreateProjectsLocationsServiceConnectionPoli
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetProjectsLocationsServiceConnectionPolicy()).(*pb.ServiceConnectionPolicy)
+	obj := proto.CloneOf(req.GetProjectsLocationsServiceConnectionPolicy())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -102,7 +102,7 @@ func (r *serviceConnectionPolicies) CreateProjectsLocationsServiceConnectionPoli
 // redactedForLRO returns a version of the ServiceConnectionPolicy with many fields not set,
 // which is what the LRO returns
 func redactedForLRO(obj *pb.ServiceConnectionPolicy) *pb.ServiceConnectionPolicy {
-	retObj := proto.Clone(obj).(*pb.ServiceConnectionPolicy)
+	retObj := proto.CloneOf(obj)
 	retObj.Description = ""
 	retObj.Infrastructure = ""
 	retObj.PscConfig = nil

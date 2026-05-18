@@ -74,7 +74,7 @@ func (s *ImagesV1) Insert(ctx context.Context, req *pb.InsertImageRequest) (*pb.
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetImageResource()).(*pb.Image)
+	obj := proto.CloneOf(req.GetImageResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
