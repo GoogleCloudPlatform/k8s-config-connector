@@ -26,15 +26,15 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *RegistrationServiceV1) GetService(ctx context.Context, req *pb.GetServiceRequest) (*pb.Service, error) {
-	name, err := s.parseServiceName(req.Name)
+func (s *RegistrationServiceV1) GetEndpoint(ctx context.Context, req *pb.GetEndpointRequest) (*pb.Endpoint, error) {
+	name, err := s.parseEndpointName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Service{}
+	obj := &pb.Endpoint{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
@@ -45,16 +45,16 @@ func (s *RegistrationServiceV1) GetService(ctx context.Context, req *pb.GetServi
 	return obj, nil
 }
 
-func (s *RegistrationServiceV1) CreateService(ctx context.Context, req *pb.CreateServiceRequest) (*pb.Service, error) {
-	reqName := req.Parent + "/services/" + req.GetServiceId()
-	name, err := s.parseServiceName(reqName)
+func (s *RegistrationServiceV1) CreateEndpoint(ctx context.Context, req *pb.CreateEndpointRequest) (*pb.Endpoint, error) {
+	reqName := req.Parent + "/endpoints/" + req.GetEndpointId()
+	name, err := s.parseEndpointName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Service).(*pb.Service)
+	obj := proto.Clone(req.Endpoint).(*pb.Endpoint)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -63,61 +63,65 @@ func (s *RegistrationServiceV1) CreateService(ctx context.Context, req *pb.Creat
 	return obj, nil
 }
 
-func (s *RegistrationServiceV1) UpdateService(ctx context.Context, req *pb.UpdateServiceRequest) (*pb.Service, error) {
-	reqName := req.GetService().GetName()
+func (s *RegistrationServiceV1) UpdateEndpoint(ctx context.Context, req *pb.UpdateEndpointRequest) (*pb.Endpoint, error) {
+	reqName := req.GetEndpoint().GetName()
 
-	name, err := s.parseServiceName(reqName)
+	name, err := s.parseEndpointName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.Service{}
+	obj := &pb.Endpoint{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	// TODO: Use field mask if needed, but for now just update the whole object
+	// Most mocks just overwrite for simplicity unless specified otherwise.
+	newObj := proto.Clone(req.GetEndpoint()).(*pb.Endpoint)
+	newObj.Name = fqn
+
+	if err := s.storage.Update(ctx, fqn, newObj); err != nil {
 		return nil, err
 	}
 
-	return obj, nil
-
+	return newObj, nil
 }
 
-func (s *RegistrationServiceV1) ListServices(ctx context.Context, req *pb.ListServicesRequest) (*pb.ListServicesResponse, error) {
-	_, err := s.parseNamespaceName(req.Parent)
+func (s *RegistrationServiceV1) ListEndpoints(ctx context.Context, req *pb.ListEndpointsRequest) (*pb.ListEndpointsResponse, error) {
+	_, err := s.parseServiceName(req.Parent)
 	if err != nil {
 		return nil, err
 	}
 	// TODO: Support filtering/paging if needed
 
-	prefix := req.Parent + "/services/"
+	prefix := req.Parent + "/endpoints/"
 
-	var items []*pb.Service
-	kind := (&pb.Service{}).ProtoReflect().Descriptor()
+	var items []*pb.Endpoint
+	kind := (&pb.Endpoint{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
-		item := obj.(*pb.Service)
+		item := obj.(*pb.Endpoint)
 		items = append(items, item)
 		return nil
 	}); err != nil {
 		return nil, err
 	}
 
-	return &pb.ListServicesResponse{
-		Services: items,
+	return &pb.ListEndpointsResponse{
+		Endpoints: items,
 	}, nil
 }
 
-func (s *RegistrationServiceV1) DeleteService(ctx context.Context, req *pb.DeleteServiceRequest) (*emptypb.Empty, error) {
-	name, err := s.parseServiceName(req.Name)
+func (s *RegistrationServiceV1) DeleteEndpoint(ctx context.Context, req *pb.DeleteEndpointRequest) (*emptypb.Empty, error) {
+	name, err := s.parseEndpointName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	oldObj := &pb.Service{}
+	oldObj := &pb.Endpoint{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
@@ -125,29 +129,29 @@ func (s *RegistrationServiceV1) DeleteService(ctx context.Context, req *pb.Delet
 	return &emptypb.Empty{}, nil
 }
 
-type serviceName struct {
-	NamespaceName
-	ServiceName string
+type endpointName struct {
+	serviceName
+	EndpointName string
 }
 
-func (n *serviceName) String() string {
-	return n.NamespaceName.String() + "/services/" + n.ServiceName
+func (n *endpointName) String() string {
+	return n.serviceName.String() + "/endpoints/" + n.EndpointName
 }
 
-// parseServiceName parses a string into a serviceName.
-// The expected form is projects/<projectID>/locations/<location>/namespaces/<namespace>/services/<service>
-func (s *MockService) parseServiceName(name string) (*serviceName, error) {
+// parseEndpointName parses a string into a endpointName.
+// The expected form is projects/<projectID>/locations/<location>/namespaces/<namespace>/services/<service>/endpoints/<endpoint>
+func (s *MockService) parseEndpointName(name string) (*endpointName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 8 && tokens[6] == "services" {
-		namespacename, err := s.parseNamespaceName(strings.Join(tokens[0:6], "/"))
+	if len(tokens) == 10 && tokens[8] == "endpoints" {
+		servicename, err := s.parseServiceName(strings.Join(tokens[0:8], "/"))
 		if err != nil {
 			return nil, err
 		}
 
-		name := &serviceName{
-			NamespaceName: *namespacename,
-			ServiceName:   tokens[7],
+		name := &endpointName{
+			serviceName:  *servicename,
+			EndpointName: tokens[9],
 		}
 
 		return name, nil
