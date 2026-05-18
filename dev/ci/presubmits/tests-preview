@@ -1,5 +1,5 @@
-#!/bin/bash
-# Copyright 2022 Google LLC
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,24 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 set -o errexit
 set -o nounset
 set -o pipefail
+
+function on_error() {
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/tests-preview' to fix.</hint_for_agent>"
+}
+trap on_error ERR
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
-make -C operator test
-# Env var VALIDATE_URLS needs to be unset to avoid calling URLs in TestReferenceDocConsistency under scripts/generate-google3-docs/.
-unset VALIDATE_URLS
-UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/...  ./scripts/resource-autogen/... ./scripts/generate-google3-docs/... ./tests/... | grep -v tests/e2e | grep -v pkg/cli/preview)
-if [ -z ${GITHUB_ACTION+x} ]; then
-    go test -coverprofile cover.out -count=1 ${UNIT_TEST_PACKAGES}
-else
-    go test -json -coverprofile cover.out -count=1 ${UNIT_TEST_PACKAGES} > unittest_result.json
-fi
+
+. ${REPO_ROOT}/dev/tasks/install-gcloud
+. ${REPO_ROOT}/dev/tasks/setup-envtest
+
+echo "Running preview CLI tests..."
+# A dummy default project id is required for a few unit test cases
+gcloud config set project foobar --quiet
+
+go test -test.count=1 -v ./pkg/cli/preview/...

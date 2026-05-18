@@ -111,6 +111,11 @@ func TestCombinedSummaryReport(t *testing.T) {
 				ControllerType:  k8s.ReconcilerType("tf"),
 				ReconcileStatus: ReconcileStatusHealthy,
 			},
+			{Group: "g3", Kind: "K3", Namespace: "n3", Name: "name3"}: {
+				GKNN:            GKNN{Group: "g3", Kind: "K3", Namespace: "n3", Name: "name3"},
+				ControllerType:  k8s.ReconcilerType("tf"),
+				ReconcileStatus: ReconcileStatusUnhealthy,
+			},
 		},
 	}
 	alt := &RecorderReconciledResults{
@@ -125,6 +130,11 @@ func TestCombinedSummaryReport(t *testing.T) {
 				ControllerType:  k8s.ReconcilerType("direct"),
 				ReconcileStatus: ReconcileStatusHealthy,
 			},
+			{Group: "g3", Kind: "K3", Namespace: "n3", Name: "name3"}: {
+				GKNN:            GKNN{Group: "g3", Kind: "K3", Namespace: "n3", Name: "name3"},
+				ControllerType:  k8s.ReconcilerType("direct"),
+				ReconcileStatus: ReconcileStatusUnhealthy,
+			},
 		},
 	}
 
@@ -133,11 +143,13 @@ func TestCombinedSummaryReport(t *testing.T) {
 		t.Fatalf("failed to create temp file: %v", err)
 	}
 	defer os.Remove(tmpFile.Name())
+	defer os.Remove(tmpFile.Name() + "-detail")
 	tmpFile.Close()
 
 	altExpectedMap := map[schema.GroupKind]k8s.ReconcilerType{
 		{Group: "g1", Kind: "K1"}: k8s.ReconcilerType("direct"),
 		{Group: "g2", Kind: "K2"}: k8s.ReconcilerType("direct"),
+		{Group: "g3", Kind: "K3"}: k8s.ReconcilerType("direct"),
 	}
 
 	if err := r.CombinedSummaryReport(tmpFile.Name(), alt, altExpectedMap); err != nil {
@@ -154,6 +166,7 @@ func TestCombinedSummaryReport(t *testing.T) {
 		"GROUP   KIND   NAME    DEFAULT-CONTROLLER   DEFAULT-RESULT   DEFAULT-DIFFS   ALTERNATIVE-CONTROLLER   ALTERNATIVE-RESULT   ALTERNATIVE-DIFFS",
 		"g1      K1     name1   tf                   HEALTHY          N/A             direct                   UNHEALTHY            N/A",
 		"g2      K2     name2   N/A                  N/A              N/A             direct                   HEALTHY              N/A",
+		"g3      K3     name3   tf                   UNHEALTHY        N/A             direct                   UNHEALTHY            N/A",
 	}
 
 	for _, row := range expectedRows {
@@ -171,5 +184,17 @@ func TestCombinedSummaryReport(t *testing.T) {
 				t.Errorf("expected row %q not found in content:\n%s", row, string(content))
 			}
 		}
+	}
+
+	// Verify the detail report contains the expected bad results and is deduplicated/sorted correctly
+	detailContent, err := os.ReadFile(tmpFile.Name() + "-detail")
+	if err != nil {
+		t.Fatalf("failed to read detail file: %v", err)
+	}
+	if !strings.Contains(string(detailContent), "name1") {
+		t.Errorf("expected detail report to contain name1")
+	}
+	if !strings.Contains(string(detailContent), "name3") {
+		t.Errorf("expected detail report to contain name3")
 	}
 }
