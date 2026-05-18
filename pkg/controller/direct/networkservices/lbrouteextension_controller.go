@@ -244,7 +244,7 @@ func (a *LBRouteExtensionAdapter) Create(ctx context.Context, createOp *directba
 		return err
 	}
 
-	resource := proto.Clone(desiredProto).(*networkservicespb.LbRouteExtension)
+	resource := proto.CloneOf(desiredProto)
 	resource.Name = a.id.String()
 
 	req := &networkservicespb.CreateLbRouteExtensionRequest{
@@ -281,7 +281,7 @@ func (a *LBRouteExtensionAdapter) Update(ctx context.Context, updateOp *directba
 		return err
 	}
 
-	resource := proto.Clone(desiredProto).(*networkservicespb.LbRouteExtension)
+	resource := proto.CloneOf(desiredProto)
 	resource.Name = a.id.String()
 
 	diff, err := common.CompareProtoMessage(a.actual, resource, common.BasicDiff)

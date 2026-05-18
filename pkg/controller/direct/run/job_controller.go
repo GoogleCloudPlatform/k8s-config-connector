@@ -212,7 +212,7 @@ func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 
 	// We need to set the name for the update request, but we don't want to modify a.desired
 	// as that would change the computed hash (specHash).
-	updateJob := proto.Clone(a.desired).(*runpb.Job)
+	updateJob := proto.CloneOf(a.desired)
 	updateJob.Name = a.actual.Name
 	req := &runpb.UpdateJobRequest{
 		Job: updateJob,
