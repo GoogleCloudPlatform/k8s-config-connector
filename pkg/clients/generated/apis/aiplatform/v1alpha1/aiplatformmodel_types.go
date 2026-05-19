@@ -236,6 +236,21 @@ type ModelContainerSpec struct {
 	// +optional
 	ImageURI *string `json:"imageURI,omitempty"`
 
+	/* Immutable. Invoke route prefix for the custom container. "/*" is the only
+	supported value right now. By setting this field, any non-root route on
+	this model will be accessible with invoke http call eg: "/invoke/foo/bar",
+	however the [PredictionService.Invoke] RPC is not supported yet.
+
+	Only one of `predict_route` or `invoke_route_prefix` can be set, and we
+	default to using `predict_route` if this field is not set. If this field
+	is set, the Model can only be deployed to dedicated endpoint. */
+	// +optional
+	InvokeRoutePrefix *string `json:"invokeRoutePrefix,omitempty"`
+
+	/* Immutable. Specification for Kubernetes liveness probe. */
+	// +optional
+	LivenessProbe *ModelLivenessProbe `json:"livenessProbe,omitempty"`
+
 	/* Immutable. List of ports to expose from the container. Vertex AI sends any
 	prediction requests that it receives to the first port on this list. Vertex
 	AI also sends
@@ -435,7 +450,7 @@ type ModelFeatureValueDomain struct {
 }
 
 type ModelGcsSource struct {
-	/* Required. Google Cloud Storage URI(-s) to the input file(s). May contain wildcards. For more information on wildcards, see https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames. */
+	/* Required. Google Cloud Storage URI(-s) to the input file(s). May contain wildcards. For more information on wildcards, see https://cloud.google.com/storage/docs/wildcards. */
 	// +optional
 	Uris []string `json:"uris,omitempty"`
 }
@@ -444,6 +459,20 @@ type ModelGenieSource struct {
 	/* Required. The public base model URI. */
 	// +optional
 	BaseModelURI *string `json:"baseModelURI,omitempty"`
+}
+
+type ModelGrpc struct {
+	/* Port number of the gRPC service. Number must be in the range 1 to 65535. */
+	// +optional
+	Port *int32 `json:"port,omitempty"`
+
+	/* Service is the name of the service to place in the gRPC
+	HealthCheckRequest (see
+	https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+
+	If this is not specified, the default behavior is defined by gRPC. */
+	// +optional
+	Service *string `json:"service,omitempty"`
 }
 
 type ModelGrpcPorts struct {
@@ -457,6 +486,28 @@ type ModelHealthProbe struct {
 	// +optional
 	Exec *ModelExec `json:"exec,omitempty"`
 
+	/* Number of consecutive failures before the probe is considered failed.
+	Defaults to 3. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'failureThreshold'. */
+	// +optional
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	/* GrpcAction probes the health of a container by sending a gRPC request. */
+	// +optional
+	Grpc *ModelGrpc `json:"grpc,omitempty"`
+
+	/* HttpGetAction probes the health of a container by sending an HTTP GET request. */
+	// +optional
+	HttpGet *ModelHttpGet `json:"httpGet,omitempty"`
+
+	/* Number of seconds to wait before starting the probe. Defaults to 0.
+	Minimum value is 0.
+
+	Maps to Kubernetes probe argument 'initialDelaySeconds'. */
+	// +optional
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
 	/* How often (in seconds) to perform the probe. Default to 10 seconds.
 	Minimum value is 1. Must be less than timeout_seconds.
 
@@ -464,12 +515,55 @@ type ModelHealthProbe struct {
 	// +optional
 	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
 
+	/* Number of consecutive successes before the probe is considered successful.
+	Defaults to 1. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'successThreshold'. */
+	// +optional
+	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+
+	/* TcpSocketAction probes the health of a container by opening a TCP socket connection. */
+	// +optional
+	TcpSocket *ModelTcpSocket `json:"tcpSocket,omitempty"`
+
 	/* Number of seconds after which the probe times out. Defaults to 1 second.
 	Minimum value is 1. Must be greater or equal to period_seconds.
 
 	Maps to Kubernetes probe argument 'timeoutSeconds'. */
 	// +optional
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+}
+
+type ModelHttpGet struct {
+	/* Host name to connect to, defaults to the model serving container's IP. You probably want to set "Host" in httpHeaders instead. */
+	// +optional
+	Host *string `json:"host,omitempty"`
+
+	/* Custom headers to set in the request. HTTP allows repeated headers. */
+	// +optional
+	HttpHeaders []ModelHttpHeaders `json:"httpHeaders,omitempty"`
+
+	/* Path to access on the HTTP server. */
+	// +optional
+	Path *string `json:"path,omitempty"`
+
+	/* Number of the port to access on the container. Number must be in the range 1 to 65535. */
+	// +optional
+	Port *int32 `json:"port,omitempty"`
+
+	/* Scheme to use for connecting to the host. Defaults to HTTP. Acceptable values are "HTTP" or "HTTPS". */
+	// +optional
+	Scheme *string `json:"scheme,omitempty"`
+}
+
+type ModelHttpHeaders struct {
+	/* The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* The header field value */
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type ModelIndexDisplayNameMapping struct {
@@ -624,6 +718,59 @@ type ModelIntegratedGradientsAttribution struct {
 	StepCount *int32 `json:"stepCount,omitempty"`
 }
 
+type ModelLivenessProbe struct {
+	/* ExecAction probes the health of a container by executing a command. */
+	// +optional
+	Exec *ModelExec `json:"exec,omitempty"`
+
+	/* Number of consecutive failures before the probe is considered failed.
+	Defaults to 3. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'failureThreshold'. */
+	// +optional
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	/* GrpcAction probes the health of a container by sending a gRPC request. */
+	// +optional
+	Grpc *ModelGrpc `json:"grpc,omitempty"`
+
+	/* HttpGetAction probes the health of a container by sending an HTTP GET request. */
+	// +optional
+	HttpGet *ModelHttpGet `json:"httpGet,omitempty"`
+
+	/* Number of seconds to wait before starting the probe. Defaults to 0.
+	Minimum value is 0.
+
+	Maps to Kubernetes probe argument 'initialDelaySeconds'. */
+	// +optional
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
+	/* How often (in seconds) to perform the probe. Default to 10 seconds.
+	Minimum value is 1. Must be less than timeout_seconds.
+
+	Maps to Kubernetes probe argument 'periodSeconds'. */
+	// +optional
+	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+
+	/* Number of consecutive successes before the probe is considered successful.
+	Defaults to 1. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'successThreshold'. */
+	// +optional
+	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+
+	/* TcpSocketAction probes the health of a container by opening a TCP socket connection. */
+	// +optional
+	TcpSocket *ModelTcpSocket `json:"tcpSocket,omitempty"`
+
+	/* Number of seconds after which the probe times out. Defaults to 1 second.
+	Minimum value is 1. Must be greater or equal to period_seconds.
+
+	Maps to Kubernetes probe argument 'timeoutSeconds'. */
+	// +optional
+	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+}
+
 type ModelMetadata struct {
 	/* Represents a boolean value. */
 	// +optional
@@ -650,6 +797,14 @@ type ModelModelGardenSource struct {
 	/* Required. The model garden source model resource name. */
 	// +optional
 	PublicModelName *string `json:"publicModelName,omitempty"`
+
+	/* Optional. Whether to avoid pulling the model from the HF cache. */
+	// +optional
+	SkipHfModelCache *bool `json:"skipHfModelCache,omitempty"`
+
+	/* Optional. The model garden source model version ID. */
+	// +optional
+	VersionID *string `json:"versionID,omitempty"`
 }
 
 type ModelNearestNeighborSearchConfig struct {
@@ -818,6 +973,28 @@ type ModelStartupProbe struct {
 	// +optional
 	Exec *ModelExec `json:"exec,omitempty"`
 
+	/* Number of consecutive failures before the probe is considered failed.
+	Defaults to 3. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'failureThreshold'. */
+	// +optional
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	/* GrpcAction probes the health of a container by sending a gRPC request. */
+	// +optional
+	Grpc *ModelGrpc `json:"grpc,omitempty"`
+
+	/* HttpGetAction probes the health of a container by sending an HTTP GET request. */
+	// +optional
+	HttpGet *ModelHttpGet `json:"httpGet,omitempty"`
+
+	/* Number of seconds to wait before starting the probe. Defaults to 0.
+	Minimum value is 0.
+
+	Maps to Kubernetes probe argument 'initialDelaySeconds'. */
+	// +optional
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
 	/* How often (in seconds) to perform the probe. Default to 10 seconds.
 	Minimum value is 1. Must be less than timeout_seconds.
 
@@ -825,12 +1002,33 @@ type ModelStartupProbe struct {
 	// +optional
 	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
 
+	/* Number of consecutive successes before the probe is considered successful.
+	Defaults to 1. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'successThreshold'. */
+	// +optional
+	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+
+	/* TcpSocketAction probes the health of a container by opening a TCP socket connection. */
+	// +optional
+	TcpSocket *ModelTcpSocket `json:"tcpSocket,omitempty"`
+
 	/* Number of seconds after which the probe times out. Defaults to 1 second.
 	Minimum value is 1. Must be greater or equal to period_seconds.
 
 	Maps to Kubernetes probe argument 'timeoutSeconds'. */
 	// +optional
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+}
+
+type ModelTcpSocket struct {
+	/* Optional: Host name to connect to, defaults to the model serving container's IP. */
+	// +optional
+	Host *string `json:"host,omitempty"`
+
+	/* Number of the port to access on the container. Number must be in the range 1 to 65535. */
+	// +optional
+	Port *int32 `json:"port,omitempty"`
 }
 
 type ModelVisualization struct {
