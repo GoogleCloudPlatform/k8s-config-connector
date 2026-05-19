@@ -412,10 +412,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		if err != nil {
 			h.Fatalf("error loading crds: %v", err)
 		}
-		{
+		if len(crds) > 0 {
+			start := time.Now()
 			var wg sync.WaitGroup
 			var errsMutex sync.Mutex
 			var errs []error
+			var installedCount int
 
 			for i := range crds {
 				crd := &crds[i]
@@ -425,6 +427,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 						continue
 					}
 				}
+				installedCount++
 				wg.Add(1)
 				log.V(2).Info("loading crd", "name", crd.GetName())
 
@@ -442,6 +445,9 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			if len(errs) != 0 {
 				h.Fatalf("error creating crds: %v", errors.Join(errs...))
 			}
+
+			duration := time.Since(start)
+			log.Info("Installed CRDs", "count", installedCount, "duration", duration)
 		}
 	}
 
@@ -1242,8 +1248,10 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 	name := obj.GetName()
 	namespace := obj.GetNamespace()
 
+	var lastStatus *teststatus.ObjectStatus
+
 	id := types.NamespacedName{Name: name, Namespace: namespace}
-	if err := wait.PollImmediate(2*time.Second, 1*time.Minute, func() (bool, error) {
+	if err := wait.PollImmediate(2*time.Second, 2*time.Minute, func() (bool, error) {
 		u := &unstructured.Unstructured{}
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
@@ -1253,6 +1261,7 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 			return false, err
 		}
 		objectStatus := teststatus.GetObjectStatus(h.T, u)
+		lastStatus = &objectStatus
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
@@ -1264,7 +1273,11 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 		logger.V(2).Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
 		return false, nil
 	}); err != nil {
-		h.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
+		if lastStatus != nil {
+			h.Fatalf("error while polling for ready on %v %v: %v (last status conditions: %v)", kind, id, err, lastStatus.Conditions)
+		} else {
+			h.Fatalf("error while polling for ready on %v %v: %v", kind, id, err)
+		}
 		return
 	}
 }

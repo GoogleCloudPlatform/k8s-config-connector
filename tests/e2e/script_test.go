@@ -79,6 +79,9 @@ func TestE2EScript(t *testing.T) {
 			scenarioPath := scenarioPath
 
 			t.Run(scenarioPath, func(t *testing.T) {
+				if os.Getenv("SKIP_ALL") != "" {
+					t.Skip("SKIP_ALL is set")
+				}
 				uniqueID := testvariable.NewUniqueID()
 				folderID := ""
 
