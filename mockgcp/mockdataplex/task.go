@@ -35,6 +35,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
@@ -230,6 +231,47 @@ func (s *DataplexService) DeleteTask(ctx context.Context, req *pb.DeleteTaskRequ
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func (s *DataplexService) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseTaskName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, fqn+"/iam", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// Return empty policy if not found
+			return &iampb.Policy{}, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *DataplexService) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseTaskName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	if err := s.storage.Update(ctx, fqn+"/iam", req.Policy); err != nil {
+		return nil, err
+	}
+
+	return req.Policy, nil
+}
+
+func (s *DataplexService) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	return &iampb.TestIamPermissionsResponse{
+		Permissions: req.Permissions,
+	}, nil
 }
 
 type taskName struct {
