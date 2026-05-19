@@ -17,6 +17,7 @@
 // krm.group: apihub.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.apihub.v1
+// resource: APIHubAttribute:Attribute
 // resource: APIHubDeployment:Deployment
 // resource: APIHubAPI:Api
 // resource: APIHubRuntimeProjectAttachment:RuntimeProjectAttachment
