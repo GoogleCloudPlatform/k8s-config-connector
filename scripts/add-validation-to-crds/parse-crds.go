@@ -351,7 +351,7 @@ oneOf:
 			}
 		} else if signature == "external,name,namespace" {
 			ruleYAML = refRuleWithoutKind
-		} else if signature == "value,valueFrom" && kind == "AlloyDBUser" {
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ContainerCluster") {
 			ruleYAML = legacyRefRule
 		} else {
 			if strings.HasPrefix(signature, "external,") {
