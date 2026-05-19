@@ -15,7 +15,7 @@
 package mockcertificatemanager
 
 import (
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/certificatemanager/v1"
+	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 )
 
 type CertificateManagerV1 struct {
