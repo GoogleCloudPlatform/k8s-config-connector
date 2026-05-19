@@ -143,6 +143,7 @@ require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
 	cloud.google.com/go/memcache v1.11.7 // indirect
+	cloud.google.com/go/modelarmor v1.0.0 // indirect
 	cloud.google.com/go/osconfig v1.16.0 // indirect
 	cloud.google.com/go/pubsublite v1.8.2 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect
