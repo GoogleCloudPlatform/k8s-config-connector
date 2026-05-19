@@ -48,7 +48,8 @@ type ClusterAdditionalIpRangesConfigs struct {
 	Status *string `json:"status,omitempty"`
 
 	/* The subnetwork path for the additional IP range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type ClusterAdditionalPodRangesConfig struct {
@@ -278,7 +279,7 @@ type ClusterDatabaseEncryption struct {
 	// +optional
 	KeyName *string `json:"keyName,omitempty"`
 
-	/* ENCRYPTED, ALL_OBJECTS_ENCRYPTION_ENABLED or DECRYPTED. */
+	/* ENCRYPTED or DECRYPTED. */
 	State string `json:"state"`
 }
 
