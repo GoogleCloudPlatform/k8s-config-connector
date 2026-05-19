@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	krmapphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -148,6 +149,50 @@ func AppHubDiscoveredWorkloadSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.DiscoveredWorkload{}
 	// MISSING: Name
+	return out
+}
+func AppHubServiceProjectAttachmentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krmapphubv1alpha1.AppHubServiceProjectAttachmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmapphubv1alpha1.AppHubServiceProjectAttachmentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func AppHubServiceProjectAttachmentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubServiceProjectAttachmentObservedState) *pb.ServiceProjectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceProjectAttachment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.State = direct.Enum_ToProto[pb.ServiceProjectAttachment_State](mapCtx, in.State)
+	return out
+}
+func AppHubServiceProjectAttachmentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krmapphubv1alpha1.AppHubServiceProjectAttachmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmapphubv1alpha1.AppHubServiceProjectAttachmentSpec{}
+	// MISSING: Name
+	if in.GetServiceProject() != "" {
+		out.ServiceProjectRef = &refsv1beta1.ProjectRef{External: in.GetServiceProject()}
+	}
+	return out
+}
+func AppHubServiceProjectAttachmentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.AppHubServiceProjectAttachmentSpec) *pb.ServiceProjectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceProjectAttachment{}
+	// MISSING: Name
+	if in.ServiceProjectRef != nil {
+		out.ServiceProject = in.ServiceProjectRef.External
+	}
 	return out
 }
 func Attributes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Attributes) *krm.Attributes {
