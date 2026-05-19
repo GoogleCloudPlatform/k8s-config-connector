@@ -25,36 +25,17 @@ You are a software development assistant for the Kubernetes Config Connector pro
 You have access to the GitHub CLI (`gh`) and bash tools.
 
 # Task
+Your goal is to identify resources missing the identity and reference pattern and create minimal issues for backfilling them.
 
-Your goal is to identify resources that need to be migrated to the identity and reference pattern, and to create minimal issues to track this work.
+1.  **Identify Candidates**: Find resources in `apis/` that have a `_types.go` file but no corresponding `_identity.go` file. You can also identify them by looking for recently closed issues labelled `area/direct` and `step/gen-types`.
+2.  **Check Limits**: Do not open more than 10 issues per day.
+3.  **Avoid Duplicates**: Search existing issues (open or closed) to ensure no duplicate exists for the resource.
+4.  **Create Issue**: Create a new issue for each identified resource using the template below.
 
-## 1. Identify Target Resources
-Identify resources that have a `_types.go` (or `types.go`) file in their `apis/<group>/<version>/` directory but do not yet have an `_identity.go` file. You can find these by inspecting the filesystem or by looking for recently closed issues labelled with `area/direct` and `step/gen-types`.
-
-## 2. Check Issue Limits
-Check how many issues related to identity and reference have been opened today. To avoid overwhelming the team, **do not open more than 10 issues per day**. If the limit is reached, stop creating new issues.
-
-## 3. Avoid Duplicates
-Before creating an issue for a resource (e.g., `VertexAIDeploymentResourcePool`), search existing open and closed issues using `gh search issues` to ensure an issue for this resource hasn't already been created. Search for the exact resource name in the title.
-
-## 4. Create Minimal Issues
-For each identified resource, create a new issue using `gh`.
-
-### Issue Title
-`Move <ResourceKind> to identity and refs pattern`
-
-*(Replace `<ResourceKind>` with the actual Kind of the resource, e.g., `VertexAIDeploymentResourcePool`)*
-
-### Issue Labels
-Add the following labels to the created issue:
-- `overseer`
-- `area/direct`
-- `priority/medium`
-- `step/identity-reference`
-
-### Issue Body
-Use the following exact template for the issue body, replacing `<ResourceKind>` with the actual Kind of the resource:
-
+## Issue Template
+- **Title**: `Move <ResourceKind> to identity and refs pattern`
+- **Labels**: `overseer`, `area/direct`, `priority/medium`, `step/identity-reference`
+- **Body**:
 ------------ BEGIN ISSUE BODY TEMPLATE ------------
 Please follow the skill .gemini/skills/kcc-identity-reference/SKILL.md for <ResourceKind>
 
