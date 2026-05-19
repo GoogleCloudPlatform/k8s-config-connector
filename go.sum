@@ -441,6 +441,8 @@ cloud.google.com/go/container v1.28.0/go.mod h1:b1A1gJeTBXVLQ6GGw9/9M4FG94BEGsqJ
 cloud.google.com/go/container v1.29.0/go.mod h1:b1A1gJeTBXVLQ6GGw9/9M4FG94BEGsqJ5+t4d/3N7O4=
 cloud.google.com/go/container v1.30.1/go.mod h1:vkbfX0EnAKL/vgVECs5BZn24e1cJROzgszJirRKQ4Bg=
 cloud.google.com/go/container v1.31.0/go.mod h1:7yABn5s3Iv3lmw7oMmyGbeV6tQj86njcTijkkGuvdZA=
+cloud.google.com/go/container v1.52.0 h1:oAkZciqdQ+xpP29pa5UJfsBBvcWrNNgKsWvraoz9Ajk=
+cloud.google.com/go/container v1.52.0/go.mod h1:EvqoT2eXfxLweXXUlhAMGR0sOAB00XPzEjoL01esSDs=
 cloud.google.com/go/containeranalysis v0.5.1/go.mod h1:1D92jd8gRR/c0fGMlymRgxWD3Qw9C1ff6/T7mLgVL8I=
 cloud.google.com/go/containeranalysis v0.6.0/go.mod h1:HEJoiEIu+lEXM+k7+qLCci0h33lX3ZqoYFdmPcoO7s4=
 cloud.google.com/go/containeranalysis v0.7.0/go.mod h1:9aUL+/vZ55P2CXfuZjS4UjQ9AgXoSw8Ts6lemfmxBxI=
