@@ -22,123 +22,36 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeStorageDefaultObjectAccessControls implements StorageDefaultObjectAccessControlInterface
-type FakeStorageDefaultObjectAccessControls struct {
+// fakeStorageDefaultObjectAccessControls implements StorageDefaultObjectAccessControlInterface
+type fakeStorageDefaultObjectAccessControls struct {
+	*gentype.FakeClientWithList[*v1beta1.StorageDefaultObjectAccessControl, *v1beta1.StorageDefaultObjectAccessControlList]
 	Fake *FakeStorageV1beta1
-	ns   string
 }
 
-var storagedefaultobjectaccesscontrolsResource = v1beta1.SchemeGroupVersion.WithResource("storagedefaultobjectaccesscontrols")
-
-var storagedefaultobjectaccesscontrolsKind = v1beta1.SchemeGroupVersion.WithKind("StorageDefaultObjectAccessControl")
-
-// Get takes name of the storageDefaultObjectAccessControl, and returns the corresponding storageDefaultObjectAccessControl object, and an error if there is any.
-func (c *FakeStorageDefaultObjectAccessControls) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.StorageDefaultObjectAccessControl, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(storagedefaultobjectaccesscontrolsResource, c.ns, name), &v1beta1.StorageDefaultObjectAccessControl{})
-
-	if obj == nil {
-		return nil, err
+func newFakeStorageDefaultObjectAccessControls(fake *FakeStorageV1beta1, namespace string) storagev1beta1.StorageDefaultObjectAccessControlInterface {
+	return &fakeStorageDefaultObjectAccessControls{
+		gentype.NewFakeClientWithList[*v1beta1.StorageDefaultObjectAccessControl, *v1beta1.StorageDefaultObjectAccessControlList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("storagedefaultobjectaccesscontrols"),
+			v1beta1.SchemeGroupVersion.WithKind("StorageDefaultObjectAccessControl"),
+			func() *v1beta1.StorageDefaultObjectAccessControl { return &v1beta1.StorageDefaultObjectAccessControl{} },
+			func() *v1beta1.StorageDefaultObjectAccessControlList {
+				return &v1beta1.StorageDefaultObjectAccessControlList{}
+			},
+			func(dst, src *v1beta1.StorageDefaultObjectAccessControlList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.StorageDefaultObjectAccessControlList) []*v1beta1.StorageDefaultObjectAccessControl {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.StorageDefaultObjectAccessControlList, items []*v1beta1.StorageDefaultObjectAccessControl) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.StorageDefaultObjectAccessControl), err
-}
-
-// List takes label and field selectors, and returns the list of StorageDefaultObjectAccessControls that match those selectors.
-func (c *FakeStorageDefaultObjectAccessControls) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.StorageDefaultObjectAccessControlList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(storagedefaultobjectaccesscontrolsResource, storagedefaultobjectaccesscontrolsKind, c.ns, opts), &v1beta1.StorageDefaultObjectAccessControlList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.StorageDefaultObjectAccessControlList{ListMeta: obj.(*v1beta1.StorageDefaultObjectAccessControlList).ListMeta}
-	for _, item := range obj.(*v1beta1.StorageDefaultObjectAccessControlList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested storageDefaultObjectAccessControls.
-func (c *FakeStorageDefaultObjectAccessControls) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(storagedefaultobjectaccesscontrolsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a storageDefaultObjectAccessControl and creates it.  Returns the server's representation of the storageDefaultObjectAccessControl, and an error, if there is any.
-func (c *FakeStorageDefaultObjectAccessControls) Create(ctx context.Context, storageDefaultObjectAccessControl *v1beta1.StorageDefaultObjectAccessControl, opts v1.CreateOptions) (result *v1beta1.StorageDefaultObjectAccessControl, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(storagedefaultobjectaccesscontrolsResource, c.ns, storageDefaultObjectAccessControl), &v1beta1.StorageDefaultObjectAccessControl{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.StorageDefaultObjectAccessControl), err
-}
-
-// Update takes the representation of a storageDefaultObjectAccessControl and updates it. Returns the server's representation of the storageDefaultObjectAccessControl, and an error, if there is any.
-func (c *FakeStorageDefaultObjectAccessControls) Update(ctx context.Context, storageDefaultObjectAccessControl *v1beta1.StorageDefaultObjectAccessControl, opts v1.UpdateOptions) (result *v1beta1.StorageDefaultObjectAccessControl, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(storagedefaultobjectaccesscontrolsResource, c.ns, storageDefaultObjectAccessControl), &v1beta1.StorageDefaultObjectAccessControl{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.StorageDefaultObjectAccessControl), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeStorageDefaultObjectAccessControls) UpdateStatus(ctx context.Context, storageDefaultObjectAccessControl *v1beta1.StorageDefaultObjectAccessControl, opts v1.UpdateOptions) (*v1beta1.StorageDefaultObjectAccessControl, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(storagedefaultobjectaccesscontrolsResource, "status", c.ns, storageDefaultObjectAccessControl), &v1beta1.StorageDefaultObjectAccessControl{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.StorageDefaultObjectAccessControl), err
-}
-
-// Delete takes name of the storageDefaultObjectAccessControl and deletes it. Returns an error if one occurs.
-func (c *FakeStorageDefaultObjectAccessControls) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(storagedefaultobjectaccesscontrolsResource, c.ns, name, opts), &v1beta1.StorageDefaultObjectAccessControl{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeStorageDefaultObjectAccessControls) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(storagedefaultobjectaccesscontrolsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.StorageDefaultObjectAccessControlList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched storageDefaultObjectAccessControl.
-func (c *FakeStorageDefaultObjectAccessControls) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.StorageDefaultObjectAccessControl, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(storagedefaultobjectaccesscontrolsResource, c.ns, name, pt, data, subresources...), &v1beta1.StorageDefaultObjectAccessControl{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.StorageDefaultObjectAccessControl), err
 }

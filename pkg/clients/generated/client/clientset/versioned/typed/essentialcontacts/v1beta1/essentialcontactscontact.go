@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/essentialcontacts/v1beta1"
+	essentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/essentialcontacts/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // EssentialContactsContactsGetter has a method to return a EssentialContactsContactInterface.
@@ -41,158 +40,38 @@ type EssentialContactsContactsGetter interface {
 
 // EssentialContactsContactInterface has methods to work with EssentialContactsContact resources.
 type EssentialContactsContactInterface interface {
-	Create(ctx context.Context, essentialContactsContact *v1beta1.EssentialContactsContact, opts v1.CreateOptions) (*v1beta1.EssentialContactsContact, error)
-	Update(ctx context.Context, essentialContactsContact *v1beta1.EssentialContactsContact, opts v1.UpdateOptions) (*v1beta1.EssentialContactsContact, error)
-	UpdateStatus(ctx context.Context, essentialContactsContact *v1beta1.EssentialContactsContact, opts v1.UpdateOptions) (*v1beta1.EssentialContactsContact, error)
+	Create(ctx context.Context, essentialContactsContact *essentialcontactsv1beta1.EssentialContactsContact, opts v1.CreateOptions) (*essentialcontactsv1beta1.EssentialContactsContact, error)
+	Update(ctx context.Context, essentialContactsContact *essentialcontactsv1beta1.EssentialContactsContact, opts v1.UpdateOptions) (*essentialcontactsv1beta1.EssentialContactsContact, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, essentialContactsContact *essentialcontactsv1beta1.EssentialContactsContact, opts v1.UpdateOptions) (*essentialcontactsv1beta1.EssentialContactsContact, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.EssentialContactsContact, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.EssentialContactsContactList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*essentialcontactsv1beta1.EssentialContactsContact, error)
+	List(ctx context.Context, opts v1.ListOptions) (*essentialcontactsv1beta1.EssentialContactsContactList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EssentialContactsContact, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *essentialcontactsv1beta1.EssentialContactsContact, err error)
 	EssentialContactsContactExpansion
 }
 
 // essentialContactsContacts implements EssentialContactsContactInterface
 type essentialContactsContacts struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*essentialcontactsv1beta1.EssentialContactsContact, *essentialcontactsv1beta1.EssentialContactsContactList]
 }
 
 // newEssentialContactsContacts returns a EssentialContactsContacts
 func newEssentialContactsContacts(c *EssentialcontactsV1beta1Client, namespace string) *essentialContactsContacts {
 	return &essentialContactsContacts{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*essentialcontactsv1beta1.EssentialContactsContact, *essentialcontactsv1beta1.EssentialContactsContactList](
+			"essentialcontactscontacts",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *essentialcontactsv1beta1.EssentialContactsContact {
+				return &essentialcontactsv1beta1.EssentialContactsContact{}
+			},
+			func() *essentialcontactsv1beta1.EssentialContactsContactList {
+				return &essentialcontactsv1beta1.EssentialContactsContactList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the essentialContactsContact, and returns the corresponding essentialContactsContact object, and an error if there is any.
-func (c *essentialContactsContacts) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EssentialContactsContact, err error) {
-	result = &v1beta1.EssentialContactsContact{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("essentialcontactscontacts").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of EssentialContactsContacts that match those selectors.
-func (c *essentialContactsContacts) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.EssentialContactsContactList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.EssentialContactsContactList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("essentialcontactscontacts").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested essentialContactsContacts.
-func (c *essentialContactsContacts) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("essentialcontactscontacts").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a essentialContactsContact and creates it.  Returns the server's representation of the essentialContactsContact, and an error, if there is any.
-func (c *essentialContactsContacts) Create(ctx context.Context, essentialContactsContact *v1beta1.EssentialContactsContact, opts v1.CreateOptions) (result *v1beta1.EssentialContactsContact, err error) {
-	result = &v1beta1.EssentialContactsContact{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("essentialcontactscontacts").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(essentialContactsContact).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a essentialContactsContact and updates it. Returns the server's representation of the essentialContactsContact, and an error, if there is any.
-func (c *essentialContactsContacts) Update(ctx context.Context, essentialContactsContact *v1beta1.EssentialContactsContact, opts v1.UpdateOptions) (result *v1beta1.EssentialContactsContact, err error) {
-	result = &v1beta1.EssentialContactsContact{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("essentialcontactscontacts").
-		Name(essentialContactsContact.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(essentialContactsContact).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *essentialContactsContacts) UpdateStatus(ctx context.Context, essentialContactsContact *v1beta1.EssentialContactsContact, opts v1.UpdateOptions) (result *v1beta1.EssentialContactsContact, err error) {
-	result = &v1beta1.EssentialContactsContact{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("essentialcontactscontacts").
-		Name(essentialContactsContact.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(essentialContactsContact).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the essentialContactsContact and deletes it. Returns an error if one occurs.
-func (c *essentialContactsContacts) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("essentialcontactscontacts").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *essentialContactsContacts) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("essentialcontactscontacts").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched essentialContactsContact.
-func (c *essentialContactsContacts) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EssentialContactsContact, err error) {
-	result = &v1beta1.EssentialContactsContact{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("essentialcontactscontacts").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

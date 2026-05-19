@@ -27,8 +27,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	pb "cloud.google.com/go/pubsublite/apiv1/pubsublitepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/pubsublite/v1"
 )
 
 func (s *PubSubLiteV1) GetTopic(ctx context.Context, req *pb.GetTopicRequest) (*pb.Topic, error) {
@@ -56,7 +56,7 @@ func (s *PubSubLiteV1) CreateTopic(ctx context.Context, req *pb.CreateTopicReque
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Topic).(*pb.Topic)
+	obj := proto.CloneOf(req.Topic)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

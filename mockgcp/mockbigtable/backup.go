@@ -45,7 +45,7 @@ func (s *tableAdminServer) CreateBackup(ctx context.Context, req *pb.CreateBacku
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Backup).(*pb.Backup)
+	obj := proto.CloneOf(req.Backup)
 	obj.Name = fqn
 
 	s.populateDefaultsForBackup(obj)

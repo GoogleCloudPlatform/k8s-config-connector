@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeComputeNetworkEndpoints implements ComputeNetworkEndpointInterface
-type FakeComputeNetworkEndpoints struct {
+// fakeComputeNetworkEndpoints implements ComputeNetworkEndpointInterface
+type fakeComputeNetworkEndpoints struct {
+	*gentype.FakeClientWithList[*v1alpha1.ComputeNetworkEndpoint, *v1alpha1.ComputeNetworkEndpointList]
 	Fake *FakeComputeV1alpha1
-	ns   string
 }
 
-var computenetworkendpointsResource = v1alpha1.SchemeGroupVersion.WithResource("computenetworkendpoints")
-
-var computenetworkendpointsKind = v1alpha1.SchemeGroupVersion.WithKind("ComputeNetworkEndpoint")
-
-// Get takes name of the computeNetworkEndpoint, and returns the corresponding computeNetworkEndpoint object, and an error if there is any.
-func (c *FakeComputeNetworkEndpoints) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeNetworkEndpoint, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(computenetworkendpointsResource, c.ns, name), &v1alpha1.ComputeNetworkEndpoint{})
-
-	if obj == nil {
-		return nil, err
+func newFakeComputeNetworkEndpoints(fake *FakeComputeV1alpha1, namespace string) computev1alpha1.ComputeNetworkEndpointInterface {
+	return &fakeComputeNetworkEndpoints{
+		gentype.NewFakeClientWithList[*v1alpha1.ComputeNetworkEndpoint, *v1alpha1.ComputeNetworkEndpointList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("computenetworkendpoints"),
+			v1alpha1.SchemeGroupVersion.WithKind("ComputeNetworkEndpoint"),
+			func() *v1alpha1.ComputeNetworkEndpoint { return &v1alpha1.ComputeNetworkEndpoint{} },
+			func() *v1alpha1.ComputeNetworkEndpointList { return &v1alpha1.ComputeNetworkEndpointList{} },
+			func(dst, src *v1alpha1.ComputeNetworkEndpointList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.ComputeNetworkEndpointList) []*v1alpha1.ComputeNetworkEndpoint {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.ComputeNetworkEndpointList, items []*v1alpha1.ComputeNetworkEndpoint) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.ComputeNetworkEndpoint), err
-}
-
-// List takes label and field selectors, and returns the list of ComputeNetworkEndpoints that match those selectors.
-func (c *FakeComputeNetworkEndpoints) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeNetworkEndpointList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(computenetworkendpointsResource, computenetworkendpointsKind, c.ns, opts), &v1alpha1.ComputeNetworkEndpointList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.ComputeNetworkEndpointList{ListMeta: obj.(*v1alpha1.ComputeNetworkEndpointList).ListMeta}
-	for _, item := range obj.(*v1alpha1.ComputeNetworkEndpointList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested computeNetworkEndpoints.
-func (c *FakeComputeNetworkEndpoints) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(computenetworkendpointsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a computeNetworkEndpoint and creates it.  Returns the server's representation of the computeNetworkEndpoint, and an error, if there is any.
-func (c *FakeComputeNetworkEndpoints) Create(ctx context.Context, computeNetworkEndpoint *v1alpha1.ComputeNetworkEndpoint, opts v1.CreateOptions) (result *v1alpha1.ComputeNetworkEndpoint, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(computenetworkendpointsResource, c.ns, computeNetworkEndpoint), &v1alpha1.ComputeNetworkEndpoint{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeNetworkEndpoint), err
-}
-
-// Update takes the representation of a computeNetworkEndpoint and updates it. Returns the server's representation of the computeNetworkEndpoint, and an error, if there is any.
-func (c *FakeComputeNetworkEndpoints) Update(ctx context.Context, computeNetworkEndpoint *v1alpha1.ComputeNetworkEndpoint, opts v1.UpdateOptions) (result *v1alpha1.ComputeNetworkEndpoint, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(computenetworkendpointsResource, c.ns, computeNetworkEndpoint), &v1alpha1.ComputeNetworkEndpoint{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeNetworkEndpoint), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeComputeNetworkEndpoints) UpdateStatus(ctx context.Context, computeNetworkEndpoint *v1alpha1.ComputeNetworkEndpoint, opts v1.UpdateOptions) (*v1alpha1.ComputeNetworkEndpoint, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(computenetworkendpointsResource, "status", c.ns, computeNetworkEndpoint), &v1alpha1.ComputeNetworkEndpoint{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeNetworkEndpoint), err
-}
-
-// Delete takes name of the computeNetworkEndpoint and deletes it. Returns an error if one occurs.
-func (c *FakeComputeNetworkEndpoints) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(computenetworkendpointsResource, c.ns, name, opts), &v1alpha1.ComputeNetworkEndpoint{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeComputeNetworkEndpoints) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(computenetworkendpointsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.ComputeNetworkEndpointList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched computeNetworkEndpoint.
-func (c *FakeComputeNetworkEndpoints) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeNetworkEndpoint, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(computenetworkendpointsResource, c.ns, name, pt, data, subresources...), &v1alpha1.ComputeNetworkEndpoint{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeNetworkEndpoint), err
 }

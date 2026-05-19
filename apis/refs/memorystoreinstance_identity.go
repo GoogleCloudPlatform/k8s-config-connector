@@ -15,47 +15,73 @@
 package refs
 
 import (
+	"context"
 	"fmt"
-	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
-// MemorystoreInstanceIdentity defines the resource reference to MemorystoreInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+var (
+	_ identity.IdentityV2 = &MemorystoreInstanceIdentity{}
+)
+
+var MemorystoreInstanceIdentityFormat = gcpurls.Template[MemorystoreInstanceIdentity]("memorystore.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
+
+// +k8s:deepcopy-gen=false
 type MemorystoreInstanceIdentity struct {
-	Parent_ *MemorystoreInstanceParent
-	ID_     string
+	Project  string
+	Location string
+	Instance string
 }
 
 func (i *MemorystoreInstanceIdentity) String() string {
-	return i.Parent_.String() + "/instances/" + i.ID_
+	return MemorystoreInstanceIdentityFormat.ToString(*i)
 }
 
-func (i *MemorystoreInstanceIdentity) ID() string {
-	return i.ID_
-}
-
-func (i *MemorystoreInstanceIdentity) Parent() *MemorystoreInstanceParent {
-	return i.Parent_
-}
-
-type MemorystoreInstanceParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *MemorystoreInstanceParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-func ParseInstanceExternal(external string) (parent *MemorystoreInstanceParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "instances" {
-		return nil, "", fmt.Errorf("format of MemorystoreInstance external=%q was not known (use projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}})", external)
+func (i *MemorystoreInstanceIdentity) FromExternal(ref string) error {
+	parsed, match, err := MemorystoreInstanceIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of MemorystoreInstance external=%q was not known (use %s): %w", ref, MemorystoreInstanceIdentityFormat.CanonicalForm(), err)
 	}
-	parent = &MemorystoreInstanceParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+	if !match {
+		return fmt.Errorf("format of MemorystoreInstance external=%q was not known (use %s)", ref, MemorystoreInstanceIdentityFormat.CanonicalForm())
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	*i = *parsed
+	return nil
+}
+
+func (i *MemorystoreInstanceIdentity) Host() string {
+	return MemorystoreInstanceIdentityFormat.Host()
+}
+
+// MemorystoreInstance_IdentityFromSpec gets the identity of a MemorystoreInstance from its spec.
+// We could have a registry mapping GVK to the type, once all the types implemented identity.Resource,
+// then we could move this helper into the resource type.
+func MemorystoreInstance_IdentityFromSpec(ctx context.Context, reader client.Reader, obj client.Object) (*MemorystoreInstanceIdentity, error) {
+	resourceID, err := refsv1beta1.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	location, err := refsv1beta1.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &MemorystoreInstanceIdentity{
+		Project:  projectID,
+		Location: location,
+		Instance: resourceID,
+	}
+	return identity, nil
 }

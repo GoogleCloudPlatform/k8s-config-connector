@@ -30,6 +30,7 @@ import (
 )
 
 func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
+	t.Parallel()
 	crds, err := crdloader.LoadCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)

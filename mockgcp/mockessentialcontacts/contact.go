@@ -23,8 +23,8 @@ import (
 	"fmt"
 	"strings"
 
+	pb "cloud.google.com/go/essentialcontacts/apiv1/essentialcontactspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/essentialcontacts/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -60,7 +60,7 @@ func (s *EssentialContactsV1) CreateContact(ctx context.Context, req *pb.CreateC
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetContact()).(*pb.Contact)
+	obj := proto.CloneOf(req.GetContact())
 	obj.Name = name.GetName()
 	obj.ValidateTime = timestamppb.Now()
 	obj.ValidationState = pb.ValidationState_VALID

@@ -32,7 +32,7 @@ type FakeOrgpolicyV1alpha1 struct {
 }
 
 func (c *FakeOrgpolicyV1alpha1) OrgPolicyPolicies(namespace string) v1alpha1.OrgPolicyPolicyInterface {
-	return &FakeOrgPolicyPolicies{c, namespace}
+	return newFakeOrgPolicyPolicies(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

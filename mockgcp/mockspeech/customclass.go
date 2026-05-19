@@ -30,9 +30,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/speech/apiv2/speechpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/speech/v2"
 	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
@@ -64,7 +64,7 @@ func (s *SpeechV2) CreateCustomClass(ctx context.Context, req *pb.CreateCustomCl
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetCustomClass()).(*pb.CustomClass)
+	obj := proto.CloneOf(req.GetCustomClass())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

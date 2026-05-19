@@ -86,6 +86,34 @@ func AsProjectRef(in *deprecatedrefs.ResourceRef) *ProjectRef {
 	}
 }
 
+// The resource reference that defaults to Project if Kind is not specified.
+type ExtendedProjectRef struct {
+	// Kind of the referenced resource
+	// +kubebuilder:default=Project
+	Kind      string `json:"kind,omitempty"`
+	Namespace string `json:"namespace,omitempty"`
+	Name      string `json:"name,omitempty"`
+	// APIVersion of the referenced resource
+	APIVersion string `json:"apiVersion,omitempty"`
+	// The external name of the referenced resource
+	External string `json:"external,omitempty"`
+}
+
+func (r *ExtendedProjectRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ExtendedProjectRef) GroupVersionKind() schema.GroupVersionKind {
+	return schema.FromAPIVersionAndKind(r.APIVersion, r.Kind)
+}
+
+func (r *ExtendedProjectRef) SetGroupVersionKind(gvk schema.GroupVersionKind) {
+	r.APIVersion, r.Kind = gvk.ToAPIVersionAndKind()
+}
+
 type ProjectIdentity struct {
 	ProjectID string
 }

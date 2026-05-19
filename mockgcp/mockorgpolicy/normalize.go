@@ -22,9 +22,9 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// policy
-	replacements.ReplacePath(".spec.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".spec.updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".spec.etag", "abcdef0123A=")
-	replacements.ReplacePath(".dryRunSpec.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".dryRunSpec.updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".dryRunSpec.etag", "abcdef0123A=")
 }
 

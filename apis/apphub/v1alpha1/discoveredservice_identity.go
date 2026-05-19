@@ -58,7 +58,7 @@ func (p *DiscoveredServiceParent) String() string {
 func NewDiscoveredServiceIdentity(ctx context.Context, reader client.Reader, obj *AppHubDiscoveredService) (*DiscoveredServiceIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func NewDiscoveredServiceIdentity(ctx context.Context, reader client.Reader, obj
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Parent.Location
+	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

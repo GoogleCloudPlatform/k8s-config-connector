@@ -67,7 +67,7 @@ func (r *internalRanges) CreateProjectsLocationsInternalRange(ctx context.Contex
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetProjectsLocationsInternalRange()).(*pb.InternalRange)
+	obj := proto.CloneOf(req.GetProjectsLocationsInternalRange())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

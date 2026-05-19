@@ -66,7 +66,7 @@ func (s *notebookService) AssignNotebookRuntime(ctx context.Context, req *pb.Ass
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.NotebookRuntime).(*pb.NotebookRuntime)
+	obj := proto.CloneOf(req.NotebookRuntime)
 
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)

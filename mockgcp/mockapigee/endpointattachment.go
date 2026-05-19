@@ -85,7 +85,7 @@ func (s *endpointAttachmentsServer) CreateOrganizationsEndpointAttachment(ctx co
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.OrganizationsEndpointAttachment).(*pb.GoogleCloudApigeeV1EndpointAttachment)
+	obj := proto.CloneOf(req.OrganizationsEndpointAttachment)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -103,7 +103,7 @@ func (s *endpointAttachmentsServer) CreateOrganizationsEndpointAttachment(ctx co
 			PercentDone: 100,
 		}
 		metadata.State = "FINISHED"
-		result := proto.Clone(obj).(*pb.GoogleCloudApigeeV1EndpointAttachment)
+		result := proto.CloneOf(obj)
 		populateOutputsForOrganizationsEndpointAttachment(result)
 		s.storage.Update(ctx, fqn, result)
 		return result, nil

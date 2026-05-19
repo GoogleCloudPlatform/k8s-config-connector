@@ -60,7 +60,7 @@ func (s *configServiceV2) CreateSink(ctx context.Context, req *pb.CreateSinkRequ
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetSink()).(*pb.LogSink)
+	obj := proto.CloneOf(req.GetSink())
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
 
@@ -96,7 +96,7 @@ func (s *configServiceV2) UpdateSink(ctx context.Context, req *pb.UpdateSinkRequ
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.LogSink)
+	updated := proto.CloneOf(existing)
 
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {

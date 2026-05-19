@@ -59,7 +59,7 @@ func returnView(obj *pb.Table, view pb.Table_View) *pb.Table {
 		view = pb.Table_SCHEMA_VIEW
 	}
 
-	ret := proto.Clone(obj).(*pb.Table)
+	ret := proto.CloneOf(obj)
 
 	for _, columnFamily := range ret.GetColumnFamilies() {
 		if proto.Equal(columnFamily.GcRule, &pb.GcRule{}) {
@@ -104,7 +104,7 @@ func (s *tableAdminServer) CreateTable(ctx context.Context, req *pb.CreateTableR
 
 	tableFQN := tableName.String()
 
-	obj := proto.Clone(req.Table).(*pb.Table)
+	obj := proto.CloneOf(req.Table)
 	obj.Name = tableFQN
 
 	if obj.Granularity == pb.Table_TIMESTAMP_GRANULARITY_UNSPECIFIED {

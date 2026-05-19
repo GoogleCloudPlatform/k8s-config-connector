@@ -65,7 +65,7 @@ func (s *backupVaultsService) CreateBackupPolicy(ctx context.Context, req *pb.Cr
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetBackupPolicy()).(*pb.BackupPolicy)
+	obj := proto.CloneOf(req.GetBackupPolicy())
 	obj.Name = fqn
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)

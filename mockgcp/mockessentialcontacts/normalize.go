@@ -21,9 +21,9 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	replacements.ReplacePath(".contacts[].validateTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".response.validateTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".validateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".contacts[].validateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.validateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".validateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

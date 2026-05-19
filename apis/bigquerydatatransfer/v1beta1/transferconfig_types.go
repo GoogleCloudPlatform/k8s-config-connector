@@ -122,7 +122,7 @@ type BigQueryDataTransferConfigSpec struct {
 
 	Parent `json:",inline"`
 
-	// The BigQueryDataTransferConfig name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Data transfer schedule.
@@ -240,6 +240,7 @@ type BigQueryDataTransferConfigObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 // +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 
 // BigQueryDataTransferConfig is the Schema for the BigQueryDataTransferConfig API
 // +k8s:openapi-gen=true

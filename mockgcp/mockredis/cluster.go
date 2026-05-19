@@ -28,8 +28,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/cluster/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
 )
 
@@ -54,7 +54,7 @@ func (r *clusterServer) GetCluster(ctx context.Context, req *pb.GetClusterReques
 		return nil, err
 	}
 
-	retObj := proto.Clone(obj).(*pb.Cluster)
+	retObj := proto.CloneOf(obj)
 	// pscConfigs is not included in the response
 	retObj.PscConfigs = nil
 	return retObj, nil
@@ -71,7 +71,7 @@ func (r *clusterServer) CreateCluster(ctx context.Context, req *pb.CreateCluster
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetCluster()).(*pb.Cluster)
+	obj := proto.CloneOf(req.GetCluster())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 
@@ -101,7 +101,7 @@ func (r *clusterServer) CreateCluster(ctx context.Context, req *pb.CreateCluster
 			return nil, err
 		}
 
-		retObj := proto.Clone(obj).(*pb.Cluster)
+		retObj := proto.CloneOf(obj)
 		// pscConfigs is not included in the response
 		retObj.PscConfigs = nil
 		return retObj, nil
@@ -275,7 +275,7 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		retObj := proto.Clone(obj).(*pb.Cluster)
+		retObj := proto.CloneOf(obj)
 		// pscConfigs is not included in the response
 		retObj.PscConfigs = nil
 		return retObj, nil

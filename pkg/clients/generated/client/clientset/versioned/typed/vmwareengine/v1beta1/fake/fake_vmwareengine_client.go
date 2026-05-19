@@ -32,7 +32,7 @@ type FakeVmwareengineV1beta1 struct {
 }
 
 func (c *FakeVmwareengineV1beta1) VMwareEngineExternalAddresses(namespace string) v1beta1.VMwareEngineExternalAddressInterface {
-	return &FakeVMwareEngineExternalAddresses{c, namespace}
+	return newFakeVMwareEngineExternalAddresses(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

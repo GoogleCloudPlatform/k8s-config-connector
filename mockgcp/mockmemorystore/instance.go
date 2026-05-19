@@ -28,9 +28,10 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/memorystore/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
+	"github.com/google/uuid"
 )
 
 type instanceServer struct {
@@ -54,7 +55,7 @@ func (r *instanceServer) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 		return nil, err
 	}
 
-	retObj := proto.Clone(obj).(*pb.Instance)
+	retObj := proto.CloneOf(obj)
 	return retObj, nil
 }
 
@@ -69,7 +70,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstance())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -93,7 +94,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		retObj := proto.Clone(obj).(*pb.Instance)
+		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
 		r.storage.Update(ctx, fqn, retObj)
 		return retObj, nil
@@ -106,7 +107,21 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	}
 
 	if obj.DeletionProtectionEnabled == nil {
-		obj.DeletionProtectionEnabled = mocks.PtrTo(false)
+		obj.DeletionProtectionEnabled = new(false)
+	}
+
+	if obj.EffectiveMaintenanceVersion == nil {
+		obj.EffectiveMaintenanceVersion = new("MEMORYSTORE_20260313_01_02")
+	}
+
+	if obj.AvailableMaintenanceVersions == nil {
+		obj.AvailableMaintenanceVersions = []string{"MEMORYSTORE_20260313_01_02", "MEMORYSTORE_20260313_01_03"}
+	}
+
+	if obj.EncryptionInfo == nil {
+		obj.EncryptionInfo = &pb.EncryptionInfo{
+			EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+		}
 	}
 
 	if obj.NodeType == pb.Instance_NODE_TYPE_UNSPECIFIED {
@@ -116,6 +131,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.Mode == pb.Instance_MODE_UNSPECIFIED {
 		obj.Mode = pb.Instance_CLUSTER
 	}
+
 	if len(obj.PscAttachmentDetails) == 0 {
 		var types []pb.ConnectionType
 		switch obj.GetMode() {
@@ -126,17 +142,20 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 			types = append(types, pb.ConnectionType_CONNECTION_TYPE_PRIMARY)
 			types = append(types, pb.ConnectionType_CONNECTION_TYPE_READER)
 		}
+		pscProjectNumber := 11199043661                                 // This is (presumably) a project owned by memorystore
+		pscUID := strings.ReplaceAll(uuid.New().String(), "-", "")[:15] // Take a substring to get a shorter UID
 		obj.PscAttachmentDetails = []*pb.PscAttachmentDetail{
 			{
-				ServiceAttachment: fmt.Sprintf("projects/tp-%s/regions/%s/serviceAttachments/sa-%s", name.Name, name.Location, name.Name),
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-j%s-psc-sa", pscProjectNumber, name.Location, pscUID),
 				ConnectionType:    types[0],
 			},
 			{
-				ServiceAttachment: fmt.Sprintf("projects/tp-%s/regions/%s/serviceAttachments/sa-%s-2", name.Name, name.Location, name.Name),
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-j%s-psc-sa-2", pscProjectNumber, name.Location, pscUID),
 				ConnectionType:    types[1],
 			},
 		}
 	}
+
 	if len(obj.Endpoints) > 0 {
 		if obj.Endpoints[0] != nil && len(obj.Endpoints[0].Connections) > 0 {
 			connections := obj.Endpoints[0].Connections
@@ -145,7 +164,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 				if autoConnection != nil {
 					obj.Endpoints[0].Connections = append(obj.Endpoints[0].Connections, &pb.Instance_ConnectionDetail{
 						Connection: &pb.Instance_ConnectionDetail_PscAutoConnection{
-							PscAutoConnection: proto.Clone(autoConnection).(*pb.PscAutoConnection),
+							PscAutoConnection: proto.CloneOf(autoConnection),
 						},
 					})
 				}
@@ -228,8 +247,9 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		obj.TransitEncryptionMode = pb.Instance_TRANSIT_ENCRYPTION_DISABLED
 	}
 	if obj.Uid == "" {
-		obj.Uid = fmt.Sprintf("instance-%s", name.Name)
+		obj.Uid = uuid.New().String()
 	}
+
 	if obj.ZoneDistributionConfig == nil {
 		obj.ZoneDistributionConfig = &pb.ZoneDistributionConfig{}
 	}
@@ -390,6 +410,8 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.TransitEncryptionMode = req.Instance.TransitEncryptionMode
 		case "zoneDistributionConfig":
 			obj.ZoneDistributionConfig = req.Instance.ZoneDistributionConfig
+		case "maintenanceVersion":
+			obj.MaintenanceVersion = req.Instance.MaintenanceVersion
 		default:
 			// Note: actual error is:
 			// googleapi: Error 400: unsupported path in fieldMask: mode. Allowed values are engine_version, automated_backup_config, shard_count, persistence_config.rdb_config.rdb_snapshot_period, acl_policy, auth_mode, persistence_config.aof_config.append_fsync, simulate_maintenance_event, deletion_protection_enabled, node_type, cross_instance_replication_config.primary_instance.instance, replica_count, persistence_config.rdb_config.rdb_snapshot_start_time, endpoints, cross_instance_replication_config, cross_instance_replication_config.instance_role, rotate_server_certificate, engine_configs, labels, persistence_config, maintenance_window, maintenance_policy, automated_backup_config.fixed_frequency_schedule.start_time.hours, maintenance_version, maintenance_policy.weekly_maintenance_window, automated_backup_config.fixed_frequency_schedule.start_time, cross_instance_replication_config.secondary_instances, automated_backup_config.automated_backup_mode, automated_backup_config.fixed_frequency_schedule, automated_backup_config.retention, persistence_config.mode
@@ -418,7 +440,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		retObj := proto.Clone(obj).(*pb.Instance)
+		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
 		retObj.UpdateTime = timestamppb.New(time.Now())
 		r.storage.Update(ctx, fqn, retObj)
@@ -499,7 +521,7 @@ func (r *instanceServer) GetBackup(ctx context.Context, req *pb.GetBackupRequest
 		return nil, err
 	}
 
-	retObj := proto.Clone(obj).(*pb.Backup)
+	retObj := proto.CloneOf(obj)
 	return retObj, nil
 }
 
@@ -570,6 +592,12 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 		TotalSizeBytes: 141,
 		Uid:            fmt.Sprintf("backup-%s", backupID),
 	}
+
+	obj.EncryptionInfo = &pb.EncryptionInfo{
+		EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+		LastUpdateTime: timestamppb.New(now),
+	}
+
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -586,7 +614,7 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 		metadata.EndTime = timestamppb.Now()
 		obj.State = pb.Backup_ACTIVE
 		r.storage.Update(ctx, fqn, obj)
-		return proto.Clone(instanceObj).(*pb.Instance), nil
+		return proto.CloneOf(instanceObj), nil
 	})
 }
 

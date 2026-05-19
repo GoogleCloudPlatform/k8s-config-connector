@@ -62,7 +62,7 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.WorkerPool).(*pb.WorkerPool)
+	obj := proto.CloneOf(req.WorkerPool)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	obj.UpdateTime = timestamppb.Now()

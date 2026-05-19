@@ -65,7 +65,7 @@ func (s *workflowTemplateServer) CreateWorkflowTemplate(ctx context.Context, req
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetTemplate()).(*pb.WorkflowTemplate)
+	obj := proto.CloneOf(req.GetTemplate())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

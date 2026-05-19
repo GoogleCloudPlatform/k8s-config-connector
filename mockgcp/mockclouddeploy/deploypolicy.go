@@ -30,8 +30,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/deploy/apiv1/deploypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/deploy/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -61,7 +61,7 @@ func (s *cloudDeploy) CreateDeployPolicy(ctx context.Context, req *pb.CreateDepl
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetDeployPolicy()).(*pb.DeployPolicy)
+	obj := proto.CloneOf(req.GetDeployPolicy())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

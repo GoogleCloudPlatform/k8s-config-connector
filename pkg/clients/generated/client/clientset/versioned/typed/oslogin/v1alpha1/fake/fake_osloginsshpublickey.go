@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/oslogin/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	osloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oslogin/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeOSLoginSSHPublicKeys implements OSLoginSSHPublicKeyInterface
-type FakeOSLoginSSHPublicKeys struct {
+// fakeOSLoginSSHPublicKeys implements OSLoginSSHPublicKeyInterface
+type fakeOSLoginSSHPublicKeys struct {
+	*gentype.FakeClientWithList[*v1alpha1.OSLoginSSHPublicKey, *v1alpha1.OSLoginSSHPublicKeyList]
 	Fake *FakeOsloginV1alpha1
-	ns   string
 }
 
-var osloginsshpublickeysResource = v1alpha1.SchemeGroupVersion.WithResource("osloginsshpublickeys")
-
-var osloginsshpublickeysKind = v1alpha1.SchemeGroupVersion.WithKind("OSLoginSSHPublicKey")
-
-// Get takes name of the oSLoginSSHPublicKey, and returns the corresponding oSLoginSSHPublicKey object, and an error if there is any.
-func (c *FakeOSLoginSSHPublicKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.OSLoginSSHPublicKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(osloginsshpublickeysResource, c.ns, name), &v1alpha1.OSLoginSSHPublicKey{})
-
-	if obj == nil {
-		return nil, err
+func newFakeOSLoginSSHPublicKeys(fake *FakeOsloginV1alpha1, namespace string) osloginv1alpha1.OSLoginSSHPublicKeyInterface {
+	return &fakeOSLoginSSHPublicKeys{
+		gentype.NewFakeClientWithList[*v1alpha1.OSLoginSSHPublicKey, *v1alpha1.OSLoginSSHPublicKeyList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("osloginsshpublickeys"),
+			v1alpha1.SchemeGroupVersion.WithKind("OSLoginSSHPublicKey"),
+			func() *v1alpha1.OSLoginSSHPublicKey { return &v1alpha1.OSLoginSSHPublicKey{} },
+			func() *v1alpha1.OSLoginSSHPublicKeyList { return &v1alpha1.OSLoginSSHPublicKeyList{} },
+			func(dst, src *v1alpha1.OSLoginSSHPublicKeyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.OSLoginSSHPublicKeyList) []*v1alpha1.OSLoginSSHPublicKey {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.OSLoginSSHPublicKeyList, items []*v1alpha1.OSLoginSSHPublicKey) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.OSLoginSSHPublicKey), err
-}
-
-// List takes label and field selectors, and returns the list of OSLoginSSHPublicKeys that match those selectors.
-func (c *FakeOSLoginSSHPublicKeys) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.OSLoginSSHPublicKeyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(osloginsshpublickeysResource, osloginsshpublickeysKind, c.ns, opts), &v1alpha1.OSLoginSSHPublicKeyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.OSLoginSSHPublicKeyList{ListMeta: obj.(*v1alpha1.OSLoginSSHPublicKeyList).ListMeta}
-	for _, item := range obj.(*v1alpha1.OSLoginSSHPublicKeyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested oSLoginSSHPublicKeys.
-func (c *FakeOSLoginSSHPublicKeys) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(osloginsshpublickeysResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a oSLoginSSHPublicKey and creates it.  Returns the server's representation of the oSLoginSSHPublicKey, and an error, if there is any.
-func (c *FakeOSLoginSSHPublicKeys) Create(ctx context.Context, oSLoginSSHPublicKey *v1alpha1.OSLoginSSHPublicKey, opts v1.CreateOptions) (result *v1alpha1.OSLoginSSHPublicKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(osloginsshpublickeysResource, c.ns, oSLoginSSHPublicKey), &v1alpha1.OSLoginSSHPublicKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.OSLoginSSHPublicKey), err
-}
-
-// Update takes the representation of a oSLoginSSHPublicKey and updates it. Returns the server's representation of the oSLoginSSHPublicKey, and an error, if there is any.
-func (c *FakeOSLoginSSHPublicKeys) Update(ctx context.Context, oSLoginSSHPublicKey *v1alpha1.OSLoginSSHPublicKey, opts v1.UpdateOptions) (result *v1alpha1.OSLoginSSHPublicKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(osloginsshpublickeysResource, c.ns, oSLoginSSHPublicKey), &v1alpha1.OSLoginSSHPublicKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.OSLoginSSHPublicKey), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeOSLoginSSHPublicKeys) UpdateStatus(ctx context.Context, oSLoginSSHPublicKey *v1alpha1.OSLoginSSHPublicKey, opts v1.UpdateOptions) (*v1alpha1.OSLoginSSHPublicKey, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(osloginsshpublickeysResource, "status", c.ns, oSLoginSSHPublicKey), &v1alpha1.OSLoginSSHPublicKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.OSLoginSSHPublicKey), err
-}
-
-// Delete takes name of the oSLoginSSHPublicKey and deletes it. Returns an error if one occurs.
-func (c *FakeOSLoginSSHPublicKeys) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(osloginsshpublickeysResource, c.ns, name, opts), &v1alpha1.OSLoginSSHPublicKey{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeOSLoginSSHPublicKeys) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(osloginsshpublickeysResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.OSLoginSSHPublicKeyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched oSLoginSSHPublicKey.
-func (c *FakeOSLoginSSHPublicKeys) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.OSLoginSSHPublicKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(osloginsshpublickeysResource, c.ns, name, pt, data, subresources...), &v1alpha1.OSLoginSSHPublicKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.OSLoginSSHPublicKey), err
 }

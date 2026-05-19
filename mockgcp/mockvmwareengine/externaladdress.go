@@ -66,7 +66,7 @@ func (s *VMwareEngineV1) CreateExternalAddress(ctx context.Context, req *pb.Crea
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetExternalAddress()).(*pb.ExternalAddress)
+	obj := proto.CloneOf(req.GetExternalAddress())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

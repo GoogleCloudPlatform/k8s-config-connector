@@ -522,9 +522,19 @@ func (in *MachineSpec) DeepCopyInto(out *MachineSpec) {
 		*out = new(int32)
 		**out = **in
 	}
+	if in.GpuPartitionSize != nil {
+		in, out := &in.GpuPartitionSize, &out.GpuPartitionSize
+		*out = new(string)
+		**out = **in
+	}
 	if in.TpuTopology != nil {
 		in, out := &in.TpuTopology, &out.TpuTopology
 		*out = new(string)
+		**out = **in
+	}
+	if in.MultihostGpuNodeCount != nil {
+		in, out := &in.MultihostGpuNodeCount, &out.MultihostGpuNodeCount
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ReservationAffinity != nil {

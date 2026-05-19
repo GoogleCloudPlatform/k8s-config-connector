@@ -18,7 +18,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
+	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

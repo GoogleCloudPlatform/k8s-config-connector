@@ -121,7 +121,7 @@ func (r *kmsServer) CreateCryptoKeyVersion(ctx context.Context, req *pb.CreateCr
 	now := time.Now()
 
 	var obj *pb.CryptoKeyVersion
-	obj = proto.Clone(req.GetCryptoKeyVersion()).(*pb.CryptoKeyVersion)
+	obj = proto.CloneOf(req.GetCryptoKeyVersion())
 	if obj == nil {
 		obj = &pb.CryptoKeyVersion{}
 	}

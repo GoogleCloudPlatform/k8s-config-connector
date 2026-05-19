@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeIAMAccessBoundaryPolicies implements IAMAccessBoundaryPolicyInterface
-type FakeIAMAccessBoundaryPolicies struct {
+// fakeIAMAccessBoundaryPolicies implements IAMAccessBoundaryPolicyInterface
+type fakeIAMAccessBoundaryPolicies struct {
+	*gentype.FakeClientWithList[*v1beta1.IAMAccessBoundaryPolicy, *v1beta1.IAMAccessBoundaryPolicyList]
 	Fake *FakeIamV1beta1
-	ns   string
 }
 
-var iamaccessboundarypoliciesResource = v1beta1.SchemeGroupVersion.WithResource("iamaccessboundarypolicies")
-
-var iamaccessboundarypoliciesKind = v1beta1.SchemeGroupVersion.WithKind("IAMAccessBoundaryPolicy")
-
-// Get takes name of the iAMAccessBoundaryPolicy, and returns the corresponding iAMAccessBoundaryPolicy object, and an error if there is any.
-func (c *FakeIAMAccessBoundaryPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IAMAccessBoundaryPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(iamaccessboundarypoliciesResource, c.ns, name), &v1beta1.IAMAccessBoundaryPolicy{})
-
-	if obj == nil {
-		return nil, err
+func newFakeIAMAccessBoundaryPolicies(fake *FakeIamV1beta1, namespace string) iamv1beta1.IAMAccessBoundaryPolicyInterface {
+	return &fakeIAMAccessBoundaryPolicies{
+		gentype.NewFakeClientWithList[*v1beta1.IAMAccessBoundaryPolicy, *v1beta1.IAMAccessBoundaryPolicyList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("iamaccessboundarypolicies"),
+			v1beta1.SchemeGroupVersion.WithKind("IAMAccessBoundaryPolicy"),
+			func() *v1beta1.IAMAccessBoundaryPolicy { return &v1beta1.IAMAccessBoundaryPolicy{} },
+			func() *v1beta1.IAMAccessBoundaryPolicyList { return &v1beta1.IAMAccessBoundaryPolicyList{} },
+			func(dst, src *v1beta1.IAMAccessBoundaryPolicyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.IAMAccessBoundaryPolicyList) []*v1beta1.IAMAccessBoundaryPolicy {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.IAMAccessBoundaryPolicyList, items []*v1beta1.IAMAccessBoundaryPolicy) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.IAMAccessBoundaryPolicy), err
-}
-
-// List takes label and field selectors, and returns the list of IAMAccessBoundaryPolicies that match those selectors.
-func (c *FakeIAMAccessBoundaryPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.IAMAccessBoundaryPolicyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(iamaccessboundarypoliciesResource, iamaccessboundarypoliciesKind, c.ns, opts), &v1beta1.IAMAccessBoundaryPolicyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.IAMAccessBoundaryPolicyList{ListMeta: obj.(*v1beta1.IAMAccessBoundaryPolicyList).ListMeta}
-	for _, item := range obj.(*v1beta1.IAMAccessBoundaryPolicyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested iAMAccessBoundaryPolicies.
-func (c *FakeIAMAccessBoundaryPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(iamaccessboundarypoliciesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a iAMAccessBoundaryPolicy and creates it.  Returns the server's representation of the iAMAccessBoundaryPolicy, and an error, if there is any.
-func (c *FakeIAMAccessBoundaryPolicies) Create(ctx context.Context, iAMAccessBoundaryPolicy *v1beta1.IAMAccessBoundaryPolicy, opts v1.CreateOptions) (result *v1beta1.IAMAccessBoundaryPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(iamaccessboundarypoliciesResource, c.ns, iAMAccessBoundaryPolicy), &v1beta1.IAMAccessBoundaryPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.IAMAccessBoundaryPolicy), err
-}
-
-// Update takes the representation of a iAMAccessBoundaryPolicy and updates it. Returns the server's representation of the iAMAccessBoundaryPolicy, and an error, if there is any.
-func (c *FakeIAMAccessBoundaryPolicies) Update(ctx context.Context, iAMAccessBoundaryPolicy *v1beta1.IAMAccessBoundaryPolicy, opts v1.UpdateOptions) (result *v1beta1.IAMAccessBoundaryPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(iamaccessboundarypoliciesResource, c.ns, iAMAccessBoundaryPolicy), &v1beta1.IAMAccessBoundaryPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.IAMAccessBoundaryPolicy), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeIAMAccessBoundaryPolicies) UpdateStatus(ctx context.Context, iAMAccessBoundaryPolicy *v1beta1.IAMAccessBoundaryPolicy, opts v1.UpdateOptions) (*v1beta1.IAMAccessBoundaryPolicy, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(iamaccessboundarypoliciesResource, "status", c.ns, iAMAccessBoundaryPolicy), &v1beta1.IAMAccessBoundaryPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.IAMAccessBoundaryPolicy), err
-}
-
-// Delete takes name of the iAMAccessBoundaryPolicy and deletes it. Returns an error if one occurs.
-func (c *FakeIAMAccessBoundaryPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(iamaccessboundarypoliciesResource, c.ns, name, opts), &v1beta1.IAMAccessBoundaryPolicy{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeIAMAccessBoundaryPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(iamaccessboundarypoliciesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.IAMAccessBoundaryPolicyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched iAMAccessBoundaryPolicy.
-func (c *FakeIAMAccessBoundaryPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAMAccessBoundaryPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(iamaccessboundarypoliciesResource, c.ns, name, pt, data, subresources...), &v1beta1.IAMAccessBoundaryPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.IAMAccessBoundaryPolicy), err
 }

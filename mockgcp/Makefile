@@ -111,10 +111,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/vertex_rag_data.proto \
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/apphub/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/bigquery/connection/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/certificatemanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
@@ -131,24 +129,14 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
 		./third_party/googleapis/mockgcp/cloud/gkemulticloud/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/deploy/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/memorystore/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/orgpolicy/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/parametermanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/redis/cluster/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/redis/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/resourcemanager/v3/*.proto \
-		./third_party/googleapis/mockgcp/cloud/secretmanager/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/securesourcemanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/security/privateca/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/servicedirectory/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/sql/v1beta4/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tpu/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vpcaccess/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/workflows/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/workflows/executions/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/workstations/v1/*.proto \
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
@@ -169,18 +157,12 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/api/cloudquotas/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/datacatalog/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/eventarc/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/netapp/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/datastream/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/modelarmor/v1/service.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
-		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
 
 
@@ -202,22 +184,16 @@ generate-grpc-for-google-protos:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--grpc-gateway_opt standalone=true \
-		./third_party/googleapis/google/cloud/discoveryengine/v1/data_store_service.proto \
-		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
-		./third_party/googleapis/google/cloud/dataproc/v1/*.proto \
 		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
 		./third_party/googleapis/google/storage/control/v2/*.proto \
 		./third_party/googleapis/google/cloud/batch/v1/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
-		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
-		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
-		./third_party/googleapis/google/logging/v2/*.proto \
 		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
 
 .PHONY: generate-protos-from-openapi

@@ -20,7 +20,7 @@ import (
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
+	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/types/known/anypb"

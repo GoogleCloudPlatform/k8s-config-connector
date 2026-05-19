@@ -47,7 +47,7 @@ func (s *peeredDnsDomainsServer) CreateServicesProjectsGlobalNetworksPeeredDnsDo
 		return nil, status.Errorf(codes.InvalidArgument, "The peered DNS domain suffix '%s' must end with a trailing dot (.)", domain)
 	}
 
-	obj := proto.Clone(req.GetServicesProjectsGlobalNetworksPeeredDnsDomain()).(*pb.PeeredDnsDomain)
+	obj := proto.CloneOf(req.GetServicesProjectsGlobalNetworksPeeredDnsDomain())
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

@@ -25,7 +25,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/alloydb/v1beta"
+	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 )
 
 func (s *AlloyDBAdminV1) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User, error) {
@@ -56,7 +56,7 @@ func (s *AlloyDBAdminV1) CreateUser(ctx context.Context, req *pb.CreateUserReque
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.User).(*pb.User)
+	obj := proto.CloneOf(req.User)
 	obj.Name = fqn
 
 	if obj.DatabaseRoles == nil && obj.UserType == pb.User_ALLOYDB_IAM_USER {

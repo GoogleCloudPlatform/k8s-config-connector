@@ -18,11 +18,15 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -44,6 +48,9 @@ func (s *FutureReservationsV1) Get(ctx context.Context, req *pb.GetFutureReserva
 
 	obj := &pb.FutureReservation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -51,6 +58,17 @@ func (s *FutureReservationsV1) Get(ctx context.Context, req *pb.GetFutureReserva
 }
 
 func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureReservationRequest) (*pb.Operation, error) {
+	// Simulate realGCP validation
+	if req.GetFutureReservationResource().GetTimeWindow() != nil && req.GetFutureReservationResource().GetTimeWindow().GetStartTime() != "" {
+		startTimeStr := req.GetFutureReservationResource().GetTimeWindow().GetStartTime()
+		startTime, err := time.Parse(time.RFC3339Nano, startTimeStr)
+		if err == nil {
+			if startTime.Before(time.Now()) {
+				return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.timeWindow.startTime': '%s'. Future reservation start time is either in the past or too early.", startTimeStr)
+			}
+		}
+	}
+
 	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/futureReservations/" + req.GetFutureReservationResource().GetName()
 	name, err := s.parseFutureReservationName(reqName)
 	if err != nil {
@@ -61,24 +79,20 @@ func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureR
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetFutureReservationResource()).(*pb.FutureReservation)
+	obj := proto.CloneOf(req.GetFutureReservationResource())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, name.String()))
 	obj.Kind = PtrTo("compute#futureReservation")
 	if obj.Status == nil {
-		obj.Status = &pb.FutureReservationStatus{}
+		obj.Status = &pb.FutureReservationStatus{ProcurementStatus: PtrTo("DRAFTING")}
 	}
 	if obj.PlanningStatus == nil {
 		obj.PlanningStatus = PtrTo("DRAFT")
 	}
-	obj.Status.ProcurementStatus = PtrTo("DRAFTING")
 	obj.SelfLinkWithId = PtrTo(BuildComputeSelfLink(ctx, name.String()))
 	if obj.SpecificReservationRequired == nil {
 		obj.SpecificReservationRequired = PtrTo(false)
-	}
-	if obj.GetAutoDeleteAutoCreatedReservations() == false {
-		obj.AutoDeleteAutoCreatedReservations = nil
 	}
 	obj.Zone = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s", name.Project.ID, name.Zone))
 
@@ -93,6 +107,48 @@ func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureR
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		// Assign API default(nil) values after resource creation
+
+		// GCP API does not have AutoDeleteAutoCreatedReservations field in the response body.
+		// If it's false, it will not be populated; If it's true, AutoCreatedReservationsDeleteTime will be populated.
+		obj.AutoDeleteAutoCreatedReservations = nil
+
+		if obj.GetEnableEmergentMaintenance() == false {
+			obj.EnableEmergentMaintenance = nil
+		}
+		if obj.ShareSettings != nil && obj.ShareSettings.GetShareType() == "LOCAL" {
+			obj.ShareSettings = nil
+		}
+		if obj.GetSchedulingType() == "FLEXIBLE" {
+			obj.SchedulingType = nil
+		}
+
+		obj.Status.ExistingMatchingUsageInfo = &pb.FutureReservationStatusExistingMatchingUsageInfo{
+			Count:     PtrTo(int64(0)),
+			Timestamp: PtrTo(s.nowString()),
+		}
+		// handle endtime calculated by duration
+		if obj.TimeWindow != nil && obj.TimeWindow.Duration != nil {
+			end, err := parseDuration(obj.TimeWindow.StartTime, obj.TimeWindow.Duration)
+			if err != nil {
+				return nil, err
+			}
+			obj.TimeWindow.EndTime = direct.PtrTo(end.Format(time.RFC3339Nano))
+			obj.TimeWindow.Duration = nil
+		}
+
+		// handle AutoCreatedReservationsDeleteTime calculated by duration
+		if obj.AutoCreatedReservationsDuration != nil {
+			end, err := parseDuration(obj.TimeWindow.StartTime, obj.AutoCreatedReservationsDuration)
+			if err != nil {
+				return nil, err
+			}
+			obj.AutoCreatedReservationsDeleteTime = direct.PtrTo(end.Format(time.RFC3339Nano))
+			obj.AutoCreatedReservationsDuration = nil
+		}
+		if err := s.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
 		return obj, nil
 	})
 }
@@ -110,15 +166,34 @@ func (s *FutureReservationsV1) Update(ctx context.Context, req *pb.UpdateFutureR
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	proto.Merge(obj, req.GetFutureReservationResource())
-	if obj.Status != nil {
-		obj.Status.ExistingMatchingUsageInfo = &pb.FutureReservationStatusExistingMatchingUsageInfo{
-			Count:     PtrTo(int64(0)),
-			Timestamp: PtrTo(s.nowString()),
-		}
+
+	paths := strings.Split(req.GetUpdateMask(), ",")
+	if len(paths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
+
+	if err := fields.UpdateByFieldMask(obj, req.GetFutureReservationResource(), paths); err != nil {
+		return nil, fmt.Errorf("applying updates: %w", err)
+	}
+
+	// handle endtime calculated by duration
 	if obj.TimeWindow != nil && obj.TimeWindow.Duration != nil {
+		end, err := parseDuration(obj.TimeWindow.StartTime, obj.TimeWindow.Duration)
+		if err != nil {
+			return nil, err
+		}
+		obj.TimeWindow.EndTime = direct.PtrTo(end.Format(time.RFC3339Nano))
 		obj.TimeWindow.Duration = nil
+	}
+
+	// handle AutoCreatedReservationsDeleteTime calculated by duration
+	if obj.AutoCreatedReservationsDuration != nil {
+		end, err := parseDuration(obj.TimeWindow.StartTime, obj.AutoCreatedReservationsDuration)
+		if err != nil {
+			return nil, err
+		}
+		obj.AutoCreatedReservationsDeleteTime = direct.PtrTo(end.Format(time.RFC3339Nano))
+		obj.AutoCreatedReservationsDuration = nil
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -132,6 +207,23 @@ func (s *FutureReservationsV1) Update(ctx context.Context, req *pb.UpdateFutureR
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		// If AutoDeleteAutoCreatedReservations is enabled and AutoCreatedReservationsDeleteTime/AutoCreatedReservationsDuration is not specified,
+		// use EndTime as the default auto delete time.
+		if obj.GetAutoDeleteAutoCreatedReservations() == true && obj.AutoCreatedReservationsDeleteTime == nil {
+			obj.AutoCreatedReservationsDeleteTime = obj.TimeWindow.EndTime
+		}
+		// GCP API does not have AutoDeleteAutoCreatedReservations field in the response body.
+		// If it's false, it will not be populated; If it's true, AutoCreatedReservationsDeleteTime will be populated.
+		obj.AutoDeleteAutoCreatedReservations = nil
+
+		// Simulate realGCP
+		if obj.Description == nil {
+			obj.Description = direct.PtrTo("")
+		}
+
+		if err := s.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
 		return obj, nil
 	})
 }
@@ -262,4 +354,21 @@ func (s *MockService) parseFutureReservationName(name string) (*futureReservatio
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func parseDuration(startTime *string, duration *pb.Duration) (time.Time, error) {
+	start, err := time.Parse(time.RFC3339Nano, direct.ValueOf(startTime))
+	if err != nil {
+		return time.Time{}, status.Errorf(codes.InvalidArgument, "invalid start_time: %v", err)
+	}
+
+	d := time.Duration(0)
+	if duration.Seconds != nil {
+		d = d + time.Duration(direct.ValueOf(duration.Seconds))*time.Second
+	}
+	if duration.Nanos != nil {
+		d = d + time.Duration(direct.ValueOf(duration.Nanos))*time.Nanosecond
+	}
+
+	return start.Add(d), nil
 }

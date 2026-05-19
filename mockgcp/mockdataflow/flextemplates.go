@@ -89,7 +89,7 @@ func (r *flexTemplatesServer) LaunchFlexTemplate(ctx context.Context, req *pb.La
 	retVal := &pb.LaunchFlexTemplateResponse{
 		Job: job,
 	}
-	retVal = proto.Clone(retVal).(*pb.LaunchFlexTemplateResponse)
+	retVal = proto.CloneOf(retVal)
 	retVal.Job.ReplaceJobId = ""
 	return retVal, nil
 }

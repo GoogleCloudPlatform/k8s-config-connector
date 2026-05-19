@@ -65,7 +65,7 @@ func (s *networkEdgeSecurityServicesV1) Insert(ctx context.Context, req *pb.Inse
 	fqn := name.String()
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetNetworkEdgeSecurityServiceResource()).(*pb.NetworkEdgeSecurityService)
+	obj := proto.CloneOf(req.GetNetworkEdgeSecurityServiceResource())
 	obj.Id = proto.Uint64(s.generateID())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.SelfLinkWithId = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/networkEdgeSecurityServices/%d", name.Project.ID, name.Region, id)))

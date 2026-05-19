@@ -46,7 +46,7 @@ func (s *firestoreAdminServer) CreateIndex(ctx context.Context, req *pb.CreateIn
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.Index).(*pb.Index)
+	obj := proto.CloneOf(req.Index)
 	obj.Name = fqn
 	obj.State = pb.Index_READY
 
@@ -63,7 +63,7 @@ func (s *firestoreAdminServer) CreateIndex(ctx context.Context, req *pb.CreateIn
 	}
 	lroPrefix := fmt.Sprintf("projects/%s/databases/%s", name.Project.ID, name.Database)
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		result := ProtoClone(obj)
+		result := proto.CloneOf(obj)
 		result.State = pb.Index_CREATING
 
 		lroMetadata.EndTime = timestamppb.Now()

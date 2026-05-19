@@ -144,9 +144,9 @@ func (a *lakeAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	log.V(2).Info("creating dataplex lake", "name", a.id)
 
 	req := &pb.CreateLakeRequest{
-		Parent: a.id.Parent().String(),
+		Parent: fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
 		Lake:   a.desired,
-		LakeId: a.id.ID(),
+		LakeId: a.id.Lake,
 	}
 	op, err := a.gcpClient.CreateLake(ctx, req)
 	if err != nil {
@@ -250,8 +250,8 @@ func (a *lakeAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ParentRef = &parent.ProjectAndLocationRef{
-		ProjectRef: &refs.ProjectRef{External: a.id.Parent().ProjectID},
-		Location:   a.id.Parent().Location,
+		ProjectRef: &refs.ProjectRef{External: a.id.Project},
+		Location:   a.id.Location,
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

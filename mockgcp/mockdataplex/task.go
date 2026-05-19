@@ -69,7 +69,7 @@ func (s *DataplexService) CreateTask(ctx context.Context, req *pb.CreateTaskRequ
 
 	now := timestamppb.New(time.Now())
 	uid := uuid.NewString()
-	obj := proto.Clone(req.Task).(*pb.Task)
+	obj := proto.CloneOf(req.Task)
 	obj.Name = fqn
 	obj.CreateTime = now
 	obj.UpdateTime = now

@@ -66,7 +66,7 @@ func (s *PrivateCAV1) CreateCaPool(ctx context.Context, req *pb.CreateCaPoolRequ
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.CaPool).(*pb.CaPool)
+	obj := proto.CloneOf(req.CaPool)
 	obj.Name = fqn
 
 	// service seems to remove "zero" values
