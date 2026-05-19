@@ -31,11 +31,32 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/modelarmor/v1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ModelArmorV1 struct {
 	*MockService
 	pb.UnimplementedModelArmorServer
+}
+
+func (s *ModelArmorV1) ListTemplates(ctx context.Context, req *pb.ListTemplatesRequest) (*pb.ListTemplatesResponse, error) {
+	// parent is like projects/*/locations/*
+	tokens := strings.Split(req.Parent, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)
+	}
+
+	res := &pb.ListTemplatesResponse{}
+	kind := (&pb.Template{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: req.Parent}, func(obj proto.Message) error {
+		res.Templates = append(res.Templates, obj.(*pb.Template))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func (s *ModelArmorV1) GetTemplate(ctx context.Context, req *pb.GetTemplateRequest) (*pb.Template, error) {
@@ -96,6 +117,7 @@ func (s *ModelArmorV1) UpdateTemplate(ctx context.Context, req *pb.UpdateTemplat
 		return nil, err
 	}
 
+	// TODO: Use update_mask
 	proto.Merge(obj, req.Template)
 	obj.UpdateTime = timestamppb.New(time.Now())
 
@@ -121,6 +143,89 @@ func (s *ModelArmorV1) DeleteTemplate(ctx context.Context, req *pb.DeleteTemplat
 	return &emptypb.Empty{}, nil
 }
 
+func (s *ModelArmorV1) GetFloorSetting(ctx context.Context, req *pb.GetFloorSettingRequest) (*pb.FloorSetting, error) {
+	name, err := s.parseFloorSettingName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.FloorSetting{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// Return a default floor setting if not found
+			now := time.Now()
+			obj = &pb.FloorSetting{
+				Name:       fqn,
+				CreateTime: timestamppb.New(now),
+				UpdateTime: timestamppb.New(now),
+			}
+			// Should we create it in storage too?
+			// Some GCP services do, some don't. Let's create it for consistency.
+			if err := s.storage.Create(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
+			return obj, nil
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *ModelArmorV1) UpdateFloorSetting(ctx context.Context, req *pb.UpdateFloorSettingRequest) (*pb.FloorSetting, error) {
+	name, err := s.parseFloorSettingName(req.GetFloorSetting().GetName())
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	obj := &pb.FloorSetting{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// Create it if it doesn't exist? (Standard for some settings)
+			now := time.Now()
+			obj = proto.Clone(req.FloorSetting).(*pb.FloorSetting)
+			obj.Name = fqn
+			obj.CreateTime = timestamppb.New(now)
+			obj.UpdateTime = timestamppb.New(now)
+			if err := s.storage.Create(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
+			return obj, nil
+		}
+		return nil, err
+	}
+
+	// TODO: Use update_mask
+	proto.Merge(obj, req.FloorSetting)
+	obj.UpdateTime = timestamppb.New(time.Now())
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (s *ModelArmorV1) SanitizeUserPrompt(ctx context.Context, req *pb.SanitizeUserPromptRequest) (*pb.SanitizeUserPromptResponse, error) {
+	return &pb.SanitizeUserPromptResponse{
+		SanitizationResult: &pb.SanitizationResult{
+			FilterMatchState: pb.FilterMatchState_NO_MATCH_FOUND,
+			InvocationResult: pb.InvocationResult_SUCCESS,
+		},
+	}, nil
+}
+
+func (s *ModelArmorV1) SanitizeModelResponse(ctx context.Context, req *pb.SanitizeModelResponseRequest) (*pb.SanitizeModelResponseResponse, error) {
+	return &pb.SanitizeModelResponseResponse{
+		SanitizationResult: &pb.SanitizationResult{
+			FilterMatchState: pb.FilterMatchState_NO_MATCH_FOUND,
+			InvocationResult: pb.InvocationResult_SUCCESS,
+		},
+	}, nil
+}
+
 type templateName struct {
 	Project      string
 	Location     string
@@ -143,6 +248,29 @@ func (s *MockService) parseTemplateName(name string) (*templateName, error) {
 		}
 
 		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+type floorSettingName struct {
+	ParentType string
+	ParentID   string
+	Location   string
+}
+
+func (n *floorSettingName) String() string {
+	return fmt.Sprintf("%s/%s/locations/%s/floorSetting", n.ParentType, n.ParentID, n.Location)
+}
+
+func (s *MockService) parseFloorSettingName(name string) (*floorSettingName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 5 && (tokens[0] == "projects" || tokens[0] == "folders" || tokens[0] == "organizations") && tokens[2] == "locations" && tokens[4] == "floorSetting" {
+		return &floorSettingName{
+			ParentType: tokens[0],
+			ParentID:   tokens[1],
+			Location:   tokens[3],
+		}, nil
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
