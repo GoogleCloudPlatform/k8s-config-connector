@@ -1,0 +1,1 @@
+- ApiHubDeployment: Dropped 'Annotations' from spec since proto uses map of string to AttributeValues (wrapper message). Used IdentityV2 standard.
