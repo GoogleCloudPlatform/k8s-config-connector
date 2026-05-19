@@ -42,12 +42,16 @@ Your goal is to identify GCP resources that are missing from KCC but defined in 
       gh issue list --state all --search "ai:chore: Implement direct types for: <Kind>"
       ```
 
-      Do nothing if there are more than 5 outstanding open issues.
+      Do nothing if there are more than 5 outstanding open issues AND if you have opened an issue today.
 
 4.  **Task**: If no tracking issue exists, create a new issue for the resource types implementation.
     - **Title**: `ai:chore: Implement direct types for: <Kind>`
     - **Labels**: `overseer`, `area/direct`, `priority/medium`, `step/gen-types`, `greenfield`, `chore/ai`
     - **Body**: Use the **TYPES ISSUE BODY TEMPLATE** below. Append a link to this chore file (`.agents/greenfield-direct-new-resource-types.md`) at the end of the issue body for traceability.
+
+5. **Audit**:
+   - If you have opened an issue or multiple issues, comment the links, in a single GitHub comment, to the tracking issue https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/8439
+   - If you have determined that you don't need to open an issue, make a single comment to the tracking issue https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/8439 as to why you are not opening an issue this run.
 
 ---
 
@@ -58,7 +62,7 @@ Your task is to implement the initial KRM types, CRD, and IdentityV2 for the `<K
 
 # Context: Implementation Versions
 To ensure stability and reproducibility, this task is pinned to the following repository versions:
-# TODO: Dynamically determine these SHAs during task generation (see PR #7946 feedback).
+<!-- TODO: Dynamically determine these SHAs during task generation (see PR #7946 feedback). -->
 - **Google APIs SHA**: `731d7f2ab6` (from `apis/git.versions`)
 - **KCC Base SHA**: `dc1dd45d0b`
 
@@ -73,19 +77,15 @@ To ensure stability and reproducibility, this task is pinned to the following re
    - resource_kind: <Kind>
    - template: <GCP_URL_Template> (e.g. projects/{project}/locations/{location}/<plural>/{<resource>})
 
-3. **Implement Controller**: Use skill `.gemini/skills/kcc-direct-controller-implementer/SKILL.md` with:
-   - resource_kind: <Kind>
-   - package_path: pkg/controller/direct/<group_short>/<kind_lowercase>/
-   - proto_package: <proto.package.name>
-
-4. **Run local validations**:
+3. **Run local validations**:
    - run `scripts/validate-prereqs.sh`, if the script fails the output will contain agent hints for fixing the errors.
    - run `./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>`
 
-5. **Journal Findings**: Use skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` to capture quirks and update knowledge.
+4. **Journal Findings**: Use skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` to capture quirks and update knowledge.
 
-6. **Create PR**:
+5. **Create PR**:
    - create a Pull Request with your changes.
+   - make sure the Pull Request does not contain the controller or mapper steps.
    - apply the same labels to the PR as are on this issue.
    - include a link to the chore file (`.agents/greenfield-direct-new-resource-types.md`) in the PR description.
    - include `Fixes #<issue-number>` in the PR description.
