@@ -33,6 +33,8 @@ import (
 	fakealloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1/fake"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1"
 	fakeanalyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1/fake"
+	analyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analyticshub/v1alpha1"
+	fakeanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analyticshub/v1alpha1/fake"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
 	fakeapigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1/fake"
 	apigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1beta1"
@@ -455,6 +457,11 @@ func (c *Clientset) AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface {
 // AnalyticsV1alpha1 retrieves the AnalyticsV1alpha1Client
 func (c *Clientset) AnalyticsV1alpha1() analyticsv1alpha1.AnalyticsV1alpha1Interface {
 	return &fakeanalyticsv1alpha1.FakeAnalyticsV1alpha1{Fake: &c.Fake}
+}
+
+// AnalyticshubV1alpha1 retrieves the AnalyticshubV1alpha1Client
+func (c *Clientset) AnalyticshubV1alpha1() analyticshubv1alpha1.AnalyticshubV1alpha1Interface {
+	return &fakeanalyticshubv1alpha1.FakeAnalyticshubV1alpha1{Fake: &c.Fake}
 }
 
 // ApigatewayV1alpha1 retrieves the ApigatewayV1alpha1Client

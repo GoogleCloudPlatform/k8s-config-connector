@@ -27,6 +27,7 @@ import (
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/aiplatform/v1alpha1"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/analytics/v1alpha1"
+	analyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/analyticshub/v1alpha1"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigateway/v1alpha1"
 	apigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigateway/v1beta1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1alpha1"
@@ -206,6 +207,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	aiplatformv1alpha1.AddToScheme,
 	alloydbv1beta1.AddToScheme,
 	analyticsv1alpha1.AddToScheme,
+	analyticshubv1alpha1.AddToScheme,
 	apigatewayv1alpha1.AddToScheme,
 	apigatewayv1beta1.AddToScheme,
 	apigeev1alpha1.AddToScheme,

@@ -39,6 +39,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - analyticshub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - apigateway.cnrm.cloud.google.com
   resources:
   - '*'

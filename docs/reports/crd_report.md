@@ -54,6 +54,7 @@
 | bigquerybiglake.cnrm.cloud.google.com         | BigLakeCatalog                                  | True         | False       | False  | Direct     | True        |
 | bigquerybiglake.cnrm.cloud.google.com         | BigLakeDatabase                                 | True         | False       | False  | Direct     | True        |
 | bigquerybiglake.cnrm.cloud.google.com         | BigLakeTable                                    | True         | True        | False  | Direct     | True        |
+| analyticshub.cnrm.cloud.google.com            | BigQueryAnalyticsHubDataExchange                | True         | False       | False  | Direct     | True        |
 | bigqueryanalyticshub.cnrm.cloud.google.com    | BigQueryAnalyticsHubDataExchange                | True         | True        | False  | Direct     | True        |
 | bigqueryanalyticshub.cnrm.cloud.google.com    | BigQueryAnalyticsHubListing                     | True         | True        | False  | Direct     | True        |
 | bigqueryconnection.cnrm.cloud.google.com      | BigQueryConnectionConnection                    | True         | True        | False  | Direct     | True        |

@@ -30,6 +30,7 @@ import (
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1"
+	analyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analyticshub/v1alpha1"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
 	apigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1beta1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
@@ -205,6 +206,7 @@ type Interface interface {
 	AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface
 	AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface
 	AnalyticsV1alpha1() analyticsv1alpha1.AnalyticsV1alpha1Interface
+	AnalyticshubV1alpha1() analyticshubv1alpha1.AnalyticshubV1alpha1Interface
 	ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface
 	ApigatewayV1beta1() apigatewayv1beta1.ApigatewayV1beta1Interface
 	ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface
@@ -378,6 +380,7 @@ type Clientset struct {
 	aiplatformV1alpha1             *aiplatformv1alpha1.AiplatformV1alpha1Client
 	alloydbV1beta1                 *alloydbv1beta1.AlloydbV1beta1Client
 	analyticsV1alpha1              *analyticsv1alpha1.AnalyticsV1alpha1Client
+	analyticshubV1alpha1           *analyticshubv1alpha1.AnalyticshubV1alpha1Client
 	apigatewayV1alpha1             *apigatewayv1alpha1.ApigatewayV1alpha1Client
 	apigatewayV1beta1              *apigatewayv1beta1.ApigatewayV1beta1Client
 	apigeeV1alpha1                 *apigeev1alpha1.ApigeeV1alpha1Client
@@ -566,6 +569,11 @@ func (c *Clientset) AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface {
 // AnalyticsV1alpha1 retrieves the AnalyticsV1alpha1Client
 func (c *Clientset) AnalyticsV1alpha1() analyticsv1alpha1.AnalyticsV1alpha1Interface {
 	return c.analyticsV1alpha1
+}
+
+// AnalyticshubV1alpha1 retrieves the AnalyticshubV1alpha1Client
+func (c *Clientset) AnalyticshubV1alpha1() analyticshubv1alpha1.AnalyticshubV1alpha1Interface {
+	return c.analyticshubV1alpha1
 }
 
 // ApigatewayV1alpha1 retrieves the ApigatewayV1alpha1Client
@@ -1447,6 +1455,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.analyticshubV1alpha1, err = analyticshubv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.apigatewayV1alpha1, err = apigatewayv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2125,6 +2137,7 @@ func New(c rest.Interface) *Clientset {
 	cs.aiplatformV1alpha1 = aiplatformv1alpha1.New(c)
 	cs.alloydbV1beta1 = alloydbv1beta1.New(c)
 	cs.analyticsV1alpha1 = analyticsv1alpha1.New(c)
+	cs.analyticshubV1alpha1 = analyticshubv1alpha1.New(c)
 	cs.apigatewayV1alpha1 = apigatewayv1alpha1.New(c)
 	cs.apigatewayV1beta1 = apigatewayv1beta1.New(c)
 	cs.apigeeV1alpha1 = apigeev1alpha1.New(c)
