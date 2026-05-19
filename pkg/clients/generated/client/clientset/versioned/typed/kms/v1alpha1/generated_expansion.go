@@ -23,6 +23,8 @@ package v1alpha1
 
 type KMSCryptoKeyVersionExpansion interface{}
 
+type KMSEKMConnectionExpansion interface{}
+
 type KMSKeyRingImportJobExpansion interface{}
 
 type KMSSecretCiphertextExpansion interface{}

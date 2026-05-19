@@ -26,10 +26,12 @@ var KMSEKMConnectionGVK = GroupVersion.WithKind("KMSEKMConnection")
 // +kcc:spec:proto=google.cloud.kms.v1.EkmConnection
 type KMSEKMConnectionSpec struct {
 	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
-	// The location of this resource.
-	Location string `json:"location"`
+	// Immutable. The location of this resource.
+	// +required
+	Location *string `json:"location,omitempty"`
 
 	// The KMSEKMConnection name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -37,10 +39,6 @@ type KMSEKMConnectionSpec struct {
 	// Optional. A list of ServiceResolvers where the EKM can be reached. There should be one ServiceResolver per EKM replica. Currently, only a single ServiceResolver is supported.
 	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.service_resolvers
 	ServiceResolvers []KMSEKMConnectionServiceResolver `json:"serviceResolvers,omitempty"`
-
-	// Optional. Etag of the currently stored EkmConnection.
-	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.etag
-	Etag *string `json:"etag,omitempty"`
 
 	// Optional. Describes who can perform control plane operations on the EKM. If unset, this defaults to MANUAL.
 	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.key_management_mode
@@ -55,7 +53,7 @@ type KMSEKMConnectionSpec struct {
 type KMSEKMConnectionServiceResolver struct {
 	// Required. The resource name of the Service Directory service pointing to an EKM replica, in the format projects/*/locations/*/namespaces/*/services/*.
 	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.service_directory_service
-	ServiceDirectoryService *string `json:"serviceDirectoryService,omitempty"`
+	ServiceDirectoryServiceRef *ServiceDirectoryServiceRef `json:"serviceDirectoryServiceRef,omitempty"`
 
 	// Optional. The filter applied to the endpoints of the resolved service. If no filter is specified, all endpoints will be considered. An endpoint will be chosen arbitrarily from the filtered list for each request.
 	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.endpoint_filter
@@ -74,7 +72,7 @@ type KMSEKMConnectionServiceResolver struct {
 type KMSEKMConnectionCertificate struct {
 	// Required. The raw certificate bytes in DER format.
 	// +kcc:proto:field=google.cloud.kms.v1.Certificate.raw_der
-	RawDer []byte `json:"rawDer,omitempty"`
+	RawDER []byte `json:"rawDer,omitempty"`
 }
 
 // KMSEKMConnectionStatus defines the config connector machine state of KMSEKMConnection
@@ -127,7 +125,7 @@ type KMSEKMConnectionObservedCertificate struct {
 
 	// Output only. The subject Alternative DNS names. Only present if parsed is true.
 	// +kcc:proto:field=google.cloud.kms.v1.Certificate.subject_alternative_dns_names
-	SubjectAlternativeDnsNames []string `json:"subjectAlternativeDnsNames,omitempty"`
+	SubjectAlternativeDNSNames []string `json:"subjectAlternativeDNSNames,omitempty"`
 
 	// Output only. The certificate is not valid before this time. Only present if parsed is true.
 	// +kcc:proto:field=google.cloud.kms.v1.Certificate.not_before_time
@@ -157,8 +155,10 @@ type KMSEKMConnectionObservedCertificate struct {
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
-
-// KMSEKMConnection is the Schema for the KMSEKMConnection API
+//
+// KMSEKMConnection is the Schema for the KMSEKMConnection API.
+// Note: EkmConnection resources cannot be deleted via the Google Cloud API.
+// To remove this resource from Config Connector management, users must use the 'cnrm.cloud.google.com/deletion-policy: abandon' annotation.
 // +k8s:openapi-gen=true
 type KMSEKMConnection struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -171,9 +171,6 @@ func (a *EKMConnectionAdapter) Update(ctx context.Context, updateOp *directbase.
 	if !reflect.DeepEqual(resource.ServiceResolvers, a.actual.ServiceResolvers) {
 		updateMask.Paths = append(updateMask.Paths, "service_resolvers")
 	}
-	if resource.Etag != "" && resource.Etag != a.actual.Etag {
-		updateMask.Paths = append(updateMask.Paths, "etag")
-	}
 	if resource.KeyManagementMode != a.actual.KeyManagementMode {
 		updateMask.Paths = append(updateMask.Paths, "key_management_mode")
 	}
@@ -228,10 +225,7 @@ func (a *EKMConnectionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 }
 
 func (a *EKMConnectionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	// Kcc currently handles deletion manually? Or doesn't support deletion?
-	// EkmConnection does not have a delete method in the proto! Wait, let me check the proto.
-	// Oh! `google.cloud.kms.v1.EkmService` has `List`, `Get`, `Create`, `Update`, `GetEkmConfig`, `UpdateEkmConfig`, `VerifyConnectivity`.
-	// IT HAS NO DELETE METHOD!
-	// Is it possible to delete an EkmConnection?
+	log := klog.FromContext(ctx)
+	log.V(2).Info("Delete operation not supported for KMSEKMConnection resource; it cannot be deleted via the Google Cloud API. Use 'cnrm.cloud.google.com/deletion-policy: abandon' to remove the resource from KCC.")
 	return false, fmt.Errorf("Delete operation not supported for KMSEKMConnection resource")
 }

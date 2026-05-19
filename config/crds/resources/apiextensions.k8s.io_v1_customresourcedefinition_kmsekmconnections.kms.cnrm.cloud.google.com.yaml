@@ -45,7 +45,10 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: KMSEKMConnection is the Schema for the KMSEKMConnection API
+        description: 'KMSEKMConnection is the Schema for the KMSEKMConnection API.
+          Note: EkmConnection resources cannot be deleted via the Google Cloud API.
+          To remove this resource from Config Connector management, users must use
+          the ''cnrm.cloud.google.com/deletion-policy: abandon'' annotation.'
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,15 +70,12 @@ spec:
                   EkmConnection maps to. Note: This field is required if KeyManagementMode
                   is CLOUD_KMS.'
                 type: string
-              etag:
-                description: Optional. Etag of the currently stored EkmConnection.
-                type: string
               keyManagementMode:
                 description: Optional. Describes who can perform control plane operations
                   on the EKM. If unset, this defaults to MANUAL.
                 type: string
               location:
-                description: The location of this resource.
+                description: Immutable. The location of this resource.
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -142,10 +142,36 @@ spec:
                             type: string
                         type: object
                       type: array
-                    serviceDirectoryService:
+                    serviceDirectoryServiceRef:
                       description: Required. The resource name of the Service Directory
                         service pointing to an EKM replica, in the format projects/*/locations/*/namespaces/*/services/*.
-                      type: string
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed ServiceDirectoryService
+                            resource. Should be in the format "projects/*/locations/*/namespaces/*/services/*".
+                          type: string
+                        name:
+                          description: The name of a ServiceDirectoryService resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a ServiceDirectoryService
+                            resource.
+                          type: string
+                      type: object
                   type: object
                 type: array
             required:
@@ -241,7 +267,7 @@ spec:
                                   name in RFC 2253 format. Only present if parsed
                                   is true.
                                 type: string
-                              subjectAlternativeDnsNames:
+                              subjectAlternativeDNSNames:
                                 description: Output only. The subject Alternative
                                   DNS names. Only present if parsed is true.
                                 items:
