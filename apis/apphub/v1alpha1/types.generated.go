@@ -19,44 +19,9 @@
 // proto.service: google.cloud.apphub.v1
 // resource: AppHubDiscoveredService:DiscoveredService
 // resource: AppHubDiscoveredWorkload:DiscoveredWorkload
+// resource: AppHubServiceProjectAttachment:ServiceProjectAttachment
 
 package v1alpha1
-
-/* found existing non-generated go type with proto tag "google.cloud.apphub.v1.DiscoveredService", skipping
-
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredService
-type DiscoveredService struct {
-	// Identifier. The resource name of the discovered service. Format:
-	//  `"projects/{host-project-id}/locations/{location}/discoveredServices/{uuid}"`
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.name
-	Name *string `json:"name,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.apphub.v1.DiscoveredWorkload", skipping
-
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredWorkload
-type DiscoveredWorkload struct {
-	// Identifier. The resource name of the discovered workload. Format:
-	//  `"projects/{host-project-id}/locations/{location}/discoveredWorkloads/{uuid}"`
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredWorkload.name
-	Name *string `json:"name,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "ServiceProperties", skipping
-
-// +kcc:proto=google.cloud.apphub.v1.ServiceProperties
-type ServiceProperties struct {
-}
-*/
-
-/* found existing non-generated go type "ServiceReference", skipping
-
-// +kcc:proto=google.cloud.apphub.v1.ServiceReference
-type ServiceReference struct {
-}
-*/
 
 /* unreachable type WorkloadProperties
 // +kcc:proto=google.cloud.apphub.v1.WorkloadProperties
@@ -67,70 +32,6 @@ type WorkloadProperties struct {
 /* unreachable type WorkloadReference
 // +kcc:proto=google.cloud.apphub.v1.WorkloadReference
 type WorkloadReference struct {
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.apphub.v1.DiscoveredService", skipping
-
-// +kcc:observedstate:proto=google.cloud.apphub.v1.DiscoveredService
-type DiscoveredServiceObservedState struct {
-	// Output only. Reference to an underlying networking resource that can
-	//  comprise a Service. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_reference
-	ServiceReference *ServiceReference `json:"serviceReference,omitempty"`
-
-	// Output only. Properties of an underlying compute resource that can comprise
-	//  a Service. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_properties
-	ServiceProperties *ServiceProperties `json:"serviceProperties,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.apphub.v1.DiscoveredWorkload", skipping
-
-// +kcc:observedstate:proto=google.cloud.apphub.v1.DiscoveredWorkload
-type DiscoveredWorkloadObservedState struct {
-	// Output only. Reference of an underlying compute resource represented by the
-	//  Workload. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredWorkload.workload_reference
-	WorkloadReference *WorkloadReference `json:"workloadReference,omitempty"`
-
-	// Output only. Properties of an underlying compute resource represented by
-	//  the Workload. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredWorkload.workload_properties
-	WorkloadProperties *WorkloadProperties `json:"workloadProperties,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "ServicePropertiesObservedState", skipping
-
-// +kcc:observedstate:proto=google.cloud.apphub.v1.ServiceProperties
-type ServicePropertiesObservedState struct {
-	// Output only. The service project identifier that the underlying cloud
-	//  resource resides in.
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.gcp_project
-	GcpProject *string `json:"gcpProject,omitempty"`
-
-	// Output only. The location that the underlying resource resides in, for
-	//  example, us-west1.
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.location
-	Location *string `json:"location,omitempty"`
-
-	// Output only. The location that the underlying resource resides in if it is
-	//  zonal, for example, us-west1-a).
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.zone
-	Zone *string `json:"zone,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "ServiceReferenceObservedState", skipping
-
-// +kcc:observedstate:proto=google.cloud.apphub.v1.ServiceReference
-type ServiceReferenceObservedState struct {
-	// Output only. The underlying resource URI. For example, URI of Forwarding
-	//  Rule, URL Map, and Backend Service.
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceReference.uri
-	URI *string `json:"uri,omitempty"`
 }
 */
 
