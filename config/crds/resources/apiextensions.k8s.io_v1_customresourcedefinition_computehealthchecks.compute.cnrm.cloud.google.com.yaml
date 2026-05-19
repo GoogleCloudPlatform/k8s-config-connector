@@ -118,6 +118,7 @@ spec:
                   port:
                     description: The TCP port number for the HTTP2 health check request.
                       The default value is 443.
+                    format: int64
                     type: integer
                   portName:
                     description: Port name as defined in InstanceGroup#NamedPort#name.
@@ -160,6 +161,7 @@ spec:
                   port:
                     description: The TCP port number for the HTTP health check request.
                       The default value is 80.
+                    format: int64
                     type: integer
                   portName:
                     description: Port name as defined in InstanceGroup#NamedPort#name.
@@ -202,6 +204,7 @@ spec:
                   port:
                     description: The TCP port number for the HTTPS health check request.
                       The default value is 443.
+                    format: int64
                     type: integer
                   portName:
                     description: Port name as defined in InstanceGroup#NamedPort#name.
@@ -258,6 +261,7 @@ spec:
                   port:
                     description: The TCP port number for the SSL health check request.
                       The default value is 443.
+                    format: int64
                     type: integer
                   portName:
                     description: Port name as defined in InstanceGroup#NamedPort#name.
@@ -297,6 +301,7 @@ spec:
                   port:
                     description: The TCP port number for the TCP health check request.
                       The default value is 443.
+                    format: int64
                     type: integer
                   portName:
                     description: Port name as defined in InstanceGroup#NamedPort#name.

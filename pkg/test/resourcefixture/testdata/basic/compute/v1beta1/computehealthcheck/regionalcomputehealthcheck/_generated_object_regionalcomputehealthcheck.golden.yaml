@@ -16,7 +16,6 @@ metadata:
 spec:
   checkIntervalSec: 15
   location: us-central1
-  resourceID: ${healthCheckID}
   tcpHealthCheck:
     port: 88
 status:
