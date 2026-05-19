@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkmanagement/v1"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
+	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 )
 
 type reachabilityService struct {
