@@ -53,6 +53,7 @@ require (
 	cloud.google.com/go/speech v1.30.0
 	cloud.google.com/go/storage v1.59.2
 	cloud.google.com/go/workflows v1.14.3
+	cloud.google.com/go/workstations v1.1.6
 	github.com/GoogleCloudPlatform/k8s-config-connector v1.129.2
 	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0
