@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 set -o errexit
 set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
@@ -26,11 +26,10 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.apphub.v1 \
   --api-version apphub.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output \
   --resource AppHubDiscoveredService:DiscoveredService \
-  --resource AppHubDiscoveredWorkload:DiscoveredWorkload
+  --resource AppHubDiscoveredWorkload:DiscoveredWorkload \
+  --resource AppHubServiceProjectAttachment:ServiceProjectAttachment
 
-cd ${REPO_ROOT}
-dev/tasks/generate-crds
-
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/apphub/
+go run . generate-mapper \
+  --service google.cloud.apphub.v1 \
+  --api-version apphub.cnrm.cloud.google.com/v1alpha1

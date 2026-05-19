@@ -33,6 +33,7 @@ type ApphubV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	AppHubDiscoveredServicesGetter
 	AppHubDiscoveredWorkloadsGetter
+	AppHubServiceProjectAttachmentsGetter
 }
 
 // ApphubV1alpha1Client is used to interact with features provided by the apphub.cnrm.cloud.google.com group.
@@ -46,6 +47,10 @@ func (c *ApphubV1alpha1Client) AppHubDiscoveredServices(namespace string) AppHub
 
 func (c *ApphubV1alpha1Client) AppHubDiscoveredWorkloads(namespace string) AppHubDiscoveredWorkloadInterface {
 	return newAppHubDiscoveredWorkloads(c, namespace)
+}
+
+func (c *ApphubV1alpha1Client) AppHubServiceProjectAttachments(namespace string) AppHubServiceProjectAttachmentInterface {
+	return newAppHubServiceProjectAttachments(c, namespace)
 }
 
 // NewForConfig creates a new ApphubV1alpha1Client for the given config.
