@@ -1,0 +1,65 @@
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	﻿2026-05-16T01:32:26.2132823Z ##[group]Run ./dev/ci/presubmits/crd-equivalence-check
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.2133302Z [36;1m./dev/ci/presubmits/crd-equivalence-check[0m
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.2174038Z shell: /usr/bin/bash -e {0}
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.2174294Z env:
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.2174466Z   GOTOOLCHAIN: local
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.2174684Z   ARTIFACTS: /tmp/artifacts
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.2174895Z ##[endgroup]
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.5914626Z COMPARISON_REF: origin/master
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.5915426Z BASE_BRANCH: master
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.5956296Z Checking CRD: config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_storagebuckets.storage.cnrm.cloud.google.com.yaml
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.5957519Z Running equivalence check...
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:32:26.5958442Z Running: go run ./dev/tools/crd-mcp-server equivalent --file config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_storagebuckets.storage.cnrm.cloud.google.com.yaml --ref origin/master
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2954856Z go: downloading github.com/metoro-io/mcp-golang v0.16.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2956202Z go: downloading github.com/spf13/cobra v1.10.2
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2959251Z go: downloading k8s.io/apiextensions-apiserver v0.33.10
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2959858Z go: downloading sigs.k8s.io/yaml v1.4.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2960381Z go: downloading github.com/spf13/pflag v1.0.10
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2960823Z go: downloading github.com/gogo/protobuf v1.3.2
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2961677Z go: downloading k8s.io/apimachinery v0.33.10
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2962298Z go: downloading k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2962973Z go: downloading github.com/invopop/jsonschema v0.13.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2963549Z go: downloading github.com/pkg/errors v0.9.1
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2964130Z go: downloading github.com/tidwall/sjson v1.2.5
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2964694Z go: downloading k8s.io/klog/v2 v2.130.1
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2965149Z go: downloading k8s.io/klog v1.0.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2965925Z go: downloading sigs.k8s.io/structured-merge-diff/v4 v4.6.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2966887Z go: downloading sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2967490Z go: downloading sigs.k8s.io/randfill v1.0.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2968011Z go: downloading github.com/wk8/go-ordered-map/v2 v2.1.8
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2968594Z go: downloading github.com/tidwall/gjson v1.18.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2969112Z go: downloading gopkg.in/inf.v0 v0.9.1
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2969608Z go: downloading github.com/go-logr/logr v1.4.3
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2970169Z go: downloading github.com/fxamacker/cbor/v2 v2.9.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2970762Z go: downloading github.com/json-iterator/go v1.1.12
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2971370Z go: downloading github.com/bahlo/generic-list-go v0.2.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2971959Z go: downloading github.com/buger/jsonparser v1.1.2
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2972535Z go: downloading github.com/mailru/easyjson v0.7.7
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2973065Z go: downloading gopkg.in/yaml.v3 v3.0.1
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2973582Z go: downloading github.com/tidwall/match v1.1.1
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2974139Z go: downloading github.com/tidwall/pretty v1.2.1
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2974689Z go: downloading golang.org/x/net v0.52.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2975199Z go: downloading github.com/x448/float16 v0.8.4
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2976540Z go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2977526Z go: downloading github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2978265Z go: downloading golang.org/x/text v0.35.0
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2978711Z NOT EQUIVALENT
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2978934Z 
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2979071Z Differences:
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2979678Z   - [v1beta1] field type changed: spec.cors[].maxAgeSeconds (integer -> int64)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2980662Z   - [v1beta1] field type changed: spec.lifecycleRule[].condition.age (integer -> int64)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2981676Z   - [v1beta1] field type changed: spec.lifecycleRule[].condition.daysSinceCustomTime (integer -> int64)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2983723Z   - [v1beta1] field type changed: spec.lifecycleRule[].condition.daysSinceNoncurrentTime (integer -> int64)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2985287Z   - [v1beta1] field type changed: spec.lifecycleRule[].condition.numNewerVersions (integer -> int64)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2986716Z   - [v1beta1] field type changed: spec.retentionPolicy.retentionPeriod (integer -> int64)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2987699Z   - [v1beta1] field type changed: spec.softDeletePolicy.retentionDurationSeconds (integer -> int64)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2988104Z 
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2988218Z Allowed changes (informational):
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2988564Z   - spec.names.listKind added: "StorageBucketList" (allowed)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2989077Z   - [v1beta1] field type changed: status.observedGeneration (integer -> int64) (allowed)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2989860Z   - [v1beta1] field type changed: status.observedState.softDeletePolicy.retentionDurationSeconds (integer -> int64) (allowed)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2990585Z   - [v1beta1] field added under status: status.externalRef (type: string, allowed)
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2991480Z ERROR: CRD config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_storagebuckets.storage.cnrm.cloud.google.com.yaml is not equivalent to origin/master!
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2992208Z -------------------------------------------
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.2992552Z CRD equivalence checks failed. Please review the output above.
+crd-equivalence-check	Run dev/ci/presubmits/crd-equivalence-check	2026-05-16T01:33:00.3006224Z ##[error]Process completed with exit code 1.
