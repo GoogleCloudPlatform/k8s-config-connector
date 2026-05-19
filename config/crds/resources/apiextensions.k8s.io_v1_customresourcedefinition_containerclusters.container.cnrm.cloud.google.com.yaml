@@ -532,7 +532,7 @@ spec:
                     description: The key to use to encrypt/decrypt secrets.
                     type: string
                   state:
-                    description: ENCRYPTED or DECRYPTED.
+                    description: ENCRYPTED, ALL_OBJECTS_ENCRYPTION_ENABLED or DECRYPTED.
                     type: string
                 required:
                 - state
