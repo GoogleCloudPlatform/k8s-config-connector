@@ -42,11 +42,7 @@ func (in *ClusterAdditionalIpRangesConfigs) DeepCopyInto(out *ClusterAdditionalI
 		*out = new(string)
 		**out = **in
 	}
-	if in.SubnetworkRef != nil {
-		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1alpha1.ResourceRef)
-		**out = **in
-	}
+	out.SubnetworkRef = in.SubnetworkRef
 	return
 }
 
