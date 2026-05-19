@@ -84,7 +84,7 @@ func (w *visitorWalker) visitAny(path string, v reflect.Value) {
 			w.errs = append(w.errs, fmt.Errorf("visiting slice of type %v is not supported", elemType.Kind()))
 		}
 
-	case reflect.String, reflect.Bool, reflect.Int32, reflect.Int64, reflect.Float64:
+	case reflect.String, reflect.Bool, reflect.Int, reflect.Int32, reflect.Int64, reflect.Uint32, reflect.Uint64, reflect.Float64:
 		// "leaf", nothing to recurse into
 	default:
 		w.errs = append(w.errs, fmt.Errorf("visiting type %v is not supported", v.Kind()))
