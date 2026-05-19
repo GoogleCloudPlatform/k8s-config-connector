@@ -250,13 +250,20 @@ func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstr
 		}
 	}
 
-	// Check for CCC setting
-	_, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Client, types.NamespacedName{Namespace: u.GetNamespace(), Name: u.GetName()})
+	// Check for CC or CCC overrides
+	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Client, types.NamespacedName{Namespace: u.GetNamespace(), Name: u.GetName()})
 	if err != nil {
 		return "", fmt.Errorf("error fetching kcc state: %w", err)
 	}
 	if ccc.Spec.Experiments != nil {
 		for k, v := range ccc.Spec.Experiments.ControllerOverrides {
+			if k == r.gvk.GroupKind().String() {
+				return v, nil
+			}
+		}
+	}
+	if cc.Spec.Experiments != nil {
+		for k, v := range cc.Spec.Experiments.ControllerOverrides {
 			if k == r.gvk.GroupKind().String() {
 				return v, nil
 			}
