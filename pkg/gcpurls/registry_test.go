@@ -77,11 +77,12 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                        true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":      true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                 true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":         true,
 	}
+
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
 		normalized := normalizeTemplateFormat(fullURL)
-
 		if tmpl.Host() == "" || tmpl.Host() == "example.com" {
 			continue
 		}
