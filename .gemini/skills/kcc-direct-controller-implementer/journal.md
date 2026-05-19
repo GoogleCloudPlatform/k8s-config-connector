@@ -11,9 +11,14 @@
 - **Problem**: Need an easy way to compute the updated paths for the field mask based on the desired and actual protobuf representations.
 - **Solution**: Use `paths, err := common.CompareProtoMessage(updateReq, a.actual, common.BasicDiff)`. Then pass `sets.List(paths)` (from `k8s.io/apimachinery/pkg/util/sets`) to `fieldmaskpb.FieldMask.Paths`.
 - **Impact**: Provides a standardized, straightforward pattern for direct KCC controllers to compute update masks accurately.
-
 ### [2026-05-19] Enum_ToProto and Enum_FromProto with Generics
 - **Context**: Implementing `AutoMLDataset` direct controller mappers.
 - **Problem**: Enums in `types.generated.go` are generated as `*string` (or a type alias for string), but proto expects a specific enum type (e.g., `pb.ClassificationType`). Using `direct.Enum_ToProto(mapCtx, in.ClassificationType)` results in compilation error `cannot infer U`.
 - **Solution**: Use explicit type instantiation: `direct.Enum_ToProto[pb.ClassificationType](mapCtx, in.ClassificationType)`.
 - **Impact**: Ensures correct type inference and compilation for enum mapping.
+
+### [2026-05-19] VertexAIIndex Manual Types and Client Registration
+- **Context**: Implementing `VertexAIIndex` direct controller.
+- **Problem**: For VertexAIIndex, we had to manually copy the types into `index_types.go` and register the client.
+- **Solution**: Copied the types manually into `index_types.go`, and configured the controller to use `gcp.NewIndexClient` and `AdapterForObjectOperation`.
+- **Impact**: Provides proper GVK-to-API and registration mappings.
