@@ -109,6 +109,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/dataflow/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/firestore/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/firestore/*/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/partner/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/iam/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/iam/admin/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/logging/v2/*.proto \
