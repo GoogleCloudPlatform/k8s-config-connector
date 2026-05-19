@@ -96,6 +96,8 @@ cloud.google.com/go/memorystore v0.9.0 h1:CPIW9v7XGjcpwJtLaJUjDohep47tI5c2zP0R3v
 cloud.google.com/go/memorystore v0.9.0/go.mod h1:fgbTd26uERz7dvH5KklyXU9/pcNdMtjNKfEZZ6slRLA=
 cloud.google.com/go/metastore v1.14.8 h1:nfyUDD9AeKIs6btY5buQ1No0OVco20WpX9wIruL8UOA=
 cloud.google.com/go/metastore v1.14.8/go.mod h1:h1XI2LpD4ohJhQYn9TwXqKb5sVt6KSo47ft96SiFF1s=
+cloud.google.com/go/modelarmor v1.0.0 h1:vGRxxlBHRDKH9D66vfFeC2nTG4eRMNJ1DMPxa6NG3bE=
+cloud.google.com/go/modelarmor v1.0.0/go.mod h1:nrgM9UlxJvFE5NcE6NN/OJ8vI1LuJih27Hg8wq38mGQ=
 cloud.google.com/go/monitoring v1.24.3 h1:dde+gMNc0UhPZD1Azu6at2e79bfdztVDS5lvhOdsgaE=
 cloud.google.com/go/monitoring v1.24.3/go.mod h1:nYP6W0tm3N9H/bOw8am7t62YTzZY+zUeQ+Bi6+2eonI=
 cloud.google.com/go/netapp v1.12.0 h1:xzzDJuCZvP2FKXIzsM70ghTT+VcCg+nN/PgfRQKvT9M=
