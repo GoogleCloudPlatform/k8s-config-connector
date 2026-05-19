@@ -1429,8 +1429,8 @@ func (in *ModelSmoothGradConfig) DeepCopyInto(out *ModelSmoothGradConfig) {
 	}
 	if in.NoiseSigma != nil {
 		in, out := &in.NoiseSigma, &out.NoiseSigma
-		*out = new(ModelNoiseSigma)
-		(*in).DeepCopyInto(*out)
+		*out = new(float64)
+		**out = **in
 	}
 	if in.NoisySampleCount != nil {
 		in, out := &in.NoisySampleCount, &out.NoisySampleCount

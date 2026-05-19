@@ -158,7 +158,7 @@ type CloudcontrolRegexpPattern struct {
 type CloudcontrolResourceTypesValues struct {
 	/* Required. The strings in the list. */
 	// +optional
-	Values []CloudcontrolValues `json:"values,omitempty"`
+	Values []string `json:"values,omitempty"`
 }
 
 type CloudcontrolRules struct {
@@ -178,7 +178,7 @@ type CloudcontrolRules struct {
 type CloudcontrolStringListValue struct {
 	/* Required. The strings in the list. */
 	// +optional
-	Values []CloudcontrolValues `json:"values,omitempty"`
+	Values []string `json:"values,omitempty"`
 }
 
 type CloudcontrolSubParameters struct {

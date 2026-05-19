@@ -119,7 +119,7 @@ type BackupplanBackupSchedule struct {
 type BackupplanDaysOfWeek struct {
 	/* Optional. A list of days of week. */
 	// +optional
-	DaysOfWeek []BackupplanDaysOfWeek `json:"daysOfWeek,omitempty"`
+	DaysOfWeek []string `json:"daysOfWeek,omitempty"`
 }
 
 type BackupplanEncryptionKey struct {

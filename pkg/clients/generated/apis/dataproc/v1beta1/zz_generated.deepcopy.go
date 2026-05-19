@@ -3219,10 +3219,8 @@ func (in *WorkflowtemplateReservationAffinity) DeepCopyInto(out *Workflowtemplat
 	}
 	if in.Values != nil {
 		in, out := &in.Values, &out.Values
-		*out = make([]WorkflowtemplateValues, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }
@@ -3614,10 +3612,8 @@ func (in *WorkflowtemplateValues) DeepCopyInto(out *WorkflowtemplateValues) {
 	*out = *in
 	if in.Values != nil {
 		in, out := &in.Values, &out.Values
-		*out = make([]WorkflowtemplateValues, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }

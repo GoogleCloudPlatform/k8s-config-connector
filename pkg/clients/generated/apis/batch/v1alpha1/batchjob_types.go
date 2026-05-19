@@ -302,7 +302,7 @@ type JobContainer struct {
 	mount options specified in `TaskSpec.Volumes`. If you need different
 	mount settings, you can explicitly configure them in this field. */
 	// +optional
-	Volumes []JobVolumes `json:"volumes,omitempty"`
+	Volumes []string `json:"volumes,omitempty"`
 }
 
 type JobDisks struct {

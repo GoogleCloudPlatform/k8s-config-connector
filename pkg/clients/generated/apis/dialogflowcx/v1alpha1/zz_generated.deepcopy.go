@@ -1312,10 +1312,8 @@ func (in *FlowText) DeepCopyInto(out *FlowText) {
 	}
 	if in.Text != nil {
 		in, out := &in.Text, &out.Text
-		*out = make([]FlowText, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }
@@ -2019,10 +2017,8 @@ func (in *PageText) DeepCopyInto(out *PageText) {
 	}
 	if in.Text != nil {
 		in, out := &in.Text, &out.Text
-		*out = make([]PageText, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }

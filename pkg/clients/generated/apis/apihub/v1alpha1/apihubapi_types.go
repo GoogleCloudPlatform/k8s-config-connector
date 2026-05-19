@@ -103,7 +103,7 @@ type ApiEnumValues struct {
 type ApiJsonValues struct {
 	/* Required. The attribute values in case attribute data type is string or JSON. */
 	// +optional
-	Values []ApiValues `json:"values,omitempty"`
+	Values []string `json:"values,omitempty"`
 }
 
 type ApiOwner struct {
@@ -119,7 +119,7 @@ type ApiOwner struct {
 type ApiStringValues struct {
 	/* Required. The attribute values in case attribute data type is string or JSON. */
 	// +optional
-	Values []ApiValues `json:"values,omitempty"`
+	Values []string `json:"values,omitempty"`
 }
 
 type ApiValues struct {

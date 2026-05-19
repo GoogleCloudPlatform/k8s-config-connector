@@ -501,8 +501,8 @@ func (in *CloudbatchresourceallowanceLimit) DeepCopyInto(out *Cloudbatchresource
 	}
 	if in.Limit != nil {
 		in, out := &in.Limit, &out.Limit
-		*out = new(CloudbatchresourceallowanceLimit)
-		(*in).DeepCopyInto(*out)
+		*out = new(float64)
+		**out = **in
 	}
 	return
 }
@@ -988,10 +988,8 @@ func (in *JobContainer) DeepCopyInto(out *JobContainer) {
 	}
 	if in.Volumes != nil {
 		in, out := &in.Volumes, &out.Volumes
-		*out = make([]JobVolumes, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }

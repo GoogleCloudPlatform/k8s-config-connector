@@ -529,10 +529,8 @@ func (in *CloudcontrolResourceTypesValues) DeepCopyInto(out *CloudcontrolResourc
 	*out = *in
 	if in.Values != nil {
 		in, out := &in.Values, &out.Values
-		*out = make([]CloudcontrolValues, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }
@@ -583,10 +581,8 @@ func (in *CloudcontrolStringListValue) DeepCopyInto(out *CloudcontrolStringListV
 	*out = *in
 	if in.Values != nil {
 		in, out := &in.Values, &out.Values
-		*out = make([]CloudcontrolValues, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }

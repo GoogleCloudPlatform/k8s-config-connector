@@ -806,7 +806,7 @@ type ModelSmoothGradConfig struct {
 	[feature_noise_sigma][google.cloud.aiplatform.v1.SmoothGradConfig.feature_noise_sigma]
 	instead for each feature. */
 	// +optional
-	NoiseSigma *ModelNoiseSigma `json:"noiseSigma,omitempty"`
+	NoiseSigma *float64 `json:"noiseSigma,omitempty"`
 
 	/* The number of gradient samples to use for approximation. The higher this number, the more accurate the gradient is, but the runtime complexity increases by this factor as well. Valid range of its value is [1, 50]. Defaults to 3. */
 	// +optional

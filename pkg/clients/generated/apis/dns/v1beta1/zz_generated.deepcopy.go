@@ -788,10 +788,8 @@ func (in *RecordsetBackupGeo) DeepCopyInto(out *RecordsetBackupGeo) {
 	}
 	if in.RrdatasRefs != nil {
 		in, out := &in.RrdatasRefs, &out.RrdatasRefs
-		*out = make([]RecordsetRrdatasRefs, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]v1alpha1.ResourceRef, len(*in))
+		copy(*out, *in)
 	}
 	return
 }

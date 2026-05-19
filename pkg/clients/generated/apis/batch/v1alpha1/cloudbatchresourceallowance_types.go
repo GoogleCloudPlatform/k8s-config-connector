@@ -45,7 +45,7 @@ type CloudbatchresourceallowanceLimit struct {
 
 	/* Required. Limit value of a UsageResourceAllowance within its one duration. */
 	// +optional
-	Limit *CloudbatchresourceallowanceLimit `json:"limit,omitempty"`
+	Limit *float64 `json:"limit,omitempty"`
 }
 
 type CloudbatchresourceallowanceNotifications struct {

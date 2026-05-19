@@ -47,7 +47,7 @@ type RecordsetBackupGeo struct {
 	Location string `json:"location"`
 
 	// +optional
-	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+	RrdatasRefs []v1alpha1.ResourceRef `json:"rrdatasRefs,omitempty"`
 }
 
 type RecordsetGeo struct {

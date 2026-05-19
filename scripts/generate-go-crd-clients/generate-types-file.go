@@ -211,24 +211,15 @@ func getArrayOfNestedFieldKeys(m map[string][]*fieldProperties) []string {
 	}
 	return arr
 }
-
 func findAndReplaceInStructField(old, new string, fields []*fieldProperties) {
-	for i, f := range fields {
-		if f.Name == old {
-			switch f.Type {
-			case "string", "bool", "int": // is literal, don't replace
-				continue
-			default:
-				if strings.HasPrefix(f.Type, "[]") { // Type is list of object
-					f.Type = fmt.Sprintf("[]%v", new)
-				} else if strings.HasPrefix(f.Type, "map[string]") {
-					f.Type = fmt.Sprintf("map[string]%v", new)
-				} else {
-					f.Type = new
-				}
-			}
+	for _, f := range fields {
+		if f.Type == old {
+			f.Type = new
+		} else if f.Type == "[]"+old {
+			f.Type = "[]" + new
+		} else if f.Type == "map[string]"+old {
+			f.Type = "map[string]" + new
 		}
-		fields[i] = f
 	}
 }
 

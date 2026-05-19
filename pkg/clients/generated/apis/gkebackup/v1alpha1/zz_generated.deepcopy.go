@@ -402,10 +402,8 @@ func (in *BackupplanDaysOfWeek) DeepCopyInto(out *BackupplanDaysOfWeek) {
 	*out = *in
 	if in.DaysOfWeek != nil {
 		in, out := &in.DaysOfWeek, &out.DaysOfWeek
-		*out = make([]BackupplanDaysOfWeek, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }
