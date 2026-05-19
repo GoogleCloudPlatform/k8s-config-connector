@@ -518,7 +518,22 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoreflect.Uint64Kind,
 				protoreflect.Fixed64Kind,
 				protoreflect.BytesKind:
-				if protoIsPointerInGo(protoField) {
+
+				useCustomMethod := ""
+				switch protoField.Kind() {
+				case protoreflect.StringKind:
+					if krmField.Type != "*string" && krmField.Type != "string" && strings.HasPrefix(string(protoField.ParentFile().Package()), "google.container") {
+						useCustomMethod = fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
+					}
+				}
+
+				if useCustomMethod != "" {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						krmFieldName,
+						useCustomMethod,
+						protoAccessor,
+					)
+				} else if protoIsPointerInGo(protoField) {
 					fmt.Fprintf(out, "\tout.%s = in.%s\n",
 						krmFieldName,
 						protoFieldName,
@@ -529,10 +544,23 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						protoAccessor,
 					)
 				} else {
-					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
-						krmFieldName,
-						protoAccessor,
-					)
+					krmTypeRaw := strings.TrimPrefix(krmField.Type, "*")
+					protoKind := protoField.Kind()
+					if (protoKind == protoreflect.Int32Kind || protoKind == protoreflect.Uint32Kind ||
+						protoKind == protoreflect.Int64Kind || protoKind == protoreflect.Uint64Kind) &&
+						(krmTypeRaw == "int" || krmTypeRaw == "int32" || krmTypeRaw == "int64") &&
+krmTypeRaw != goTypeForProtoKind(protoKind) && strings.HasPrefix(string(protoField.ParentFile().Package()), "google.container") {
+						fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(%s(in.%s))\n",
+							krmFieldName,
+							krmTypeRaw,
+							protoAccessor,
+						)
+					} else {
+						fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
+							krmFieldName,
+							protoAccessor,
+						)
+					}
 				}
 
 			default:
@@ -893,10 +921,24 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						krmFieldName,
 					)
 				} else {
-					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
-						protoFieldName,
-						krmFieldName,
-					)
+					krmTypeRaw := strings.TrimPrefix(krmField.Type, "*")
+					protoKind := protoField.Kind()
+					protoTypeGo := goTypeForProtoKind(protoKind)
+					if (protoKind == protoreflect.Int32Kind || protoKind == protoreflect.Uint32Kind ||
+						protoKind == protoreflect.Int64Kind || protoKind == protoreflect.Uint64Kind) &&
+						(krmTypeRaw == "int" || krmTypeRaw == "int32" || krmTypeRaw == "int64") &&
+krmTypeRaw != protoTypeGo && strings.HasPrefix(string(protoField.ParentFile().Package()), "google.container") {
+						fmt.Fprintf(out, "\tout.%s = %s(direct.ValueOf(in.%s))\n",
+							protoFieldName,
+							protoTypeGo,
+							krmFieldName,
+						)
+					} else {
+						fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
+							protoFieldName,
+							krmFieldName,
+						)
+					}
 				}
 
 			default:
@@ -985,6 +1027,9 @@ func protoNameForType(msg protoreflect.MessageDescriptor) string {
 	}
 	fullName = strings.TrimPrefix(fullName, namespace)
 	fullName = strings.ReplaceAll(fullName, ".", "_")
+	if strings.HasPrefix(string(msg.ParentFile().Package()), "google.container") {
+	fullName = strings.ReplaceAll(fullName, "K8s", "K8S")
+	}
 	return fullName
 }
 
@@ -1022,6 +1067,22 @@ func protoNameForOneOf(field protoreflect.FieldDescriptor) string {
 
 func protoNameForField(protoField protoreflect.FieldDescriptor) string {
 	s := strings.Title(protoField.JSONName())
+	if s == "HugepageSize2m" {
+		return "HugepageSize2M"
+	}
+	if s == "HugepageSize1g" {
+		return "HugepageSize1G"
+	}
+	if s == "EnableL4ilbSubsetting" {
+		return "EnableL4IlbSubsetting"
+	}
+
+	pkg := string(protoField.ParentFile().Package())
+	if strings.HasPrefix(pkg, "google.container.v1") {
+		if strings.Contains(s, "K8s") {
+			s = strings.ReplaceAll(s, "K8s", "K8S")
+		}
+	}
 	return s
 }
 
