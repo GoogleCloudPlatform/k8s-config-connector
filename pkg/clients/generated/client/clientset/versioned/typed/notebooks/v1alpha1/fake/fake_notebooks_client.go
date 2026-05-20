@@ -32,7 +32,7 @@ type FakeNotebooksV1alpha1 struct {
 }
 
 func (c *FakeNotebooksV1alpha1) NotebooksEnvironments(namespace string) v1alpha1.NotebooksEnvironmentInterface {
-	return &FakeNotebooksEnvironments{c, namespace}
+	return newFakeNotebooksEnvironments(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

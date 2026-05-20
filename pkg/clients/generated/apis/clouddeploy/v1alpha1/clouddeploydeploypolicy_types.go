@@ -169,17 +169,13 @@ type DeploypolicyStartTime struct {
 }
 
 type DeploypolicyTarget struct {
-	/* Optional. ID of the `Target`. The value of this field could be one of the
-	following:
-
-	* The last segment of a target name
-	* "*", all targets in a location */
-	// +optional
-	Id *string `json:"id,omitempty"`
-
 	/* Target labels. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
+
+	/* Optional. The Target to which the rule applies. */
+	// +optional
+	TargetRef *v1alpha1.ResourceRef `json:"targetRef,omitempty"`
 }
 
 type DeploypolicyTimeWindows struct {

@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // ComputeInstanceGroupsGetter has a method to return a ComputeInstanceGroupInterface.
@@ -41,158 +40,34 @@ type ComputeInstanceGroupsGetter interface {
 
 // ComputeInstanceGroupInterface has methods to work with ComputeInstanceGroup resources.
 type ComputeInstanceGroupInterface interface {
-	Create(ctx context.Context, computeInstanceGroup *v1beta1.ComputeInstanceGroup, opts v1.CreateOptions) (*v1beta1.ComputeInstanceGroup, error)
-	Update(ctx context.Context, computeInstanceGroup *v1beta1.ComputeInstanceGroup, opts v1.UpdateOptions) (*v1beta1.ComputeInstanceGroup, error)
-	UpdateStatus(ctx context.Context, computeInstanceGroup *v1beta1.ComputeInstanceGroup, opts v1.UpdateOptions) (*v1beta1.ComputeInstanceGroup, error)
+	Create(ctx context.Context, computeInstanceGroup *computev1beta1.ComputeInstanceGroup, opts v1.CreateOptions) (*computev1beta1.ComputeInstanceGroup, error)
+	Update(ctx context.Context, computeInstanceGroup *computev1beta1.ComputeInstanceGroup, opts v1.UpdateOptions) (*computev1beta1.ComputeInstanceGroup, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, computeInstanceGroup *computev1beta1.ComputeInstanceGroup, opts v1.UpdateOptions) (*computev1beta1.ComputeInstanceGroup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeInstanceGroup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeInstanceGroupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeInstanceGroup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeInstanceGroupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeInstanceGroup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeInstanceGroup, err error)
 	ComputeInstanceGroupExpansion
 }
 
 // computeInstanceGroups implements ComputeInstanceGroupInterface
 type computeInstanceGroups struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*computev1beta1.ComputeInstanceGroup, *computev1beta1.ComputeInstanceGroupList]
 }
 
 // newComputeInstanceGroups returns a ComputeInstanceGroups
 func newComputeInstanceGroups(c *ComputeV1beta1Client, namespace string) *computeInstanceGroups {
 	return &computeInstanceGroups{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*computev1beta1.ComputeInstanceGroup, *computev1beta1.ComputeInstanceGroupList](
+			"computeinstancegroups",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *computev1beta1.ComputeInstanceGroup { return &computev1beta1.ComputeInstanceGroup{} },
+			func() *computev1beta1.ComputeInstanceGroupList { return &computev1beta1.ComputeInstanceGroupList{} },
+		),
 	}
-}
-
-// Get takes name of the computeInstanceGroup, and returns the corresponding computeInstanceGroup object, and an error if there is any.
-func (c *computeInstanceGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeInstanceGroup, err error) {
-	result = &v1beta1.ComputeInstanceGroup{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computeinstancegroups").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ComputeInstanceGroups that match those selectors.
-func (c *computeInstanceGroups) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeInstanceGroupList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.ComputeInstanceGroupList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computeinstancegroups").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested computeInstanceGroups.
-func (c *computeInstanceGroups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("computeinstancegroups").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a computeInstanceGroup and creates it.  Returns the server's representation of the computeInstanceGroup, and an error, if there is any.
-func (c *computeInstanceGroups) Create(ctx context.Context, computeInstanceGroup *v1beta1.ComputeInstanceGroup, opts v1.CreateOptions) (result *v1beta1.ComputeInstanceGroup, err error) {
-	result = &v1beta1.ComputeInstanceGroup{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("computeinstancegroups").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeInstanceGroup).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a computeInstanceGroup and updates it. Returns the server's representation of the computeInstanceGroup, and an error, if there is any.
-func (c *computeInstanceGroups) Update(ctx context.Context, computeInstanceGroup *v1beta1.ComputeInstanceGroup, opts v1.UpdateOptions) (result *v1beta1.ComputeInstanceGroup, err error) {
-	result = &v1beta1.ComputeInstanceGroup{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computeinstancegroups").
-		Name(computeInstanceGroup.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeInstanceGroup).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *computeInstanceGroups) UpdateStatus(ctx context.Context, computeInstanceGroup *v1beta1.ComputeInstanceGroup, opts v1.UpdateOptions) (result *v1beta1.ComputeInstanceGroup, err error) {
-	result = &v1beta1.ComputeInstanceGroup{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computeinstancegroups").
-		Name(computeInstanceGroup.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeInstanceGroup).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the computeInstanceGroup and deletes it. Returns an error if one occurs.
-func (c *computeInstanceGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computeinstancegroups").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *computeInstanceGroups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computeinstancegroups").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched computeInstanceGroup.
-func (c *computeInstanceGroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeInstanceGroup, err error) {
-	result = &v1beta1.ComputeInstanceGroup{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("computeinstancegroups").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

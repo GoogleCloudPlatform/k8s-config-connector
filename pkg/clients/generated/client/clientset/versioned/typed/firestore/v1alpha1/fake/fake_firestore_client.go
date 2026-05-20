@@ -32,15 +32,15 @@ type FakeFirestoreV1alpha1 struct {
 }
 
 func (c *FakeFirestoreV1alpha1) FirestoreBackupSchedules(namespace string) v1alpha1.FirestoreBackupScheduleInterface {
-	return &FakeFirestoreBackupSchedules{c, namespace}
+	return newFakeFirestoreBackupSchedules(c, namespace)
 }
 
 func (c *FakeFirestoreV1alpha1) FirestoreDocuments(namespace string) v1alpha1.FirestoreDocumentInterface {
-	return &FakeFirestoreDocuments{c, namespace}
+	return newFakeFirestoreDocuments(c, namespace)
 }
 
 func (c *FakeFirestoreV1alpha1) FirestoreFields(namespace string) v1alpha1.FirestoreFieldInterface {
-	return &FakeFirestoreFields{c, namespace}
+	return newFakeFirestoreFields(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
