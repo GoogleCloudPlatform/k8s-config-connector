@@ -53,23 +53,23 @@ type AddonsConfig struct {
 
 	/* The status of the NodeLocal DNSCache addon. It is disabled by default. Set enabled = true to enable. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.dns_cache_config
-	DnsCacheConfig *DnsCacheConfig `json:"dnsCacheConfig,omitempty"`
+	DNSCacheConfig *DNSCacheConfig `json:"dnsCacheConfig,omitempty"`
 
 	/* Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Set enabled = true to enable. The Compute Engine persistent disk CSI Driver is enabled by default on newly created clusters for the following versions: Linux clusters: GKE version 1.18.10-gke.2100 or later, or 1.19.3-gke.2100 or later. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.gce_persistent_disk_csi_driver_config
-	GcePersistentDiskCsiDriverConfig *GcePersistentDiskCsiDriverConfig `json:"gcePersistentDiskCsiDriverConfig,omitempty"`
+	GCEPersistentDiskCSIDriverConfig *GCEPersistentDiskCSIDriverConfig `json:"gcePersistentDiskCsiDriverConfig,omitempty"`
 
 	/* The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes. Defaults to disabled; set enabled = true to enable. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.gcp_filestore_csi_driver_config
-	GcpFilestoreCsiDriverConfig *GcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
+	GCPFilestoreCSIDriverConfig *GCPFilestoreCSIDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
 
 	/* The status of the GCS Fuse CSI driver addon, which allows the usage of GCS bucket as volumes. Defaults to disabled; set enabled = true to enable. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.gcs_fuse_csi_driver_config
-	GcsFuseCsiDriverConfig *GcsFuseCsiDriverConfig `json:"gcsFuseCsiDriverConfig,omitempty"`
+	GCSFuseCSIDriverConfig *GCSFuseCSIDriverConfig `json:"gcsFuseCsiDriverConfig,omitempty"`
 
 	/* The status of the Backup for GKE Agent addon. It is disabled by default. Set enabled = true to enable. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.gke_backup_agent_config
-	GkeBackupAgentConfig *GkeBackupAgentConfig `json:"gkeBackupAgentConfig,omitempty"`
+	GKEBackupAgentConfig *GKEBackupAgentConfig `json:"gkeBackupAgentConfig,omitempty"`
 
 	/* The status of the Horizontal Pod Autoscaling addon, which increases or decreases the number of replica pods a replication controller has based on the resource usage of the existing pods. It ensures that a Heapster pod is running in the cluster, which is also used by the Cloud Monitoring service. It is enabled by default; set disabled = true to disable. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.horizontal_pod_autoscaling
@@ -77,7 +77,7 @@ type AddonsConfig struct {
 
 	/* The status of the HTTP (L7) load balancing controller addon, which makes it easy to set up HTTP load balancers for services in a cluster. It is enabled by default; set disabled = true to disable. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.http_load_balancing
-	HttpLoadBalancing *HttpLoadBalancing `json:"httpLoadBalancing,omitempty"`
+	HTTPLoadBalancing *HTTPLoadBalancing `json:"httpLoadBalancing,omitempty"`
 
 	/* The status of the Istio addon. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.istio_config
@@ -195,7 +195,7 @@ type NodePool_UpdateConfig_BlueGreenSettings struct {
 }
 
 // +kcc:proto=google.container.v1.MasterAuthorizedNetworksConfig.CIDRBlock
-type MasterAuthorizedNetworksConfig_CidrBlock struct {
+type MasterAuthorizedNetworksConfig_CIDRBlock struct {
 	/* External network that can access Kubernetes master through HTTPS. Must be specified in CIDR notation. */
 	// +required
 	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.CIDRBlock.cidr_block
@@ -328,7 +328,7 @@ type DefaultSnatStatus struct {
 }
 
 // +kcc:proto=google.container.v1.DnsCacheConfig
-type DnsCacheConfig struct {
+type DNSCacheConfig struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.DNSCacheConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
@@ -357,11 +357,11 @@ type ControlPlaneEndpointsConfig_DNSEndpointConfig struct {
 
 	/* Controls whether the k8s token auth is allowed via DNS. */
 	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.enable_k8s_tokens_via_dns
-	EnableK8sTokensViaDns *bool `json:"enableK8sTokensViaDns,omitempty"`
+	EnableK8STokensViaDNS *bool `json:"enableK8sTokensViaDns,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.K8sBetaAPIConfig
-type K8sBetaAPIConfig struct {
+type K8SBetaAPIConfig struct {
 	/* Enabled Kubernetes Beta APIs. */
 	// +kcc:proto:field=google.container.v1.K8sBetaAPIConfig.enabled_apis
 	EnabledApis []string `json:"enabledApis"`
@@ -372,19 +372,19 @@ type EphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	// +required
 	// +kcc:proto:field=google.container.v1.NodeConfig.EphemeralStorageConfig.local_ssd_count
-	LocalSsdCount *int `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.EphemeralStorageLocalSsdConfig
 type EphemeralStorageLocalSsdConfig struct {
 	/* Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces. */
 	// +kcc:proto:field=google.container.v1.EphemeralStorageLocalSsdConfig.data_cache_count
-	DataCacheCount *int `json:"dataCacheCount,omitempty"`
+	DataCacheCount *int32 `json:"dataCacheCount,omitempty"`
 
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	// +required
 	// +kcc:proto:field=google.container.v1.EphemeralStorageLocalSsdConfig.local_ssd_count
-	LocalSsdCount *int `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.MaintenanceExclusionOptions
@@ -421,7 +421,7 @@ type GatewayAPIConfig struct {
 }
 
 // +kcc:proto=google.container.v1.GcePersistentDiskCSIDriverConfig
-type GcePersistentDiskCsiDriverConfig struct {
+type GCEPersistentDiskCSIDriverConfig struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.GcePersistentDiskCSIDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
@@ -436,45 +436,45 @@ type GcfsConfig struct {
 }
 
 // +kcc:proto=google.container.v1.GCPFilestoreCSIDriverConfig
-type GcpFilestoreCsiDriverConfig struct {
+type GCPFilestoreCSIDriverConfig struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.GCPFilestoreCSIDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.GcsFuseCSIDriverConfig
-type GcsFuseCsiDriverConfig struct {
+type GCSFuseCSIDriverConfig struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.GcsFuseCSIDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.GkeBackupAgentConfig
-type GkeBackupAgentConfig struct {
+type GKEBackupAgentConfig struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.GkeBackupAgentConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.GPUDriverInstallationConfig
-type GpuDriverInstallationConfig struct {
+type GPUDriverInstallationConfig struct {
 	/* Immutable. Mode for how the GPU driver is installed. */
 	// +required
 	// +kcc:proto:field=google.container.v1.GPUDriverInstallationConfig.gpu_driver_version
-	GpuDriverVersion *string `json:"gpuDriverVersion,omitempty"`
+	GPUDriverVersion *string `json:"gpuDriverVersion,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.GPUSharingConfig
-type GpuSharingConfig struct {
+type GPUSharingConfig struct {
 	/* Immutable. The type of GPU sharing strategy to enable on the GPU node. Possible values are described in the API package (https://pkg.go.dev/google.golang.org/api/container/v1#GPUSharingConfig). */
 	// +required
 	// +kcc:proto:field=google.container.v1.GPUSharingConfig.gpu_sharing_strategy
-	GpuSharingStrategy *string `json:"gpuSharingStrategy,omitempty"`
+	GPUSharingStrategy *string `json:"gpuSharingStrategy,omitempty"`
 
 	/* Immutable. The maximum number of containers that can share a GPU. */
 	// +required
 	// +kcc:proto:field=google.container.v1.GPUSharingConfig.max_shared_clients_per_gpu
-	MaxSharedClientsPerGpu *int `json:"maxSharedClientsPerGpu,omitempty"`
+	MaxSharedClientsPerGPU *int `json:"maxSharedClientsPerGpu,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.AcceleratorConfig
@@ -486,15 +486,15 @@ type AcceleratorConfig struct {
 
 	/* Immutable. Configuration for auto installation of GPU driver. */
 	// +kcc:proto:field=google.container.v1.AcceleratorConfig.gpu_driver_installation_config
-	GpuDriverInstallationConfig *GpuDriverInstallationConfig `json:"gpuDriverInstallationConfig,omitempty"`
+	GPUDriverInstallationConfig *GPUDriverInstallationConfig `json:"gpuDriverInstallationConfig,omitempty"`
 
 	/* Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA mig user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning). */
 	// +kcc:proto:field=google.container.v1.AcceleratorConfig.gpu_partition_size
-	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+	GPUPartitionSize *string `json:"gpuPartitionSize,omitempty"`
 
 	/* Immutable. Configuration for GPU sharing. */
 	// +kcc:proto:field=google.container.v1.AcceleratorConfig.gpu_sharing_config
-	GpuSharingConfig *GpuSharingConfig `json:"gpuSharingConfig,omitempty"`
+	GPUSharingConfig *GPUSharingConfig `json:"gpuSharingConfig,omitempty"`
 
 	/* Immutable. The accelerator type resource name. */
 	// +required
@@ -526,7 +526,7 @@ type HostMaintenancePolicy struct {
 }
 
 // +kcc:proto=google.container.v1.HttpLoadBalancing
-type HttpLoadBalancing struct {
+type HTTPLoadBalancing struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.HttpLoadBalancing.disabled
 	Disabled *bool `json:"disabled,omitempty"`
@@ -644,6 +644,10 @@ type LinuxNodeConfig struct {
 	/* The Linux kernel parameters to be applied to the nodes and all pods running on the nodes. */
 	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.sysctls
 	Sysctls map[string]string `json:"sysctls,omitempty"`
+
+	/* HugepagesConfig specifies hugepages configuration for the node. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.hugepages_config
+	HugepagesConfig *LinuxNodeConfig_HugepagesConfig `json:"hugepagesConfig,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.NodeConfig.LocalNvmeSsdBlockConfig
@@ -651,7 +655,7 @@ type NodeConfig_LocalNvmeSsdBlockConfig struct {
 	/* Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size. */
 	// +required
 	// +kcc:proto:field=google.container.v1.NodeConfig.LocalNvmeSsdBlockConfig.local_ssd_count
-	LocalSsdCount *int `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.LoggingConfig
@@ -749,7 +753,7 @@ type MasterAuth struct {
 type MasterAuthorizedNetworksConfig struct {
 	/* External networks that can access the Kubernetes cluster master through HTTPS. */
 	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.cidr_blocks
-	MasterAuthorizedNetworksConfig_CidrBlock []MasterAuthorizedNetworksConfig_CidrBlock `json:"cidrBlocks,omitempty"`
+	MasterAuthorizedNetworksConfig_CIDRBlock []MasterAuthorizedNetworksConfig_CIDRBlock `json:"cidrBlocks,omitempty"`
 
 	/* Whether master is accessible via Google Compute Engine Public IP addresses. */
 	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.gcp_public_cidrs_access_enabled
@@ -902,7 +906,7 @@ type NodeConfig struct {
 
 	/* Immutable. The number of local SSD disks to be attached to the node. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.local_ssd_count
-	LocalSsdCount *int `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
 
 	/* Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.logging_config
@@ -1206,7 +1210,7 @@ type NodeConfig_SoleTenantConfig struct {
 type StandardRolloutPolicy struct {
 	/* Number of blue nodes to drain in a batch. */
 	// +kcc:proto:field=google.container.v1.NodePool.UpdateConfig.NodePool_UpdateConfig_BlueGreenSettings.StandardRolloutPolicy.batch_node_count
-	BatchNodeCount *int `json:"batchNodeCount,omitempty"`
+	BatchNodeCount *int32 `json:"batchNodeCount,omitempty"`
 
 	/* Percentage of the bool pool nodes to drain in a batch. The range of this field should be (0.0, 1.0]. */
 	// +kcc:proto:field=google.container.v1.NodePool.UpdateConfig.NodePool_UpdateConfig_BlueGreenSettings.StandardRolloutPolicy.batch_percentage
@@ -1255,11 +1259,11 @@ type NodePool_UpgradeSettings struct {
 
 	/* The maximum number of nodes that can be created beyond the current size of the node pool during the upgrade process. */
 	// +kcc:proto:field=google.container.v1.NodePool.NodePool_UpgradeSettings.max_surge
-	MaxSurge *int `json:"maxSurge,omitempty"`
+	MaxSurge *int32 `json:"maxSurge,omitempty"`
 
 	/* The maximum number of nodes that can be simultaneously unavailable during the upgrade process. */
 	// +kcc:proto:field=google.container.v1.NodePool.NodePool_UpgradeSettings.max_unavailable
-	MaxUnavailable *int `json:"maxUnavailable,omitempty"`
+	MaxUnavailable *int32 `json:"maxUnavailable,omitempty"`
 
 	/* Update strategy of the node pool. */
 	// +kcc:proto:field=google.container.v1.NodePool.NodePool_UpgradeSettings.strategy
@@ -1385,7 +1389,7 @@ type ContainerClusterSpec struct {
 
 	/* Whether FQDN Network Policy is enabled on this cluster. */
 	// +kcc:proto:field=google.container.v1.Cluster.network_config.enable_fqdn_network_policy
-	EnableFqdnNetworkPolicy *bool `json:"enableFqdnNetworkPolicy,omitempty"`
+	EnableFQDNNetworkPolicy *bool `json:"enableFqdnNetworkPolicy,omitempty"`
 
 	/* Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network. */
 	// +kcc:proto:field=google.container.v1.Cluster.network_config.enable_intranode_visibility
@@ -1393,7 +1397,7 @@ type ContainerClusterSpec struct {
 
 	/* Configuration for Kubernetes Beta APIs. */
 	// +kcc:proto:field=google.container.v1.Cluster.enable_k8s_beta_apis
-	EnableK8sBetaApis *K8sBetaAPIConfig `json:"enableK8sBetaApis,omitempty"`
+	EnableK8SBetaApis *K8SBetaAPIConfig `json:"enableK8sBetaApis,omitempty"`
 
 	/* Immutable. Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. */
 	// +kcc:proto:field=google.container.v1.Cluster.enable_kubernetes_alpha
@@ -1401,7 +1405,7 @@ type ContainerClusterSpec struct {
 
 	/* Whether L4ILB Subsetting is enabled for this cluster. */
 	// +kcc:proto:field=google.container.v1.Cluster.network_config.enable_l4_ilb_subsetting
-	EnableL4IlbSubsetting *bool `json:"enableL4IlbSubsetting,omitempty"`
+	EnableL4ILBSubsetting *bool `json:"enableL4IlbSubsetting,omitempty"`
 
 	/* Whether the ABAC authorizer is enabled for this cluster. When enabled, identities in the system, including service accounts, nodes, and controllers, will have statically granted permissions beyond those provided by the RBAC configuration or IAM. Defaults to false. */
 	// +kcc:proto:field=google.container.v1.Cluster.legacy_abac.enabled
@@ -1429,7 +1433,11 @@ type ContainerClusterSpec struct {
 
 	/* Immutable. The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true. */
 	// +kcc:proto:field=google.container.v1.Cluster.initial_node_count
-	InitialNodeCount *int `json:"initialNodeCount,omitempty"`
+	InitialNodeCount *int32 `json:"initialNodeCount,omitempty"`
+
+	/* The pods' PIDs limit. */
+	// +kcc:proto:field=google.container.v1.Cluster.network_config.pod_pids_limit
+	PodPidsLimit *int `json:"podPidsLimit,omitempty"`
 
 	/* Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based. */
 	// +kcc:proto:field=google.container.v1.Cluster.ip_allocation_policy
@@ -1541,7 +1549,7 @@ type ContainerClusterSpec struct {
 
 	/* If set, and enabled=true, services with external ips field will not be blocked. */
 	// +kcc:proto:field=google.container.v1.Cluster.service_external_ips_config
-	ServiceExternalIpsConfig *ServiceExternalIPsConfig `json:"serviceExternalIpsConfig,omitempty"`
+	ServiceExternalIPsConfig *ServiceExternalIPsConfig `json:"serviceExternalIpsConfig,omitempty"`
 
 	// +kcc:proto:field=google.container.v1.Cluster.subnetwork
 	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
@@ -1559,11 +1567,11 @@ type ContainerClusterSpec struct {
 type ControlPlaneEndpointsConfigStatus struct {
 	/* DNS endpoint configuration. */
 	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.dns_endpoint_config
-	DnsEndpointConfig *DnsEndpointConfigStatus `json:"dnsEndpointConfig,omitempty"`
+	DNSEndpointConfig *DNSEndpointConfigStatus `json:"dnsEndpointConfig,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig
-type DnsEndpointConfigStatus struct {
+type DNSEndpointConfigStatus struct {
 	/* The cluster's DNS endpoint. */
 	// +kcc:proto:field=google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.endpoint
 	Endpoint *string `json:"endpoint,omitempty"`
@@ -1577,7 +1585,7 @@ type MasterAuthStatus struct {
 
 	/* Base64 encoded public certificate that is the root of trust for the cluster. */
 	// +kcc:proto:field=google.container.v1.MasterAuth.cluster_ca_certificate
-	ClusterCaCertificate *string `json:"clusterCaCertificate,omitempty"`
+	ClusterCACertificate *string `json:"clusterCaCertificate,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.container.v1.Cluster
@@ -1631,10 +1639,10 @@ type ContainerClusterStatus struct {
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	/* The IP address range of the Kubernetes services in this cluster, in CIDR notation (e.g. 1.2.3.4/29). Service addresses are typically put in the last /16 from the container CIDR. */
-	ServicesIpv4Cidr *string `json:"servicesIpv4Cidr,omitempty"`
+	ServicesIPV4CIDR *string `json:"servicesIpv4Cidr,omitempty"`
 
 	/* The IP address range of the Cloud TPUs in this cluster, in CIDR notation (e.g. 1.2.3.4/29). */
-	TpuIpv4CidrBlock *string `json:"tpuIpv4CidrBlock,omitempty"`
+	TpuIPV4CIDRBlock *string `json:"tpuIpv4CidrBlock,omitempty"`
 }
 
 // +genclient
@@ -1713,4 +1721,15 @@ type MaintenancePolicyObservedState struct {
 	// Specifies the maintenance window in which maintenance may be performed.
 	// +kcc:proto:field=google.container.v1.MaintenancePolicy.window
 	Window *MaintenanceWindowObservedState `json:"window,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.LinuxNodeConfig.HugepagesConfig
+type LinuxNodeConfig_HugepagesConfig struct {
+	/* Amount of 2M hugepages. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size2m
+	HugepageSize2M *int32 `json:"hugepageSize2M,omitempty"`
+
+	/* Amount of 1G hugepages. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size1g
+	HugepageSize1G *int32 `json:"hugepageSize1G,omitempty"`
 }
