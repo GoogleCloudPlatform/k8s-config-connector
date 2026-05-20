@@ -94,7 +94,7 @@ X-Xss-Protection: 0
     "maxDoublings": 16,
     "minBackoff": "0.100s"
   },
-  "state": 1
+  "state": "RUNNING"
 }
 
 ---
@@ -168,7 +168,7 @@ X-Xss-Protection: 0
     "maxDoublings": 16,
     "minBackoff": "0.100s"
   },
-  "state": 1
+  "state": "RUNNING"
 }
 
 ---

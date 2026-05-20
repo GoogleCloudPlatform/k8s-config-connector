@@ -28,7 +28,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
-	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/tasks/v2"
@@ -36,11 +35,12 @@ import (
 
 type cloudTasks struct {
 	*MockService
-	pb.UnimplementedCloudTasksServer
+	pb.UnimplementedProjectsLocationsQueuesServerServer
+	pb.UnimplementedProjectsLocationsQueuesTasksServerServer
 }
 
-func (s *cloudTasks) GetQueue(ctx context.Context, req *pb.GetQueueRequest) (*pb.Queue, error) {
-	name, err := s.parseQueueName(req.Name)
+func (s *cloudTasks) GetProjectsLocationsQueue(ctx context.Context, req *pb.GetProjectsLocationsQueueRequest) (*pb.Queue, error) {
+	name, err := s.parseQueueName(req.GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (s *cloudTasks) GetQueue(ctx context.Context, req *pb.GetQueueRequest) (*pb
 	fqn := name.String()
 
 	obj := &pb.Queue{}
-	obj.State = pb.Queue_RUNNING
+	obj.State = PtrTo("RUNNING")
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "queue %q not found", fqn)
@@ -58,8 +58,8 @@ func (s *cloudTasks) GetQueue(ctx context.Context, req *pb.GetQueueRequest) (*pb
 	return obj, nil
 }
 
-func (s *cloudTasks) UpdateQueue(ctx context.Context, req *pb.UpdateQueueRequest) (*pb.Queue, error) {
-	reqName := req.GetQueue().GetName()
+func (s *cloudTasks) PatchProjectsLocationsQueue(ctx context.Context, req *pb.PatchProjectsLocationsQueueRequest) (*pb.Queue, error) {
+	reqName := req.GetProjectsLocationsQueue().GetName()
 
 	name, err := s.parseQueueName(reqName)
 	if err != nil {
@@ -72,72 +72,71 @@ func (s *cloudTasks) UpdateQueue(ctx context.Context, req *pb.UpdateQueueRequest
 	}
 
 	// Required. A list of fields to be updated in this request.
-	paths := req.GetUpdateMask().GetPaths()
-	// log.Fatalf("paths: %+v", paths)
+	paths := strings.Split(req.GetUpdateMask(), ",")
 	for _, path := range paths {
 		switch path {
 		case "rateLimits.maxDispatchesPerSecond":
 			if obj.RateLimits == nil {
 				obj.RateLimits = &pb.RateLimits{}
 			}
-			if req.GetQueue().GetRateLimits().GetMaxDispatchesPerSecond() == 0 {
-				obj.RateLimits.MaxDispatchesPerSecond = 500
+			if req.GetProjectsLocationsQueue().GetRateLimits().GetMaxDispatchesPerSecond() == 0 {
+				obj.RateLimits.MaxDispatchesPerSecond = PtrTo(500.0)
 			} else {
-				obj.RateLimits.MaxDispatchesPerSecond = req.GetQueue().GetRateLimits().GetMaxDispatchesPerSecond()
+				obj.RateLimits.MaxDispatchesPerSecond = PtrTo(req.GetProjectsLocationsQueue().GetRateLimits().GetMaxDispatchesPerSecond())
 			}
 		case "rateLimits.maxBurstSize":
 			if obj.RateLimits == nil {
 				obj.RateLimits = &pb.RateLimits{}
 			}
-			if req.GetQueue().GetRateLimits().GetMaxBurstSize() == 0 {
-				obj.RateLimits.MaxBurstSize = 100
+			if req.GetProjectsLocationsQueue().GetRateLimits().GetMaxBurstSize() == 0 {
+				obj.RateLimits.MaxBurstSize = PtrTo(int32(100))
 			} else {
-				obj.RateLimits.MaxBurstSize = req.GetQueue().GetRateLimits().GetMaxBurstSize()
+				obj.RateLimits.MaxBurstSize = PtrTo(req.GetProjectsLocationsQueue().GetRateLimits().GetMaxBurstSize())
 			}
 		case "rateLimits.maxConcurrentDispatches":
 			if obj.RateLimits == nil {
 				obj.RateLimits = &pb.RateLimits{}
 			}
-			if req.GetQueue().GetRateLimits().GetMaxConcurrentDispatches() == 0 {
-				obj.RateLimits.MaxConcurrentDispatches = 1000
+			if req.GetProjectsLocationsQueue().GetRateLimits().GetMaxConcurrentDispatches() == 0 {
+				obj.RateLimits.MaxConcurrentDispatches = PtrTo(int32(1000))
 			} else {
-				obj.RateLimits.MaxConcurrentDispatches = req.GetQueue().GetRateLimits().GetMaxConcurrentDispatches()
+				obj.RateLimits.MaxConcurrentDispatches = PtrTo(req.GetProjectsLocationsQueue().GetRateLimits().GetMaxConcurrentDispatches())
 			}
 		case "retryConfig.maxAttempts":
 			if obj.RetryConfig == nil {
 				obj.RetryConfig = &pb.RetryConfig{}
 			}
-			if req.GetQueue().GetRetryConfig().GetMaxAttempts() == 0 {
-				obj.RetryConfig.MaxAttempts = 100
+			if req.GetProjectsLocationsQueue().GetRetryConfig().GetMaxAttempts() == 0 {
+				obj.RetryConfig.MaxAttempts = PtrTo(int32(100))
 			} else {
-				obj.RetryConfig.MaxAttempts = req.GetQueue().GetRetryConfig().GetMaxAttempts()
+				obj.RetryConfig.MaxAttempts = PtrTo(req.GetProjectsLocationsQueue().GetRetryConfig().GetMaxAttempts())
 			}
 		case "retryConfig.minBackoff":
 			if obj.RetryConfig == nil {
 				obj.RetryConfig = &pb.RetryConfig{}
 			}
-			if req.GetQueue().GetRetryConfig().GetMinBackoff() == nil {
+			if req.GetProjectsLocationsQueue().GetRetryConfig().GetMinBackoff() == nil {
 				obj.RetryConfig.MinBackoff = durationpb.New(time.Second / 10)
 			} else {
-				obj.RetryConfig.MinBackoff = req.GetQueue().GetRetryConfig().GetMinBackoff()
+				obj.RetryConfig.MinBackoff = req.GetProjectsLocationsQueue().GetRetryConfig().GetMinBackoff()
 			}
 		case "retryConfig.maxBackoff":
 			if obj.RetryConfig == nil {
 				obj.RetryConfig = &pb.RetryConfig{}
 			}
-			if req.GetQueue().GetRetryConfig().GetMaxBackoff() == nil {
+			if req.GetProjectsLocationsQueue().GetRetryConfig().GetMaxBackoff() == nil {
 				obj.RetryConfig.MaxBackoff = durationpb.New(3600 * time.Second)
 			} else {
-				obj.RetryConfig.MaxBackoff = req.GetQueue().GetRetryConfig().GetMaxBackoff()
+				obj.RetryConfig.MaxBackoff = req.GetProjectsLocationsQueue().GetRetryConfig().GetMaxBackoff()
 			}
 		case "retryConfig.maxDoublings":
 			if obj.RetryConfig == nil {
 				obj.RetryConfig = &pb.RetryConfig{}
 			}
-			if req.GetQueue().GetRetryConfig().GetMaxDoublings() == 0 {
-				obj.RetryConfig.MaxDoublings = 16
+			if req.GetProjectsLocationsQueue().GetRetryConfig().GetMaxDoublings() == 0 {
+				obj.RetryConfig.MaxDoublings = PtrTo(int32(16))
 			} else {
-				obj.RetryConfig.MaxDoublings = req.GetQueue().GetRetryConfig().GetMaxDoublings()
+				obj.RetryConfig.MaxDoublings = PtrTo(req.GetProjectsLocationsQueue().GetRetryConfig().GetMaxDoublings())
 			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
@@ -151,25 +150,25 @@ func (s *cloudTasks) UpdateQueue(ctx context.Context, req *pb.UpdateQueueRequest
 	return obj, nil
 }
 
-func (s *cloudTasks) CreateQueue(ctx context.Context, req *pb.CreateQueueRequest) (*pb.Queue, error) {
-	name, err := s.parseQueueName(req.GetQueue().GetName())
+func (s *cloudTasks) CreateProjectsLocationsQueue(ctx context.Context, req *pb.CreateProjectsLocationsQueueRequest) (*pb.Queue, error) {
+	name, err := s.parseQueueName(req.GetProjectsLocationsQueue().GetName())
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := proto.CloneOf(req.Queue)
-	obj.Name = fqn
+	obj := proto.Clone(req.GetProjectsLocationsQueue()).(*pb.Queue)
+	obj.Name = PtrTo(fqn)
 	obj.RateLimits = &pb.RateLimits{
-		MaxBurstSize:            100,
-		MaxConcurrentDispatches: 1000,
-		MaxDispatchesPerSecond:  500,
+		MaxBurstSize:            PtrTo(int32(100)),
+		MaxConcurrentDispatches: PtrTo(int32(1000)),
+		MaxDispatchesPerSecond:  PtrTo(500.0),
 	}
 	obj.RetryConfig = &pb.RetryConfig{
-		MaxAttempts:  100,
+		MaxAttempts:  PtrTo(int32(100)),
 		MaxBackoff:   durationpb.New(3600 * time.Second),
-		MaxDoublings: 16,
+		MaxDoublings: PtrTo(int32(16)),
 		MinBackoff:   durationpb.New(time.Second / 10),
 	}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -179,8 +178,8 @@ func (s *cloudTasks) CreateQueue(ctx context.Context, req *pb.CreateQueueRequest
 	return obj, nil
 }
 
-func (s *cloudTasks) DeleteQueue(ctx context.Context, req *pb.DeleteQueueRequest) (*emptypb.Empty, error) {
-	name, err := s.parseQueueName(req.Name)
+func (s *cloudTasks) DeleteProjectsLocationsQueue(ctx context.Context, req *pb.DeleteProjectsLocationsQueueRequest) (*pb.Empty, error) {
+	name, err := s.parseQueueName(req.GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +191,7 @@ func (s *cloudTasks) DeleteQueue(ctx context.Context, req *pb.DeleteQueueRequest
 		return nil, err
 	}
 
-	return &emptypb.Empty{}, nil
+	return &pb.Empty{}, nil
 }
 
 type queueParent struct {
@@ -256,4 +255,8 @@ func (s *MockService) parseQueueParent(name string) (*queueParent, error) {
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", name)
+}
+
+func PtrTo[T any](t T) *T {
+	return &t
 }

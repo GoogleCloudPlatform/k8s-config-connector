@@ -56,6 +56,8 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
+		./apis/mockgcp/cloud/tasks/v2/*.proto \
+		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/annotation*.proto \
@@ -112,8 +114,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
 		./third_party/googleapis/mockgcp/cloud/compute/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/documentai/v1/*.proto \
@@ -140,7 +142,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
 		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
-		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto	 \
+		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/v1/resource_policy_member.proto \
 		./third_party/googleapis/mockgcp/spanner/admin/database/v1/*.proto \
@@ -228,5 +230,9 @@ generate-protos-from-openapi:
 	mkdir -p apis/google/cloud/dns/v1/
 	# DNS sadly uses a bespoke operation type
 	cd tools/gapic; go run . --proto-version=2 --proto-package google.cloud.dns.v1 --normalize-lro=false ../../temp/dns-api.json > ../../apis/google/cloud/dns/v1/service.proto
+
+	wget -O temp/cloudtasks-v2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/cloudtasks/v2/cloudtasks-api.json
+	mkdir -p apis/mockgcp/cloud/tasks/v2/
+	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.tasks.v2 ../../temp/cloudtasks-v2.json > ../../apis/mockgcp/cloud/tasks/v2/service.proto
 
 	rm -r temp
