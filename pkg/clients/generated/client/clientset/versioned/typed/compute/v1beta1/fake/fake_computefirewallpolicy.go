@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeComputeFirewallPolicies implements ComputeFirewallPolicyInterface
-type FakeComputeFirewallPolicies struct {
+// fakeComputeFirewallPolicies implements ComputeFirewallPolicyInterface
+type fakeComputeFirewallPolicies struct {
+	*gentype.FakeClientWithList[*v1beta1.ComputeFirewallPolicy, *v1beta1.ComputeFirewallPolicyList]
 	Fake *FakeComputeV1beta1
-	ns   string
 }
 
-var computefirewallpoliciesResource = v1beta1.SchemeGroupVersion.WithResource("computefirewallpolicies")
-
-var computefirewallpoliciesKind = v1beta1.SchemeGroupVersion.WithKind("ComputeFirewallPolicy")
-
-// Get takes name of the computeFirewallPolicy, and returns the corresponding computeFirewallPolicy object, and an error if there is any.
-func (c *FakeComputeFirewallPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeFirewallPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(computefirewallpoliciesResource, c.ns, name), &v1beta1.ComputeFirewallPolicy{})
-
-	if obj == nil {
-		return nil, err
+func newFakeComputeFirewallPolicies(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeFirewallPolicyInterface {
+	return &fakeComputeFirewallPolicies{
+		gentype.NewFakeClientWithList[*v1beta1.ComputeFirewallPolicy, *v1beta1.ComputeFirewallPolicyList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("computefirewallpolicies"),
+			v1beta1.SchemeGroupVersion.WithKind("ComputeFirewallPolicy"),
+			func() *v1beta1.ComputeFirewallPolicy { return &v1beta1.ComputeFirewallPolicy{} },
+			func() *v1beta1.ComputeFirewallPolicyList { return &v1beta1.ComputeFirewallPolicyList{} },
+			func(dst, src *v1beta1.ComputeFirewallPolicyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.ComputeFirewallPolicyList) []*v1beta1.ComputeFirewallPolicy {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.ComputeFirewallPolicyList, items []*v1beta1.ComputeFirewallPolicy) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.ComputeFirewallPolicy), err
-}
-
-// List takes label and field selectors, and returns the list of ComputeFirewallPolicies that match those selectors.
-func (c *FakeComputeFirewallPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeFirewallPolicyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(computefirewallpoliciesResource, computefirewallpoliciesKind, c.ns, opts), &v1beta1.ComputeFirewallPolicyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.ComputeFirewallPolicyList{ListMeta: obj.(*v1beta1.ComputeFirewallPolicyList).ListMeta}
-	for _, item := range obj.(*v1beta1.ComputeFirewallPolicyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested computeFirewallPolicies.
-func (c *FakeComputeFirewallPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(computefirewallpoliciesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a computeFirewallPolicy and creates it.  Returns the server's representation of the computeFirewallPolicy, and an error, if there is any.
-func (c *FakeComputeFirewallPolicies) Create(ctx context.Context, computeFirewallPolicy *v1beta1.ComputeFirewallPolicy, opts v1.CreateOptions) (result *v1beta1.ComputeFirewallPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(computefirewallpoliciesResource, c.ns, computeFirewallPolicy), &v1beta1.ComputeFirewallPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeFirewallPolicy), err
-}
-
-// Update takes the representation of a computeFirewallPolicy and updates it. Returns the server's representation of the computeFirewallPolicy, and an error, if there is any.
-func (c *FakeComputeFirewallPolicies) Update(ctx context.Context, computeFirewallPolicy *v1beta1.ComputeFirewallPolicy, opts v1.UpdateOptions) (result *v1beta1.ComputeFirewallPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(computefirewallpoliciesResource, c.ns, computeFirewallPolicy), &v1beta1.ComputeFirewallPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeFirewallPolicy), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeComputeFirewallPolicies) UpdateStatus(ctx context.Context, computeFirewallPolicy *v1beta1.ComputeFirewallPolicy, opts v1.UpdateOptions) (*v1beta1.ComputeFirewallPolicy, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(computefirewallpoliciesResource, "status", c.ns, computeFirewallPolicy), &v1beta1.ComputeFirewallPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeFirewallPolicy), err
-}
-
-// Delete takes name of the computeFirewallPolicy and deletes it. Returns an error if one occurs.
-func (c *FakeComputeFirewallPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(computefirewallpoliciesResource, c.ns, name, opts), &v1beta1.ComputeFirewallPolicy{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeComputeFirewallPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(computefirewallpoliciesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.ComputeFirewallPolicyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched computeFirewallPolicy.
-func (c *FakeComputeFirewallPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeFirewallPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(computefirewallpoliciesResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeFirewallPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeFirewallPolicy), err
 }

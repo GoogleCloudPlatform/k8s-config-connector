@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1beta1"
+	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // BackupDRBackupPlanAssociationsGetter has a method to return a BackupDRBackupPlanAssociationInterface.
@@ -41,158 +40,38 @@ type BackupDRBackupPlanAssociationsGetter interface {
 
 // BackupDRBackupPlanAssociationInterface has methods to work with BackupDRBackupPlanAssociation resources.
 type BackupDRBackupPlanAssociationInterface interface {
-	Create(ctx context.Context, backupDRBackupPlanAssociation *v1beta1.BackupDRBackupPlanAssociation, opts v1.CreateOptions) (*v1beta1.BackupDRBackupPlanAssociation, error)
-	Update(ctx context.Context, backupDRBackupPlanAssociation *v1beta1.BackupDRBackupPlanAssociation, opts v1.UpdateOptions) (*v1beta1.BackupDRBackupPlanAssociation, error)
-	UpdateStatus(ctx context.Context, backupDRBackupPlanAssociation *v1beta1.BackupDRBackupPlanAssociation, opts v1.UpdateOptions) (*v1beta1.BackupDRBackupPlanAssociation, error)
+	Create(ctx context.Context, backupDRBackupPlanAssociation *backupdrv1beta1.BackupDRBackupPlanAssociation, opts v1.CreateOptions) (*backupdrv1beta1.BackupDRBackupPlanAssociation, error)
+	Update(ctx context.Context, backupDRBackupPlanAssociation *backupdrv1beta1.BackupDRBackupPlanAssociation, opts v1.UpdateOptions) (*backupdrv1beta1.BackupDRBackupPlanAssociation, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, backupDRBackupPlanAssociation *backupdrv1beta1.BackupDRBackupPlanAssociation, opts v1.UpdateOptions) (*backupdrv1beta1.BackupDRBackupPlanAssociation, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.BackupDRBackupPlanAssociation, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.BackupDRBackupPlanAssociationList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*backupdrv1beta1.BackupDRBackupPlanAssociation, error)
+	List(ctx context.Context, opts v1.ListOptions) (*backupdrv1beta1.BackupDRBackupPlanAssociationList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BackupDRBackupPlanAssociation, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *backupdrv1beta1.BackupDRBackupPlanAssociation, err error)
 	BackupDRBackupPlanAssociationExpansion
 }
 
 // backupDRBackupPlanAssociations implements BackupDRBackupPlanAssociationInterface
 type backupDRBackupPlanAssociations struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*backupdrv1beta1.BackupDRBackupPlanAssociation, *backupdrv1beta1.BackupDRBackupPlanAssociationList]
 }
 
 // newBackupDRBackupPlanAssociations returns a BackupDRBackupPlanAssociations
 func newBackupDRBackupPlanAssociations(c *BackupdrV1beta1Client, namespace string) *backupDRBackupPlanAssociations {
 	return &backupDRBackupPlanAssociations{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*backupdrv1beta1.BackupDRBackupPlanAssociation, *backupdrv1beta1.BackupDRBackupPlanAssociationList](
+			"backupdrbackupplanassociations",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *backupdrv1beta1.BackupDRBackupPlanAssociation {
+				return &backupdrv1beta1.BackupDRBackupPlanAssociation{}
+			},
+			func() *backupdrv1beta1.BackupDRBackupPlanAssociationList {
+				return &backupdrv1beta1.BackupDRBackupPlanAssociationList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the backupDRBackupPlanAssociation, and returns the corresponding backupDRBackupPlanAssociation object, and an error if there is any.
-func (c *backupDRBackupPlanAssociations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BackupDRBackupPlanAssociation, err error) {
-	result = &v1beta1.BackupDRBackupPlanAssociation{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("backupdrbackupplanassociations").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of BackupDRBackupPlanAssociations that match those selectors.
-func (c *backupDRBackupPlanAssociations) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BackupDRBackupPlanAssociationList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.BackupDRBackupPlanAssociationList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("backupdrbackupplanassociations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested backupDRBackupPlanAssociations.
-func (c *backupDRBackupPlanAssociations) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("backupdrbackupplanassociations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a backupDRBackupPlanAssociation and creates it.  Returns the server's representation of the backupDRBackupPlanAssociation, and an error, if there is any.
-func (c *backupDRBackupPlanAssociations) Create(ctx context.Context, backupDRBackupPlanAssociation *v1beta1.BackupDRBackupPlanAssociation, opts v1.CreateOptions) (result *v1beta1.BackupDRBackupPlanAssociation, err error) {
-	result = &v1beta1.BackupDRBackupPlanAssociation{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("backupdrbackupplanassociations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(backupDRBackupPlanAssociation).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a backupDRBackupPlanAssociation and updates it. Returns the server's representation of the backupDRBackupPlanAssociation, and an error, if there is any.
-func (c *backupDRBackupPlanAssociations) Update(ctx context.Context, backupDRBackupPlanAssociation *v1beta1.BackupDRBackupPlanAssociation, opts v1.UpdateOptions) (result *v1beta1.BackupDRBackupPlanAssociation, err error) {
-	result = &v1beta1.BackupDRBackupPlanAssociation{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("backupdrbackupplanassociations").
-		Name(backupDRBackupPlanAssociation.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(backupDRBackupPlanAssociation).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *backupDRBackupPlanAssociations) UpdateStatus(ctx context.Context, backupDRBackupPlanAssociation *v1beta1.BackupDRBackupPlanAssociation, opts v1.UpdateOptions) (result *v1beta1.BackupDRBackupPlanAssociation, err error) {
-	result = &v1beta1.BackupDRBackupPlanAssociation{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("backupdrbackupplanassociations").
-		Name(backupDRBackupPlanAssociation.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(backupDRBackupPlanAssociation).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the backupDRBackupPlanAssociation and deletes it. Returns an error if one occurs.
-func (c *backupDRBackupPlanAssociations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("backupdrbackupplanassociations").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *backupDRBackupPlanAssociations) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("backupdrbackupplanassociations").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched backupDRBackupPlanAssociation.
-func (c *backupDRBackupPlanAssociations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BackupDRBackupPlanAssociation, err error) {
-	result = &v1beta1.BackupDRBackupPlanAssociation{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("backupdrbackupplanassociations").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

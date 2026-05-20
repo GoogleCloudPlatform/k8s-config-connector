@@ -79,6 +79,23 @@ type RuntimetemplateMachineSpec struct {
 	// +optional
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 
+	/* Optional. Immutable. The Nvidia GPU partition size.
+
+	When specified, the requested accelerators will be partitioned into
+	smaller GPU partitions. For example, if the request is for 8 units of
+	NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+	create 8 * 7 = 56 partitioned MIG instances.
+
+	The partition size must be a value supported by the requested accelerator.
+	Refer to
+	[Nvidia GPU
+	Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
+	for the available partition sizes.
+
+	If set, the accelerator_count should be set to 1. */
+	// +optional
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
 	/* Immutable. The type of the machine.
 
 	See the [list of machine types supported for
@@ -94,6 +111,10 @@ type RuntimetemplateMachineSpec struct {
 	this field is required. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
+
+	/* Optional. Immutable. The number of nodes per replica for multihost GPU deployments. */
+	// +optional
+	MultihostGpuNodeCount *int32 `json:"multihostGpuNodeCount,omitempty"`
 
 	/* Optional. Immutable. Configuration controlling how this resource pool consumes reservation. */
 	// +optional

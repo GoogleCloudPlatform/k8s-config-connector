@@ -32,19 +32,19 @@ type FakeDlpV1beta1 struct {
 }
 
 func (c *FakeDlpV1beta1) DLPDeidentifyTemplates(namespace string) v1beta1.DLPDeidentifyTemplateInterface {
-	return &FakeDLPDeidentifyTemplates{c, namespace}
+	return newFakeDLPDeidentifyTemplates(c, namespace)
 }
 
 func (c *FakeDlpV1beta1) DLPInspectTemplates(namespace string) v1beta1.DLPInspectTemplateInterface {
-	return &FakeDLPInspectTemplates{c, namespace}
+	return newFakeDLPInspectTemplates(c, namespace)
 }
 
 func (c *FakeDlpV1beta1) DLPJobTriggers(namespace string) v1beta1.DLPJobTriggerInterface {
-	return &FakeDLPJobTriggers{c, namespace}
+	return newFakeDLPJobTriggers(c, namespace)
 }
 
 func (c *FakeDlpV1beta1) DLPStoredInfoTypes(namespace string) v1beta1.DLPStoredInfoTypeInterface {
-	return &FakeDLPStoredInfoTypes{c, namespace}
+	return newFakeDLPStoredInfoTypes(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
