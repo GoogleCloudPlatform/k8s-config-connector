@@ -57,50 +57,18 @@ func IsSelfLinkEqual(a, b *string) bool {
 	return aVal == bVal
 }
 
-func Int32_FromProto(in *int64) *int32 {
+func ConvertInt32ToInt(in *int32) *int {
 	if in == nil {
 		return nil
 	}
-	out := int32(*in)
-	return &out
+	v := int(*in)
+	return &v
 }
 
-func Int32_ToProto(in *int32) *int64 {
+func ConvertIntToInt32(in *int) *int32 {
 	if in == nil {
 		return nil
 	}
-	out := int64(*in)
-	return &out
-}
-
-func Int64_FromProto(in *int32) *int64 {
-	if in == nil {
-		return nil
-	}
-	out := int64(*in)
-	return &out
-}
-
-func Int64_ToProto(in *int64) *int32 {
-	if in == nil {
-		return nil
-	}
-	out := int32(*in)
-	return &out
-}
-
-func Uint64_FromProto(in *uint64) *int64 {
-	if in == nil {
-		return nil
-	}
-	out := int64(*in)
-	return &out
-}
-
-func Uint64_ToProto(in *int64) *uint64 {
-	if in == nil {
-		return nil
-	}
-	out := uint64(*in)
-	return &out
+	v := int32(*in)
+	return &v
 }
