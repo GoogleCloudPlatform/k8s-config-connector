@@ -41,7 +41,7 @@ type ComputeReservationSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.specific_reservation_required
 	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
 
-	// Immutable. The share setting for reservations and sole tenancy node groups.
+	// The share setting for reservations and sole tenancy node groups.
 	// +kcc:proto:field=google.cloud.compute.v1.Reservation.share_settings
 	ShareSettings *ShareSettings `json:"shareSettings,omitempty"`
 
@@ -201,7 +201,7 @@ type ShareSettings struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_map
 	ProjectMap []ShareSettingsProjectMap `json:"projectMap,omitempty"`
 
-	// Type of sharing for this shared-reservation
+	// Immutable. Type of sharing for this shared-reservation
 	//  Check the ShareType enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
 	ShareType *string `json:"shareType,omitempty"`

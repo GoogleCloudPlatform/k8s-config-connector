@@ -14,6 +14,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 403,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The caller does not have permission",
+        "reason": "forbidden"
+      }
+    ],
     "message": "The caller does not have permission",
     "status": "PERMISSION_DENIED"
   }
@@ -250,10 +257,17 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "${projectId}",
   "etag": "abcdef0123A=",
+  "labels": {
+    "generative-language": "enabled",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectNumber}",
+  "parent": "folders/185572751725",
   "projectId": "${projectId}",
-  "state": 1
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -284,7 +298,8 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}",
   "parent": "organizations/${organizationID}",
   "projectId": "project-${uniqueId}",
-  "state": 1
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -429,38 +444,13 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a/reservations/${reservationID}?paths=share_settings
+PATCH https://compute.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a/reservations/${reservationID}?paths=shareSettings.projectMap.${projectNumber}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=shared-reservations-project&zone=us-central1-a&reservation=${reservationID}
 
 {
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#reservation",
-  "name": "${reservationID}",
-  "reservationSharingPolicy": {
-    "serviceShareType": "DISALLOW_ALL"
-  },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a/reservations/${reservationID}",
-  "shareSettings": {
-    "projectMap": {
-      "${projectNumber}": {
-        "projectId": "${projectNumber}"
-      }
-    },
-    "shareType": "SPECIFIC_PROJECTS"
-  },
-  "specificReservation": {
-    "assuredCount": "1",
-    "count": "1",
-    "instanceProperties": {
-      "machineType": "n1-standard-1"
-    }
-  },
-  "specificReservationRequired": false,
-  "status": "READY",
-  "zone": "https://www.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a"
+  "name": "${reservationID}"
 }
 
 200 OK
@@ -551,9 +541,6 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a/reservations/${reservationID}",
   "shareSettings": {
     "projectMap": {
-      "${projectNumber}": {
-        "projectId": "${projectNumber}"
-      },
       "${projectNumber}": {
         "projectId": "${projectNumber}"
       }

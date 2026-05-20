@@ -33,3 +33,5 @@ spec:
       localSsds:
         - interface: NVME
           diskSizeGb: 375
+  shareSettings:
+    shareType: LOCAL
