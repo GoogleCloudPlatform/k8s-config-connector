@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
+	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // AppHubDiscoveredWorkloadsGetter has a method to return a AppHubDiscoveredWorkloadInterface.
@@ -41,158 +40,36 @@ type AppHubDiscoveredWorkloadsGetter interface {
 
 // AppHubDiscoveredWorkloadInterface has methods to work with AppHubDiscoveredWorkload resources.
 type AppHubDiscoveredWorkloadInterface interface {
-	Create(ctx context.Context, appHubDiscoveredWorkload *v1alpha1.AppHubDiscoveredWorkload, opts v1.CreateOptions) (*v1alpha1.AppHubDiscoveredWorkload, error)
-	Update(ctx context.Context, appHubDiscoveredWorkload *v1alpha1.AppHubDiscoveredWorkload, opts v1.UpdateOptions) (*v1alpha1.AppHubDiscoveredWorkload, error)
-	UpdateStatus(ctx context.Context, appHubDiscoveredWorkload *v1alpha1.AppHubDiscoveredWorkload, opts v1.UpdateOptions) (*v1alpha1.AppHubDiscoveredWorkload, error)
+	Create(ctx context.Context, appHubDiscoveredWorkload *apphubv1alpha1.AppHubDiscoveredWorkload, opts v1.CreateOptions) (*apphubv1alpha1.AppHubDiscoveredWorkload, error)
+	Update(ctx context.Context, appHubDiscoveredWorkload *apphubv1alpha1.AppHubDiscoveredWorkload, opts v1.UpdateOptions) (*apphubv1alpha1.AppHubDiscoveredWorkload, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, appHubDiscoveredWorkload *apphubv1alpha1.AppHubDiscoveredWorkload, opts v1.UpdateOptions) (*apphubv1alpha1.AppHubDiscoveredWorkload, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.AppHubDiscoveredWorkload, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.AppHubDiscoveredWorkloadList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*apphubv1alpha1.AppHubDiscoveredWorkload, error)
+	List(ctx context.Context, opts v1.ListOptions) (*apphubv1alpha1.AppHubDiscoveredWorkloadList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppHubDiscoveredWorkload, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apphubv1alpha1.AppHubDiscoveredWorkload, err error)
 	AppHubDiscoveredWorkloadExpansion
 }
 
 // appHubDiscoveredWorkloads implements AppHubDiscoveredWorkloadInterface
 type appHubDiscoveredWorkloads struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*apphubv1alpha1.AppHubDiscoveredWorkload, *apphubv1alpha1.AppHubDiscoveredWorkloadList]
 }
 
 // newAppHubDiscoveredWorkloads returns a AppHubDiscoveredWorkloads
 func newAppHubDiscoveredWorkloads(c *ApphubV1alpha1Client, namespace string) *appHubDiscoveredWorkloads {
 	return &appHubDiscoveredWorkloads{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*apphubv1alpha1.AppHubDiscoveredWorkload, *apphubv1alpha1.AppHubDiscoveredWorkloadList](
+			"apphubdiscoveredworkloads",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *apphubv1alpha1.AppHubDiscoveredWorkload { return &apphubv1alpha1.AppHubDiscoveredWorkload{} },
+			func() *apphubv1alpha1.AppHubDiscoveredWorkloadList {
+				return &apphubv1alpha1.AppHubDiscoveredWorkloadList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the appHubDiscoveredWorkload, and returns the corresponding appHubDiscoveredWorkload object, and an error if there is any.
-func (c *appHubDiscoveredWorkloads) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AppHubDiscoveredWorkload, err error) {
-	result = &v1alpha1.AppHubDiscoveredWorkload{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredworkloads").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of AppHubDiscoveredWorkloads that match those selectors.
-func (c *appHubDiscoveredWorkloads) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.AppHubDiscoveredWorkloadList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.AppHubDiscoveredWorkloadList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredworkloads").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested appHubDiscoveredWorkloads.
-func (c *appHubDiscoveredWorkloads) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredworkloads").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a appHubDiscoveredWorkload and creates it.  Returns the server's representation of the appHubDiscoveredWorkload, and an error, if there is any.
-func (c *appHubDiscoveredWorkloads) Create(ctx context.Context, appHubDiscoveredWorkload *v1alpha1.AppHubDiscoveredWorkload, opts v1.CreateOptions) (result *v1alpha1.AppHubDiscoveredWorkload, err error) {
-	result = &v1alpha1.AppHubDiscoveredWorkload{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredworkloads").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(appHubDiscoveredWorkload).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a appHubDiscoveredWorkload and updates it. Returns the server's representation of the appHubDiscoveredWorkload, and an error, if there is any.
-func (c *appHubDiscoveredWorkloads) Update(ctx context.Context, appHubDiscoveredWorkload *v1alpha1.AppHubDiscoveredWorkload, opts v1.UpdateOptions) (result *v1alpha1.AppHubDiscoveredWorkload, err error) {
-	result = &v1alpha1.AppHubDiscoveredWorkload{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredworkloads").
-		Name(appHubDiscoveredWorkload.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(appHubDiscoveredWorkload).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *appHubDiscoveredWorkloads) UpdateStatus(ctx context.Context, appHubDiscoveredWorkload *v1alpha1.AppHubDiscoveredWorkload, opts v1.UpdateOptions) (result *v1alpha1.AppHubDiscoveredWorkload, err error) {
-	result = &v1alpha1.AppHubDiscoveredWorkload{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredworkloads").
-		Name(appHubDiscoveredWorkload.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(appHubDiscoveredWorkload).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the appHubDiscoveredWorkload and deletes it. Returns an error if one occurs.
-func (c *appHubDiscoveredWorkloads) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredworkloads").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *appHubDiscoveredWorkloads) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredworkloads").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched appHubDiscoveredWorkload.
-func (c *appHubDiscoveredWorkloads) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppHubDiscoveredWorkload, err error) {
-	result = &v1alpha1.AppHubDiscoveredWorkload{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("apphubdiscoveredworkloads").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

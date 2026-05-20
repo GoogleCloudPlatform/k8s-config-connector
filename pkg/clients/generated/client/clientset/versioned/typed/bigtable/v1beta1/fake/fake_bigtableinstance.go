@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBigtableInstances implements BigtableInstanceInterface
-type FakeBigtableInstances struct {
+// fakeBigtableInstances implements BigtableInstanceInterface
+type fakeBigtableInstances struct {
+	*gentype.FakeClientWithList[*v1beta1.BigtableInstance, *v1beta1.BigtableInstanceList]
 	Fake *FakeBigtableV1beta1
-	ns   string
 }
 
-var bigtableinstancesResource = v1beta1.SchemeGroupVersion.WithResource("bigtableinstances")
-
-var bigtableinstancesKind = v1beta1.SchemeGroupVersion.WithKind("BigtableInstance")
-
-// Get takes name of the bigtableInstance, and returns the corresponding bigtableInstance object, and an error if there is any.
-func (c *FakeBigtableInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigtableInstance, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(bigtableinstancesResource, c.ns, name), &v1beta1.BigtableInstance{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBigtableInstances(fake *FakeBigtableV1beta1, namespace string) bigtablev1beta1.BigtableInstanceInterface {
+	return &fakeBigtableInstances{
+		gentype.NewFakeClientWithList[*v1beta1.BigtableInstance, *v1beta1.BigtableInstanceList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("bigtableinstances"),
+			v1beta1.SchemeGroupVersion.WithKind("BigtableInstance"),
+			func() *v1beta1.BigtableInstance { return &v1beta1.BigtableInstance{} },
+			func() *v1beta1.BigtableInstanceList { return &v1beta1.BigtableInstanceList{} },
+			func(dst, src *v1beta1.BigtableInstanceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.BigtableInstanceList) []*v1beta1.BigtableInstance {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.BigtableInstanceList, items []*v1beta1.BigtableInstance) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.BigtableInstance), err
-}
-
-// List takes label and field selectors, and returns the list of BigtableInstances that match those selectors.
-func (c *FakeBigtableInstances) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigtableInstanceList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(bigtableinstancesResource, bigtableinstancesKind, c.ns, opts), &v1beta1.BigtableInstanceList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.BigtableInstanceList{ListMeta: obj.(*v1beta1.BigtableInstanceList).ListMeta}
-	for _, item := range obj.(*v1beta1.BigtableInstanceList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested bigtableInstances.
-func (c *FakeBigtableInstances) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(bigtableinstancesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a bigtableInstance and creates it.  Returns the server's representation of the bigtableInstance, and an error, if there is any.
-func (c *FakeBigtableInstances) Create(ctx context.Context, bigtableInstance *v1beta1.BigtableInstance, opts v1.CreateOptions) (result *v1beta1.BigtableInstance, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(bigtableinstancesResource, c.ns, bigtableInstance), &v1beta1.BigtableInstance{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigtableInstance), err
-}
-
-// Update takes the representation of a bigtableInstance and updates it. Returns the server's representation of the bigtableInstance, and an error, if there is any.
-func (c *FakeBigtableInstances) Update(ctx context.Context, bigtableInstance *v1beta1.BigtableInstance, opts v1.UpdateOptions) (result *v1beta1.BigtableInstance, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(bigtableinstancesResource, c.ns, bigtableInstance), &v1beta1.BigtableInstance{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigtableInstance), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigtableInstances) UpdateStatus(ctx context.Context, bigtableInstance *v1beta1.BigtableInstance, opts v1.UpdateOptions) (*v1beta1.BigtableInstance, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(bigtableinstancesResource, "status", c.ns, bigtableInstance), &v1beta1.BigtableInstance{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigtableInstance), err
-}
-
-// Delete takes name of the bigtableInstance and deletes it. Returns an error if one occurs.
-func (c *FakeBigtableInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(bigtableinstancesResource, c.ns, name, opts), &v1beta1.BigtableInstance{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBigtableInstances) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(bigtableinstancesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.BigtableInstanceList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched bigtableInstance.
-func (c *FakeBigtableInstances) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigtableInstance, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(bigtableinstancesResource, c.ns, name, pt, data, subresources...), &v1beta1.BigtableInstance{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigtableInstance), err
 }

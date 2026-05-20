@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeFirestoreFields implements FirestoreFieldInterface
-type FakeFirestoreFields struct {
+// fakeFirestoreFields implements FirestoreFieldInterface
+type fakeFirestoreFields struct {
+	*gentype.FakeClientWithList[*v1alpha1.FirestoreField, *v1alpha1.FirestoreFieldList]
 	Fake *FakeFirestoreV1alpha1
-	ns   string
 }
 
-var firestorefieldsResource = v1alpha1.SchemeGroupVersion.WithResource("firestorefields")
-
-var firestorefieldsKind = v1alpha1.SchemeGroupVersion.WithKind("FirestoreField")
-
-// Get takes name of the firestoreField, and returns the corresponding firestoreField object, and an error if there is any.
-func (c *FakeFirestoreFields) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.FirestoreField, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(firestorefieldsResource, c.ns, name), &v1alpha1.FirestoreField{})
-
-	if obj == nil {
-		return nil, err
+func newFakeFirestoreFields(fake *FakeFirestoreV1alpha1, namespace string) firestorev1alpha1.FirestoreFieldInterface {
+	return &fakeFirestoreFields{
+		gentype.NewFakeClientWithList[*v1alpha1.FirestoreField, *v1alpha1.FirestoreFieldList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("firestorefields"),
+			v1alpha1.SchemeGroupVersion.WithKind("FirestoreField"),
+			func() *v1alpha1.FirestoreField { return &v1alpha1.FirestoreField{} },
+			func() *v1alpha1.FirestoreFieldList { return &v1alpha1.FirestoreFieldList{} },
+			func(dst, src *v1alpha1.FirestoreFieldList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.FirestoreFieldList) []*v1alpha1.FirestoreField {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.FirestoreFieldList, items []*v1alpha1.FirestoreField) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.FirestoreField), err
-}
-
-// List takes label and field selectors, and returns the list of FirestoreFields that match those selectors.
-func (c *FakeFirestoreFields) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.FirestoreFieldList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(firestorefieldsResource, firestorefieldsKind, c.ns, opts), &v1alpha1.FirestoreFieldList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.FirestoreFieldList{ListMeta: obj.(*v1alpha1.FirestoreFieldList).ListMeta}
-	for _, item := range obj.(*v1alpha1.FirestoreFieldList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested firestoreFields.
-func (c *FakeFirestoreFields) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(firestorefieldsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a firestoreField and creates it.  Returns the server's representation of the firestoreField, and an error, if there is any.
-func (c *FakeFirestoreFields) Create(ctx context.Context, firestoreField *v1alpha1.FirestoreField, opts v1.CreateOptions) (result *v1alpha1.FirestoreField, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(firestorefieldsResource, c.ns, firestoreField), &v1alpha1.FirestoreField{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FirestoreField), err
-}
-
-// Update takes the representation of a firestoreField and updates it. Returns the server's representation of the firestoreField, and an error, if there is any.
-func (c *FakeFirestoreFields) Update(ctx context.Context, firestoreField *v1alpha1.FirestoreField, opts v1.UpdateOptions) (result *v1alpha1.FirestoreField, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(firestorefieldsResource, c.ns, firestoreField), &v1alpha1.FirestoreField{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FirestoreField), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeFirestoreFields) UpdateStatus(ctx context.Context, firestoreField *v1alpha1.FirestoreField, opts v1.UpdateOptions) (*v1alpha1.FirestoreField, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(firestorefieldsResource, "status", c.ns, firestoreField), &v1alpha1.FirestoreField{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FirestoreField), err
-}
-
-// Delete takes name of the firestoreField and deletes it. Returns an error if one occurs.
-func (c *FakeFirestoreFields) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(firestorefieldsResource, c.ns, name, opts), &v1alpha1.FirestoreField{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeFirestoreFields) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(firestorefieldsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.FirestoreFieldList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched firestoreField.
-func (c *FakeFirestoreFields) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.FirestoreField, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(firestorefieldsResource, c.ns, name, pt, data, subresources...), &v1alpha1.FirestoreField{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FirestoreField), err
 }

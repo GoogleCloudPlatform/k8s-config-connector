@@ -32,11 +32,11 @@ type FakeNetworkconnectivityV1beta1 struct {
 }
 
 func (c *FakeNetworkconnectivityV1beta1) NetworkConnectivityHubs(namespace string) v1beta1.NetworkConnectivityHubInterface {
-	return &FakeNetworkConnectivityHubs{c, namespace}
+	return newFakeNetworkConnectivityHubs(c, namespace)
 }
 
 func (c *FakeNetworkconnectivityV1beta1) NetworkConnectivitySpokes(namespace string) v1beta1.NetworkConnectivitySpokeInterface {
-	return &FakeNetworkConnectivitySpokes{c, namespace}
+	return newFakeNetworkConnectivitySpokes(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -32,11 +32,11 @@ type FakeSecretmanagerV1beta1 struct {
 }
 
 func (c *FakeSecretmanagerV1beta1) SecretManagerSecrets(namespace string) v1beta1.SecretManagerSecretInterface {
-	return &FakeSecretManagerSecrets{c, namespace}
+	return newFakeSecretManagerSecrets(c, namespace)
 }
 
 func (c *FakeSecretmanagerV1beta1) SecretManagerSecretVersions(namespace string) v1beta1.SecretManagerSecretVersionInterface {
-	return &FakeSecretManagerSecretVersions{c, namespace}
+	return newFakeSecretManagerSecretVersions(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

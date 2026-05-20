@@ -22,123 +22,38 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeNetworkConnectivityServiceConnectionPolicies implements NetworkConnectivityServiceConnectionPolicyInterface
-type FakeNetworkConnectivityServiceConnectionPolicies struct {
+// fakeNetworkConnectivityServiceConnectionPolicies implements NetworkConnectivityServiceConnectionPolicyInterface
+type fakeNetworkConnectivityServiceConnectionPolicies struct {
+	*gentype.FakeClientWithList[*v1alpha1.NetworkConnectivityServiceConnectionPolicy, *v1alpha1.NetworkConnectivityServiceConnectionPolicyList]
 	Fake *FakeNetworkconnectivityV1alpha1
-	ns   string
 }
 
-var networkconnectivityserviceconnectionpoliciesResource = v1alpha1.SchemeGroupVersion.WithResource("networkconnectivityserviceconnectionpolicies")
-
-var networkconnectivityserviceconnectionpoliciesKind = v1alpha1.SchemeGroupVersion.WithKind("NetworkConnectivityServiceConnectionPolicy")
-
-// Get takes name of the networkConnectivityServiceConnectionPolicy, and returns the corresponding networkConnectivityServiceConnectionPolicy object, and an error if there is any.
-func (c *FakeNetworkConnectivityServiceConnectionPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkConnectivityServiceConnectionPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(networkconnectivityserviceconnectionpoliciesResource, c.ns, name), &v1alpha1.NetworkConnectivityServiceConnectionPolicy{})
-
-	if obj == nil {
-		return nil, err
+func newFakeNetworkConnectivityServiceConnectionPolicies(fake *FakeNetworkconnectivityV1alpha1, namespace string) networkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicyInterface {
+	return &fakeNetworkConnectivityServiceConnectionPolicies{
+		gentype.NewFakeClientWithList[*v1alpha1.NetworkConnectivityServiceConnectionPolicy, *v1alpha1.NetworkConnectivityServiceConnectionPolicyList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("networkconnectivityserviceconnectionpolicies"),
+			v1alpha1.SchemeGroupVersion.WithKind("NetworkConnectivityServiceConnectionPolicy"),
+			func() *v1alpha1.NetworkConnectivityServiceConnectionPolicy {
+				return &v1alpha1.NetworkConnectivityServiceConnectionPolicy{}
+			},
+			func() *v1alpha1.NetworkConnectivityServiceConnectionPolicyList {
+				return &v1alpha1.NetworkConnectivityServiceConnectionPolicyList{}
+			},
+			func(dst, src *v1alpha1.NetworkConnectivityServiceConnectionPolicyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.NetworkConnectivityServiceConnectionPolicyList) []*v1alpha1.NetworkConnectivityServiceConnectionPolicy {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.NetworkConnectivityServiceConnectionPolicyList, items []*v1alpha1.NetworkConnectivityServiceConnectionPolicy) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.NetworkConnectivityServiceConnectionPolicy), err
-}
-
-// List takes label and field selectors, and returns the list of NetworkConnectivityServiceConnectionPolicies that match those selectors.
-func (c *FakeNetworkConnectivityServiceConnectionPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetworkConnectivityServiceConnectionPolicyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(networkconnectivityserviceconnectionpoliciesResource, networkconnectivityserviceconnectionpoliciesKind, c.ns, opts), &v1alpha1.NetworkConnectivityServiceConnectionPolicyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.NetworkConnectivityServiceConnectionPolicyList{ListMeta: obj.(*v1alpha1.NetworkConnectivityServiceConnectionPolicyList).ListMeta}
-	for _, item := range obj.(*v1alpha1.NetworkConnectivityServiceConnectionPolicyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested networkConnectivityServiceConnectionPolicies.
-func (c *FakeNetworkConnectivityServiceConnectionPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(networkconnectivityserviceconnectionpoliciesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a networkConnectivityServiceConnectionPolicy and creates it.  Returns the server's representation of the networkConnectivityServiceConnectionPolicy, and an error, if there is any.
-func (c *FakeNetworkConnectivityServiceConnectionPolicies) Create(ctx context.Context, networkConnectivityServiceConnectionPolicy *v1alpha1.NetworkConnectivityServiceConnectionPolicy, opts v1.CreateOptions) (result *v1alpha1.NetworkConnectivityServiceConnectionPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(networkconnectivityserviceconnectionpoliciesResource, c.ns, networkConnectivityServiceConnectionPolicy), &v1alpha1.NetworkConnectivityServiceConnectionPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkConnectivityServiceConnectionPolicy), err
-}
-
-// Update takes the representation of a networkConnectivityServiceConnectionPolicy and updates it. Returns the server's representation of the networkConnectivityServiceConnectionPolicy, and an error, if there is any.
-func (c *FakeNetworkConnectivityServiceConnectionPolicies) Update(ctx context.Context, networkConnectivityServiceConnectionPolicy *v1alpha1.NetworkConnectivityServiceConnectionPolicy, opts v1.UpdateOptions) (result *v1alpha1.NetworkConnectivityServiceConnectionPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(networkconnectivityserviceconnectionpoliciesResource, c.ns, networkConnectivityServiceConnectionPolicy), &v1alpha1.NetworkConnectivityServiceConnectionPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkConnectivityServiceConnectionPolicy), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeNetworkConnectivityServiceConnectionPolicies) UpdateStatus(ctx context.Context, networkConnectivityServiceConnectionPolicy *v1alpha1.NetworkConnectivityServiceConnectionPolicy, opts v1.UpdateOptions) (*v1alpha1.NetworkConnectivityServiceConnectionPolicy, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(networkconnectivityserviceconnectionpoliciesResource, "status", c.ns, networkConnectivityServiceConnectionPolicy), &v1alpha1.NetworkConnectivityServiceConnectionPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkConnectivityServiceConnectionPolicy), err
-}
-
-// Delete takes name of the networkConnectivityServiceConnectionPolicy and deletes it. Returns an error if one occurs.
-func (c *FakeNetworkConnectivityServiceConnectionPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(networkconnectivityserviceconnectionpoliciesResource, c.ns, name, opts), &v1alpha1.NetworkConnectivityServiceConnectionPolicy{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeNetworkConnectivityServiceConnectionPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(networkconnectivityserviceconnectionpoliciesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.NetworkConnectivityServiceConnectionPolicyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched networkConnectivityServiceConnectionPolicy.
-func (c *FakeNetworkConnectivityServiceConnectionPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkConnectivityServiceConnectionPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(networkconnectivityserviceconnectionpoliciesResource, c.ns, name, pt, data, subresources...), &v1alpha1.NetworkConnectivityServiceConnectionPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkConnectivityServiceConnectionPolicy), err
 }

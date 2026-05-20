@@ -32,11 +32,11 @@ type FakeFilestoreV1beta1 struct {
 }
 
 func (c *FakeFilestoreV1beta1) FilestoreBackups(namespace string) v1beta1.FilestoreBackupInterface {
-	return &FakeFilestoreBackups{c, namespace}
+	return newFakeFilestoreBackups(c, namespace)
 }
 
 func (c *FakeFilestoreV1beta1) FilestoreInstances(namespace string) v1beta1.FilestoreInstanceInterface {
-	return &FakeFilestoreInstances{c, namespace}
+	return newFakeFilestoreInstances(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
