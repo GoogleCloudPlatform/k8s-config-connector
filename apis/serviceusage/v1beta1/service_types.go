@@ -15,7 +15,7 @@
 package v1beta1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,7 +25,7 @@ var ServiceGVK = GroupVersion.WithKind("Service")
 // ServiceSpec defines the desired state of Service
 type ServiceSpec struct {
 	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+	ProjectRef *parent.ProjectRef `json:"projectRef,omitempty"`
 
 	// Immutable. Optional. The service of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
 	ResourceID *string `json:"resourceID,omitempty"`
