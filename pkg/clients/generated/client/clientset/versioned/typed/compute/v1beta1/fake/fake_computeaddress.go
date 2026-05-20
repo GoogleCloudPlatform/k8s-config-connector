@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeAddresses implements ComputeAddressInterface
-type fakeComputeAddresses struct {
-	*gentype.FakeClientWithList[*v1beta1.ComputeAddress, *v1beta1.ComputeAddressList]
+// FakeComputeAddresses implements ComputeAddressInterface
+type FakeComputeAddresses struct {
 	Fake *FakeComputeV1beta1
+	ns   string
 }
 
-func newFakeComputeAddresses(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeAddressInterface {
-	return &fakeComputeAddresses{
-		gentype.NewFakeClientWithList[*v1beta1.ComputeAddress, *v1beta1.ComputeAddressList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("computeaddresses"),
-			v1beta1.SchemeGroupVersion.WithKind("ComputeAddress"),
-			func() *v1beta1.ComputeAddress { return &v1beta1.ComputeAddress{} },
-			func() *v1beta1.ComputeAddressList { return &v1beta1.ComputeAddressList{} },
-			func(dst, src *v1beta1.ComputeAddressList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.ComputeAddressList) []*v1beta1.ComputeAddress {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.ComputeAddressList, items []*v1beta1.ComputeAddress) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computeaddressesResource = v1beta1.SchemeGroupVersion.WithResource("computeaddresses")
+
+var computeaddressesKind = v1beta1.SchemeGroupVersion.WithKind("ComputeAddress")
+
+// Get takes name of the computeAddress, and returns the corresponding computeAddress object, and an error if there is any.
+func (c *FakeComputeAddresses) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeAddress, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computeaddressesResource, c.ns, name), &v1beta1.ComputeAddress{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.ComputeAddress), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeAddresses that match those selectors.
+func (c *FakeComputeAddresses) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeAddressList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computeaddressesResource, computeaddressesKind, c.ns, opts), &v1beta1.ComputeAddressList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.ComputeAddressList{ListMeta: obj.(*v1beta1.ComputeAddressList).ListMeta}
+	for _, item := range obj.(*v1beta1.ComputeAddressList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeAddresses.
+func (c *FakeComputeAddresses) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computeaddressesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeAddress and creates it.  Returns the server's representation of the computeAddress, and an error, if there is any.
+func (c *FakeComputeAddresses) Create(ctx context.Context, computeAddress *v1beta1.ComputeAddress, opts v1.CreateOptions) (result *v1beta1.ComputeAddress, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computeaddressesResource, c.ns, computeAddress), &v1beta1.ComputeAddress{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeAddress), err
+}
+
+// Update takes the representation of a computeAddress and updates it. Returns the server's representation of the computeAddress, and an error, if there is any.
+func (c *FakeComputeAddresses) Update(ctx context.Context, computeAddress *v1beta1.ComputeAddress, opts v1.UpdateOptions) (result *v1beta1.ComputeAddress, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computeaddressesResource, c.ns, computeAddress), &v1beta1.ComputeAddress{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeAddress), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeAddresses) UpdateStatus(ctx context.Context, computeAddress *v1beta1.ComputeAddress, opts v1.UpdateOptions) (*v1beta1.ComputeAddress, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computeaddressesResource, "status", c.ns, computeAddress), &v1beta1.ComputeAddress{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeAddress), err
+}
+
+// Delete takes name of the computeAddress and deletes it. Returns an error if one occurs.
+func (c *FakeComputeAddresses) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computeaddressesResource, c.ns, name, opts), &v1beta1.ComputeAddress{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeAddresses) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computeaddressesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.ComputeAddressList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeAddress.
+func (c *FakeComputeAddresses) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeAddress, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computeaddressesResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeAddress{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeAddress), err
 }

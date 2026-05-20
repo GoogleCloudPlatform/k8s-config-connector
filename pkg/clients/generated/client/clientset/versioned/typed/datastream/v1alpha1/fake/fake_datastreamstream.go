@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastream/v1alpha1"
-	datastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDatastreamStreams implements DatastreamStreamInterface
-type fakeDatastreamStreams struct {
-	*gentype.FakeClientWithList[*v1alpha1.DatastreamStream, *v1alpha1.DatastreamStreamList]
+// FakeDatastreamStreams implements DatastreamStreamInterface
+type FakeDatastreamStreams struct {
 	Fake *FakeDatastreamV1alpha1
+	ns   string
 }
 
-func newFakeDatastreamStreams(fake *FakeDatastreamV1alpha1, namespace string) datastreamv1alpha1.DatastreamStreamInterface {
-	return &fakeDatastreamStreams{
-		gentype.NewFakeClientWithList[*v1alpha1.DatastreamStream, *v1alpha1.DatastreamStreamList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("datastreamstreams"),
-			v1alpha1.SchemeGroupVersion.WithKind("DatastreamStream"),
-			func() *v1alpha1.DatastreamStream { return &v1alpha1.DatastreamStream{} },
-			func() *v1alpha1.DatastreamStreamList { return &v1alpha1.DatastreamStreamList{} },
-			func(dst, src *v1alpha1.DatastreamStreamList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DatastreamStreamList) []*v1alpha1.DatastreamStream {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DatastreamStreamList, items []*v1alpha1.DatastreamStream) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var datastreamstreamsResource = v1alpha1.SchemeGroupVersion.WithResource("datastreamstreams")
+
+var datastreamstreamsKind = v1alpha1.SchemeGroupVersion.WithKind("DatastreamStream")
+
+// Get takes name of the datastreamStream, and returns the corresponding datastreamStream object, and an error if there is any.
+func (c *FakeDatastreamStreams) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DatastreamStream, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(datastreamstreamsResource, c.ns, name), &v1alpha1.DatastreamStream{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DatastreamStream), err
+}
+
+// List takes label and field selectors, and returns the list of DatastreamStreams that match those selectors.
+func (c *FakeDatastreamStreams) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DatastreamStreamList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(datastreamstreamsResource, datastreamstreamsKind, c.ns, opts), &v1alpha1.DatastreamStreamList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DatastreamStreamList{ListMeta: obj.(*v1alpha1.DatastreamStreamList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DatastreamStreamList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested datastreamStreams.
+func (c *FakeDatastreamStreams) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(datastreamstreamsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a datastreamStream and creates it.  Returns the server's representation of the datastreamStream, and an error, if there is any.
+func (c *FakeDatastreamStreams) Create(ctx context.Context, datastreamStream *v1alpha1.DatastreamStream, opts v1.CreateOptions) (result *v1alpha1.DatastreamStream, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(datastreamstreamsResource, c.ns, datastreamStream), &v1alpha1.DatastreamStream{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DatastreamStream), err
+}
+
+// Update takes the representation of a datastreamStream and updates it. Returns the server's representation of the datastreamStream, and an error, if there is any.
+func (c *FakeDatastreamStreams) Update(ctx context.Context, datastreamStream *v1alpha1.DatastreamStream, opts v1.UpdateOptions) (result *v1alpha1.DatastreamStream, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(datastreamstreamsResource, c.ns, datastreamStream), &v1alpha1.DatastreamStream{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DatastreamStream), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDatastreamStreams) UpdateStatus(ctx context.Context, datastreamStream *v1alpha1.DatastreamStream, opts v1.UpdateOptions) (*v1alpha1.DatastreamStream, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(datastreamstreamsResource, "status", c.ns, datastreamStream), &v1alpha1.DatastreamStream{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DatastreamStream), err
+}
+
+// Delete takes name of the datastreamStream and deletes it. Returns an error if one occurs.
+func (c *FakeDatastreamStreams) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(datastreamstreamsResource, c.ns, name, opts), &v1alpha1.DatastreamStream{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDatastreamStreams) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(datastreamstreamsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DatastreamStreamList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched datastreamStream.
+func (c *FakeDatastreamStreams) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DatastreamStream, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(datastreamstreamsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DatastreamStream{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DatastreamStream), err
 }

@@ -32,11 +32,11 @@ type FakeNetworkconnectivityV1alpha1 struct {
 }
 
 func (c *FakeNetworkconnectivityV1alpha1) NetworkConnectivityInternalRanges(namespace string) v1alpha1.NetworkConnectivityInternalRangeInterface {
-	return newFakeNetworkConnectivityInternalRanges(c, namespace)
+	return &FakeNetworkConnectivityInternalRanges{c, namespace}
 }
 
 func (c *FakeNetworkconnectivityV1alpha1) NetworkConnectivityServiceConnectionPolicies(namespace string) v1alpha1.NetworkConnectivityServiceConnectionPolicyInterface {
-	return newFakeNetworkConnectivityServiceConnectionPolicies(c, namespace)
+	return &FakeNetworkConnectivityServiceConnectionPolicies{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

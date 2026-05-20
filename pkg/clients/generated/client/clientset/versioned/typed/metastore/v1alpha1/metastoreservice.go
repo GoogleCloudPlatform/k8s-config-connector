@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // MetastoreServicesGetter has a method to return a MetastoreServiceInterface.
@@ -40,34 +41,158 @@ type MetastoreServicesGetter interface {
 
 // MetastoreServiceInterface has methods to work with MetastoreService resources.
 type MetastoreServiceInterface interface {
-	Create(ctx context.Context, metastoreService *metastorev1alpha1.MetastoreService, opts v1.CreateOptions) (*metastorev1alpha1.MetastoreService, error)
-	Update(ctx context.Context, metastoreService *metastorev1alpha1.MetastoreService, opts v1.UpdateOptions) (*metastorev1alpha1.MetastoreService, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, metastoreService *metastorev1alpha1.MetastoreService, opts v1.UpdateOptions) (*metastorev1alpha1.MetastoreService, error)
+	Create(ctx context.Context, metastoreService *v1alpha1.MetastoreService, opts v1.CreateOptions) (*v1alpha1.MetastoreService, error)
+	Update(ctx context.Context, metastoreService *v1alpha1.MetastoreService, opts v1.UpdateOptions) (*v1alpha1.MetastoreService, error)
+	UpdateStatus(ctx context.Context, metastoreService *v1alpha1.MetastoreService, opts v1.UpdateOptions) (*v1alpha1.MetastoreService, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*metastorev1alpha1.MetastoreService, error)
-	List(ctx context.Context, opts v1.ListOptions) (*metastorev1alpha1.MetastoreServiceList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.MetastoreService, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.MetastoreServiceList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *metastorev1alpha1.MetastoreService, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.MetastoreService, err error)
 	MetastoreServiceExpansion
 }
 
 // metastoreServices implements MetastoreServiceInterface
 type metastoreServices struct {
-	*gentype.ClientWithList[*metastorev1alpha1.MetastoreService, *metastorev1alpha1.MetastoreServiceList]
+	client rest.Interface
+	ns     string
 }
 
 // newMetastoreServices returns a MetastoreServices
 func newMetastoreServices(c *MetastoreV1alpha1Client, namespace string) *metastoreServices {
 	return &metastoreServices{
-		gentype.NewClientWithList[*metastorev1alpha1.MetastoreService, *metastorev1alpha1.MetastoreServiceList](
-			"metastoreservices",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *metastorev1alpha1.MetastoreService { return &metastorev1alpha1.MetastoreService{} },
-			func() *metastorev1alpha1.MetastoreServiceList { return &metastorev1alpha1.MetastoreServiceList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the metastoreService, and returns the corresponding metastoreService object, and an error if there is any.
+func (c *metastoreServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.MetastoreService, err error) {
+	result = &v1alpha1.MetastoreService{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("metastoreservices").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of MetastoreServices that match those selectors.
+func (c *metastoreServices) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.MetastoreServiceList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.MetastoreServiceList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("metastoreservices").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested metastoreServices.
+func (c *metastoreServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("metastoreservices").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a metastoreService and creates it.  Returns the server's representation of the metastoreService, and an error, if there is any.
+func (c *metastoreServices) Create(ctx context.Context, metastoreService *v1alpha1.MetastoreService, opts v1.CreateOptions) (result *v1alpha1.MetastoreService, err error) {
+	result = &v1alpha1.MetastoreService{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("metastoreservices").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(metastoreService).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a metastoreService and updates it. Returns the server's representation of the metastoreService, and an error, if there is any.
+func (c *metastoreServices) Update(ctx context.Context, metastoreService *v1alpha1.MetastoreService, opts v1.UpdateOptions) (result *v1alpha1.MetastoreService, err error) {
+	result = &v1alpha1.MetastoreService{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("metastoreservices").
+		Name(metastoreService.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(metastoreService).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *metastoreServices) UpdateStatus(ctx context.Context, metastoreService *v1alpha1.MetastoreService, opts v1.UpdateOptions) (result *v1alpha1.MetastoreService, err error) {
+	result = &v1alpha1.MetastoreService{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("metastoreservices").
+		Name(metastoreService.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(metastoreService).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the metastoreService and deletes it. Returns an error if one occurs.
+func (c *metastoreServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("metastoreservices").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *metastoreServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("metastoreservices").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched metastoreService.
+func (c *metastoreServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.MetastoreService, err error) {
+	result = &v1alpha1.MetastoreService{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("metastoreservices").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

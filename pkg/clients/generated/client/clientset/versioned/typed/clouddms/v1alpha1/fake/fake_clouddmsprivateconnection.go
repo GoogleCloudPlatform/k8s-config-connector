@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddms/v1alpha1"
-	clouddmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddms/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeCloudDMSPrivateConnections implements CloudDMSPrivateConnectionInterface
-type fakeCloudDMSPrivateConnections struct {
-	*gentype.FakeClientWithList[*v1alpha1.CloudDMSPrivateConnection, *v1alpha1.CloudDMSPrivateConnectionList]
+// FakeCloudDMSPrivateConnections implements CloudDMSPrivateConnectionInterface
+type FakeCloudDMSPrivateConnections struct {
 	Fake *FakeClouddmsV1alpha1
+	ns   string
 }
 
-func newFakeCloudDMSPrivateConnections(fake *FakeClouddmsV1alpha1, namespace string) clouddmsv1alpha1.CloudDMSPrivateConnectionInterface {
-	return &fakeCloudDMSPrivateConnections{
-		gentype.NewFakeClientWithList[*v1alpha1.CloudDMSPrivateConnection, *v1alpha1.CloudDMSPrivateConnectionList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("clouddmsprivateconnections"),
-			v1alpha1.SchemeGroupVersion.WithKind("CloudDMSPrivateConnection"),
-			func() *v1alpha1.CloudDMSPrivateConnection { return &v1alpha1.CloudDMSPrivateConnection{} },
-			func() *v1alpha1.CloudDMSPrivateConnectionList { return &v1alpha1.CloudDMSPrivateConnectionList{} },
-			func(dst, src *v1alpha1.CloudDMSPrivateConnectionList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.CloudDMSPrivateConnectionList) []*v1alpha1.CloudDMSPrivateConnection {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.CloudDMSPrivateConnectionList, items []*v1alpha1.CloudDMSPrivateConnection) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var clouddmsprivateconnectionsResource = v1alpha1.SchemeGroupVersion.WithResource("clouddmsprivateconnections")
+
+var clouddmsprivateconnectionsKind = v1alpha1.SchemeGroupVersion.WithKind("CloudDMSPrivateConnection")
+
+// Get takes name of the cloudDMSPrivateConnection, and returns the corresponding cloudDMSPrivateConnection object, and an error if there is any.
+func (c *FakeCloudDMSPrivateConnections) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudDMSPrivateConnection, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(clouddmsprivateconnectionsResource, c.ns, name), &v1alpha1.CloudDMSPrivateConnection{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.CloudDMSPrivateConnection), err
+}
+
+// List takes label and field selectors, and returns the list of CloudDMSPrivateConnections that match those selectors.
+func (c *FakeCloudDMSPrivateConnections) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudDMSPrivateConnectionList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(clouddmsprivateconnectionsResource, clouddmsprivateconnectionsKind, c.ns, opts), &v1alpha1.CloudDMSPrivateConnectionList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.CloudDMSPrivateConnectionList{ListMeta: obj.(*v1alpha1.CloudDMSPrivateConnectionList).ListMeta}
+	for _, item := range obj.(*v1alpha1.CloudDMSPrivateConnectionList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested cloudDMSPrivateConnections.
+func (c *FakeCloudDMSPrivateConnections) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(clouddmsprivateconnectionsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a cloudDMSPrivateConnection and creates it.  Returns the server's representation of the cloudDMSPrivateConnection, and an error, if there is any.
+func (c *FakeCloudDMSPrivateConnections) Create(ctx context.Context, cloudDMSPrivateConnection *v1alpha1.CloudDMSPrivateConnection, opts v1.CreateOptions) (result *v1alpha1.CloudDMSPrivateConnection, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(clouddmsprivateconnectionsResource, c.ns, cloudDMSPrivateConnection), &v1alpha1.CloudDMSPrivateConnection{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudDMSPrivateConnection), err
+}
+
+// Update takes the representation of a cloudDMSPrivateConnection and updates it. Returns the server's representation of the cloudDMSPrivateConnection, and an error, if there is any.
+func (c *FakeCloudDMSPrivateConnections) Update(ctx context.Context, cloudDMSPrivateConnection *v1alpha1.CloudDMSPrivateConnection, opts v1.UpdateOptions) (result *v1alpha1.CloudDMSPrivateConnection, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(clouddmsprivateconnectionsResource, c.ns, cloudDMSPrivateConnection), &v1alpha1.CloudDMSPrivateConnection{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudDMSPrivateConnection), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeCloudDMSPrivateConnections) UpdateStatus(ctx context.Context, cloudDMSPrivateConnection *v1alpha1.CloudDMSPrivateConnection, opts v1.UpdateOptions) (*v1alpha1.CloudDMSPrivateConnection, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(clouddmsprivateconnectionsResource, "status", c.ns, cloudDMSPrivateConnection), &v1alpha1.CloudDMSPrivateConnection{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudDMSPrivateConnection), err
+}
+
+// Delete takes name of the cloudDMSPrivateConnection and deletes it. Returns an error if one occurs.
+func (c *FakeCloudDMSPrivateConnections) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(clouddmsprivateconnectionsResource, c.ns, name, opts), &v1alpha1.CloudDMSPrivateConnection{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeCloudDMSPrivateConnections) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(clouddmsprivateconnectionsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.CloudDMSPrivateConnectionList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched cloudDMSPrivateConnection.
+func (c *FakeCloudDMSPrivateConnections) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudDMSPrivateConnection, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(clouddmsprivateconnectionsResource, c.ns, name, pt, data, subresources...), &v1alpha1.CloudDMSPrivateConnection{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudDMSPrivateConnection), err
 }

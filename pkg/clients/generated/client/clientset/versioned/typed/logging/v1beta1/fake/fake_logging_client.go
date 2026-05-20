@@ -32,27 +32,27 @@ type FakeLoggingV1beta1 struct {
 }
 
 func (c *FakeLoggingV1beta1) LoggingLinks(namespace string) v1beta1.LoggingLinkInterface {
-	return newFakeLoggingLinks(c, namespace)
+	return &FakeLoggingLinks{c, namespace}
 }
 
 func (c *FakeLoggingV1beta1) LoggingLogBuckets(namespace string) v1beta1.LoggingLogBucketInterface {
-	return newFakeLoggingLogBuckets(c, namespace)
+	return &FakeLoggingLogBuckets{c, namespace}
 }
 
 func (c *FakeLoggingV1beta1) LoggingLogExclusions(namespace string) v1beta1.LoggingLogExclusionInterface {
-	return newFakeLoggingLogExclusions(c, namespace)
+	return &FakeLoggingLogExclusions{c, namespace}
 }
 
 func (c *FakeLoggingV1beta1) LoggingLogMetrics(namespace string) v1beta1.LoggingLogMetricInterface {
-	return newFakeLoggingLogMetrics(c, namespace)
+	return &FakeLoggingLogMetrics{c, namespace}
 }
 
 func (c *FakeLoggingV1beta1) LoggingLogSinks(namespace string) v1beta1.LoggingLogSinkInterface {
-	return newFakeLoggingLogSinks(c, namespace)
+	return &FakeLoggingLogSinks{c, namespace}
 }
 
 func (c *FakeLoggingV1beta1) LoggingLogViews(namespace string) v1beta1.LoggingLogViewInterface {
-	return newFakeLoggingLogViews(c, namespace)
+	return &FakeLoggingLogViews{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

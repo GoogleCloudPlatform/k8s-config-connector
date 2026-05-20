@@ -32,11 +32,11 @@ type FakeRunV1beta1 struct {
 }
 
 func (c *FakeRunV1beta1) RunJobs(namespace string) v1beta1.RunJobInterface {
-	return newFakeRunJobs(c, namespace)
+	return &FakeRunJobs{c, namespace}
 }
 
 func (c *FakeRunV1beta1) RunServices(namespace string) v1beta1.RunServiceInterface {
-	return newFakeRunServices(c, namespace)
+	return &FakeRunServices{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

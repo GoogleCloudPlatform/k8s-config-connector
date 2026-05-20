@@ -22,36 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1alpha1"
-	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeNetworkConnectivityInternalRanges implements NetworkConnectivityInternalRangeInterface
-type fakeNetworkConnectivityInternalRanges struct {
-	*gentype.FakeClientWithList[*v1alpha1.NetworkConnectivityInternalRange, *v1alpha1.NetworkConnectivityInternalRangeList]
+// FakeNetworkConnectivityInternalRanges implements NetworkConnectivityInternalRangeInterface
+type FakeNetworkConnectivityInternalRanges struct {
 	Fake *FakeNetworkconnectivityV1alpha1
+	ns   string
 }
 
-func newFakeNetworkConnectivityInternalRanges(fake *FakeNetworkconnectivityV1alpha1, namespace string) networkconnectivityv1alpha1.NetworkConnectivityInternalRangeInterface {
-	return &fakeNetworkConnectivityInternalRanges{
-		gentype.NewFakeClientWithList[*v1alpha1.NetworkConnectivityInternalRange, *v1alpha1.NetworkConnectivityInternalRangeList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("networkconnectivityinternalranges"),
-			v1alpha1.SchemeGroupVersion.WithKind("NetworkConnectivityInternalRange"),
-			func() *v1alpha1.NetworkConnectivityInternalRange { return &v1alpha1.NetworkConnectivityInternalRange{} },
-			func() *v1alpha1.NetworkConnectivityInternalRangeList {
-				return &v1alpha1.NetworkConnectivityInternalRangeList{}
-			},
-			func(dst, src *v1alpha1.NetworkConnectivityInternalRangeList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.NetworkConnectivityInternalRangeList) []*v1alpha1.NetworkConnectivityInternalRange {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.NetworkConnectivityInternalRangeList, items []*v1alpha1.NetworkConnectivityInternalRange) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var networkconnectivityinternalrangesResource = v1alpha1.SchemeGroupVersion.WithResource("networkconnectivityinternalranges")
+
+var networkconnectivityinternalrangesKind = v1alpha1.SchemeGroupVersion.WithKind("NetworkConnectivityInternalRange")
+
+// Get takes name of the networkConnectivityInternalRange, and returns the corresponding networkConnectivityInternalRange object, and an error if there is any.
+func (c *FakeNetworkConnectivityInternalRanges) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkConnectivityInternalRange, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(networkconnectivityinternalrangesResource, c.ns, name), &v1alpha1.NetworkConnectivityInternalRange{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.NetworkConnectivityInternalRange), err
+}
+
+// List takes label and field selectors, and returns the list of NetworkConnectivityInternalRanges that match those selectors.
+func (c *FakeNetworkConnectivityInternalRanges) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetworkConnectivityInternalRangeList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(networkconnectivityinternalrangesResource, networkconnectivityinternalrangesKind, c.ns, opts), &v1alpha1.NetworkConnectivityInternalRangeList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.NetworkConnectivityInternalRangeList{ListMeta: obj.(*v1alpha1.NetworkConnectivityInternalRangeList).ListMeta}
+	for _, item := range obj.(*v1alpha1.NetworkConnectivityInternalRangeList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested networkConnectivityInternalRanges.
+func (c *FakeNetworkConnectivityInternalRanges) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(networkconnectivityinternalrangesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a networkConnectivityInternalRange and creates it.  Returns the server's representation of the networkConnectivityInternalRange, and an error, if there is any.
+func (c *FakeNetworkConnectivityInternalRanges) Create(ctx context.Context, networkConnectivityInternalRange *v1alpha1.NetworkConnectivityInternalRange, opts v1.CreateOptions) (result *v1alpha1.NetworkConnectivityInternalRange, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(networkconnectivityinternalrangesResource, c.ns, networkConnectivityInternalRange), &v1alpha1.NetworkConnectivityInternalRange{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetworkConnectivityInternalRange), err
+}
+
+// Update takes the representation of a networkConnectivityInternalRange and updates it. Returns the server's representation of the networkConnectivityInternalRange, and an error, if there is any.
+func (c *FakeNetworkConnectivityInternalRanges) Update(ctx context.Context, networkConnectivityInternalRange *v1alpha1.NetworkConnectivityInternalRange, opts v1.UpdateOptions) (result *v1alpha1.NetworkConnectivityInternalRange, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(networkconnectivityinternalrangesResource, c.ns, networkConnectivityInternalRange), &v1alpha1.NetworkConnectivityInternalRange{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetworkConnectivityInternalRange), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeNetworkConnectivityInternalRanges) UpdateStatus(ctx context.Context, networkConnectivityInternalRange *v1alpha1.NetworkConnectivityInternalRange, opts v1.UpdateOptions) (*v1alpha1.NetworkConnectivityInternalRange, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(networkconnectivityinternalrangesResource, "status", c.ns, networkConnectivityInternalRange), &v1alpha1.NetworkConnectivityInternalRange{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetworkConnectivityInternalRange), err
+}
+
+// Delete takes name of the networkConnectivityInternalRange and deletes it. Returns an error if one occurs.
+func (c *FakeNetworkConnectivityInternalRanges) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(networkconnectivityinternalrangesResource, c.ns, name, opts), &v1alpha1.NetworkConnectivityInternalRange{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeNetworkConnectivityInternalRanges) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(networkconnectivityinternalrangesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.NetworkConnectivityInternalRangeList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched networkConnectivityInternalRange.
+func (c *FakeNetworkConnectivityInternalRanges) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkConnectivityInternalRange, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(networkconnectivityinternalrangesResource, c.ns, name, pt, data, subresources...), &v1alpha1.NetworkConnectivityInternalRange{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetworkConnectivityInternalRange), err
 }

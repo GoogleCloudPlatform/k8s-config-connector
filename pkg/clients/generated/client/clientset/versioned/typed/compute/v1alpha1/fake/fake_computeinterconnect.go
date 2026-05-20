@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeInterconnects implements ComputeInterconnectInterface
-type fakeComputeInterconnects struct {
-	*gentype.FakeClientWithList[*v1alpha1.ComputeInterconnect, *v1alpha1.ComputeInterconnectList]
+// FakeComputeInterconnects implements ComputeInterconnectInterface
+type FakeComputeInterconnects struct {
 	Fake *FakeComputeV1alpha1
+	ns   string
 }
 
-func newFakeComputeInterconnects(fake *FakeComputeV1alpha1, namespace string) computev1alpha1.ComputeInterconnectInterface {
-	return &fakeComputeInterconnects{
-		gentype.NewFakeClientWithList[*v1alpha1.ComputeInterconnect, *v1alpha1.ComputeInterconnectList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("computeinterconnects"),
-			v1alpha1.SchemeGroupVersion.WithKind("ComputeInterconnect"),
-			func() *v1alpha1.ComputeInterconnect { return &v1alpha1.ComputeInterconnect{} },
-			func() *v1alpha1.ComputeInterconnectList { return &v1alpha1.ComputeInterconnectList{} },
-			func(dst, src *v1alpha1.ComputeInterconnectList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ComputeInterconnectList) []*v1alpha1.ComputeInterconnect {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.ComputeInterconnectList, items []*v1alpha1.ComputeInterconnect) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computeinterconnectsResource = v1alpha1.SchemeGroupVersion.WithResource("computeinterconnects")
+
+var computeinterconnectsKind = v1alpha1.SchemeGroupVersion.WithKind("ComputeInterconnect")
+
+// Get takes name of the computeInterconnect, and returns the corresponding computeInterconnect object, and an error if there is any.
+func (c *FakeComputeInterconnects) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeInterconnect, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computeinterconnectsResource, c.ns, name), &v1alpha1.ComputeInterconnect{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.ComputeInterconnect), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeInterconnects that match those selectors.
+func (c *FakeComputeInterconnects) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeInterconnectList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computeinterconnectsResource, computeinterconnectsKind, c.ns, opts), &v1alpha1.ComputeInterconnectList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.ComputeInterconnectList{ListMeta: obj.(*v1alpha1.ComputeInterconnectList).ListMeta}
+	for _, item := range obj.(*v1alpha1.ComputeInterconnectList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeInterconnects.
+func (c *FakeComputeInterconnects) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computeinterconnectsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeInterconnect and creates it.  Returns the server's representation of the computeInterconnect, and an error, if there is any.
+func (c *FakeComputeInterconnects) Create(ctx context.Context, computeInterconnect *v1alpha1.ComputeInterconnect, opts v1.CreateOptions) (result *v1alpha1.ComputeInterconnect, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computeinterconnectsResource, c.ns, computeInterconnect), &v1alpha1.ComputeInterconnect{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeInterconnect), err
+}
+
+// Update takes the representation of a computeInterconnect and updates it. Returns the server's representation of the computeInterconnect, and an error, if there is any.
+func (c *FakeComputeInterconnects) Update(ctx context.Context, computeInterconnect *v1alpha1.ComputeInterconnect, opts v1.UpdateOptions) (result *v1alpha1.ComputeInterconnect, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computeinterconnectsResource, c.ns, computeInterconnect), &v1alpha1.ComputeInterconnect{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeInterconnect), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeInterconnects) UpdateStatus(ctx context.Context, computeInterconnect *v1alpha1.ComputeInterconnect, opts v1.UpdateOptions) (*v1alpha1.ComputeInterconnect, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computeinterconnectsResource, "status", c.ns, computeInterconnect), &v1alpha1.ComputeInterconnect{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeInterconnect), err
+}
+
+// Delete takes name of the computeInterconnect and deletes it. Returns an error if one occurs.
+func (c *FakeComputeInterconnects) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computeinterconnectsResource, c.ns, name, opts), &v1alpha1.ComputeInterconnect{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeInterconnects) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computeinterconnectsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.ComputeInterconnectList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeInterconnect.
+func (c *FakeComputeInterconnects) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeInterconnect, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computeinterconnectsResource, c.ns, name, pt, data, subresources...), &v1alpha1.ComputeInterconnect{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeInterconnect), err
 }

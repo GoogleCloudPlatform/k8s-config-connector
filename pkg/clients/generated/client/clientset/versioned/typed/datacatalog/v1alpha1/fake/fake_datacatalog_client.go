@@ -32,19 +32,19 @@ type FakeDatacatalogV1alpha1 struct {
 }
 
 func (c *FakeDatacatalogV1alpha1) DataCatalogEntries(namespace string) v1alpha1.DataCatalogEntryInterface {
-	return newFakeDataCatalogEntries(c, namespace)
+	return &FakeDataCatalogEntries{c, namespace}
 }
 
 func (c *FakeDatacatalogV1alpha1) DataCatalogEntryGroups(namespace string) v1alpha1.DataCatalogEntryGroupInterface {
-	return newFakeDataCatalogEntryGroups(c, namespace)
+	return &FakeDataCatalogEntryGroups{c, namespace}
 }
 
 func (c *FakeDatacatalogV1alpha1) DataCatalogTags(namespace string) v1alpha1.DataCatalogTagInterface {
-	return newFakeDataCatalogTags(c, namespace)
+	return &FakeDataCatalogTags{c, namespace}
 }
 
 func (c *FakeDatacatalogV1alpha1) DataCatalogTagTemplates(namespace string) v1alpha1.DataCatalogTagTemplateInterface {
-	return newFakeDataCatalogTagTemplates(c, namespace)
+	return &FakeDataCatalogTagTemplates{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

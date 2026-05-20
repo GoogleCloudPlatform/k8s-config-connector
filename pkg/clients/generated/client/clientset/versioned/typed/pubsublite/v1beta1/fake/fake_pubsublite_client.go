@@ -32,7 +32,7 @@ type FakePubsubliteV1beta1 struct {
 }
 
 func (c *FakePubsubliteV1beta1) PubSubLiteReservations(namespace string) v1beta1.PubSubLiteReservationInterface {
-	return newFakePubSubLiteReservations(c, namespace)
+	return &FakePubSubLiteReservations{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
