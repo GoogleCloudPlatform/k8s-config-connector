@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iap/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iap/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // IAPSettingsesGetter has a method to return a IAPSettingsInterface.
@@ -40,34 +41,158 @@ type IAPSettingsesGetter interface {
 
 // IAPSettingsInterface has methods to work with IAPSettings resources.
 type IAPSettingsInterface interface {
-	Create(ctx context.Context, iAPSettings *iapv1beta1.IAPSettings, opts v1.CreateOptions) (*iapv1beta1.IAPSettings, error)
-	Update(ctx context.Context, iAPSettings *iapv1beta1.IAPSettings, opts v1.UpdateOptions) (*iapv1beta1.IAPSettings, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, iAPSettings *iapv1beta1.IAPSettings, opts v1.UpdateOptions) (*iapv1beta1.IAPSettings, error)
+	Create(ctx context.Context, iAPSettings *v1beta1.IAPSettings, opts v1.CreateOptions) (*v1beta1.IAPSettings, error)
+	Update(ctx context.Context, iAPSettings *v1beta1.IAPSettings, opts v1.UpdateOptions) (*v1beta1.IAPSettings, error)
+	UpdateStatus(ctx context.Context, iAPSettings *v1beta1.IAPSettings, opts v1.UpdateOptions) (*v1beta1.IAPSettings, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*iapv1beta1.IAPSettings, error)
-	List(ctx context.Context, opts v1.ListOptions) (*iapv1beta1.IAPSettingsList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.IAPSettings, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.IAPSettingsList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *iapv1beta1.IAPSettings, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAPSettings, err error)
 	IAPSettingsExpansion
 }
 
 // iAPSettingses implements IAPSettingsInterface
 type iAPSettingses struct {
-	*gentype.ClientWithList[*iapv1beta1.IAPSettings, *iapv1beta1.IAPSettingsList]
+	client rest.Interface
+	ns     string
 }
 
 // newIAPSettingses returns a IAPSettingses
 func newIAPSettingses(c *IapV1beta1Client, namespace string) *iAPSettingses {
 	return &iAPSettingses{
-		gentype.NewClientWithList[*iapv1beta1.IAPSettings, *iapv1beta1.IAPSettingsList](
-			"iapsettingses",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *iapv1beta1.IAPSettings { return &iapv1beta1.IAPSettings{} },
-			func() *iapv1beta1.IAPSettingsList { return &iapv1beta1.IAPSettingsList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the iAPSettings, and returns the corresponding iAPSettings object, and an error if there is any.
+func (c *iAPSettingses) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IAPSettings, err error) {
+	result = &v1beta1.IAPSettings{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("iapsettingses").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of IAPSettingses that match those selectors.
+func (c *iAPSettingses) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.IAPSettingsList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.IAPSettingsList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("iapsettingses").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested iAPSettingses.
+func (c *iAPSettingses) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("iapsettingses").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a iAPSettings and creates it.  Returns the server's representation of the iAPSettings, and an error, if there is any.
+func (c *iAPSettingses) Create(ctx context.Context, iAPSettings *v1beta1.IAPSettings, opts v1.CreateOptions) (result *v1beta1.IAPSettings, err error) {
+	result = &v1beta1.IAPSettings{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("iapsettingses").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(iAPSettings).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a iAPSettings and updates it. Returns the server's representation of the iAPSettings, and an error, if there is any.
+func (c *iAPSettingses) Update(ctx context.Context, iAPSettings *v1beta1.IAPSettings, opts v1.UpdateOptions) (result *v1beta1.IAPSettings, err error) {
+	result = &v1beta1.IAPSettings{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("iapsettingses").
+		Name(iAPSettings.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(iAPSettings).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *iAPSettingses) UpdateStatus(ctx context.Context, iAPSettings *v1beta1.IAPSettings, opts v1.UpdateOptions) (result *v1beta1.IAPSettings, err error) {
+	result = &v1beta1.IAPSettings{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("iapsettingses").
+		Name(iAPSettings.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(iAPSettings).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the iAPSettings and deletes it. Returns an error if one occurs.
+func (c *iAPSettingses) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("iapsettingses").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *iAPSettingses) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("iapsettingses").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched iAPSettings.
+func (c *iAPSettingses) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAPSettings, err error) {
+	result = &v1beta1.IAPSettings{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("iapsettingses").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

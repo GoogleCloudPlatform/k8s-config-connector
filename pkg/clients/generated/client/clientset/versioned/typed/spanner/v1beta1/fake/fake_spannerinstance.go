@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/spanner/v1beta1"
-	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/spanner/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeSpannerInstances implements SpannerInstanceInterface
-type fakeSpannerInstances struct {
-	*gentype.FakeClientWithList[*v1beta1.SpannerInstance, *v1beta1.SpannerInstanceList]
+// FakeSpannerInstances implements SpannerInstanceInterface
+type FakeSpannerInstances struct {
 	Fake *FakeSpannerV1beta1
+	ns   string
 }
 
-func newFakeSpannerInstances(fake *FakeSpannerV1beta1, namespace string) spannerv1beta1.SpannerInstanceInterface {
-	return &fakeSpannerInstances{
-		gentype.NewFakeClientWithList[*v1beta1.SpannerInstance, *v1beta1.SpannerInstanceList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("spannerinstances"),
-			v1beta1.SchemeGroupVersion.WithKind("SpannerInstance"),
-			func() *v1beta1.SpannerInstance { return &v1beta1.SpannerInstance{} },
-			func() *v1beta1.SpannerInstanceList { return &v1beta1.SpannerInstanceList{} },
-			func(dst, src *v1beta1.SpannerInstanceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.SpannerInstanceList) []*v1beta1.SpannerInstance {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.SpannerInstanceList, items []*v1beta1.SpannerInstance) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var spannerinstancesResource = v1beta1.SchemeGroupVersion.WithResource("spannerinstances")
+
+var spannerinstancesKind = v1beta1.SchemeGroupVersion.WithKind("SpannerInstance")
+
+// Get takes name of the spannerInstance, and returns the corresponding spannerInstance object, and an error if there is any.
+func (c *FakeSpannerInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SpannerInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(spannerinstancesResource, c.ns, name), &v1beta1.SpannerInstance{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.SpannerInstance), err
+}
+
+// List takes label and field selectors, and returns the list of SpannerInstances that match those selectors.
+func (c *FakeSpannerInstances) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SpannerInstanceList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(spannerinstancesResource, spannerinstancesKind, c.ns, opts), &v1beta1.SpannerInstanceList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.SpannerInstanceList{ListMeta: obj.(*v1beta1.SpannerInstanceList).ListMeta}
+	for _, item := range obj.(*v1beta1.SpannerInstanceList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested spannerInstances.
+func (c *FakeSpannerInstances) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(spannerinstancesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a spannerInstance and creates it.  Returns the server's representation of the spannerInstance, and an error, if there is any.
+func (c *FakeSpannerInstances) Create(ctx context.Context, spannerInstance *v1beta1.SpannerInstance, opts v1.CreateOptions) (result *v1beta1.SpannerInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(spannerinstancesResource, c.ns, spannerInstance), &v1beta1.SpannerInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpannerInstance), err
+}
+
+// Update takes the representation of a spannerInstance and updates it. Returns the server's representation of the spannerInstance, and an error, if there is any.
+func (c *FakeSpannerInstances) Update(ctx context.Context, spannerInstance *v1beta1.SpannerInstance, opts v1.UpdateOptions) (result *v1beta1.SpannerInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(spannerinstancesResource, c.ns, spannerInstance), &v1beta1.SpannerInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpannerInstance), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeSpannerInstances) UpdateStatus(ctx context.Context, spannerInstance *v1beta1.SpannerInstance, opts v1.UpdateOptions) (*v1beta1.SpannerInstance, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(spannerinstancesResource, "status", c.ns, spannerInstance), &v1beta1.SpannerInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpannerInstance), err
+}
+
+// Delete takes name of the spannerInstance and deletes it. Returns an error if one occurs.
+func (c *FakeSpannerInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(spannerinstancesResource, c.ns, name, opts), &v1beta1.SpannerInstance{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeSpannerInstances) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(spannerinstancesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.SpannerInstanceList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched spannerInstance.
+func (c *FakeSpannerInstances) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SpannerInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(spannerinstancesResource, c.ns, name, pt, data, subresources...), &v1beta1.SpannerInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpannerInstance), err
 }

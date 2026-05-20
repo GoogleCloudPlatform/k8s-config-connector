@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // AccessContextManagerServicePerimeterResourcesGetter has a method to return a AccessContextManagerServicePerimeterResourceInterface.
@@ -40,38 +41,158 @@ type AccessContextManagerServicePerimeterResourcesGetter interface {
 
 // AccessContextManagerServicePerimeterResourceInterface has methods to work with AccessContextManagerServicePerimeterResource resources.
 type AccessContextManagerServicePerimeterResourceInterface interface {
-	Create(ctx context.Context, accessContextManagerServicePerimeterResource *accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, opts v1.CreateOptions) (*accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, error)
-	Update(ctx context.Context, accessContextManagerServicePerimeterResource *accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, opts v1.UpdateOptions) (*accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, accessContextManagerServicePerimeterResource *accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, opts v1.UpdateOptions) (*accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, error)
+	Create(ctx context.Context, accessContextManagerServicePerimeterResource *v1beta1.AccessContextManagerServicePerimeterResource, opts v1.CreateOptions) (*v1beta1.AccessContextManagerServicePerimeterResource, error)
+	Update(ctx context.Context, accessContextManagerServicePerimeterResource *v1beta1.AccessContextManagerServicePerimeterResource, opts v1.UpdateOptions) (*v1beta1.AccessContextManagerServicePerimeterResource, error)
+	UpdateStatus(ctx context.Context, accessContextManagerServicePerimeterResource *v1beta1.AccessContextManagerServicePerimeterResource, opts v1.UpdateOptions) (*v1beta1.AccessContextManagerServicePerimeterResource, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, error)
-	List(ctx context.Context, opts v1.ListOptions) (*accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResourceList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.AccessContextManagerServicePerimeterResource, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.AccessContextManagerServicePerimeterResourceList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AccessContextManagerServicePerimeterResource, err error)
 	AccessContextManagerServicePerimeterResourceExpansion
 }
 
 // accessContextManagerServicePerimeterResources implements AccessContextManagerServicePerimeterResourceInterface
 type accessContextManagerServicePerimeterResources struct {
-	*gentype.ClientWithList[*accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, *accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResourceList]
+	client rest.Interface
+	ns     string
 }
 
 // newAccessContextManagerServicePerimeterResources returns a AccessContextManagerServicePerimeterResources
 func newAccessContextManagerServicePerimeterResources(c *AccesscontextmanagerV1beta1Client, namespace string) *accessContextManagerServicePerimeterResources {
 	return &accessContextManagerServicePerimeterResources{
-		gentype.NewClientWithList[*accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource, *accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResourceList](
-			"accesscontextmanagerserviceperimeterresources",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource {
-				return &accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResource{}
-			},
-			func() *accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResourceList {
-				return &accesscontextmanagerv1beta1.AccessContextManagerServicePerimeterResourceList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the accessContextManagerServicePerimeterResource, and returns the corresponding accessContextManagerServicePerimeterResource object, and an error if there is any.
+func (c *accessContextManagerServicePerimeterResources) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.AccessContextManagerServicePerimeterResource, err error) {
+	result = &v1beta1.AccessContextManagerServicePerimeterResource{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("accesscontextmanagerserviceperimeterresources").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of AccessContextManagerServicePerimeterResources that match those selectors.
+func (c *accessContextManagerServicePerimeterResources) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.AccessContextManagerServicePerimeterResourceList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.AccessContextManagerServicePerimeterResourceList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("accesscontextmanagerserviceperimeterresources").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested accessContextManagerServicePerimeterResources.
+func (c *accessContextManagerServicePerimeterResources) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("accesscontextmanagerserviceperimeterresources").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a accessContextManagerServicePerimeterResource and creates it.  Returns the server's representation of the accessContextManagerServicePerimeterResource, and an error, if there is any.
+func (c *accessContextManagerServicePerimeterResources) Create(ctx context.Context, accessContextManagerServicePerimeterResource *v1beta1.AccessContextManagerServicePerimeterResource, opts v1.CreateOptions) (result *v1beta1.AccessContextManagerServicePerimeterResource, err error) {
+	result = &v1beta1.AccessContextManagerServicePerimeterResource{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("accesscontextmanagerserviceperimeterresources").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(accessContextManagerServicePerimeterResource).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a accessContextManagerServicePerimeterResource and updates it. Returns the server's representation of the accessContextManagerServicePerimeterResource, and an error, if there is any.
+func (c *accessContextManagerServicePerimeterResources) Update(ctx context.Context, accessContextManagerServicePerimeterResource *v1beta1.AccessContextManagerServicePerimeterResource, opts v1.UpdateOptions) (result *v1beta1.AccessContextManagerServicePerimeterResource, err error) {
+	result = &v1beta1.AccessContextManagerServicePerimeterResource{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("accesscontextmanagerserviceperimeterresources").
+		Name(accessContextManagerServicePerimeterResource.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(accessContextManagerServicePerimeterResource).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *accessContextManagerServicePerimeterResources) UpdateStatus(ctx context.Context, accessContextManagerServicePerimeterResource *v1beta1.AccessContextManagerServicePerimeterResource, opts v1.UpdateOptions) (result *v1beta1.AccessContextManagerServicePerimeterResource, err error) {
+	result = &v1beta1.AccessContextManagerServicePerimeterResource{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("accesscontextmanagerserviceperimeterresources").
+		Name(accessContextManagerServicePerimeterResource.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(accessContextManagerServicePerimeterResource).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the accessContextManagerServicePerimeterResource and deletes it. Returns an error if one occurs.
+func (c *accessContextManagerServicePerimeterResources) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("accesscontextmanagerserviceperimeterresources").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *accessContextManagerServicePerimeterResources) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("accesscontextmanagerserviceperimeterresources").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched accessContextManagerServicePerimeterResource.
+func (c *accessContextManagerServicePerimeterResources) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AccessContextManagerServicePerimeterResource, err error) {
+	result = &v1beta1.AccessContextManagerServicePerimeterResource{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("accesscontextmanagerserviceperimeterresources").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

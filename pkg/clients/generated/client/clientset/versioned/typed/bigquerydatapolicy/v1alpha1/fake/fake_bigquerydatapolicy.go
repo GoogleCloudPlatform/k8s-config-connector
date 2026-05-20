@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1alpha1"
-	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeBigQueryDataPolicies implements BigQueryDataPolicyInterface
-type fakeBigQueryDataPolicies struct {
-	*gentype.FakeClientWithList[*v1alpha1.BigQueryDataPolicy, *v1alpha1.BigQueryDataPolicyList]
+// FakeBigQueryDataPolicies implements BigQueryDataPolicyInterface
+type FakeBigQueryDataPolicies struct {
 	Fake *FakeBigquerydatapolicyV1alpha1
+	ns   string
 }
 
-func newFakeBigQueryDataPolicies(fake *FakeBigquerydatapolicyV1alpha1, namespace string) bigquerydatapolicyv1alpha1.BigQueryDataPolicyInterface {
-	return &fakeBigQueryDataPolicies{
-		gentype.NewFakeClientWithList[*v1alpha1.BigQueryDataPolicy, *v1alpha1.BigQueryDataPolicyList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("bigquerydatapolicies"),
-			v1alpha1.SchemeGroupVersion.WithKind("BigQueryDataPolicy"),
-			func() *v1alpha1.BigQueryDataPolicy { return &v1alpha1.BigQueryDataPolicy{} },
-			func() *v1alpha1.BigQueryDataPolicyList { return &v1alpha1.BigQueryDataPolicyList{} },
-			func(dst, src *v1alpha1.BigQueryDataPolicyList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.BigQueryDataPolicyList) []*v1alpha1.BigQueryDataPolicy {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.BigQueryDataPolicyList, items []*v1alpha1.BigQueryDataPolicy) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var bigquerydatapoliciesResource = v1alpha1.SchemeGroupVersion.WithResource("bigquerydatapolicies")
+
+var bigquerydatapoliciesKind = v1alpha1.SchemeGroupVersion.WithKind("BigQueryDataPolicy")
+
+// Get takes name of the bigQueryDataPolicy, and returns the corresponding bigQueryDataPolicy object, and an error if there is any.
+func (c *FakeBigQueryDataPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigQueryDataPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(bigquerydatapoliciesResource, c.ns, name), &v1alpha1.BigQueryDataPolicy{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.BigQueryDataPolicy), err
+}
+
+// List takes label and field selectors, and returns the list of BigQueryDataPolicies that match those selectors.
+func (c *FakeBigQueryDataPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigQueryDataPolicyList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(bigquerydatapoliciesResource, bigquerydatapoliciesKind, c.ns, opts), &v1alpha1.BigQueryDataPolicyList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.BigQueryDataPolicyList{ListMeta: obj.(*v1alpha1.BigQueryDataPolicyList).ListMeta}
+	for _, item := range obj.(*v1alpha1.BigQueryDataPolicyList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested bigQueryDataPolicies.
+func (c *FakeBigQueryDataPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(bigquerydatapoliciesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a bigQueryDataPolicy and creates it.  Returns the server's representation of the bigQueryDataPolicy, and an error, if there is any.
+func (c *FakeBigQueryDataPolicies) Create(ctx context.Context, bigQueryDataPolicy *v1alpha1.BigQueryDataPolicy, opts v1.CreateOptions) (result *v1alpha1.BigQueryDataPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(bigquerydatapoliciesResource, c.ns, bigQueryDataPolicy), &v1alpha1.BigQueryDataPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigQueryDataPolicy), err
+}
+
+// Update takes the representation of a bigQueryDataPolicy and updates it. Returns the server's representation of the bigQueryDataPolicy, and an error, if there is any.
+func (c *FakeBigQueryDataPolicies) Update(ctx context.Context, bigQueryDataPolicy *v1alpha1.BigQueryDataPolicy, opts v1.UpdateOptions) (result *v1alpha1.BigQueryDataPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(bigquerydatapoliciesResource, c.ns, bigQueryDataPolicy), &v1alpha1.BigQueryDataPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigQueryDataPolicy), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeBigQueryDataPolicies) UpdateStatus(ctx context.Context, bigQueryDataPolicy *v1alpha1.BigQueryDataPolicy, opts v1.UpdateOptions) (*v1alpha1.BigQueryDataPolicy, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(bigquerydatapoliciesResource, "status", c.ns, bigQueryDataPolicy), &v1alpha1.BigQueryDataPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigQueryDataPolicy), err
+}
+
+// Delete takes name of the bigQueryDataPolicy and deletes it. Returns an error if one occurs.
+func (c *FakeBigQueryDataPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(bigquerydatapoliciesResource, c.ns, name, opts), &v1alpha1.BigQueryDataPolicy{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeBigQueryDataPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(bigquerydatapoliciesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.BigQueryDataPolicyList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched bigQueryDataPolicy.
+func (c *FakeBigQueryDataPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigQueryDataPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(bigquerydatapoliciesResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigQueryDataPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigQueryDataPolicy), err
 }

@@ -32,7 +32,7 @@ type FakeConfigcontrollerV1beta1 struct {
 }
 
 func (c *FakeConfigcontrollerV1beta1) ConfigControllerInstances(namespace string) v1beta1.ConfigControllerInstanceInterface {
-	return newFakeConfigControllerInstances(c, namespace)
+	return &FakeConfigControllerInstances{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

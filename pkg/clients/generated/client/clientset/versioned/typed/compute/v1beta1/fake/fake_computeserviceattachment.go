@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeServiceAttachments implements ComputeServiceAttachmentInterface
-type fakeComputeServiceAttachments struct {
-	*gentype.FakeClientWithList[*v1beta1.ComputeServiceAttachment, *v1beta1.ComputeServiceAttachmentList]
+// FakeComputeServiceAttachments implements ComputeServiceAttachmentInterface
+type FakeComputeServiceAttachments struct {
 	Fake *FakeComputeV1beta1
+	ns   string
 }
 
-func newFakeComputeServiceAttachments(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeServiceAttachmentInterface {
-	return &fakeComputeServiceAttachments{
-		gentype.NewFakeClientWithList[*v1beta1.ComputeServiceAttachment, *v1beta1.ComputeServiceAttachmentList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("computeserviceattachments"),
-			v1beta1.SchemeGroupVersion.WithKind("ComputeServiceAttachment"),
-			func() *v1beta1.ComputeServiceAttachment { return &v1beta1.ComputeServiceAttachment{} },
-			func() *v1beta1.ComputeServiceAttachmentList { return &v1beta1.ComputeServiceAttachmentList{} },
-			func(dst, src *v1beta1.ComputeServiceAttachmentList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.ComputeServiceAttachmentList) []*v1beta1.ComputeServiceAttachment {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.ComputeServiceAttachmentList, items []*v1beta1.ComputeServiceAttachment) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computeserviceattachmentsResource = v1beta1.SchemeGroupVersion.WithResource("computeserviceattachments")
+
+var computeserviceattachmentsKind = v1beta1.SchemeGroupVersion.WithKind("ComputeServiceAttachment")
+
+// Get takes name of the computeServiceAttachment, and returns the corresponding computeServiceAttachment object, and an error if there is any.
+func (c *FakeComputeServiceAttachments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeServiceAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computeserviceattachmentsResource, c.ns, name), &v1beta1.ComputeServiceAttachment{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.ComputeServiceAttachment), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeServiceAttachments that match those selectors.
+func (c *FakeComputeServiceAttachments) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeServiceAttachmentList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computeserviceattachmentsResource, computeserviceattachmentsKind, c.ns, opts), &v1beta1.ComputeServiceAttachmentList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.ComputeServiceAttachmentList{ListMeta: obj.(*v1beta1.ComputeServiceAttachmentList).ListMeta}
+	for _, item := range obj.(*v1beta1.ComputeServiceAttachmentList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeServiceAttachments.
+func (c *FakeComputeServiceAttachments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computeserviceattachmentsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeServiceAttachment and creates it.  Returns the server's representation of the computeServiceAttachment, and an error, if there is any.
+func (c *FakeComputeServiceAttachments) Create(ctx context.Context, computeServiceAttachment *v1beta1.ComputeServiceAttachment, opts v1.CreateOptions) (result *v1beta1.ComputeServiceAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computeserviceattachmentsResource, c.ns, computeServiceAttachment), &v1beta1.ComputeServiceAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeServiceAttachment), err
+}
+
+// Update takes the representation of a computeServiceAttachment and updates it. Returns the server's representation of the computeServiceAttachment, and an error, if there is any.
+func (c *FakeComputeServiceAttachments) Update(ctx context.Context, computeServiceAttachment *v1beta1.ComputeServiceAttachment, opts v1.UpdateOptions) (result *v1beta1.ComputeServiceAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computeserviceattachmentsResource, c.ns, computeServiceAttachment), &v1beta1.ComputeServiceAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeServiceAttachment), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeServiceAttachments) UpdateStatus(ctx context.Context, computeServiceAttachment *v1beta1.ComputeServiceAttachment, opts v1.UpdateOptions) (*v1beta1.ComputeServiceAttachment, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computeserviceattachmentsResource, "status", c.ns, computeServiceAttachment), &v1beta1.ComputeServiceAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeServiceAttachment), err
+}
+
+// Delete takes name of the computeServiceAttachment and deletes it. Returns an error if one occurs.
+func (c *FakeComputeServiceAttachments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computeserviceattachmentsResource, c.ns, name, opts), &v1beta1.ComputeServiceAttachment{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeServiceAttachments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computeserviceattachmentsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.ComputeServiceAttachmentList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeServiceAttachment.
+func (c *FakeComputeServiceAttachments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeServiceAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computeserviceattachmentsResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeServiceAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeServiceAttachment), err
 }

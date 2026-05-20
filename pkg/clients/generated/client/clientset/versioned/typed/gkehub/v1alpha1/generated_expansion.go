@@ -21,10 +21,4 @@
 
 package v1alpha1
 
-type GKEHubMembershipBindingExpansion interface{}
-
-type GKEHubNamespaceExpansion interface{}
-
 type GKEHubScopeExpansion interface{}
-
-type GKEHubScopeRBACRoleBindingExpansion interface{}

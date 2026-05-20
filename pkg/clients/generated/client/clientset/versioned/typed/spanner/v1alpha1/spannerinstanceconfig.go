@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	spannerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/spanner/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/spanner/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // SpannerInstanceConfigsGetter has a method to return a SpannerInstanceConfigInterface.
@@ -40,34 +41,158 @@ type SpannerInstanceConfigsGetter interface {
 
 // SpannerInstanceConfigInterface has methods to work with SpannerInstanceConfig resources.
 type SpannerInstanceConfigInterface interface {
-	Create(ctx context.Context, spannerInstanceConfig *spannerv1alpha1.SpannerInstanceConfig, opts v1.CreateOptions) (*spannerv1alpha1.SpannerInstanceConfig, error)
-	Update(ctx context.Context, spannerInstanceConfig *spannerv1alpha1.SpannerInstanceConfig, opts v1.UpdateOptions) (*spannerv1alpha1.SpannerInstanceConfig, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, spannerInstanceConfig *spannerv1alpha1.SpannerInstanceConfig, opts v1.UpdateOptions) (*spannerv1alpha1.SpannerInstanceConfig, error)
+	Create(ctx context.Context, spannerInstanceConfig *v1alpha1.SpannerInstanceConfig, opts v1.CreateOptions) (*v1alpha1.SpannerInstanceConfig, error)
+	Update(ctx context.Context, spannerInstanceConfig *v1alpha1.SpannerInstanceConfig, opts v1.UpdateOptions) (*v1alpha1.SpannerInstanceConfig, error)
+	UpdateStatus(ctx context.Context, spannerInstanceConfig *v1alpha1.SpannerInstanceConfig, opts v1.UpdateOptions) (*v1alpha1.SpannerInstanceConfig, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*spannerv1alpha1.SpannerInstanceConfig, error)
-	List(ctx context.Context, opts v1.ListOptions) (*spannerv1alpha1.SpannerInstanceConfigList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.SpannerInstanceConfig, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.SpannerInstanceConfigList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *spannerv1alpha1.SpannerInstanceConfig, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.SpannerInstanceConfig, err error)
 	SpannerInstanceConfigExpansion
 }
 
 // spannerInstanceConfigs implements SpannerInstanceConfigInterface
 type spannerInstanceConfigs struct {
-	*gentype.ClientWithList[*spannerv1alpha1.SpannerInstanceConfig, *spannerv1alpha1.SpannerInstanceConfigList]
+	client rest.Interface
+	ns     string
 }
 
 // newSpannerInstanceConfigs returns a SpannerInstanceConfigs
 func newSpannerInstanceConfigs(c *SpannerV1alpha1Client, namespace string) *spannerInstanceConfigs {
 	return &spannerInstanceConfigs{
-		gentype.NewClientWithList[*spannerv1alpha1.SpannerInstanceConfig, *spannerv1alpha1.SpannerInstanceConfigList](
-			"spannerinstanceconfigs",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *spannerv1alpha1.SpannerInstanceConfig { return &spannerv1alpha1.SpannerInstanceConfig{} },
-			func() *spannerv1alpha1.SpannerInstanceConfigList { return &spannerv1alpha1.SpannerInstanceConfigList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the spannerInstanceConfig, and returns the corresponding spannerInstanceConfig object, and an error if there is any.
+func (c *spannerInstanceConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.SpannerInstanceConfig, err error) {
+	result = &v1alpha1.SpannerInstanceConfig{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("spannerinstanceconfigs").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of SpannerInstanceConfigs that match those selectors.
+func (c *spannerInstanceConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.SpannerInstanceConfigList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.SpannerInstanceConfigList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("spannerinstanceconfigs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested spannerInstanceConfigs.
+func (c *spannerInstanceConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("spannerinstanceconfigs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a spannerInstanceConfig and creates it.  Returns the server's representation of the spannerInstanceConfig, and an error, if there is any.
+func (c *spannerInstanceConfigs) Create(ctx context.Context, spannerInstanceConfig *v1alpha1.SpannerInstanceConfig, opts v1.CreateOptions) (result *v1alpha1.SpannerInstanceConfig, err error) {
+	result = &v1alpha1.SpannerInstanceConfig{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("spannerinstanceconfigs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(spannerInstanceConfig).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a spannerInstanceConfig and updates it. Returns the server's representation of the spannerInstanceConfig, and an error, if there is any.
+func (c *spannerInstanceConfigs) Update(ctx context.Context, spannerInstanceConfig *v1alpha1.SpannerInstanceConfig, opts v1.UpdateOptions) (result *v1alpha1.SpannerInstanceConfig, err error) {
+	result = &v1alpha1.SpannerInstanceConfig{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("spannerinstanceconfigs").
+		Name(spannerInstanceConfig.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(spannerInstanceConfig).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *spannerInstanceConfigs) UpdateStatus(ctx context.Context, spannerInstanceConfig *v1alpha1.SpannerInstanceConfig, opts v1.UpdateOptions) (result *v1alpha1.SpannerInstanceConfig, err error) {
+	result = &v1alpha1.SpannerInstanceConfig{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("spannerinstanceconfigs").
+		Name(spannerInstanceConfig.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(spannerInstanceConfig).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the spannerInstanceConfig and deletes it. Returns an error if one occurs.
+func (c *spannerInstanceConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("spannerinstanceconfigs").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *spannerInstanceConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("spannerinstanceconfigs").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched spannerInstanceConfig.
+func (c *spannerInstanceConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.SpannerInstanceConfig, err error) {
+	result = &v1alpha1.SpannerInstanceConfig{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("spannerinstanceconfigs").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

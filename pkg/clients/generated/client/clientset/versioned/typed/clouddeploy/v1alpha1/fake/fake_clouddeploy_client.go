@@ -31,20 +31,16 @@ type FakeClouddeployV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeClouddeployV1alpha1) CloudDeployAutomations(namespace string) v1alpha1.CloudDeployAutomationInterface {
-	return newFakeCloudDeployAutomations(c, namespace)
-}
-
 func (c *FakeClouddeployV1alpha1) CloudDeployCustomTargetTypes(namespace string) v1alpha1.CloudDeployCustomTargetTypeInterface {
-	return newFakeCloudDeployCustomTargetTypes(c, namespace)
+	return &FakeCloudDeployCustomTargetTypes{c, namespace}
 }
 
 func (c *FakeClouddeployV1alpha1) CloudDeployDeployPolicies(namespace string) v1alpha1.CloudDeployDeployPolicyInterface {
-	return newFakeCloudDeployDeployPolicies(c, namespace)
+	return &FakeCloudDeployDeployPolicies{c, namespace}
 }
 
 func (c *FakeClouddeployV1alpha1) CloudDeployTargets(namespace string) v1alpha1.CloudDeployTargetInterface {
-	return newFakeCloudDeployTargets(c, namespace)
+	return &FakeCloudDeployTargets{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

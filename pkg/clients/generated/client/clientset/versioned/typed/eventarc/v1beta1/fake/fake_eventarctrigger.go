@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1beta1"
-	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeEventarcTriggers implements EventarcTriggerInterface
-type fakeEventarcTriggers struct {
-	*gentype.FakeClientWithList[*v1beta1.EventarcTrigger, *v1beta1.EventarcTriggerList]
+// FakeEventarcTriggers implements EventarcTriggerInterface
+type FakeEventarcTriggers struct {
 	Fake *FakeEventarcV1beta1
+	ns   string
 }
 
-func newFakeEventarcTriggers(fake *FakeEventarcV1beta1, namespace string) eventarcv1beta1.EventarcTriggerInterface {
-	return &fakeEventarcTriggers{
-		gentype.NewFakeClientWithList[*v1beta1.EventarcTrigger, *v1beta1.EventarcTriggerList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("eventarctriggers"),
-			v1beta1.SchemeGroupVersion.WithKind("EventarcTrigger"),
-			func() *v1beta1.EventarcTrigger { return &v1beta1.EventarcTrigger{} },
-			func() *v1beta1.EventarcTriggerList { return &v1beta1.EventarcTriggerList{} },
-			func(dst, src *v1beta1.EventarcTriggerList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.EventarcTriggerList) []*v1beta1.EventarcTrigger {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.EventarcTriggerList, items []*v1beta1.EventarcTrigger) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var eventarctriggersResource = v1beta1.SchemeGroupVersion.WithResource("eventarctriggers")
+
+var eventarctriggersKind = v1beta1.SchemeGroupVersion.WithKind("EventarcTrigger")
+
+// Get takes name of the eventarcTrigger, and returns the corresponding eventarcTrigger object, and an error if there is any.
+func (c *FakeEventarcTriggers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EventarcTrigger, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(eventarctriggersResource, c.ns, name), &v1beta1.EventarcTrigger{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.EventarcTrigger), err
+}
+
+// List takes label and field selectors, and returns the list of EventarcTriggers that match those selectors.
+func (c *FakeEventarcTriggers) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.EventarcTriggerList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(eventarctriggersResource, eventarctriggersKind, c.ns, opts), &v1beta1.EventarcTriggerList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.EventarcTriggerList{ListMeta: obj.(*v1beta1.EventarcTriggerList).ListMeta}
+	for _, item := range obj.(*v1beta1.EventarcTriggerList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested eventarcTriggers.
+func (c *FakeEventarcTriggers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(eventarctriggersResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a eventarcTrigger and creates it.  Returns the server's representation of the eventarcTrigger, and an error, if there is any.
+func (c *FakeEventarcTriggers) Create(ctx context.Context, eventarcTrigger *v1beta1.EventarcTrigger, opts v1.CreateOptions) (result *v1beta1.EventarcTrigger, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(eventarctriggersResource, c.ns, eventarcTrigger), &v1beta1.EventarcTrigger{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EventarcTrigger), err
+}
+
+// Update takes the representation of a eventarcTrigger and updates it. Returns the server's representation of the eventarcTrigger, and an error, if there is any.
+func (c *FakeEventarcTriggers) Update(ctx context.Context, eventarcTrigger *v1beta1.EventarcTrigger, opts v1.UpdateOptions) (result *v1beta1.EventarcTrigger, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(eventarctriggersResource, c.ns, eventarcTrigger), &v1beta1.EventarcTrigger{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EventarcTrigger), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeEventarcTriggers) UpdateStatus(ctx context.Context, eventarcTrigger *v1beta1.EventarcTrigger, opts v1.UpdateOptions) (*v1beta1.EventarcTrigger, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(eventarctriggersResource, "status", c.ns, eventarcTrigger), &v1beta1.EventarcTrigger{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EventarcTrigger), err
+}
+
+// Delete takes name of the eventarcTrigger and deletes it. Returns an error if one occurs.
+func (c *FakeEventarcTriggers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(eventarctriggersResource, c.ns, name, opts), &v1beta1.EventarcTrigger{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeEventarcTriggers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(eventarctriggersResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.EventarcTriggerList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched eventarcTrigger.
+func (c *FakeEventarcTriggers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EventarcTrigger, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(eventarctriggersResource, c.ns, name, pt, data, subresources...), &v1beta1.EventarcTrigger{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EventarcTrigger), err
 }

@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
-	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDataCatalogEntryGroups implements DataCatalogEntryGroupInterface
-type fakeDataCatalogEntryGroups struct {
-	*gentype.FakeClientWithList[*v1alpha1.DataCatalogEntryGroup, *v1alpha1.DataCatalogEntryGroupList]
+// FakeDataCatalogEntryGroups implements DataCatalogEntryGroupInterface
+type FakeDataCatalogEntryGroups struct {
 	Fake *FakeDatacatalogV1alpha1
+	ns   string
 }
 
-func newFakeDataCatalogEntryGroups(fake *FakeDatacatalogV1alpha1, namespace string) datacatalogv1alpha1.DataCatalogEntryGroupInterface {
-	return &fakeDataCatalogEntryGroups{
-		gentype.NewFakeClientWithList[*v1alpha1.DataCatalogEntryGroup, *v1alpha1.DataCatalogEntryGroupList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("datacatalogentrygroups"),
-			v1alpha1.SchemeGroupVersion.WithKind("DataCatalogEntryGroup"),
-			func() *v1alpha1.DataCatalogEntryGroup { return &v1alpha1.DataCatalogEntryGroup{} },
-			func() *v1alpha1.DataCatalogEntryGroupList { return &v1alpha1.DataCatalogEntryGroupList{} },
-			func(dst, src *v1alpha1.DataCatalogEntryGroupList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DataCatalogEntryGroupList) []*v1alpha1.DataCatalogEntryGroup {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DataCatalogEntryGroupList, items []*v1alpha1.DataCatalogEntryGroup) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var datacatalogentrygroupsResource = v1alpha1.SchemeGroupVersion.WithResource("datacatalogentrygroups")
+
+var datacatalogentrygroupsKind = v1alpha1.SchemeGroupVersion.WithKind("DataCatalogEntryGroup")
+
+// Get takes name of the dataCatalogEntryGroup, and returns the corresponding dataCatalogEntryGroup object, and an error if there is any.
+func (c *FakeDataCatalogEntryGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataCatalogEntryGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(datacatalogentrygroupsResource, c.ns, name), &v1alpha1.DataCatalogEntryGroup{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DataCatalogEntryGroup), err
+}
+
+// List takes label and field selectors, and returns the list of DataCatalogEntryGroups that match those selectors.
+func (c *FakeDataCatalogEntryGroups) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DataCatalogEntryGroupList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(datacatalogentrygroupsResource, datacatalogentrygroupsKind, c.ns, opts), &v1alpha1.DataCatalogEntryGroupList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DataCatalogEntryGroupList{ListMeta: obj.(*v1alpha1.DataCatalogEntryGroupList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DataCatalogEntryGroupList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested dataCatalogEntryGroups.
+func (c *FakeDataCatalogEntryGroups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(datacatalogentrygroupsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a dataCatalogEntryGroup and creates it.  Returns the server's representation of the dataCatalogEntryGroup, and an error, if there is any.
+func (c *FakeDataCatalogEntryGroups) Create(ctx context.Context, dataCatalogEntryGroup *v1alpha1.DataCatalogEntryGroup, opts v1.CreateOptions) (result *v1alpha1.DataCatalogEntryGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(datacatalogentrygroupsResource, c.ns, dataCatalogEntryGroup), &v1alpha1.DataCatalogEntryGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataCatalogEntryGroup), err
+}
+
+// Update takes the representation of a dataCatalogEntryGroup and updates it. Returns the server's representation of the dataCatalogEntryGroup, and an error, if there is any.
+func (c *FakeDataCatalogEntryGroups) Update(ctx context.Context, dataCatalogEntryGroup *v1alpha1.DataCatalogEntryGroup, opts v1.UpdateOptions) (result *v1alpha1.DataCatalogEntryGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(datacatalogentrygroupsResource, c.ns, dataCatalogEntryGroup), &v1alpha1.DataCatalogEntryGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataCatalogEntryGroup), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDataCatalogEntryGroups) UpdateStatus(ctx context.Context, dataCatalogEntryGroup *v1alpha1.DataCatalogEntryGroup, opts v1.UpdateOptions) (*v1alpha1.DataCatalogEntryGroup, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(datacatalogentrygroupsResource, "status", c.ns, dataCatalogEntryGroup), &v1alpha1.DataCatalogEntryGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataCatalogEntryGroup), err
+}
+
+// Delete takes name of the dataCatalogEntryGroup and deletes it. Returns an error if one occurs.
+func (c *FakeDataCatalogEntryGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(datacatalogentrygroupsResource, c.ns, name, opts), &v1alpha1.DataCatalogEntryGroup{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDataCatalogEntryGroups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(datacatalogentrygroupsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DataCatalogEntryGroupList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched dataCatalogEntryGroup.
+func (c *FakeDataCatalogEntryGroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataCatalogEntryGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(datacatalogentrygroupsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DataCatalogEntryGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataCatalogEntryGroup), err
 }
