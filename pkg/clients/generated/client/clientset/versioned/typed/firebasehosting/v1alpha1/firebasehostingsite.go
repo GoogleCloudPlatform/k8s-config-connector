@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	firebasehostingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasehosting/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasehosting/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // FirebaseHostingSitesGetter has a method to return a FirebaseHostingSiteInterface.
@@ -40,38 +41,158 @@ type FirebaseHostingSitesGetter interface {
 
 // FirebaseHostingSiteInterface has methods to work with FirebaseHostingSite resources.
 type FirebaseHostingSiteInterface interface {
-	Create(ctx context.Context, firebaseHostingSite *firebasehostingv1alpha1.FirebaseHostingSite, opts v1.CreateOptions) (*firebasehostingv1alpha1.FirebaseHostingSite, error)
-	Update(ctx context.Context, firebaseHostingSite *firebasehostingv1alpha1.FirebaseHostingSite, opts v1.UpdateOptions) (*firebasehostingv1alpha1.FirebaseHostingSite, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, firebaseHostingSite *firebasehostingv1alpha1.FirebaseHostingSite, opts v1.UpdateOptions) (*firebasehostingv1alpha1.FirebaseHostingSite, error)
+	Create(ctx context.Context, firebaseHostingSite *v1alpha1.FirebaseHostingSite, opts v1.CreateOptions) (*v1alpha1.FirebaseHostingSite, error)
+	Update(ctx context.Context, firebaseHostingSite *v1alpha1.FirebaseHostingSite, opts v1.UpdateOptions) (*v1alpha1.FirebaseHostingSite, error)
+	UpdateStatus(ctx context.Context, firebaseHostingSite *v1alpha1.FirebaseHostingSite, opts v1.UpdateOptions) (*v1alpha1.FirebaseHostingSite, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*firebasehostingv1alpha1.FirebaseHostingSite, error)
-	List(ctx context.Context, opts v1.ListOptions) (*firebasehostingv1alpha1.FirebaseHostingSiteList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.FirebaseHostingSite, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.FirebaseHostingSiteList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *firebasehostingv1alpha1.FirebaseHostingSite, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.FirebaseHostingSite, err error)
 	FirebaseHostingSiteExpansion
 }
 
 // firebaseHostingSites implements FirebaseHostingSiteInterface
 type firebaseHostingSites struct {
-	*gentype.ClientWithList[*firebasehostingv1alpha1.FirebaseHostingSite, *firebasehostingv1alpha1.FirebaseHostingSiteList]
+	client rest.Interface
+	ns     string
 }
 
 // newFirebaseHostingSites returns a FirebaseHostingSites
 func newFirebaseHostingSites(c *FirebasehostingV1alpha1Client, namespace string) *firebaseHostingSites {
 	return &firebaseHostingSites{
-		gentype.NewClientWithList[*firebasehostingv1alpha1.FirebaseHostingSite, *firebasehostingv1alpha1.FirebaseHostingSiteList](
-			"firebasehostingsites",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *firebasehostingv1alpha1.FirebaseHostingSite {
-				return &firebasehostingv1alpha1.FirebaseHostingSite{}
-			},
-			func() *firebasehostingv1alpha1.FirebaseHostingSiteList {
-				return &firebasehostingv1alpha1.FirebaseHostingSiteList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the firebaseHostingSite, and returns the corresponding firebaseHostingSite object, and an error if there is any.
+func (c *firebaseHostingSites) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.FirebaseHostingSite, err error) {
+	result = &v1alpha1.FirebaseHostingSite{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("firebasehostingsites").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of FirebaseHostingSites that match those selectors.
+func (c *firebaseHostingSites) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.FirebaseHostingSiteList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.FirebaseHostingSiteList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("firebasehostingsites").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested firebaseHostingSites.
+func (c *firebaseHostingSites) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("firebasehostingsites").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a firebaseHostingSite and creates it.  Returns the server's representation of the firebaseHostingSite, and an error, if there is any.
+func (c *firebaseHostingSites) Create(ctx context.Context, firebaseHostingSite *v1alpha1.FirebaseHostingSite, opts v1.CreateOptions) (result *v1alpha1.FirebaseHostingSite, err error) {
+	result = &v1alpha1.FirebaseHostingSite{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("firebasehostingsites").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(firebaseHostingSite).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a firebaseHostingSite and updates it. Returns the server's representation of the firebaseHostingSite, and an error, if there is any.
+func (c *firebaseHostingSites) Update(ctx context.Context, firebaseHostingSite *v1alpha1.FirebaseHostingSite, opts v1.UpdateOptions) (result *v1alpha1.FirebaseHostingSite, err error) {
+	result = &v1alpha1.FirebaseHostingSite{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("firebasehostingsites").
+		Name(firebaseHostingSite.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(firebaseHostingSite).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *firebaseHostingSites) UpdateStatus(ctx context.Context, firebaseHostingSite *v1alpha1.FirebaseHostingSite, opts v1.UpdateOptions) (result *v1alpha1.FirebaseHostingSite, err error) {
+	result = &v1alpha1.FirebaseHostingSite{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("firebasehostingsites").
+		Name(firebaseHostingSite.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(firebaseHostingSite).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the firebaseHostingSite and deletes it. Returns an error if one occurs.
+func (c *firebaseHostingSites) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("firebasehostingsites").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *firebaseHostingSites) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("firebasehostingsites").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched firebaseHostingSite.
+func (c *firebaseHostingSites) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.FirebaseHostingSite, err error) {
+	result = &v1alpha1.FirebaseHostingSite{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("firebasehostingsites").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

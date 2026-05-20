@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	recaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ReCAPTCHAEnterpriseFirewallPoliciesGetter has a method to return a ReCAPTCHAEnterpriseFirewallPolicyInterface.
@@ -40,38 +41,158 @@ type ReCAPTCHAEnterpriseFirewallPoliciesGetter interface {
 
 // ReCAPTCHAEnterpriseFirewallPolicyInterface has methods to work with ReCAPTCHAEnterpriseFirewallPolicy resources.
 type ReCAPTCHAEnterpriseFirewallPolicyInterface interface {
-	Create(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.CreateOptions) (*recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, error)
-	Update(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.UpdateOptions) (*recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.UpdateOptions) (*recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, error)
+	Create(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.CreateOptions) (*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, error)
+	Update(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.UpdateOptions) (*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, error)
+	UpdateStatus(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.UpdateOptions) (*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error)
 	ReCAPTCHAEnterpriseFirewallPolicyExpansion
 }
 
 // reCAPTCHAEnterpriseFirewallPolicies implements ReCAPTCHAEnterpriseFirewallPolicyInterface
 type reCAPTCHAEnterpriseFirewallPolicies struct {
-	*gentype.ClientWithList[*recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, *recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList]
+	client rest.Interface
+	ns     string
 }
 
 // newReCAPTCHAEnterpriseFirewallPolicies returns a ReCAPTCHAEnterpriseFirewallPolicies
 func newReCAPTCHAEnterpriseFirewallPolicies(c *RecaptchaenterpriseV1alpha1Client, namespace string) *reCAPTCHAEnterpriseFirewallPolicies {
 	return &reCAPTCHAEnterpriseFirewallPolicies{
-		gentype.NewClientWithList[*recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, *recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList](
-			"recaptchaenterprisefirewallpolicies",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy {
-				return &recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{}
-			},
-			func() *recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList {
-				return &recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the reCAPTCHAEnterpriseFirewallPolicy, and returns the corresponding reCAPTCHAEnterpriseFirewallPolicy object, and an error if there is any.
+func (c *reCAPTCHAEnterpriseFirewallPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error) {
+	result = &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("recaptchaenterprisefirewallpolicies").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ReCAPTCHAEnterpriseFirewallPolicies that match those selectors.
+func (c *reCAPTCHAEnterpriseFirewallPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("recaptchaenterprisefirewallpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested reCAPTCHAEnterpriseFirewallPolicies.
+func (c *reCAPTCHAEnterpriseFirewallPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("recaptchaenterprisefirewallpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a reCAPTCHAEnterpriseFirewallPolicy and creates it.  Returns the server's representation of the reCAPTCHAEnterpriseFirewallPolicy, and an error, if there is any.
+func (c *reCAPTCHAEnterpriseFirewallPolicies) Create(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.CreateOptions) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error) {
+	result = &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("recaptchaenterprisefirewallpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(reCAPTCHAEnterpriseFirewallPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a reCAPTCHAEnterpriseFirewallPolicy and updates it. Returns the server's representation of the reCAPTCHAEnterpriseFirewallPolicy, and an error, if there is any.
+func (c *reCAPTCHAEnterpriseFirewallPolicies) Update(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.UpdateOptions) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error) {
+	result = &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("recaptchaenterprisefirewallpolicies").
+		Name(reCAPTCHAEnterpriseFirewallPolicy.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(reCAPTCHAEnterpriseFirewallPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *reCAPTCHAEnterpriseFirewallPolicies) UpdateStatus(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.UpdateOptions) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error) {
+	result = &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("recaptchaenterprisefirewallpolicies").
+		Name(reCAPTCHAEnterpriseFirewallPolicy.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(reCAPTCHAEnterpriseFirewallPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the reCAPTCHAEnterpriseFirewallPolicy and deletes it. Returns an error if one occurs.
+func (c *reCAPTCHAEnterpriseFirewallPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("recaptchaenterprisefirewallpolicies").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *reCAPTCHAEnterpriseFirewallPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("recaptchaenterprisefirewallpolicies").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched reCAPTCHAEnterpriseFirewallPolicy.
+func (c *reCAPTCHAEnterpriseFirewallPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error) {
+	result = &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("recaptchaenterprisefirewallpolicies").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

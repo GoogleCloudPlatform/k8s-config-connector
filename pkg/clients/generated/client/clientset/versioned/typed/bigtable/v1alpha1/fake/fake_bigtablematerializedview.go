@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1alpha1"
-	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeBigtableMaterializedViews implements BigtableMaterializedViewInterface
-type fakeBigtableMaterializedViews struct {
-	*gentype.FakeClientWithList[*v1alpha1.BigtableMaterializedView, *v1alpha1.BigtableMaterializedViewList]
+// FakeBigtableMaterializedViews implements BigtableMaterializedViewInterface
+type FakeBigtableMaterializedViews struct {
 	Fake *FakeBigtableV1alpha1
+	ns   string
 }
 
-func newFakeBigtableMaterializedViews(fake *FakeBigtableV1alpha1, namespace string) bigtablev1alpha1.BigtableMaterializedViewInterface {
-	return &fakeBigtableMaterializedViews{
-		gentype.NewFakeClientWithList[*v1alpha1.BigtableMaterializedView, *v1alpha1.BigtableMaterializedViewList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("bigtablematerializedviews"),
-			v1alpha1.SchemeGroupVersion.WithKind("BigtableMaterializedView"),
-			func() *v1alpha1.BigtableMaterializedView { return &v1alpha1.BigtableMaterializedView{} },
-			func() *v1alpha1.BigtableMaterializedViewList { return &v1alpha1.BigtableMaterializedViewList{} },
-			func(dst, src *v1alpha1.BigtableMaterializedViewList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.BigtableMaterializedViewList) []*v1alpha1.BigtableMaterializedView {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.BigtableMaterializedViewList, items []*v1alpha1.BigtableMaterializedView) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var bigtablematerializedviewsResource = v1alpha1.SchemeGroupVersion.WithResource("bigtablematerializedviews")
+
+var bigtablematerializedviewsKind = v1alpha1.SchemeGroupVersion.WithKind("BigtableMaterializedView")
+
+// Get takes name of the bigtableMaterializedView, and returns the corresponding bigtableMaterializedView object, and an error if there is any.
+func (c *FakeBigtableMaterializedViews) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigtableMaterializedView, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(bigtablematerializedviewsResource, c.ns, name), &v1alpha1.BigtableMaterializedView{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.BigtableMaterializedView), err
+}
+
+// List takes label and field selectors, and returns the list of BigtableMaterializedViews that match those selectors.
+func (c *FakeBigtableMaterializedViews) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigtableMaterializedViewList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(bigtablematerializedviewsResource, bigtablematerializedviewsKind, c.ns, opts), &v1alpha1.BigtableMaterializedViewList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.BigtableMaterializedViewList{ListMeta: obj.(*v1alpha1.BigtableMaterializedViewList).ListMeta}
+	for _, item := range obj.(*v1alpha1.BigtableMaterializedViewList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested bigtableMaterializedViews.
+func (c *FakeBigtableMaterializedViews) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(bigtablematerializedviewsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a bigtableMaterializedView and creates it.  Returns the server's representation of the bigtableMaterializedView, and an error, if there is any.
+func (c *FakeBigtableMaterializedViews) Create(ctx context.Context, bigtableMaterializedView *v1alpha1.BigtableMaterializedView, opts v1.CreateOptions) (result *v1alpha1.BigtableMaterializedView, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(bigtablematerializedviewsResource, c.ns, bigtableMaterializedView), &v1alpha1.BigtableMaterializedView{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigtableMaterializedView), err
+}
+
+// Update takes the representation of a bigtableMaterializedView and updates it. Returns the server's representation of the bigtableMaterializedView, and an error, if there is any.
+func (c *FakeBigtableMaterializedViews) Update(ctx context.Context, bigtableMaterializedView *v1alpha1.BigtableMaterializedView, opts v1.UpdateOptions) (result *v1alpha1.BigtableMaterializedView, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(bigtablematerializedviewsResource, c.ns, bigtableMaterializedView), &v1alpha1.BigtableMaterializedView{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigtableMaterializedView), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeBigtableMaterializedViews) UpdateStatus(ctx context.Context, bigtableMaterializedView *v1alpha1.BigtableMaterializedView, opts v1.UpdateOptions) (*v1alpha1.BigtableMaterializedView, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(bigtablematerializedviewsResource, "status", c.ns, bigtableMaterializedView), &v1alpha1.BigtableMaterializedView{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigtableMaterializedView), err
+}
+
+// Delete takes name of the bigtableMaterializedView and deletes it. Returns an error if one occurs.
+func (c *FakeBigtableMaterializedViews) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(bigtablematerializedviewsResource, c.ns, name, opts), &v1alpha1.BigtableMaterializedView{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeBigtableMaterializedViews) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(bigtablematerializedviewsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.BigtableMaterializedViewList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched bigtableMaterializedView.
+func (c *FakeBigtableMaterializedViews) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigtableMaterializedView, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(bigtablematerializedviewsResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigtableMaterializedView{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigtableMaterializedView), err
 }

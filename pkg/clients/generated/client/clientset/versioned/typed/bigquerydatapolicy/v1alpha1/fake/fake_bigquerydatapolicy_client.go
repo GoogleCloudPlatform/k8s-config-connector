@@ -32,11 +32,11 @@ type FakeBigquerydatapolicyV1alpha1 struct {
 }
 
 func (c *FakeBigquerydatapolicyV1alpha1) BigQueryDataPolicies(namespace string) v1alpha1.BigQueryDataPolicyInterface {
-	return newFakeBigQueryDataPolicies(c, namespace)
+	return &FakeBigQueryDataPolicies{c, namespace}
 }
 
 func (c *FakeBigquerydatapolicyV1alpha1) BigQueryDataPolicyDataPolicies(namespace string) v1alpha1.BigQueryDataPolicyDataPolicyInterface {
-	return newFakeBigQueryDataPolicyDataPolicies(c, namespace)
+	return &FakeBigQueryDataPolicyDataPolicies{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

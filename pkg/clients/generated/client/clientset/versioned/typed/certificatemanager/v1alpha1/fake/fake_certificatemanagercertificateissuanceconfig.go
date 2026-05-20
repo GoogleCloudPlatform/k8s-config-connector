@@ -22,38 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1alpha1"
-	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeCertificateManagerCertificateIssuanceConfigs implements CertificateManagerCertificateIssuanceConfigInterface
-type fakeCertificateManagerCertificateIssuanceConfigs struct {
-	*gentype.FakeClientWithList[*v1alpha1.CertificateManagerCertificateIssuanceConfig, *v1alpha1.CertificateManagerCertificateIssuanceConfigList]
+// FakeCertificateManagerCertificateIssuanceConfigs implements CertificateManagerCertificateIssuanceConfigInterface
+type FakeCertificateManagerCertificateIssuanceConfigs struct {
 	Fake *FakeCertificatemanagerV1alpha1
+	ns   string
 }
 
-func newFakeCertificateManagerCertificateIssuanceConfigs(fake *FakeCertificatemanagerV1alpha1, namespace string) certificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigInterface {
-	return &fakeCertificateManagerCertificateIssuanceConfigs{
-		gentype.NewFakeClientWithList[*v1alpha1.CertificateManagerCertificateIssuanceConfig, *v1alpha1.CertificateManagerCertificateIssuanceConfigList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("certificatemanagercertificateissuanceconfigs"),
-			v1alpha1.SchemeGroupVersion.WithKind("CertificateManagerCertificateIssuanceConfig"),
-			func() *v1alpha1.CertificateManagerCertificateIssuanceConfig {
-				return &v1alpha1.CertificateManagerCertificateIssuanceConfig{}
-			},
-			func() *v1alpha1.CertificateManagerCertificateIssuanceConfigList {
-				return &v1alpha1.CertificateManagerCertificateIssuanceConfigList{}
-			},
-			func(dst, src *v1alpha1.CertificateManagerCertificateIssuanceConfigList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.CertificateManagerCertificateIssuanceConfigList) []*v1alpha1.CertificateManagerCertificateIssuanceConfig {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.CertificateManagerCertificateIssuanceConfigList, items []*v1alpha1.CertificateManagerCertificateIssuanceConfig) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var certificatemanagercertificateissuanceconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("certificatemanagercertificateissuanceconfigs")
+
+var certificatemanagercertificateissuanceconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("CertificateManagerCertificateIssuanceConfig")
+
+// Get takes name of the certificateManagerCertificateIssuanceConfig, and returns the corresponding certificateManagerCertificateIssuanceConfig object, and an error if there is any.
+func (c *FakeCertificateManagerCertificateIssuanceConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CertificateManagerCertificateIssuanceConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(certificatemanagercertificateissuanceconfigsResource, c.ns, name), &v1alpha1.CertificateManagerCertificateIssuanceConfig{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.CertificateManagerCertificateIssuanceConfig), err
+}
+
+// List takes label and field selectors, and returns the list of CertificateManagerCertificateIssuanceConfigs that match those selectors.
+func (c *FakeCertificateManagerCertificateIssuanceConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CertificateManagerCertificateIssuanceConfigList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(certificatemanagercertificateissuanceconfigsResource, certificatemanagercertificateissuanceconfigsKind, c.ns, opts), &v1alpha1.CertificateManagerCertificateIssuanceConfigList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.CertificateManagerCertificateIssuanceConfigList{ListMeta: obj.(*v1alpha1.CertificateManagerCertificateIssuanceConfigList).ListMeta}
+	for _, item := range obj.(*v1alpha1.CertificateManagerCertificateIssuanceConfigList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested certificateManagerCertificateIssuanceConfigs.
+func (c *FakeCertificateManagerCertificateIssuanceConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(certificatemanagercertificateissuanceconfigsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a certificateManagerCertificateIssuanceConfig and creates it.  Returns the server's representation of the certificateManagerCertificateIssuanceConfig, and an error, if there is any.
+func (c *FakeCertificateManagerCertificateIssuanceConfigs) Create(ctx context.Context, certificateManagerCertificateIssuanceConfig *v1alpha1.CertificateManagerCertificateIssuanceConfig, opts v1.CreateOptions) (result *v1alpha1.CertificateManagerCertificateIssuanceConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(certificatemanagercertificateissuanceconfigsResource, c.ns, certificateManagerCertificateIssuanceConfig), &v1alpha1.CertificateManagerCertificateIssuanceConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CertificateManagerCertificateIssuanceConfig), err
+}
+
+// Update takes the representation of a certificateManagerCertificateIssuanceConfig and updates it. Returns the server's representation of the certificateManagerCertificateIssuanceConfig, and an error, if there is any.
+func (c *FakeCertificateManagerCertificateIssuanceConfigs) Update(ctx context.Context, certificateManagerCertificateIssuanceConfig *v1alpha1.CertificateManagerCertificateIssuanceConfig, opts v1.UpdateOptions) (result *v1alpha1.CertificateManagerCertificateIssuanceConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(certificatemanagercertificateissuanceconfigsResource, c.ns, certificateManagerCertificateIssuanceConfig), &v1alpha1.CertificateManagerCertificateIssuanceConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CertificateManagerCertificateIssuanceConfig), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeCertificateManagerCertificateIssuanceConfigs) UpdateStatus(ctx context.Context, certificateManagerCertificateIssuanceConfig *v1alpha1.CertificateManagerCertificateIssuanceConfig, opts v1.UpdateOptions) (*v1alpha1.CertificateManagerCertificateIssuanceConfig, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(certificatemanagercertificateissuanceconfigsResource, "status", c.ns, certificateManagerCertificateIssuanceConfig), &v1alpha1.CertificateManagerCertificateIssuanceConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CertificateManagerCertificateIssuanceConfig), err
+}
+
+// Delete takes name of the certificateManagerCertificateIssuanceConfig and deletes it. Returns an error if one occurs.
+func (c *FakeCertificateManagerCertificateIssuanceConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(certificatemanagercertificateissuanceconfigsResource, c.ns, name, opts), &v1alpha1.CertificateManagerCertificateIssuanceConfig{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeCertificateManagerCertificateIssuanceConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(certificatemanagercertificateissuanceconfigsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.CertificateManagerCertificateIssuanceConfigList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched certificateManagerCertificateIssuanceConfig.
+func (c *FakeCertificateManagerCertificateIssuanceConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CertificateManagerCertificateIssuanceConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(certificatemanagercertificateissuanceconfigsResource, c.ns, name, pt, data, subresources...), &v1alpha1.CertificateManagerCertificateIssuanceConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CertificateManagerCertificateIssuanceConfig), err
 }

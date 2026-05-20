@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/speech/v1beta1"
-	speechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/speech/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeSpeechCustomClasses implements SpeechCustomClassInterface
-type fakeSpeechCustomClasses struct {
-	*gentype.FakeClientWithList[*v1beta1.SpeechCustomClass, *v1beta1.SpeechCustomClassList]
+// FakeSpeechCustomClasses implements SpeechCustomClassInterface
+type FakeSpeechCustomClasses struct {
 	Fake *FakeSpeechV1beta1
+	ns   string
 }
 
-func newFakeSpeechCustomClasses(fake *FakeSpeechV1beta1, namespace string) speechv1beta1.SpeechCustomClassInterface {
-	return &fakeSpeechCustomClasses{
-		gentype.NewFakeClientWithList[*v1beta1.SpeechCustomClass, *v1beta1.SpeechCustomClassList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("speechcustomclasses"),
-			v1beta1.SchemeGroupVersion.WithKind("SpeechCustomClass"),
-			func() *v1beta1.SpeechCustomClass { return &v1beta1.SpeechCustomClass{} },
-			func() *v1beta1.SpeechCustomClassList { return &v1beta1.SpeechCustomClassList{} },
-			func(dst, src *v1beta1.SpeechCustomClassList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.SpeechCustomClassList) []*v1beta1.SpeechCustomClass {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.SpeechCustomClassList, items []*v1beta1.SpeechCustomClass) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var speechcustomclassesResource = v1beta1.SchemeGroupVersion.WithResource("speechcustomclasses")
+
+var speechcustomclassesKind = v1beta1.SchemeGroupVersion.WithKind("SpeechCustomClass")
+
+// Get takes name of the speechCustomClass, and returns the corresponding speechCustomClass object, and an error if there is any.
+func (c *FakeSpeechCustomClasses) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SpeechCustomClass, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(speechcustomclassesResource, c.ns, name), &v1beta1.SpeechCustomClass{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.SpeechCustomClass), err
+}
+
+// List takes label and field selectors, and returns the list of SpeechCustomClasses that match those selectors.
+func (c *FakeSpeechCustomClasses) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SpeechCustomClassList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(speechcustomclassesResource, speechcustomclassesKind, c.ns, opts), &v1beta1.SpeechCustomClassList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.SpeechCustomClassList{ListMeta: obj.(*v1beta1.SpeechCustomClassList).ListMeta}
+	for _, item := range obj.(*v1beta1.SpeechCustomClassList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested speechCustomClasses.
+func (c *FakeSpeechCustomClasses) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(speechcustomclassesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a speechCustomClass and creates it.  Returns the server's representation of the speechCustomClass, and an error, if there is any.
+func (c *FakeSpeechCustomClasses) Create(ctx context.Context, speechCustomClass *v1beta1.SpeechCustomClass, opts v1.CreateOptions) (result *v1beta1.SpeechCustomClass, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(speechcustomclassesResource, c.ns, speechCustomClass), &v1beta1.SpeechCustomClass{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpeechCustomClass), err
+}
+
+// Update takes the representation of a speechCustomClass and updates it. Returns the server's representation of the speechCustomClass, and an error, if there is any.
+func (c *FakeSpeechCustomClasses) Update(ctx context.Context, speechCustomClass *v1beta1.SpeechCustomClass, opts v1.UpdateOptions) (result *v1beta1.SpeechCustomClass, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(speechcustomclassesResource, c.ns, speechCustomClass), &v1beta1.SpeechCustomClass{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpeechCustomClass), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeSpeechCustomClasses) UpdateStatus(ctx context.Context, speechCustomClass *v1beta1.SpeechCustomClass, opts v1.UpdateOptions) (*v1beta1.SpeechCustomClass, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(speechcustomclassesResource, "status", c.ns, speechCustomClass), &v1beta1.SpeechCustomClass{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpeechCustomClass), err
+}
+
+// Delete takes name of the speechCustomClass and deletes it. Returns an error if one occurs.
+func (c *FakeSpeechCustomClasses) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(speechcustomclassesResource, c.ns, name, opts), &v1beta1.SpeechCustomClass{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeSpeechCustomClasses) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(speechcustomclassesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.SpeechCustomClassList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched speechCustomClass.
+func (c *FakeSpeechCustomClasses) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SpeechCustomClass, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(speechcustomclassesResource, c.ns, name, pt, data, subresources...), &v1beta1.SpeechCustomClass{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpeechCustomClass), err
 }

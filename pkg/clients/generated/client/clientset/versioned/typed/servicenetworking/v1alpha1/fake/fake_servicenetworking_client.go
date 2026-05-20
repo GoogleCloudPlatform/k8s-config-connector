@@ -32,7 +32,7 @@ type FakeServicenetworkingV1alpha1 struct {
 }
 
 func (c *FakeServicenetworkingV1alpha1) ServiceNetworkingPeeredDNSDomains(namespace string) v1alpha1.ServiceNetworkingPeeredDNSDomainInterface {
-	return newFakeServiceNetworkingPeeredDNSDomains(c, namespace)
+	return &FakeServiceNetworkingPeeredDNSDomains{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

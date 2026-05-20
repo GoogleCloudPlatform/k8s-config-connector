@@ -39,10 +39,15 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ReservationGuestAccelerators struct {
-	/* Immutable. The number of the guest accelerator cards exposed to this instance. */
-	AcceleratorCount int32 `json:"acceleratorCount"`
+	/* Immutable. The number of the guest accelerator cards exposed to
+	this instance. */
+	AcceleratorCount int64 `json:"acceleratorCount"`
 
-	/* Immutable. The full or partial URL of the accelerator type to attach to this instance. For example: 'projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100' If you are creating an instance template, specify only the accelerator name. */
+	/* Immutable. The full or partial URL of the accelerator type to
+	attach to this instance. For example:
+	'projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100'
+
+	If you are creating an instance template, specify only the accelerator name. */
 	AcceleratorType string `json:"acceleratorType"`
 }
 
@@ -51,21 +56,25 @@ type ReservationInstanceProperties struct {
 	// +optional
 	GuestAccelerators []ReservationGuestAccelerators `json:"guestAccelerators,omitempty"`
 
-	/* Immutable. The amount of local ssd to reserve with each instance. This reserves disks of type 'local-ssd'. */
+	/* Immutable. The amount of local ssd to reserve with each instance. This
+	reserves disks of type 'local-ssd'. */
 	// +optional
 	LocalSsds []ReservationLocalSsds `json:"localSsds,omitempty"`
 
 	/* Immutable. The name of the machine type to reserve. */
 	MachineType string `json:"machineType"`
 
-	/* Immutable. The minimum CPU platform for the reservation. For example, '"Intel Skylake"'. See the CPU platform availability reference](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform#availablezones) for information on available CPU platforms. */
+	/* Immutable. The minimum CPU platform for the reservation. For example,
+	'"Intel Skylake"'. See
+	the CPU platform availability reference](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform#availablezones)
+	for information on available CPU platforms. */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 }
 
 type ReservationLocalSsds struct {
 	/* Immutable. The size of the disk in base-2 GB. */
-	DiskSizeGb int32 `json:"diskSizeGb"`
+	DiskSizeGb int64 `json:"diskSizeGb"`
 
 	/* Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"]. */
 	// +optional
@@ -74,11 +83,11 @@ type ReservationLocalSsds struct {
 
 type ReservationSpecificReservation struct {
 	/* The number of resources that are allocated. */
-	Count int32 `json:"count"`
+	Count int64 `json:"count"`
 
 	/* How many instances are in use. */
 	// +optional
-	InUseCount *int32 `json:"inUseCount,omitempty"`
+	InUseCount *int64 `json:"inUseCount,omitempty"`
 
 	/* Immutable. The instance properties for the reservation. */
 	InstanceProperties ReservationInstanceProperties `json:"instanceProperties"`
@@ -96,7 +105,9 @@ type ComputeReservationSpec struct {
 	/* Reservation for instances with specific machine shapes. */
 	SpecificReservation ReservationSpecificReservation `json:"specificReservation"`
 
-	/* Immutable. When set to true, only VMs that target this reservation by name can consume this reservation. Otherwise, it can be consumed by VMs with affinity for any reservation. Defaults to false. */
+	/* Immutable. When set to true, only VMs that target this reservation by name can
+	consume this reservation. Otherwise, it can be consumed by VMs with
+	affinity for any reservation. Defaults to false. */
 	// +optional
 	SpecificReservationRequired *bool `json:"specificReservationRequired,omitempty"`
 
@@ -108,7 +119,8 @@ type ComputeReservationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeReservation's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment. */
+	/* Full or partial URL to a parent commitment. This field displays for
+	reservations that are tied to a commitment. */
 	// +optional
 	Commitment *string `json:"commitment,omitempty"`
 
@@ -116,15 +128,10 @@ type ComputeReservationStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* A unique specifier for the ComputeReservation resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Server-defined URL for the resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 

@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // DataplexTasksGetter has a method to return a DataplexTaskInterface.
@@ -40,34 +41,158 @@ type DataplexTasksGetter interface {
 
 // DataplexTaskInterface has methods to work with DataplexTask resources.
 type DataplexTaskInterface interface {
-	Create(ctx context.Context, dataplexTask *dataplexv1alpha1.DataplexTask, opts v1.CreateOptions) (*dataplexv1alpha1.DataplexTask, error)
-	Update(ctx context.Context, dataplexTask *dataplexv1alpha1.DataplexTask, opts v1.UpdateOptions) (*dataplexv1alpha1.DataplexTask, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, dataplexTask *dataplexv1alpha1.DataplexTask, opts v1.UpdateOptions) (*dataplexv1alpha1.DataplexTask, error)
+	Create(ctx context.Context, dataplexTask *v1alpha1.DataplexTask, opts v1.CreateOptions) (*v1alpha1.DataplexTask, error)
+	Update(ctx context.Context, dataplexTask *v1alpha1.DataplexTask, opts v1.UpdateOptions) (*v1alpha1.DataplexTask, error)
+	UpdateStatus(ctx context.Context, dataplexTask *v1alpha1.DataplexTask, opts v1.UpdateOptions) (*v1alpha1.DataplexTask, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*dataplexv1alpha1.DataplexTask, error)
-	List(ctx context.Context, opts v1.ListOptions) (*dataplexv1alpha1.DataplexTaskList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.DataplexTask, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.DataplexTaskList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *dataplexv1alpha1.DataplexTask, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataplexTask, err error)
 	DataplexTaskExpansion
 }
 
 // dataplexTasks implements DataplexTaskInterface
 type dataplexTasks struct {
-	*gentype.ClientWithList[*dataplexv1alpha1.DataplexTask, *dataplexv1alpha1.DataplexTaskList]
+	client rest.Interface
+	ns     string
 }
 
 // newDataplexTasks returns a DataplexTasks
 func newDataplexTasks(c *DataplexV1alpha1Client, namespace string) *dataplexTasks {
 	return &dataplexTasks{
-		gentype.NewClientWithList[*dataplexv1alpha1.DataplexTask, *dataplexv1alpha1.DataplexTaskList](
-			"dataplextasks",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *dataplexv1alpha1.DataplexTask { return &dataplexv1alpha1.DataplexTask{} },
-			func() *dataplexv1alpha1.DataplexTaskList { return &dataplexv1alpha1.DataplexTaskList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the dataplexTask, and returns the corresponding dataplexTask object, and an error if there is any.
+func (c *dataplexTasks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataplexTask, err error) {
+	result = &v1alpha1.DataplexTask{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dataplextasks").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of DataplexTasks that match those selectors.
+func (c *dataplexTasks) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DataplexTaskList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.DataplexTaskList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dataplextasks").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested dataplexTasks.
+func (c *dataplexTasks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("dataplextasks").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a dataplexTask and creates it.  Returns the server's representation of the dataplexTask, and an error, if there is any.
+func (c *dataplexTasks) Create(ctx context.Context, dataplexTask *v1alpha1.DataplexTask, opts v1.CreateOptions) (result *v1alpha1.DataplexTask, err error) {
+	result = &v1alpha1.DataplexTask{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("dataplextasks").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataplexTask).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a dataplexTask and updates it. Returns the server's representation of the dataplexTask, and an error, if there is any.
+func (c *dataplexTasks) Update(ctx context.Context, dataplexTask *v1alpha1.DataplexTask, opts v1.UpdateOptions) (result *v1alpha1.DataplexTask, err error) {
+	result = &v1alpha1.DataplexTask{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dataplextasks").
+		Name(dataplexTask.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataplexTask).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *dataplexTasks) UpdateStatus(ctx context.Context, dataplexTask *v1alpha1.DataplexTask, opts v1.UpdateOptions) (result *v1alpha1.DataplexTask, err error) {
+	result = &v1alpha1.DataplexTask{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dataplextasks").
+		Name(dataplexTask.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataplexTask).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the dataplexTask and deletes it. Returns an error if one occurs.
+func (c *dataplexTasks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dataplextasks").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *dataplexTasks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dataplextasks").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched dataplexTask.
+func (c *dataplexTasks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataplexTask, err error) {
+	result = &v1alpha1.DataplexTask{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("dataplextasks").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

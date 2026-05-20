@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicenetworking/v1beta1"
-	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeServiceNetworkingConnections implements ServiceNetworkingConnectionInterface
-type fakeServiceNetworkingConnections struct {
-	*gentype.FakeClientWithList[*v1beta1.ServiceNetworkingConnection, *v1beta1.ServiceNetworkingConnectionList]
+// FakeServiceNetworkingConnections implements ServiceNetworkingConnectionInterface
+type FakeServiceNetworkingConnections struct {
 	Fake *FakeServicenetworkingV1beta1
+	ns   string
 }
 
-func newFakeServiceNetworkingConnections(fake *FakeServicenetworkingV1beta1, namespace string) servicenetworkingv1beta1.ServiceNetworkingConnectionInterface {
-	return &fakeServiceNetworkingConnections{
-		gentype.NewFakeClientWithList[*v1beta1.ServiceNetworkingConnection, *v1beta1.ServiceNetworkingConnectionList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("servicenetworkingconnections"),
-			v1beta1.SchemeGroupVersion.WithKind("ServiceNetworkingConnection"),
-			func() *v1beta1.ServiceNetworkingConnection { return &v1beta1.ServiceNetworkingConnection{} },
-			func() *v1beta1.ServiceNetworkingConnectionList { return &v1beta1.ServiceNetworkingConnectionList{} },
-			func(dst, src *v1beta1.ServiceNetworkingConnectionList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.ServiceNetworkingConnectionList) []*v1beta1.ServiceNetworkingConnection {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.ServiceNetworkingConnectionList, items []*v1beta1.ServiceNetworkingConnection) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var servicenetworkingconnectionsResource = v1beta1.SchemeGroupVersion.WithResource("servicenetworkingconnections")
+
+var servicenetworkingconnectionsKind = v1beta1.SchemeGroupVersion.WithKind("ServiceNetworkingConnection")
+
+// Get takes name of the serviceNetworkingConnection, and returns the corresponding serviceNetworkingConnection object, and an error if there is any.
+func (c *FakeServiceNetworkingConnections) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ServiceNetworkingConnection, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(servicenetworkingconnectionsResource, c.ns, name), &v1beta1.ServiceNetworkingConnection{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.ServiceNetworkingConnection), err
+}
+
+// List takes label and field selectors, and returns the list of ServiceNetworkingConnections that match those selectors.
+func (c *FakeServiceNetworkingConnections) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ServiceNetworkingConnectionList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(servicenetworkingconnectionsResource, servicenetworkingconnectionsKind, c.ns, opts), &v1beta1.ServiceNetworkingConnectionList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.ServiceNetworkingConnectionList{ListMeta: obj.(*v1beta1.ServiceNetworkingConnectionList).ListMeta}
+	for _, item := range obj.(*v1beta1.ServiceNetworkingConnectionList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested serviceNetworkingConnections.
+func (c *FakeServiceNetworkingConnections) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(servicenetworkingconnectionsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a serviceNetworkingConnection and creates it.  Returns the server's representation of the serviceNetworkingConnection, and an error, if there is any.
+func (c *FakeServiceNetworkingConnections) Create(ctx context.Context, serviceNetworkingConnection *v1beta1.ServiceNetworkingConnection, opts v1.CreateOptions) (result *v1beta1.ServiceNetworkingConnection, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(servicenetworkingconnectionsResource, c.ns, serviceNetworkingConnection), &v1beta1.ServiceNetworkingConnection{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ServiceNetworkingConnection), err
+}
+
+// Update takes the representation of a serviceNetworkingConnection and updates it. Returns the server's representation of the serviceNetworkingConnection, and an error, if there is any.
+func (c *FakeServiceNetworkingConnections) Update(ctx context.Context, serviceNetworkingConnection *v1beta1.ServiceNetworkingConnection, opts v1.UpdateOptions) (result *v1beta1.ServiceNetworkingConnection, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(servicenetworkingconnectionsResource, c.ns, serviceNetworkingConnection), &v1beta1.ServiceNetworkingConnection{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ServiceNetworkingConnection), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeServiceNetworkingConnections) UpdateStatus(ctx context.Context, serviceNetworkingConnection *v1beta1.ServiceNetworkingConnection, opts v1.UpdateOptions) (*v1beta1.ServiceNetworkingConnection, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(servicenetworkingconnectionsResource, "status", c.ns, serviceNetworkingConnection), &v1beta1.ServiceNetworkingConnection{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ServiceNetworkingConnection), err
+}
+
+// Delete takes name of the serviceNetworkingConnection and deletes it. Returns an error if one occurs.
+func (c *FakeServiceNetworkingConnections) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(servicenetworkingconnectionsResource, c.ns, name, opts), &v1beta1.ServiceNetworkingConnection{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeServiceNetworkingConnections) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(servicenetworkingconnectionsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.ServiceNetworkingConnectionList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched serviceNetworkingConnection.
+func (c *FakeServiceNetworkingConnections) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ServiceNetworkingConnection, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(servicenetworkingconnectionsResource, c.ns, name, pt, data, subresources...), &v1beta1.ServiceNetworkingConnection{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ServiceNetworkingConnection), err
 }

@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1beta1"
-	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeFirestoreIndexes implements FirestoreIndexInterface
-type fakeFirestoreIndexes struct {
-	*gentype.FakeClientWithList[*v1beta1.FirestoreIndex, *v1beta1.FirestoreIndexList]
+// FakeFirestoreIndexes implements FirestoreIndexInterface
+type FakeFirestoreIndexes struct {
 	Fake *FakeFirestoreV1beta1
+	ns   string
 }
 
-func newFakeFirestoreIndexes(fake *FakeFirestoreV1beta1, namespace string) firestorev1beta1.FirestoreIndexInterface {
-	return &fakeFirestoreIndexes{
-		gentype.NewFakeClientWithList[*v1beta1.FirestoreIndex, *v1beta1.FirestoreIndexList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("firestoreindexes"),
-			v1beta1.SchemeGroupVersion.WithKind("FirestoreIndex"),
-			func() *v1beta1.FirestoreIndex { return &v1beta1.FirestoreIndex{} },
-			func() *v1beta1.FirestoreIndexList { return &v1beta1.FirestoreIndexList{} },
-			func(dst, src *v1beta1.FirestoreIndexList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.FirestoreIndexList) []*v1beta1.FirestoreIndex {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.FirestoreIndexList, items []*v1beta1.FirestoreIndex) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var firestoreindexesResource = v1beta1.SchemeGroupVersion.WithResource("firestoreindexes")
+
+var firestoreindexesKind = v1beta1.SchemeGroupVersion.WithKind("FirestoreIndex")
+
+// Get takes name of the firestoreIndex, and returns the corresponding firestoreIndex object, and an error if there is any.
+func (c *FakeFirestoreIndexes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.FirestoreIndex, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(firestoreindexesResource, c.ns, name), &v1beta1.FirestoreIndex{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.FirestoreIndex), err
+}
+
+// List takes label and field selectors, and returns the list of FirestoreIndexes that match those selectors.
+func (c *FakeFirestoreIndexes) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.FirestoreIndexList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(firestoreindexesResource, firestoreindexesKind, c.ns, opts), &v1beta1.FirestoreIndexList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.FirestoreIndexList{ListMeta: obj.(*v1beta1.FirestoreIndexList).ListMeta}
+	for _, item := range obj.(*v1beta1.FirestoreIndexList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested firestoreIndexes.
+func (c *FakeFirestoreIndexes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(firestoreindexesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a firestoreIndex and creates it.  Returns the server's representation of the firestoreIndex, and an error, if there is any.
+func (c *FakeFirestoreIndexes) Create(ctx context.Context, firestoreIndex *v1beta1.FirestoreIndex, opts v1.CreateOptions) (result *v1beta1.FirestoreIndex, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(firestoreindexesResource, c.ns, firestoreIndex), &v1beta1.FirestoreIndex{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.FirestoreIndex), err
+}
+
+// Update takes the representation of a firestoreIndex and updates it. Returns the server's representation of the firestoreIndex, and an error, if there is any.
+func (c *FakeFirestoreIndexes) Update(ctx context.Context, firestoreIndex *v1beta1.FirestoreIndex, opts v1.UpdateOptions) (result *v1beta1.FirestoreIndex, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(firestoreindexesResource, c.ns, firestoreIndex), &v1beta1.FirestoreIndex{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.FirestoreIndex), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeFirestoreIndexes) UpdateStatus(ctx context.Context, firestoreIndex *v1beta1.FirestoreIndex, opts v1.UpdateOptions) (*v1beta1.FirestoreIndex, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(firestoreindexesResource, "status", c.ns, firestoreIndex), &v1beta1.FirestoreIndex{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.FirestoreIndex), err
+}
+
+// Delete takes name of the firestoreIndex and deletes it. Returns an error if one occurs.
+func (c *FakeFirestoreIndexes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(firestoreindexesResource, c.ns, name, opts), &v1beta1.FirestoreIndex{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeFirestoreIndexes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(firestoreindexesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.FirestoreIndexList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched firestoreIndex.
+func (c *FakeFirestoreIndexes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.FirestoreIndex, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(firestoreindexesResource, c.ns, name, pt, data, subresources...), &v1beta1.FirestoreIndex{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.FirestoreIndex), err
 }

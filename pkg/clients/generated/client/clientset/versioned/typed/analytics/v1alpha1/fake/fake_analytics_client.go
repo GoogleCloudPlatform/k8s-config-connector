@@ -32,7 +32,7 @@ type FakeAnalyticsV1alpha1 struct {
 }
 
 func (c *FakeAnalyticsV1alpha1) AnalyticsAccounts(namespace string) v1alpha1.AnalyticsAccountInterface {
-	return newFakeAnalyticsAccounts(c, namespace)
+	return &FakeAnalyticsAccounts{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

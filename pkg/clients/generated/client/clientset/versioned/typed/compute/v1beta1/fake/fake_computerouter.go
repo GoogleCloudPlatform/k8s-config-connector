@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeRouters implements ComputeRouterInterface
-type fakeComputeRouters struct {
-	*gentype.FakeClientWithList[*v1beta1.ComputeRouter, *v1beta1.ComputeRouterList]
+// FakeComputeRouters implements ComputeRouterInterface
+type FakeComputeRouters struct {
 	Fake *FakeComputeV1beta1
+	ns   string
 }
 
-func newFakeComputeRouters(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeRouterInterface {
-	return &fakeComputeRouters{
-		gentype.NewFakeClientWithList[*v1beta1.ComputeRouter, *v1beta1.ComputeRouterList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("computerouters"),
-			v1beta1.SchemeGroupVersion.WithKind("ComputeRouter"),
-			func() *v1beta1.ComputeRouter { return &v1beta1.ComputeRouter{} },
-			func() *v1beta1.ComputeRouterList { return &v1beta1.ComputeRouterList{} },
-			func(dst, src *v1beta1.ComputeRouterList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.ComputeRouterList) []*v1beta1.ComputeRouter {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.ComputeRouterList, items []*v1beta1.ComputeRouter) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computeroutersResource = v1beta1.SchemeGroupVersion.WithResource("computerouters")
+
+var computeroutersKind = v1beta1.SchemeGroupVersion.WithKind("ComputeRouter")
+
+// Get takes name of the computeRouter, and returns the corresponding computeRouter object, and an error if there is any.
+func (c *FakeComputeRouters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeRouter, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computeroutersResource, c.ns, name), &v1beta1.ComputeRouter{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.ComputeRouter), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeRouters that match those selectors.
+func (c *FakeComputeRouters) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeRouterList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computeroutersResource, computeroutersKind, c.ns, opts), &v1beta1.ComputeRouterList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.ComputeRouterList{ListMeta: obj.(*v1beta1.ComputeRouterList).ListMeta}
+	for _, item := range obj.(*v1beta1.ComputeRouterList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeRouters.
+func (c *FakeComputeRouters) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computeroutersResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeRouter and creates it.  Returns the server's representation of the computeRouter, and an error, if there is any.
+func (c *FakeComputeRouters) Create(ctx context.Context, computeRouter *v1beta1.ComputeRouter, opts v1.CreateOptions) (result *v1beta1.ComputeRouter, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computeroutersResource, c.ns, computeRouter), &v1beta1.ComputeRouter{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeRouter), err
+}
+
+// Update takes the representation of a computeRouter and updates it. Returns the server's representation of the computeRouter, and an error, if there is any.
+func (c *FakeComputeRouters) Update(ctx context.Context, computeRouter *v1beta1.ComputeRouter, opts v1.UpdateOptions) (result *v1beta1.ComputeRouter, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computeroutersResource, c.ns, computeRouter), &v1beta1.ComputeRouter{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeRouter), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeRouters) UpdateStatus(ctx context.Context, computeRouter *v1beta1.ComputeRouter, opts v1.UpdateOptions) (*v1beta1.ComputeRouter, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computeroutersResource, "status", c.ns, computeRouter), &v1beta1.ComputeRouter{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeRouter), err
+}
+
+// Delete takes name of the computeRouter and deletes it. Returns an error if one occurs.
+func (c *FakeComputeRouters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computeroutersResource, c.ns, name, opts), &v1beta1.ComputeRouter{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeRouters) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computeroutersResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.ComputeRouterList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeRouter.
+func (c *FakeComputeRouters) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeRouter, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computeroutersResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeRouter{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeRouter), err
 }

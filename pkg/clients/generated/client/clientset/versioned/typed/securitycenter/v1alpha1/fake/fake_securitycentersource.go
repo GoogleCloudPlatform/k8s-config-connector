@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securitycenter/v1alpha1"
-	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeSecurityCenterSources implements SecurityCenterSourceInterface
-type fakeSecurityCenterSources struct {
-	*gentype.FakeClientWithList[*v1alpha1.SecurityCenterSource, *v1alpha1.SecurityCenterSourceList]
+// FakeSecurityCenterSources implements SecurityCenterSourceInterface
+type FakeSecurityCenterSources struct {
 	Fake *FakeSecuritycenterV1alpha1
+	ns   string
 }
 
-func newFakeSecurityCenterSources(fake *FakeSecuritycenterV1alpha1, namespace string) securitycenterv1alpha1.SecurityCenterSourceInterface {
-	return &fakeSecurityCenterSources{
-		gentype.NewFakeClientWithList[*v1alpha1.SecurityCenterSource, *v1alpha1.SecurityCenterSourceList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("securitycentersources"),
-			v1alpha1.SchemeGroupVersion.WithKind("SecurityCenterSource"),
-			func() *v1alpha1.SecurityCenterSource { return &v1alpha1.SecurityCenterSource{} },
-			func() *v1alpha1.SecurityCenterSourceList { return &v1alpha1.SecurityCenterSourceList{} },
-			func(dst, src *v1alpha1.SecurityCenterSourceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.SecurityCenterSourceList) []*v1alpha1.SecurityCenterSource {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.SecurityCenterSourceList, items []*v1alpha1.SecurityCenterSource) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var securitycentersourcesResource = v1alpha1.SchemeGroupVersion.WithResource("securitycentersources")
+
+var securitycentersourcesKind = v1alpha1.SchemeGroupVersion.WithKind("SecurityCenterSource")
+
+// Get takes name of the securityCenterSource, and returns the corresponding securityCenterSource object, and an error if there is any.
+func (c *FakeSecurityCenterSources) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.SecurityCenterSource, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(securitycentersourcesResource, c.ns, name), &v1alpha1.SecurityCenterSource{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.SecurityCenterSource), err
+}
+
+// List takes label and field selectors, and returns the list of SecurityCenterSources that match those selectors.
+func (c *FakeSecurityCenterSources) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.SecurityCenterSourceList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(securitycentersourcesResource, securitycentersourcesKind, c.ns, opts), &v1alpha1.SecurityCenterSourceList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.SecurityCenterSourceList{ListMeta: obj.(*v1alpha1.SecurityCenterSourceList).ListMeta}
+	for _, item := range obj.(*v1alpha1.SecurityCenterSourceList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested securityCenterSources.
+func (c *FakeSecurityCenterSources) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(securitycentersourcesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a securityCenterSource and creates it.  Returns the server's representation of the securityCenterSource, and an error, if there is any.
+func (c *FakeSecurityCenterSources) Create(ctx context.Context, securityCenterSource *v1alpha1.SecurityCenterSource, opts v1.CreateOptions) (result *v1alpha1.SecurityCenterSource, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(securitycentersourcesResource, c.ns, securityCenterSource), &v1alpha1.SecurityCenterSource{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.SecurityCenterSource), err
+}
+
+// Update takes the representation of a securityCenterSource and updates it. Returns the server's representation of the securityCenterSource, and an error, if there is any.
+func (c *FakeSecurityCenterSources) Update(ctx context.Context, securityCenterSource *v1alpha1.SecurityCenterSource, opts v1.UpdateOptions) (result *v1alpha1.SecurityCenterSource, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(securitycentersourcesResource, c.ns, securityCenterSource), &v1alpha1.SecurityCenterSource{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.SecurityCenterSource), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeSecurityCenterSources) UpdateStatus(ctx context.Context, securityCenterSource *v1alpha1.SecurityCenterSource, opts v1.UpdateOptions) (*v1alpha1.SecurityCenterSource, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(securitycentersourcesResource, "status", c.ns, securityCenterSource), &v1alpha1.SecurityCenterSource{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.SecurityCenterSource), err
+}
+
+// Delete takes name of the securityCenterSource and deletes it. Returns an error if one occurs.
+func (c *FakeSecurityCenterSources) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(securitycentersourcesResource, c.ns, name, opts), &v1alpha1.SecurityCenterSource{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeSecurityCenterSources) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(securitycentersourcesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.SecurityCenterSourceList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched securityCenterSource.
+func (c *FakeSecurityCenterSources) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.SecurityCenterSource, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(securitycentersourcesResource, c.ns, name, pt, data, subresources...), &v1alpha1.SecurityCenterSource{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.SecurityCenterSource), err
 }

@@ -22,38 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeRegionDiskResourcePolicyAttachments implements ComputeRegionDiskResourcePolicyAttachmentInterface
-type fakeComputeRegionDiskResourcePolicyAttachments struct {
-	*gentype.FakeClientWithList[*v1alpha1.ComputeRegionDiskResourcePolicyAttachment, *v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList]
+// FakeComputeRegionDiskResourcePolicyAttachments implements ComputeRegionDiskResourcePolicyAttachmentInterface
+type FakeComputeRegionDiskResourcePolicyAttachments struct {
 	Fake *FakeComputeV1alpha1
+	ns   string
 }
 
-func newFakeComputeRegionDiskResourcePolicyAttachments(fake *FakeComputeV1alpha1, namespace string) computev1alpha1.ComputeRegionDiskResourcePolicyAttachmentInterface {
-	return &fakeComputeRegionDiskResourcePolicyAttachments{
-		gentype.NewFakeClientWithList[*v1alpha1.ComputeRegionDiskResourcePolicyAttachment, *v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("computeregiondiskresourcepolicyattachments"),
-			v1alpha1.SchemeGroupVersion.WithKind("ComputeRegionDiskResourcePolicyAttachment"),
-			func() *v1alpha1.ComputeRegionDiskResourcePolicyAttachment {
-				return &v1alpha1.ComputeRegionDiskResourcePolicyAttachment{}
-			},
-			func() *v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList {
-				return &v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList{}
-			},
-			func(dst, src *v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList) []*v1alpha1.ComputeRegionDiskResourcePolicyAttachment {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList, items []*v1alpha1.ComputeRegionDiskResourcePolicyAttachment) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computeregiondiskresourcepolicyattachmentsResource = v1alpha1.SchemeGroupVersion.WithResource("computeregiondiskresourcepolicyattachments")
+
+var computeregiondiskresourcepolicyattachmentsKind = v1alpha1.SchemeGroupVersion.WithKind("ComputeRegionDiskResourcePolicyAttachment")
+
+// Get takes name of the computeRegionDiskResourcePolicyAttachment, and returns the corresponding computeRegionDiskResourcePolicyAttachment object, and an error if there is any.
+func (c *FakeComputeRegionDiskResourcePolicyAttachments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeRegionDiskResourcePolicyAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computeregiondiskresourcepolicyattachmentsResource, c.ns, name), &v1alpha1.ComputeRegionDiskResourcePolicyAttachment{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.ComputeRegionDiskResourcePolicyAttachment), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeRegionDiskResourcePolicyAttachments that match those selectors.
+func (c *FakeComputeRegionDiskResourcePolicyAttachments) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computeregiondiskresourcepolicyattachmentsResource, computeregiondiskresourcepolicyattachmentsKind, c.ns, opts), &v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList{ListMeta: obj.(*v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList).ListMeta}
+	for _, item := range obj.(*v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeRegionDiskResourcePolicyAttachments.
+func (c *FakeComputeRegionDiskResourcePolicyAttachments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computeregiondiskresourcepolicyattachmentsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeRegionDiskResourcePolicyAttachment and creates it.  Returns the server's representation of the computeRegionDiskResourcePolicyAttachment, and an error, if there is any.
+func (c *FakeComputeRegionDiskResourcePolicyAttachments) Create(ctx context.Context, computeRegionDiskResourcePolicyAttachment *v1alpha1.ComputeRegionDiskResourcePolicyAttachment, opts v1.CreateOptions) (result *v1alpha1.ComputeRegionDiskResourcePolicyAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computeregiondiskresourcepolicyattachmentsResource, c.ns, computeRegionDiskResourcePolicyAttachment), &v1alpha1.ComputeRegionDiskResourcePolicyAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeRegionDiskResourcePolicyAttachment), err
+}
+
+// Update takes the representation of a computeRegionDiskResourcePolicyAttachment and updates it. Returns the server's representation of the computeRegionDiskResourcePolicyAttachment, and an error, if there is any.
+func (c *FakeComputeRegionDiskResourcePolicyAttachments) Update(ctx context.Context, computeRegionDiskResourcePolicyAttachment *v1alpha1.ComputeRegionDiskResourcePolicyAttachment, opts v1.UpdateOptions) (result *v1alpha1.ComputeRegionDiskResourcePolicyAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computeregiondiskresourcepolicyattachmentsResource, c.ns, computeRegionDiskResourcePolicyAttachment), &v1alpha1.ComputeRegionDiskResourcePolicyAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeRegionDiskResourcePolicyAttachment), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeRegionDiskResourcePolicyAttachments) UpdateStatus(ctx context.Context, computeRegionDiskResourcePolicyAttachment *v1alpha1.ComputeRegionDiskResourcePolicyAttachment, opts v1.UpdateOptions) (*v1alpha1.ComputeRegionDiskResourcePolicyAttachment, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computeregiondiskresourcepolicyattachmentsResource, "status", c.ns, computeRegionDiskResourcePolicyAttachment), &v1alpha1.ComputeRegionDiskResourcePolicyAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeRegionDiskResourcePolicyAttachment), err
+}
+
+// Delete takes name of the computeRegionDiskResourcePolicyAttachment and deletes it. Returns an error if one occurs.
+func (c *FakeComputeRegionDiskResourcePolicyAttachments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computeregiondiskresourcepolicyattachmentsResource, c.ns, name, opts), &v1alpha1.ComputeRegionDiskResourcePolicyAttachment{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeRegionDiskResourcePolicyAttachments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computeregiondiskresourcepolicyattachmentsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.ComputeRegionDiskResourcePolicyAttachmentList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeRegionDiskResourcePolicyAttachment.
+func (c *FakeComputeRegionDiskResourcePolicyAttachments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeRegionDiskResourcePolicyAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computeregiondiskresourcepolicyattachmentsResource, c.ns, name, pt, data, subresources...), &v1alpha1.ComputeRegionDiskResourcePolicyAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeRegionDiskResourcePolicyAttachment), err
 }

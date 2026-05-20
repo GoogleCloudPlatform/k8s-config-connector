@@ -32,31 +32,31 @@ type FakeNetworkservicesV1beta1 struct {
 }
 
 func (c *FakeNetworkservicesV1beta1) NetworkServicesEndpointPolicies(namespace string) v1beta1.NetworkServicesEndpointPolicyInterface {
-	return newFakeNetworkServicesEndpointPolicies(c, namespace)
+	return &FakeNetworkServicesEndpointPolicies{c, namespace}
 }
 
 func (c *FakeNetworkservicesV1beta1) NetworkServicesGRPCRoutes(namespace string) v1beta1.NetworkServicesGRPCRouteInterface {
-	return newFakeNetworkServicesGRPCRoutes(c, namespace)
+	return &FakeNetworkServicesGRPCRoutes{c, namespace}
 }
 
 func (c *FakeNetworkservicesV1beta1) NetworkServicesGateways(namespace string) v1beta1.NetworkServicesGatewayInterface {
-	return newFakeNetworkServicesGateways(c, namespace)
+	return &FakeNetworkServicesGateways{c, namespace}
 }
 
 func (c *FakeNetworkservicesV1beta1) NetworkServicesHTTPRoutes(namespace string) v1beta1.NetworkServicesHTTPRouteInterface {
-	return newFakeNetworkServicesHTTPRoutes(c, namespace)
+	return &FakeNetworkServicesHTTPRoutes{c, namespace}
 }
 
 func (c *FakeNetworkservicesV1beta1) NetworkServicesMeshes(namespace string) v1beta1.NetworkServicesMeshInterface {
-	return newFakeNetworkServicesMeshes(c, namespace)
+	return &FakeNetworkServicesMeshes{c, namespace}
 }
 
 func (c *FakeNetworkservicesV1beta1) NetworkServicesTCPRoutes(namespace string) v1beta1.NetworkServicesTCPRouteInterface {
-	return newFakeNetworkServicesTCPRoutes(c, namespace)
+	return &FakeNetworkServicesTCPRoutes{c, namespace}
 }
 
 func (c *FakeNetworkservicesV1beta1) NetworkServicesTLSRoutes(namespace string) v1beta1.NetworkServicesTLSRouteInterface {
-	return newFakeNetworkServicesTLSRoutes(c, namespace)
+	return &FakeNetworkServicesTLSRoutes{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

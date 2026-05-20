@@ -32,7 +32,7 @@ type FakeFirebasedatabaseV1alpha1 struct {
 }
 
 func (c *FakeFirebasedatabaseV1alpha1) FirebaseDatabaseInstances(namespace string) v1alpha1.FirebaseDatabaseInstanceInterface {
-	return newFakeFirebaseDatabaseInstances(c, namespace)
+	return &FakeFirebaseDatabaseInstances{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

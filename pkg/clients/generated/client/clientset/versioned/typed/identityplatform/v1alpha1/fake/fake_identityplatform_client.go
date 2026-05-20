@@ -32,23 +32,23 @@ type FakeIdentityplatformV1alpha1 struct {
 }
 
 func (c *FakeIdentityplatformV1alpha1) IdentityPlatformDefaultSupportedIDPConfigs(namespace string) v1alpha1.IdentityPlatformDefaultSupportedIDPConfigInterface {
-	return newFakeIdentityPlatformDefaultSupportedIDPConfigs(c, namespace)
+	return &FakeIdentityPlatformDefaultSupportedIDPConfigs{c, namespace}
 }
 
 func (c *FakeIdentityplatformV1alpha1) IdentityPlatformInboundSAMLConfigs(namespace string) v1alpha1.IdentityPlatformInboundSAMLConfigInterface {
-	return newFakeIdentityPlatformInboundSAMLConfigs(c, namespace)
+	return &FakeIdentityPlatformInboundSAMLConfigs{c, namespace}
 }
 
 func (c *FakeIdentityplatformV1alpha1) IdentityPlatformProjectDefaultConfigs(namespace string) v1alpha1.IdentityPlatformProjectDefaultConfigInterface {
-	return newFakeIdentityPlatformProjectDefaultConfigs(c, namespace)
+	return &FakeIdentityPlatformProjectDefaultConfigs{c, namespace}
 }
 
 func (c *FakeIdentityplatformV1alpha1) IdentityPlatformTenantDefaultSupportedIDPConfigs(namespace string) v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigInterface {
-	return newFakeIdentityPlatformTenantDefaultSupportedIDPConfigs(c, namespace)
+	return &FakeIdentityPlatformTenantDefaultSupportedIDPConfigs{c, namespace}
 }
 
 func (c *FakeIdentityplatformV1alpha1) IdentityPlatformTenantInboundSAMLConfigs(namespace string) v1alpha1.IdentityPlatformTenantInboundSAMLConfigInterface {
-	return newFakeIdentityPlatformTenantInboundSAMLConfigs(c, namespace)
+	return &FakeIdentityPlatformTenantInboundSAMLConfigs{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

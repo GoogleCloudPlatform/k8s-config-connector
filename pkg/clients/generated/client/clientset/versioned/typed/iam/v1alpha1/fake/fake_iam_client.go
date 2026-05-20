@@ -32,7 +32,7 @@ type FakeIamV1alpha1 struct {
 }
 
 func (c *FakeIamV1alpha1) IAMDenyPolicies(namespace string) v1alpha1.IAMDenyPolicyInterface {
-	return newFakeIAMDenyPolicies(c, namespace)
+	return &FakeIAMDenyPolicies{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

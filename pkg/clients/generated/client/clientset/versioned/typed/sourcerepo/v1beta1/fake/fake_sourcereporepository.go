@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sourcerepo/v1beta1"
-	sourcerepov1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sourcerepo/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeSourceRepoRepositories implements SourceRepoRepositoryInterface
-type fakeSourceRepoRepositories struct {
-	*gentype.FakeClientWithList[*v1beta1.SourceRepoRepository, *v1beta1.SourceRepoRepositoryList]
+// FakeSourceRepoRepositories implements SourceRepoRepositoryInterface
+type FakeSourceRepoRepositories struct {
 	Fake *FakeSourcerepoV1beta1
+	ns   string
 }
 
-func newFakeSourceRepoRepositories(fake *FakeSourcerepoV1beta1, namespace string) sourcerepov1beta1.SourceRepoRepositoryInterface {
-	return &fakeSourceRepoRepositories{
-		gentype.NewFakeClientWithList[*v1beta1.SourceRepoRepository, *v1beta1.SourceRepoRepositoryList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("sourcereporepositories"),
-			v1beta1.SchemeGroupVersion.WithKind("SourceRepoRepository"),
-			func() *v1beta1.SourceRepoRepository { return &v1beta1.SourceRepoRepository{} },
-			func() *v1beta1.SourceRepoRepositoryList { return &v1beta1.SourceRepoRepositoryList{} },
-			func(dst, src *v1beta1.SourceRepoRepositoryList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.SourceRepoRepositoryList) []*v1beta1.SourceRepoRepository {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.SourceRepoRepositoryList, items []*v1beta1.SourceRepoRepository) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var sourcereporepositoriesResource = v1beta1.SchemeGroupVersion.WithResource("sourcereporepositories")
+
+var sourcereporepositoriesKind = v1beta1.SchemeGroupVersion.WithKind("SourceRepoRepository")
+
+// Get takes name of the sourceRepoRepository, and returns the corresponding sourceRepoRepository object, and an error if there is any.
+func (c *FakeSourceRepoRepositories) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SourceRepoRepository, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(sourcereporepositoriesResource, c.ns, name), &v1beta1.SourceRepoRepository{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.SourceRepoRepository), err
+}
+
+// List takes label and field selectors, and returns the list of SourceRepoRepositories that match those selectors.
+func (c *FakeSourceRepoRepositories) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SourceRepoRepositoryList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(sourcereporepositoriesResource, sourcereporepositoriesKind, c.ns, opts), &v1beta1.SourceRepoRepositoryList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.SourceRepoRepositoryList{ListMeta: obj.(*v1beta1.SourceRepoRepositoryList).ListMeta}
+	for _, item := range obj.(*v1beta1.SourceRepoRepositoryList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested sourceRepoRepositories.
+func (c *FakeSourceRepoRepositories) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(sourcereporepositoriesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a sourceRepoRepository and creates it.  Returns the server's representation of the sourceRepoRepository, and an error, if there is any.
+func (c *FakeSourceRepoRepositories) Create(ctx context.Context, sourceRepoRepository *v1beta1.SourceRepoRepository, opts v1.CreateOptions) (result *v1beta1.SourceRepoRepository, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(sourcereporepositoriesResource, c.ns, sourceRepoRepository), &v1beta1.SourceRepoRepository{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SourceRepoRepository), err
+}
+
+// Update takes the representation of a sourceRepoRepository and updates it. Returns the server's representation of the sourceRepoRepository, and an error, if there is any.
+func (c *FakeSourceRepoRepositories) Update(ctx context.Context, sourceRepoRepository *v1beta1.SourceRepoRepository, opts v1.UpdateOptions) (result *v1beta1.SourceRepoRepository, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(sourcereporepositoriesResource, c.ns, sourceRepoRepository), &v1beta1.SourceRepoRepository{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SourceRepoRepository), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeSourceRepoRepositories) UpdateStatus(ctx context.Context, sourceRepoRepository *v1beta1.SourceRepoRepository, opts v1.UpdateOptions) (*v1beta1.SourceRepoRepository, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(sourcereporepositoriesResource, "status", c.ns, sourceRepoRepository), &v1beta1.SourceRepoRepository{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SourceRepoRepository), err
+}
+
+// Delete takes name of the sourceRepoRepository and deletes it. Returns an error if one occurs.
+func (c *FakeSourceRepoRepositories) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(sourcereporepositoriesResource, c.ns, name, opts), &v1beta1.SourceRepoRepository{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeSourceRepoRepositories) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(sourcereporepositoriesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.SourceRepoRepositoryList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched sourceRepoRepository.
+func (c *FakeSourceRepoRepositories) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SourceRepoRepository, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(sourcereporepositoriesResource, c.ns, name, pt, data, subresources...), &v1beta1.SourceRepoRepository{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SourceRepoRepository), err
 }
