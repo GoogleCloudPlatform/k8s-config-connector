@@ -78,28 +78,28 @@ func getIdentityFromBigQueryAnalyticsHubListingSpec(ctx context.Context, reader 
 
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		return nil, err
 	}
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location")
+		return nil, err
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
+		return nil, err
 	}
 
 	dataExchangeRef := listing.Spec.DataExchangeRef.DeepCopy()
-	if err := dataExchangeRef.Normalize(ctx, reader, listing.Namespace); err != nil {
+	if err := dataExchangeRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, fmt.Errorf("cannot resolve dataExchangeRef: %w", err)
 	}
-	dataExchangeExternal := dataExchangeRef.External
-	dataExchangeID := &BigQueryAnalyticsHubDataExchangeIdentity{}
-	if err := dataExchangeID.FromExternal(dataExchangeExternal); err != nil {
+	dataExchangeIDRaw, err := dataExchangeRef.ParseExternalToIdentity()
+	if err != nil {
 		return nil, fmt.Errorf("cannot parse dataExchangeRef: %w", err)
 	}
+	dataExchangeID := dataExchangeIDRaw.(*BigQueryAnalyticsHubDataExchangeIdentity)
 
 	if dataExchangeID.Project != projectID {
 		return nil, fmt.Errorf("dataExchangeRef.project must match spec.projectRef")
