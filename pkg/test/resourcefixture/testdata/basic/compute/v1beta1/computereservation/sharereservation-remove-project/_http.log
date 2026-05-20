@@ -14,13 +14,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 403,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The caller does not have permission",
-        "reason": "forbidden"
-      }
-    ],
     "message": "The caller does not have permission",
     "status": "PERMISSION_DENIED"
   }
@@ -257,17 +250,10 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "${projectId}",
   "etag": "abcdef0123A=",
-  "labels": {
-    "generative-language": "enabled",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/${projectNumber}",
-  "parent": "folders/185572751725",
   "projectId": "${projectId}",
-  "state": 1,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "state": 1
 }
 
 ---
@@ -298,8 +284,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}",
   "parent": "organizations/${organizationID}",
   "projectId": "project-${uniqueId}",
-  "state": 1,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "state": 1
 }
 
 ---
