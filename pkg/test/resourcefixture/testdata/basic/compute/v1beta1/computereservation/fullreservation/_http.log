@@ -37,6 +37,9 @@ X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
 {
   "description": "Full compute reservation",
   "name": "${reservationID}",
+  "shareSettings": {
+    "shareType": "LOCAL"
+  },
   "specificReservation": {
     "count": "2",
     "instanceProperties": {

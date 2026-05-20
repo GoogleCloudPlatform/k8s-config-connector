@@ -23,6 +23,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
@@ -235,25 +236,93 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("successfully resized compute Reservation", "name", a.id)
 	}
 
+	shareSettingsChanged := false
 	for path := range paths {
 		if strings.HasPrefix(path, "share_settings") {
+			shareSettingsChanged = true
+			break
+		}
+	}
+
+	if shareSettingsChanged {
+		actualShareSettings := a.actual.GetShareSettings()
+		desiredShareSettings := resource.GetShareSettings()
+
+		if actualShareSettings.GetShareType() != desiredShareSettings.GetShareType() {
+			return fmt.Errorf("field %q is immutable", "share_settings.share_type")
+		}
+
+		actualProjectMap := actualShareSettings.GetProjectMap()
+		desiredProjectMap := desiredShareSettings.GetProjectMap()
+
+		var addProjectPaths []string
+		addedProjectMap := make(map[string]*computepb.ShareSettingsProjectConfig)
+		for k, v := range desiredProjectMap {
+			actualVal, ok := actualProjectMap[k]
+			if !ok || actualVal.GetProjectId() != v.GetProjectId() {
+				addProjectPaths = append(addProjectPaths, fmt.Sprintf("shareSettings.projectMap.%s", k))
+				addedProjectMap[k] = v
+			}
+		}
+
+		var removeProjectPaths []string
+		for k := range actualProjectMap {
+			if _, ok := desiredProjectMap[k]; !ok {
+				removeProjectPaths = append(removeProjectPaths, fmt.Sprintf("shareSettings.projectMap.%s", k))
+			}
+		}
+
+		// Perform additions first.
+		// Cannot remove the single remaining shared project first for change. The API requires at least one shared project at all times.
+		if len(addProjectPaths) > 0 {
+			sort.Strings(addProjectPaths)
 			req := &computepb.UpdateReservationRequest{
-				Project:             a.id.Project,
-				Zone:                a.id.Zone,
-				Reservation:         a.id.Reservation,
-				Paths:               direct.LazyPtr("share_settings"),
-				ReservationResource: resource,
+				Project:     a.id.Project,
+				Zone:        a.id.Zone,
+				Reservation: a.id.Reservation,
+				Paths:       direct.LazyPtr(strings.Join(addProjectPaths, ",")),
+				ReservationResource: &computepb.Reservation{
+					Name: direct.LazyPtr(a.id.Reservation),
+					ShareSettings: &computepb.ShareSettings{
+						ShareType:  actualShareSettings.ShareType,
+						ProjectMap: addedProjectMap,
+					},
+				},
 			}
 
 			op, err := a.gcpClient.Update(ctx, req)
 			if err != nil {
-				return fmt.Errorf("updating shareSettings for compute Reservation %s: %w", a.id.String(), err)
+				return fmt.Errorf("adding projects to shareSettings for compute Reservation %s: %w", a.id.String(), err)
 			}
 			err = op.Wait(ctx)
 			if err != nil {
-				return fmt.Errorf("waiting for update shareSettings of compute Reservation %s: %w", a.id.String(), err)
+				return fmt.Errorf("waiting for add projects to shareSettings of compute Reservation %s: %w", a.id.String(), err)
 			}
-			log.V(2).Info("successfully updated shareSettings of compute Reservation", "name", a.id)
+			log.V(2).Info("successfully added projects to shareSettings of compute Reservation", "name", a.id)
+		}
+
+		// Perform removals next.
+		if len(removeProjectPaths) > 0 {
+			sort.Strings(removeProjectPaths)
+			req := &computepb.UpdateReservationRequest{
+				Project:     a.id.Project,
+				Zone:        a.id.Zone,
+				Reservation: a.id.Reservation,
+				Paths:       direct.LazyPtr(strings.Join(removeProjectPaths, ",")),
+				ReservationResource: &computepb.Reservation{
+					Name: direct.LazyPtr(a.id.Reservation),
+				},
+			}
+
+			op, err := a.gcpClient.Update(ctx, req)
+			if err != nil {
+				return fmt.Errorf("removing projects from shareSettings for compute Reservation %s: %w", a.id.String(), err)
+			}
+			err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting for remove projects from shareSettings of compute Reservation %s: %w", a.id.String(), err)
+			}
+			log.V(2).Info("successfully removed projects from shareSettings of compute Reservation", "name", a.id)
 		}
 	}
 
@@ -357,9 +426,9 @@ func (a *ReservationAdapter) assignGCPDefaults(desired *computepb.Reservation, a
 	if desired.ReservationSharingPolicy == nil {
 		desired.ReservationSharingPolicy = actual.ReservationSharingPolicy
 	}
-	desiredShareSettings := desired.GetShareSettings()
-	if desiredShareSettings != nil && desiredShareSettings.GetShareType() == "LOCAL" {
-		desiredShareSettings = nil
+	if (desired.ShareSettings == nil || desired.GetShareSettings().GetShareType() == "" || desired.GetShareSettings().GetShareType() == "LOCAL") &&
+		actual.GetShareSettings().GetShareType() == "LOCAL" {
+		desired.ShareSettings = actual.ShareSettings
 	}
 	if desired.SpecificReservation != nil && desired.SpecificReservation.AssuredCount == nil {
 		desired.SpecificReservation.AssuredCount = actual.SpecificReservation.AssuredCount

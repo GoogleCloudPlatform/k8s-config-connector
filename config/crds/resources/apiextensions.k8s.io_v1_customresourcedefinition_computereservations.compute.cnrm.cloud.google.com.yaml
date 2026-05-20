@@ -72,8 +72,8 @@ spec:
                   is used as the default.
                 type: string
               shareSettings:
-                description: Immutable. The share setting for reservations and sole
-                  tenancy node groups.
+                description: The share setting for reservations and sole tenancy node
+                  groups.
                 properties:
                   projectMap:
                     description: A map of key(i.e. project or other shared resources)
@@ -155,8 +155,8 @@ spec:
                       type: object
                     type: array
                   shareType:
-                    description: Type of sharing for this shared-reservation Check
-                      the ShareType enum for the list of possible values.
+                    description: Immutable. Type of sharing for this shared-reservation
+                      Check the ShareType enum for the list of possible values.
                     type: string
                 type: object
               specificReservation:
