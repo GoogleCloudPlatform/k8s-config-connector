@@ -12,21 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package refs
+package v1beta1
 
 import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 var (
 	_ identity.IdentityV2 = &MemorystoreInstanceIdentity{}
+	_ identity.Resource   = &MemorystoreInstance{}
 )
 
 var MemorystoreInstanceIdentityFormat = gcpurls.Template[MemorystoreInstanceIdentity]("memorystore.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
@@ -59,21 +60,18 @@ func (i *MemorystoreInstanceIdentity) Host() string {
 	return MemorystoreInstanceIdentityFormat.Host()
 }
 
-// MemorystoreInstance_IdentityFromSpec gets the identity of a MemorystoreInstance from its spec.
-// We could have a registry mapping GVK to the type, once all the types implemented identity.Resource,
-// then we could move this helper into the resource type.
-func MemorystoreInstance_IdentityFromSpec(ctx context.Context, reader client.Reader, obj client.Object) (*MemorystoreInstanceIdentity, error) {
-	resourceID, err := refsv1beta1.GetResourceID(obj)
+func getIdentityFromMemorystoreInstanceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*MemorystoreInstanceIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	location, err := refsv1beta1.GetLocation(obj)
+	location, err := refs.GetLocation(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
@@ -84,4 +82,27 @@ func MemorystoreInstance_IdentityFromSpec(ctx context.Context, reader client.Rea
 		Instance: resourceID,
 	}
 	return identity, nil
+}
+
+func (obj *MemorystoreInstance) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromMemorystoreInstanceSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusIdentity := &MemorystoreInstanceIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change MemorystoreInstance identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }

@@ -23,7 +23,6 @@ import (
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
-	api_refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -444,7 +443,7 @@ func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.InstanceRole = direct.Enum_FromProto(mapCtx, in.GetInstanceRole())
 	if in.GetPrimaryInstance() != nil {
 		out.PrimaryInstance = &krmv1beta1.CrossInstanceReplicationConfig_RemoteInstance{}
-		out.PrimaryInstance.InstanceRef = &api_refs.MemorystoreInstanceRef{
+		out.PrimaryInstance.InstanceRef = &refs.MemorystoreInstanceRef{
 			External: in.GetPrimaryInstance().GetInstance(),
 		}
 	}

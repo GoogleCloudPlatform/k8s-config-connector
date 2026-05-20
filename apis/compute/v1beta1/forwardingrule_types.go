@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -118,7 +117,7 @@ type Target struct {
 type MemorystoreInstanceServiceAttachment struct {
 	// A reference to a MemorystoreInstance resource.
 	// +required
-	MemorystoreInstanceRef *refs.MemorystoreInstanceRef `json:"memorystoreInstanceRef,omitempty"`
+	MemorystoreInstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"memorystoreInstanceRef,omitempty"`
 
 	// The connection type of the serviceAttachment.
 	// A memorystore instance has multiple serviceAttachments, each with a different connection type.
