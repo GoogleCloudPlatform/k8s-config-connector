@@ -32,11 +32,11 @@ type FakeDnsV1alpha1 struct {
 }
 
 func (c *FakeDnsV1alpha1) DNSResponsePolicies(namespace string) v1alpha1.DNSResponsePolicyInterface {
-	return newFakeDNSResponsePolicies(c, namespace)
+	return &FakeDNSResponsePolicies{c, namespace}
 }
 
 func (c *FakeDnsV1alpha1) DNSResponsePolicyRules(namespace string) v1alpha1.DNSResponsePolicyRuleInterface {
-	return newFakeDNSResponsePolicyRules(c, namespace)
+	return &FakeDNSResponsePolicyRules{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

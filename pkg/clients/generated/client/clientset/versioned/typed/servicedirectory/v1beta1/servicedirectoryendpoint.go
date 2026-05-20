@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicedirectory/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicedirectory/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ServiceDirectoryEndpointsGetter has a method to return a ServiceDirectoryEndpointInterface.
@@ -40,38 +41,158 @@ type ServiceDirectoryEndpointsGetter interface {
 
 // ServiceDirectoryEndpointInterface has methods to work with ServiceDirectoryEndpoint resources.
 type ServiceDirectoryEndpointInterface interface {
-	Create(ctx context.Context, serviceDirectoryEndpoint *servicedirectoryv1beta1.ServiceDirectoryEndpoint, opts v1.CreateOptions) (*servicedirectoryv1beta1.ServiceDirectoryEndpoint, error)
-	Update(ctx context.Context, serviceDirectoryEndpoint *servicedirectoryv1beta1.ServiceDirectoryEndpoint, opts v1.UpdateOptions) (*servicedirectoryv1beta1.ServiceDirectoryEndpoint, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, serviceDirectoryEndpoint *servicedirectoryv1beta1.ServiceDirectoryEndpoint, opts v1.UpdateOptions) (*servicedirectoryv1beta1.ServiceDirectoryEndpoint, error)
+	Create(ctx context.Context, serviceDirectoryEndpoint *v1beta1.ServiceDirectoryEndpoint, opts v1.CreateOptions) (*v1beta1.ServiceDirectoryEndpoint, error)
+	Update(ctx context.Context, serviceDirectoryEndpoint *v1beta1.ServiceDirectoryEndpoint, opts v1.UpdateOptions) (*v1beta1.ServiceDirectoryEndpoint, error)
+	UpdateStatus(ctx context.Context, serviceDirectoryEndpoint *v1beta1.ServiceDirectoryEndpoint, opts v1.UpdateOptions) (*v1beta1.ServiceDirectoryEndpoint, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*servicedirectoryv1beta1.ServiceDirectoryEndpoint, error)
-	List(ctx context.Context, opts v1.ListOptions) (*servicedirectoryv1beta1.ServiceDirectoryEndpointList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ServiceDirectoryEndpoint, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ServiceDirectoryEndpointList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *servicedirectoryv1beta1.ServiceDirectoryEndpoint, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ServiceDirectoryEndpoint, err error)
 	ServiceDirectoryEndpointExpansion
 }
 
 // serviceDirectoryEndpoints implements ServiceDirectoryEndpointInterface
 type serviceDirectoryEndpoints struct {
-	*gentype.ClientWithList[*servicedirectoryv1beta1.ServiceDirectoryEndpoint, *servicedirectoryv1beta1.ServiceDirectoryEndpointList]
+	client rest.Interface
+	ns     string
 }
 
 // newServiceDirectoryEndpoints returns a ServiceDirectoryEndpoints
 func newServiceDirectoryEndpoints(c *ServicedirectoryV1beta1Client, namespace string) *serviceDirectoryEndpoints {
 	return &serviceDirectoryEndpoints{
-		gentype.NewClientWithList[*servicedirectoryv1beta1.ServiceDirectoryEndpoint, *servicedirectoryv1beta1.ServiceDirectoryEndpointList](
-			"servicedirectoryendpoints",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *servicedirectoryv1beta1.ServiceDirectoryEndpoint {
-				return &servicedirectoryv1beta1.ServiceDirectoryEndpoint{}
-			},
-			func() *servicedirectoryv1beta1.ServiceDirectoryEndpointList {
-				return &servicedirectoryv1beta1.ServiceDirectoryEndpointList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the serviceDirectoryEndpoint, and returns the corresponding serviceDirectoryEndpoint object, and an error if there is any.
+func (c *serviceDirectoryEndpoints) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ServiceDirectoryEndpoint, err error) {
+	result = &v1beta1.ServiceDirectoryEndpoint{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("servicedirectoryendpoints").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ServiceDirectoryEndpoints that match those selectors.
+func (c *serviceDirectoryEndpoints) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ServiceDirectoryEndpointList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ServiceDirectoryEndpointList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("servicedirectoryendpoints").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested serviceDirectoryEndpoints.
+func (c *serviceDirectoryEndpoints) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("servicedirectoryendpoints").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a serviceDirectoryEndpoint and creates it.  Returns the server's representation of the serviceDirectoryEndpoint, and an error, if there is any.
+func (c *serviceDirectoryEndpoints) Create(ctx context.Context, serviceDirectoryEndpoint *v1beta1.ServiceDirectoryEndpoint, opts v1.CreateOptions) (result *v1beta1.ServiceDirectoryEndpoint, err error) {
+	result = &v1beta1.ServiceDirectoryEndpoint{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("servicedirectoryendpoints").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(serviceDirectoryEndpoint).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a serviceDirectoryEndpoint and updates it. Returns the server's representation of the serviceDirectoryEndpoint, and an error, if there is any.
+func (c *serviceDirectoryEndpoints) Update(ctx context.Context, serviceDirectoryEndpoint *v1beta1.ServiceDirectoryEndpoint, opts v1.UpdateOptions) (result *v1beta1.ServiceDirectoryEndpoint, err error) {
+	result = &v1beta1.ServiceDirectoryEndpoint{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("servicedirectoryendpoints").
+		Name(serviceDirectoryEndpoint.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(serviceDirectoryEndpoint).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *serviceDirectoryEndpoints) UpdateStatus(ctx context.Context, serviceDirectoryEndpoint *v1beta1.ServiceDirectoryEndpoint, opts v1.UpdateOptions) (result *v1beta1.ServiceDirectoryEndpoint, err error) {
+	result = &v1beta1.ServiceDirectoryEndpoint{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("servicedirectoryendpoints").
+		Name(serviceDirectoryEndpoint.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(serviceDirectoryEndpoint).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the serviceDirectoryEndpoint and deletes it. Returns an error if one occurs.
+func (c *serviceDirectoryEndpoints) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("servicedirectoryendpoints").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *serviceDirectoryEndpoints) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("servicedirectoryendpoints").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched serviceDirectoryEndpoint.
+func (c *serviceDirectoryEndpoints) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ServiceDirectoryEndpoint, err error) {
+	result = &v1beta1.ServiceDirectoryEndpoint{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("servicedirectoryendpoints").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

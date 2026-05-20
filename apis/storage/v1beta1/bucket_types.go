@@ -227,7 +227,7 @@ type StorageBucketStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	ObservedState *StorageBucketObservedState `json:"observedState,omitempty"`
@@ -250,7 +250,7 @@ type StorageBucketSoftDeletePolicyObservedState struct {
 	EffectiveTime *string `json:"effectiveTime,omitempty"`
 
 	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
-	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
+	RetentionDurationSeconds *int `json:"retentionDurationSeconds,omitempty"`
 }
 
 // +genclient

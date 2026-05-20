@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkmanagement/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkmanagement/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // NetworkManagementConnectivityTestsGetter has a method to return a NetworkManagementConnectivityTestInterface.
@@ -40,38 +41,158 @@ type NetworkManagementConnectivityTestsGetter interface {
 
 // NetworkManagementConnectivityTestInterface has methods to work with NetworkManagementConnectivityTest resources.
 type NetworkManagementConnectivityTestInterface interface {
-	Create(ctx context.Context, networkManagementConnectivityTest *networkmanagementv1alpha1.NetworkManagementConnectivityTest, opts v1.CreateOptions) (*networkmanagementv1alpha1.NetworkManagementConnectivityTest, error)
-	Update(ctx context.Context, networkManagementConnectivityTest *networkmanagementv1alpha1.NetworkManagementConnectivityTest, opts v1.UpdateOptions) (*networkmanagementv1alpha1.NetworkManagementConnectivityTest, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, networkManagementConnectivityTest *networkmanagementv1alpha1.NetworkManagementConnectivityTest, opts v1.UpdateOptions) (*networkmanagementv1alpha1.NetworkManagementConnectivityTest, error)
+	Create(ctx context.Context, networkManagementConnectivityTest *v1alpha1.NetworkManagementConnectivityTest, opts v1.CreateOptions) (*v1alpha1.NetworkManagementConnectivityTest, error)
+	Update(ctx context.Context, networkManagementConnectivityTest *v1alpha1.NetworkManagementConnectivityTest, opts v1.UpdateOptions) (*v1alpha1.NetworkManagementConnectivityTest, error)
+	UpdateStatus(ctx context.Context, networkManagementConnectivityTest *v1alpha1.NetworkManagementConnectivityTest, opts v1.UpdateOptions) (*v1alpha1.NetworkManagementConnectivityTest, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*networkmanagementv1alpha1.NetworkManagementConnectivityTest, error)
-	List(ctx context.Context, opts v1.ListOptions) (*networkmanagementv1alpha1.NetworkManagementConnectivityTestList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.NetworkManagementConnectivityTest, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.NetworkManagementConnectivityTestList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *networkmanagementv1alpha1.NetworkManagementConnectivityTest, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkManagementConnectivityTest, err error)
 	NetworkManagementConnectivityTestExpansion
 }
 
 // networkManagementConnectivityTests implements NetworkManagementConnectivityTestInterface
 type networkManagementConnectivityTests struct {
-	*gentype.ClientWithList[*networkmanagementv1alpha1.NetworkManagementConnectivityTest, *networkmanagementv1alpha1.NetworkManagementConnectivityTestList]
+	client rest.Interface
+	ns     string
 }
 
 // newNetworkManagementConnectivityTests returns a NetworkManagementConnectivityTests
 func newNetworkManagementConnectivityTests(c *NetworkmanagementV1alpha1Client, namespace string) *networkManagementConnectivityTests {
 	return &networkManagementConnectivityTests{
-		gentype.NewClientWithList[*networkmanagementv1alpha1.NetworkManagementConnectivityTest, *networkmanagementv1alpha1.NetworkManagementConnectivityTestList](
-			"networkmanagementconnectivitytests",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *networkmanagementv1alpha1.NetworkManagementConnectivityTest {
-				return &networkmanagementv1alpha1.NetworkManagementConnectivityTest{}
-			},
-			func() *networkmanagementv1alpha1.NetworkManagementConnectivityTestList {
-				return &networkmanagementv1alpha1.NetworkManagementConnectivityTestList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the networkManagementConnectivityTest, and returns the corresponding networkManagementConnectivityTest object, and an error if there is any.
+func (c *networkManagementConnectivityTests) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkManagementConnectivityTest, err error) {
+	result = &v1alpha1.NetworkManagementConnectivityTest{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("networkmanagementconnectivitytests").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of NetworkManagementConnectivityTests that match those selectors.
+func (c *networkManagementConnectivityTests) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetworkManagementConnectivityTestList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.NetworkManagementConnectivityTestList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("networkmanagementconnectivitytests").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested networkManagementConnectivityTests.
+func (c *networkManagementConnectivityTests) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("networkmanagementconnectivitytests").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a networkManagementConnectivityTest and creates it.  Returns the server's representation of the networkManagementConnectivityTest, and an error, if there is any.
+func (c *networkManagementConnectivityTests) Create(ctx context.Context, networkManagementConnectivityTest *v1alpha1.NetworkManagementConnectivityTest, opts v1.CreateOptions) (result *v1alpha1.NetworkManagementConnectivityTest, err error) {
+	result = &v1alpha1.NetworkManagementConnectivityTest{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("networkmanagementconnectivitytests").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkManagementConnectivityTest).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a networkManagementConnectivityTest and updates it. Returns the server's representation of the networkManagementConnectivityTest, and an error, if there is any.
+func (c *networkManagementConnectivityTests) Update(ctx context.Context, networkManagementConnectivityTest *v1alpha1.NetworkManagementConnectivityTest, opts v1.UpdateOptions) (result *v1alpha1.NetworkManagementConnectivityTest, err error) {
+	result = &v1alpha1.NetworkManagementConnectivityTest{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("networkmanagementconnectivitytests").
+		Name(networkManagementConnectivityTest.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkManagementConnectivityTest).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *networkManagementConnectivityTests) UpdateStatus(ctx context.Context, networkManagementConnectivityTest *v1alpha1.NetworkManagementConnectivityTest, opts v1.UpdateOptions) (result *v1alpha1.NetworkManagementConnectivityTest, err error) {
+	result = &v1alpha1.NetworkManagementConnectivityTest{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("networkmanagementconnectivitytests").
+		Name(networkManagementConnectivityTest.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkManagementConnectivityTest).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the networkManagementConnectivityTest and deletes it. Returns an error if one occurs.
+func (c *networkManagementConnectivityTests) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("networkmanagementconnectivitytests").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *networkManagementConnectivityTests) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("networkmanagementconnectivitytests").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched networkManagementConnectivityTest.
+func (c *networkManagementConnectivityTests) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkManagementConnectivityTest, err error) {
+	result = &v1alpha1.NetworkManagementConnectivityTest{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("networkmanagementconnectivitytests").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

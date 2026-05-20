@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflow/v1alpha1"
-	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDialogflowAgents implements DialogflowAgentInterface
-type fakeDialogflowAgents struct {
-	*gentype.FakeClientWithList[*v1alpha1.DialogflowAgent, *v1alpha1.DialogflowAgentList]
+// FakeDialogflowAgents implements DialogflowAgentInterface
+type FakeDialogflowAgents struct {
 	Fake *FakeDialogflowV1alpha1
+	ns   string
 }
 
-func newFakeDialogflowAgents(fake *FakeDialogflowV1alpha1, namespace string) dialogflowv1alpha1.DialogflowAgentInterface {
-	return &fakeDialogflowAgents{
-		gentype.NewFakeClientWithList[*v1alpha1.DialogflowAgent, *v1alpha1.DialogflowAgentList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("dialogflowagents"),
-			v1alpha1.SchemeGroupVersion.WithKind("DialogflowAgent"),
-			func() *v1alpha1.DialogflowAgent { return &v1alpha1.DialogflowAgent{} },
-			func() *v1alpha1.DialogflowAgentList { return &v1alpha1.DialogflowAgentList{} },
-			func(dst, src *v1alpha1.DialogflowAgentList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DialogflowAgentList) []*v1alpha1.DialogflowAgent {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DialogflowAgentList, items []*v1alpha1.DialogflowAgent) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var dialogflowagentsResource = v1alpha1.SchemeGroupVersion.WithResource("dialogflowagents")
+
+var dialogflowagentsKind = v1alpha1.SchemeGroupVersion.WithKind("DialogflowAgent")
+
+// Get takes name of the dialogflowAgent, and returns the corresponding dialogflowAgent object, and an error if there is any.
+func (c *FakeDialogflowAgents) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowAgent, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(dialogflowagentsResource, c.ns, name), &v1alpha1.DialogflowAgent{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DialogflowAgent), err
+}
+
+// List takes label and field selectors, and returns the list of DialogflowAgents that match those selectors.
+func (c *FakeDialogflowAgents) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DialogflowAgentList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(dialogflowagentsResource, dialogflowagentsKind, c.ns, opts), &v1alpha1.DialogflowAgentList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DialogflowAgentList{ListMeta: obj.(*v1alpha1.DialogflowAgentList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DialogflowAgentList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested dialogflowAgents.
+func (c *FakeDialogflowAgents) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(dialogflowagentsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a dialogflowAgent and creates it.  Returns the server's representation of the dialogflowAgent, and an error, if there is any.
+func (c *FakeDialogflowAgents) Create(ctx context.Context, dialogflowAgent *v1alpha1.DialogflowAgent, opts v1.CreateOptions) (result *v1alpha1.DialogflowAgent, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(dialogflowagentsResource, c.ns, dialogflowAgent), &v1alpha1.DialogflowAgent{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DialogflowAgent), err
+}
+
+// Update takes the representation of a dialogflowAgent and updates it. Returns the server's representation of the dialogflowAgent, and an error, if there is any.
+func (c *FakeDialogflowAgents) Update(ctx context.Context, dialogflowAgent *v1alpha1.DialogflowAgent, opts v1.UpdateOptions) (result *v1alpha1.DialogflowAgent, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(dialogflowagentsResource, c.ns, dialogflowAgent), &v1alpha1.DialogflowAgent{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DialogflowAgent), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDialogflowAgents) UpdateStatus(ctx context.Context, dialogflowAgent *v1alpha1.DialogflowAgent, opts v1.UpdateOptions) (*v1alpha1.DialogflowAgent, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(dialogflowagentsResource, "status", c.ns, dialogflowAgent), &v1alpha1.DialogflowAgent{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DialogflowAgent), err
+}
+
+// Delete takes name of the dialogflowAgent and deletes it. Returns an error if one occurs.
+func (c *FakeDialogflowAgents) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(dialogflowagentsResource, c.ns, name, opts), &v1alpha1.DialogflowAgent{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDialogflowAgents) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(dialogflowagentsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DialogflowAgentList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched dialogflowAgent.
+func (c *FakeDialogflowAgents) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowAgent, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(dialogflowagentsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DialogflowAgent{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DialogflowAgent), err
 }

@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ApigeeEnvgroupAttachmentsGetter has a method to return a ApigeeEnvgroupAttachmentInterface.
@@ -40,36 +41,158 @@ type ApigeeEnvgroupAttachmentsGetter interface {
 
 // ApigeeEnvgroupAttachmentInterface has methods to work with ApigeeEnvgroupAttachment resources.
 type ApigeeEnvgroupAttachmentInterface interface {
-	Create(ctx context.Context, apigeeEnvgroupAttachment *apigeev1beta1.ApigeeEnvgroupAttachment, opts v1.CreateOptions) (*apigeev1beta1.ApigeeEnvgroupAttachment, error)
-	Update(ctx context.Context, apigeeEnvgroupAttachment *apigeev1beta1.ApigeeEnvgroupAttachment, opts v1.UpdateOptions) (*apigeev1beta1.ApigeeEnvgroupAttachment, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, apigeeEnvgroupAttachment *apigeev1beta1.ApigeeEnvgroupAttachment, opts v1.UpdateOptions) (*apigeev1beta1.ApigeeEnvgroupAttachment, error)
+	Create(ctx context.Context, apigeeEnvgroupAttachment *v1beta1.ApigeeEnvgroupAttachment, opts v1.CreateOptions) (*v1beta1.ApigeeEnvgroupAttachment, error)
+	Update(ctx context.Context, apigeeEnvgroupAttachment *v1beta1.ApigeeEnvgroupAttachment, opts v1.UpdateOptions) (*v1beta1.ApigeeEnvgroupAttachment, error)
+	UpdateStatus(ctx context.Context, apigeeEnvgroupAttachment *v1beta1.ApigeeEnvgroupAttachment, opts v1.UpdateOptions) (*v1beta1.ApigeeEnvgroupAttachment, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*apigeev1beta1.ApigeeEnvgroupAttachment, error)
-	List(ctx context.Context, opts v1.ListOptions) (*apigeev1beta1.ApigeeEnvgroupAttachmentList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ApigeeEnvgroupAttachment, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ApigeeEnvgroupAttachmentList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apigeev1beta1.ApigeeEnvgroupAttachment, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ApigeeEnvgroupAttachment, err error)
 	ApigeeEnvgroupAttachmentExpansion
 }
 
 // apigeeEnvgroupAttachments implements ApigeeEnvgroupAttachmentInterface
 type apigeeEnvgroupAttachments struct {
-	*gentype.ClientWithList[*apigeev1beta1.ApigeeEnvgroupAttachment, *apigeev1beta1.ApigeeEnvgroupAttachmentList]
+	client rest.Interface
+	ns     string
 }
 
 // newApigeeEnvgroupAttachments returns a ApigeeEnvgroupAttachments
 func newApigeeEnvgroupAttachments(c *ApigeeV1beta1Client, namespace string) *apigeeEnvgroupAttachments {
 	return &apigeeEnvgroupAttachments{
-		gentype.NewClientWithList[*apigeev1beta1.ApigeeEnvgroupAttachment, *apigeev1beta1.ApigeeEnvgroupAttachmentList](
-			"apigeeenvgroupattachments",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *apigeev1beta1.ApigeeEnvgroupAttachment { return &apigeev1beta1.ApigeeEnvgroupAttachment{} },
-			func() *apigeev1beta1.ApigeeEnvgroupAttachmentList {
-				return &apigeev1beta1.ApigeeEnvgroupAttachmentList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the apigeeEnvgroupAttachment, and returns the corresponding apigeeEnvgroupAttachment object, and an error if there is any.
+func (c *apigeeEnvgroupAttachments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ApigeeEnvgroupAttachment, err error) {
+	result = &v1beta1.ApigeeEnvgroupAttachment{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("apigeeenvgroupattachments").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ApigeeEnvgroupAttachments that match those selectors.
+func (c *apigeeEnvgroupAttachments) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ApigeeEnvgroupAttachmentList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ApigeeEnvgroupAttachmentList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("apigeeenvgroupattachments").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested apigeeEnvgroupAttachments.
+func (c *apigeeEnvgroupAttachments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("apigeeenvgroupattachments").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a apigeeEnvgroupAttachment and creates it.  Returns the server's representation of the apigeeEnvgroupAttachment, and an error, if there is any.
+func (c *apigeeEnvgroupAttachments) Create(ctx context.Context, apigeeEnvgroupAttachment *v1beta1.ApigeeEnvgroupAttachment, opts v1.CreateOptions) (result *v1beta1.ApigeeEnvgroupAttachment, err error) {
+	result = &v1beta1.ApigeeEnvgroupAttachment{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("apigeeenvgroupattachments").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(apigeeEnvgroupAttachment).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a apigeeEnvgroupAttachment and updates it. Returns the server's representation of the apigeeEnvgroupAttachment, and an error, if there is any.
+func (c *apigeeEnvgroupAttachments) Update(ctx context.Context, apigeeEnvgroupAttachment *v1beta1.ApigeeEnvgroupAttachment, opts v1.UpdateOptions) (result *v1beta1.ApigeeEnvgroupAttachment, err error) {
+	result = &v1beta1.ApigeeEnvgroupAttachment{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("apigeeenvgroupattachments").
+		Name(apigeeEnvgroupAttachment.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(apigeeEnvgroupAttachment).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *apigeeEnvgroupAttachments) UpdateStatus(ctx context.Context, apigeeEnvgroupAttachment *v1beta1.ApigeeEnvgroupAttachment, opts v1.UpdateOptions) (result *v1beta1.ApigeeEnvgroupAttachment, err error) {
+	result = &v1beta1.ApigeeEnvgroupAttachment{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("apigeeenvgroupattachments").
+		Name(apigeeEnvgroupAttachment.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(apigeeEnvgroupAttachment).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the apigeeEnvgroupAttachment and deletes it. Returns an error if one occurs.
+func (c *apigeeEnvgroupAttachments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("apigeeenvgroupattachments").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *apigeeEnvgroupAttachments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("apigeeenvgroupattachments").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched apigeeEnvgroupAttachment.
+func (c *apigeeEnvgroupAttachments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ApigeeEnvgroupAttachment, err error) {
+	result = &v1beta1.ApigeeEnvgroupAttachment{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("apigeeenvgroupattachments").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

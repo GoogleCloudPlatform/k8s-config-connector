@@ -32,23 +32,23 @@ type FakeAppengineV1alpha1 struct {
 }
 
 func (c *FakeAppengineV1alpha1) AppEngineDomainMappings(namespace string) v1alpha1.AppEngineDomainMappingInterface {
-	return newFakeAppEngineDomainMappings(c, namespace)
+	return &FakeAppEngineDomainMappings{c, namespace}
 }
 
 func (c *FakeAppengineV1alpha1) AppEngineFirewallRules(namespace string) v1alpha1.AppEngineFirewallRuleInterface {
-	return newFakeAppEngineFirewallRules(c, namespace)
+	return &FakeAppEngineFirewallRules{c, namespace}
 }
 
 func (c *FakeAppengineV1alpha1) AppEngineFlexibleAppVersions(namespace string) v1alpha1.AppEngineFlexibleAppVersionInterface {
-	return newFakeAppEngineFlexibleAppVersions(c, namespace)
+	return &FakeAppEngineFlexibleAppVersions{c, namespace}
 }
 
 func (c *FakeAppengineV1alpha1) AppEngineServiceSplitTraffics(namespace string) v1alpha1.AppEngineServiceSplitTrafficInterface {
-	return newFakeAppEngineServiceSplitTraffics(c, namespace)
+	return &FakeAppEngineServiceSplitTraffics{c, namespace}
 }
 
 func (c *FakeAppengineV1alpha1) AppEngineStandardAppVersions(namespace string) v1alpha1.AppEngineStandardAppVersionInterface {
-	return newFakeAppEngineStandardAppVersions(c, namespace)
+	return &FakeAppEngineStandardAppVersions{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

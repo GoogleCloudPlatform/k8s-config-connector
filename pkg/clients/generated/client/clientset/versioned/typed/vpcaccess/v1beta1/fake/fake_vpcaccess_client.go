@@ -32,7 +32,7 @@ type FakeVpcaccessV1beta1 struct {
 }
 
 func (c *FakeVpcaccessV1beta1) VPCAccessConnectors(namespace string) v1beta1.VPCAccessConnectorInterface {
-	return newFakeVPCAccessConnectors(c, namespace)
+	return &FakeVPCAccessConnectors{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

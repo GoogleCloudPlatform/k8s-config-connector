@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeMachineImages implements ComputeMachineImageInterface
-type fakeComputeMachineImages struct {
-	*gentype.FakeClientWithList[*v1alpha1.ComputeMachineImage, *v1alpha1.ComputeMachineImageList]
+// FakeComputeMachineImages implements ComputeMachineImageInterface
+type FakeComputeMachineImages struct {
 	Fake *FakeComputeV1alpha1
+	ns   string
 }
 
-func newFakeComputeMachineImages(fake *FakeComputeV1alpha1, namespace string) computev1alpha1.ComputeMachineImageInterface {
-	return &fakeComputeMachineImages{
-		gentype.NewFakeClientWithList[*v1alpha1.ComputeMachineImage, *v1alpha1.ComputeMachineImageList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("computemachineimages"),
-			v1alpha1.SchemeGroupVersion.WithKind("ComputeMachineImage"),
-			func() *v1alpha1.ComputeMachineImage { return &v1alpha1.ComputeMachineImage{} },
-			func() *v1alpha1.ComputeMachineImageList { return &v1alpha1.ComputeMachineImageList{} },
-			func(dst, src *v1alpha1.ComputeMachineImageList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ComputeMachineImageList) []*v1alpha1.ComputeMachineImage {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.ComputeMachineImageList, items []*v1alpha1.ComputeMachineImage) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computemachineimagesResource = v1alpha1.SchemeGroupVersion.WithResource("computemachineimages")
+
+var computemachineimagesKind = v1alpha1.SchemeGroupVersion.WithKind("ComputeMachineImage")
+
+// Get takes name of the computeMachineImage, and returns the corresponding computeMachineImage object, and an error if there is any.
+func (c *FakeComputeMachineImages) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeMachineImage, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computemachineimagesResource, c.ns, name), &v1alpha1.ComputeMachineImage{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.ComputeMachineImage), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeMachineImages that match those selectors.
+func (c *FakeComputeMachineImages) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeMachineImageList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computemachineimagesResource, computemachineimagesKind, c.ns, opts), &v1alpha1.ComputeMachineImageList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.ComputeMachineImageList{ListMeta: obj.(*v1alpha1.ComputeMachineImageList).ListMeta}
+	for _, item := range obj.(*v1alpha1.ComputeMachineImageList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeMachineImages.
+func (c *FakeComputeMachineImages) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computemachineimagesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeMachineImage and creates it.  Returns the server's representation of the computeMachineImage, and an error, if there is any.
+func (c *FakeComputeMachineImages) Create(ctx context.Context, computeMachineImage *v1alpha1.ComputeMachineImage, opts v1.CreateOptions) (result *v1alpha1.ComputeMachineImage, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computemachineimagesResource, c.ns, computeMachineImage), &v1alpha1.ComputeMachineImage{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeMachineImage), err
+}
+
+// Update takes the representation of a computeMachineImage and updates it. Returns the server's representation of the computeMachineImage, and an error, if there is any.
+func (c *FakeComputeMachineImages) Update(ctx context.Context, computeMachineImage *v1alpha1.ComputeMachineImage, opts v1.UpdateOptions) (result *v1alpha1.ComputeMachineImage, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computemachineimagesResource, c.ns, computeMachineImage), &v1alpha1.ComputeMachineImage{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeMachineImage), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeMachineImages) UpdateStatus(ctx context.Context, computeMachineImage *v1alpha1.ComputeMachineImage, opts v1.UpdateOptions) (*v1alpha1.ComputeMachineImage, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computemachineimagesResource, "status", c.ns, computeMachineImage), &v1alpha1.ComputeMachineImage{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeMachineImage), err
+}
+
+// Delete takes name of the computeMachineImage and deletes it. Returns an error if one occurs.
+func (c *FakeComputeMachineImages) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computemachineimagesResource, c.ns, name, opts), &v1alpha1.ComputeMachineImage{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeMachineImages) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computemachineimagesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.ComputeMachineImageList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeMachineImage.
+func (c *FakeComputeMachineImages) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeMachineImage, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computemachineimagesResource, c.ns, name, pt, data, subresources...), &v1alpha1.ComputeMachineImage{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeMachineImage), err
 }

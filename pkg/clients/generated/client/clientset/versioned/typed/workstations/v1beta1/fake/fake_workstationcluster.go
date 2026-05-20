@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workstations/v1beta1"
-	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeWorkstationClusters implements WorkstationClusterInterface
-type fakeWorkstationClusters struct {
-	*gentype.FakeClientWithList[*v1beta1.WorkstationCluster, *v1beta1.WorkstationClusterList]
+// FakeWorkstationClusters implements WorkstationClusterInterface
+type FakeWorkstationClusters struct {
 	Fake *FakeWorkstationsV1beta1
+	ns   string
 }
 
-func newFakeWorkstationClusters(fake *FakeWorkstationsV1beta1, namespace string) workstationsv1beta1.WorkstationClusterInterface {
-	return &fakeWorkstationClusters{
-		gentype.NewFakeClientWithList[*v1beta1.WorkstationCluster, *v1beta1.WorkstationClusterList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("workstationclusters"),
-			v1beta1.SchemeGroupVersion.WithKind("WorkstationCluster"),
-			func() *v1beta1.WorkstationCluster { return &v1beta1.WorkstationCluster{} },
-			func() *v1beta1.WorkstationClusterList { return &v1beta1.WorkstationClusterList{} },
-			func(dst, src *v1beta1.WorkstationClusterList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.WorkstationClusterList) []*v1beta1.WorkstationCluster {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.WorkstationClusterList, items []*v1beta1.WorkstationCluster) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var workstationclustersResource = v1beta1.SchemeGroupVersion.WithResource("workstationclusters")
+
+var workstationclustersKind = v1beta1.SchemeGroupVersion.WithKind("WorkstationCluster")
+
+// Get takes name of the workstationCluster, and returns the corresponding workstationCluster object, and an error if there is any.
+func (c *FakeWorkstationClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.WorkstationCluster, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(workstationclustersResource, c.ns, name), &v1beta1.WorkstationCluster{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.WorkstationCluster), err
+}
+
+// List takes label and field selectors, and returns the list of WorkstationClusters that match those selectors.
+func (c *FakeWorkstationClusters) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.WorkstationClusterList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(workstationclustersResource, workstationclustersKind, c.ns, opts), &v1beta1.WorkstationClusterList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.WorkstationClusterList{ListMeta: obj.(*v1beta1.WorkstationClusterList).ListMeta}
+	for _, item := range obj.(*v1beta1.WorkstationClusterList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested workstationClusters.
+func (c *FakeWorkstationClusters) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(workstationclustersResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a workstationCluster and creates it.  Returns the server's representation of the workstationCluster, and an error, if there is any.
+func (c *FakeWorkstationClusters) Create(ctx context.Context, workstationCluster *v1beta1.WorkstationCluster, opts v1.CreateOptions) (result *v1beta1.WorkstationCluster, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(workstationclustersResource, c.ns, workstationCluster), &v1beta1.WorkstationCluster{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.WorkstationCluster), err
+}
+
+// Update takes the representation of a workstationCluster and updates it. Returns the server's representation of the workstationCluster, and an error, if there is any.
+func (c *FakeWorkstationClusters) Update(ctx context.Context, workstationCluster *v1beta1.WorkstationCluster, opts v1.UpdateOptions) (result *v1beta1.WorkstationCluster, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(workstationclustersResource, c.ns, workstationCluster), &v1beta1.WorkstationCluster{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.WorkstationCluster), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeWorkstationClusters) UpdateStatus(ctx context.Context, workstationCluster *v1beta1.WorkstationCluster, opts v1.UpdateOptions) (*v1beta1.WorkstationCluster, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(workstationclustersResource, "status", c.ns, workstationCluster), &v1beta1.WorkstationCluster{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.WorkstationCluster), err
+}
+
+// Delete takes name of the workstationCluster and deletes it. Returns an error if one occurs.
+func (c *FakeWorkstationClusters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(workstationclustersResource, c.ns, name, opts), &v1beta1.WorkstationCluster{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeWorkstationClusters) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(workstationclustersResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.WorkstationClusterList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched workstationCluster.
+func (c *FakeWorkstationClusters) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.WorkstationCluster, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(workstationclustersResource, c.ns, name, pt, data, subresources...), &v1beta1.WorkstationCluster{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.WorkstationCluster), err
 }

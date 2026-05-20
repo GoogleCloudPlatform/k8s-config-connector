@@ -29,8 +29,6 @@ type ComputeBackendServiceSignedURLKeyExpansion interface{}
 
 type ComputeDiskResourcePolicyAttachmentExpansion interface{}
 
-type ComputeFutureReservationExpansion interface{}
-
 type ComputeGlobalNetworkEndpointExpansion interface{}
 
 type ComputeGlobalNetworkEndpointGroupExpansion interface{}

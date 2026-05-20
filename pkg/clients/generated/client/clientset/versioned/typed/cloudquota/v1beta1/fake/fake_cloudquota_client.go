@@ -32,11 +32,11 @@ type FakeCloudquotaV1beta1 struct {
 }
 
 func (c *FakeCloudquotaV1beta1) APIQuotaAdjusterSettingses(namespace string) v1beta1.APIQuotaAdjusterSettingsInterface {
-	return newFakeAPIQuotaAdjusterSettingses(c, namespace)
+	return &FakeAPIQuotaAdjusterSettingses{c, namespace}
 }
 
 func (c *FakeCloudquotaV1beta1) APIQuotaPreferences(namespace string) v1beta1.APIQuotaPreferenceInterface {
-	return newFakeAPIQuotaPreferences(c, namespace)
+	return &FakeAPIQuotaPreferences{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
