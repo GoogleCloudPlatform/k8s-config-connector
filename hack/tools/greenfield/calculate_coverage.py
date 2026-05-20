@@ -175,6 +175,38 @@ def prepare_repo(repo_url, target_dir, sha):
     run_shell("git fetch origin master --depth 100", cwd=target_dir)
     run_shell(f"git checkout -f {sha}", cwd=target_dir)
 
+def canonicalize_resource_name(name):
+    """Strips hierarchical prefixes (Global, Regional, Zonal) from resource names."""
+    prefixes = ["Global", "Regional", "Zonal"]
+    for p in prefixes:
+        if name.startswith(p) and len(name) > len(p) and name[len(p)].isupper():
+            return name[len(p):]
+    return name
+
+def unify_hierarchies(resources):
+    """Groups GCP resources by their canonical name to avoid overcounting."""
+    unified = {}
+    for rtype, info in resources.items():
+        service = info['service']
+        canonical_name = canonicalize_resource_name(info['name'])
+        key = f"{service}/{canonical_name}"
+        
+        if key not in unified:
+            unified[key] = {
+                'service': service,
+                'pkg': info['pkg'],
+                'name': canonical_name,
+                'ops': set(),
+                'patterns': [],
+                'rtypes': [] # Keep track of original rtypes
+            }
+        
+        unified[key]['ops'].update(info['ops'])
+        unified[key]['patterns'].extend(info['patterns'])
+        unified[key]['rtypes'].append(rtype)
+        
+    return unified
+
 def main():
     if len(sys.argv) < 3:
         print("Usage: python calculate_coverage.py <googleapis_sha> <kcc_sha> [k]")
@@ -194,19 +226,18 @@ def main():
     if kcc_sha.upper() != "LOCAL":
         prepare_repo("https://github.com/GoogleCloudPlatform/k8s-config-connector.git", kcc_dir, kcc_sha)
 
-    gcp_resources = get_gcp_resources(googleapis_dir)
-    all_gcp_raw_count = len(gcp_resources)
-
-    # Apply Skip List
+    gcp_raw = get_gcp_resources(googleapis_dir)
+    
+    # Apply Skip List before unification
     skip_file = os.path.join(os.path.dirname(__file__), "coverage_skip.json")
     skipped_count = 0
+    gcp_filtered = {}
     if os.path.exists(skip_file):
         with open(skip_file, 'r') as f:
             skip_data = json.load(f)
             patterns = [re.compile(s['pattern']) for s in skip_data.get('skips', [])]
             
-            filtered_gcp = {}
-            for rtype, info in gcp_resources.items():
+            for rtype, info in gcp_raw.items():
                 is_skipped = False
                 for p in patterns:
                     if p.match(rtype):
@@ -214,26 +245,87 @@ def main():
                         skipped_count += 1
                         break
                 if not is_skipped:
-                    filtered_gcp[rtype] = info
-            gcp_resources = filtered_gcp
+                    gcp_filtered[rtype] = info
+    else:
+        gcp_filtered = gcp_raw
+
+    # Unify hierarchies (Global/Regional/Zonal -> Base)
+    gcp_resources = unify_hierarchies(gcp_filtered)
+    all_gcp_raw_count = len(gcp_raw)
 
     kcc_resources = get_kcc_resources(kcc_dir)
-    covered = match_resources(gcp_resources, kcc_resources)
+    # match_resources needs to work with unified keys now
+    covered = set()
+    kcc_map = {}
+    for res in kcc_resources:
+        service = res['group'].replace(".cnrm.cloud.google.com", "")
+        if service not in kcc_map: kcc_map[service] = []
+        kcc_map[service].append(res['kind'])
+
+    service_aliases = {
+        "cloudresourcemanager": ["resourcemanager"],
+        "analyticshub": ["bigqueryanalyticshub"],
+        "container": ["container", "gke"],
+        "sqladmin": ["sql"],
+        "cloudquota": ["cloudquotas"],
+    }
+
+    for key, info in gcp_resources.items():
+        gcp_service_base = info['service']
+        gcp_name = info['name']
+        matched_kcc_service = None
+        if gcp_service_base in kcc_map:
+            matched_kcc_service = gcp_service_base
+        elif gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
+            matched_kcc_service = gcp_service_base[:-1]
+        elif gcp_service_base + 's' in kcc_map:
+            matched_kcc_service = gcp_service_base + 's'
+        else:
+            for kcc_s, aliases in service_aliases.items():
+                if gcp_service_base in aliases or gcp_service_base == kcc_s:
+                    if kcc_s in kcc_map:
+                        matched_kcc_service = kcc_s
+                        break
+        
+        if not matched_kcc_service: continue
+        name_norm = gcp_name.lower()
+        for kcc_kind in kcc_map[matched_kcc_service]:
+            kind_norm = kcc_kind.lower()
+            prefixes = [matched_kcc_service.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
+            if kind_norm == name_norm:
+                covered.add(key)
+                break
+            found_prefix_match = False
+            for p in prefixes:
+                if kind_norm.startswith(p) and len(kind_norm) > len(p):
+                    if kind_norm[len(p):] == name_norm:
+                        covered.add(key)
+                        found_prefix_match = True
+                        break
+            if found_prefix_match: break
+            if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
+                covered.add(key)
+                break
     
     # Categorization
-    all_gcp = set(gcp_resources.keys())
-    missing = all_gcp - covered
+    all_gcp_keys = set(gcp_resources.keys())
+    covered = {key for key in covered if key in all_gcp_keys}
+    missing = all_gcp_keys - covered
     
+    # Calculate how many raw rtypes were unified
+    total_raw_rtypes = sum(len(info['rtypes']) for info in gcp_resources.values())
+    unification_count = total_raw_rtypes - len(gcp_resources)
+
     # Manageable = Has Create OR Delete
-    manageable_gcp = {rtype for rtype, info in gcp_resources.items() if 'CREATE' in info['ops'] or 'DELETE' in info['ops']}
+    manageable_gcp = {key for key, info in gcp_resources.items() if 'CREATE' in info['ops'] or 'DELETE' in info['ops']}
     missing_manageable = manageable_gcp - covered
 
     # Fully Manageable = Has Create AND Delete
-    fully_manageable_gcp = {rtype for rtype, info in gcp_resources.items() if 'CREATE' in info['ops'] and 'DELETE' in info['ops']}
+    fully_manageable_gcp = {key for key, info in gcp_resources.items() if 'CREATE' in info['ops'] and 'DELETE' in info['ops']}
     missing_fully_manageable = fully_manageable_gcp - covered
 
     # Easy = Fully Manageable AND Leaf pattern
-    missing_easy = {rtype for rtype in missing_fully_manageable if is_leaf(gcp_resources[rtype]['patterns'])}
+    missing_easy = {key for key in missing_fully_manageable if is_leaf(gcp_resources[key]['patterns'])}
     
     # Generate Gap Analysis Table for tracking
     gap_file = os.path.join(os.path.dirname(__file__), "gap_analysis.txt")
@@ -246,16 +338,17 @@ def main():
         "-" * 55,
         f"{'Metric':<30} | {'Value':<10}",
         "-" * 55,
-        f"{'Total GCP Resources':<30} | {all_gcp_raw_count:<10}",
+        f"{'Total GCP Resources (Raw)':<30} | {all_gcp_raw_count:<10}",
+        f"{'Unified (Hierarchical)':<30} | {unification_count:<10}",
+        f"{'Processed Resources (Unified)':<30} | {len(all_gcp_keys):<10}",
         f"{'Skipped (Policy)':<30} | {skipped_count:<10}",
-        f"{'Processed Resources':<30} | {len(all_gcp):<10}",
         f"{'Implemented in KCC':<30} | {len(covered):<10}",
         f"{'Missing from KCC':<30} | {len(missing):<10}",
         "-" * 55,
         f"{'Missing Manageable':<30} | {len(missing_manageable):<10}",
         f"{'Missing Fully Manageable':<30} | {len(missing_fully_manageable):<10}",
         "-" * 55,
-        f"{'Current Coverage':<30} | {len(covered)/max(1, len(all_gcp)):.2%}",
+        f"{'Current Coverage':<30} | {len(covered)/max(1, len(all_gcp_keys)):.2%}",
         ""
     ]
     
@@ -263,12 +356,13 @@ def main():
         f.write("\n".join(analysis_lines))
 
     print("\n--- Coverage Summary ---")
-    print(f"Total GCP Resources:      {all_gcp_raw_count}")
+    print(f"Total GCP Resources (Raw): {all_gcp_raw_count}")
+    print(f"  - Unified:              {unification_count}")
+    print(f"  - Processed (Unified):  {len(all_gcp_keys)}")
     print(f"  - Skipped (Policy):     {skipped_count}")
-    print(f"  - Processed:            {len(all_gcp)}")
     print(f"  - Implemented in KCC:   {len(covered)}")
     print(f"  - Missing from KCC:     {len(missing)}")
-    print(f"  - Coverage:             {len(covered)/max(1, len(all_gcp)):.2%}")
+    print(f"  - Coverage:             {len(covered)/max(1, len(all_gcp_keys)):.2%}")
     
     print("\n--- Gap Breakdown (Missing Resources) ---")
     print(f"Total Missing:            {len(missing)}")
