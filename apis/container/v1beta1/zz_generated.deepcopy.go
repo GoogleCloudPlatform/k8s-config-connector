@@ -35,19 +35,19 @@ func (in *AcceleratorConfig) DeepCopyInto(out *AcceleratorConfig) {
 		*out = new(int)
 		**out = **in
 	}
-	if in.GpuDriverInstallationConfig != nil {
-		in, out := &in.GpuDriverInstallationConfig, &out.GpuDriverInstallationConfig
-		*out = new(GpuDriverInstallationConfig)
+	if in.GPUDriverInstallationConfig != nil {
+		in, out := &in.GPUDriverInstallationConfig, &out.GPUDriverInstallationConfig
+		*out = new(GPUDriverInstallationConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.GpuPartitionSize != nil {
-		in, out := &in.GpuPartitionSize, &out.GpuPartitionSize
+	if in.GPUPartitionSize != nil {
+		in, out := &in.GPUPartitionSize, &out.GPUPartitionSize
 		*out = new(string)
 		**out = **in
 	}
-	if in.GpuSharingConfig != nil {
-		in, out := &in.GpuSharingConfig, &out.GpuSharingConfig
-		*out = new(GpuSharingConfig)
+	if in.GPUSharingConfig != nil {
+		in, out := &in.GPUSharingConfig, &out.GPUSharingConfig
+		*out = new(GPUSharingConfig)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.Type != nil {
@@ -152,29 +152,29 @@ func (in *AddonsConfig) DeepCopyInto(out *AddonsConfig) {
 		*out = new(ConfigConnectorConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.DnsCacheConfig != nil {
-		in, out := &in.DnsCacheConfig, &out.DnsCacheConfig
-		*out = new(DnsCacheConfig)
+	if in.DNSCacheConfig != nil {
+		in, out := &in.DNSCacheConfig, &out.DNSCacheConfig
+		*out = new(DNSCacheConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.GcePersistentDiskCsiDriverConfig != nil {
-		in, out := &in.GcePersistentDiskCsiDriverConfig, &out.GcePersistentDiskCsiDriverConfig
-		*out = new(GcePersistentDiskCsiDriverConfig)
+	if in.GCEPersistentDiskCSIDriverConfig != nil {
+		in, out := &in.GCEPersistentDiskCSIDriverConfig, &out.GCEPersistentDiskCSIDriverConfig
+		*out = new(GCEPersistentDiskCSIDriverConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.GcpFilestoreCsiDriverConfig != nil {
-		in, out := &in.GcpFilestoreCsiDriverConfig, &out.GcpFilestoreCsiDriverConfig
-		*out = new(GcpFilestoreCsiDriverConfig)
+	if in.GCPFilestoreCSIDriverConfig != nil {
+		in, out := &in.GCPFilestoreCSIDriverConfig, &out.GCPFilestoreCSIDriverConfig
+		*out = new(GCPFilestoreCSIDriverConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.GcsFuseCsiDriverConfig != nil {
-		in, out := &in.GcsFuseCsiDriverConfig, &out.GcsFuseCsiDriverConfig
-		*out = new(GcsFuseCsiDriverConfig)
+	if in.GCSFuseCSIDriverConfig != nil {
+		in, out := &in.GCSFuseCSIDriverConfig, &out.GCSFuseCSIDriverConfig
+		*out = new(GCSFuseCSIDriverConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.GkeBackupAgentConfig != nil {
-		in, out := &in.GkeBackupAgentConfig, &out.GkeBackupAgentConfig
-		*out = new(GkeBackupAgentConfig)
+	if in.GKEBackupAgentConfig != nil {
+		in, out := &in.GKEBackupAgentConfig, &out.GKEBackupAgentConfig
+		*out = new(GKEBackupAgentConfig)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.HorizontalPodAutoscaling != nil {
@@ -182,9 +182,9 @@ func (in *AddonsConfig) DeepCopyInto(out *AddonsConfig) {
 		*out = new(HorizontalPodAutoscaling)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.HttpLoadBalancing != nil {
-		in, out := &in.HttpLoadBalancing, &out.HttpLoadBalancing
-		*out = new(HttpLoadBalancing)
+	if in.HTTPLoadBalancing != nil {
+		in, out := &in.HTTPLoadBalancing, &out.HTTPLoadBalancing
+		*out = new(HTTPLoadBalancing)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.IstioConfig != nil {
@@ -733,8 +733,8 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.EnableFqdnNetworkPolicy != nil {
-		in, out := &in.EnableFqdnNetworkPolicy, &out.EnableFqdnNetworkPolicy
+	if in.EnableFQDNNetworkPolicy != nil {
+		in, out := &in.EnableFQDNNetworkPolicy, &out.EnableFQDNNetworkPolicy
 		*out = new(bool)
 		**out = **in
 	}
@@ -743,9 +743,9 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.EnableK8sBetaApis != nil {
-		in, out := &in.EnableK8sBetaApis, &out.EnableK8sBetaApis
-		*out = new(K8sBetaAPIConfig)
+	if in.EnableK8SBetaApis != nil {
+		in, out := &in.EnableK8SBetaApis, &out.EnableK8SBetaApis
+		*out = new(K8SBetaAPIConfig)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.EnableKubernetesAlpha != nil {
@@ -753,8 +753,8 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.EnableL4IlbSubsetting != nil {
-		in, out := &in.EnableL4IlbSubsetting, &out.EnableL4IlbSubsetting
+	if in.EnableL4ILBSubsetting != nil {
+		in, out := &in.EnableL4ILBSubsetting, &out.EnableL4ILBSubsetting
 		*out = new(bool)
 		**out = **in
 	}
@@ -790,6 +790,11 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 	}
 	if in.InitialNodeCount != nil {
 		in, out := &in.InitialNodeCount, &out.InitialNodeCount
+		*out = new(int32)
+		**out = **in
+	}
+	if in.PodPidsLimit != nil {
+		in, out := &in.PodPidsLimit, &out.PodPidsLimit
 		*out = new(int)
 		**out = **in
 	}
@@ -933,8 +938,8 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(SecurityPostureConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ServiceExternalIpsConfig != nil {
-		in, out := &in.ServiceExternalIpsConfig, &out.ServiceExternalIpsConfig
+	if in.ServiceExternalIPsConfig != nil {
+		in, out := &in.ServiceExternalIPsConfig, &out.ServiceExternalIPsConfig
 		*out = new(ServiceExternalIPsConfig)
 		(*in).DeepCopyInto(*out)
 	}
@@ -1008,13 +1013,13 @@ func (in *ContainerClusterStatus) DeepCopyInto(out *ContainerClusterStatus) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServicesIpv4Cidr != nil {
-		in, out := &in.ServicesIpv4Cidr, &out.ServicesIpv4Cidr
+	if in.ServicesIPV4CIDR != nil {
+		in, out := &in.ServicesIPV4CIDR, &out.ServicesIPV4CIDR
 		*out = new(string)
 		**out = **in
 	}
-	if in.TpuIpv4CidrBlock != nil {
-		in, out := &in.TpuIpv4CidrBlock, &out.TpuIpv4CidrBlock
+	if in.TpuIPV4CIDRBlock != nil {
+		in, out := &in.TpuIPV4CIDRBlock, &out.TpuIPV4CIDRBlock
 		*out = new(string)
 		**out = **in
 	}
@@ -1058,9 +1063,9 @@ func (in *ControlPlaneEndpointsConfig) DeepCopy() *ControlPlaneEndpointsConfig {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ControlPlaneEndpointsConfigStatus) DeepCopyInto(out *ControlPlaneEndpointsConfigStatus) {
 	*out = *in
-	if in.DnsEndpointConfig != nil {
-		in, out := &in.DnsEndpointConfig, &out.DnsEndpointConfig
-		*out = new(DnsEndpointConfigStatus)
+	if in.DNSEndpointConfig != nil {
+		in, out := &in.DNSEndpointConfig, &out.DNSEndpointConfig
+		*out = new(DNSEndpointConfigStatus)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -1083,8 +1088,8 @@ func (in *ControlPlaneEndpointsConfig_DNSEndpointConfig) DeepCopyInto(out *Contr
 		*out = new(bool)
 		**out = **in
 	}
-	if in.EnableK8sTokensViaDns != nil {
-		in, out := &in.EnableK8sTokensViaDns, &out.EnableK8sTokensViaDns
+	if in.EnableK8STokensViaDNS != nil {
+		in, out := &in.EnableK8STokensViaDNS, &out.EnableK8STokensViaDNS
 		*out = new(bool)
 		**out = **in
 	}
@@ -1141,6 +1146,26 @@ func (in *CostManagementConfig) DeepCopy() *CostManagementConfig {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *DNSCacheConfig) DeepCopyInto(out *DNSCacheConfig) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new DNSCacheConfig.
+func (in *DNSCacheConfig) DeepCopy() *DNSCacheConfig {
+	if in == nil {
+		return nil
+	}
+	out := new(DNSCacheConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *DNSConfig) DeepCopyInto(out *DNSConfig) {
 	*out = *in
 	if in.ClusterDNS != nil {
@@ -1166,6 +1191,26 @@ func (in *DNSConfig) DeepCopy() *DNSConfig {
 		return nil
 	}
 	out := new(DNSConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *DNSEndpointConfigStatus) DeepCopyInto(out *DNSEndpointConfigStatus) {
+	*out = *in
+	if in.Endpoint != nil {
+		in, out := &in.Endpoint, &out.Endpoint
+		*out = new(string)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new DNSEndpointConfigStatus.
+func (in *DNSEndpointConfigStatus) DeepCopy() *DNSEndpointConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := new(DNSEndpointConfigStatus)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -1261,51 +1306,11 @@ func (in *DefaultSnatStatus) DeepCopy() *DefaultSnatStatus {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *DnsCacheConfig) DeepCopyInto(out *DnsCacheConfig) {
-	*out = *in
-	if in.Enabled != nil {
-		in, out := &in.Enabled, &out.Enabled
-		*out = new(bool)
-		**out = **in
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new DnsCacheConfig.
-func (in *DnsCacheConfig) DeepCopy() *DnsCacheConfig {
-	if in == nil {
-		return nil
-	}
-	out := new(DnsCacheConfig)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *DnsEndpointConfigStatus) DeepCopyInto(out *DnsEndpointConfigStatus) {
-	*out = *in
-	if in.Endpoint != nil {
-		in, out := &in.Endpoint, &out.Endpoint
-		*out = new(string)
-		**out = **in
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new DnsEndpointConfigStatus.
-func (in *DnsEndpointConfigStatus) DeepCopy() *DnsEndpointConfigStatus {
-	if in == nil {
-		return nil
-	}
-	out := new(DnsEndpointConfigStatus)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *EphemeralStorageConfig) DeepCopyInto(out *EphemeralStorageConfig) {
 	*out = *in
 	if in.LocalSsdCount != nil {
 		in, out := &in.LocalSsdCount, &out.LocalSsdCount
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 }
@@ -1325,12 +1330,12 @@ func (in *EphemeralStorageLocalSsdConfig) DeepCopyInto(out *EphemeralStorageLoca
 	*out = *in
 	if in.DataCacheCount != nil {
 		in, out := &in.DataCacheCount, &out.DataCacheCount
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.LocalSsdCount != nil {
 		in, out := &in.LocalSsdCount, &out.LocalSsdCount
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 }
@@ -1366,6 +1371,131 @@ func (in *FastSocket) DeepCopy() *FastSocket {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *GCEPersistentDiskCSIDriverConfig) DeepCopyInto(out *GCEPersistentDiskCSIDriverConfig) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GCEPersistentDiskCSIDriverConfig.
+func (in *GCEPersistentDiskCSIDriverConfig) DeepCopy() *GCEPersistentDiskCSIDriverConfig {
+	if in == nil {
+		return nil
+	}
+	out := new(GCEPersistentDiskCSIDriverConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *GCPFilestoreCSIDriverConfig) DeepCopyInto(out *GCPFilestoreCSIDriverConfig) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GCPFilestoreCSIDriverConfig.
+func (in *GCPFilestoreCSIDriverConfig) DeepCopy() *GCPFilestoreCSIDriverConfig {
+	if in == nil {
+		return nil
+	}
+	out := new(GCPFilestoreCSIDriverConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *GCSFuseCSIDriverConfig) DeepCopyInto(out *GCSFuseCSIDriverConfig) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GCSFuseCSIDriverConfig.
+func (in *GCSFuseCSIDriverConfig) DeepCopy() *GCSFuseCSIDriverConfig {
+	if in == nil {
+		return nil
+	}
+	out := new(GCSFuseCSIDriverConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *GKEBackupAgentConfig) DeepCopyInto(out *GKEBackupAgentConfig) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GKEBackupAgentConfig.
+func (in *GKEBackupAgentConfig) DeepCopy() *GKEBackupAgentConfig {
+	if in == nil {
+		return nil
+	}
+	out := new(GKEBackupAgentConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *GPUDriverInstallationConfig) DeepCopyInto(out *GPUDriverInstallationConfig) {
+	*out = *in
+	if in.GPUDriverVersion != nil {
+		in, out := &in.GPUDriverVersion, &out.GPUDriverVersion
+		*out = new(string)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GPUDriverInstallationConfig.
+func (in *GPUDriverInstallationConfig) DeepCopy() *GPUDriverInstallationConfig {
+	if in == nil {
+		return nil
+	}
+	out := new(GPUDriverInstallationConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *GPUSharingConfig) DeepCopyInto(out *GPUSharingConfig) {
+	*out = *in
+	if in.GPUSharingStrategy != nil {
+		in, out := &in.GPUSharingStrategy, &out.GPUSharingStrategy
+		*out = new(string)
+		**out = **in
+	}
+	if in.MaxSharedClientsPerGPU != nil {
+		in, out := &in.MaxSharedClientsPerGPU, &out.MaxSharedClientsPerGPU
+		*out = new(int)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GPUSharingConfig.
+func (in *GPUSharingConfig) DeepCopy() *GPUSharingConfig {
+	if in == nil {
+		return nil
+	}
+	out := new(GPUSharingConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *GatewayAPIConfig) DeepCopyInto(out *GatewayAPIConfig) {
 	*out = *in
 	if in.Channel != nil {
@@ -1381,26 +1511,6 @@ func (in *GatewayAPIConfig) DeepCopy() *GatewayAPIConfig {
 		return nil
 	}
 	out := new(GatewayAPIConfig)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *GcePersistentDiskCsiDriverConfig) DeepCopyInto(out *GcePersistentDiskCsiDriverConfig) {
-	*out = *in
-	if in.Enabled != nil {
-		in, out := &in.Enabled, &out.Enabled
-		*out = new(bool)
-		**out = **in
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GcePersistentDiskCsiDriverConfig.
-func (in *GcePersistentDiskCsiDriverConfig) DeepCopy() *GcePersistentDiskCsiDriverConfig {
-	if in == nil {
-		return nil
-	}
-	out := new(GcePersistentDiskCsiDriverConfig)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -1426,106 +1536,21 @@ func (in *GcfsConfig) DeepCopy() *GcfsConfig {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *GcpFilestoreCsiDriverConfig) DeepCopyInto(out *GcpFilestoreCsiDriverConfig) {
+func (in *HTTPLoadBalancing) DeepCopyInto(out *HTTPLoadBalancing) {
 	*out = *in
-	if in.Enabled != nil {
-		in, out := &in.Enabled, &out.Enabled
+	if in.Disabled != nil {
+		in, out := &in.Disabled, &out.Disabled
 		*out = new(bool)
 		**out = **in
 	}
 }
 
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GcpFilestoreCsiDriverConfig.
-func (in *GcpFilestoreCsiDriverConfig) DeepCopy() *GcpFilestoreCsiDriverConfig {
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new HTTPLoadBalancing.
+func (in *HTTPLoadBalancing) DeepCopy() *HTTPLoadBalancing {
 	if in == nil {
 		return nil
 	}
-	out := new(GcpFilestoreCsiDriverConfig)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *GcsFuseCsiDriverConfig) DeepCopyInto(out *GcsFuseCsiDriverConfig) {
-	*out = *in
-	if in.Enabled != nil {
-		in, out := &in.Enabled, &out.Enabled
-		*out = new(bool)
-		**out = **in
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GcsFuseCsiDriverConfig.
-func (in *GcsFuseCsiDriverConfig) DeepCopy() *GcsFuseCsiDriverConfig {
-	if in == nil {
-		return nil
-	}
-	out := new(GcsFuseCsiDriverConfig)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *GkeBackupAgentConfig) DeepCopyInto(out *GkeBackupAgentConfig) {
-	*out = *in
-	if in.Enabled != nil {
-		in, out := &in.Enabled, &out.Enabled
-		*out = new(bool)
-		**out = **in
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GkeBackupAgentConfig.
-func (in *GkeBackupAgentConfig) DeepCopy() *GkeBackupAgentConfig {
-	if in == nil {
-		return nil
-	}
-	out := new(GkeBackupAgentConfig)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *GpuDriverInstallationConfig) DeepCopyInto(out *GpuDriverInstallationConfig) {
-	*out = *in
-	if in.GpuDriverVersion != nil {
-		in, out := &in.GpuDriverVersion, &out.GpuDriverVersion
-		*out = new(string)
-		**out = **in
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GpuDriverInstallationConfig.
-func (in *GpuDriverInstallationConfig) DeepCopy() *GpuDriverInstallationConfig {
-	if in == nil {
-		return nil
-	}
-	out := new(GpuDriverInstallationConfig)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *GpuSharingConfig) DeepCopyInto(out *GpuSharingConfig) {
-	*out = *in
-	if in.GpuSharingStrategy != nil {
-		in, out := &in.GpuSharingStrategy, &out.GpuSharingStrategy
-		*out = new(string)
-		**out = **in
-	}
-	if in.MaxSharedClientsPerGpu != nil {
-		in, out := &in.MaxSharedClientsPerGpu, &out.MaxSharedClientsPerGpu
-		*out = new(int)
-		**out = **in
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new GpuSharingConfig.
-func (in *GpuSharingConfig) DeepCopy() *GpuSharingConfig {
-	if in == nil {
-		return nil
-	}
-	out := new(GpuSharingConfig)
+	out := new(HTTPLoadBalancing)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -1566,26 +1591,6 @@ func (in *HostMaintenancePolicy) DeepCopy() *HostMaintenancePolicy {
 		return nil
 	}
 	out := new(HostMaintenancePolicy)
-	in.DeepCopyInto(out)
-	return out
-}
-
-// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *HttpLoadBalancing) DeepCopyInto(out *HttpLoadBalancing) {
-	*out = *in
-	if in.Disabled != nil {
-		in, out := &in.Disabled, &out.Disabled
-		*out = new(bool)
-		**out = **in
-	}
-}
-
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new HttpLoadBalancing.
-func (in *HttpLoadBalancing) DeepCopy() *HttpLoadBalancing {
-	if in == nil {
-		return nil
-	}
-	out := new(HttpLoadBalancing)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -1693,7 +1698,7 @@ func (in *IstioConfig) DeepCopy() *IstioConfig {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *K8sBetaAPIConfig) DeepCopyInto(out *K8sBetaAPIConfig) {
+func (in *K8SBetaAPIConfig) DeepCopyInto(out *K8SBetaAPIConfig) {
 	*out = *in
 	if in.EnabledApis != nil {
 		in, out := &in.EnabledApis, &out.EnabledApis
@@ -1702,12 +1707,12 @@ func (in *K8sBetaAPIConfig) DeepCopyInto(out *K8sBetaAPIConfig) {
 	}
 }
 
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new K8sBetaAPIConfig.
-func (in *K8sBetaAPIConfig) DeepCopy() *K8sBetaAPIConfig {
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new K8SBetaAPIConfig.
+func (in *K8SBetaAPIConfig) DeepCopy() *K8SBetaAPIConfig {
 	if in == nil {
 		return nil
 	}
-	out := new(K8sBetaAPIConfig)
+	out := new(K8SBetaAPIConfig)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -1782,6 +1787,11 @@ func (in *LinuxNodeConfig) DeepCopyInto(out *LinuxNodeConfig) {
 			(*out)[key] = val
 		}
 	}
+	if in.HugepagesConfig != nil {
+		in, out := &in.HugepagesConfig, &out.HugepagesConfig
+		*out = new(LinuxNodeConfig_HugepagesConfig)
+		(*in).DeepCopyInto(*out)
+	}
 }
 
 // DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new LinuxNodeConfig.
@@ -1790,6 +1800,31 @@ func (in *LinuxNodeConfig) DeepCopy() *LinuxNodeConfig {
 		return nil
 	}
 	out := new(LinuxNodeConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *LinuxNodeConfig_HugepagesConfig) DeepCopyInto(out *LinuxNodeConfig_HugepagesConfig) {
+	*out = *in
+	if in.HugepageSize2M != nil {
+		in, out := &in.HugepageSize2M, &out.HugepageSize2M
+		*out = new(int32)
+		**out = **in
+	}
+	if in.HugepageSize1G != nil {
+		in, out := &in.HugepageSize1G, &out.HugepageSize1G
+		*out = new(int32)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new LinuxNodeConfig_HugepagesConfig.
+func (in *LinuxNodeConfig_HugepagesConfig) DeepCopy() *LinuxNodeConfig_HugepagesConfig {
+	if in == nil {
+		return nil
+	}
+	out := new(LinuxNodeConfig_HugepagesConfig)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -2014,8 +2049,8 @@ func (in *MasterAuthStatus) DeepCopyInto(out *MasterAuthStatus) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ClusterCaCertificate != nil {
-		in, out := &in.ClusterCaCertificate, &out.ClusterCaCertificate
+	if in.ClusterCACertificate != nil {
+		in, out := &in.ClusterCACertificate, &out.ClusterCACertificate
 		*out = new(string)
 		**out = **in
 	}
@@ -2054,9 +2089,9 @@ func (in *MasterAuth_ClientCertificateConfig) DeepCopy() *MasterAuth_ClientCerti
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *MasterAuthorizedNetworksConfig) DeepCopyInto(out *MasterAuthorizedNetworksConfig) {
 	*out = *in
-	if in.MasterAuthorizedNetworksConfig_CidrBlock != nil {
-		in, out := &in.MasterAuthorizedNetworksConfig_CidrBlock, &out.MasterAuthorizedNetworksConfig_CidrBlock
-		*out = make([]MasterAuthorizedNetworksConfig_CidrBlock, len(*in))
+	if in.MasterAuthorizedNetworksConfig_CIDRBlock != nil {
+		in, out := &in.MasterAuthorizedNetworksConfig_CIDRBlock, &out.MasterAuthorizedNetworksConfig_CIDRBlock
+		*out = make([]MasterAuthorizedNetworksConfig_CIDRBlock, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
@@ -2079,7 +2114,7 @@ func (in *MasterAuthorizedNetworksConfig) DeepCopy() *MasterAuthorizedNetworksCo
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
-func (in *MasterAuthorizedNetworksConfig_CidrBlock) DeepCopyInto(out *MasterAuthorizedNetworksConfig_CidrBlock) {
+func (in *MasterAuthorizedNetworksConfig_CIDRBlock) DeepCopyInto(out *MasterAuthorizedNetworksConfig_CIDRBlock) {
 	*out = *in
 	if in.CIDRBlock != nil {
 		in, out := &in.CIDRBlock, &out.CIDRBlock
@@ -2093,12 +2128,12 @@ func (in *MasterAuthorizedNetworksConfig_CidrBlock) DeepCopyInto(out *MasterAuth
 	}
 }
 
-// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new MasterAuthorizedNetworksConfig_CidrBlock.
-func (in *MasterAuthorizedNetworksConfig_CidrBlock) DeepCopy() *MasterAuthorizedNetworksConfig_CidrBlock {
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new MasterAuthorizedNetworksConfig_CIDRBlock.
+func (in *MasterAuthorizedNetworksConfig_CIDRBlock) DeepCopy() *MasterAuthorizedNetworksConfig_CIDRBlock {
 	if in == nil {
 		return nil
 	}
-	out := new(MasterAuthorizedNetworksConfig_CidrBlock)
+	out := new(MasterAuthorizedNetworksConfig_CIDRBlock)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -2348,7 +2383,7 @@ func (in *NodeConfig) DeepCopyInto(out *NodeConfig) {
 	}
 	if in.LocalSsdCount != nil {
 		in, out := &in.LocalSsdCount, &out.LocalSsdCount
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.LoggingVariant != nil {
@@ -2509,7 +2544,7 @@ func (in *NodeConfig_LocalNvmeSsdBlockConfig) DeepCopyInto(out *NodeConfig_Local
 	*out = *in
 	if in.LocalSsdCount != nil {
 		in, out := &in.LocalSsdCount, &out.LocalSsdCount
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 }
@@ -2723,12 +2758,12 @@ func (in *NodePool_UpgradeSettings) DeepCopyInto(out *NodePool_UpgradeSettings) 
 	}
 	if in.MaxSurge != nil {
 		in, out := &in.MaxSurge, &out.MaxSurge
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxUnavailable != nil {
 		in, out := &in.MaxUnavailable, &out.MaxUnavailable
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Strategy != nil {
@@ -3289,7 +3324,7 @@ func (in *StandardRolloutPolicy) DeepCopyInto(out *StandardRolloutPolicy) {
 	*out = *in
 	if in.BatchNodeCount != nil {
 		in, out := &in.BatchNodeCount, &out.BatchNodeCount
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.BatchPercentage != nil {
