@@ -32,7 +32,7 @@ type FakeSpannerV1alpha1 struct {
 }
 
 func (c *FakeSpannerV1alpha1) SpannerInstanceConfigs(namespace string) v1alpha1.SpannerInstanceConfigInterface {
-	return newFakeSpannerInstanceConfigs(c, namespace)
+	return &FakeSpannerInstanceConfigs{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

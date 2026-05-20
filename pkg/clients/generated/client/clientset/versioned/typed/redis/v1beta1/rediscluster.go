@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // RedisClustersGetter has a method to return a RedisClusterInterface.
@@ -40,34 +41,158 @@ type RedisClustersGetter interface {
 
 // RedisClusterInterface has methods to work with RedisCluster resources.
 type RedisClusterInterface interface {
-	Create(ctx context.Context, redisCluster *redisv1beta1.RedisCluster, opts v1.CreateOptions) (*redisv1beta1.RedisCluster, error)
-	Update(ctx context.Context, redisCluster *redisv1beta1.RedisCluster, opts v1.UpdateOptions) (*redisv1beta1.RedisCluster, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, redisCluster *redisv1beta1.RedisCluster, opts v1.UpdateOptions) (*redisv1beta1.RedisCluster, error)
+	Create(ctx context.Context, redisCluster *v1beta1.RedisCluster, opts v1.CreateOptions) (*v1beta1.RedisCluster, error)
+	Update(ctx context.Context, redisCluster *v1beta1.RedisCluster, opts v1.UpdateOptions) (*v1beta1.RedisCluster, error)
+	UpdateStatus(ctx context.Context, redisCluster *v1beta1.RedisCluster, opts v1.UpdateOptions) (*v1beta1.RedisCluster, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*redisv1beta1.RedisCluster, error)
-	List(ctx context.Context, opts v1.ListOptions) (*redisv1beta1.RedisClusterList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.RedisCluster, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.RedisClusterList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *redisv1beta1.RedisCluster, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.RedisCluster, err error)
 	RedisClusterExpansion
 }
 
 // redisClusters implements RedisClusterInterface
 type redisClusters struct {
-	*gentype.ClientWithList[*redisv1beta1.RedisCluster, *redisv1beta1.RedisClusterList]
+	client rest.Interface
+	ns     string
 }
 
 // newRedisClusters returns a RedisClusters
 func newRedisClusters(c *RedisV1beta1Client, namespace string) *redisClusters {
 	return &redisClusters{
-		gentype.NewClientWithList[*redisv1beta1.RedisCluster, *redisv1beta1.RedisClusterList](
-			"redisclusters",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *redisv1beta1.RedisCluster { return &redisv1beta1.RedisCluster{} },
-			func() *redisv1beta1.RedisClusterList { return &redisv1beta1.RedisClusterList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the redisCluster, and returns the corresponding redisCluster object, and an error if there is any.
+func (c *redisClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.RedisCluster, err error) {
+	result = &v1beta1.RedisCluster{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("redisclusters").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of RedisClusters that match those selectors.
+func (c *redisClusters) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.RedisClusterList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.RedisClusterList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("redisclusters").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested redisClusters.
+func (c *redisClusters) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("redisclusters").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a redisCluster and creates it.  Returns the server's representation of the redisCluster, and an error, if there is any.
+func (c *redisClusters) Create(ctx context.Context, redisCluster *v1beta1.RedisCluster, opts v1.CreateOptions) (result *v1beta1.RedisCluster, err error) {
+	result = &v1beta1.RedisCluster{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("redisclusters").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(redisCluster).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a redisCluster and updates it. Returns the server's representation of the redisCluster, and an error, if there is any.
+func (c *redisClusters) Update(ctx context.Context, redisCluster *v1beta1.RedisCluster, opts v1.UpdateOptions) (result *v1beta1.RedisCluster, err error) {
+	result = &v1beta1.RedisCluster{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("redisclusters").
+		Name(redisCluster.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(redisCluster).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *redisClusters) UpdateStatus(ctx context.Context, redisCluster *v1beta1.RedisCluster, opts v1.UpdateOptions) (result *v1beta1.RedisCluster, err error) {
+	result = &v1beta1.RedisCluster{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("redisclusters").
+		Name(redisCluster.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(redisCluster).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the redisCluster and deletes it. Returns an error if one occurs.
+func (c *redisClusters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("redisclusters").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *redisClusters) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("redisclusters").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched redisCluster.
+func (c *redisClusters) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.RedisCluster, err error) {
+	result = &v1beta1.RedisCluster{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("redisclusters").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

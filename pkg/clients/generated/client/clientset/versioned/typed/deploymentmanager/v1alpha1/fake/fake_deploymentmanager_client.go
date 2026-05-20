@@ -32,7 +32,7 @@ type FakeDeploymentmanagerV1alpha1 struct {
 }
 
 func (c *FakeDeploymentmanagerV1alpha1) DeploymentManagerDeployments(namespace string) v1alpha1.DeploymentManagerDeploymentInterface {
-	return newFakeDeploymentManagerDeployments(c, namespace)
+	return &FakeDeploymentManagerDeployments{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

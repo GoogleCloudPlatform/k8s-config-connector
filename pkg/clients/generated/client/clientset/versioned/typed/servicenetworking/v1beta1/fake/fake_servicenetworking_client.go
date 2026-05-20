@@ -32,7 +32,7 @@ type FakeServicenetworkingV1beta1 struct {
 }
 
 func (c *FakeServicenetworkingV1beta1) ServiceNetworkingConnections(namespace string) v1beta1.ServiceNetworkingConnectionInterface {
-	return newFakeServiceNetworkingConnections(c, namespace)
+	return &FakeServiceNetworkingConnections{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

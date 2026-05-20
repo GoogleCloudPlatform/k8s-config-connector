@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1alpha1"
-	backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeBackupDRManagementServers implements BackupDRManagementServerInterface
-type fakeBackupDRManagementServers struct {
-	*gentype.FakeClientWithList[*v1alpha1.BackupDRManagementServer, *v1alpha1.BackupDRManagementServerList]
+// FakeBackupDRManagementServers implements BackupDRManagementServerInterface
+type FakeBackupDRManagementServers struct {
 	Fake *FakeBackupdrV1alpha1
+	ns   string
 }
 
-func newFakeBackupDRManagementServers(fake *FakeBackupdrV1alpha1, namespace string) backupdrv1alpha1.BackupDRManagementServerInterface {
-	return &fakeBackupDRManagementServers{
-		gentype.NewFakeClientWithList[*v1alpha1.BackupDRManagementServer, *v1alpha1.BackupDRManagementServerList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("backupdrmanagementservers"),
-			v1alpha1.SchemeGroupVersion.WithKind("BackupDRManagementServer"),
-			func() *v1alpha1.BackupDRManagementServer { return &v1alpha1.BackupDRManagementServer{} },
-			func() *v1alpha1.BackupDRManagementServerList { return &v1alpha1.BackupDRManagementServerList{} },
-			func(dst, src *v1alpha1.BackupDRManagementServerList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.BackupDRManagementServerList) []*v1alpha1.BackupDRManagementServer {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.BackupDRManagementServerList, items []*v1alpha1.BackupDRManagementServer) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var backupdrmanagementserversResource = v1alpha1.SchemeGroupVersion.WithResource("backupdrmanagementservers")
+
+var backupdrmanagementserversKind = v1alpha1.SchemeGroupVersion.WithKind("BackupDRManagementServer")
+
+// Get takes name of the backupDRManagementServer, and returns the corresponding backupDRManagementServer object, and an error if there is any.
+func (c *FakeBackupDRManagementServers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BackupDRManagementServer, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(backupdrmanagementserversResource, c.ns, name), &v1alpha1.BackupDRManagementServer{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.BackupDRManagementServer), err
+}
+
+// List takes label and field selectors, and returns the list of BackupDRManagementServers that match those selectors.
+func (c *FakeBackupDRManagementServers) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BackupDRManagementServerList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(backupdrmanagementserversResource, backupdrmanagementserversKind, c.ns, opts), &v1alpha1.BackupDRManagementServerList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.BackupDRManagementServerList{ListMeta: obj.(*v1alpha1.BackupDRManagementServerList).ListMeta}
+	for _, item := range obj.(*v1alpha1.BackupDRManagementServerList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested backupDRManagementServers.
+func (c *FakeBackupDRManagementServers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(backupdrmanagementserversResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a backupDRManagementServer and creates it.  Returns the server's representation of the backupDRManagementServer, and an error, if there is any.
+func (c *FakeBackupDRManagementServers) Create(ctx context.Context, backupDRManagementServer *v1alpha1.BackupDRManagementServer, opts v1.CreateOptions) (result *v1alpha1.BackupDRManagementServer, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(backupdrmanagementserversResource, c.ns, backupDRManagementServer), &v1alpha1.BackupDRManagementServer{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BackupDRManagementServer), err
+}
+
+// Update takes the representation of a backupDRManagementServer and updates it. Returns the server's representation of the backupDRManagementServer, and an error, if there is any.
+func (c *FakeBackupDRManagementServers) Update(ctx context.Context, backupDRManagementServer *v1alpha1.BackupDRManagementServer, opts v1.UpdateOptions) (result *v1alpha1.BackupDRManagementServer, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(backupdrmanagementserversResource, c.ns, backupDRManagementServer), &v1alpha1.BackupDRManagementServer{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BackupDRManagementServer), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeBackupDRManagementServers) UpdateStatus(ctx context.Context, backupDRManagementServer *v1alpha1.BackupDRManagementServer, opts v1.UpdateOptions) (*v1alpha1.BackupDRManagementServer, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(backupdrmanagementserversResource, "status", c.ns, backupDRManagementServer), &v1alpha1.BackupDRManagementServer{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BackupDRManagementServer), err
+}
+
+// Delete takes name of the backupDRManagementServer and deletes it. Returns an error if one occurs.
+func (c *FakeBackupDRManagementServers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(backupdrmanagementserversResource, c.ns, name, opts), &v1alpha1.BackupDRManagementServer{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeBackupDRManagementServers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(backupdrmanagementserversResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.BackupDRManagementServerList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched backupDRManagementServer.
+func (c *FakeBackupDRManagementServers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BackupDRManagementServer, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(backupdrmanagementserversResource, c.ns, name, pt, data, subresources...), &v1alpha1.BackupDRManagementServer{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BackupDRManagementServer), err
 }

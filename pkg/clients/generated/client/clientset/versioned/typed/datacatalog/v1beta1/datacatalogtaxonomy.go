@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // DataCatalogTaxonomiesGetter has a method to return a DataCatalogTaxonomyInterface.
@@ -40,36 +41,158 @@ type DataCatalogTaxonomiesGetter interface {
 
 // DataCatalogTaxonomyInterface has methods to work with DataCatalogTaxonomy resources.
 type DataCatalogTaxonomyInterface interface {
-	Create(ctx context.Context, dataCatalogTaxonomy *datacatalogv1beta1.DataCatalogTaxonomy, opts v1.CreateOptions) (*datacatalogv1beta1.DataCatalogTaxonomy, error)
-	Update(ctx context.Context, dataCatalogTaxonomy *datacatalogv1beta1.DataCatalogTaxonomy, opts v1.UpdateOptions) (*datacatalogv1beta1.DataCatalogTaxonomy, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, dataCatalogTaxonomy *datacatalogv1beta1.DataCatalogTaxonomy, opts v1.UpdateOptions) (*datacatalogv1beta1.DataCatalogTaxonomy, error)
+	Create(ctx context.Context, dataCatalogTaxonomy *v1beta1.DataCatalogTaxonomy, opts v1.CreateOptions) (*v1beta1.DataCatalogTaxonomy, error)
+	Update(ctx context.Context, dataCatalogTaxonomy *v1beta1.DataCatalogTaxonomy, opts v1.UpdateOptions) (*v1beta1.DataCatalogTaxonomy, error)
+	UpdateStatus(ctx context.Context, dataCatalogTaxonomy *v1beta1.DataCatalogTaxonomy, opts v1.UpdateOptions) (*v1beta1.DataCatalogTaxonomy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*datacatalogv1beta1.DataCatalogTaxonomy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*datacatalogv1beta1.DataCatalogTaxonomyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.DataCatalogTaxonomy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.DataCatalogTaxonomyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *datacatalogv1beta1.DataCatalogTaxonomy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DataCatalogTaxonomy, err error)
 	DataCatalogTaxonomyExpansion
 }
 
 // dataCatalogTaxonomies implements DataCatalogTaxonomyInterface
 type dataCatalogTaxonomies struct {
-	*gentype.ClientWithList[*datacatalogv1beta1.DataCatalogTaxonomy, *datacatalogv1beta1.DataCatalogTaxonomyList]
+	client rest.Interface
+	ns     string
 }
 
 // newDataCatalogTaxonomies returns a DataCatalogTaxonomies
 func newDataCatalogTaxonomies(c *DatacatalogV1beta1Client, namespace string) *dataCatalogTaxonomies {
 	return &dataCatalogTaxonomies{
-		gentype.NewClientWithList[*datacatalogv1beta1.DataCatalogTaxonomy, *datacatalogv1beta1.DataCatalogTaxonomyList](
-			"datacatalogtaxonomies",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *datacatalogv1beta1.DataCatalogTaxonomy { return &datacatalogv1beta1.DataCatalogTaxonomy{} },
-			func() *datacatalogv1beta1.DataCatalogTaxonomyList {
-				return &datacatalogv1beta1.DataCatalogTaxonomyList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the dataCatalogTaxonomy, and returns the corresponding dataCatalogTaxonomy object, and an error if there is any.
+func (c *dataCatalogTaxonomies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataCatalogTaxonomy, err error) {
+	result = &v1beta1.DataCatalogTaxonomy{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("datacatalogtaxonomies").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of DataCatalogTaxonomies that match those selectors.
+func (c *dataCatalogTaxonomies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.DataCatalogTaxonomyList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.DataCatalogTaxonomyList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("datacatalogtaxonomies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested dataCatalogTaxonomies.
+func (c *dataCatalogTaxonomies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("datacatalogtaxonomies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a dataCatalogTaxonomy and creates it.  Returns the server's representation of the dataCatalogTaxonomy, and an error, if there is any.
+func (c *dataCatalogTaxonomies) Create(ctx context.Context, dataCatalogTaxonomy *v1beta1.DataCatalogTaxonomy, opts v1.CreateOptions) (result *v1beta1.DataCatalogTaxonomy, err error) {
+	result = &v1beta1.DataCatalogTaxonomy{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("datacatalogtaxonomies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataCatalogTaxonomy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a dataCatalogTaxonomy and updates it. Returns the server's representation of the dataCatalogTaxonomy, and an error, if there is any.
+func (c *dataCatalogTaxonomies) Update(ctx context.Context, dataCatalogTaxonomy *v1beta1.DataCatalogTaxonomy, opts v1.UpdateOptions) (result *v1beta1.DataCatalogTaxonomy, err error) {
+	result = &v1beta1.DataCatalogTaxonomy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("datacatalogtaxonomies").
+		Name(dataCatalogTaxonomy.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataCatalogTaxonomy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *dataCatalogTaxonomies) UpdateStatus(ctx context.Context, dataCatalogTaxonomy *v1beta1.DataCatalogTaxonomy, opts v1.UpdateOptions) (result *v1beta1.DataCatalogTaxonomy, err error) {
+	result = &v1beta1.DataCatalogTaxonomy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("datacatalogtaxonomies").
+		Name(dataCatalogTaxonomy.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataCatalogTaxonomy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the dataCatalogTaxonomy and deletes it. Returns an error if one occurs.
+func (c *dataCatalogTaxonomies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("datacatalogtaxonomies").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *dataCatalogTaxonomies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("datacatalogtaxonomies").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched dataCatalogTaxonomy.
+func (c *dataCatalogTaxonomies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DataCatalogTaxonomy, err error) {
+	result = &v1beta1.DataCatalogTaxonomy{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("datacatalogtaxonomies").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

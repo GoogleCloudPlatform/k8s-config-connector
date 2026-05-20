@@ -22,36 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1beta1"
-	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeBigQueryReservationReservations implements BigQueryReservationReservationInterface
-type fakeBigQueryReservationReservations struct {
-	*gentype.FakeClientWithList[*v1beta1.BigQueryReservationReservation, *v1beta1.BigQueryReservationReservationList]
+// FakeBigQueryReservationReservations implements BigQueryReservationReservationInterface
+type FakeBigQueryReservationReservations struct {
 	Fake *FakeBigqueryreservationV1beta1
+	ns   string
 }
 
-func newFakeBigQueryReservationReservations(fake *FakeBigqueryreservationV1beta1, namespace string) bigqueryreservationv1beta1.BigQueryReservationReservationInterface {
-	return &fakeBigQueryReservationReservations{
-		gentype.NewFakeClientWithList[*v1beta1.BigQueryReservationReservation, *v1beta1.BigQueryReservationReservationList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("bigqueryreservationreservations"),
-			v1beta1.SchemeGroupVersion.WithKind("BigQueryReservationReservation"),
-			func() *v1beta1.BigQueryReservationReservation { return &v1beta1.BigQueryReservationReservation{} },
-			func() *v1beta1.BigQueryReservationReservationList {
-				return &v1beta1.BigQueryReservationReservationList{}
-			},
-			func(dst, src *v1beta1.BigQueryReservationReservationList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.BigQueryReservationReservationList) []*v1beta1.BigQueryReservationReservation {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.BigQueryReservationReservationList, items []*v1beta1.BigQueryReservationReservation) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var bigqueryreservationreservationsResource = v1beta1.SchemeGroupVersion.WithResource("bigqueryreservationreservations")
+
+var bigqueryreservationreservationsKind = v1beta1.SchemeGroupVersion.WithKind("BigQueryReservationReservation")
+
+// Get takes name of the bigQueryReservationReservation, and returns the corresponding bigQueryReservationReservation object, and an error if there is any.
+func (c *FakeBigQueryReservationReservations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigQueryReservationReservation, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(bigqueryreservationreservationsResource, c.ns, name), &v1beta1.BigQueryReservationReservation{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.BigQueryReservationReservation), err
+}
+
+// List takes label and field selectors, and returns the list of BigQueryReservationReservations that match those selectors.
+func (c *FakeBigQueryReservationReservations) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigQueryReservationReservationList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(bigqueryreservationreservationsResource, bigqueryreservationreservationsKind, c.ns, opts), &v1beta1.BigQueryReservationReservationList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.BigQueryReservationReservationList{ListMeta: obj.(*v1beta1.BigQueryReservationReservationList).ListMeta}
+	for _, item := range obj.(*v1beta1.BigQueryReservationReservationList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested bigQueryReservationReservations.
+func (c *FakeBigQueryReservationReservations) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(bigqueryreservationreservationsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a bigQueryReservationReservation and creates it.  Returns the server's representation of the bigQueryReservationReservation, and an error, if there is any.
+func (c *FakeBigQueryReservationReservations) Create(ctx context.Context, bigQueryReservationReservation *v1beta1.BigQueryReservationReservation, opts v1.CreateOptions) (result *v1beta1.BigQueryReservationReservation, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(bigqueryreservationreservationsResource, c.ns, bigQueryReservationReservation), &v1beta1.BigQueryReservationReservation{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BigQueryReservationReservation), err
+}
+
+// Update takes the representation of a bigQueryReservationReservation and updates it. Returns the server's representation of the bigQueryReservationReservation, and an error, if there is any.
+func (c *FakeBigQueryReservationReservations) Update(ctx context.Context, bigQueryReservationReservation *v1beta1.BigQueryReservationReservation, opts v1.UpdateOptions) (result *v1beta1.BigQueryReservationReservation, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(bigqueryreservationreservationsResource, c.ns, bigQueryReservationReservation), &v1beta1.BigQueryReservationReservation{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BigQueryReservationReservation), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeBigQueryReservationReservations) UpdateStatus(ctx context.Context, bigQueryReservationReservation *v1beta1.BigQueryReservationReservation, opts v1.UpdateOptions) (*v1beta1.BigQueryReservationReservation, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(bigqueryreservationreservationsResource, "status", c.ns, bigQueryReservationReservation), &v1beta1.BigQueryReservationReservation{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BigQueryReservationReservation), err
+}
+
+// Delete takes name of the bigQueryReservationReservation and deletes it. Returns an error if one occurs.
+func (c *FakeBigQueryReservationReservations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(bigqueryreservationreservationsResource, c.ns, name, opts), &v1beta1.BigQueryReservationReservation{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeBigQueryReservationReservations) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(bigqueryreservationreservationsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.BigQueryReservationReservationList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched bigQueryReservationReservation.
+func (c *FakeBigQueryReservationReservations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigQueryReservationReservation, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(bigqueryreservationreservationsResource, c.ns, name, pt, data, subresources...), &v1beta1.BigQueryReservationReservation{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BigQueryReservationReservation), err
 }

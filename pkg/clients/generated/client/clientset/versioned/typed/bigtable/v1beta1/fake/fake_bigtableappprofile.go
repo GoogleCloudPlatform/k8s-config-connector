@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
-	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeBigtableAppProfiles implements BigtableAppProfileInterface
-type fakeBigtableAppProfiles struct {
-	*gentype.FakeClientWithList[*v1beta1.BigtableAppProfile, *v1beta1.BigtableAppProfileList]
+// FakeBigtableAppProfiles implements BigtableAppProfileInterface
+type FakeBigtableAppProfiles struct {
 	Fake *FakeBigtableV1beta1
+	ns   string
 }
 
-func newFakeBigtableAppProfiles(fake *FakeBigtableV1beta1, namespace string) bigtablev1beta1.BigtableAppProfileInterface {
-	return &fakeBigtableAppProfiles{
-		gentype.NewFakeClientWithList[*v1beta1.BigtableAppProfile, *v1beta1.BigtableAppProfileList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("bigtableappprofiles"),
-			v1beta1.SchemeGroupVersion.WithKind("BigtableAppProfile"),
-			func() *v1beta1.BigtableAppProfile { return &v1beta1.BigtableAppProfile{} },
-			func() *v1beta1.BigtableAppProfileList { return &v1beta1.BigtableAppProfileList{} },
-			func(dst, src *v1beta1.BigtableAppProfileList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.BigtableAppProfileList) []*v1beta1.BigtableAppProfile {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.BigtableAppProfileList, items []*v1beta1.BigtableAppProfile) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var bigtableappprofilesResource = v1beta1.SchemeGroupVersion.WithResource("bigtableappprofiles")
+
+var bigtableappprofilesKind = v1beta1.SchemeGroupVersion.WithKind("BigtableAppProfile")
+
+// Get takes name of the bigtableAppProfile, and returns the corresponding bigtableAppProfile object, and an error if there is any.
+func (c *FakeBigtableAppProfiles) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigtableAppProfile, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(bigtableappprofilesResource, c.ns, name), &v1beta1.BigtableAppProfile{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.BigtableAppProfile), err
+}
+
+// List takes label and field selectors, and returns the list of BigtableAppProfiles that match those selectors.
+func (c *FakeBigtableAppProfiles) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigtableAppProfileList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(bigtableappprofilesResource, bigtableappprofilesKind, c.ns, opts), &v1beta1.BigtableAppProfileList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.BigtableAppProfileList{ListMeta: obj.(*v1beta1.BigtableAppProfileList).ListMeta}
+	for _, item := range obj.(*v1beta1.BigtableAppProfileList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested bigtableAppProfiles.
+func (c *FakeBigtableAppProfiles) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(bigtableappprofilesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a bigtableAppProfile and creates it.  Returns the server's representation of the bigtableAppProfile, and an error, if there is any.
+func (c *FakeBigtableAppProfiles) Create(ctx context.Context, bigtableAppProfile *v1beta1.BigtableAppProfile, opts v1.CreateOptions) (result *v1beta1.BigtableAppProfile, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(bigtableappprofilesResource, c.ns, bigtableAppProfile), &v1beta1.BigtableAppProfile{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BigtableAppProfile), err
+}
+
+// Update takes the representation of a bigtableAppProfile and updates it. Returns the server's representation of the bigtableAppProfile, and an error, if there is any.
+func (c *FakeBigtableAppProfiles) Update(ctx context.Context, bigtableAppProfile *v1beta1.BigtableAppProfile, opts v1.UpdateOptions) (result *v1beta1.BigtableAppProfile, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(bigtableappprofilesResource, c.ns, bigtableAppProfile), &v1beta1.BigtableAppProfile{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BigtableAppProfile), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeBigtableAppProfiles) UpdateStatus(ctx context.Context, bigtableAppProfile *v1beta1.BigtableAppProfile, opts v1.UpdateOptions) (*v1beta1.BigtableAppProfile, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(bigtableappprofilesResource, "status", c.ns, bigtableAppProfile), &v1beta1.BigtableAppProfile{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BigtableAppProfile), err
+}
+
+// Delete takes name of the bigtableAppProfile and deletes it. Returns an error if one occurs.
+func (c *FakeBigtableAppProfiles) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(bigtableappprofilesResource, c.ns, name, opts), &v1beta1.BigtableAppProfile{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeBigtableAppProfiles) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(bigtableappprofilesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.BigtableAppProfileList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched bigtableAppProfile.
+func (c *FakeBigtableAppProfiles) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigtableAppProfile, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(bigtableappprofilesResource, c.ns, name, pt, data, subresources...), &v1beta1.BigtableAppProfile{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BigtableAppProfile), err
 }

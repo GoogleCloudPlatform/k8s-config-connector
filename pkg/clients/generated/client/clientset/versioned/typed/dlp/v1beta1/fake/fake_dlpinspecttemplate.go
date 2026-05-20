@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dlp/v1beta1"
-	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDLPInspectTemplates implements DLPInspectTemplateInterface
-type fakeDLPInspectTemplates struct {
-	*gentype.FakeClientWithList[*v1beta1.DLPInspectTemplate, *v1beta1.DLPInspectTemplateList]
+// FakeDLPInspectTemplates implements DLPInspectTemplateInterface
+type FakeDLPInspectTemplates struct {
 	Fake *FakeDlpV1beta1
+	ns   string
 }
 
-func newFakeDLPInspectTemplates(fake *FakeDlpV1beta1, namespace string) dlpv1beta1.DLPInspectTemplateInterface {
-	return &fakeDLPInspectTemplates{
-		gentype.NewFakeClientWithList[*v1beta1.DLPInspectTemplate, *v1beta1.DLPInspectTemplateList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("dlpinspecttemplates"),
-			v1beta1.SchemeGroupVersion.WithKind("DLPInspectTemplate"),
-			func() *v1beta1.DLPInspectTemplate { return &v1beta1.DLPInspectTemplate{} },
-			func() *v1beta1.DLPInspectTemplateList { return &v1beta1.DLPInspectTemplateList{} },
-			func(dst, src *v1beta1.DLPInspectTemplateList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.DLPInspectTemplateList) []*v1beta1.DLPInspectTemplate {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.DLPInspectTemplateList, items []*v1beta1.DLPInspectTemplate) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var dlpinspecttemplatesResource = v1beta1.SchemeGroupVersion.WithResource("dlpinspecttemplates")
+
+var dlpinspecttemplatesKind = v1beta1.SchemeGroupVersion.WithKind("DLPInspectTemplate")
+
+// Get takes name of the dLPInspectTemplate, and returns the corresponding dLPInspectTemplate object, and an error if there is any.
+func (c *FakeDLPInspectTemplates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DLPInspectTemplate, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(dlpinspecttemplatesResource, c.ns, name), &v1beta1.DLPInspectTemplate{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.DLPInspectTemplate), err
+}
+
+// List takes label and field selectors, and returns the list of DLPInspectTemplates that match those selectors.
+func (c *FakeDLPInspectTemplates) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.DLPInspectTemplateList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(dlpinspecttemplatesResource, dlpinspecttemplatesKind, c.ns, opts), &v1beta1.DLPInspectTemplateList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.DLPInspectTemplateList{ListMeta: obj.(*v1beta1.DLPInspectTemplateList).ListMeta}
+	for _, item := range obj.(*v1beta1.DLPInspectTemplateList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested dLPInspectTemplates.
+func (c *FakeDLPInspectTemplates) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(dlpinspecttemplatesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a dLPInspectTemplate and creates it.  Returns the server's representation of the dLPInspectTemplate, and an error, if there is any.
+func (c *FakeDLPInspectTemplates) Create(ctx context.Context, dLPInspectTemplate *v1beta1.DLPInspectTemplate, opts v1.CreateOptions) (result *v1beta1.DLPInspectTemplate, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(dlpinspecttemplatesResource, c.ns, dLPInspectTemplate), &v1beta1.DLPInspectTemplate{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.DLPInspectTemplate), err
+}
+
+// Update takes the representation of a dLPInspectTemplate and updates it. Returns the server's representation of the dLPInspectTemplate, and an error, if there is any.
+func (c *FakeDLPInspectTemplates) Update(ctx context.Context, dLPInspectTemplate *v1beta1.DLPInspectTemplate, opts v1.UpdateOptions) (result *v1beta1.DLPInspectTemplate, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(dlpinspecttemplatesResource, c.ns, dLPInspectTemplate), &v1beta1.DLPInspectTemplate{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.DLPInspectTemplate), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDLPInspectTemplates) UpdateStatus(ctx context.Context, dLPInspectTemplate *v1beta1.DLPInspectTemplate, opts v1.UpdateOptions) (*v1beta1.DLPInspectTemplate, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(dlpinspecttemplatesResource, "status", c.ns, dLPInspectTemplate), &v1beta1.DLPInspectTemplate{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.DLPInspectTemplate), err
+}
+
+// Delete takes name of the dLPInspectTemplate and deletes it. Returns an error if one occurs.
+func (c *FakeDLPInspectTemplates) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(dlpinspecttemplatesResource, c.ns, name, opts), &v1beta1.DLPInspectTemplate{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDLPInspectTemplates) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(dlpinspecttemplatesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.DLPInspectTemplateList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched dLPInspectTemplate.
+func (c *FakeDLPInspectTemplates) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DLPInspectTemplate, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(dlpinspecttemplatesResource, c.ns, name, pt, data, subresources...), &v1beta1.DLPInspectTemplate{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.DLPInspectTemplate), err
 }

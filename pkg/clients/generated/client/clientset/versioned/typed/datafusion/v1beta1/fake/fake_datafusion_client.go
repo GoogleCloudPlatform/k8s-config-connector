@@ -32,7 +32,7 @@ type FakeDatafusionV1beta1 struct {
 }
 
 func (c *FakeDatafusionV1beta1) DataFusionInstances(namespace string) v1beta1.DataFusionInstanceInterface {
-	return newFakeDataFusionInstances(c, namespace)
+	return &FakeDataFusionInstances{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
