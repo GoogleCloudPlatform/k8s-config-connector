@@ -257,6 +257,12 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	if config.NodeConfig.ServiceAccount == "" {
 		config.NodeConfig.ServiceAccount = "${projectNumber}-compute@developer.gserviceaccount.com"
 	}
+	if config.NodeConfig.ComposerInternalIpv4CidrBlock == "" {
+		config.NodeConfig.ComposerInternalIpv4CidrBlock = "172.31.251.0/24"
+	}
+	if config.NodeConfig.ComposerNetworkAttachment == "" {
+		config.NodeConfig.ComposerNetworkAttachment = "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment"
+	}
 
 	if config.PrivateEnvironmentConfig == nil {
 		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}
