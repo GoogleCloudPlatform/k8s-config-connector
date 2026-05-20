@@ -32,7 +32,7 @@ type FakeContaineranalysisV1alpha1 struct {
 }
 
 func (c *FakeContaineranalysisV1alpha1) ContainerAnalysisOccurrences(namespace string) v1alpha1.ContainerAnalysisOccurrenceInterface {
-	return &FakeContainerAnalysisOccurrences{c, namespace}
+	return newFakeContainerAnalysisOccurrences(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

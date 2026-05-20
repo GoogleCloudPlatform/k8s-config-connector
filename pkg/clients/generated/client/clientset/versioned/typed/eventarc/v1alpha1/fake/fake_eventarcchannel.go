@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	eventarcv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeEventarcChannels implements EventarcChannelInterface
-type FakeEventarcChannels struct {
+// fakeEventarcChannels implements EventarcChannelInterface
+type fakeEventarcChannels struct {
+	*gentype.FakeClientWithList[*v1alpha1.EventarcChannel, *v1alpha1.EventarcChannelList]
 	Fake *FakeEventarcV1alpha1
-	ns   string
 }
 
-var eventarcchannelsResource = v1alpha1.SchemeGroupVersion.WithResource("eventarcchannels")
-
-var eventarcchannelsKind = v1alpha1.SchemeGroupVersion.WithKind("EventarcChannel")
-
-// Get takes name of the eventarcChannel, and returns the corresponding eventarcChannel object, and an error if there is any.
-func (c *FakeEventarcChannels) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.EventarcChannel, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(eventarcchannelsResource, c.ns, name), &v1alpha1.EventarcChannel{})
-
-	if obj == nil {
-		return nil, err
+func newFakeEventarcChannels(fake *FakeEventarcV1alpha1, namespace string) eventarcv1alpha1.EventarcChannelInterface {
+	return &fakeEventarcChannels{
+		gentype.NewFakeClientWithList[*v1alpha1.EventarcChannel, *v1alpha1.EventarcChannelList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("eventarcchannels"),
+			v1alpha1.SchemeGroupVersion.WithKind("EventarcChannel"),
+			func() *v1alpha1.EventarcChannel { return &v1alpha1.EventarcChannel{} },
+			func() *v1alpha1.EventarcChannelList { return &v1alpha1.EventarcChannelList{} },
+			func(dst, src *v1alpha1.EventarcChannelList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.EventarcChannelList) []*v1alpha1.EventarcChannel {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.EventarcChannelList, items []*v1alpha1.EventarcChannel) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.EventarcChannel), err
-}
-
-// List takes label and field selectors, and returns the list of EventarcChannels that match those selectors.
-func (c *FakeEventarcChannels) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.EventarcChannelList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(eventarcchannelsResource, eventarcchannelsKind, c.ns, opts), &v1alpha1.EventarcChannelList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.EventarcChannelList{ListMeta: obj.(*v1alpha1.EventarcChannelList).ListMeta}
-	for _, item := range obj.(*v1alpha1.EventarcChannelList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested eventarcChannels.
-func (c *FakeEventarcChannels) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(eventarcchannelsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a eventarcChannel and creates it.  Returns the server's representation of the eventarcChannel, and an error, if there is any.
-func (c *FakeEventarcChannels) Create(ctx context.Context, eventarcChannel *v1alpha1.EventarcChannel, opts v1.CreateOptions) (result *v1alpha1.EventarcChannel, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(eventarcchannelsResource, c.ns, eventarcChannel), &v1alpha1.EventarcChannel{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.EventarcChannel), err
-}
-
-// Update takes the representation of a eventarcChannel and updates it. Returns the server's representation of the eventarcChannel, and an error, if there is any.
-func (c *FakeEventarcChannels) Update(ctx context.Context, eventarcChannel *v1alpha1.EventarcChannel, opts v1.UpdateOptions) (result *v1alpha1.EventarcChannel, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(eventarcchannelsResource, c.ns, eventarcChannel), &v1alpha1.EventarcChannel{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.EventarcChannel), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeEventarcChannels) UpdateStatus(ctx context.Context, eventarcChannel *v1alpha1.EventarcChannel, opts v1.UpdateOptions) (*v1alpha1.EventarcChannel, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(eventarcchannelsResource, "status", c.ns, eventarcChannel), &v1alpha1.EventarcChannel{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.EventarcChannel), err
-}
-
-// Delete takes name of the eventarcChannel and deletes it. Returns an error if one occurs.
-func (c *FakeEventarcChannels) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(eventarcchannelsResource, c.ns, name, opts), &v1alpha1.EventarcChannel{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeEventarcChannels) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(eventarcchannelsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.EventarcChannelList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched eventarcChannel.
-func (c *FakeEventarcChannels) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.EventarcChannel, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(eventarcchannelsResource, c.ns, name, pt, data, subresources...), &v1alpha1.EventarcChannel{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.EventarcChannel), err
 }

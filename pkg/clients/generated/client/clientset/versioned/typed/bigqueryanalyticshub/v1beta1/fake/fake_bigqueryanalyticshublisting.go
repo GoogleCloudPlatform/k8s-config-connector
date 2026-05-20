@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryanalyticshub/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	bigqueryanalyticshubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBigQueryAnalyticsHubListings implements BigQueryAnalyticsHubListingInterface
-type FakeBigQueryAnalyticsHubListings struct {
+// fakeBigQueryAnalyticsHubListings implements BigQueryAnalyticsHubListingInterface
+type fakeBigQueryAnalyticsHubListings struct {
+	*gentype.FakeClientWithList[*v1beta1.BigQueryAnalyticsHubListing, *v1beta1.BigQueryAnalyticsHubListingList]
 	Fake *FakeBigqueryanalyticshubV1beta1
-	ns   string
 }
 
-var bigqueryanalyticshublistingsResource = v1beta1.SchemeGroupVersion.WithResource("bigqueryanalyticshublistings")
-
-var bigqueryanalyticshublistingsKind = v1beta1.SchemeGroupVersion.WithKind("BigQueryAnalyticsHubListing")
-
-// Get takes name of the bigQueryAnalyticsHubListing, and returns the corresponding bigQueryAnalyticsHubListing object, and an error if there is any.
-func (c *FakeBigQueryAnalyticsHubListings) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigQueryAnalyticsHubListing, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(bigqueryanalyticshublistingsResource, c.ns, name), &v1beta1.BigQueryAnalyticsHubListing{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBigQueryAnalyticsHubListings(fake *FakeBigqueryanalyticshubV1beta1, namespace string) bigqueryanalyticshubv1beta1.BigQueryAnalyticsHubListingInterface {
+	return &fakeBigQueryAnalyticsHubListings{
+		gentype.NewFakeClientWithList[*v1beta1.BigQueryAnalyticsHubListing, *v1beta1.BigQueryAnalyticsHubListingList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("bigqueryanalyticshublistings"),
+			v1beta1.SchemeGroupVersion.WithKind("BigQueryAnalyticsHubListing"),
+			func() *v1beta1.BigQueryAnalyticsHubListing { return &v1beta1.BigQueryAnalyticsHubListing{} },
+			func() *v1beta1.BigQueryAnalyticsHubListingList { return &v1beta1.BigQueryAnalyticsHubListingList{} },
+			func(dst, src *v1beta1.BigQueryAnalyticsHubListingList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.BigQueryAnalyticsHubListingList) []*v1beta1.BigQueryAnalyticsHubListing {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.BigQueryAnalyticsHubListingList, items []*v1beta1.BigQueryAnalyticsHubListing) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.BigQueryAnalyticsHubListing), err
-}
-
-// List takes label and field selectors, and returns the list of BigQueryAnalyticsHubListings that match those selectors.
-func (c *FakeBigQueryAnalyticsHubListings) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigQueryAnalyticsHubListingList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(bigqueryanalyticshublistingsResource, bigqueryanalyticshublistingsKind, c.ns, opts), &v1beta1.BigQueryAnalyticsHubListingList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.BigQueryAnalyticsHubListingList{ListMeta: obj.(*v1beta1.BigQueryAnalyticsHubListingList).ListMeta}
-	for _, item := range obj.(*v1beta1.BigQueryAnalyticsHubListingList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested bigQueryAnalyticsHubListings.
-func (c *FakeBigQueryAnalyticsHubListings) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(bigqueryanalyticshublistingsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a bigQueryAnalyticsHubListing and creates it.  Returns the server's representation of the bigQueryAnalyticsHubListing, and an error, if there is any.
-func (c *FakeBigQueryAnalyticsHubListings) Create(ctx context.Context, bigQueryAnalyticsHubListing *v1beta1.BigQueryAnalyticsHubListing, opts v1.CreateOptions) (result *v1beta1.BigQueryAnalyticsHubListing, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(bigqueryanalyticshublistingsResource, c.ns, bigQueryAnalyticsHubListing), &v1beta1.BigQueryAnalyticsHubListing{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigQueryAnalyticsHubListing), err
-}
-
-// Update takes the representation of a bigQueryAnalyticsHubListing and updates it. Returns the server's representation of the bigQueryAnalyticsHubListing, and an error, if there is any.
-func (c *FakeBigQueryAnalyticsHubListings) Update(ctx context.Context, bigQueryAnalyticsHubListing *v1beta1.BigQueryAnalyticsHubListing, opts v1.UpdateOptions) (result *v1beta1.BigQueryAnalyticsHubListing, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(bigqueryanalyticshublistingsResource, c.ns, bigQueryAnalyticsHubListing), &v1beta1.BigQueryAnalyticsHubListing{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigQueryAnalyticsHubListing), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigQueryAnalyticsHubListings) UpdateStatus(ctx context.Context, bigQueryAnalyticsHubListing *v1beta1.BigQueryAnalyticsHubListing, opts v1.UpdateOptions) (*v1beta1.BigQueryAnalyticsHubListing, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(bigqueryanalyticshublistingsResource, "status", c.ns, bigQueryAnalyticsHubListing), &v1beta1.BigQueryAnalyticsHubListing{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigQueryAnalyticsHubListing), err
-}
-
-// Delete takes name of the bigQueryAnalyticsHubListing and deletes it. Returns an error if one occurs.
-func (c *FakeBigQueryAnalyticsHubListings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(bigqueryanalyticshublistingsResource, c.ns, name, opts), &v1beta1.BigQueryAnalyticsHubListing{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBigQueryAnalyticsHubListings) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(bigqueryanalyticshublistingsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.BigQueryAnalyticsHubListingList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched bigQueryAnalyticsHubListing.
-func (c *FakeBigQueryAnalyticsHubListings) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigQueryAnalyticsHubListing, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(bigqueryanalyticshublistingsResource, c.ns, name, pt, data, subresources...), &v1beta1.BigQueryAnalyticsHubListing{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigQueryAnalyticsHubListing), err
 }

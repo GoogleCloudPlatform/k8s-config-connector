@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeAppHubApplications implements AppHubApplicationInterface
-type FakeAppHubApplications struct {
+// fakeAppHubApplications implements AppHubApplicationInterface
+type fakeAppHubApplications struct {
+	*gentype.FakeClientWithList[*v1beta1.AppHubApplication, *v1beta1.AppHubApplicationList]
 	Fake *FakeApphubV1beta1
-	ns   string
 }
 
-var apphubapplicationsResource = v1beta1.SchemeGroupVersion.WithResource("apphubapplications")
-
-var apphubapplicationsKind = v1beta1.SchemeGroupVersion.WithKind("AppHubApplication")
-
-// Get takes name of the appHubApplication, and returns the corresponding appHubApplication object, and an error if there is any.
-func (c *FakeAppHubApplications) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.AppHubApplication, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(apphubapplicationsResource, c.ns, name), &v1beta1.AppHubApplication{})
-
-	if obj == nil {
-		return nil, err
+func newFakeAppHubApplications(fake *FakeApphubV1beta1, namespace string) apphubv1beta1.AppHubApplicationInterface {
+	return &fakeAppHubApplications{
+		gentype.NewFakeClientWithList[*v1beta1.AppHubApplication, *v1beta1.AppHubApplicationList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("apphubapplications"),
+			v1beta1.SchemeGroupVersion.WithKind("AppHubApplication"),
+			func() *v1beta1.AppHubApplication { return &v1beta1.AppHubApplication{} },
+			func() *v1beta1.AppHubApplicationList { return &v1beta1.AppHubApplicationList{} },
+			func(dst, src *v1beta1.AppHubApplicationList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.AppHubApplicationList) []*v1beta1.AppHubApplication {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.AppHubApplicationList, items []*v1beta1.AppHubApplication) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.AppHubApplication), err
-}
-
-// List takes label and field selectors, and returns the list of AppHubApplications that match those selectors.
-func (c *FakeAppHubApplications) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.AppHubApplicationList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(apphubapplicationsResource, apphubapplicationsKind, c.ns, opts), &v1beta1.AppHubApplicationList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.AppHubApplicationList{ListMeta: obj.(*v1beta1.AppHubApplicationList).ListMeta}
-	for _, item := range obj.(*v1beta1.AppHubApplicationList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested appHubApplications.
-func (c *FakeAppHubApplications) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(apphubapplicationsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a appHubApplication and creates it.  Returns the server's representation of the appHubApplication, and an error, if there is any.
-func (c *FakeAppHubApplications) Create(ctx context.Context, appHubApplication *v1beta1.AppHubApplication, opts v1.CreateOptions) (result *v1beta1.AppHubApplication, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(apphubapplicationsResource, c.ns, appHubApplication), &v1beta1.AppHubApplication{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AppHubApplication), err
-}
-
-// Update takes the representation of a appHubApplication and updates it. Returns the server's representation of the appHubApplication, and an error, if there is any.
-func (c *FakeAppHubApplications) Update(ctx context.Context, appHubApplication *v1beta1.AppHubApplication, opts v1.UpdateOptions) (result *v1beta1.AppHubApplication, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(apphubapplicationsResource, c.ns, appHubApplication), &v1beta1.AppHubApplication{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AppHubApplication), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeAppHubApplications) UpdateStatus(ctx context.Context, appHubApplication *v1beta1.AppHubApplication, opts v1.UpdateOptions) (*v1beta1.AppHubApplication, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(apphubapplicationsResource, "status", c.ns, appHubApplication), &v1beta1.AppHubApplication{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AppHubApplication), err
-}
-
-// Delete takes name of the appHubApplication and deletes it. Returns an error if one occurs.
-func (c *FakeAppHubApplications) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(apphubapplicationsResource, c.ns, name, opts), &v1beta1.AppHubApplication{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeAppHubApplications) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(apphubapplicationsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.AppHubApplicationList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched appHubApplication.
-func (c *FakeAppHubApplications) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AppHubApplication, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(apphubapplicationsResource, c.ns, name, pt, data, subresources...), &v1beta1.AppHubApplication{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AppHubApplication), err
 }

@@ -32,7 +32,7 @@ type FakeBackupdrV1alpha1 struct {
 }
 
 func (c *FakeBackupdrV1alpha1) BackupDRManagementServers(namespace string) v1alpha1.BackupDRManagementServerInterface {
-	return &FakeBackupDRManagementServers{c, namespace}
+	return newFakeBackupDRManagementServers(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
