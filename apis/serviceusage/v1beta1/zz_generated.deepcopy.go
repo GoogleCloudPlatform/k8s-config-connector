@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -227,7 +228,7 @@ func (in *ServiceSpec) DeepCopyInto(out *ServiceSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(parent.ProjectRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
