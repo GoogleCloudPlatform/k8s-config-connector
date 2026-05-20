@@ -351,8 +351,19 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 		desired.MaintenanceWindow = actual.MaintenanceWindow
 	}
 
-	if desired.NodeConfig == nil {
+	if desired.NodeConfig == nil && actual.NodeConfig != nil {
 		desired.NodeConfig = actual.NodeConfig
+	} else if desired.NodeConfig != nil && actual.NodeConfig != nil {
+		// Preserve immutable, server-assigned fields.
+		// These fields are not sent in update requests (see NodeConfig_ToProto),
+		// but we need to match them in the desired state so CompareProtoMessage
+		// doesn't flag them as changed (drift).
+		if desired.NodeConfig.ComposerInternalIpv4CidrBlock == "" {
+			desired.NodeConfig.ComposerInternalIpv4CidrBlock = actual.NodeConfig.ComposerInternalIpv4CidrBlock
+		}
+		if desired.NodeConfig.ComposerNetworkAttachment == "" {
+			desired.NodeConfig.ComposerNetworkAttachment = actual.NodeConfig.ComposerNetworkAttachment
+		}
 	}
 
 	if actual.PrivateEnvironmentConfig != nil {

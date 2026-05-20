@@ -36,6 +36,16 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
+  "config": {
+    "nodeConfig": {
+      "network": "projects/${projectId}/global/networks/default",
+      "serviceAccount": "composer-env-sa@${projectId}.iam.gserviceaccount.com",
+      "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+    },
+    "softwareConfig": {
+      "imageVersion": "composer-3-airflow-3.1.7-build.5"
+    }
+  },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
 }
 
@@ -122,7 +132,8 @@ X-Xss-Protection: 0
           "useIpAliases": true
         },
         "network": "projects/${projectId}/global/networks/default",
-        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+        "serviceAccount": "composer-env-sa@${projectId}.iam.gserviceaccount.com",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "privateEnvironmentConfig": {
         "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
@@ -131,7 +142,7 @@ X-Xss-Protection: 0
       },
       "softwareConfig": {
         "cloudDataLineageIntegration": {},
-        "imageVersion": "composer-2.11.3-airflow-2.10.2",
+        "imageVersion": "composer-3-airflow-3.1.7-build.5",
         "pythonVersion": "3"
       },
       "webServerNetworkAccessControl": {
@@ -222,7 +233,8 @@ X-Xss-Protection: 0
       "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment",
       "ipAllocationPolicy": {},
       "network": "projects/${projectId}/global/networks/default",
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+      "serviceAccount": "composer-env-sa@${projectId}.iam.gserviceaccount.com",
+      "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
     },
     "privateEnvironmentConfig": {
       "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
@@ -231,7 +243,7 @@ X-Xss-Protection: 0
     },
     "softwareConfig": {
       "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-2.11.3-airflow-2.10.2"
+      "imageVersion": "composer-3-airflow-3.1.7-build.5"
     },
     "webServerNetworkAccessControl": {
       "allowedIpRanges": [
@@ -306,9 +318,9 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "172.31.251.0/24",
       "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment",
-      "ipAllocationPolicy": {},
       "network": "projects/${projectId}/global/networks/default",
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+      "serviceAccount": "composer-env-sa@${projectId}.iam.gserviceaccount.com",
+      "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
     },
     "privateEnvironmentConfig": {
       "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
@@ -317,7 +329,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
     },
     "softwareConfig": {
       "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-2.11.3-airflow-2.10.2"
+      "imageVersion": "composer-3-airflow-3.1.7-build.5"
     },
     "webServerNetworkAccessControl": {
       "allowedIpRanges": [
@@ -448,7 +460,8 @@ X-Xss-Protection: 0
           "useIpAliases": true
         },
         "network": "projects/${projectId}/global/networks/default",
-        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+        "serviceAccount": "composer-env-sa@${projectId}.iam.gserviceaccount.com",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "privateEnvironmentConfig": {
         "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
@@ -457,7 +470,7 @@ X-Xss-Protection: 0
       },
       "softwareConfig": {
         "cloudDataLineageIntegration": {},
-        "imageVersion": "composer-2.11.3-airflow-2.10.2",
+        "imageVersion": "composer-3-airflow-3.1.7-build.5",
         "pythonVersion": "3"
       },
       "webServerNetworkAccessControl": {
@@ -551,7 +564,8 @@ X-Xss-Protection: 0
       "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment",
       "ipAllocationPolicy": {},
       "network": "projects/${projectId}/global/networks/default",
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+      "serviceAccount": "composer-env-sa@${projectId}.iam.gserviceaccount.com",
+      "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
     },
     "privateEnvironmentConfig": {
       "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
@@ -560,7 +574,7 @@ X-Xss-Protection: 0
     },
     "softwareConfig": {
       "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-2.11.3-airflow-2.10.2"
+      "imageVersion": "composer-3-airflow-3.1.7-build.5"
     },
     "webServerNetworkAccessControl": {
       "allowedIpRanges": [
