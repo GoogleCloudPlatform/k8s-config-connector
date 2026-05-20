@@ -22,38 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/serviceusage/v1alpha1"
-	serviceusagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/serviceusage/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeServiceUsageConsumerQuotaOverrides implements ServiceUsageConsumerQuotaOverrideInterface
-type fakeServiceUsageConsumerQuotaOverrides struct {
-	*gentype.FakeClientWithList[*v1alpha1.ServiceUsageConsumerQuotaOverride, *v1alpha1.ServiceUsageConsumerQuotaOverrideList]
+// FakeServiceUsageConsumerQuotaOverrides implements ServiceUsageConsumerQuotaOverrideInterface
+type FakeServiceUsageConsumerQuotaOverrides struct {
 	Fake *FakeServiceusageV1alpha1
+	ns   string
 }
 
-func newFakeServiceUsageConsumerQuotaOverrides(fake *FakeServiceusageV1alpha1, namespace string) serviceusagev1alpha1.ServiceUsageConsumerQuotaOverrideInterface {
-	return &fakeServiceUsageConsumerQuotaOverrides{
-		gentype.NewFakeClientWithList[*v1alpha1.ServiceUsageConsumerQuotaOverride, *v1alpha1.ServiceUsageConsumerQuotaOverrideList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("serviceusageconsumerquotaoverrides"),
-			v1alpha1.SchemeGroupVersion.WithKind("ServiceUsageConsumerQuotaOverride"),
-			func() *v1alpha1.ServiceUsageConsumerQuotaOverride {
-				return &v1alpha1.ServiceUsageConsumerQuotaOverride{}
-			},
-			func() *v1alpha1.ServiceUsageConsumerQuotaOverrideList {
-				return &v1alpha1.ServiceUsageConsumerQuotaOverrideList{}
-			},
-			func(dst, src *v1alpha1.ServiceUsageConsumerQuotaOverrideList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ServiceUsageConsumerQuotaOverrideList) []*v1alpha1.ServiceUsageConsumerQuotaOverride {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.ServiceUsageConsumerQuotaOverrideList, items []*v1alpha1.ServiceUsageConsumerQuotaOverride) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var serviceusageconsumerquotaoverridesResource = v1alpha1.SchemeGroupVersion.WithResource("serviceusageconsumerquotaoverrides")
+
+var serviceusageconsumerquotaoverridesKind = v1alpha1.SchemeGroupVersion.WithKind("ServiceUsageConsumerQuotaOverride")
+
+// Get takes name of the serviceUsageConsumerQuotaOverride, and returns the corresponding serviceUsageConsumerQuotaOverride object, and an error if there is any.
+func (c *FakeServiceUsageConsumerQuotaOverrides) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ServiceUsageConsumerQuotaOverride, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(serviceusageconsumerquotaoverridesResource, c.ns, name), &v1alpha1.ServiceUsageConsumerQuotaOverride{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.ServiceUsageConsumerQuotaOverride), err
+}
+
+// List takes label and field selectors, and returns the list of ServiceUsageConsumerQuotaOverrides that match those selectors.
+func (c *FakeServiceUsageConsumerQuotaOverrides) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ServiceUsageConsumerQuotaOverrideList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(serviceusageconsumerquotaoverridesResource, serviceusageconsumerquotaoverridesKind, c.ns, opts), &v1alpha1.ServiceUsageConsumerQuotaOverrideList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.ServiceUsageConsumerQuotaOverrideList{ListMeta: obj.(*v1alpha1.ServiceUsageConsumerQuotaOverrideList).ListMeta}
+	for _, item := range obj.(*v1alpha1.ServiceUsageConsumerQuotaOverrideList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested serviceUsageConsumerQuotaOverrides.
+func (c *FakeServiceUsageConsumerQuotaOverrides) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(serviceusageconsumerquotaoverridesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a serviceUsageConsumerQuotaOverride and creates it.  Returns the server's representation of the serviceUsageConsumerQuotaOverride, and an error, if there is any.
+func (c *FakeServiceUsageConsumerQuotaOverrides) Create(ctx context.Context, serviceUsageConsumerQuotaOverride *v1alpha1.ServiceUsageConsumerQuotaOverride, opts v1.CreateOptions) (result *v1alpha1.ServiceUsageConsumerQuotaOverride, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(serviceusageconsumerquotaoverridesResource, c.ns, serviceUsageConsumerQuotaOverride), &v1alpha1.ServiceUsageConsumerQuotaOverride{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ServiceUsageConsumerQuotaOverride), err
+}
+
+// Update takes the representation of a serviceUsageConsumerQuotaOverride and updates it. Returns the server's representation of the serviceUsageConsumerQuotaOverride, and an error, if there is any.
+func (c *FakeServiceUsageConsumerQuotaOverrides) Update(ctx context.Context, serviceUsageConsumerQuotaOverride *v1alpha1.ServiceUsageConsumerQuotaOverride, opts v1.UpdateOptions) (result *v1alpha1.ServiceUsageConsumerQuotaOverride, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(serviceusageconsumerquotaoverridesResource, c.ns, serviceUsageConsumerQuotaOverride), &v1alpha1.ServiceUsageConsumerQuotaOverride{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ServiceUsageConsumerQuotaOverride), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeServiceUsageConsumerQuotaOverrides) UpdateStatus(ctx context.Context, serviceUsageConsumerQuotaOverride *v1alpha1.ServiceUsageConsumerQuotaOverride, opts v1.UpdateOptions) (*v1alpha1.ServiceUsageConsumerQuotaOverride, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(serviceusageconsumerquotaoverridesResource, "status", c.ns, serviceUsageConsumerQuotaOverride), &v1alpha1.ServiceUsageConsumerQuotaOverride{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ServiceUsageConsumerQuotaOverride), err
+}
+
+// Delete takes name of the serviceUsageConsumerQuotaOverride and deletes it. Returns an error if one occurs.
+func (c *FakeServiceUsageConsumerQuotaOverrides) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(serviceusageconsumerquotaoverridesResource, c.ns, name, opts), &v1alpha1.ServiceUsageConsumerQuotaOverride{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeServiceUsageConsumerQuotaOverrides) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(serviceusageconsumerquotaoverridesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.ServiceUsageConsumerQuotaOverrideList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched serviceUsageConsumerQuotaOverride.
+func (c *FakeServiceUsageConsumerQuotaOverrides) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ServiceUsageConsumerQuotaOverride, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(serviceusageconsumerquotaoverridesResource, c.ns, name, pt, data, subresources...), &v1alpha1.ServiceUsageConsumerQuotaOverride{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ServiceUsageConsumerQuotaOverride), err
 }

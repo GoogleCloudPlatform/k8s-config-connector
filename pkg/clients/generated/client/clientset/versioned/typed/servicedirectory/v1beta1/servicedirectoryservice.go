@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicedirectory/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicedirectory/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ServiceDirectoryServicesGetter has a method to return a ServiceDirectoryServiceInterface.
@@ -40,38 +41,158 @@ type ServiceDirectoryServicesGetter interface {
 
 // ServiceDirectoryServiceInterface has methods to work with ServiceDirectoryService resources.
 type ServiceDirectoryServiceInterface interface {
-	Create(ctx context.Context, serviceDirectoryService *servicedirectoryv1beta1.ServiceDirectoryService, opts v1.CreateOptions) (*servicedirectoryv1beta1.ServiceDirectoryService, error)
-	Update(ctx context.Context, serviceDirectoryService *servicedirectoryv1beta1.ServiceDirectoryService, opts v1.UpdateOptions) (*servicedirectoryv1beta1.ServiceDirectoryService, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, serviceDirectoryService *servicedirectoryv1beta1.ServiceDirectoryService, opts v1.UpdateOptions) (*servicedirectoryv1beta1.ServiceDirectoryService, error)
+	Create(ctx context.Context, serviceDirectoryService *v1beta1.ServiceDirectoryService, opts v1.CreateOptions) (*v1beta1.ServiceDirectoryService, error)
+	Update(ctx context.Context, serviceDirectoryService *v1beta1.ServiceDirectoryService, opts v1.UpdateOptions) (*v1beta1.ServiceDirectoryService, error)
+	UpdateStatus(ctx context.Context, serviceDirectoryService *v1beta1.ServiceDirectoryService, opts v1.UpdateOptions) (*v1beta1.ServiceDirectoryService, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*servicedirectoryv1beta1.ServiceDirectoryService, error)
-	List(ctx context.Context, opts v1.ListOptions) (*servicedirectoryv1beta1.ServiceDirectoryServiceList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ServiceDirectoryService, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ServiceDirectoryServiceList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *servicedirectoryv1beta1.ServiceDirectoryService, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ServiceDirectoryService, err error)
 	ServiceDirectoryServiceExpansion
 }
 
 // serviceDirectoryServices implements ServiceDirectoryServiceInterface
 type serviceDirectoryServices struct {
-	*gentype.ClientWithList[*servicedirectoryv1beta1.ServiceDirectoryService, *servicedirectoryv1beta1.ServiceDirectoryServiceList]
+	client rest.Interface
+	ns     string
 }
 
 // newServiceDirectoryServices returns a ServiceDirectoryServices
 func newServiceDirectoryServices(c *ServicedirectoryV1beta1Client, namespace string) *serviceDirectoryServices {
 	return &serviceDirectoryServices{
-		gentype.NewClientWithList[*servicedirectoryv1beta1.ServiceDirectoryService, *servicedirectoryv1beta1.ServiceDirectoryServiceList](
-			"servicedirectoryservices",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *servicedirectoryv1beta1.ServiceDirectoryService {
-				return &servicedirectoryv1beta1.ServiceDirectoryService{}
-			},
-			func() *servicedirectoryv1beta1.ServiceDirectoryServiceList {
-				return &servicedirectoryv1beta1.ServiceDirectoryServiceList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the serviceDirectoryService, and returns the corresponding serviceDirectoryService object, and an error if there is any.
+func (c *serviceDirectoryServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ServiceDirectoryService, err error) {
+	result = &v1beta1.ServiceDirectoryService{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("servicedirectoryservices").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ServiceDirectoryServices that match those selectors.
+func (c *serviceDirectoryServices) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ServiceDirectoryServiceList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ServiceDirectoryServiceList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("servicedirectoryservices").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested serviceDirectoryServices.
+func (c *serviceDirectoryServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("servicedirectoryservices").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a serviceDirectoryService and creates it.  Returns the server's representation of the serviceDirectoryService, and an error, if there is any.
+func (c *serviceDirectoryServices) Create(ctx context.Context, serviceDirectoryService *v1beta1.ServiceDirectoryService, opts v1.CreateOptions) (result *v1beta1.ServiceDirectoryService, err error) {
+	result = &v1beta1.ServiceDirectoryService{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("servicedirectoryservices").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(serviceDirectoryService).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a serviceDirectoryService and updates it. Returns the server's representation of the serviceDirectoryService, and an error, if there is any.
+func (c *serviceDirectoryServices) Update(ctx context.Context, serviceDirectoryService *v1beta1.ServiceDirectoryService, opts v1.UpdateOptions) (result *v1beta1.ServiceDirectoryService, err error) {
+	result = &v1beta1.ServiceDirectoryService{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("servicedirectoryservices").
+		Name(serviceDirectoryService.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(serviceDirectoryService).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *serviceDirectoryServices) UpdateStatus(ctx context.Context, serviceDirectoryService *v1beta1.ServiceDirectoryService, opts v1.UpdateOptions) (result *v1beta1.ServiceDirectoryService, err error) {
+	result = &v1beta1.ServiceDirectoryService{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("servicedirectoryservices").
+		Name(serviceDirectoryService.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(serviceDirectoryService).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the serviceDirectoryService and deletes it. Returns an error if one occurs.
+func (c *serviceDirectoryServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("servicedirectoryservices").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *serviceDirectoryServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("servicedirectoryservices").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched serviceDirectoryService.
+func (c *serviceDirectoryServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ServiceDirectoryService, err error) {
+	result = &v1beta1.ServiceDirectoryService{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("servicedirectoryservices").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

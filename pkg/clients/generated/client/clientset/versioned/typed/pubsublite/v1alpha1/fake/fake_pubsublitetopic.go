@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsublite/v1alpha1"
-	pubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakePubSubLiteTopics implements PubSubLiteTopicInterface
-type fakePubSubLiteTopics struct {
-	*gentype.FakeClientWithList[*v1alpha1.PubSubLiteTopic, *v1alpha1.PubSubLiteTopicList]
+// FakePubSubLiteTopics implements PubSubLiteTopicInterface
+type FakePubSubLiteTopics struct {
 	Fake *FakePubsubliteV1alpha1
+	ns   string
 }
 
-func newFakePubSubLiteTopics(fake *FakePubsubliteV1alpha1, namespace string) pubsublitev1alpha1.PubSubLiteTopicInterface {
-	return &fakePubSubLiteTopics{
-		gentype.NewFakeClientWithList[*v1alpha1.PubSubLiteTopic, *v1alpha1.PubSubLiteTopicList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("pubsublitetopics"),
-			v1alpha1.SchemeGroupVersion.WithKind("PubSubLiteTopic"),
-			func() *v1alpha1.PubSubLiteTopic { return &v1alpha1.PubSubLiteTopic{} },
-			func() *v1alpha1.PubSubLiteTopicList { return &v1alpha1.PubSubLiteTopicList{} },
-			func(dst, src *v1alpha1.PubSubLiteTopicList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.PubSubLiteTopicList) []*v1alpha1.PubSubLiteTopic {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.PubSubLiteTopicList, items []*v1alpha1.PubSubLiteTopic) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var pubsublitetopicsResource = v1alpha1.SchemeGroupVersion.WithResource("pubsublitetopics")
+
+var pubsublitetopicsKind = v1alpha1.SchemeGroupVersion.WithKind("PubSubLiteTopic")
+
+// Get takes name of the pubSubLiteTopic, and returns the corresponding pubSubLiteTopic object, and an error if there is any.
+func (c *FakePubSubLiteTopics) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.PubSubLiteTopic, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(pubsublitetopicsResource, c.ns, name), &v1alpha1.PubSubLiteTopic{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.PubSubLiteTopic), err
+}
+
+// List takes label and field selectors, and returns the list of PubSubLiteTopics that match those selectors.
+func (c *FakePubSubLiteTopics) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.PubSubLiteTopicList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(pubsublitetopicsResource, pubsublitetopicsKind, c.ns, opts), &v1alpha1.PubSubLiteTopicList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.PubSubLiteTopicList{ListMeta: obj.(*v1alpha1.PubSubLiteTopicList).ListMeta}
+	for _, item := range obj.(*v1alpha1.PubSubLiteTopicList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested pubSubLiteTopics.
+func (c *FakePubSubLiteTopics) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(pubsublitetopicsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a pubSubLiteTopic and creates it.  Returns the server's representation of the pubSubLiteTopic, and an error, if there is any.
+func (c *FakePubSubLiteTopics) Create(ctx context.Context, pubSubLiteTopic *v1alpha1.PubSubLiteTopic, opts v1.CreateOptions) (result *v1alpha1.PubSubLiteTopic, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(pubsublitetopicsResource, c.ns, pubSubLiteTopic), &v1alpha1.PubSubLiteTopic{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.PubSubLiteTopic), err
+}
+
+// Update takes the representation of a pubSubLiteTopic and updates it. Returns the server's representation of the pubSubLiteTopic, and an error, if there is any.
+func (c *FakePubSubLiteTopics) Update(ctx context.Context, pubSubLiteTopic *v1alpha1.PubSubLiteTopic, opts v1.UpdateOptions) (result *v1alpha1.PubSubLiteTopic, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(pubsublitetopicsResource, c.ns, pubSubLiteTopic), &v1alpha1.PubSubLiteTopic{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.PubSubLiteTopic), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakePubSubLiteTopics) UpdateStatus(ctx context.Context, pubSubLiteTopic *v1alpha1.PubSubLiteTopic, opts v1.UpdateOptions) (*v1alpha1.PubSubLiteTopic, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(pubsublitetopicsResource, "status", c.ns, pubSubLiteTopic), &v1alpha1.PubSubLiteTopic{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.PubSubLiteTopic), err
+}
+
+// Delete takes name of the pubSubLiteTopic and deletes it. Returns an error if one occurs.
+func (c *FakePubSubLiteTopics) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(pubsublitetopicsResource, c.ns, name, opts), &v1alpha1.PubSubLiteTopic{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakePubSubLiteTopics) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(pubsublitetopicsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.PubSubLiteTopicList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched pubSubLiteTopic.
+func (c *FakePubSubLiteTopics) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.PubSubLiteTopic, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(pubsublitetopicsResource, c.ns, name, pt, data, subresources...), &v1alpha1.PubSubLiteTopic{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.PubSubLiteTopic), err
 }

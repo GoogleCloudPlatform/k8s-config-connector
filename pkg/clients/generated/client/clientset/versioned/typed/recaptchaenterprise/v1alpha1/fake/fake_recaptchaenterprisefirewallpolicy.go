@@ -22,38 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1alpha1"
-	recaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeReCAPTCHAEnterpriseFirewallPolicies implements ReCAPTCHAEnterpriseFirewallPolicyInterface
-type fakeReCAPTCHAEnterpriseFirewallPolicies struct {
-	*gentype.FakeClientWithList[*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList]
+// FakeReCAPTCHAEnterpriseFirewallPolicies implements ReCAPTCHAEnterpriseFirewallPolicyInterface
+type FakeReCAPTCHAEnterpriseFirewallPolicies struct {
 	Fake *FakeRecaptchaenterpriseV1alpha1
+	ns   string
 }
 
-func newFakeReCAPTCHAEnterpriseFirewallPolicies(fake *FakeRecaptchaenterpriseV1alpha1, namespace string) recaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicyInterface {
-	return &fakeReCAPTCHAEnterpriseFirewallPolicies{
-		gentype.NewFakeClientWithList[*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("recaptchaenterprisefirewallpolicies"),
-			v1alpha1.SchemeGroupVersion.WithKind("ReCAPTCHAEnterpriseFirewallPolicy"),
-			func() *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy {
-				return &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{}
-			},
-			func() *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList {
-				return &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList{}
-			},
-			func(dst, src *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList) []*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList, items []*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var recaptchaenterprisefirewallpoliciesResource = v1alpha1.SchemeGroupVersion.WithResource("recaptchaenterprisefirewallpolicies")
+
+var recaptchaenterprisefirewallpoliciesKind = v1alpha1.SchemeGroupVersion.WithKind("ReCAPTCHAEnterpriseFirewallPolicy")
+
+// Get takes name of the reCAPTCHAEnterpriseFirewallPolicy, and returns the corresponding reCAPTCHAEnterpriseFirewallPolicy object, and an error if there is any.
+func (c *FakeReCAPTCHAEnterpriseFirewallPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(recaptchaenterprisefirewallpoliciesResource, c.ns, name), &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy), err
+}
+
+// List takes label and field selectors, and returns the list of ReCAPTCHAEnterpriseFirewallPolicies that match those selectors.
+func (c *FakeReCAPTCHAEnterpriseFirewallPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(recaptchaenterprisefirewallpoliciesResource, recaptchaenterprisefirewallpoliciesKind, c.ns, opts), &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList{ListMeta: obj.(*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList).ListMeta}
+	for _, item := range obj.(*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested reCAPTCHAEnterpriseFirewallPolicies.
+func (c *FakeReCAPTCHAEnterpriseFirewallPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(recaptchaenterprisefirewallpoliciesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a reCAPTCHAEnterpriseFirewallPolicy and creates it.  Returns the server's representation of the reCAPTCHAEnterpriseFirewallPolicy, and an error, if there is any.
+func (c *FakeReCAPTCHAEnterpriseFirewallPolicies) Create(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.CreateOptions) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(recaptchaenterprisefirewallpoliciesResource, c.ns, reCAPTCHAEnterpriseFirewallPolicy), &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy), err
+}
+
+// Update takes the representation of a reCAPTCHAEnterpriseFirewallPolicy and updates it. Returns the server's representation of the reCAPTCHAEnterpriseFirewallPolicy, and an error, if there is any.
+func (c *FakeReCAPTCHAEnterpriseFirewallPolicies) Update(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.UpdateOptions) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(recaptchaenterprisefirewallpoliciesResource, c.ns, reCAPTCHAEnterpriseFirewallPolicy), &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeReCAPTCHAEnterpriseFirewallPolicies) UpdateStatus(ctx context.Context, reCAPTCHAEnterpriseFirewallPolicy *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, opts v1.UpdateOptions) (*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(recaptchaenterprisefirewallpoliciesResource, "status", c.ns, reCAPTCHAEnterpriseFirewallPolicy), &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy), err
+}
+
+// Delete takes name of the reCAPTCHAEnterpriseFirewallPolicy and deletes it. Returns an error if one occurs.
+func (c *FakeReCAPTCHAEnterpriseFirewallPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(recaptchaenterprisefirewallpoliciesResource, c.ns, name, opts), &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeReCAPTCHAEnterpriseFirewallPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(recaptchaenterprisefirewallpoliciesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicyList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched reCAPTCHAEnterpriseFirewallPolicy.
+func (c *FakeReCAPTCHAEnterpriseFirewallPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(recaptchaenterprisefirewallpoliciesResource, c.ns, name, pt, data, subresources...), &v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ReCAPTCHAEnterpriseFirewallPolicy), err
 }

@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/privateca/v1beta1"
-	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakePrivateCACertificateAuthorities implements PrivateCACertificateAuthorityInterface
-type fakePrivateCACertificateAuthorities struct {
-	*gentype.FakeClientWithList[*v1beta1.PrivateCACertificateAuthority, *v1beta1.PrivateCACertificateAuthorityList]
+// FakePrivateCACertificateAuthorities implements PrivateCACertificateAuthorityInterface
+type FakePrivateCACertificateAuthorities struct {
 	Fake *FakePrivatecaV1beta1
+	ns   string
 }
 
-func newFakePrivateCACertificateAuthorities(fake *FakePrivatecaV1beta1, namespace string) privatecav1beta1.PrivateCACertificateAuthorityInterface {
-	return &fakePrivateCACertificateAuthorities{
-		gentype.NewFakeClientWithList[*v1beta1.PrivateCACertificateAuthority, *v1beta1.PrivateCACertificateAuthorityList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("privatecacertificateauthorities"),
-			v1beta1.SchemeGroupVersion.WithKind("PrivateCACertificateAuthority"),
-			func() *v1beta1.PrivateCACertificateAuthority { return &v1beta1.PrivateCACertificateAuthority{} },
-			func() *v1beta1.PrivateCACertificateAuthorityList { return &v1beta1.PrivateCACertificateAuthorityList{} },
-			func(dst, src *v1beta1.PrivateCACertificateAuthorityList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.PrivateCACertificateAuthorityList) []*v1beta1.PrivateCACertificateAuthority {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.PrivateCACertificateAuthorityList, items []*v1beta1.PrivateCACertificateAuthority) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var privatecacertificateauthoritiesResource = v1beta1.SchemeGroupVersion.WithResource("privatecacertificateauthorities")
+
+var privatecacertificateauthoritiesKind = v1beta1.SchemeGroupVersion.WithKind("PrivateCACertificateAuthority")
+
+// Get takes name of the privateCACertificateAuthority, and returns the corresponding privateCACertificateAuthority object, and an error if there is any.
+func (c *FakePrivateCACertificateAuthorities) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.PrivateCACertificateAuthority, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(privatecacertificateauthoritiesResource, c.ns, name), &v1beta1.PrivateCACertificateAuthority{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.PrivateCACertificateAuthority), err
+}
+
+// List takes label and field selectors, and returns the list of PrivateCACertificateAuthorities that match those selectors.
+func (c *FakePrivateCACertificateAuthorities) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.PrivateCACertificateAuthorityList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(privatecacertificateauthoritiesResource, privatecacertificateauthoritiesKind, c.ns, opts), &v1beta1.PrivateCACertificateAuthorityList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.PrivateCACertificateAuthorityList{ListMeta: obj.(*v1beta1.PrivateCACertificateAuthorityList).ListMeta}
+	for _, item := range obj.(*v1beta1.PrivateCACertificateAuthorityList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested privateCACertificateAuthorities.
+func (c *FakePrivateCACertificateAuthorities) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(privatecacertificateauthoritiesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a privateCACertificateAuthority and creates it.  Returns the server's representation of the privateCACertificateAuthority, and an error, if there is any.
+func (c *FakePrivateCACertificateAuthorities) Create(ctx context.Context, privateCACertificateAuthority *v1beta1.PrivateCACertificateAuthority, opts v1.CreateOptions) (result *v1beta1.PrivateCACertificateAuthority, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(privatecacertificateauthoritiesResource, c.ns, privateCACertificateAuthority), &v1beta1.PrivateCACertificateAuthority{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PrivateCACertificateAuthority), err
+}
+
+// Update takes the representation of a privateCACertificateAuthority and updates it. Returns the server's representation of the privateCACertificateAuthority, and an error, if there is any.
+func (c *FakePrivateCACertificateAuthorities) Update(ctx context.Context, privateCACertificateAuthority *v1beta1.PrivateCACertificateAuthority, opts v1.UpdateOptions) (result *v1beta1.PrivateCACertificateAuthority, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(privatecacertificateauthoritiesResource, c.ns, privateCACertificateAuthority), &v1beta1.PrivateCACertificateAuthority{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PrivateCACertificateAuthority), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakePrivateCACertificateAuthorities) UpdateStatus(ctx context.Context, privateCACertificateAuthority *v1beta1.PrivateCACertificateAuthority, opts v1.UpdateOptions) (*v1beta1.PrivateCACertificateAuthority, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(privatecacertificateauthoritiesResource, "status", c.ns, privateCACertificateAuthority), &v1beta1.PrivateCACertificateAuthority{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PrivateCACertificateAuthority), err
+}
+
+// Delete takes name of the privateCACertificateAuthority and deletes it. Returns an error if one occurs.
+func (c *FakePrivateCACertificateAuthorities) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(privatecacertificateauthoritiesResource, c.ns, name, opts), &v1beta1.PrivateCACertificateAuthority{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakePrivateCACertificateAuthorities) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(privatecacertificateauthoritiesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.PrivateCACertificateAuthorityList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched privateCACertificateAuthority.
+func (c *FakePrivateCACertificateAuthorities) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.PrivateCACertificateAuthority, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(privatecacertificateauthoritiesResource, c.ns, name, pt, data, subresources...), &v1beta1.PrivateCACertificateAuthority{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PrivateCACertificateAuthority), err
 }

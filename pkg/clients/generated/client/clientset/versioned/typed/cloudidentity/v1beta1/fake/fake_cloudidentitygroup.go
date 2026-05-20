@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1beta1"
-	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeCloudIdentityGroups implements CloudIdentityGroupInterface
-type fakeCloudIdentityGroups struct {
-	*gentype.FakeClientWithList[*v1beta1.CloudIdentityGroup, *v1beta1.CloudIdentityGroupList]
+// FakeCloudIdentityGroups implements CloudIdentityGroupInterface
+type FakeCloudIdentityGroups struct {
 	Fake *FakeCloudidentityV1beta1
+	ns   string
 }
 
-func newFakeCloudIdentityGroups(fake *FakeCloudidentityV1beta1, namespace string) cloudidentityv1beta1.CloudIdentityGroupInterface {
-	return &fakeCloudIdentityGroups{
-		gentype.NewFakeClientWithList[*v1beta1.CloudIdentityGroup, *v1beta1.CloudIdentityGroupList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("cloudidentitygroups"),
-			v1beta1.SchemeGroupVersion.WithKind("CloudIdentityGroup"),
-			func() *v1beta1.CloudIdentityGroup { return &v1beta1.CloudIdentityGroup{} },
-			func() *v1beta1.CloudIdentityGroupList { return &v1beta1.CloudIdentityGroupList{} },
-			func(dst, src *v1beta1.CloudIdentityGroupList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.CloudIdentityGroupList) []*v1beta1.CloudIdentityGroup {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.CloudIdentityGroupList, items []*v1beta1.CloudIdentityGroup) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var cloudidentitygroupsResource = v1beta1.SchemeGroupVersion.WithResource("cloudidentitygroups")
+
+var cloudidentitygroupsKind = v1beta1.SchemeGroupVersion.WithKind("CloudIdentityGroup")
+
+// Get takes name of the cloudIdentityGroup, and returns the corresponding cloudIdentityGroup object, and an error if there is any.
+func (c *FakeCloudIdentityGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.CloudIdentityGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(cloudidentitygroupsResource, c.ns, name), &v1beta1.CloudIdentityGroup{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.CloudIdentityGroup), err
+}
+
+// List takes label and field selectors, and returns the list of CloudIdentityGroups that match those selectors.
+func (c *FakeCloudIdentityGroups) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.CloudIdentityGroupList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(cloudidentitygroupsResource, cloudidentitygroupsKind, c.ns, opts), &v1beta1.CloudIdentityGroupList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.CloudIdentityGroupList{ListMeta: obj.(*v1beta1.CloudIdentityGroupList).ListMeta}
+	for _, item := range obj.(*v1beta1.CloudIdentityGroupList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested cloudIdentityGroups.
+func (c *FakeCloudIdentityGroups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(cloudidentitygroupsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a cloudIdentityGroup and creates it.  Returns the server's representation of the cloudIdentityGroup, and an error, if there is any.
+func (c *FakeCloudIdentityGroups) Create(ctx context.Context, cloudIdentityGroup *v1beta1.CloudIdentityGroup, opts v1.CreateOptions) (result *v1beta1.CloudIdentityGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(cloudidentitygroupsResource, c.ns, cloudIdentityGroup), &v1beta1.CloudIdentityGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.CloudIdentityGroup), err
+}
+
+// Update takes the representation of a cloudIdentityGroup and updates it. Returns the server's representation of the cloudIdentityGroup, and an error, if there is any.
+func (c *FakeCloudIdentityGroups) Update(ctx context.Context, cloudIdentityGroup *v1beta1.CloudIdentityGroup, opts v1.UpdateOptions) (result *v1beta1.CloudIdentityGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(cloudidentitygroupsResource, c.ns, cloudIdentityGroup), &v1beta1.CloudIdentityGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.CloudIdentityGroup), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeCloudIdentityGroups) UpdateStatus(ctx context.Context, cloudIdentityGroup *v1beta1.CloudIdentityGroup, opts v1.UpdateOptions) (*v1beta1.CloudIdentityGroup, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(cloudidentitygroupsResource, "status", c.ns, cloudIdentityGroup), &v1beta1.CloudIdentityGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.CloudIdentityGroup), err
+}
+
+// Delete takes name of the cloudIdentityGroup and deletes it. Returns an error if one occurs.
+func (c *FakeCloudIdentityGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(cloudidentitygroupsResource, c.ns, name, opts), &v1beta1.CloudIdentityGroup{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeCloudIdentityGroups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(cloudidentitygroupsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.CloudIdentityGroupList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched cloudIdentityGroup.
+func (c *FakeCloudIdentityGroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.CloudIdentityGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(cloudidentitygroupsResource, c.ns, name, pt, data, subresources...), &v1beta1.CloudIdentityGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.CloudIdentityGroup), err
 }

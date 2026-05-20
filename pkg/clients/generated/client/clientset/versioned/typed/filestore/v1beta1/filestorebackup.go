@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // FilestoreBackupsGetter has a method to return a FilestoreBackupInterface.
@@ -40,34 +41,158 @@ type FilestoreBackupsGetter interface {
 
 // FilestoreBackupInterface has methods to work with FilestoreBackup resources.
 type FilestoreBackupInterface interface {
-	Create(ctx context.Context, filestoreBackup *filestorev1beta1.FilestoreBackup, opts v1.CreateOptions) (*filestorev1beta1.FilestoreBackup, error)
-	Update(ctx context.Context, filestoreBackup *filestorev1beta1.FilestoreBackup, opts v1.UpdateOptions) (*filestorev1beta1.FilestoreBackup, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, filestoreBackup *filestorev1beta1.FilestoreBackup, opts v1.UpdateOptions) (*filestorev1beta1.FilestoreBackup, error)
+	Create(ctx context.Context, filestoreBackup *v1beta1.FilestoreBackup, opts v1.CreateOptions) (*v1beta1.FilestoreBackup, error)
+	Update(ctx context.Context, filestoreBackup *v1beta1.FilestoreBackup, opts v1.UpdateOptions) (*v1beta1.FilestoreBackup, error)
+	UpdateStatus(ctx context.Context, filestoreBackup *v1beta1.FilestoreBackup, opts v1.UpdateOptions) (*v1beta1.FilestoreBackup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*filestorev1beta1.FilestoreBackup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*filestorev1beta1.FilestoreBackupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.FilestoreBackup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.FilestoreBackupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *filestorev1beta1.FilestoreBackup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.FilestoreBackup, err error)
 	FilestoreBackupExpansion
 }
 
 // filestoreBackups implements FilestoreBackupInterface
 type filestoreBackups struct {
-	*gentype.ClientWithList[*filestorev1beta1.FilestoreBackup, *filestorev1beta1.FilestoreBackupList]
+	client rest.Interface
+	ns     string
 }
 
 // newFilestoreBackups returns a FilestoreBackups
 func newFilestoreBackups(c *FilestoreV1beta1Client, namespace string) *filestoreBackups {
 	return &filestoreBackups{
-		gentype.NewClientWithList[*filestorev1beta1.FilestoreBackup, *filestorev1beta1.FilestoreBackupList](
-			"filestorebackups",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *filestorev1beta1.FilestoreBackup { return &filestorev1beta1.FilestoreBackup{} },
-			func() *filestorev1beta1.FilestoreBackupList { return &filestorev1beta1.FilestoreBackupList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the filestoreBackup, and returns the corresponding filestoreBackup object, and an error if there is any.
+func (c *filestoreBackups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.FilestoreBackup, err error) {
+	result = &v1beta1.FilestoreBackup{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("filestorebackups").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of FilestoreBackups that match those selectors.
+func (c *filestoreBackups) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.FilestoreBackupList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.FilestoreBackupList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("filestorebackups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested filestoreBackups.
+func (c *filestoreBackups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("filestorebackups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a filestoreBackup and creates it.  Returns the server's representation of the filestoreBackup, and an error, if there is any.
+func (c *filestoreBackups) Create(ctx context.Context, filestoreBackup *v1beta1.FilestoreBackup, opts v1.CreateOptions) (result *v1beta1.FilestoreBackup, err error) {
+	result = &v1beta1.FilestoreBackup{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("filestorebackups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(filestoreBackup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a filestoreBackup and updates it. Returns the server's representation of the filestoreBackup, and an error, if there is any.
+func (c *filestoreBackups) Update(ctx context.Context, filestoreBackup *v1beta1.FilestoreBackup, opts v1.UpdateOptions) (result *v1beta1.FilestoreBackup, err error) {
+	result = &v1beta1.FilestoreBackup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("filestorebackups").
+		Name(filestoreBackup.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(filestoreBackup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *filestoreBackups) UpdateStatus(ctx context.Context, filestoreBackup *v1beta1.FilestoreBackup, opts v1.UpdateOptions) (result *v1beta1.FilestoreBackup, err error) {
+	result = &v1beta1.FilestoreBackup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("filestorebackups").
+		Name(filestoreBackup.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(filestoreBackup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the filestoreBackup and deletes it. Returns an error if one occurs.
+func (c *filestoreBackups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("filestorebackups").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *filestoreBackups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("filestorebackups").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched filestoreBackup.
+func (c *filestoreBackups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.FilestoreBackup, err error) {
+	result = &v1beta1.FilestoreBackup{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("filestorebackups").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

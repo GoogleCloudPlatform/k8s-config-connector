@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeIAMPolicyMembers implements IAMPolicyMemberInterface
-type fakeIAMPolicyMembers struct {
-	*gentype.FakeClientWithList[*v1beta1.IAMPolicyMember, *v1beta1.IAMPolicyMemberList]
+// FakeIAMPolicyMembers implements IAMPolicyMemberInterface
+type FakeIAMPolicyMembers struct {
 	Fake *FakeIamV1beta1
+	ns   string
 }
 
-func newFakeIAMPolicyMembers(fake *FakeIamV1beta1, namespace string) iamv1beta1.IAMPolicyMemberInterface {
-	return &fakeIAMPolicyMembers{
-		gentype.NewFakeClientWithList[*v1beta1.IAMPolicyMember, *v1beta1.IAMPolicyMemberList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("iampolicymembers"),
-			v1beta1.SchemeGroupVersion.WithKind("IAMPolicyMember"),
-			func() *v1beta1.IAMPolicyMember { return &v1beta1.IAMPolicyMember{} },
-			func() *v1beta1.IAMPolicyMemberList { return &v1beta1.IAMPolicyMemberList{} },
-			func(dst, src *v1beta1.IAMPolicyMemberList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.IAMPolicyMemberList) []*v1beta1.IAMPolicyMember {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.IAMPolicyMemberList, items []*v1beta1.IAMPolicyMember) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var iampolicymembersResource = v1beta1.SchemeGroupVersion.WithResource("iampolicymembers")
+
+var iampolicymembersKind = v1beta1.SchemeGroupVersion.WithKind("IAMPolicyMember")
+
+// Get takes name of the iAMPolicyMember, and returns the corresponding iAMPolicyMember object, and an error if there is any.
+func (c *FakeIAMPolicyMembers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IAMPolicyMember, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(iampolicymembersResource, c.ns, name), &v1beta1.IAMPolicyMember{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.IAMPolicyMember), err
+}
+
+// List takes label and field selectors, and returns the list of IAMPolicyMembers that match those selectors.
+func (c *FakeIAMPolicyMembers) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.IAMPolicyMemberList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(iampolicymembersResource, iampolicymembersKind, c.ns, opts), &v1beta1.IAMPolicyMemberList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.IAMPolicyMemberList{ListMeta: obj.(*v1beta1.IAMPolicyMemberList).ListMeta}
+	for _, item := range obj.(*v1beta1.IAMPolicyMemberList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested iAMPolicyMembers.
+func (c *FakeIAMPolicyMembers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(iampolicymembersResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a iAMPolicyMember and creates it.  Returns the server's representation of the iAMPolicyMember, and an error, if there is any.
+func (c *FakeIAMPolicyMembers) Create(ctx context.Context, iAMPolicyMember *v1beta1.IAMPolicyMember, opts v1.CreateOptions) (result *v1beta1.IAMPolicyMember, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(iampolicymembersResource, c.ns, iAMPolicyMember), &v1beta1.IAMPolicyMember{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAMPolicyMember), err
+}
+
+// Update takes the representation of a iAMPolicyMember and updates it. Returns the server's representation of the iAMPolicyMember, and an error, if there is any.
+func (c *FakeIAMPolicyMembers) Update(ctx context.Context, iAMPolicyMember *v1beta1.IAMPolicyMember, opts v1.UpdateOptions) (result *v1beta1.IAMPolicyMember, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(iampolicymembersResource, c.ns, iAMPolicyMember), &v1beta1.IAMPolicyMember{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAMPolicyMember), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeIAMPolicyMembers) UpdateStatus(ctx context.Context, iAMPolicyMember *v1beta1.IAMPolicyMember, opts v1.UpdateOptions) (*v1beta1.IAMPolicyMember, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(iampolicymembersResource, "status", c.ns, iAMPolicyMember), &v1beta1.IAMPolicyMember{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAMPolicyMember), err
+}
+
+// Delete takes name of the iAMPolicyMember and deletes it. Returns an error if one occurs.
+func (c *FakeIAMPolicyMembers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(iampolicymembersResource, c.ns, name, opts), &v1beta1.IAMPolicyMember{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeIAMPolicyMembers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(iampolicymembersResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.IAMPolicyMemberList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched iAMPolicyMember.
+func (c *FakeIAMPolicyMembers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAMPolicyMember, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(iampolicymembersResource, c.ns, name, pt, data, subresources...), &v1beta1.IAMPolicyMember{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAMPolicyMember), err
 }
