@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/composer/v1beta1"
+	composerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/composer/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // ComposerEnvironmentsGetter has a method to return a ComposerEnvironmentInterface.
@@ -41,158 +40,34 @@ type ComposerEnvironmentsGetter interface {
 
 // ComposerEnvironmentInterface has methods to work with ComposerEnvironment resources.
 type ComposerEnvironmentInterface interface {
-	Create(ctx context.Context, composerEnvironment *v1beta1.ComposerEnvironment, opts v1.CreateOptions) (*v1beta1.ComposerEnvironment, error)
-	Update(ctx context.Context, composerEnvironment *v1beta1.ComposerEnvironment, opts v1.UpdateOptions) (*v1beta1.ComposerEnvironment, error)
-	UpdateStatus(ctx context.Context, composerEnvironment *v1beta1.ComposerEnvironment, opts v1.UpdateOptions) (*v1beta1.ComposerEnvironment, error)
+	Create(ctx context.Context, composerEnvironment *composerv1beta1.ComposerEnvironment, opts v1.CreateOptions) (*composerv1beta1.ComposerEnvironment, error)
+	Update(ctx context.Context, composerEnvironment *composerv1beta1.ComposerEnvironment, opts v1.UpdateOptions) (*composerv1beta1.ComposerEnvironment, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, composerEnvironment *composerv1beta1.ComposerEnvironment, opts v1.UpdateOptions) (*composerv1beta1.ComposerEnvironment, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComposerEnvironment, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComposerEnvironmentList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*composerv1beta1.ComposerEnvironment, error)
+	List(ctx context.Context, opts v1.ListOptions) (*composerv1beta1.ComposerEnvironmentList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComposerEnvironment, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *composerv1beta1.ComposerEnvironment, err error)
 	ComposerEnvironmentExpansion
 }
 
 // composerEnvironments implements ComposerEnvironmentInterface
 type composerEnvironments struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*composerv1beta1.ComposerEnvironment, *composerv1beta1.ComposerEnvironmentList]
 }
 
 // newComposerEnvironments returns a ComposerEnvironments
 func newComposerEnvironments(c *ComposerV1beta1Client, namespace string) *composerEnvironments {
 	return &composerEnvironments{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*composerv1beta1.ComposerEnvironment, *composerv1beta1.ComposerEnvironmentList](
+			"composerenvironments",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *composerv1beta1.ComposerEnvironment { return &composerv1beta1.ComposerEnvironment{} },
+			func() *composerv1beta1.ComposerEnvironmentList { return &composerv1beta1.ComposerEnvironmentList{} },
+		),
 	}
-}
-
-// Get takes name of the composerEnvironment, and returns the corresponding composerEnvironment object, and an error if there is any.
-func (c *composerEnvironments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComposerEnvironment, err error) {
-	result = &v1beta1.ComposerEnvironment{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("composerenvironments").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ComposerEnvironments that match those selectors.
-func (c *composerEnvironments) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComposerEnvironmentList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.ComposerEnvironmentList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("composerenvironments").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested composerEnvironments.
-func (c *composerEnvironments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("composerenvironments").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a composerEnvironment and creates it.  Returns the server's representation of the composerEnvironment, and an error, if there is any.
-func (c *composerEnvironments) Create(ctx context.Context, composerEnvironment *v1beta1.ComposerEnvironment, opts v1.CreateOptions) (result *v1beta1.ComposerEnvironment, err error) {
-	result = &v1beta1.ComposerEnvironment{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("composerenvironments").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(composerEnvironment).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a composerEnvironment and updates it. Returns the server's representation of the composerEnvironment, and an error, if there is any.
-func (c *composerEnvironments) Update(ctx context.Context, composerEnvironment *v1beta1.ComposerEnvironment, opts v1.UpdateOptions) (result *v1beta1.ComposerEnvironment, err error) {
-	result = &v1beta1.ComposerEnvironment{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("composerenvironments").
-		Name(composerEnvironment.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(composerEnvironment).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *composerEnvironments) UpdateStatus(ctx context.Context, composerEnvironment *v1beta1.ComposerEnvironment, opts v1.UpdateOptions) (result *v1beta1.ComposerEnvironment, err error) {
-	result = &v1beta1.ComposerEnvironment{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("composerenvironments").
-		Name(composerEnvironment.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(composerEnvironment).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the composerEnvironment and deletes it. Returns an error if one occurs.
-func (c *composerEnvironments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("composerenvironments").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *composerEnvironments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("composerenvironments").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched composerEnvironment.
-func (c *composerEnvironments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComposerEnvironment, err error) {
-	result = &v1beta1.ComposerEnvironment{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("composerenvironments").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

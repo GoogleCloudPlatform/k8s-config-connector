@@ -32,39 +32,39 @@ type FakeMonitoringV1beta1 struct {
 }
 
 func (c *FakeMonitoringV1beta1) MonitoringAlertPolicies(namespace string) v1beta1.MonitoringAlertPolicyInterface {
-	return &FakeMonitoringAlertPolicies{c, namespace}
+	return newFakeMonitoringAlertPolicies(c, namespace)
 }
 
 func (c *FakeMonitoringV1beta1) MonitoringDashboards(namespace string) v1beta1.MonitoringDashboardInterface {
-	return &FakeMonitoringDashboards{c, namespace}
+	return newFakeMonitoringDashboards(c, namespace)
 }
 
 func (c *FakeMonitoringV1beta1) MonitoringGroups(namespace string) v1beta1.MonitoringGroupInterface {
-	return &FakeMonitoringGroups{c, namespace}
+	return newFakeMonitoringGroups(c, namespace)
 }
 
 func (c *FakeMonitoringV1beta1) MonitoringMetricDescriptors(namespace string) v1beta1.MonitoringMetricDescriptorInterface {
-	return &FakeMonitoringMetricDescriptors{c, namespace}
+	return newFakeMonitoringMetricDescriptors(c, namespace)
 }
 
 func (c *FakeMonitoringV1beta1) MonitoringMonitoredProjects(namespace string) v1beta1.MonitoringMonitoredProjectInterface {
-	return &FakeMonitoringMonitoredProjects{c, namespace}
+	return newFakeMonitoringMonitoredProjects(c, namespace)
 }
 
 func (c *FakeMonitoringV1beta1) MonitoringNotificationChannels(namespace string) v1beta1.MonitoringNotificationChannelInterface {
-	return &FakeMonitoringNotificationChannels{c, namespace}
+	return newFakeMonitoringNotificationChannels(c, namespace)
 }
 
 func (c *FakeMonitoringV1beta1) MonitoringServices(namespace string) v1beta1.MonitoringServiceInterface {
-	return &FakeMonitoringServices{c, namespace}
+	return newFakeMonitoringServices(c, namespace)
 }
 
 func (c *FakeMonitoringV1beta1) MonitoringServiceLevelObjectives(namespace string) v1beta1.MonitoringServiceLevelObjectiveInterface {
-	return &FakeMonitoringServiceLevelObjectives{c, namespace}
+	return newFakeMonitoringServiceLevelObjectives(c, namespace)
 }
 
 func (c *FakeMonitoringV1beta1) MonitoringUptimeCheckConfigs(namespace string) v1beta1.MonitoringUptimeCheckConfigInterface {
-	return &FakeMonitoringUptimeCheckConfigs{c, namespace}
+	return newFakeMonitoringUptimeCheckConfigs(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

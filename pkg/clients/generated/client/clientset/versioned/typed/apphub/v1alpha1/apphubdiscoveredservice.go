@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
+	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // AppHubDiscoveredServicesGetter has a method to return a AppHubDiscoveredServiceInterface.
@@ -41,158 +40,36 @@ type AppHubDiscoveredServicesGetter interface {
 
 // AppHubDiscoveredServiceInterface has methods to work with AppHubDiscoveredService resources.
 type AppHubDiscoveredServiceInterface interface {
-	Create(ctx context.Context, appHubDiscoveredService *v1alpha1.AppHubDiscoveredService, opts v1.CreateOptions) (*v1alpha1.AppHubDiscoveredService, error)
-	Update(ctx context.Context, appHubDiscoveredService *v1alpha1.AppHubDiscoveredService, opts v1.UpdateOptions) (*v1alpha1.AppHubDiscoveredService, error)
-	UpdateStatus(ctx context.Context, appHubDiscoveredService *v1alpha1.AppHubDiscoveredService, opts v1.UpdateOptions) (*v1alpha1.AppHubDiscoveredService, error)
+	Create(ctx context.Context, appHubDiscoveredService *apphubv1alpha1.AppHubDiscoveredService, opts v1.CreateOptions) (*apphubv1alpha1.AppHubDiscoveredService, error)
+	Update(ctx context.Context, appHubDiscoveredService *apphubv1alpha1.AppHubDiscoveredService, opts v1.UpdateOptions) (*apphubv1alpha1.AppHubDiscoveredService, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, appHubDiscoveredService *apphubv1alpha1.AppHubDiscoveredService, opts v1.UpdateOptions) (*apphubv1alpha1.AppHubDiscoveredService, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.AppHubDiscoveredService, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.AppHubDiscoveredServiceList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*apphubv1alpha1.AppHubDiscoveredService, error)
+	List(ctx context.Context, opts v1.ListOptions) (*apphubv1alpha1.AppHubDiscoveredServiceList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppHubDiscoveredService, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apphubv1alpha1.AppHubDiscoveredService, err error)
 	AppHubDiscoveredServiceExpansion
 }
 
 // appHubDiscoveredServices implements AppHubDiscoveredServiceInterface
 type appHubDiscoveredServices struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*apphubv1alpha1.AppHubDiscoveredService, *apphubv1alpha1.AppHubDiscoveredServiceList]
 }
 
 // newAppHubDiscoveredServices returns a AppHubDiscoveredServices
 func newAppHubDiscoveredServices(c *ApphubV1alpha1Client, namespace string) *appHubDiscoveredServices {
 	return &appHubDiscoveredServices{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*apphubv1alpha1.AppHubDiscoveredService, *apphubv1alpha1.AppHubDiscoveredServiceList](
+			"apphubdiscoveredservices",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *apphubv1alpha1.AppHubDiscoveredService { return &apphubv1alpha1.AppHubDiscoveredService{} },
+			func() *apphubv1alpha1.AppHubDiscoveredServiceList {
+				return &apphubv1alpha1.AppHubDiscoveredServiceList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the appHubDiscoveredService, and returns the corresponding appHubDiscoveredService object, and an error if there is any.
-func (c *appHubDiscoveredServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AppHubDiscoveredService, err error) {
-	result = &v1alpha1.AppHubDiscoveredService{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredservices").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of AppHubDiscoveredServices that match those selectors.
-func (c *appHubDiscoveredServices) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.AppHubDiscoveredServiceList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.AppHubDiscoveredServiceList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredservices").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested appHubDiscoveredServices.
-func (c *appHubDiscoveredServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredservices").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a appHubDiscoveredService and creates it.  Returns the server's representation of the appHubDiscoveredService, and an error, if there is any.
-func (c *appHubDiscoveredServices) Create(ctx context.Context, appHubDiscoveredService *v1alpha1.AppHubDiscoveredService, opts v1.CreateOptions) (result *v1alpha1.AppHubDiscoveredService, err error) {
-	result = &v1alpha1.AppHubDiscoveredService{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredservices").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(appHubDiscoveredService).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a appHubDiscoveredService and updates it. Returns the server's representation of the appHubDiscoveredService, and an error, if there is any.
-func (c *appHubDiscoveredServices) Update(ctx context.Context, appHubDiscoveredService *v1alpha1.AppHubDiscoveredService, opts v1.UpdateOptions) (result *v1alpha1.AppHubDiscoveredService, err error) {
-	result = &v1alpha1.AppHubDiscoveredService{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredservices").
-		Name(appHubDiscoveredService.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(appHubDiscoveredService).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *appHubDiscoveredServices) UpdateStatus(ctx context.Context, appHubDiscoveredService *v1alpha1.AppHubDiscoveredService, opts v1.UpdateOptions) (result *v1alpha1.AppHubDiscoveredService, err error) {
-	result = &v1alpha1.AppHubDiscoveredService{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredservices").
-		Name(appHubDiscoveredService.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(appHubDiscoveredService).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the appHubDiscoveredService and deletes it. Returns an error if one occurs.
-func (c *appHubDiscoveredServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredservices").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *appHubDiscoveredServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("apphubdiscoveredservices").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched appHubDiscoveredService.
-func (c *appHubDiscoveredServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppHubDiscoveredService, err error) {
-	result = &v1alpha1.AppHubDiscoveredService{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("apphubdiscoveredservices").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

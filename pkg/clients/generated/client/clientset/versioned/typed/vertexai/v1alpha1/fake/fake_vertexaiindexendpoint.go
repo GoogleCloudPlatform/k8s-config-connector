@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeVertexAIIndexEndpoints implements VertexAIIndexEndpointInterface
-type FakeVertexAIIndexEndpoints struct {
+// fakeVertexAIIndexEndpoints implements VertexAIIndexEndpointInterface
+type fakeVertexAIIndexEndpoints struct {
+	*gentype.FakeClientWithList[*v1alpha1.VertexAIIndexEndpoint, *v1alpha1.VertexAIIndexEndpointList]
 	Fake *FakeVertexaiV1alpha1
-	ns   string
 }
 
-var vertexaiindexendpointsResource = v1alpha1.SchemeGroupVersion.WithResource("vertexaiindexendpoints")
-
-var vertexaiindexendpointsKind = v1alpha1.SchemeGroupVersion.WithKind("VertexAIIndexEndpoint")
-
-// Get takes name of the vertexAIIndexEndpoint, and returns the corresponding vertexAIIndexEndpoint object, and an error if there is any.
-func (c *FakeVertexAIIndexEndpoints) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VertexAIIndexEndpoint, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(vertexaiindexendpointsResource, c.ns, name), &v1alpha1.VertexAIIndexEndpoint{})
-
-	if obj == nil {
-		return nil, err
+func newFakeVertexAIIndexEndpoints(fake *FakeVertexaiV1alpha1, namespace string) vertexaiv1alpha1.VertexAIIndexEndpointInterface {
+	return &fakeVertexAIIndexEndpoints{
+		gentype.NewFakeClientWithList[*v1alpha1.VertexAIIndexEndpoint, *v1alpha1.VertexAIIndexEndpointList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("vertexaiindexendpoints"),
+			v1alpha1.SchemeGroupVersion.WithKind("VertexAIIndexEndpoint"),
+			func() *v1alpha1.VertexAIIndexEndpoint { return &v1alpha1.VertexAIIndexEndpoint{} },
+			func() *v1alpha1.VertexAIIndexEndpointList { return &v1alpha1.VertexAIIndexEndpointList{} },
+			func(dst, src *v1alpha1.VertexAIIndexEndpointList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.VertexAIIndexEndpointList) []*v1alpha1.VertexAIIndexEndpoint {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.VertexAIIndexEndpointList, items []*v1alpha1.VertexAIIndexEndpoint) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.VertexAIIndexEndpoint), err
-}
-
-// List takes label and field selectors, and returns the list of VertexAIIndexEndpoints that match those selectors.
-func (c *FakeVertexAIIndexEndpoints) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VertexAIIndexEndpointList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(vertexaiindexendpointsResource, vertexaiindexendpointsKind, c.ns, opts), &v1alpha1.VertexAIIndexEndpointList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.VertexAIIndexEndpointList{ListMeta: obj.(*v1alpha1.VertexAIIndexEndpointList).ListMeta}
-	for _, item := range obj.(*v1alpha1.VertexAIIndexEndpointList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested vertexAIIndexEndpoints.
-func (c *FakeVertexAIIndexEndpoints) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(vertexaiindexendpointsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a vertexAIIndexEndpoint and creates it.  Returns the server's representation of the vertexAIIndexEndpoint, and an error, if there is any.
-func (c *FakeVertexAIIndexEndpoints) Create(ctx context.Context, vertexAIIndexEndpoint *v1alpha1.VertexAIIndexEndpoint, opts v1.CreateOptions) (result *v1alpha1.VertexAIIndexEndpoint, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(vertexaiindexendpointsResource, c.ns, vertexAIIndexEndpoint), &v1alpha1.VertexAIIndexEndpoint{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VertexAIIndexEndpoint), err
-}
-
-// Update takes the representation of a vertexAIIndexEndpoint and updates it. Returns the server's representation of the vertexAIIndexEndpoint, and an error, if there is any.
-func (c *FakeVertexAIIndexEndpoints) Update(ctx context.Context, vertexAIIndexEndpoint *v1alpha1.VertexAIIndexEndpoint, opts v1.UpdateOptions) (result *v1alpha1.VertexAIIndexEndpoint, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(vertexaiindexendpointsResource, c.ns, vertexAIIndexEndpoint), &v1alpha1.VertexAIIndexEndpoint{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VertexAIIndexEndpoint), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeVertexAIIndexEndpoints) UpdateStatus(ctx context.Context, vertexAIIndexEndpoint *v1alpha1.VertexAIIndexEndpoint, opts v1.UpdateOptions) (*v1alpha1.VertexAIIndexEndpoint, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(vertexaiindexendpointsResource, "status", c.ns, vertexAIIndexEndpoint), &v1alpha1.VertexAIIndexEndpoint{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VertexAIIndexEndpoint), err
-}
-
-// Delete takes name of the vertexAIIndexEndpoint and deletes it. Returns an error if one occurs.
-func (c *FakeVertexAIIndexEndpoints) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(vertexaiindexendpointsResource, c.ns, name, opts), &v1alpha1.VertexAIIndexEndpoint{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeVertexAIIndexEndpoints) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(vertexaiindexendpointsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.VertexAIIndexEndpointList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched vertexAIIndexEndpoint.
-func (c *FakeVertexAIIndexEndpoints) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VertexAIIndexEndpoint, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(vertexaiindexendpointsResource, c.ns, name, pt, data, subresources...), &v1alpha1.VertexAIIndexEndpoint{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VertexAIIndexEndpoint), err
 }
