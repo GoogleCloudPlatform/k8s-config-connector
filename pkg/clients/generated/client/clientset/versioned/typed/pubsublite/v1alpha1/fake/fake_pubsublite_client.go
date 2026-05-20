@@ -32,11 +32,11 @@ type FakePubsubliteV1alpha1 struct {
 }
 
 func (c *FakePubsubliteV1alpha1) PubSubLiteSubscriptions(namespace string) v1alpha1.PubSubLiteSubscriptionInterface {
-	return &FakePubSubLiteSubscriptions{c, namespace}
+	return newFakePubSubLiteSubscriptions(c, namespace)
 }
 
 func (c *FakePubsubliteV1alpha1) PubSubLiteTopics(namespace string) v1alpha1.PubSubLiteTopicInterface {
-	return &FakePubSubLiteTopics{c, namespace}
+	return newFakePubSubLiteTopics(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

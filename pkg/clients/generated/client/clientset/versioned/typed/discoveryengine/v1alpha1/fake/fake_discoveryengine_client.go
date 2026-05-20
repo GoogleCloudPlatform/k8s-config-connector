@@ -32,15 +32,15 @@ type FakeDiscoveryengineV1alpha1 struct {
 }
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineDataStores(namespace string) v1alpha1.DiscoveryEngineDataStoreInterface {
-	return &FakeDiscoveryEngineDataStores{c, namespace}
+	return newFakeDiscoveryEngineDataStores(c, namespace)
 }
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineDataStoreTargetSites(namespace string) v1alpha1.DiscoveryEngineDataStoreTargetSiteInterface {
-	return &FakeDiscoveryEngineDataStoreTargetSites{c, namespace}
+	return newFakeDiscoveryEngineDataStoreTargetSites(c, namespace)
 }
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineEngines(namespace string) v1alpha1.DiscoveryEngineEngineInterface {
-	return &FakeDiscoveryEngineEngines{c, namespace}
+	return newFakeDiscoveryEngineEngines(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

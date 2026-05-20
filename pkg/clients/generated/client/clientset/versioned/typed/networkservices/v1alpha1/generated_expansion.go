@@ -30,3 +30,5 @@ type NetworkServicesEdgeCacheServiceExpansion interface{}
 type NetworkServicesLBRouteExtensionExpansion interface{}
 
 type NetworkServicesServiceBindingExpansion interface{}
+
+type NetworkServicesWasmPluginExpansion interface{}

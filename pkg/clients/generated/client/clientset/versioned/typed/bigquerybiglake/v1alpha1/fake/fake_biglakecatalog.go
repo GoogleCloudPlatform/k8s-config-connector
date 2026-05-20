@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	bigquerybiglakev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerybiglake/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBigLakeCatalogs implements BigLakeCatalogInterface
-type FakeBigLakeCatalogs struct {
+// fakeBigLakeCatalogs implements BigLakeCatalogInterface
+type fakeBigLakeCatalogs struct {
+	*gentype.FakeClientWithList[*v1alpha1.BigLakeCatalog, *v1alpha1.BigLakeCatalogList]
 	Fake *FakeBigquerybiglakeV1alpha1
-	ns   string
 }
 
-var biglakecatalogsResource = v1alpha1.SchemeGroupVersion.WithResource("biglakecatalogs")
-
-var biglakecatalogsKind = v1alpha1.SchemeGroupVersion.WithKind("BigLakeCatalog")
-
-// Get takes name of the bigLakeCatalog, and returns the corresponding bigLakeCatalog object, and an error if there is any.
-func (c *FakeBigLakeCatalogs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigLakeCatalog, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(biglakecatalogsResource, c.ns, name), &v1alpha1.BigLakeCatalog{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBigLakeCatalogs(fake *FakeBigquerybiglakeV1alpha1, namespace string) bigquerybiglakev1alpha1.BigLakeCatalogInterface {
+	return &fakeBigLakeCatalogs{
+		gentype.NewFakeClientWithList[*v1alpha1.BigLakeCatalog, *v1alpha1.BigLakeCatalogList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("biglakecatalogs"),
+			v1alpha1.SchemeGroupVersion.WithKind("BigLakeCatalog"),
+			func() *v1alpha1.BigLakeCatalog { return &v1alpha1.BigLakeCatalog{} },
+			func() *v1alpha1.BigLakeCatalogList { return &v1alpha1.BigLakeCatalogList{} },
+			func(dst, src *v1alpha1.BigLakeCatalogList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.BigLakeCatalogList) []*v1alpha1.BigLakeCatalog {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.BigLakeCatalogList, items []*v1alpha1.BigLakeCatalog) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.BigLakeCatalog), err
-}
-
-// List takes label and field selectors, and returns the list of BigLakeCatalogs that match those selectors.
-func (c *FakeBigLakeCatalogs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigLakeCatalogList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(biglakecatalogsResource, biglakecatalogsKind, c.ns, opts), &v1alpha1.BigLakeCatalogList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.BigLakeCatalogList{ListMeta: obj.(*v1alpha1.BigLakeCatalogList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BigLakeCatalogList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested bigLakeCatalogs.
-func (c *FakeBigLakeCatalogs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(biglakecatalogsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a bigLakeCatalog and creates it.  Returns the server's representation of the bigLakeCatalog, and an error, if there is any.
-func (c *FakeBigLakeCatalogs) Create(ctx context.Context, bigLakeCatalog *v1alpha1.BigLakeCatalog, opts v1.CreateOptions) (result *v1alpha1.BigLakeCatalog, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(biglakecatalogsResource, c.ns, bigLakeCatalog), &v1alpha1.BigLakeCatalog{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigLakeCatalog), err
-}
-
-// Update takes the representation of a bigLakeCatalog and updates it. Returns the server's representation of the bigLakeCatalog, and an error, if there is any.
-func (c *FakeBigLakeCatalogs) Update(ctx context.Context, bigLakeCatalog *v1alpha1.BigLakeCatalog, opts v1.UpdateOptions) (result *v1alpha1.BigLakeCatalog, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(biglakecatalogsResource, c.ns, bigLakeCatalog), &v1alpha1.BigLakeCatalog{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigLakeCatalog), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigLakeCatalogs) UpdateStatus(ctx context.Context, bigLakeCatalog *v1alpha1.BigLakeCatalog, opts v1.UpdateOptions) (*v1alpha1.BigLakeCatalog, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(biglakecatalogsResource, "status", c.ns, bigLakeCatalog), &v1alpha1.BigLakeCatalog{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigLakeCatalog), err
-}
-
-// Delete takes name of the bigLakeCatalog and deletes it. Returns an error if one occurs.
-func (c *FakeBigLakeCatalogs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(biglakecatalogsResource, c.ns, name, opts), &v1alpha1.BigLakeCatalog{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBigLakeCatalogs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(biglakecatalogsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.BigLakeCatalogList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched bigLakeCatalog.
-func (c *FakeBigLakeCatalogs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigLakeCatalog, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(biglakecatalogsResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigLakeCatalog{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigLakeCatalog), err
 }

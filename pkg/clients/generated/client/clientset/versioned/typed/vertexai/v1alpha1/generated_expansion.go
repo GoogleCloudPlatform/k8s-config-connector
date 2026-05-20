@@ -21,6 +21,10 @@
 
 package v1alpha1
 
+type VertexAIDataLabelingJobExpansion interface{}
+
+type VertexAIDeploymentResourcePoolExpansion interface{}
+
 type VertexAIFeaturestoreExpansion interface{}
 
 type VertexAIFeaturestoreEntityTypeExpansion interface{}

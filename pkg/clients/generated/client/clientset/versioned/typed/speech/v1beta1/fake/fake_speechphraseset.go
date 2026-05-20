@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/speech/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	speechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/speech/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeSpeechPhraseSets implements SpeechPhraseSetInterface
-type FakeSpeechPhraseSets struct {
+// fakeSpeechPhraseSets implements SpeechPhraseSetInterface
+type fakeSpeechPhraseSets struct {
+	*gentype.FakeClientWithList[*v1beta1.SpeechPhraseSet, *v1beta1.SpeechPhraseSetList]
 	Fake *FakeSpeechV1beta1
-	ns   string
 }
 
-var speechphrasesetsResource = v1beta1.SchemeGroupVersion.WithResource("speechphrasesets")
-
-var speechphrasesetsKind = v1beta1.SchemeGroupVersion.WithKind("SpeechPhraseSet")
-
-// Get takes name of the speechPhraseSet, and returns the corresponding speechPhraseSet object, and an error if there is any.
-func (c *FakeSpeechPhraseSets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SpeechPhraseSet, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(speechphrasesetsResource, c.ns, name), &v1beta1.SpeechPhraseSet{})
-
-	if obj == nil {
-		return nil, err
+func newFakeSpeechPhraseSets(fake *FakeSpeechV1beta1, namespace string) speechv1beta1.SpeechPhraseSetInterface {
+	return &fakeSpeechPhraseSets{
+		gentype.NewFakeClientWithList[*v1beta1.SpeechPhraseSet, *v1beta1.SpeechPhraseSetList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("speechphrasesets"),
+			v1beta1.SchemeGroupVersion.WithKind("SpeechPhraseSet"),
+			func() *v1beta1.SpeechPhraseSet { return &v1beta1.SpeechPhraseSet{} },
+			func() *v1beta1.SpeechPhraseSetList { return &v1beta1.SpeechPhraseSetList{} },
+			func(dst, src *v1beta1.SpeechPhraseSetList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.SpeechPhraseSetList) []*v1beta1.SpeechPhraseSet {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.SpeechPhraseSetList, items []*v1beta1.SpeechPhraseSet) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.SpeechPhraseSet), err
-}
-
-// List takes label and field selectors, and returns the list of SpeechPhraseSets that match those selectors.
-func (c *FakeSpeechPhraseSets) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SpeechPhraseSetList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(speechphrasesetsResource, speechphrasesetsKind, c.ns, opts), &v1beta1.SpeechPhraseSetList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.SpeechPhraseSetList{ListMeta: obj.(*v1beta1.SpeechPhraseSetList).ListMeta}
-	for _, item := range obj.(*v1beta1.SpeechPhraseSetList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested speechPhraseSets.
-func (c *FakeSpeechPhraseSets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(speechphrasesetsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a speechPhraseSet and creates it.  Returns the server's representation of the speechPhraseSet, and an error, if there is any.
-func (c *FakeSpeechPhraseSets) Create(ctx context.Context, speechPhraseSet *v1beta1.SpeechPhraseSet, opts v1.CreateOptions) (result *v1beta1.SpeechPhraseSet, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(speechphrasesetsResource, c.ns, speechPhraseSet), &v1beta1.SpeechPhraseSet{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SpeechPhraseSet), err
-}
-
-// Update takes the representation of a speechPhraseSet and updates it. Returns the server's representation of the speechPhraseSet, and an error, if there is any.
-func (c *FakeSpeechPhraseSets) Update(ctx context.Context, speechPhraseSet *v1beta1.SpeechPhraseSet, opts v1.UpdateOptions) (result *v1beta1.SpeechPhraseSet, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(speechphrasesetsResource, c.ns, speechPhraseSet), &v1beta1.SpeechPhraseSet{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SpeechPhraseSet), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeSpeechPhraseSets) UpdateStatus(ctx context.Context, speechPhraseSet *v1beta1.SpeechPhraseSet, opts v1.UpdateOptions) (*v1beta1.SpeechPhraseSet, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(speechphrasesetsResource, "status", c.ns, speechPhraseSet), &v1beta1.SpeechPhraseSet{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SpeechPhraseSet), err
-}
-
-// Delete takes name of the speechPhraseSet and deletes it. Returns an error if one occurs.
-func (c *FakeSpeechPhraseSets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(speechphrasesetsResource, c.ns, name, opts), &v1beta1.SpeechPhraseSet{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeSpeechPhraseSets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(speechphrasesetsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.SpeechPhraseSetList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched speechPhraseSet.
-func (c *FakeSpeechPhraseSets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SpeechPhraseSet, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(speechphrasesetsResource, c.ns, name, pt, data, subresources...), &v1beta1.SpeechPhraseSet{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SpeechPhraseSet), err
 }

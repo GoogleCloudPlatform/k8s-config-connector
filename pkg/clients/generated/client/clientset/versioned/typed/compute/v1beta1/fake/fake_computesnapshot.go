@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeComputeSnapshots implements ComputeSnapshotInterface
-type FakeComputeSnapshots struct {
+// fakeComputeSnapshots implements ComputeSnapshotInterface
+type fakeComputeSnapshots struct {
+	*gentype.FakeClientWithList[*v1beta1.ComputeSnapshot, *v1beta1.ComputeSnapshotList]
 	Fake *FakeComputeV1beta1
-	ns   string
 }
 
-var computesnapshotsResource = v1beta1.SchemeGroupVersion.WithResource("computesnapshots")
-
-var computesnapshotsKind = v1beta1.SchemeGroupVersion.WithKind("ComputeSnapshot")
-
-// Get takes name of the computeSnapshot, and returns the corresponding computeSnapshot object, and an error if there is any.
-func (c *FakeComputeSnapshots) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeSnapshot, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(computesnapshotsResource, c.ns, name), &v1beta1.ComputeSnapshot{})
-
-	if obj == nil {
-		return nil, err
+func newFakeComputeSnapshots(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeSnapshotInterface {
+	return &fakeComputeSnapshots{
+		gentype.NewFakeClientWithList[*v1beta1.ComputeSnapshot, *v1beta1.ComputeSnapshotList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("computesnapshots"),
+			v1beta1.SchemeGroupVersion.WithKind("ComputeSnapshot"),
+			func() *v1beta1.ComputeSnapshot { return &v1beta1.ComputeSnapshot{} },
+			func() *v1beta1.ComputeSnapshotList { return &v1beta1.ComputeSnapshotList{} },
+			func(dst, src *v1beta1.ComputeSnapshotList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.ComputeSnapshotList) []*v1beta1.ComputeSnapshot {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.ComputeSnapshotList, items []*v1beta1.ComputeSnapshot) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.ComputeSnapshot), err
-}
-
-// List takes label and field selectors, and returns the list of ComputeSnapshots that match those selectors.
-func (c *FakeComputeSnapshots) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeSnapshotList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(computesnapshotsResource, computesnapshotsKind, c.ns, opts), &v1beta1.ComputeSnapshotList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.ComputeSnapshotList{ListMeta: obj.(*v1beta1.ComputeSnapshotList).ListMeta}
-	for _, item := range obj.(*v1beta1.ComputeSnapshotList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested computeSnapshots.
-func (c *FakeComputeSnapshots) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(computesnapshotsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a computeSnapshot and creates it.  Returns the server's representation of the computeSnapshot, and an error, if there is any.
-func (c *FakeComputeSnapshots) Create(ctx context.Context, computeSnapshot *v1beta1.ComputeSnapshot, opts v1.CreateOptions) (result *v1beta1.ComputeSnapshot, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(computesnapshotsResource, c.ns, computeSnapshot), &v1beta1.ComputeSnapshot{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeSnapshot), err
-}
-
-// Update takes the representation of a computeSnapshot and updates it. Returns the server's representation of the computeSnapshot, and an error, if there is any.
-func (c *FakeComputeSnapshots) Update(ctx context.Context, computeSnapshot *v1beta1.ComputeSnapshot, opts v1.UpdateOptions) (result *v1beta1.ComputeSnapshot, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(computesnapshotsResource, c.ns, computeSnapshot), &v1beta1.ComputeSnapshot{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeSnapshot), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeComputeSnapshots) UpdateStatus(ctx context.Context, computeSnapshot *v1beta1.ComputeSnapshot, opts v1.UpdateOptions) (*v1beta1.ComputeSnapshot, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(computesnapshotsResource, "status", c.ns, computeSnapshot), &v1beta1.ComputeSnapshot{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeSnapshot), err
-}
-
-// Delete takes name of the computeSnapshot and deletes it. Returns an error if one occurs.
-func (c *FakeComputeSnapshots) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(computesnapshotsResource, c.ns, name, opts), &v1beta1.ComputeSnapshot{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeComputeSnapshots) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(computesnapshotsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.ComputeSnapshotList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched computeSnapshot.
-func (c *FakeComputeSnapshots) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeSnapshot, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(computesnapshotsResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeSnapshot{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeSnapshot), err
 }

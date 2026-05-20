@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBigtableGCPolicies implements BigtableGCPolicyInterface
-type FakeBigtableGCPolicies struct {
+// fakeBigtableGCPolicies implements BigtableGCPolicyInterface
+type fakeBigtableGCPolicies struct {
+	*gentype.FakeClientWithList[*v1beta1.BigtableGCPolicy, *v1beta1.BigtableGCPolicyList]
 	Fake *FakeBigtableV1beta1
-	ns   string
 }
 
-var bigtablegcpoliciesResource = v1beta1.SchemeGroupVersion.WithResource("bigtablegcpolicies")
-
-var bigtablegcpoliciesKind = v1beta1.SchemeGroupVersion.WithKind("BigtableGCPolicy")
-
-// Get takes name of the bigtableGCPolicy, and returns the corresponding bigtableGCPolicy object, and an error if there is any.
-func (c *FakeBigtableGCPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigtableGCPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(bigtablegcpoliciesResource, c.ns, name), &v1beta1.BigtableGCPolicy{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBigtableGCPolicies(fake *FakeBigtableV1beta1, namespace string) bigtablev1beta1.BigtableGCPolicyInterface {
+	return &fakeBigtableGCPolicies{
+		gentype.NewFakeClientWithList[*v1beta1.BigtableGCPolicy, *v1beta1.BigtableGCPolicyList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("bigtablegcpolicies"),
+			v1beta1.SchemeGroupVersion.WithKind("BigtableGCPolicy"),
+			func() *v1beta1.BigtableGCPolicy { return &v1beta1.BigtableGCPolicy{} },
+			func() *v1beta1.BigtableGCPolicyList { return &v1beta1.BigtableGCPolicyList{} },
+			func(dst, src *v1beta1.BigtableGCPolicyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.BigtableGCPolicyList) []*v1beta1.BigtableGCPolicy {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.BigtableGCPolicyList, items []*v1beta1.BigtableGCPolicy) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.BigtableGCPolicy), err
-}
-
-// List takes label and field selectors, and returns the list of BigtableGCPolicies that match those selectors.
-func (c *FakeBigtableGCPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigtableGCPolicyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(bigtablegcpoliciesResource, bigtablegcpoliciesKind, c.ns, opts), &v1beta1.BigtableGCPolicyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.BigtableGCPolicyList{ListMeta: obj.(*v1beta1.BigtableGCPolicyList).ListMeta}
-	for _, item := range obj.(*v1beta1.BigtableGCPolicyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested bigtableGCPolicies.
-func (c *FakeBigtableGCPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(bigtablegcpoliciesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a bigtableGCPolicy and creates it.  Returns the server's representation of the bigtableGCPolicy, and an error, if there is any.
-func (c *FakeBigtableGCPolicies) Create(ctx context.Context, bigtableGCPolicy *v1beta1.BigtableGCPolicy, opts v1.CreateOptions) (result *v1beta1.BigtableGCPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(bigtablegcpoliciesResource, c.ns, bigtableGCPolicy), &v1beta1.BigtableGCPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigtableGCPolicy), err
-}
-
-// Update takes the representation of a bigtableGCPolicy and updates it. Returns the server's representation of the bigtableGCPolicy, and an error, if there is any.
-func (c *FakeBigtableGCPolicies) Update(ctx context.Context, bigtableGCPolicy *v1beta1.BigtableGCPolicy, opts v1.UpdateOptions) (result *v1beta1.BigtableGCPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(bigtablegcpoliciesResource, c.ns, bigtableGCPolicy), &v1beta1.BigtableGCPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigtableGCPolicy), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigtableGCPolicies) UpdateStatus(ctx context.Context, bigtableGCPolicy *v1beta1.BigtableGCPolicy, opts v1.UpdateOptions) (*v1beta1.BigtableGCPolicy, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(bigtablegcpoliciesResource, "status", c.ns, bigtableGCPolicy), &v1beta1.BigtableGCPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigtableGCPolicy), err
-}
-
-// Delete takes name of the bigtableGCPolicy and deletes it. Returns an error if one occurs.
-func (c *FakeBigtableGCPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(bigtablegcpoliciesResource, c.ns, name, opts), &v1beta1.BigtableGCPolicy{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBigtableGCPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(bigtablegcpoliciesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.BigtableGCPolicyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched bigtableGCPolicy.
-func (c *FakeBigtableGCPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigtableGCPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(bigtablegcpoliciesResource, c.ns, name, pt, data, subresources...), &v1beta1.BigtableGCPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigtableGCPolicy), err
 }
