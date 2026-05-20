@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudasset/v1alpha1"
-	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeCloudAssetFolderFeeds implements CloudAssetFolderFeedInterface
-type fakeCloudAssetFolderFeeds struct {
-	*gentype.FakeClientWithList[*v1alpha1.CloudAssetFolderFeed, *v1alpha1.CloudAssetFolderFeedList]
+// FakeCloudAssetFolderFeeds implements CloudAssetFolderFeedInterface
+type FakeCloudAssetFolderFeeds struct {
 	Fake *FakeCloudassetV1alpha1
+	ns   string
 }
 
-func newFakeCloudAssetFolderFeeds(fake *FakeCloudassetV1alpha1, namespace string) cloudassetv1alpha1.CloudAssetFolderFeedInterface {
-	return &fakeCloudAssetFolderFeeds{
-		gentype.NewFakeClientWithList[*v1alpha1.CloudAssetFolderFeed, *v1alpha1.CloudAssetFolderFeedList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("cloudassetfolderfeeds"),
-			v1alpha1.SchemeGroupVersion.WithKind("CloudAssetFolderFeed"),
-			func() *v1alpha1.CloudAssetFolderFeed { return &v1alpha1.CloudAssetFolderFeed{} },
-			func() *v1alpha1.CloudAssetFolderFeedList { return &v1alpha1.CloudAssetFolderFeedList{} },
-			func(dst, src *v1alpha1.CloudAssetFolderFeedList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.CloudAssetFolderFeedList) []*v1alpha1.CloudAssetFolderFeed {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.CloudAssetFolderFeedList, items []*v1alpha1.CloudAssetFolderFeed) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var cloudassetfolderfeedsResource = v1alpha1.SchemeGroupVersion.WithResource("cloudassetfolderfeeds")
+
+var cloudassetfolderfeedsKind = v1alpha1.SchemeGroupVersion.WithKind("CloudAssetFolderFeed")
+
+// Get takes name of the cloudAssetFolderFeed, and returns the corresponding cloudAssetFolderFeed object, and an error if there is any.
+func (c *FakeCloudAssetFolderFeeds) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudAssetFolderFeed, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(cloudassetfolderfeedsResource, c.ns, name), &v1alpha1.CloudAssetFolderFeed{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.CloudAssetFolderFeed), err
+}
+
+// List takes label and field selectors, and returns the list of CloudAssetFolderFeeds that match those selectors.
+func (c *FakeCloudAssetFolderFeeds) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudAssetFolderFeedList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(cloudassetfolderfeedsResource, cloudassetfolderfeedsKind, c.ns, opts), &v1alpha1.CloudAssetFolderFeedList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.CloudAssetFolderFeedList{ListMeta: obj.(*v1alpha1.CloudAssetFolderFeedList).ListMeta}
+	for _, item := range obj.(*v1alpha1.CloudAssetFolderFeedList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested cloudAssetFolderFeeds.
+func (c *FakeCloudAssetFolderFeeds) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(cloudassetfolderfeedsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a cloudAssetFolderFeed and creates it.  Returns the server's representation of the cloudAssetFolderFeed, and an error, if there is any.
+func (c *FakeCloudAssetFolderFeeds) Create(ctx context.Context, cloudAssetFolderFeed *v1alpha1.CloudAssetFolderFeed, opts v1.CreateOptions) (result *v1alpha1.CloudAssetFolderFeed, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(cloudassetfolderfeedsResource, c.ns, cloudAssetFolderFeed), &v1alpha1.CloudAssetFolderFeed{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudAssetFolderFeed), err
+}
+
+// Update takes the representation of a cloudAssetFolderFeed and updates it. Returns the server's representation of the cloudAssetFolderFeed, and an error, if there is any.
+func (c *FakeCloudAssetFolderFeeds) Update(ctx context.Context, cloudAssetFolderFeed *v1alpha1.CloudAssetFolderFeed, opts v1.UpdateOptions) (result *v1alpha1.CloudAssetFolderFeed, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(cloudassetfolderfeedsResource, c.ns, cloudAssetFolderFeed), &v1alpha1.CloudAssetFolderFeed{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudAssetFolderFeed), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeCloudAssetFolderFeeds) UpdateStatus(ctx context.Context, cloudAssetFolderFeed *v1alpha1.CloudAssetFolderFeed, opts v1.UpdateOptions) (*v1alpha1.CloudAssetFolderFeed, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(cloudassetfolderfeedsResource, "status", c.ns, cloudAssetFolderFeed), &v1alpha1.CloudAssetFolderFeed{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudAssetFolderFeed), err
+}
+
+// Delete takes name of the cloudAssetFolderFeed and deletes it. Returns an error if one occurs.
+func (c *FakeCloudAssetFolderFeeds) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(cloudassetfolderfeedsResource, c.ns, name, opts), &v1alpha1.CloudAssetFolderFeed{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeCloudAssetFolderFeeds) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(cloudassetfolderfeedsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.CloudAssetFolderFeedList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched cloudAssetFolderFeed.
+func (c *FakeCloudAssetFolderFeeds) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudAssetFolderFeed, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(cloudassetfolderfeedsResource, c.ns, name, pt, data, subresources...), &v1alpha1.CloudAssetFolderFeed{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudAssetFolderFeed), err
 }

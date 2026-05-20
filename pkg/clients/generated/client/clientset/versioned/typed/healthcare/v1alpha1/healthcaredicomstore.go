@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // HealthcareDICOMStoresGetter has a method to return a HealthcareDICOMStoreInterface.
@@ -40,36 +41,158 @@ type HealthcareDICOMStoresGetter interface {
 
 // HealthcareDICOMStoreInterface has methods to work with HealthcareDICOMStore resources.
 type HealthcareDICOMStoreInterface interface {
-	Create(ctx context.Context, healthcareDICOMStore *healthcarev1alpha1.HealthcareDICOMStore, opts v1.CreateOptions) (*healthcarev1alpha1.HealthcareDICOMStore, error)
-	Update(ctx context.Context, healthcareDICOMStore *healthcarev1alpha1.HealthcareDICOMStore, opts v1.UpdateOptions) (*healthcarev1alpha1.HealthcareDICOMStore, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, healthcareDICOMStore *healthcarev1alpha1.HealthcareDICOMStore, opts v1.UpdateOptions) (*healthcarev1alpha1.HealthcareDICOMStore, error)
+	Create(ctx context.Context, healthcareDICOMStore *v1alpha1.HealthcareDICOMStore, opts v1.CreateOptions) (*v1alpha1.HealthcareDICOMStore, error)
+	Update(ctx context.Context, healthcareDICOMStore *v1alpha1.HealthcareDICOMStore, opts v1.UpdateOptions) (*v1alpha1.HealthcareDICOMStore, error)
+	UpdateStatus(ctx context.Context, healthcareDICOMStore *v1alpha1.HealthcareDICOMStore, opts v1.UpdateOptions) (*v1alpha1.HealthcareDICOMStore, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*healthcarev1alpha1.HealthcareDICOMStore, error)
-	List(ctx context.Context, opts v1.ListOptions) (*healthcarev1alpha1.HealthcareDICOMStoreList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.HealthcareDICOMStore, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.HealthcareDICOMStoreList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *healthcarev1alpha1.HealthcareDICOMStore, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.HealthcareDICOMStore, err error)
 	HealthcareDICOMStoreExpansion
 }
 
 // healthcareDICOMStores implements HealthcareDICOMStoreInterface
 type healthcareDICOMStores struct {
-	*gentype.ClientWithList[*healthcarev1alpha1.HealthcareDICOMStore, *healthcarev1alpha1.HealthcareDICOMStoreList]
+	client rest.Interface
+	ns     string
 }
 
 // newHealthcareDICOMStores returns a HealthcareDICOMStores
 func newHealthcareDICOMStores(c *HealthcareV1alpha1Client, namespace string) *healthcareDICOMStores {
 	return &healthcareDICOMStores{
-		gentype.NewClientWithList[*healthcarev1alpha1.HealthcareDICOMStore, *healthcarev1alpha1.HealthcareDICOMStoreList](
-			"healthcaredicomstores",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *healthcarev1alpha1.HealthcareDICOMStore { return &healthcarev1alpha1.HealthcareDICOMStore{} },
-			func() *healthcarev1alpha1.HealthcareDICOMStoreList {
-				return &healthcarev1alpha1.HealthcareDICOMStoreList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the healthcareDICOMStore, and returns the corresponding healthcareDICOMStore object, and an error if there is any.
+func (c *healthcareDICOMStores) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.HealthcareDICOMStore, err error) {
+	result = &v1alpha1.HealthcareDICOMStore{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("healthcaredicomstores").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of HealthcareDICOMStores that match those selectors.
+func (c *healthcareDICOMStores) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.HealthcareDICOMStoreList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.HealthcareDICOMStoreList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("healthcaredicomstores").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested healthcareDICOMStores.
+func (c *healthcareDICOMStores) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("healthcaredicomstores").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a healthcareDICOMStore and creates it.  Returns the server's representation of the healthcareDICOMStore, and an error, if there is any.
+func (c *healthcareDICOMStores) Create(ctx context.Context, healthcareDICOMStore *v1alpha1.HealthcareDICOMStore, opts v1.CreateOptions) (result *v1alpha1.HealthcareDICOMStore, err error) {
+	result = &v1alpha1.HealthcareDICOMStore{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("healthcaredicomstores").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(healthcareDICOMStore).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a healthcareDICOMStore and updates it. Returns the server's representation of the healthcareDICOMStore, and an error, if there is any.
+func (c *healthcareDICOMStores) Update(ctx context.Context, healthcareDICOMStore *v1alpha1.HealthcareDICOMStore, opts v1.UpdateOptions) (result *v1alpha1.HealthcareDICOMStore, err error) {
+	result = &v1alpha1.HealthcareDICOMStore{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("healthcaredicomstores").
+		Name(healthcareDICOMStore.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(healthcareDICOMStore).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *healthcareDICOMStores) UpdateStatus(ctx context.Context, healthcareDICOMStore *v1alpha1.HealthcareDICOMStore, opts v1.UpdateOptions) (result *v1alpha1.HealthcareDICOMStore, err error) {
+	result = &v1alpha1.HealthcareDICOMStore{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("healthcaredicomstores").
+		Name(healthcareDICOMStore.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(healthcareDICOMStore).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the healthcareDICOMStore and deletes it. Returns an error if one occurs.
+func (c *healthcareDICOMStores) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("healthcaredicomstores").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *healthcareDICOMStores) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("healthcaredicomstores").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched healthcareDICOMStore.
+func (c *healthcareDICOMStores) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.HealthcareDICOMStore, err error) {
+	result = &v1alpha1.HealthcareDICOMStore{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("healthcaredicomstores").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

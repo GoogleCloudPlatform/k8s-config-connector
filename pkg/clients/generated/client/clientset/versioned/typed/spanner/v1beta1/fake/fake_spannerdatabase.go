@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/spanner/v1beta1"
-	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/spanner/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeSpannerDatabases implements SpannerDatabaseInterface
-type fakeSpannerDatabases struct {
-	*gentype.FakeClientWithList[*v1beta1.SpannerDatabase, *v1beta1.SpannerDatabaseList]
+// FakeSpannerDatabases implements SpannerDatabaseInterface
+type FakeSpannerDatabases struct {
 	Fake *FakeSpannerV1beta1
+	ns   string
 }
 
-func newFakeSpannerDatabases(fake *FakeSpannerV1beta1, namespace string) spannerv1beta1.SpannerDatabaseInterface {
-	return &fakeSpannerDatabases{
-		gentype.NewFakeClientWithList[*v1beta1.SpannerDatabase, *v1beta1.SpannerDatabaseList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("spannerdatabases"),
-			v1beta1.SchemeGroupVersion.WithKind("SpannerDatabase"),
-			func() *v1beta1.SpannerDatabase { return &v1beta1.SpannerDatabase{} },
-			func() *v1beta1.SpannerDatabaseList { return &v1beta1.SpannerDatabaseList{} },
-			func(dst, src *v1beta1.SpannerDatabaseList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.SpannerDatabaseList) []*v1beta1.SpannerDatabase {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.SpannerDatabaseList, items []*v1beta1.SpannerDatabase) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var spannerdatabasesResource = v1beta1.SchemeGroupVersion.WithResource("spannerdatabases")
+
+var spannerdatabasesKind = v1beta1.SchemeGroupVersion.WithKind("SpannerDatabase")
+
+// Get takes name of the spannerDatabase, and returns the corresponding spannerDatabase object, and an error if there is any.
+func (c *FakeSpannerDatabases) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SpannerDatabase, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(spannerdatabasesResource, c.ns, name), &v1beta1.SpannerDatabase{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.SpannerDatabase), err
+}
+
+// List takes label and field selectors, and returns the list of SpannerDatabases that match those selectors.
+func (c *FakeSpannerDatabases) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SpannerDatabaseList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(spannerdatabasesResource, spannerdatabasesKind, c.ns, opts), &v1beta1.SpannerDatabaseList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.SpannerDatabaseList{ListMeta: obj.(*v1beta1.SpannerDatabaseList).ListMeta}
+	for _, item := range obj.(*v1beta1.SpannerDatabaseList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested spannerDatabases.
+func (c *FakeSpannerDatabases) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(spannerdatabasesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a spannerDatabase and creates it.  Returns the server's representation of the spannerDatabase, and an error, if there is any.
+func (c *FakeSpannerDatabases) Create(ctx context.Context, spannerDatabase *v1beta1.SpannerDatabase, opts v1.CreateOptions) (result *v1beta1.SpannerDatabase, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(spannerdatabasesResource, c.ns, spannerDatabase), &v1beta1.SpannerDatabase{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpannerDatabase), err
+}
+
+// Update takes the representation of a spannerDatabase and updates it. Returns the server's representation of the spannerDatabase, and an error, if there is any.
+func (c *FakeSpannerDatabases) Update(ctx context.Context, spannerDatabase *v1beta1.SpannerDatabase, opts v1.UpdateOptions) (result *v1beta1.SpannerDatabase, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(spannerdatabasesResource, c.ns, spannerDatabase), &v1beta1.SpannerDatabase{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpannerDatabase), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeSpannerDatabases) UpdateStatus(ctx context.Context, spannerDatabase *v1beta1.SpannerDatabase, opts v1.UpdateOptions) (*v1beta1.SpannerDatabase, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(spannerdatabasesResource, "status", c.ns, spannerDatabase), &v1beta1.SpannerDatabase{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpannerDatabase), err
+}
+
+// Delete takes name of the spannerDatabase and deletes it. Returns an error if one occurs.
+func (c *FakeSpannerDatabases) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(spannerdatabasesResource, c.ns, name, opts), &v1beta1.SpannerDatabase{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeSpannerDatabases) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(spannerdatabasesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.SpannerDatabaseList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched spannerDatabase.
+func (c *FakeSpannerDatabases) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SpannerDatabase, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(spannerdatabasesResource, c.ns, name, pt, data, subresources...), &v1beta1.SpannerDatabase{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SpannerDatabase), err
 }

@@ -22,36 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/parametermanager/v1alpha1"
-	parametermanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/parametermanager/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeParameterManagerParameterVersions implements ParameterManagerParameterVersionInterface
-type fakeParameterManagerParameterVersions struct {
-	*gentype.FakeClientWithList[*v1alpha1.ParameterManagerParameterVersion, *v1alpha1.ParameterManagerParameterVersionList]
+// FakeParameterManagerParameterVersions implements ParameterManagerParameterVersionInterface
+type FakeParameterManagerParameterVersions struct {
 	Fake *FakeParametermanagerV1alpha1
+	ns   string
 }
 
-func newFakeParameterManagerParameterVersions(fake *FakeParametermanagerV1alpha1, namespace string) parametermanagerv1alpha1.ParameterManagerParameterVersionInterface {
-	return &fakeParameterManagerParameterVersions{
-		gentype.NewFakeClientWithList[*v1alpha1.ParameterManagerParameterVersion, *v1alpha1.ParameterManagerParameterVersionList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("parametermanagerparameterversions"),
-			v1alpha1.SchemeGroupVersion.WithKind("ParameterManagerParameterVersion"),
-			func() *v1alpha1.ParameterManagerParameterVersion { return &v1alpha1.ParameterManagerParameterVersion{} },
-			func() *v1alpha1.ParameterManagerParameterVersionList {
-				return &v1alpha1.ParameterManagerParameterVersionList{}
-			},
-			func(dst, src *v1alpha1.ParameterManagerParameterVersionList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ParameterManagerParameterVersionList) []*v1alpha1.ParameterManagerParameterVersion {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.ParameterManagerParameterVersionList, items []*v1alpha1.ParameterManagerParameterVersion) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var parametermanagerparameterversionsResource = v1alpha1.SchemeGroupVersion.WithResource("parametermanagerparameterversions")
+
+var parametermanagerparameterversionsKind = v1alpha1.SchemeGroupVersion.WithKind("ParameterManagerParameterVersion")
+
+// Get takes name of the parameterManagerParameterVersion, and returns the corresponding parameterManagerParameterVersion object, and an error if there is any.
+func (c *FakeParameterManagerParameterVersions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ParameterManagerParameterVersion, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(parametermanagerparameterversionsResource, c.ns, name), &v1alpha1.ParameterManagerParameterVersion{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.ParameterManagerParameterVersion), err
+}
+
+// List takes label and field selectors, and returns the list of ParameterManagerParameterVersions that match those selectors.
+func (c *FakeParameterManagerParameterVersions) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ParameterManagerParameterVersionList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(parametermanagerparameterversionsResource, parametermanagerparameterversionsKind, c.ns, opts), &v1alpha1.ParameterManagerParameterVersionList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.ParameterManagerParameterVersionList{ListMeta: obj.(*v1alpha1.ParameterManagerParameterVersionList).ListMeta}
+	for _, item := range obj.(*v1alpha1.ParameterManagerParameterVersionList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested parameterManagerParameterVersions.
+func (c *FakeParameterManagerParameterVersions) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(parametermanagerparameterversionsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a parameterManagerParameterVersion and creates it.  Returns the server's representation of the parameterManagerParameterVersion, and an error, if there is any.
+func (c *FakeParameterManagerParameterVersions) Create(ctx context.Context, parameterManagerParameterVersion *v1alpha1.ParameterManagerParameterVersion, opts v1.CreateOptions) (result *v1alpha1.ParameterManagerParameterVersion, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(parametermanagerparameterversionsResource, c.ns, parameterManagerParameterVersion), &v1alpha1.ParameterManagerParameterVersion{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ParameterManagerParameterVersion), err
+}
+
+// Update takes the representation of a parameterManagerParameterVersion and updates it. Returns the server's representation of the parameterManagerParameterVersion, and an error, if there is any.
+func (c *FakeParameterManagerParameterVersions) Update(ctx context.Context, parameterManagerParameterVersion *v1alpha1.ParameterManagerParameterVersion, opts v1.UpdateOptions) (result *v1alpha1.ParameterManagerParameterVersion, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(parametermanagerparameterversionsResource, c.ns, parameterManagerParameterVersion), &v1alpha1.ParameterManagerParameterVersion{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ParameterManagerParameterVersion), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeParameterManagerParameterVersions) UpdateStatus(ctx context.Context, parameterManagerParameterVersion *v1alpha1.ParameterManagerParameterVersion, opts v1.UpdateOptions) (*v1alpha1.ParameterManagerParameterVersion, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(parametermanagerparameterversionsResource, "status", c.ns, parameterManagerParameterVersion), &v1alpha1.ParameterManagerParameterVersion{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ParameterManagerParameterVersion), err
+}
+
+// Delete takes name of the parameterManagerParameterVersion and deletes it. Returns an error if one occurs.
+func (c *FakeParameterManagerParameterVersions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(parametermanagerparameterversionsResource, c.ns, name, opts), &v1alpha1.ParameterManagerParameterVersion{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeParameterManagerParameterVersions) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(parametermanagerparameterversionsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.ParameterManagerParameterVersionList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched parameterManagerParameterVersion.
+func (c *FakeParameterManagerParameterVersions) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ParameterManagerParameterVersion, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(parametermanagerparameterversionsResource, c.ns, name, pt, data, subresources...), &v1alpha1.ParameterManagerParameterVersion{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ParameterManagerParameterVersion), err
 }

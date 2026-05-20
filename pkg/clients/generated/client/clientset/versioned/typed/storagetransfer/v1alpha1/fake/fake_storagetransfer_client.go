@@ -32,7 +32,7 @@ type FakeStoragetransferV1alpha1 struct {
 }
 
 func (c *FakeStoragetransferV1alpha1) StorageTransferAgentPools(namespace string) v1alpha1.StorageTransferAgentPoolInterface {
-	return newFakeStorageTransferAgentPools(c, namespace)
+	return &FakeStorageTransferAgentPools{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

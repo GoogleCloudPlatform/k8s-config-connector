@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // DialogflowCXEntityTypesGetter has a method to return a DialogflowCXEntityTypeInterface.
@@ -40,38 +41,158 @@ type DialogflowCXEntityTypesGetter interface {
 
 // DialogflowCXEntityTypeInterface has methods to work with DialogflowCXEntityType resources.
 type DialogflowCXEntityTypeInterface interface {
-	Create(ctx context.Context, dialogflowCXEntityType *dialogflowcxv1alpha1.DialogflowCXEntityType, opts v1.CreateOptions) (*dialogflowcxv1alpha1.DialogflowCXEntityType, error)
-	Update(ctx context.Context, dialogflowCXEntityType *dialogflowcxv1alpha1.DialogflowCXEntityType, opts v1.UpdateOptions) (*dialogflowcxv1alpha1.DialogflowCXEntityType, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, dialogflowCXEntityType *dialogflowcxv1alpha1.DialogflowCXEntityType, opts v1.UpdateOptions) (*dialogflowcxv1alpha1.DialogflowCXEntityType, error)
+	Create(ctx context.Context, dialogflowCXEntityType *v1alpha1.DialogflowCXEntityType, opts v1.CreateOptions) (*v1alpha1.DialogflowCXEntityType, error)
+	Update(ctx context.Context, dialogflowCXEntityType *v1alpha1.DialogflowCXEntityType, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXEntityType, error)
+	UpdateStatus(ctx context.Context, dialogflowCXEntityType *v1alpha1.DialogflowCXEntityType, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXEntityType, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*dialogflowcxv1alpha1.DialogflowCXEntityType, error)
-	List(ctx context.Context, opts v1.ListOptions) (*dialogflowcxv1alpha1.DialogflowCXEntityTypeList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.DialogflowCXEntityType, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.DialogflowCXEntityTypeList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *dialogflowcxv1alpha1.DialogflowCXEntityType, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXEntityType, err error)
 	DialogflowCXEntityTypeExpansion
 }
 
 // dialogflowCXEntityTypes implements DialogflowCXEntityTypeInterface
 type dialogflowCXEntityTypes struct {
-	*gentype.ClientWithList[*dialogflowcxv1alpha1.DialogflowCXEntityType, *dialogflowcxv1alpha1.DialogflowCXEntityTypeList]
+	client rest.Interface
+	ns     string
 }
 
 // newDialogflowCXEntityTypes returns a DialogflowCXEntityTypes
 func newDialogflowCXEntityTypes(c *DialogflowcxV1alpha1Client, namespace string) *dialogflowCXEntityTypes {
 	return &dialogflowCXEntityTypes{
-		gentype.NewClientWithList[*dialogflowcxv1alpha1.DialogflowCXEntityType, *dialogflowcxv1alpha1.DialogflowCXEntityTypeList](
-			"dialogflowcxentitytypes",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *dialogflowcxv1alpha1.DialogflowCXEntityType {
-				return &dialogflowcxv1alpha1.DialogflowCXEntityType{}
-			},
-			func() *dialogflowcxv1alpha1.DialogflowCXEntityTypeList {
-				return &dialogflowcxv1alpha1.DialogflowCXEntityTypeList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the dialogflowCXEntityType, and returns the corresponding dialogflowCXEntityType object, and an error if there is any.
+func (c *dialogflowCXEntityTypes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowCXEntityType, err error) {
+	result = &v1alpha1.DialogflowCXEntityType{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dialogflowcxentitytypes").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of DialogflowCXEntityTypes that match those selectors.
+func (c *dialogflowCXEntityTypes) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DialogflowCXEntityTypeList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.DialogflowCXEntityTypeList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dialogflowcxentitytypes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested dialogflowCXEntityTypes.
+func (c *dialogflowCXEntityTypes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("dialogflowcxentitytypes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a dialogflowCXEntityType and creates it.  Returns the server's representation of the dialogflowCXEntityType, and an error, if there is any.
+func (c *dialogflowCXEntityTypes) Create(ctx context.Context, dialogflowCXEntityType *v1alpha1.DialogflowCXEntityType, opts v1.CreateOptions) (result *v1alpha1.DialogflowCXEntityType, err error) {
+	result = &v1alpha1.DialogflowCXEntityType{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("dialogflowcxentitytypes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dialogflowCXEntityType).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a dialogflowCXEntityType and updates it. Returns the server's representation of the dialogflowCXEntityType, and an error, if there is any.
+func (c *dialogflowCXEntityTypes) Update(ctx context.Context, dialogflowCXEntityType *v1alpha1.DialogflowCXEntityType, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXEntityType, err error) {
+	result = &v1alpha1.DialogflowCXEntityType{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dialogflowcxentitytypes").
+		Name(dialogflowCXEntityType.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dialogflowCXEntityType).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *dialogflowCXEntityTypes) UpdateStatus(ctx context.Context, dialogflowCXEntityType *v1alpha1.DialogflowCXEntityType, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXEntityType, err error) {
+	result = &v1alpha1.DialogflowCXEntityType{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dialogflowcxentitytypes").
+		Name(dialogflowCXEntityType.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dialogflowCXEntityType).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the dialogflowCXEntityType and deletes it. Returns an error if one occurs.
+func (c *dialogflowCXEntityTypes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dialogflowcxentitytypes").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *dialogflowCXEntityTypes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dialogflowcxentitytypes").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched dialogflowCXEntityType.
+func (c *dialogflowCXEntityTypes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXEntityType, err error) {
+	result = &v1alpha1.DialogflowCXEntityType{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("dialogflowcxentitytypes").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

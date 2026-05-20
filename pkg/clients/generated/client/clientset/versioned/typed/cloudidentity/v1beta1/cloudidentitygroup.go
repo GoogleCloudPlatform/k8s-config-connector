@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // CloudIdentityGroupsGetter has a method to return a CloudIdentityGroupInterface.
@@ -40,36 +41,158 @@ type CloudIdentityGroupsGetter interface {
 
 // CloudIdentityGroupInterface has methods to work with CloudIdentityGroup resources.
 type CloudIdentityGroupInterface interface {
-	Create(ctx context.Context, cloudIdentityGroup *cloudidentityv1beta1.CloudIdentityGroup, opts v1.CreateOptions) (*cloudidentityv1beta1.CloudIdentityGroup, error)
-	Update(ctx context.Context, cloudIdentityGroup *cloudidentityv1beta1.CloudIdentityGroup, opts v1.UpdateOptions) (*cloudidentityv1beta1.CloudIdentityGroup, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, cloudIdentityGroup *cloudidentityv1beta1.CloudIdentityGroup, opts v1.UpdateOptions) (*cloudidentityv1beta1.CloudIdentityGroup, error)
+	Create(ctx context.Context, cloudIdentityGroup *v1beta1.CloudIdentityGroup, opts v1.CreateOptions) (*v1beta1.CloudIdentityGroup, error)
+	Update(ctx context.Context, cloudIdentityGroup *v1beta1.CloudIdentityGroup, opts v1.UpdateOptions) (*v1beta1.CloudIdentityGroup, error)
+	UpdateStatus(ctx context.Context, cloudIdentityGroup *v1beta1.CloudIdentityGroup, opts v1.UpdateOptions) (*v1beta1.CloudIdentityGroup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*cloudidentityv1beta1.CloudIdentityGroup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*cloudidentityv1beta1.CloudIdentityGroupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.CloudIdentityGroup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.CloudIdentityGroupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *cloudidentityv1beta1.CloudIdentityGroup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.CloudIdentityGroup, err error)
 	CloudIdentityGroupExpansion
 }
 
 // cloudIdentityGroups implements CloudIdentityGroupInterface
 type cloudIdentityGroups struct {
-	*gentype.ClientWithList[*cloudidentityv1beta1.CloudIdentityGroup, *cloudidentityv1beta1.CloudIdentityGroupList]
+	client rest.Interface
+	ns     string
 }
 
 // newCloudIdentityGroups returns a CloudIdentityGroups
 func newCloudIdentityGroups(c *CloudidentityV1beta1Client, namespace string) *cloudIdentityGroups {
 	return &cloudIdentityGroups{
-		gentype.NewClientWithList[*cloudidentityv1beta1.CloudIdentityGroup, *cloudidentityv1beta1.CloudIdentityGroupList](
-			"cloudidentitygroups",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *cloudidentityv1beta1.CloudIdentityGroup { return &cloudidentityv1beta1.CloudIdentityGroup{} },
-			func() *cloudidentityv1beta1.CloudIdentityGroupList {
-				return &cloudidentityv1beta1.CloudIdentityGroupList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the cloudIdentityGroup, and returns the corresponding cloudIdentityGroup object, and an error if there is any.
+func (c *cloudIdentityGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.CloudIdentityGroup, err error) {
+	result = &v1beta1.CloudIdentityGroup{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("cloudidentitygroups").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of CloudIdentityGroups that match those selectors.
+func (c *cloudIdentityGroups) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.CloudIdentityGroupList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.CloudIdentityGroupList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("cloudidentitygroups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested cloudIdentityGroups.
+func (c *cloudIdentityGroups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("cloudidentitygroups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a cloudIdentityGroup and creates it.  Returns the server's representation of the cloudIdentityGroup, and an error, if there is any.
+func (c *cloudIdentityGroups) Create(ctx context.Context, cloudIdentityGroup *v1beta1.CloudIdentityGroup, opts v1.CreateOptions) (result *v1beta1.CloudIdentityGroup, err error) {
+	result = &v1beta1.CloudIdentityGroup{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("cloudidentitygroups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(cloudIdentityGroup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a cloudIdentityGroup and updates it. Returns the server's representation of the cloudIdentityGroup, and an error, if there is any.
+func (c *cloudIdentityGroups) Update(ctx context.Context, cloudIdentityGroup *v1beta1.CloudIdentityGroup, opts v1.UpdateOptions) (result *v1beta1.CloudIdentityGroup, err error) {
+	result = &v1beta1.CloudIdentityGroup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("cloudidentitygroups").
+		Name(cloudIdentityGroup.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(cloudIdentityGroup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *cloudIdentityGroups) UpdateStatus(ctx context.Context, cloudIdentityGroup *v1beta1.CloudIdentityGroup, opts v1.UpdateOptions) (result *v1beta1.CloudIdentityGroup, err error) {
+	result = &v1beta1.CloudIdentityGroup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("cloudidentitygroups").
+		Name(cloudIdentityGroup.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(cloudIdentityGroup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the cloudIdentityGroup and deletes it. Returns an error if one occurs.
+func (c *cloudIdentityGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("cloudidentitygroups").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *cloudIdentityGroups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("cloudidentitygroups").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched cloudIdentityGroup.
+func (c *cloudIdentityGroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.CloudIdentityGroup, err error) {
+	result = &v1beta1.CloudIdentityGroup{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("cloudidentitygroups").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

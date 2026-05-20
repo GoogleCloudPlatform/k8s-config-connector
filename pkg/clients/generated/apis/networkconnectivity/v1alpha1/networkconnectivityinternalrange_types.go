@@ -43,7 +43,7 @@ type InternalrangeMigration struct {
 	// +optional
 	Source *string `json:"source,omitempty"`
 
-	/* Immutable. Resource path of the target resource. The target project can be different, as in the cases when migrating to peer networks. For example: /projects/{project}/regions/{region}/subnetworks/{subnet} */
+	/* Immutable. Resource path of the target resource. The target project can be different, as in the cases when migrating to peer networks. The resource For example: /projects/{project}/regions/{region}/subnetworks/{subnet} */
 	// +optional
 	Target *string `json:"target,omitempty"`
 }

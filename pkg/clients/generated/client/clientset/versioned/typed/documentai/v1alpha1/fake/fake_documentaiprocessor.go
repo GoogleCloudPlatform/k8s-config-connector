@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/documentai/v1alpha1"
-	documentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDocumentAIProcessors implements DocumentAIProcessorInterface
-type fakeDocumentAIProcessors struct {
-	*gentype.FakeClientWithList[*v1alpha1.DocumentAIProcessor, *v1alpha1.DocumentAIProcessorList]
+// FakeDocumentAIProcessors implements DocumentAIProcessorInterface
+type FakeDocumentAIProcessors struct {
 	Fake *FakeDocumentaiV1alpha1
+	ns   string
 }
 
-func newFakeDocumentAIProcessors(fake *FakeDocumentaiV1alpha1, namespace string) documentaiv1alpha1.DocumentAIProcessorInterface {
-	return &fakeDocumentAIProcessors{
-		gentype.NewFakeClientWithList[*v1alpha1.DocumentAIProcessor, *v1alpha1.DocumentAIProcessorList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("documentaiprocessors"),
-			v1alpha1.SchemeGroupVersion.WithKind("DocumentAIProcessor"),
-			func() *v1alpha1.DocumentAIProcessor { return &v1alpha1.DocumentAIProcessor{} },
-			func() *v1alpha1.DocumentAIProcessorList { return &v1alpha1.DocumentAIProcessorList{} },
-			func(dst, src *v1alpha1.DocumentAIProcessorList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DocumentAIProcessorList) []*v1alpha1.DocumentAIProcessor {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DocumentAIProcessorList, items []*v1alpha1.DocumentAIProcessor) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var documentaiprocessorsResource = v1alpha1.SchemeGroupVersion.WithResource("documentaiprocessors")
+
+var documentaiprocessorsKind = v1alpha1.SchemeGroupVersion.WithKind("DocumentAIProcessor")
+
+// Get takes name of the documentAIProcessor, and returns the corresponding documentAIProcessor object, and an error if there is any.
+func (c *FakeDocumentAIProcessors) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DocumentAIProcessor, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(documentaiprocessorsResource, c.ns, name), &v1alpha1.DocumentAIProcessor{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DocumentAIProcessor), err
+}
+
+// List takes label and field selectors, and returns the list of DocumentAIProcessors that match those selectors.
+func (c *FakeDocumentAIProcessors) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DocumentAIProcessorList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(documentaiprocessorsResource, documentaiprocessorsKind, c.ns, opts), &v1alpha1.DocumentAIProcessorList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DocumentAIProcessorList{ListMeta: obj.(*v1alpha1.DocumentAIProcessorList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DocumentAIProcessorList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested documentAIProcessors.
+func (c *FakeDocumentAIProcessors) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(documentaiprocessorsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a documentAIProcessor and creates it.  Returns the server's representation of the documentAIProcessor, and an error, if there is any.
+func (c *FakeDocumentAIProcessors) Create(ctx context.Context, documentAIProcessor *v1alpha1.DocumentAIProcessor, opts v1.CreateOptions) (result *v1alpha1.DocumentAIProcessor, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(documentaiprocessorsResource, c.ns, documentAIProcessor), &v1alpha1.DocumentAIProcessor{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DocumentAIProcessor), err
+}
+
+// Update takes the representation of a documentAIProcessor and updates it. Returns the server's representation of the documentAIProcessor, and an error, if there is any.
+func (c *FakeDocumentAIProcessors) Update(ctx context.Context, documentAIProcessor *v1alpha1.DocumentAIProcessor, opts v1.UpdateOptions) (result *v1alpha1.DocumentAIProcessor, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(documentaiprocessorsResource, c.ns, documentAIProcessor), &v1alpha1.DocumentAIProcessor{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DocumentAIProcessor), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDocumentAIProcessors) UpdateStatus(ctx context.Context, documentAIProcessor *v1alpha1.DocumentAIProcessor, opts v1.UpdateOptions) (*v1alpha1.DocumentAIProcessor, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(documentaiprocessorsResource, "status", c.ns, documentAIProcessor), &v1alpha1.DocumentAIProcessor{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DocumentAIProcessor), err
+}
+
+// Delete takes name of the documentAIProcessor and deletes it. Returns an error if one occurs.
+func (c *FakeDocumentAIProcessors) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(documentaiprocessorsResource, c.ns, name, opts), &v1alpha1.DocumentAIProcessor{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDocumentAIProcessors) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(documentaiprocessorsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DocumentAIProcessorList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched documentAIProcessor.
+func (c *FakeDocumentAIProcessors) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DocumentAIProcessor, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(documentaiprocessorsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DocumentAIProcessor{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DocumentAIProcessor), err
 }

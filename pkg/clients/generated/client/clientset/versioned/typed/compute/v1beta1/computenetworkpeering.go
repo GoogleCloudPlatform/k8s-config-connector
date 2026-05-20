@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeNetworkPeeringsGetter has a method to return a ComputeNetworkPeeringInterface.
@@ -40,34 +41,158 @@ type ComputeNetworkPeeringsGetter interface {
 
 // ComputeNetworkPeeringInterface has methods to work with ComputeNetworkPeering resources.
 type ComputeNetworkPeeringInterface interface {
-	Create(ctx context.Context, computeNetworkPeering *computev1beta1.ComputeNetworkPeering, opts v1.CreateOptions) (*computev1beta1.ComputeNetworkPeering, error)
-	Update(ctx context.Context, computeNetworkPeering *computev1beta1.ComputeNetworkPeering, opts v1.UpdateOptions) (*computev1beta1.ComputeNetworkPeering, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeNetworkPeering *computev1beta1.ComputeNetworkPeering, opts v1.UpdateOptions) (*computev1beta1.ComputeNetworkPeering, error)
+	Create(ctx context.Context, computeNetworkPeering *v1beta1.ComputeNetworkPeering, opts v1.CreateOptions) (*v1beta1.ComputeNetworkPeering, error)
+	Update(ctx context.Context, computeNetworkPeering *v1beta1.ComputeNetworkPeering, opts v1.UpdateOptions) (*v1beta1.ComputeNetworkPeering, error)
+	UpdateStatus(ctx context.Context, computeNetworkPeering *v1beta1.ComputeNetworkPeering, opts v1.UpdateOptions) (*v1beta1.ComputeNetworkPeering, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeNetworkPeering, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeNetworkPeeringList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeNetworkPeering, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeNetworkPeeringList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeNetworkPeering, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeNetworkPeering, err error)
 	ComputeNetworkPeeringExpansion
 }
 
 // computeNetworkPeerings implements ComputeNetworkPeeringInterface
 type computeNetworkPeerings struct {
-	*gentype.ClientWithList[*computev1beta1.ComputeNetworkPeering, *computev1beta1.ComputeNetworkPeeringList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeNetworkPeerings returns a ComputeNetworkPeerings
 func newComputeNetworkPeerings(c *ComputeV1beta1Client, namespace string) *computeNetworkPeerings {
 	return &computeNetworkPeerings{
-		gentype.NewClientWithList[*computev1beta1.ComputeNetworkPeering, *computev1beta1.ComputeNetworkPeeringList](
-			"computenetworkpeerings",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1beta1.ComputeNetworkPeering { return &computev1beta1.ComputeNetworkPeering{} },
-			func() *computev1beta1.ComputeNetworkPeeringList { return &computev1beta1.ComputeNetworkPeeringList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeNetworkPeering, and returns the corresponding computeNetworkPeering object, and an error if there is any.
+func (c *computeNetworkPeerings) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeNetworkPeering, err error) {
+	result = &v1beta1.ComputeNetworkPeering{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computenetworkpeerings").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeNetworkPeerings that match those selectors.
+func (c *computeNetworkPeerings) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeNetworkPeeringList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ComputeNetworkPeeringList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computenetworkpeerings").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeNetworkPeerings.
+func (c *computeNetworkPeerings) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computenetworkpeerings").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeNetworkPeering and creates it.  Returns the server's representation of the computeNetworkPeering, and an error, if there is any.
+func (c *computeNetworkPeerings) Create(ctx context.Context, computeNetworkPeering *v1beta1.ComputeNetworkPeering, opts v1.CreateOptions) (result *v1beta1.ComputeNetworkPeering, err error) {
+	result = &v1beta1.ComputeNetworkPeering{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computenetworkpeerings").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeNetworkPeering).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeNetworkPeering and updates it. Returns the server's representation of the computeNetworkPeering, and an error, if there is any.
+func (c *computeNetworkPeerings) Update(ctx context.Context, computeNetworkPeering *v1beta1.ComputeNetworkPeering, opts v1.UpdateOptions) (result *v1beta1.ComputeNetworkPeering, err error) {
+	result = &v1beta1.ComputeNetworkPeering{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computenetworkpeerings").
+		Name(computeNetworkPeering.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeNetworkPeering).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeNetworkPeerings) UpdateStatus(ctx context.Context, computeNetworkPeering *v1beta1.ComputeNetworkPeering, opts v1.UpdateOptions) (result *v1beta1.ComputeNetworkPeering, err error) {
+	result = &v1beta1.ComputeNetworkPeering{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computenetworkpeerings").
+		Name(computeNetworkPeering.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeNetworkPeering).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeNetworkPeering and deletes it. Returns an error if one occurs.
+func (c *computeNetworkPeerings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computenetworkpeerings").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeNetworkPeerings) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computenetworkpeerings").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeNetworkPeering.
+func (c *computeNetworkPeerings) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeNetworkPeering, err error) {
+	result = &v1beta1.ComputeNetworkPeering{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computenetworkpeerings").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

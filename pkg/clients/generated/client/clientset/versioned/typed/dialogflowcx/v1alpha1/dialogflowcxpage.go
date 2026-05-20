@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // DialogflowCXPagesGetter has a method to return a DialogflowCXPageInterface.
@@ -40,34 +41,158 @@ type DialogflowCXPagesGetter interface {
 
 // DialogflowCXPageInterface has methods to work with DialogflowCXPage resources.
 type DialogflowCXPageInterface interface {
-	Create(ctx context.Context, dialogflowCXPage *dialogflowcxv1alpha1.DialogflowCXPage, opts v1.CreateOptions) (*dialogflowcxv1alpha1.DialogflowCXPage, error)
-	Update(ctx context.Context, dialogflowCXPage *dialogflowcxv1alpha1.DialogflowCXPage, opts v1.UpdateOptions) (*dialogflowcxv1alpha1.DialogflowCXPage, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, dialogflowCXPage *dialogflowcxv1alpha1.DialogflowCXPage, opts v1.UpdateOptions) (*dialogflowcxv1alpha1.DialogflowCXPage, error)
+	Create(ctx context.Context, dialogflowCXPage *v1alpha1.DialogflowCXPage, opts v1.CreateOptions) (*v1alpha1.DialogflowCXPage, error)
+	Update(ctx context.Context, dialogflowCXPage *v1alpha1.DialogflowCXPage, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXPage, error)
+	UpdateStatus(ctx context.Context, dialogflowCXPage *v1alpha1.DialogflowCXPage, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXPage, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*dialogflowcxv1alpha1.DialogflowCXPage, error)
-	List(ctx context.Context, opts v1.ListOptions) (*dialogflowcxv1alpha1.DialogflowCXPageList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.DialogflowCXPage, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.DialogflowCXPageList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *dialogflowcxv1alpha1.DialogflowCXPage, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXPage, err error)
 	DialogflowCXPageExpansion
 }
 
 // dialogflowCXPages implements DialogflowCXPageInterface
 type dialogflowCXPages struct {
-	*gentype.ClientWithList[*dialogflowcxv1alpha1.DialogflowCXPage, *dialogflowcxv1alpha1.DialogflowCXPageList]
+	client rest.Interface
+	ns     string
 }
 
 // newDialogflowCXPages returns a DialogflowCXPages
 func newDialogflowCXPages(c *DialogflowcxV1alpha1Client, namespace string) *dialogflowCXPages {
 	return &dialogflowCXPages{
-		gentype.NewClientWithList[*dialogflowcxv1alpha1.DialogflowCXPage, *dialogflowcxv1alpha1.DialogflowCXPageList](
-			"dialogflowcxpages",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *dialogflowcxv1alpha1.DialogflowCXPage { return &dialogflowcxv1alpha1.DialogflowCXPage{} },
-			func() *dialogflowcxv1alpha1.DialogflowCXPageList { return &dialogflowcxv1alpha1.DialogflowCXPageList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the dialogflowCXPage, and returns the corresponding dialogflowCXPage object, and an error if there is any.
+func (c *dialogflowCXPages) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowCXPage, err error) {
+	result = &v1alpha1.DialogflowCXPage{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dialogflowcxpages").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of DialogflowCXPages that match those selectors.
+func (c *dialogflowCXPages) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DialogflowCXPageList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.DialogflowCXPageList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dialogflowcxpages").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested dialogflowCXPages.
+func (c *dialogflowCXPages) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("dialogflowcxpages").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a dialogflowCXPage and creates it.  Returns the server's representation of the dialogflowCXPage, and an error, if there is any.
+func (c *dialogflowCXPages) Create(ctx context.Context, dialogflowCXPage *v1alpha1.DialogflowCXPage, opts v1.CreateOptions) (result *v1alpha1.DialogflowCXPage, err error) {
+	result = &v1alpha1.DialogflowCXPage{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("dialogflowcxpages").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dialogflowCXPage).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a dialogflowCXPage and updates it. Returns the server's representation of the dialogflowCXPage, and an error, if there is any.
+func (c *dialogflowCXPages) Update(ctx context.Context, dialogflowCXPage *v1alpha1.DialogflowCXPage, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXPage, err error) {
+	result = &v1alpha1.DialogflowCXPage{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dialogflowcxpages").
+		Name(dialogflowCXPage.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dialogflowCXPage).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *dialogflowCXPages) UpdateStatus(ctx context.Context, dialogflowCXPage *v1alpha1.DialogflowCXPage, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXPage, err error) {
+	result = &v1alpha1.DialogflowCXPage{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dialogflowcxpages").
+		Name(dialogflowCXPage.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dialogflowCXPage).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the dialogflowCXPage and deletes it. Returns an error if one occurs.
+func (c *dialogflowCXPages) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dialogflowcxpages").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *dialogflowCXPages) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dialogflowcxpages").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched dialogflowCXPage.
+func (c *dialogflowCXPages) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXPage, err error) {
+	result = &v1alpha1.DialogflowCXPage{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("dialogflowcxpages").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

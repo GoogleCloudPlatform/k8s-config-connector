@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
-	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeMonitoringMetricDescriptors implements MonitoringMetricDescriptorInterface
-type fakeMonitoringMetricDescriptors struct {
-	*gentype.FakeClientWithList[*v1beta1.MonitoringMetricDescriptor, *v1beta1.MonitoringMetricDescriptorList]
+// FakeMonitoringMetricDescriptors implements MonitoringMetricDescriptorInterface
+type FakeMonitoringMetricDescriptors struct {
 	Fake *FakeMonitoringV1beta1
+	ns   string
 }
 
-func newFakeMonitoringMetricDescriptors(fake *FakeMonitoringV1beta1, namespace string) monitoringv1beta1.MonitoringMetricDescriptorInterface {
-	return &fakeMonitoringMetricDescriptors{
-		gentype.NewFakeClientWithList[*v1beta1.MonitoringMetricDescriptor, *v1beta1.MonitoringMetricDescriptorList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("monitoringmetricdescriptors"),
-			v1beta1.SchemeGroupVersion.WithKind("MonitoringMetricDescriptor"),
-			func() *v1beta1.MonitoringMetricDescriptor { return &v1beta1.MonitoringMetricDescriptor{} },
-			func() *v1beta1.MonitoringMetricDescriptorList { return &v1beta1.MonitoringMetricDescriptorList{} },
-			func(dst, src *v1beta1.MonitoringMetricDescriptorList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.MonitoringMetricDescriptorList) []*v1beta1.MonitoringMetricDescriptor {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.MonitoringMetricDescriptorList, items []*v1beta1.MonitoringMetricDescriptor) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var monitoringmetricdescriptorsResource = v1beta1.SchemeGroupVersion.WithResource("monitoringmetricdescriptors")
+
+var monitoringmetricdescriptorsKind = v1beta1.SchemeGroupVersion.WithKind("MonitoringMetricDescriptor")
+
+// Get takes name of the monitoringMetricDescriptor, and returns the corresponding monitoringMetricDescriptor object, and an error if there is any.
+func (c *FakeMonitoringMetricDescriptors) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.MonitoringMetricDescriptor, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(monitoringmetricdescriptorsResource, c.ns, name), &v1beta1.MonitoringMetricDescriptor{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.MonitoringMetricDescriptor), err
+}
+
+// List takes label and field selectors, and returns the list of MonitoringMetricDescriptors that match those selectors.
+func (c *FakeMonitoringMetricDescriptors) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.MonitoringMetricDescriptorList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(monitoringmetricdescriptorsResource, monitoringmetricdescriptorsKind, c.ns, opts), &v1beta1.MonitoringMetricDescriptorList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.MonitoringMetricDescriptorList{ListMeta: obj.(*v1beta1.MonitoringMetricDescriptorList).ListMeta}
+	for _, item := range obj.(*v1beta1.MonitoringMetricDescriptorList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested monitoringMetricDescriptors.
+func (c *FakeMonitoringMetricDescriptors) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(monitoringmetricdescriptorsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a monitoringMetricDescriptor and creates it.  Returns the server's representation of the monitoringMetricDescriptor, and an error, if there is any.
+func (c *FakeMonitoringMetricDescriptors) Create(ctx context.Context, monitoringMetricDescriptor *v1beta1.MonitoringMetricDescriptor, opts v1.CreateOptions) (result *v1beta1.MonitoringMetricDescriptor, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(monitoringmetricdescriptorsResource, c.ns, monitoringMetricDescriptor), &v1beta1.MonitoringMetricDescriptor{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MonitoringMetricDescriptor), err
+}
+
+// Update takes the representation of a monitoringMetricDescriptor and updates it. Returns the server's representation of the monitoringMetricDescriptor, and an error, if there is any.
+func (c *FakeMonitoringMetricDescriptors) Update(ctx context.Context, monitoringMetricDescriptor *v1beta1.MonitoringMetricDescriptor, opts v1.UpdateOptions) (result *v1beta1.MonitoringMetricDescriptor, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(monitoringmetricdescriptorsResource, c.ns, monitoringMetricDescriptor), &v1beta1.MonitoringMetricDescriptor{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MonitoringMetricDescriptor), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeMonitoringMetricDescriptors) UpdateStatus(ctx context.Context, monitoringMetricDescriptor *v1beta1.MonitoringMetricDescriptor, opts v1.UpdateOptions) (*v1beta1.MonitoringMetricDescriptor, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(monitoringmetricdescriptorsResource, "status", c.ns, monitoringMetricDescriptor), &v1beta1.MonitoringMetricDescriptor{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MonitoringMetricDescriptor), err
+}
+
+// Delete takes name of the monitoringMetricDescriptor and deletes it. Returns an error if one occurs.
+func (c *FakeMonitoringMetricDescriptors) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(monitoringmetricdescriptorsResource, c.ns, name, opts), &v1beta1.MonitoringMetricDescriptor{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeMonitoringMetricDescriptors) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(monitoringmetricdescriptorsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.MonitoringMetricDescriptorList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched monitoringMetricDescriptor.
+func (c *FakeMonitoringMetricDescriptors) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.MonitoringMetricDescriptor, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(monitoringmetricdescriptorsResource, c.ns, name, pt, data, subresources...), &v1beta1.MonitoringMetricDescriptor{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MonitoringMetricDescriptor), err
 }

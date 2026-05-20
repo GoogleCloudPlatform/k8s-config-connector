@@ -32,7 +32,7 @@ type FakeStoragetransferV1beta1 struct {
 }
 
 func (c *FakeStoragetransferV1beta1) StorageTransferJobs(namespace string) v1beta1.StorageTransferJobInterface {
-	return newFakeStorageTransferJobs(c, namespace)
+	return &FakeStorageTransferJobs{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
