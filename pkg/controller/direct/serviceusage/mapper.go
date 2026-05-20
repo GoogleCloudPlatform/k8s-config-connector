@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ func ServiceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.Ser
 		return nil
 	}
 	out := &krm.ServiceStatus{}
+	out.ExternalRef = &in.Name
 	// Conditions and ObservedGeneration are handled by the reconciler
 	return out
 }
