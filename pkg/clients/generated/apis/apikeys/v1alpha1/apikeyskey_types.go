@@ -40,18 +40,15 @@ var _ = apiextensionsv1.JSON{}
 
 type KeyAllowedApplications struct {
 	/* The package name of the application. */
-	// +optional
-	PackageName *string `json:"packageName,omitempty"`
+	PackageName string `json:"packageName"`
 
 	/* The SHA1 fingerprint of the application. For example, both sha1 formats are acceptable : DA:39:A3:EE:5E:6B:4B:0D:32:55:BF:EF:95:60:18:90:AF:D8:07:09 or DA39A3EE5E6B4B0D3255BFEF95601890AFD80709. Output format is the latter. */
-	// +optional
-	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
+	Sha1Fingerprint string `json:"sha1Fingerprint"`
 }
 
 type KeyAndroidKeyRestrictions struct {
 	/* A list of Android applications that are allowed to make API calls with this key. */
-	// +optional
-	AllowedApplications []KeyAllowedApplications `json:"allowedApplications,omitempty"`
+	AllowedApplications []KeyAllowedApplications `json:"allowedApplications"`
 }
 
 type KeyApiTargets struct {
@@ -60,20 +57,17 @@ type KeyApiTargets struct {
 	Methods []string `json:"methods,omitempty"`
 
 	/* The service for this restriction. It should be the canonical service name, for example: `translate.googleapis.com`. You can use [`gcloud services list`](/sdk/gcloud/reference/services/list) to get a list of services that are enabled in the project. */
-	// +optional
-	Service *string `json:"service,omitempty"`
+	Service string `json:"service"`
 }
 
 type KeyBrowserKeyRestrictions struct {
 	/* A list of regular expressions for the referrer URLs that are allowed to make API calls with this key. */
-	// +optional
-	AllowedReferrers []string `json:"allowedReferrers,omitempty"`
+	AllowedReferrers []string `json:"allowedReferrers"`
 }
 
 type KeyIosKeyRestrictions struct {
 	/* A list of bundle IDs that are allowed when making API calls with this key. */
-	// +optional
-	AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
+	AllowedBundleIds []string `json:"allowedBundleIds"`
 }
 
 type KeyRestrictions struct {
@@ -100,8 +94,7 @@ type KeyRestrictions struct {
 
 type KeyServerKeyRestrictions struct {
 	/* A list of the caller IP addresses that are allowed to make API calls with this key. */
-	// +optional
-	AllowedIps []string `json:"allowedIps,omitempty"`
+	AllowedIps []string `json:"allowedIps"`
 }
 
 type APIKeysKeySpec struct {
@@ -131,10 +124,6 @@ type APIKeysKeyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   APIKeysKey's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the APIKeysKey resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

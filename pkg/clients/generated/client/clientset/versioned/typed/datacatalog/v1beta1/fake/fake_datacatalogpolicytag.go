@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
-	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDataCatalogPolicyTags implements DataCatalogPolicyTagInterface
-type fakeDataCatalogPolicyTags struct {
-	*gentype.FakeClientWithList[*v1beta1.DataCatalogPolicyTag, *v1beta1.DataCatalogPolicyTagList]
+// FakeDataCatalogPolicyTags implements DataCatalogPolicyTagInterface
+type FakeDataCatalogPolicyTags struct {
 	Fake *FakeDatacatalogV1beta1
+	ns   string
 }
 
-func newFakeDataCatalogPolicyTags(fake *FakeDatacatalogV1beta1, namespace string) datacatalogv1beta1.DataCatalogPolicyTagInterface {
-	return &fakeDataCatalogPolicyTags{
-		gentype.NewFakeClientWithList[*v1beta1.DataCatalogPolicyTag, *v1beta1.DataCatalogPolicyTagList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("datacatalogpolicytags"),
-			v1beta1.SchemeGroupVersion.WithKind("DataCatalogPolicyTag"),
-			func() *v1beta1.DataCatalogPolicyTag { return &v1beta1.DataCatalogPolicyTag{} },
-			func() *v1beta1.DataCatalogPolicyTagList { return &v1beta1.DataCatalogPolicyTagList{} },
-			func(dst, src *v1beta1.DataCatalogPolicyTagList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.DataCatalogPolicyTagList) []*v1beta1.DataCatalogPolicyTag {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.DataCatalogPolicyTagList, items []*v1beta1.DataCatalogPolicyTag) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var datacatalogpolicytagsResource = v1beta1.SchemeGroupVersion.WithResource("datacatalogpolicytags")
+
+var datacatalogpolicytagsKind = v1beta1.SchemeGroupVersion.WithKind("DataCatalogPolicyTag")
+
+// Get takes name of the dataCatalogPolicyTag, and returns the corresponding dataCatalogPolicyTag object, and an error if there is any.
+func (c *FakeDataCatalogPolicyTags) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataCatalogPolicyTag, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(datacatalogpolicytagsResource, c.ns, name), &v1beta1.DataCatalogPolicyTag{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.DataCatalogPolicyTag), err
+}
+
+// List takes label and field selectors, and returns the list of DataCatalogPolicyTags that match those selectors.
+func (c *FakeDataCatalogPolicyTags) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.DataCatalogPolicyTagList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(datacatalogpolicytagsResource, datacatalogpolicytagsKind, c.ns, opts), &v1beta1.DataCatalogPolicyTagList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.DataCatalogPolicyTagList{ListMeta: obj.(*v1beta1.DataCatalogPolicyTagList).ListMeta}
+	for _, item := range obj.(*v1beta1.DataCatalogPolicyTagList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested dataCatalogPolicyTags.
+func (c *FakeDataCatalogPolicyTags) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(datacatalogpolicytagsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a dataCatalogPolicyTag and creates it.  Returns the server's representation of the dataCatalogPolicyTag, and an error, if there is any.
+func (c *FakeDataCatalogPolicyTags) Create(ctx context.Context, dataCatalogPolicyTag *v1beta1.DataCatalogPolicyTag, opts v1.CreateOptions) (result *v1beta1.DataCatalogPolicyTag, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(datacatalogpolicytagsResource, c.ns, dataCatalogPolicyTag), &v1beta1.DataCatalogPolicyTag{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.DataCatalogPolicyTag), err
+}
+
+// Update takes the representation of a dataCatalogPolicyTag and updates it. Returns the server's representation of the dataCatalogPolicyTag, and an error, if there is any.
+func (c *FakeDataCatalogPolicyTags) Update(ctx context.Context, dataCatalogPolicyTag *v1beta1.DataCatalogPolicyTag, opts v1.UpdateOptions) (result *v1beta1.DataCatalogPolicyTag, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(datacatalogpolicytagsResource, c.ns, dataCatalogPolicyTag), &v1beta1.DataCatalogPolicyTag{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.DataCatalogPolicyTag), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDataCatalogPolicyTags) UpdateStatus(ctx context.Context, dataCatalogPolicyTag *v1beta1.DataCatalogPolicyTag, opts v1.UpdateOptions) (*v1beta1.DataCatalogPolicyTag, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(datacatalogpolicytagsResource, "status", c.ns, dataCatalogPolicyTag), &v1beta1.DataCatalogPolicyTag{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.DataCatalogPolicyTag), err
+}
+
+// Delete takes name of the dataCatalogPolicyTag and deletes it. Returns an error if one occurs.
+func (c *FakeDataCatalogPolicyTags) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(datacatalogpolicytagsResource, c.ns, name, opts), &v1beta1.DataCatalogPolicyTag{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDataCatalogPolicyTags) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(datacatalogpolicytagsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.DataCatalogPolicyTagList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched dataCatalogPolicyTag.
+func (c *FakeDataCatalogPolicyTags) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DataCatalogPolicyTag, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(datacatalogpolicytagsResource, c.ns, name, pt, data, subresources...), &v1beta1.DataCatalogPolicyTag{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.DataCatalogPolicyTag), err
 }

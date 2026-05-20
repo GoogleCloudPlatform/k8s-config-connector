@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1beta1"
-	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeBackupDRBackupVaults implements BackupDRBackupVaultInterface
-type fakeBackupDRBackupVaults struct {
-	*gentype.FakeClientWithList[*v1beta1.BackupDRBackupVault, *v1beta1.BackupDRBackupVaultList]
+// FakeBackupDRBackupVaults implements BackupDRBackupVaultInterface
+type FakeBackupDRBackupVaults struct {
 	Fake *FakeBackupdrV1beta1
+	ns   string
 }
 
-func newFakeBackupDRBackupVaults(fake *FakeBackupdrV1beta1, namespace string) backupdrv1beta1.BackupDRBackupVaultInterface {
-	return &fakeBackupDRBackupVaults{
-		gentype.NewFakeClientWithList[*v1beta1.BackupDRBackupVault, *v1beta1.BackupDRBackupVaultList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("backupdrbackupvaults"),
-			v1beta1.SchemeGroupVersion.WithKind("BackupDRBackupVault"),
-			func() *v1beta1.BackupDRBackupVault { return &v1beta1.BackupDRBackupVault{} },
-			func() *v1beta1.BackupDRBackupVaultList { return &v1beta1.BackupDRBackupVaultList{} },
-			func(dst, src *v1beta1.BackupDRBackupVaultList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.BackupDRBackupVaultList) []*v1beta1.BackupDRBackupVault {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.BackupDRBackupVaultList, items []*v1beta1.BackupDRBackupVault) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var backupdrbackupvaultsResource = v1beta1.SchemeGroupVersion.WithResource("backupdrbackupvaults")
+
+var backupdrbackupvaultsKind = v1beta1.SchemeGroupVersion.WithKind("BackupDRBackupVault")
+
+// Get takes name of the backupDRBackupVault, and returns the corresponding backupDRBackupVault object, and an error if there is any.
+func (c *FakeBackupDRBackupVaults) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BackupDRBackupVault, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(backupdrbackupvaultsResource, c.ns, name), &v1beta1.BackupDRBackupVault{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.BackupDRBackupVault), err
+}
+
+// List takes label and field selectors, and returns the list of BackupDRBackupVaults that match those selectors.
+func (c *FakeBackupDRBackupVaults) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BackupDRBackupVaultList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(backupdrbackupvaultsResource, backupdrbackupvaultsKind, c.ns, opts), &v1beta1.BackupDRBackupVaultList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.BackupDRBackupVaultList{ListMeta: obj.(*v1beta1.BackupDRBackupVaultList).ListMeta}
+	for _, item := range obj.(*v1beta1.BackupDRBackupVaultList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested backupDRBackupVaults.
+func (c *FakeBackupDRBackupVaults) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(backupdrbackupvaultsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a backupDRBackupVault and creates it.  Returns the server's representation of the backupDRBackupVault, and an error, if there is any.
+func (c *FakeBackupDRBackupVaults) Create(ctx context.Context, backupDRBackupVault *v1beta1.BackupDRBackupVault, opts v1.CreateOptions) (result *v1beta1.BackupDRBackupVault, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(backupdrbackupvaultsResource, c.ns, backupDRBackupVault), &v1beta1.BackupDRBackupVault{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BackupDRBackupVault), err
+}
+
+// Update takes the representation of a backupDRBackupVault and updates it. Returns the server's representation of the backupDRBackupVault, and an error, if there is any.
+func (c *FakeBackupDRBackupVaults) Update(ctx context.Context, backupDRBackupVault *v1beta1.BackupDRBackupVault, opts v1.UpdateOptions) (result *v1beta1.BackupDRBackupVault, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(backupdrbackupvaultsResource, c.ns, backupDRBackupVault), &v1beta1.BackupDRBackupVault{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BackupDRBackupVault), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeBackupDRBackupVaults) UpdateStatus(ctx context.Context, backupDRBackupVault *v1beta1.BackupDRBackupVault, opts v1.UpdateOptions) (*v1beta1.BackupDRBackupVault, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(backupdrbackupvaultsResource, "status", c.ns, backupDRBackupVault), &v1beta1.BackupDRBackupVault{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BackupDRBackupVault), err
+}
+
+// Delete takes name of the backupDRBackupVault and deletes it. Returns an error if one occurs.
+func (c *FakeBackupDRBackupVaults) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(backupdrbackupvaultsResource, c.ns, name, opts), &v1beta1.BackupDRBackupVault{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeBackupDRBackupVaults) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(backupdrbackupvaultsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.BackupDRBackupVaultList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched backupDRBackupVault.
+func (c *FakeBackupDRBackupVaults) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BackupDRBackupVault, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(backupdrbackupvaultsResource, c.ns, name, pt, data, subresources...), &v1beta1.BackupDRBackupVault{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BackupDRBackupVault), err
 }

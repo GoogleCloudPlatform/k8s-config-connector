@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // NetworkServicesEdgeCacheKeysetsGetter has a method to return a NetworkServicesEdgeCacheKeysetInterface.
@@ -40,38 +41,158 @@ type NetworkServicesEdgeCacheKeysetsGetter interface {
 
 // NetworkServicesEdgeCacheKeysetInterface has methods to work with NetworkServicesEdgeCacheKeyset resources.
 type NetworkServicesEdgeCacheKeysetInterface interface {
-	Create(ctx context.Context, networkServicesEdgeCacheKeyset *networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, opts v1.CreateOptions) (*networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, error)
-	Update(ctx context.Context, networkServicesEdgeCacheKeyset *networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, opts v1.UpdateOptions) (*networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, networkServicesEdgeCacheKeyset *networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, opts v1.UpdateOptions) (*networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, error)
+	Create(ctx context.Context, networkServicesEdgeCacheKeyset *v1alpha1.NetworkServicesEdgeCacheKeyset, opts v1.CreateOptions) (*v1alpha1.NetworkServicesEdgeCacheKeyset, error)
+	Update(ctx context.Context, networkServicesEdgeCacheKeyset *v1alpha1.NetworkServicesEdgeCacheKeyset, opts v1.UpdateOptions) (*v1alpha1.NetworkServicesEdgeCacheKeyset, error)
+	UpdateStatus(ctx context.Context, networkServicesEdgeCacheKeyset *v1alpha1.NetworkServicesEdgeCacheKeyset, opts v1.UpdateOptions) (*v1alpha1.NetworkServicesEdgeCacheKeyset, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, error)
-	List(ctx context.Context, opts v1.ListOptions) (*networkservicesv1alpha1.NetworkServicesEdgeCacheKeysetList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.NetworkServicesEdgeCacheKeyset, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.NetworkServicesEdgeCacheKeysetList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkServicesEdgeCacheKeyset, err error)
 	NetworkServicesEdgeCacheKeysetExpansion
 }
 
 // networkServicesEdgeCacheKeysets implements NetworkServicesEdgeCacheKeysetInterface
 type networkServicesEdgeCacheKeysets struct {
-	*gentype.ClientWithList[*networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, *networkservicesv1alpha1.NetworkServicesEdgeCacheKeysetList]
+	client rest.Interface
+	ns     string
 }
 
 // newNetworkServicesEdgeCacheKeysets returns a NetworkServicesEdgeCacheKeysets
 func newNetworkServicesEdgeCacheKeysets(c *NetworkservicesV1alpha1Client, namespace string) *networkServicesEdgeCacheKeysets {
 	return &networkServicesEdgeCacheKeysets{
-		gentype.NewClientWithList[*networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset, *networkservicesv1alpha1.NetworkServicesEdgeCacheKeysetList](
-			"networkservicesedgecachekeysets",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset {
-				return &networkservicesv1alpha1.NetworkServicesEdgeCacheKeyset{}
-			},
-			func() *networkservicesv1alpha1.NetworkServicesEdgeCacheKeysetList {
-				return &networkservicesv1alpha1.NetworkServicesEdgeCacheKeysetList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the networkServicesEdgeCacheKeyset, and returns the corresponding networkServicesEdgeCacheKeyset object, and an error if there is any.
+func (c *networkServicesEdgeCacheKeysets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkServicesEdgeCacheKeyset, err error) {
+	result = &v1alpha1.NetworkServicesEdgeCacheKeyset{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("networkservicesedgecachekeysets").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of NetworkServicesEdgeCacheKeysets that match those selectors.
+func (c *networkServicesEdgeCacheKeysets) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetworkServicesEdgeCacheKeysetList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.NetworkServicesEdgeCacheKeysetList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("networkservicesedgecachekeysets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested networkServicesEdgeCacheKeysets.
+func (c *networkServicesEdgeCacheKeysets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("networkservicesedgecachekeysets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a networkServicesEdgeCacheKeyset and creates it.  Returns the server's representation of the networkServicesEdgeCacheKeyset, and an error, if there is any.
+func (c *networkServicesEdgeCacheKeysets) Create(ctx context.Context, networkServicesEdgeCacheKeyset *v1alpha1.NetworkServicesEdgeCacheKeyset, opts v1.CreateOptions) (result *v1alpha1.NetworkServicesEdgeCacheKeyset, err error) {
+	result = &v1alpha1.NetworkServicesEdgeCacheKeyset{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("networkservicesedgecachekeysets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkServicesEdgeCacheKeyset).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a networkServicesEdgeCacheKeyset and updates it. Returns the server's representation of the networkServicesEdgeCacheKeyset, and an error, if there is any.
+func (c *networkServicesEdgeCacheKeysets) Update(ctx context.Context, networkServicesEdgeCacheKeyset *v1alpha1.NetworkServicesEdgeCacheKeyset, opts v1.UpdateOptions) (result *v1alpha1.NetworkServicesEdgeCacheKeyset, err error) {
+	result = &v1alpha1.NetworkServicesEdgeCacheKeyset{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("networkservicesedgecachekeysets").
+		Name(networkServicesEdgeCacheKeyset.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkServicesEdgeCacheKeyset).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *networkServicesEdgeCacheKeysets) UpdateStatus(ctx context.Context, networkServicesEdgeCacheKeyset *v1alpha1.NetworkServicesEdgeCacheKeyset, opts v1.UpdateOptions) (result *v1alpha1.NetworkServicesEdgeCacheKeyset, err error) {
+	result = &v1alpha1.NetworkServicesEdgeCacheKeyset{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("networkservicesedgecachekeysets").
+		Name(networkServicesEdgeCacheKeyset.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkServicesEdgeCacheKeyset).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the networkServicesEdgeCacheKeyset and deletes it. Returns an error if one occurs.
+func (c *networkServicesEdgeCacheKeysets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("networkservicesedgecachekeysets").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *networkServicesEdgeCacheKeysets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("networkservicesedgecachekeysets").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched networkServicesEdgeCacheKeyset.
+func (c *networkServicesEdgeCacheKeysets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkServicesEdgeCacheKeyset, err error) {
+	result = &v1alpha1.NetworkServicesEdgeCacheKeyset{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("networkservicesedgecachekeysets").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

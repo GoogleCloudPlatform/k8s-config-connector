@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // MetastoreBackupsGetter has a method to return a MetastoreBackupInterface.
@@ -40,34 +41,158 @@ type MetastoreBackupsGetter interface {
 
 // MetastoreBackupInterface has methods to work with MetastoreBackup resources.
 type MetastoreBackupInterface interface {
-	Create(ctx context.Context, metastoreBackup *metastorev1beta1.MetastoreBackup, opts v1.CreateOptions) (*metastorev1beta1.MetastoreBackup, error)
-	Update(ctx context.Context, metastoreBackup *metastorev1beta1.MetastoreBackup, opts v1.UpdateOptions) (*metastorev1beta1.MetastoreBackup, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, metastoreBackup *metastorev1beta1.MetastoreBackup, opts v1.UpdateOptions) (*metastorev1beta1.MetastoreBackup, error)
+	Create(ctx context.Context, metastoreBackup *v1beta1.MetastoreBackup, opts v1.CreateOptions) (*v1beta1.MetastoreBackup, error)
+	Update(ctx context.Context, metastoreBackup *v1beta1.MetastoreBackup, opts v1.UpdateOptions) (*v1beta1.MetastoreBackup, error)
+	UpdateStatus(ctx context.Context, metastoreBackup *v1beta1.MetastoreBackup, opts v1.UpdateOptions) (*v1beta1.MetastoreBackup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*metastorev1beta1.MetastoreBackup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*metastorev1beta1.MetastoreBackupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.MetastoreBackup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.MetastoreBackupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *metastorev1beta1.MetastoreBackup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.MetastoreBackup, err error)
 	MetastoreBackupExpansion
 }
 
 // metastoreBackups implements MetastoreBackupInterface
 type metastoreBackups struct {
-	*gentype.ClientWithList[*metastorev1beta1.MetastoreBackup, *metastorev1beta1.MetastoreBackupList]
+	client rest.Interface
+	ns     string
 }
 
 // newMetastoreBackups returns a MetastoreBackups
 func newMetastoreBackups(c *MetastoreV1beta1Client, namespace string) *metastoreBackups {
 	return &metastoreBackups{
-		gentype.NewClientWithList[*metastorev1beta1.MetastoreBackup, *metastorev1beta1.MetastoreBackupList](
-			"metastorebackups",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *metastorev1beta1.MetastoreBackup { return &metastorev1beta1.MetastoreBackup{} },
-			func() *metastorev1beta1.MetastoreBackupList { return &metastorev1beta1.MetastoreBackupList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the metastoreBackup, and returns the corresponding metastoreBackup object, and an error if there is any.
+func (c *metastoreBackups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.MetastoreBackup, err error) {
+	result = &v1beta1.MetastoreBackup{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("metastorebackups").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of MetastoreBackups that match those selectors.
+func (c *metastoreBackups) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.MetastoreBackupList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.MetastoreBackupList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("metastorebackups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested metastoreBackups.
+func (c *metastoreBackups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("metastorebackups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a metastoreBackup and creates it.  Returns the server's representation of the metastoreBackup, and an error, if there is any.
+func (c *metastoreBackups) Create(ctx context.Context, metastoreBackup *v1beta1.MetastoreBackup, opts v1.CreateOptions) (result *v1beta1.MetastoreBackup, err error) {
+	result = &v1beta1.MetastoreBackup{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("metastorebackups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(metastoreBackup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a metastoreBackup and updates it. Returns the server's representation of the metastoreBackup, and an error, if there is any.
+func (c *metastoreBackups) Update(ctx context.Context, metastoreBackup *v1beta1.MetastoreBackup, opts v1.UpdateOptions) (result *v1beta1.MetastoreBackup, err error) {
+	result = &v1beta1.MetastoreBackup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("metastorebackups").
+		Name(metastoreBackup.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(metastoreBackup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *metastoreBackups) UpdateStatus(ctx context.Context, metastoreBackup *v1beta1.MetastoreBackup, opts v1.UpdateOptions) (result *v1beta1.MetastoreBackup, err error) {
+	result = &v1beta1.MetastoreBackup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("metastorebackups").
+		Name(metastoreBackup.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(metastoreBackup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the metastoreBackup and deletes it. Returns an error if one occurs.
+func (c *metastoreBackups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("metastorebackups").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *metastoreBackups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("metastorebackups").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched metastoreBackup.
+func (c *metastoreBackups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.MetastoreBackup, err error) {
+	result = &v1beta1.MetastoreBackup{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("metastorebackups").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

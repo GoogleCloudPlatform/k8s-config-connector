@@ -32,23 +32,23 @@ type FakeStorageV1beta1 struct {
 }
 
 func (c *FakeStorageV1beta1) StorageAnywhereCaches(namespace string) v1beta1.StorageAnywhereCacheInterface {
-	return newFakeStorageAnywhereCaches(c, namespace)
+	return &FakeStorageAnywhereCaches{c, namespace}
 }
 
 func (c *FakeStorageV1beta1) StorageBuckets(namespace string) v1beta1.StorageBucketInterface {
-	return newFakeStorageBuckets(c, namespace)
+	return &FakeStorageBuckets{c, namespace}
 }
 
 func (c *FakeStorageV1beta1) StorageBucketAccessControls(namespace string) v1beta1.StorageBucketAccessControlInterface {
-	return newFakeStorageBucketAccessControls(c, namespace)
+	return &FakeStorageBucketAccessControls{c, namespace}
 }
 
 func (c *FakeStorageV1beta1) StorageDefaultObjectAccessControls(namespace string) v1beta1.StorageDefaultObjectAccessControlInterface {
-	return newFakeStorageDefaultObjectAccessControls(c, namespace)
+	return &FakeStorageDefaultObjectAccessControls{c, namespace}
 }
 
 func (c *FakeStorageV1beta1) StorageNotifications(namespace string) v1beta1.StorageNotificationInterface {
-	return newFakeStorageNotifications(c, namespace)
+	return &FakeStorageNotifications{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

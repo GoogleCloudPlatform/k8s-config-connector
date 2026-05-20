@@ -32,11 +32,11 @@ type FakeEdgenetworkV1beta1 struct {
 }
 
 func (c *FakeEdgenetworkV1beta1) EdgeNetworkNetworks(namespace string) v1beta1.EdgeNetworkNetworkInterface {
-	return newFakeEdgeNetworkNetworks(c, namespace)
+	return &FakeEdgeNetworkNetworks{c, namespace}
 }
 
 func (c *FakeEdgenetworkV1beta1) EdgeNetworkSubnets(namespace string) v1beta1.EdgeNetworkSubnetInterface {
-	return newFakeEdgeNetworkSubnets(c, namespace)
+	return &FakeEdgeNetworkSubnets{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

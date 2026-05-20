@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
-	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeKMSImportJobs implements KMSImportJobInterface
-type fakeKMSImportJobs struct {
-	*gentype.FakeClientWithList[*v1beta1.KMSImportJob, *v1beta1.KMSImportJobList]
+// FakeKMSImportJobs implements KMSImportJobInterface
+type FakeKMSImportJobs struct {
 	Fake *FakeKmsV1beta1
+	ns   string
 }
 
-func newFakeKMSImportJobs(fake *FakeKmsV1beta1, namespace string) kmsv1beta1.KMSImportJobInterface {
-	return &fakeKMSImportJobs{
-		gentype.NewFakeClientWithList[*v1beta1.KMSImportJob, *v1beta1.KMSImportJobList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("kmsimportjobs"),
-			v1beta1.SchemeGroupVersion.WithKind("KMSImportJob"),
-			func() *v1beta1.KMSImportJob { return &v1beta1.KMSImportJob{} },
-			func() *v1beta1.KMSImportJobList { return &v1beta1.KMSImportJobList{} },
-			func(dst, src *v1beta1.KMSImportJobList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.KMSImportJobList) []*v1beta1.KMSImportJob {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.KMSImportJobList, items []*v1beta1.KMSImportJob) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var kmsimportjobsResource = v1beta1.SchemeGroupVersion.WithResource("kmsimportjobs")
+
+var kmsimportjobsKind = v1beta1.SchemeGroupVersion.WithKind("KMSImportJob")
+
+// Get takes name of the kMSImportJob, and returns the corresponding kMSImportJob object, and an error if there is any.
+func (c *FakeKMSImportJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.KMSImportJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(kmsimportjobsResource, c.ns, name), &v1beta1.KMSImportJob{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.KMSImportJob), err
+}
+
+// List takes label and field selectors, and returns the list of KMSImportJobs that match those selectors.
+func (c *FakeKMSImportJobs) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.KMSImportJobList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(kmsimportjobsResource, kmsimportjobsKind, c.ns, opts), &v1beta1.KMSImportJobList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.KMSImportJobList{ListMeta: obj.(*v1beta1.KMSImportJobList).ListMeta}
+	for _, item := range obj.(*v1beta1.KMSImportJobList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested kMSImportJobs.
+func (c *FakeKMSImportJobs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(kmsimportjobsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a kMSImportJob and creates it.  Returns the server's representation of the kMSImportJob, and an error, if there is any.
+func (c *FakeKMSImportJobs) Create(ctx context.Context, kMSImportJob *v1beta1.KMSImportJob, opts v1.CreateOptions) (result *v1beta1.KMSImportJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(kmsimportjobsResource, c.ns, kMSImportJob), &v1beta1.KMSImportJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.KMSImportJob), err
+}
+
+// Update takes the representation of a kMSImportJob and updates it. Returns the server's representation of the kMSImportJob, and an error, if there is any.
+func (c *FakeKMSImportJobs) Update(ctx context.Context, kMSImportJob *v1beta1.KMSImportJob, opts v1.UpdateOptions) (result *v1beta1.KMSImportJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(kmsimportjobsResource, c.ns, kMSImportJob), &v1beta1.KMSImportJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.KMSImportJob), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeKMSImportJobs) UpdateStatus(ctx context.Context, kMSImportJob *v1beta1.KMSImportJob, opts v1.UpdateOptions) (*v1beta1.KMSImportJob, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(kmsimportjobsResource, "status", c.ns, kMSImportJob), &v1beta1.KMSImportJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.KMSImportJob), err
+}
+
+// Delete takes name of the kMSImportJob and deletes it. Returns an error if one occurs.
+func (c *FakeKMSImportJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(kmsimportjobsResource, c.ns, name, opts), &v1beta1.KMSImportJob{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeKMSImportJobs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(kmsimportjobsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.KMSImportJobList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched kMSImportJob.
+func (c *FakeKMSImportJobs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.KMSImportJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(kmsimportjobsResource, c.ns, name, pt, data, subresources...), &v1beta1.KMSImportJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.KMSImportJob), err
 }
