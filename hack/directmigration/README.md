@@ -73,6 +73,13 @@ Compares the list of CustomResourceDefinitions (CRDs) in `config/crds/resources/
     *   Prints a summary and lists all CRDs that do not have a corresponding `_types.go` file.
     *   The `--output` (`-o`) flag saves the missing kinds to a file, which can be directly fed into `topological-sort.py`.
 
+#### `find-missing-identity-reference.py`
+Identifies resources in the migration pipeline that have their Go types implemented in the `apis/` directory but are missing their corresponding `_identity.go` or `_reference.go` files. This script is useful for identifying the next steps for TF/DCL-based resources.
+*   **Usage:** `./hack/directmigration/find-missing-identity-reference.py [--output FILE]`
+*   **Features:**
+    *   Uses `pkg/controller/resourceconfig/static_config.go` to target only resources needing migration (TF/DCL backed).
+    *   Checks multiple naming patterns for identity and reference files.
+
 #### `find-implemented-refs.py`
 Analyzes reference fields (`*Ref`) defined in the CRDs' OpenAPI schemas and checks if there is a corresponding Go type implementation in the `apis/` directory.
 *   **Usage:** `./hack/directmigration/find-implemented-refs.py`
