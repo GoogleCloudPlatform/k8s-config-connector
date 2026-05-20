@@ -31,8 +31,20 @@ type FakeGkehubV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeGkehubV1alpha1) GKEHubMembershipBindings(namespace string) v1alpha1.GKEHubMembershipBindingInterface {
+	return newFakeGKEHubMembershipBindings(c, namespace)
+}
+
+func (c *FakeGkehubV1alpha1) GKEHubNamespaces(namespace string) v1alpha1.GKEHubNamespaceInterface {
+	return newFakeGKEHubNamespaces(c, namespace)
+}
+
 func (c *FakeGkehubV1alpha1) GKEHubScopes(namespace string) v1alpha1.GKEHubScopeInterface {
-	return &FakeGKEHubScopes{c, namespace}
+	return newFakeGKEHubScopes(c, namespace)
+}
+
+func (c *FakeGkehubV1alpha1) GKEHubScopeRBACRoleBindings(namespace string) v1alpha1.GKEHubScopeRBACRoleBindingInterface {
+	return newFakeGKEHubScopeRBACRoleBindings(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

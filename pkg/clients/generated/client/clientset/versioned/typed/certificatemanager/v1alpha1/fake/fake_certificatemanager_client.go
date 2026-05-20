@@ -32,7 +32,7 @@ type FakeCertificatemanagerV1alpha1 struct {
 }
 
 func (c *FakeCertificatemanagerV1alpha1) CertificateManagerCertificateIssuanceConfigs(namespace string) v1alpha1.CertificateManagerCertificateIssuanceConfigInterface {
-	return &FakeCertificateManagerCertificateIssuanceConfigs{c, namespace}
+	return newFakeCertificateManagerCertificateIssuanceConfigs(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

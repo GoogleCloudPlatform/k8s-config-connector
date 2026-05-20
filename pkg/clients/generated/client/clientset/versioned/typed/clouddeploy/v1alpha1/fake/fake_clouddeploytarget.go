@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	clouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeCloudDeployTargets implements CloudDeployTargetInterface
-type FakeCloudDeployTargets struct {
+// fakeCloudDeployTargets implements CloudDeployTargetInterface
+type fakeCloudDeployTargets struct {
+	*gentype.FakeClientWithList[*v1alpha1.CloudDeployTarget, *v1alpha1.CloudDeployTargetList]
 	Fake *FakeClouddeployV1alpha1
-	ns   string
 }
 
-var clouddeploytargetsResource = v1alpha1.SchemeGroupVersion.WithResource("clouddeploytargets")
-
-var clouddeploytargetsKind = v1alpha1.SchemeGroupVersion.WithKind("CloudDeployTarget")
-
-// Get takes name of the cloudDeployTarget, and returns the corresponding cloudDeployTarget object, and an error if there is any.
-func (c *FakeCloudDeployTargets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudDeployTarget, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(clouddeploytargetsResource, c.ns, name), &v1alpha1.CloudDeployTarget{})
-
-	if obj == nil {
-		return nil, err
+func newFakeCloudDeployTargets(fake *FakeClouddeployV1alpha1, namespace string) clouddeployv1alpha1.CloudDeployTargetInterface {
+	return &fakeCloudDeployTargets{
+		gentype.NewFakeClientWithList[*v1alpha1.CloudDeployTarget, *v1alpha1.CloudDeployTargetList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("clouddeploytargets"),
+			v1alpha1.SchemeGroupVersion.WithKind("CloudDeployTarget"),
+			func() *v1alpha1.CloudDeployTarget { return &v1alpha1.CloudDeployTarget{} },
+			func() *v1alpha1.CloudDeployTargetList { return &v1alpha1.CloudDeployTargetList{} },
+			func(dst, src *v1alpha1.CloudDeployTargetList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.CloudDeployTargetList) []*v1alpha1.CloudDeployTarget {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.CloudDeployTargetList, items []*v1alpha1.CloudDeployTarget) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.CloudDeployTarget), err
-}
-
-// List takes label and field selectors, and returns the list of CloudDeployTargets that match those selectors.
-func (c *FakeCloudDeployTargets) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudDeployTargetList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(clouddeploytargetsResource, clouddeploytargetsKind, c.ns, opts), &v1alpha1.CloudDeployTargetList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.CloudDeployTargetList{ListMeta: obj.(*v1alpha1.CloudDeployTargetList).ListMeta}
-	for _, item := range obj.(*v1alpha1.CloudDeployTargetList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested cloudDeployTargets.
-func (c *FakeCloudDeployTargets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(clouddeploytargetsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a cloudDeployTarget and creates it.  Returns the server's representation of the cloudDeployTarget, and an error, if there is any.
-func (c *FakeCloudDeployTargets) Create(ctx context.Context, cloudDeployTarget *v1alpha1.CloudDeployTarget, opts v1.CreateOptions) (result *v1alpha1.CloudDeployTarget, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(clouddeploytargetsResource, c.ns, cloudDeployTarget), &v1alpha1.CloudDeployTarget{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.CloudDeployTarget), err
-}
-
-// Update takes the representation of a cloudDeployTarget and updates it. Returns the server's representation of the cloudDeployTarget, and an error, if there is any.
-func (c *FakeCloudDeployTargets) Update(ctx context.Context, cloudDeployTarget *v1alpha1.CloudDeployTarget, opts v1.UpdateOptions) (result *v1alpha1.CloudDeployTarget, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(clouddeploytargetsResource, c.ns, cloudDeployTarget), &v1alpha1.CloudDeployTarget{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.CloudDeployTarget), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeCloudDeployTargets) UpdateStatus(ctx context.Context, cloudDeployTarget *v1alpha1.CloudDeployTarget, opts v1.UpdateOptions) (*v1alpha1.CloudDeployTarget, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(clouddeploytargetsResource, "status", c.ns, cloudDeployTarget), &v1alpha1.CloudDeployTarget{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.CloudDeployTarget), err
-}
-
-// Delete takes name of the cloudDeployTarget and deletes it. Returns an error if one occurs.
-func (c *FakeCloudDeployTargets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(clouddeploytargetsResource, c.ns, name, opts), &v1alpha1.CloudDeployTarget{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeCloudDeployTargets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(clouddeploytargetsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.CloudDeployTargetList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched cloudDeployTarget.
-func (c *FakeCloudDeployTargets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudDeployTarget, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(clouddeploytargetsResource, c.ns, name, pt, data, subresources...), &v1alpha1.CloudDeployTarget{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.CloudDeployTarget), err
 }

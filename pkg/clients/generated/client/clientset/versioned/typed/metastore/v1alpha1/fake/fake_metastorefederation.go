@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeMetastoreFederations implements MetastoreFederationInterface
-type FakeMetastoreFederations struct {
+// fakeMetastoreFederations implements MetastoreFederationInterface
+type fakeMetastoreFederations struct {
+	*gentype.FakeClientWithList[*v1alpha1.MetastoreFederation, *v1alpha1.MetastoreFederationList]
 	Fake *FakeMetastoreV1alpha1
-	ns   string
 }
 
-var metastorefederationsResource = v1alpha1.SchemeGroupVersion.WithResource("metastorefederations")
-
-var metastorefederationsKind = v1alpha1.SchemeGroupVersion.WithKind("MetastoreFederation")
-
-// Get takes name of the metastoreFederation, and returns the corresponding metastoreFederation object, and an error if there is any.
-func (c *FakeMetastoreFederations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.MetastoreFederation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(metastorefederationsResource, c.ns, name), &v1alpha1.MetastoreFederation{})
-
-	if obj == nil {
-		return nil, err
+func newFakeMetastoreFederations(fake *FakeMetastoreV1alpha1, namespace string) metastorev1alpha1.MetastoreFederationInterface {
+	return &fakeMetastoreFederations{
+		gentype.NewFakeClientWithList[*v1alpha1.MetastoreFederation, *v1alpha1.MetastoreFederationList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("metastorefederations"),
+			v1alpha1.SchemeGroupVersion.WithKind("MetastoreFederation"),
+			func() *v1alpha1.MetastoreFederation { return &v1alpha1.MetastoreFederation{} },
+			func() *v1alpha1.MetastoreFederationList { return &v1alpha1.MetastoreFederationList{} },
+			func(dst, src *v1alpha1.MetastoreFederationList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.MetastoreFederationList) []*v1alpha1.MetastoreFederation {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.MetastoreFederationList, items []*v1alpha1.MetastoreFederation) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.MetastoreFederation), err
-}
-
-// List takes label and field selectors, and returns the list of MetastoreFederations that match those selectors.
-func (c *FakeMetastoreFederations) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.MetastoreFederationList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(metastorefederationsResource, metastorefederationsKind, c.ns, opts), &v1alpha1.MetastoreFederationList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.MetastoreFederationList{ListMeta: obj.(*v1alpha1.MetastoreFederationList).ListMeta}
-	for _, item := range obj.(*v1alpha1.MetastoreFederationList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested metastoreFederations.
-func (c *FakeMetastoreFederations) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(metastorefederationsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a metastoreFederation and creates it.  Returns the server's representation of the metastoreFederation, and an error, if there is any.
-func (c *FakeMetastoreFederations) Create(ctx context.Context, metastoreFederation *v1alpha1.MetastoreFederation, opts v1.CreateOptions) (result *v1alpha1.MetastoreFederation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(metastorefederationsResource, c.ns, metastoreFederation), &v1alpha1.MetastoreFederation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MetastoreFederation), err
-}
-
-// Update takes the representation of a metastoreFederation and updates it. Returns the server's representation of the metastoreFederation, and an error, if there is any.
-func (c *FakeMetastoreFederations) Update(ctx context.Context, metastoreFederation *v1alpha1.MetastoreFederation, opts v1.UpdateOptions) (result *v1alpha1.MetastoreFederation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(metastorefederationsResource, c.ns, metastoreFederation), &v1alpha1.MetastoreFederation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MetastoreFederation), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeMetastoreFederations) UpdateStatus(ctx context.Context, metastoreFederation *v1alpha1.MetastoreFederation, opts v1.UpdateOptions) (*v1alpha1.MetastoreFederation, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(metastorefederationsResource, "status", c.ns, metastoreFederation), &v1alpha1.MetastoreFederation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MetastoreFederation), err
-}
-
-// Delete takes name of the metastoreFederation and deletes it. Returns an error if one occurs.
-func (c *FakeMetastoreFederations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(metastorefederationsResource, c.ns, name, opts), &v1alpha1.MetastoreFederation{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeMetastoreFederations) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(metastorefederationsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.MetastoreFederationList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched metastoreFederation.
-func (c *FakeMetastoreFederations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.MetastoreFederation, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(metastorefederationsResource, c.ns, name, pt, data, subresources...), &v1alpha1.MetastoreFederation{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MetastoreFederation), err
 }

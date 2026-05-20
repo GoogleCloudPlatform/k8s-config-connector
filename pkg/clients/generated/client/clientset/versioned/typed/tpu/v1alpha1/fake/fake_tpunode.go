@@ -22,123 +22,32 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeTPUNodes implements TPUNodeInterface
-type FakeTPUNodes struct {
+// fakeTPUNodes implements TPUNodeInterface
+type fakeTPUNodes struct {
+	*gentype.FakeClientWithList[*v1alpha1.TPUNode, *v1alpha1.TPUNodeList]
 	Fake *FakeTpuV1alpha1
-	ns   string
 }
 
-var tpunodesResource = v1alpha1.SchemeGroupVersion.WithResource("tpunodes")
-
-var tpunodesKind = v1alpha1.SchemeGroupVersion.WithKind("TPUNode")
-
-// Get takes name of the tPUNode, and returns the corresponding tPUNode object, and an error if there is any.
-func (c *FakeTPUNodes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.TPUNode, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(tpunodesResource, c.ns, name), &v1alpha1.TPUNode{})
-
-	if obj == nil {
-		return nil, err
+func newFakeTPUNodes(fake *FakeTpuV1alpha1, namespace string) tpuv1alpha1.TPUNodeInterface {
+	return &fakeTPUNodes{
+		gentype.NewFakeClientWithList[*v1alpha1.TPUNode, *v1alpha1.TPUNodeList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("tpunodes"),
+			v1alpha1.SchemeGroupVersion.WithKind("TPUNode"),
+			func() *v1alpha1.TPUNode { return &v1alpha1.TPUNode{} },
+			func() *v1alpha1.TPUNodeList { return &v1alpha1.TPUNodeList{} },
+			func(dst, src *v1alpha1.TPUNodeList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.TPUNodeList) []*v1alpha1.TPUNode { return gentype.ToPointerSlice(list.Items) },
+			func(list *v1alpha1.TPUNodeList, items []*v1alpha1.TPUNode) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.TPUNode), err
-}
-
-// List takes label and field selectors, and returns the list of TPUNodes that match those selectors.
-func (c *FakeTPUNodes) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.TPUNodeList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(tpunodesResource, tpunodesKind, c.ns, opts), &v1alpha1.TPUNodeList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.TPUNodeList{ListMeta: obj.(*v1alpha1.TPUNodeList).ListMeta}
-	for _, item := range obj.(*v1alpha1.TPUNodeList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested tPUNodes.
-func (c *FakeTPUNodes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(tpunodesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a tPUNode and creates it.  Returns the server's representation of the tPUNode, and an error, if there is any.
-func (c *FakeTPUNodes) Create(ctx context.Context, tPUNode *v1alpha1.TPUNode, opts v1.CreateOptions) (result *v1alpha1.TPUNode, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(tpunodesResource, c.ns, tPUNode), &v1alpha1.TPUNode{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.TPUNode), err
-}
-
-// Update takes the representation of a tPUNode and updates it. Returns the server's representation of the tPUNode, and an error, if there is any.
-func (c *FakeTPUNodes) Update(ctx context.Context, tPUNode *v1alpha1.TPUNode, opts v1.UpdateOptions) (result *v1alpha1.TPUNode, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(tpunodesResource, c.ns, tPUNode), &v1alpha1.TPUNode{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.TPUNode), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeTPUNodes) UpdateStatus(ctx context.Context, tPUNode *v1alpha1.TPUNode, opts v1.UpdateOptions) (*v1alpha1.TPUNode, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(tpunodesResource, "status", c.ns, tPUNode), &v1alpha1.TPUNode{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.TPUNode), err
-}
-
-// Delete takes name of the tPUNode and deletes it. Returns an error if one occurs.
-func (c *FakeTPUNodes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(tpunodesResource, c.ns, name, opts), &v1alpha1.TPUNode{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeTPUNodes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(tpunodesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.TPUNodeList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched tPUNode.
-func (c *FakeTPUNodes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.TPUNode, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(tpunodesResource, c.ns, name, pt, data, subresources...), &v1alpha1.TPUNode{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.TPUNode), err
 }
