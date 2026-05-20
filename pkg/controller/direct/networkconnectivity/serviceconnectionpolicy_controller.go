@@ -83,26 +83,15 @@ func (m *serviceConnectionPolicyModel) AdapterForObject(ctx context.Context, op 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	identity, err := obj.GetIdentity(ctx, kube)
+	if err != nil {
+		return nil, err
 	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	location := direct.ValueOf(obj.Spec.Location)
-	if location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
+	id := identity.(*krm.NetworkConnectivityServiceConnectionPolicyIdentity)
 
 	projectRef, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
 	}
 
 	if err := common.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
@@ -116,9 +105,9 @@ func (m *serviceConnectionPolicyModel) AdapterForObject(ctx context.Context, op 
 	}
 
 	return &serviceConnectionPolicyAdapter{
-		projectID:  projectID,
-		resourceID: resourceID,
-		location:   location,
+		projectID:  id.Project,
+		resourceID: id.ServiceConnectionPolicy,
+		location:   id.Location,
 		desired:    desiredProto,
 		gcpClient:  gcpClient,
 	}, nil

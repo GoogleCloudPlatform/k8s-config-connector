@@ -68,20 +68,21 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	ignoredTemplates := map[string]bool{
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
-		"//storage.googleapis.com/projects/{}/buckets/{}":                                         true,
-		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                       true,
-		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                  true,
-		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
-		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                     true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                       true,
-		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                        true,
-		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":      true,
-		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                 true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":         true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                   true,
-		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":      true,
-		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                         true}
-
+"//storage.googleapis.com/projects/{}/buckets/{}":                                            true,
+"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                          true,
+"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                     true,
+"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}":    true,
+"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                        true,
+"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                          true,
+"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                           true,
+"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":         true,
+"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                    true,
+"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":            true,
+"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                      true,
+"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":         true,
+"//networkconnectivity.googleapis.com/projects/{}/locations/{}/serviceConnectionPolicies/{}": true,
+"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                            true,
+}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
 		normalized := normalizeTemplateFormat(fullURL)
