@@ -95,8 +95,14 @@ def main():
             # Check if any of the _types.go files have a corresponding _reference.go file
             has_reference = False
             for filepath in implemented_types[kind]:
-                ref_filepath = filepath.replace("_types.go", "_reference.go")
-                if os.path.exists(ref_filepath):
+                # Pattern 1: Derived from types filename (e.g. repository_types.go -> repository_reference.go)
+                ref_filepath_1 = filepath.replace("_types.go", "_reference.go")
+
+                # Pattern 2: Derived from Kind name (e.g. ArtifactRegistryRepository -> artifactregistryrepository_reference.go)
+                dir_path = os.path.dirname(filepath)
+                ref_filepath_2 = os.path.join(dir_path, f"{kind.lower()}_reference.go")
+
+                if os.path.exists(ref_filepath_1) or os.path.exists(ref_filepath_2):
                     has_reference = True
                     break
             
