@@ -1534,6 +1534,12 @@ spec:
                 version: v1beta1
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
+            - key: regionNetworkEndpointGroupRef
+              gvk:
+                kind: ComputeRegionNetworkEndpointGroup
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
         - tfField: iap.oauth2_client_id
           description: OAuth2 Client ID for IAP.
           key: oauth2ClientIdRef
