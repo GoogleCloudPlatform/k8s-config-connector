@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configcontroller/v1beta1"
-	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeConfigControllerInstances implements ConfigControllerInstanceInterface
-type fakeConfigControllerInstances struct {
-	*gentype.FakeClientWithList[*v1beta1.ConfigControllerInstance, *v1beta1.ConfigControllerInstanceList]
+// FakeConfigControllerInstances implements ConfigControllerInstanceInterface
+type FakeConfigControllerInstances struct {
 	Fake *FakeConfigcontrollerV1beta1
+	ns   string
 }
 
-func newFakeConfigControllerInstances(fake *FakeConfigcontrollerV1beta1, namespace string) configcontrollerv1beta1.ConfigControllerInstanceInterface {
-	return &fakeConfigControllerInstances{
-		gentype.NewFakeClientWithList[*v1beta1.ConfigControllerInstance, *v1beta1.ConfigControllerInstanceList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("configcontrollerinstances"),
-			v1beta1.SchemeGroupVersion.WithKind("ConfigControllerInstance"),
-			func() *v1beta1.ConfigControllerInstance { return &v1beta1.ConfigControllerInstance{} },
-			func() *v1beta1.ConfigControllerInstanceList { return &v1beta1.ConfigControllerInstanceList{} },
-			func(dst, src *v1beta1.ConfigControllerInstanceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.ConfigControllerInstanceList) []*v1beta1.ConfigControllerInstance {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.ConfigControllerInstanceList, items []*v1beta1.ConfigControllerInstance) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var configcontrollerinstancesResource = v1beta1.SchemeGroupVersion.WithResource("configcontrollerinstances")
+
+var configcontrollerinstancesKind = v1beta1.SchemeGroupVersion.WithKind("ConfigControllerInstance")
+
+// Get takes name of the configControllerInstance, and returns the corresponding configControllerInstance object, and an error if there is any.
+func (c *FakeConfigControllerInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ConfigControllerInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(configcontrollerinstancesResource, c.ns, name), &v1beta1.ConfigControllerInstance{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.ConfigControllerInstance), err
+}
+
+// List takes label and field selectors, and returns the list of ConfigControllerInstances that match those selectors.
+func (c *FakeConfigControllerInstances) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ConfigControllerInstanceList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(configcontrollerinstancesResource, configcontrollerinstancesKind, c.ns, opts), &v1beta1.ConfigControllerInstanceList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.ConfigControllerInstanceList{ListMeta: obj.(*v1beta1.ConfigControllerInstanceList).ListMeta}
+	for _, item := range obj.(*v1beta1.ConfigControllerInstanceList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested configControllerInstances.
+func (c *FakeConfigControllerInstances) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(configcontrollerinstancesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a configControllerInstance and creates it.  Returns the server's representation of the configControllerInstance, and an error, if there is any.
+func (c *FakeConfigControllerInstances) Create(ctx context.Context, configControllerInstance *v1beta1.ConfigControllerInstance, opts v1.CreateOptions) (result *v1beta1.ConfigControllerInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(configcontrollerinstancesResource, c.ns, configControllerInstance), &v1beta1.ConfigControllerInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ConfigControllerInstance), err
+}
+
+// Update takes the representation of a configControllerInstance and updates it. Returns the server's representation of the configControllerInstance, and an error, if there is any.
+func (c *FakeConfigControllerInstances) Update(ctx context.Context, configControllerInstance *v1beta1.ConfigControllerInstance, opts v1.UpdateOptions) (result *v1beta1.ConfigControllerInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(configcontrollerinstancesResource, c.ns, configControllerInstance), &v1beta1.ConfigControllerInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ConfigControllerInstance), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeConfigControllerInstances) UpdateStatus(ctx context.Context, configControllerInstance *v1beta1.ConfigControllerInstance, opts v1.UpdateOptions) (*v1beta1.ConfigControllerInstance, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(configcontrollerinstancesResource, "status", c.ns, configControllerInstance), &v1beta1.ConfigControllerInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ConfigControllerInstance), err
+}
+
+// Delete takes name of the configControllerInstance and deletes it. Returns an error if one occurs.
+func (c *FakeConfigControllerInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(configcontrollerinstancesResource, c.ns, name, opts), &v1beta1.ConfigControllerInstance{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeConfigControllerInstances) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(configcontrollerinstancesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.ConfigControllerInstanceList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched configControllerInstance.
+func (c *FakeConfigControllerInstances) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ConfigControllerInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(configcontrollerinstancesResource, c.ns, name, pt, data, subresources...), &v1beta1.ConfigControllerInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ConfigControllerInstance), err
 }

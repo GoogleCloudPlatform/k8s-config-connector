@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1beta1"
-	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeRedisInstances implements RedisInstanceInterface
-type fakeRedisInstances struct {
-	*gentype.FakeClientWithList[*v1beta1.RedisInstance, *v1beta1.RedisInstanceList]
+// FakeRedisInstances implements RedisInstanceInterface
+type FakeRedisInstances struct {
 	Fake *FakeRedisV1beta1
+	ns   string
 }
 
-func newFakeRedisInstances(fake *FakeRedisV1beta1, namespace string) redisv1beta1.RedisInstanceInterface {
-	return &fakeRedisInstances{
-		gentype.NewFakeClientWithList[*v1beta1.RedisInstance, *v1beta1.RedisInstanceList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("redisinstances"),
-			v1beta1.SchemeGroupVersion.WithKind("RedisInstance"),
-			func() *v1beta1.RedisInstance { return &v1beta1.RedisInstance{} },
-			func() *v1beta1.RedisInstanceList { return &v1beta1.RedisInstanceList{} },
-			func(dst, src *v1beta1.RedisInstanceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.RedisInstanceList) []*v1beta1.RedisInstance {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.RedisInstanceList, items []*v1beta1.RedisInstance) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var redisinstancesResource = v1beta1.SchemeGroupVersion.WithResource("redisinstances")
+
+var redisinstancesKind = v1beta1.SchemeGroupVersion.WithKind("RedisInstance")
+
+// Get takes name of the redisInstance, and returns the corresponding redisInstance object, and an error if there is any.
+func (c *FakeRedisInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.RedisInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(redisinstancesResource, c.ns, name), &v1beta1.RedisInstance{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.RedisInstance), err
+}
+
+// List takes label and field selectors, and returns the list of RedisInstances that match those selectors.
+func (c *FakeRedisInstances) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.RedisInstanceList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(redisinstancesResource, redisinstancesKind, c.ns, opts), &v1beta1.RedisInstanceList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.RedisInstanceList{ListMeta: obj.(*v1beta1.RedisInstanceList).ListMeta}
+	for _, item := range obj.(*v1beta1.RedisInstanceList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested redisInstances.
+func (c *FakeRedisInstances) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(redisinstancesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a redisInstance and creates it.  Returns the server's representation of the redisInstance, and an error, if there is any.
+func (c *FakeRedisInstances) Create(ctx context.Context, redisInstance *v1beta1.RedisInstance, opts v1.CreateOptions) (result *v1beta1.RedisInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(redisinstancesResource, c.ns, redisInstance), &v1beta1.RedisInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.RedisInstance), err
+}
+
+// Update takes the representation of a redisInstance and updates it. Returns the server's representation of the redisInstance, and an error, if there is any.
+func (c *FakeRedisInstances) Update(ctx context.Context, redisInstance *v1beta1.RedisInstance, opts v1.UpdateOptions) (result *v1beta1.RedisInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(redisinstancesResource, c.ns, redisInstance), &v1beta1.RedisInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.RedisInstance), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeRedisInstances) UpdateStatus(ctx context.Context, redisInstance *v1beta1.RedisInstance, opts v1.UpdateOptions) (*v1beta1.RedisInstance, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(redisinstancesResource, "status", c.ns, redisInstance), &v1beta1.RedisInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.RedisInstance), err
+}
+
+// Delete takes name of the redisInstance and deletes it. Returns an error if one occurs.
+func (c *FakeRedisInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(redisinstancesResource, c.ns, name, opts), &v1beta1.RedisInstance{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeRedisInstances) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(redisinstancesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.RedisInstanceList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched redisInstance.
+func (c *FakeRedisInstances) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.RedisInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(redisinstancesResource, c.ns, name, pt, data, subresources...), &v1beta1.RedisInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.RedisInstance), err
 }

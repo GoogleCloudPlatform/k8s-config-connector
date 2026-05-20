@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudasset/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudasset/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // CloudAssetFolderFeedsGetter has a method to return a CloudAssetFolderFeedInterface.
@@ -40,36 +41,158 @@ type CloudAssetFolderFeedsGetter interface {
 
 // CloudAssetFolderFeedInterface has methods to work with CloudAssetFolderFeed resources.
 type CloudAssetFolderFeedInterface interface {
-	Create(ctx context.Context, cloudAssetFolderFeed *cloudassetv1alpha1.CloudAssetFolderFeed, opts v1.CreateOptions) (*cloudassetv1alpha1.CloudAssetFolderFeed, error)
-	Update(ctx context.Context, cloudAssetFolderFeed *cloudassetv1alpha1.CloudAssetFolderFeed, opts v1.UpdateOptions) (*cloudassetv1alpha1.CloudAssetFolderFeed, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, cloudAssetFolderFeed *cloudassetv1alpha1.CloudAssetFolderFeed, opts v1.UpdateOptions) (*cloudassetv1alpha1.CloudAssetFolderFeed, error)
+	Create(ctx context.Context, cloudAssetFolderFeed *v1alpha1.CloudAssetFolderFeed, opts v1.CreateOptions) (*v1alpha1.CloudAssetFolderFeed, error)
+	Update(ctx context.Context, cloudAssetFolderFeed *v1alpha1.CloudAssetFolderFeed, opts v1.UpdateOptions) (*v1alpha1.CloudAssetFolderFeed, error)
+	UpdateStatus(ctx context.Context, cloudAssetFolderFeed *v1alpha1.CloudAssetFolderFeed, opts v1.UpdateOptions) (*v1alpha1.CloudAssetFolderFeed, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*cloudassetv1alpha1.CloudAssetFolderFeed, error)
-	List(ctx context.Context, opts v1.ListOptions) (*cloudassetv1alpha1.CloudAssetFolderFeedList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.CloudAssetFolderFeed, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.CloudAssetFolderFeedList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *cloudassetv1alpha1.CloudAssetFolderFeed, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudAssetFolderFeed, err error)
 	CloudAssetFolderFeedExpansion
 }
 
 // cloudAssetFolderFeeds implements CloudAssetFolderFeedInterface
 type cloudAssetFolderFeeds struct {
-	*gentype.ClientWithList[*cloudassetv1alpha1.CloudAssetFolderFeed, *cloudassetv1alpha1.CloudAssetFolderFeedList]
+	client rest.Interface
+	ns     string
 }
 
 // newCloudAssetFolderFeeds returns a CloudAssetFolderFeeds
 func newCloudAssetFolderFeeds(c *CloudassetV1alpha1Client, namespace string) *cloudAssetFolderFeeds {
 	return &cloudAssetFolderFeeds{
-		gentype.NewClientWithList[*cloudassetv1alpha1.CloudAssetFolderFeed, *cloudassetv1alpha1.CloudAssetFolderFeedList](
-			"cloudassetfolderfeeds",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *cloudassetv1alpha1.CloudAssetFolderFeed { return &cloudassetv1alpha1.CloudAssetFolderFeed{} },
-			func() *cloudassetv1alpha1.CloudAssetFolderFeedList {
-				return &cloudassetv1alpha1.CloudAssetFolderFeedList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the cloudAssetFolderFeed, and returns the corresponding cloudAssetFolderFeed object, and an error if there is any.
+func (c *cloudAssetFolderFeeds) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudAssetFolderFeed, err error) {
+	result = &v1alpha1.CloudAssetFolderFeed{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("cloudassetfolderfeeds").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of CloudAssetFolderFeeds that match those selectors.
+func (c *cloudAssetFolderFeeds) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudAssetFolderFeedList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.CloudAssetFolderFeedList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("cloudassetfolderfeeds").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested cloudAssetFolderFeeds.
+func (c *cloudAssetFolderFeeds) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("cloudassetfolderfeeds").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a cloudAssetFolderFeed and creates it.  Returns the server's representation of the cloudAssetFolderFeed, and an error, if there is any.
+func (c *cloudAssetFolderFeeds) Create(ctx context.Context, cloudAssetFolderFeed *v1alpha1.CloudAssetFolderFeed, opts v1.CreateOptions) (result *v1alpha1.CloudAssetFolderFeed, err error) {
+	result = &v1alpha1.CloudAssetFolderFeed{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("cloudassetfolderfeeds").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(cloudAssetFolderFeed).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a cloudAssetFolderFeed and updates it. Returns the server's representation of the cloudAssetFolderFeed, and an error, if there is any.
+func (c *cloudAssetFolderFeeds) Update(ctx context.Context, cloudAssetFolderFeed *v1alpha1.CloudAssetFolderFeed, opts v1.UpdateOptions) (result *v1alpha1.CloudAssetFolderFeed, err error) {
+	result = &v1alpha1.CloudAssetFolderFeed{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("cloudassetfolderfeeds").
+		Name(cloudAssetFolderFeed.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(cloudAssetFolderFeed).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *cloudAssetFolderFeeds) UpdateStatus(ctx context.Context, cloudAssetFolderFeed *v1alpha1.CloudAssetFolderFeed, opts v1.UpdateOptions) (result *v1alpha1.CloudAssetFolderFeed, err error) {
+	result = &v1alpha1.CloudAssetFolderFeed{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("cloudassetfolderfeeds").
+		Name(cloudAssetFolderFeed.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(cloudAssetFolderFeed).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the cloudAssetFolderFeed and deletes it. Returns an error if one occurs.
+func (c *cloudAssetFolderFeeds) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("cloudassetfolderfeeds").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *cloudAssetFolderFeeds) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("cloudassetfolderfeeds").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched cloudAssetFolderFeed.
+func (c *cloudAssetFolderFeeds) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudAssetFolderFeed, err error) {
+	result = &v1alpha1.CloudAssetFolderFeed{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("cloudassetfolderfeeds").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

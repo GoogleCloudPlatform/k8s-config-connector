@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
-	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeAlloyDBBackups implements AlloyDBBackupInterface
-type fakeAlloyDBBackups struct {
-	*gentype.FakeClientWithList[*v1beta1.AlloyDBBackup, *v1beta1.AlloyDBBackupList]
+// FakeAlloyDBBackups implements AlloyDBBackupInterface
+type FakeAlloyDBBackups struct {
 	Fake *FakeAlloydbV1beta1
+	ns   string
 }
 
-func newFakeAlloyDBBackups(fake *FakeAlloydbV1beta1, namespace string) alloydbv1beta1.AlloyDBBackupInterface {
-	return &fakeAlloyDBBackups{
-		gentype.NewFakeClientWithList[*v1beta1.AlloyDBBackup, *v1beta1.AlloyDBBackupList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("alloydbbackups"),
-			v1beta1.SchemeGroupVersion.WithKind("AlloyDBBackup"),
-			func() *v1beta1.AlloyDBBackup { return &v1beta1.AlloyDBBackup{} },
-			func() *v1beta1.AlloyDBBackupList { return &v1beta1.AlloyDBBackupList{} },
-			func(dst, src *v1beta1.AlloyDBBackupList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.AlloyDBBackupList) []*v1beta1.AlloyDBBackup {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.AlloyDBBackupList, items []*v1beta1.AlloyDBBackup) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var alloydbbackupsResource = v1beta1.SchemeGroupVersion.WithResource("alloydbbackups")
+
+var alloydbbackupsKind = v1beta1.SchemeGroupVersion.WithKind("AlloyDBBackup")
+
+// Get takes name of the alloyDBBackup, and returns the corresponding alloyDBBackup object, and an error if there is any.
+func (c *FakeAlloyDBBackups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.AlloyDBBackup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(alloydbbackupsResource, c.ns, name), &v1beta1.AlloyDBBackup{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.AlloyDBBackup), err
+}
+
+// List takes label and field selectors, and returns the list of AlloyDBBackups that match those selectors.
+func (c *FakeAlloyDBBackups) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.AlloyDBBackupList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(alloydbbackupsResource, alloydbbackupsKind, c.ns, opts), &v1beta1.AlloyDBBackupList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.AlloyDBBackupList{ListMeta: obj.(*v1beta1.AlloyDBBackupList).ListMeta}
+	for _, item := range obj.(*v1beta1.AlloyDBBackupList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested alloyDBBackups.
+func (c *FakeAlloyDBBackups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(alloydbbackupsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a alloyDBBackup and creates it.  Returns the server's representation of the alloyDBBackup, and an error, if there is any.
+func (c *FakeAlloyDBBackups) Create(ctx context.Context, alloyDBBackup *v1beta1.AlloyDBBackup, opts v1.CreateOptions) (result *v1beta1.AlloyDBBackup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(alloydbbackupsResource, c.ns, alloyDBBackup), &v1beta1.AlloyDBBackup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.AlloyDBBackup), err
+}
+
+// Update takes the representation of a alloyDBBackup and updates it. Returns the server's representation of the alloyDBBackup, and an error, if there is any.
+func (c *FakeAlloyDBBackups) Update(ctx context.Context, alloyDBBackup *v1beta1.AlloyDBBackup, opts v1.UpdateOptions) (result *v1beta1.AlloyDBBackup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(alloydbbackupsResource, c.ns, alloyDBBackup), &v1beta1.AlloyDBBackup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.AlloyDBBackup), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeAlloyDBBackups) UpdateStatus(ctx context.Context, alloyDBBackup *v1beta1.AlloyDBBackup, opts v1.UpdateOptions) (*v1beta1.AlloyDBBackup, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(alloydbbackupsResource, "status", c.ns, alloyDBBackup), &v1beta1.AlloyDBBackup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.AlloyDBBackup), err
+}
+
+// Delete takes name of the alloyDBBackup and deletes it. Returns an error if one occurs.
+func (c *FakeAlloyDBBackups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(alloydbbackupsResource, c.ns, name, opts), &v1beta1.AlloyDBBackup{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeAlloyDBBackups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(alloydbbackupsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.AlloyDBBackupList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched alloyDBBackup.
+func (c *FakeAlloyDBBackups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AlloyDBBackup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(alloydbbackupsResource, c.ns, name, pt, data, subresources...), &v1beta1.AlloyDBBackup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.AlloyDBBackup), err
 }

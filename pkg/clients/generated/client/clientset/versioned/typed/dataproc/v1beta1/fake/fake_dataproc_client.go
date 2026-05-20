@@ -32,15 +32,15 @@ type FakeDataprocV1beta1 struct {
 }
 
 func (c *FakeDataprocV1beta1) DataprocAutoscalingPolicies(namespace string) v1beta1.DataprocAutoscalingPolicyInterface {
-	return newFakeDataprocAutoscalingPolicies(c, namespace)
+	return &FakeDataprocAutoscalingPolicies{c, namespace}
 }
 
 func (c *FakeDataprocV1beta1) DataprocClusters(namespace string) v1beta1.DataprocClusterInterface {
-	return newFakeDataprocClusters(c, namespace)
+	return &FakeDataprocClusters{c, namespace}
 }
 
 func (c *FakeDataprocV1beta1) DataprocWorkflowTemplates(namespace string) v1beta1.DataprocWorkflowTemplateInterface {
-	return newFakeDataprocWorkflowTemplates(c, namespace)
+	return &FakeDataprocWorkflowTemplates{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

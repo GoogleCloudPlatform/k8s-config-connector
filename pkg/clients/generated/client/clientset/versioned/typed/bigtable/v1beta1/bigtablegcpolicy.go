@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // BigtableGCPoliciesGetter has a method to return a BigtableGCPolicyInterface.
@@ -40,34 +41,158 @@ type BigtableGCPoliciesGetter interface {
 
 // BigtableGCPolicyInterface has methods to work with BigtableGCPolicy resources.
 type BigtableGCPolicyInterface interface {
-	Create(ctx context.Context, bigtableGCPolicy *bigtablev1beta1.BigtableGCPolicy, opts v1.CreateOptions) (*bigtablev1beta1.BigtableGCPolicy, error)
-	Update(ctx context.Context, bigtableGCPolicy *bigtablev1beta1.BigtableGCPolicy, opts v1.UpdateOptions) (*bigtablev1beta1.BigtableGCPolicy, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, bigtableGCPolicy *bigtablev1beta1.BigtableGCPolicy, opts v1.UpdateOptions) (*bigtablev1beta1.BigtableGCPolicy, error)
+	Create(ctx context.Context, bigtableGCPolicy *v1beta1.BigtableGCPolicy, opts v1.CreateOptions) (*v1beta1.BigtableGCPolicy, error)
+	Update(ctx context.Context, bigtableGCPolicy *v1beta1.BigtableGCPolicy, opts v1.UpdateOptions) (*v1beta1.BigtableGCPolicy, error)
+	UpdateStatus(ctx context.Context, bigtableGCPolicy *v1beta1.BigtableGCPolicy, opts v1.UpdateOptions) (*v1beta1.BigtableGCPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*bigtablev1beta1.BigtableGCPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*bigtablev1beta1.BigtableGCPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.BigtableGCPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.BigtableGCPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *bigtablev1beta1.BigtableGCPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigtableGCPolicy, err error)
 	BigtableGCPolicyExpansion
 }
 
 // bigtableGCPolicies implements BigtableGCPolicyInterface
 type bigtableGCPolicies struct {
-	*gentype.ClientWithList[*bigtablev1beta1.BigtableGCPolicy, *bigtablev1beta1.BigtableGCPolicyList]
+	client rest.Interface
+	ns     string
 }
 
 // newBigtableGCPolicies returns a BigtableGCPolicies
 func newBigtableGCPolicies(c *BigtableV1beta1Client, namespace string) *bigtableGCPolicies {
 	return &bigtableGCPolicies{
-		gentype.NewClientWithList[*bigtablev1beta1.BigtableGCPolicy, *bigtablev1beta1.BigtableGCPolicyList](
-			"bigtablegcpolicies",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *bigtablev1beta1.BigtableGCPolicy { return &bigtablev1beta1.BigtableGCPolicy{} },
-			func() *bigtablev1beta1.BigtableGCPolicyList { return &bigtablev1beta1.BigtableGCPolicyList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the bigtableGCPolicy, and returns the corresponding bigtableGCPolicy object, and an error if there is any.
+func (c *bigtableGCPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigtableGCPolicy, err error) {
+	result = &v1beta1.BigtableGCPolicy{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("bigtablegcpolicies").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of BigtableGCPolicies that match those selectors.
+func (c *bigtableGCPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigtableGCPolicyList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.BigtableGCPolicyList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("bigtablegcpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested bigtableGCPolicies.
+func (c *bigtableGCPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("bigtablegcpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a bigtableGCPolicy and creates it.  Returns the server's representation of the bigtableGCPolicy, and an error, if there is any.
+func (c *bigtableGCPolicies) Create(ctx context.Context, bigtableGCPolicy *v1beta1.BigtableGCPolicy, opts v1.CreateOptions) (result *v1beta1.BigtableGCPolicy, err error) {
+	result = &v1beta1.BigtableGCPolicy{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("bigtablegcpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(bigtableGCPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a bigtableGCPolicy and updates it. Returns the server's representation of the bigtableGCPolicy, and an error, if there is any.
+func (c *bigtableGCPolicies) Update(ctx context.Context, bigtableGCPolicy *v1beta1.BigtableGCPolicy, opts v1.UpdateOptions) (result *v1beta1.BigtableGCPolicy, err error) {
+	result = &v1beta1.BigtableGCPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("bigtablegcpolicies").
+		Name(bigtableGCPolicy.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(bigtableGCPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *bigtableGCPolicies) UpdateStatus(ctx context.Context, bigtableGCPolicy *v1beta1.BigtableGCPolicy, opts v1.UpdateOptions) (result *v1beta1.BigtableGCPolicy, err error) {
+	result = &v1beta1.BigtableGCPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("bigtablegcpolicies").
+		Name(bigtableGCPolicy.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(bigtableGCPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the bigtableGCPolicy and deletes it. Returns an error if one occurs.
+func (c *bigtableGCPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("bigtablegcpolicies").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *bigtableGCPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("bigtablegcpolicies").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched bigtableGCPolicy.
+func (c *bigtableGCPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigtableGCPolicy, err error) {
+	result = &v1beta1.BigtableGCPolicy{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("bigtablegcpolicies").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

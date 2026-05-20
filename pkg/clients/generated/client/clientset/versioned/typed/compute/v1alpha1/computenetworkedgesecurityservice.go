@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeNetworkEdgeSecurityServicesGetter has a method to return a ComputeNetworkEdgeSecurityServiceInterface.
@@ -40,38 +41,158 @@ type ComputeNetworkEdgeSecurityServicesGetter interface {
 
 // ComputeNetworkEdgeSecurityServiceInterface has methods to work with ComputeNetworkEdgeSecurityService resources.
 type ComputeNetworkEdgeSecurityServiceInterface interface {
-	Create(ctx context.Context, computeNetworkEdgeSecurityService *computev1alpha1.ComputeNetworkEdgeSecurityService, opts v1.CreateOptions) (*computev1alpha1.ComputeNetworkEdgeSecurityService, error)
-	Update(ctx context.Context, computeNetworkEdgeSecurityService *computev1alpha1.ComputeNetworkEdgeSecurityService, opts v1.UpdateOptions) (*computev1alpha1.ComputeNetworkEdgeSecurityService, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeNetworkEdgeSecurityService *computev1alpha1.ComputeNetworkEdgeSecurityService, opts v1.UpdateOptions) (*computev1alpha1.ComputeNetworkEdgeSecurityService, error)
+	Create(ctx context.Context, computeNetworkEdgeSecurityService *v1alpha1.ComputeNetworkEdgeSecurityService, opts v1.CreateOptions) (*v1alpha1.ComputeNetworkEdgeSecurityService, error)
+	Update(ctx context.Context, computeNetworkEdgeSecurityService *v1alpha1.ComputeNetworkEdgeSecurityService, opts v1.UpdateOptions) (*v1alpha1.ComputeNetworkEdgeSecurityService, error)
+	UpdateStatus(ctx context.Context, computeNetworkEdgeSecurityService *v1alpha1.ComputeNetworkEdgeSecurityService, opts v1.UpdateOptions) (*v1alpha1.ComputeNetworkEdgeSecurityService, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1alpha1.ComputeNetworkEdgeSecurityService, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1alpha1.ComputeNetworkEdgeSecurityServiceList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.ComputeNetworkEdgeSecurityService, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.ComputeNetworkEdgeSecurityServiceList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1alpha1.ComputeNetworkEdgeSecurityService, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error)
 	ComputeNetworkEdgeSecurityServiceExpansion
 }
 
 // computeNetworkEdgeSecurityServices implements ComputeNetworkEdgeSecurityServiceInterface
 type computeNetworkEdgeSecurityServices struct {
-	*gentype.ClientWithList[*computev1alpha1.ComputeNetworkEdgeSecurityService, *computev1alpha1.ComputeNetworkEdgeSecurityServiceList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeNetworkEdgeSecurityServices returns a ComputeNetworkEdgeSecurityServices
 func newComputeNetworkEdgeSecurityServices(c *ComputeV1alpha1Client, namespace string) *computeNetworkEdgeSecurityServices {
 	return &computeNetworkEdgeSecurityServices{
-		gentype.NewClientWithList[*computev1alpha1.ComputeNetworkEdgeSecurityService, *computev1alpha1.ComputeNetworkEdgeSecurityServiceList](
-			"computenetworkedgesecurityservices",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1alpha1.ComputeNetworkEdgeSecurityService {
-				return &computev1alpha1.ComputeNetworkEdgeSecurityService{}
-			},
-			func() *computev1alpha1.ComputeNetworkEdgeSecurityServiceList {
-				return &computev1alpha1.ComputeNetworkEdgeSecurityServiceList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeNetworkEdgeSecurityService, and returns the corresponding computeNetworkEdgeSecurityService object, and an error if there is any.
+func (c *computeNetworkEdgeSecurityServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error) {
+	result = &v1alpha1.ComputeNetworkEdgeSecurityService{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computenetworkedgesecurityservices").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeNetworkEdgeSecurityServices that match those selectors.
+func (c *computeNetworkEdgeSecurityServices) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeNetworkEdgeSecurityServiceList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.ComputeNetworkEdgeSecurityServiceList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computenetworkedgesecurityservices").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeNetworkEdgeSecurityServices.
+func (c *computeNetworkEdgeSecurityServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computenetworkedgesecurityservices").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeNetworkEdgeSecurityService and creates it.  Returns the server's representation of the computeNetworkEdgeSecurityService, and an error, if there is any.
+func (c *computeNetworkEdgeSecurityServices) Create(ctx context.Context, computeNetworkEdgeSecurityService *v1alpha1.ComputeNetworkEdgeSecurityService, opts v1.CreateOptions) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error) {
+	result = &v1alpha1.ComputeNetworkEdgeSecurityService{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computenetworkedgesecurityservices").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeNetworkEdgeSecurityService).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeNetworkEdgeSecurityService and updates it. Returns the server's representation of the computeNetworkEdgeSecurityService, and an error, if there is any.
+func (c *computeNetworkEdgeSecurityServices) Update(ctx context.Context, computeNetworkEdgeSecurityService *v1alpha1.ComputeNetworkEdgeSecurityService, opts v1.UpdateOptions) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error) {
+	result = &v1alpha1.ComputeNetworkEdgeSecurityService{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computenetworkedgesecurityservices").
+		Name(computeNetworkEdgeSecurityService.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeNetworkEdgeSecurityService).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeNetworkEdgeSecurityServices) UpdateStatus(ctx context.Context, computeNetworkEdgeSecurityService *v1alpha1.ComputeNetworkEdgeSecurityService, opts v1.UpdateOptions) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error) {
+	result = &v1alpha1.ComputeNetworkEdgeSecurityService{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computenetworkedgesecurityservices").
+		Name(computeNetworkEdgeSecurityService.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeNetworkEdgeSecurityService).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeNetworkEdgeSecurityService and deletes it. Returns an error if one occurs.
+func (c *computeNetworkEdgeSecurityServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computenetworkedgesecurityservices").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeNetworkEdgeSecurityServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computenetworkedgesecurityservices").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeNetworkEdgeSecurityService.
+func (c *computeNetworkEdgeSecurityServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error) {
+	result = &v1alpha1.ComputeNetworkEdgeSecurityService{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computenetworkedgesecurityservices").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

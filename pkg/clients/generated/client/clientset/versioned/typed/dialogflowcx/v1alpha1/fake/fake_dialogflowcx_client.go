@@ -32,27 +32,27 @@ type FakeDialogflowcxV1alpha1 struct {
 }
 
 func (c *FakeDialogflowcxV1alpha1) DialogflowCXAgents(namespace string) v1alpha1.DialogflowCXAgentInterface {
-	return newFakeDialogflowCXAgents(c, namespace)
+	return &FakeDialogflowCXAgents{c, namespace}
 }
 
 func (c *FakeDialogflowcxV1alpha1) DialogflowCXEntityTypes(namespace string) v1alpha1.DialogflowCXEntityTypeInterface {
-	return newFakeDialogflowCXEntityTypes(c, namespace)
+	return &FakeDialogflowCXEntityTypes{c, namespace}
 }
 
 func (c *FakeDialogflowcxV1alpha1) DialogflowCXFlows(namespace string) v1alpha1.DialogflowCXFlowInterface {
-	return newFakeDialogflowCXFlows(c, namespace)
+	return &FakeDialogflowCXFlows{c, namespace}
 }
 
 func (c *FakeDialogflowcxV1alpha1) DialogflowCXIntents(namespace string) v1alpha1.DialogflowCXIntentInterface {
-	return newFakeDialogflowCXIntents(c, namespace)
+	return &FakeDialogflowCXIntents{c, namespace}
 }
 
 func (c *FakeDialogflowcxV1alpha1) DialogflowCXPages(namespace string) v1alpha1.DialogflowCXPageInterface {
-	return newFakeDialogflowCXPages(c, namespace)
+	return &FakeDialogflowCXPages{c, namespace}
 }
 
 func (c *FakeDialogflowcxV1alpha1) DialogflowCXWebhooks(namespace string) v1alpha1.DialogflowCXWebhookInterface {
-	return newFakeDialogflowCXWebhooks(c, namespace)
+	return &FakeDialogflowCXWebhooks{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

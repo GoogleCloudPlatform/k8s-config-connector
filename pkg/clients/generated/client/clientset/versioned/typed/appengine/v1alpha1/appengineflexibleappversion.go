@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appengine/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appengine/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // AppEngineFlexibleAppVersionsGetter has a method to return a AppEngineFlexibleAppVersionInterface.
@@ -40,38 +41,158 @@ type AppEngineFlexibleAppVersionsGetter interface {
 
 // AppEngineFlexibleAppVersionInterface has methods to work with AppEngineFlexibleAppVersion resources.
 type AppEngineFlexibleAppVersionInterface interface {
-	Create(ctx context.Context, appEngineFlexibleAppVersion *appenginev1alpha1.AppEngineFlexibleAppVersion, opts v1.CreateOptions) (*appenginev1alpha1.AppEngineFlexibleAppVersion, error)
-	Update(ctx context.Context, appEngineFlexibleAppVersion *appenginev1alpha1.AppEngineFlexibleAppVersion, opts v1.UpdateOptions) (*appenginev1alpha1.AppEngineFlexibleAppVersion, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, appEngineFlexibleAppVersion *appenginev1alpha1.AppEngineFlexibleAppVersion, opts v1.UpdateOptions) (*appenginev1alpha1.AppEngineFlexibleAppVersion, error)
+	Create(ctx context.Context, appEngineFlexibleAppVersion *v1alpha1.AppEngineFlexibleAppVersion, opts v1.CreateOptions) (*v1alpha1.AppEngineFlexibleAppVersion, error)
+	Update(ctx context.Context, appEngineFlexibleAppVersion *v1alpha1.AppEngineFlexibleAppVersion, opts v1.UpdateOptions) (*v1alpha1.AppEngineFlexibleAppVersion, error)
+	UpdateStatus(ctx context.Context, appEngineFlexibleAppVersion *v1alpha1.AppEngineFlexibleAppVersion, opts v1.UpdateOptions) (*v1alpha1.AppEngineFlexibleAppVersion, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*appenginev1alpha1.AppEngineFlexibleAppVersion, error)
-	List(ctx context.Context, opts v1.ListOptions) (*appenginev1alpha1.AppEngineFlexibleAppVersionList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.AppEngineFlexibleAppVersion, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.AppEngineFlexibleAppVersionList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *appenginev1alpha1.AppEngineFlexibleAppVersion, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppEngineFlexibleAppVersion, err error)
 	AppEngineFlexibleAppVersionExpansion
 }
 
 // appEngineFlexibleAppVersions implements AppEngineFlexibleAppVersionInterface
 type appEngineFlexibleAppVersions struct {
-	*gentype.ClientWithList[*appenginev1alpha1.AppEngineFlexibleAppVersion, *appenginev1alpha1.AppEngineFlexibleAppVersionList]
+	client rest.Interface
+	ns     string
 }
 
 // newAppEngineFlexibleAppVersions returns a AppEngineFlexibleAppVersions
 func newAppEngineFlexibleAppVersions(c *AppengineV1alpha1Client, namespace string) *appEngineFlexibleAppVersions {
 	return &appEngineFlexibleAppVersions{
-		gentype.NewClientWithList[*appenginev1alpha1.AppEngineFlexibleAppVersion, *appenginev1alpha1.AppEngineFlexibleAppVersionList](
-			"appengineflexibleappversions",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *appenginev1alpha1.AppEngineFlexibleAppVersion {
-				return &appenginev1alpha1.AppEngineFlexibleAppVersion{}
-			},
-			func() *appenginev1alpha1.AppEngineFlexibleAppVersionList {
-				return &appenginev1alpha1.AppEngineFlexibleAppVersionList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the appEngineFlexibleAppVersion, and returns the corresponding appEngineFlexibleAppVersion object, and an error if there is any.
+func (c *appEngineFlexibleAppVersions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AppEngineFlexibleAppVersion, err error) {
+	result = &v1alpha1.AppEngineFlexibleAppVersion{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("appengineflexibleappversions").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of AppEngineFlexibleAppVersions that match those selectors.
+func (c *appEngineFlexibleAppVersions) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.AppEngineFlexibleAppVersionList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.AppEngineFlexibleAppVersionList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("appengineflexibleappversions").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested appEngineFlexibleAppVersions.
+func (c *appEngineFlexibleAppVersions) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("appengineflexibleappversions").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a appEngineFlexibleAppVersion and creates it.  Returns the server's representation of the appEngineFlexibleAppVersion, and an error, if there is any.
+func (c *appEngineFlexibleAppVersions) Create(ctx context.Context, appEngineFlexibleAppVersion *v1alpha1.AppEngineFlexibleAppVersion, opts v1.CreateOptions) (result *v1alpha1.AppEngineFlexibleAppVersion, err error) {
+	result = &v1alpha1.AppEngineFlexibleAppVersion{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("appengineflexibleappversions").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(appEngineFlexibleAppVersion).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a appEngineFlexibleAppVersion and updates it. Returns the server's representation of the appEngineFlexibleAppVersion, and an error, if there is any.
+func (c *appEngineFlexibleAppVersions) Update(ctx context.Context, appEngineFlexibleAppVersion *v1alpha1.AppEngineFlexibleAppVersion, opts v1.UpdateOptions) (result *v1alpha1.AppEngineFlexibleAppVersion, err error) {
+	result = &v1alpha1.AppEngineFlexibleAppVersion{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("appengineflexibleappversions").
+		Name(appEngineFlexibleAppVersion.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(appEngineFlexibleAppVersion).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *appEngineFlexibleAppVersions) UpdateStatus(ctx context.Context, appEngineFlexibleAppVersion *v1alpha1.AppEngineFlexibleAppVersion, opts v1.UpdateOptions) (result *v1alpha1.AppEngineFlexibleAppVersion, err error) {
+	result = &v1alpha1.AppEngineFlexibleAppVersion{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("appengineflexibleappversions").
+		Name(appEngineFlexibleAppVersion.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(appEngineFlexibleAppVersion).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the appEngineFlexibleAppVersion and deletes it. Returns an error if one occurs.
+func (c *appEngineFlexibleAppVersions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("appengineflexibleappversions").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *appEngineFlexibleAppVersions) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("appengineflexibleappversions").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched appEngineFlexibleAppVersion.
+func (c *appEngineFlexibleAppVersions) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppEngineFlexibleAppVersion, err error) {
+	result = &v1alpha1.AppEngineFlexibleAppVersion{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("appengineflexibleappversions").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

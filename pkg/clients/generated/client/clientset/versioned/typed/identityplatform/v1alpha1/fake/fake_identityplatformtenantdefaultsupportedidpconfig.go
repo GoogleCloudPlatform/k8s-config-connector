@@ -22,40 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1alpha1"
-	identityplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeIdentityPlatformTenantDefaultSupportedIDPConfigs implements IdentityPlatformTenantDefaultSupportedIDPConfigInterface
-type fakeIdentityPlatformTenantDefaultSupportedIDPConfigs struct {
-	*gentype.FakeClientWithList[*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList]
+// FakeIdentityPlatformTenantDefaultSupportedIDPConfigs implements IdentityPlatformTenantDefaultSupportedIDPConfigInterface
+type FakeIdentityPlatformTenantDefaultSupportedIDPConfigs struct {
 	Fake *FakeIdentityplatformV1alpha1
+	ns   string
 }
 
-func newFakeIdentityPlatformTenantDefaultSupportedIDPConfigs(fake *FakeIdentityplatformV1alpha1, namespace string) identityplatformv1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigInterface {
-	return &fakeIdentityPlatformTenantDefaultSupportedIDPConfigs{
-		gentype.NewFakeClientWithList[*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("identityplatformtenantdefaultsupportedidpconfigs"),
-			v1alpha1.SchemeGroupVersion.WithKind("IdentityPlatformTenantDefaultSupportedIDPConfig"),
-			func() *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig {
-				return &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig{}
-			},
-			func() *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList {
-				return &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList{}
-			},
-			func(dst, src *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList) {
-				dst.ListMeta = src.ListMeta
-			},
-			func(list *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList) []*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList, items []*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var identityplatformtenantdefaultsupportedidpconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("identityplatformtenantdefaultsupportedidpconfigs")
+
+var identityplatformtenantdefaultsupportedidpconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("IdentityPlatformTenantDefaultSupportedIDPConfig")
+
+// Get takes name of the identityPlatformTenantDefaultSupportedIDPConfig, and returns the corresponding identityPlatformTenantDefaultSupportedIDPConfig object, and an error if there is any.
+func (c *FakeIdentityPlatformTenantDefaultSupportedIDPConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(identityplatformtenantdefaultsupportedidpconfigsResource, c.ns, name), &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig), err
+}
+
+// List takes label and field selectors, and returns the list of IdentityPlatformTenantDefaultSupportedIDPConfigs that match those selectors.
+func (c *FakeIdentityPlatformTenantDefaultSupportedIDPConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(identityplatformtenantdefaultsupportedidpconfigsResource, identityplatformtenantdefaultsupportedidpconfigsKind, c.ns, opts), &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList{ListMeta: obj.(*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList).ListMeta}
+	for _, item := range obj.(*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested identityPlatformTenantDefaultSupportedIDPConfigs.
+func (c *FakeIdentityPlatformTenantDefaultSupportedIDPConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(identityplatformtenantdefaultsupportedidpconfigsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a identityPlatformTenantDefaultSupportedIDPConfig and creates it.  Returns the server's representation of the identityPlatformTenantDefaultSupportedIDPConfig, and an error, if there is any.
+func (c *FakeIdentityPlatformTenantDefaultSupportedIDPConfigs) Create(ctx context.Context, identityPlatformTenantDefaultSupportedIDPConfig *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, opts v1.CreateOptions) (result *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(identityplatformtenantdefaultsupportedidpconfigsResource, c.ns, identityPlatformTenantDefaultSupportedIDPConfig), &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig), err
+}
+
+// Update takes the representation of a identityPlatformTenantDefaultSupportedIDPConfig and updates it. Returns the server's representation of the identityPlatformTenantDefaultSupportedIDPConfig, and an error, if there is any.
+func (c *FakeIdentityPlatformTenantDefaultSupportedIDPConfigs) Update(ctx context.Context, identityPlatformTenantDefaultSupportedIDPConfig *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, opts v1.UpdateOptions) (result *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(identityplatformtenantdefaultsupportedidpconfigsResource, c.ns, identityPlatformTenantDefaultSupportedIDPConfig), &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeIdentityPlatformTenantDefaultSupportedIDPConfigs) UpdateStatus(ctx context.Context, identityPlatformTenantDefaultSupportedIDPConfig *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, opts v1.UpdateOptions) (*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(identityplatformtenantdefaultsupportedidpconfigsResource, "status", c.ns, identityPlatformTenantDefaultSupportedIDPConfig), &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig), err
+}
+
+// Delete takes name of the identityPlatformTenantDefaultSupportedIDPConfig and deletes it. Returns an error if one occurs.
+func (c *FakeIdentityPlatformTenantDefaultSupportedIDPConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(identityplatformtenantdefaultsupportedidpconfigsResource, c.ns, name, opts), &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeIdentityPlatformTenantDefaultSupportedIDPConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(identityplatformtenantdefaultsupportedidpconfigsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfigList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched identityPlatformTenantDefaultSupportedIDPConfig.
+func (c *FakeIdentityPlatformTenantDefaultSupportedIDPConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(identityplatformtenantdefaultsupportedidpconfigsResource, c.ns, name, pt, data, subresources...), &v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.IdentityPlatformTenantDefaultSupportedIDPConfig), err
 }
