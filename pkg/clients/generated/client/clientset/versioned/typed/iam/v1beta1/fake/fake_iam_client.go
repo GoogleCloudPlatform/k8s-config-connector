@@ -32,51 +32,51 @@ type FakeIamV1beta1 struct {
 }
 
 func (c *FakeIamV1beta1) IAMAccessBoundaryPolicies(namespace string) v1beta1.IAMAccessBoundaryPolicyInterface {
-	return newFakeIAMAccessBoundaryPolicies(c, namespace)
+	return &FakeIAMAccessBoundaryPolicies{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMAuditConfigs(namespace string) v1beta1.IAMAuditConfigInterface {
-	return newFakeIAMAuditConfigs(c, namespace)
+	return &FakeIAMAuditConfigs{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMCustomRoles(namespace string) v1beta1.IAMCustomRoleInterface {
-	return newFakeIAMCustomRoles(c, namespace)
+	return &FakeIAMCustomRoles{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMPartialPolicies(namespace string) v1beta1.IAMPartialPolicyInterface {
-	return newFakeIAMPartialPolicies(c, namespace)
+	return &FakeIAMPartialPolicies{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMPolicies(namespace string) v1beta1.IAMPolicyInterface {
-	return newFakeIAMPolicies(c, namespace)
+	return &FakeIAMPolicies{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMPolicyMembers(namespace string) v1beta1.IAMPolicyMemberInterface {
-	return newFakeIAMPolicyMembers(c, namespace)
+	return &FakeIAMPolicyMembers{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMServiceAccounts(namespace string) v1beta1.IAMServiceAccountInterface {
-	return newFakeIAMServiceAccounts(c, namespace)
+	return &FakeIAMServiceAccounts{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMServiceAccountKeys(namespace string) v1beta1.IAMServiceAccountKeyInterface {
-	return newFakeIAMServiceAccountKeys(c, namespace)
+	return &FakeIAMServiceAccountKeys{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMWorkforcePools(namespace string) v1beta1.IAMWorkforcePoolInterface {
-	return newFakeIAMWorkforcePools(c, namespace)
+	return &FakeIAMWorkforcePools{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMWorkforcePoolProviders(namespace string) v1beta1.IAMWorkforcePoolProviderInterface {
-	return newFakeIAMWorkforcePoolProviders(c, namespace)
+	return &FakeIAMWorkforcePoolProviders{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMWorkloadIdentityPools(namespace string) v1beta1.IAMWorkloadIdentityPoolInterface {
-	return newFakeIAMWorkloadIdentityPools(c, namespace)
+	return &FakeIAMWorkloadIdentityPools{c, namespace}
 }
 
 func (c *FakeIamV1beta1) IAMWorkloadIdentityPoolProviders(namespace string) v1beta1.IAMWorkloadIdentityPoolProviderInterface {
-	return newFakeIAMWorkloadIdentityPoolProviders(c, namespace)
+	return &FakeIAMWorkloadIdentityPoolProviders{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

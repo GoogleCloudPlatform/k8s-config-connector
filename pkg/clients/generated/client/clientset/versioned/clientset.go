@@ -22,8 +22,8 @@
 package versioned
 
 import (
-	fmt "fmt"
-	http "net/http"
+	"fmt"
+	"net/http"
 
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
@@ -61,7 +61,6 @@ import (
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billing/v1alpha1"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
-	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1alpha1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1beta1"
@@ -238,7 +237,6 @@ type Interface interface {
 	BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface
 	BillingV1alpha1() billingv1alpha1.BillingV1alpha1Interface
 	BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface
-	BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Interface
 	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
 	CertificatemanagerV1alpha1() certificatemanagerv1alpha1.CertificatemanagerV1alpha1Interface
 	CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface
@@ -413,7 +411,6 @@ type Clientset struct {
 	bigtableV1beta1                *bigtablev1beta1.BigtableV1beta1Client
 	billingV1alpha1                *billingv1alpha1.BillingV1alpha1Client
 	billingbudgetsV1beta1          *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
-	binaryauthorizationV1alpha1    *binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Client
 	binaryauthorizationV1beta1     *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
 	certificatemanagerV1alpha1     *certificatemanagerv1alpha1.CertificatemanagerV1alpha1Client
 	certificatemanagerV1beta1      *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
@@ -727,11 +724,6 @@ func (c *Clientset) BillingV1alpha1() billingv1alpha1.BillingV1alpha1Interface {
 // BillingbudgetsV1beta1 retrieves the BillingbudgetsV1beta1Client
 func (c *Clientset) BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface {
 	return c.billingbudgetsV1beta1
-}
-
-// BinaryauthorizationV1alpha1 retrieves the BinaryauthorizationV1alpha1Client
-func (c *Clientset) BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Interface {
-	return c.binaryauthorizationV1alpha1
 }
 
 // BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
@@ -1587,10 +1579,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.binaryauthorizationV1alpha1, err = binaryauthorizationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
 	cs.binaryauthorizationV1beta1, err = binaryauthorizationv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2180,7 +2168,6 @@ func New(c rest.Interface) *Clientset {
 	cs.bigtableV1beta1 = bigtablev1beta1.New(c)
 	cs.billingV1alpha1 = billingv1alpha1.New(c)
 	cs.billingbudgetsV1beta1 = billingbudgetsv1beta1.New(c)
-	cs.binaryauthorizationV1alpha1 = binaryauthorizationv1alpha1.New(c)
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
 	cs.certificatemanagerV1alpha1 = certificatemanagerv1alpha1.New(c)
 	cs.certificatemanagerV1beta1 = certificatemanagerv1beta1.New(c)

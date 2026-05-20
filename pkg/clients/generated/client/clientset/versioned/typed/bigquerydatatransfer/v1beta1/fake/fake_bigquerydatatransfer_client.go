@@ -32,7 +32,7 @@ type FakeBigquerydatatransferV1beta1 struct {
 }
 
 func (c *FakeBigquerydatatransferV1beta1) BigQueryDataTransferConfigs(namespace string) v1beta1.BigQueryDataTransferConfigInterface {
-	return newFakeBigQueryDataTransferConfigs(c, namespace)
+	return &FakeBigQueryDataTransferConfigs{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // KMSKeyRingsGetter has a method to return a KMSKeyRingInterface.
@@ -40,34 +41,158 @@ type KMSKeyRingsGetter interface {
 
 // KMSKeyRingInterface has methods to work with KMSKeyRing resources.
 type KMSKeyRingInterface interface {
-	Create(ctx context.Context, kMSKeyRing *kmsv1beta1.KMSKeyRing, opts v1.CreateOptions) (*kmsv1beta1.KMSKeyRing, error)
-	Update(ctx context.Context, kMSKeyRing *kmsv1beta1.KMSKeyRing, opts v1.UpdateOptions) (*kmsv1beta1.KMSKeyRing, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, kMSKeyRing *kmsv1beta1.KMSKeyRing, opts v1.UpdateOptions) (*kmsv1beta1.KMSKeyRing, error)
+	Create(ctx context.Context, kMSKeyRing *v1beta1.KMSKeyRing, opts v1.CreateOptions) (*v1beta1.KMSKeyRing, error)
+	Update(ctx context.Context, kMSKeyRing *v1beta1.KMSKeyRing, opts v1.UpdateOptions) (*v1beta1.KMSKeyRing, error)
+	UpdateStatus(ctx context.Context, kMSKeyRing *v1beta1.KMSKeyRing, opts v1.UpdateOptions) (*v1beta1.KMSKeyRing, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*kmsv1beta1.KMSKeyRing, error)
-	List(ctx context.Context, opts v1.ListOptions) (*kmsv1beta1.KMSKeyRingList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.KMSKeyRing, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.KMSKeyRingList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *kmsv1beta1.KMSKeyRing, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.KMSKeyRing, err error)
 	KMSKeyRingExpansion
 }
 
 // kMSKeyRings implements KMSKeyRingInterface
 type kMSKeyRings struct {
-	*gentype.ClientWithList[*kmsv1beta1.KMSKeyRing, *kmsv1beta1.KMSKeyRingList]
+	client rest.Interface
+	ns     string
 }
 
 // newKMSKeyRings returns a KMSKeyRings
 func newKMSKeyRings(c *KmsV1beta1Client, namespace string) *kMSKeyRings {
 	return &kMSKeyRings{
-		gentype.NewClientWithList[*kmsv1beta1.KMSKeyRing, *kmsv1beta1.KMSKeyRingList](
-			"kmskeyrings",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *kmsv1beta1.KMSKeyRing { return &kmsv1beta1.KMSKeyRing{} },
-			func() *kmsv1beta1.KMSKeyRingList { return &kmsv1beta1.KMSKeyRingList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the kMSKeyRing, and returns the corresponding kMSKeyRing object, and an error if there is any.
+func (c *kMSKeyRings) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.KMSKeyRing, err error) {
+	result = &v1beta1.KMSKeyRing{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("kmskeyrings").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of KMSKeyRings that match those selectors.
+func (c *kMSKeyRings) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.KMSKeyRingList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.KMSKeyRingList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("kmskeyrings").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested kMSKeyRings.
+func (c *kMSKeyRings) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("kmskeyrings").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a kMSKeyRing and creates it.  Returns the server's representation of the kMSKeyRing, and an error, if there is any.
+func (c *kMSKeyRings) Create(ctx context.Context, kMSKeyRing *v1beta1.KMSKeyRing, opts v1.CreateOptions) (result *v1beta1.KMSKeyRing, err error) {
+	result = &v1beta1.KMSKeyRing{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("kmskeyrings").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(kMSKeyRing).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a kMSKeyRing and updates it. Returns the server's representation of the kMSKeyRing, and an error, if there is any.
+func (c *kMSKeyRings) Update(ctx context.Context, kMSKeyRing *v1beta1.KMSKeyRing, opts v1.UpdateOptions) (result *v1beta1.KMSKeyRing, err error) {
+	result = &v1beta1.KMSKeyRing{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("kmskeyrings").
+		Name(kMSKeyRing.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(kMSKeyRing).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *kMSKeyRings) UpdateStatus(ctx context.Context, kMSKeyRing *v1beta1.KMSKeyRing, opts v1.UpdateOptions) (result *v1beta1.KMSKeyRing, err error) {
+	result = &v1beta1.KMSKeyRing{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("kmskeyrings").
+		Name(kMSKeyRing.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(kMSKeyRing).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the kMSKeyRing and deletes it. Returns an error if one occurs.
+func (c *kMSKeyRings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("kmskeyrings").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *kMSKeyRings) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("kmskeyrings").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched kMSKeyRing.
+func (c *kMSKeyRings) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.KMSKeyRing, err error) {
+	result = &v1beta1.KMSKeyRing{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("kmskeyrings").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

@@ -22,32 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtasks/v1alpha1"
-	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeTasksQueues implements TasksQueueInterface
-type fakeTasksQueues struct {
-	*gentype.FakeClientWithList[*v1alpha1.TasksQueue, *v1alpha1.TasksQueueList]
+// FakeTasksQueues implements TasksQueueInterface
+type FakeTasksQueues struct {
 	Fake *FakeCloudtasksV1alpha1
+	ns   string
 }
 
-func newFakeTasksQueues(fake *FakeCloudtasksV1alpha1, namespace string) cloudtasksv1alpha1.TasksQueueInterface {
-	return &fakeTasksQueues{
-		gentype.NewFakeClientWithList[*v1alpha1.TasksQueue, *v1alpha1.TasksQueueList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("tasksqueues"),
-			v1alpha1.SchemeGroupVersion.WithKind("TasksQueue"),
-			func() *v1alpha1.TasksQueue { return &v1alpha1.TasksQueue{} },
-			func() *v1alpha1.TasksQueueList { return &v1alpha1.TasksQueueList{} },
-			func(dst, src *v1alpha1.TasksQueueList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.TasksQueueList) []*v1alpha1.TasksQueue { return gentype.ToPointerSlice(list.Items) },
-			func(list *v1alpha1.TasksQueueList, items []*v1alpha1.TasksQueue) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var tasksqueuesResource = v1alpha1.SchemeGroupVersion.WithResource("tasksqueues")
+
+var tasksqueuesKind = v1alpha1.SchemeGroupVersion.WithKind("TasksQueue")
+
+// Get takes name of the tasksQueue, and returns the corresponding tasksQueue object, and an error if there is any.
+func (c *FakeTasksQueues) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.TasksQueue, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(tasksqueuesResource, c.ns, name), &v1alpha1.TasksQueue{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.TasksQueue), err
+}
+
+// List takes label and field selectors, and returns the list of TasksQueues that match those selectors.
+func (c *FakeTasksQueues) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.TasksQueueList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(tasksqueuesResource, tasksqueuesKind, c.ns, opts), &v1alpha1.TasksQueueList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.TasksQueueList{ListMeta: obj.(*v1alpha1.TasksQueueList).ListMeta}
+	for _, item := range obj.(*v1alpha1.TasksQueueList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested tasksQueues.
+func (c *FakeTasksQueues) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(tasksqueuesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a tasksQueue and creates it.  Returns the server's representation of the tasksQueue, and an error, if there is any.
+func (c *FakeTasksQueues) Create(ctx context.Context, tasksQueue *v1alpha1.TasksQueue, opts v1.CreateOptions) (result *v1alpha1.TasksQueue, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(tasksqueuesResource, c.ns, tasksQueue), &v1alpha1.TasksQueue{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.TasksQueue), err
+}
+
+// Update takes the representation of a tasksQueue and updates it. Returns the server's representation of the tasksQueue, and an error, if there is any.
+func (c *FakeTasksQueues) Update(ctx context.Context, tasksQueue *v1alpha1.TasksQueue, opts v1.UpdateOptions) (result *v1alpha1.TasksQueue, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(tasksqueuesResource, c.ns, tasksQueue), &v1alpha1.TasksQueue{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.TasksQueue), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeTasksQueues) UpdateStatus(ctx context.Context, tasksQueue *v1alpha1.TasksQueue, opts v1.UpdateOptions) (*v1alpha1.TasksQueue, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(tasksqueuesResource, "status", c.ns, tasksQueue), &v1alpha1.TasksQueue{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.TasksQueue), err
+}
+
+// Delete takes name of the tasksQueue and deletes it. Returns an error if one occurs.
+func (c *FakeTasksQueues) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(tasksqueuesResource, c.ns, name, opts), &v1alpha1.TasksQueue{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeTasksQueues) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(tasksqueuesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.TasksQueueList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched tasksQueue.
+func (c *FakeTasksQueues) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.TasksQueue, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(tasksqueuesResource, c.ns, name, pt, data, subresources...), &v1alpha1.TasksQueue{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.TasksQueue), err
 }

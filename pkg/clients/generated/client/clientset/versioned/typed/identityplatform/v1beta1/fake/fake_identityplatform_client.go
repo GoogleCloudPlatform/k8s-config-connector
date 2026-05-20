@@ -32,19 +32,19 @@ type FakeIdentityplatformV1beta1 struct {
 }
 
 func (c *FakeIdentityplatformV1beta1) IdentityPlatformConfigs(namespace string) v1beta1.IdentityPlatformConfigInterface {
-	return newFakeIdentityPlatformConfigs(c, namespace)
+	return &FakeIdentityPlatformConfigs{c, namespace}
 }
 
 func (c *FakeIdentityplatformV1beta1) IdentityPlatformOAuthIDPConfigs(namespace string) v1beta1.IdentityPlatformOAuthIDPConfigInterface {
-	return newFakeIdentityPlatformOAuthIDPConfigs(c, namespace)
+	return &FakeIdentityPlatformOAuthIDPConfigs{c, namespace}
 }
 
 func (c *FakeIdentityplatformV1beta1) IdentityPlatformTenants(namespace string) v1beta1.IdentityPlatformTenantInterface {
-	return newFakeIdentityPlatformTenants(c, namespace)
+	return &FakeIdentityPlatformTenants{c, namespace}
 }
 
 func (c *FakeIdentityplatformV1beta1) IdentityPlatformTenantOAuthIDPConfigs(namespace string) v1beta1.IdentityPlatformTenantOAuthIDPConfigInterface {
-	return newFakeIdentityPlatformTenantOAuthIDPConfigs(c, namespace)
+	return &FakeIdentityPlatformTenantOAuthIDPConfigs{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

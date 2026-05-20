@@ -32,11 +32,11 @@ type FakeCloudidentityV1beta1 struct {
 }
 
 func (c *FakeCloudidentityV1beta1) CloudIdentityGroups(namespace string) v1beta1.CloudIdentityGroupInterface {
-	return newFakeCloudIdentityGroups(c, namespace)
+	return &FakeCloudIdentityGroups{c, namespace}
 }
 
 func (c *FakeCloudidentityV1beta1) CloudIdentityMemberships(namespace string) v1beta1.CloudIdentityMembershipInterface {
-	return newFakeCloudIdentityMemberships(c, namespace)
+	return &FakeCloudIdentityMemberships{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

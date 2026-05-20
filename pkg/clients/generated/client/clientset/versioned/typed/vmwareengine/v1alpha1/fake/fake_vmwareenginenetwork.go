@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
-	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeVMwareEngineNetworks implements VMwareEngineNetworkInterface
-type fakeVMwareEngineNetworks struct {
-	*gentype.FakeClientWithList[*v1alpha1.VMwareEngineNetwork, *v1alpha1.VMwareEngineNetworkList]
+// FakeVMwareEngineNetworks implements VMwareEngineNetworkInterface
+type FakeVMwareEngineNetworks struct {
 	Fake *FakeVmwareengineV1alpha1
+	ns   string
 }
 
-func newFakeVMwareEngineNetworks(fake *FakeVmwareengineV1alpha1, namespace string) vmwareenginev1alpha1.VMwareEngineNetworkInterface {
-	return &fakeVMwareEngineNetworks{
-		gentype.NewFakeClientWithList[*v1alpha1.VMwareEngineNetwork, *v1alpha1.VMwareEngineNetworkList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("vmwareenginenetworks"),
-			v1alpha1.SchemeGroupVersion.WithKind("VMwareEngineNetwork"),
-			func() *v1alpha1.VMwareEngineNetwork { return &v1alpha1.VMwareEngineNetwork{} },
-			func() *v1alpha1.VMwareEngineNetworkList { return &v1alpha1.VMwareEngineNetworkList{} },
-			func(dst, src *v1alpha1.VMwareEngineNetworkList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.VMwareEngineNetworkList) []*v1alpha1.VMwareEngineNetwork {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.VMwareEngineNetworkList, items []*v1alpha1.VMwareEngineNetwork) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var vmwareenginenetworksResource = v1alpha1.SchemeGroupVersion.WithResource("vmwareenginenetworks")
+
+var vmwareenginenetworksKind = v1alpha1.SchemeGroupVersion.WithKind("VMwareEngineNetwork")
+
+// Get takes name of the vMwareEngineNetwork, and returns the corresponding vMwareEngineNetwork object, and an error if there is any.
+func (c *FakeVMwareEngineNetworks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VMwareEngineNetwork, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(vmwareenginenetworksResource, c.ns, name), &v1alpha1.VMwareEngineNetwork{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.VMwareEngineNetwork), err
+}
+
+// List takes label and field selectors, and returns the list of VMwareEngineNetworks that match those selectors.
+func (c *FakeVMwareEngineNetworks) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VMwareEngineNetworkList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(vmwareenginenetworksResource, vmwareenginenetworksKind, c.ns, opts), &v1alpha1.VMwareEngineNetworkList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.VMwareEngineNetworkList{ListMeta: obj.(*v1alpha1.VMwareEngineNetworkList).ListMeta}
+	for _, item := range obj.(*v1alpha1.VMwareEngineNetworkList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested vMwareEngineNetworks.
+func (c *FakeVMwareEngineNetworks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(vmwareenginenetworksResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a vMwareEngineNetwork and creates it.  Returns the server's representation of the vMwareEngineNetwork, and an error, if there is any.
+func (c *FakeVMwareEngineNetworks) Create(ctx context.Context, vMwareEngineNetwork *v1alpha1.VMwareEngineNetwork, opts v1.CreateOptions) (result *v1alpha1.VMwareEngineNetwork, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(vmwareenginenetworksResource, c.ns, vMwareEngineNetwork), &v1alpha1.VMwareEngineNetwork{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.VMwareEngineNetwork), err
+}
+
+// Update takes the representation of a vMwareEngineNetwork and updates it. Returns the server's representation of the vMwareEngineNetwork, and an error, if there is any.
+func (c *FakeVMwareEngineNetworks) Update(ctx context.Context, vMwareEngineNetwork *v1alpha1.VMwareEngineNetwork, opts v1.UpdateOptions) (result *v1alpha1.VMwareEngineNetwork, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(vmwareenginenetworksResource, c.ns, vMwareEngineNetwork), &v1alpha1.VMwareEngineNetwork{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.VMwareEngineNetwork), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeVMwareEngineNetworks) UpdateStatus(ctx context.Context, vMwareEngineNetwork *v1alpha1.VMwareEngineNetwork, opts v1.UpdateOptions) (*v1alpha1.VMwareEngineNetwork, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(vmwareenginenetworksResource, "status", c.ns, vMwareEngineNetwork), &v1alpha1.VMwareEngineNetwork{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.VMwareEngineNetwork), err
+}
+
+// Delete takes name of the vMwareEngineNetwork and deletes it. Returns an error if one occurs.
+func (c *FakeVMwareEngineNetworks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(vmwareenginenetworksResource, c.ns, name, opts), &v1alpha1.VMwareEngineNetwork{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeVMwareEngineNetworks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(vmwareenginenetworksResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.VMwareEngineNetworkList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched vMwareEngineNetwork.
+func (c *FakeVMwareEngineNetworks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VMwareEngineNetwork, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(vmwareenginenetworksResource, c.ns, name, pt, data, subresources...), &v1alpha1.VMwareEngineNetwork{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.VMwareEngineNetwork), err
 }

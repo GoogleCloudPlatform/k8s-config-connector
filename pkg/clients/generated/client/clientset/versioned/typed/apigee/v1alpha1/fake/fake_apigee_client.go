@@ -32,15 +32,15 @@ type FakeApigeeV1alpha1 struct {
 }
 
 func (c *FakeApigeeV1alpha1) ApigeeAddonsConfigs(namespace string) v1alpha1.ApigeeAddonsConfigInterface {
-	return newFakeApigeeAddonsConfigs(c, namespace)
+	return &FakeApigeeAddonsConfigs{c, namespace}
 }
 
 func (c *FakeApigeeV1alpha1) ApigeeNATAddresses(namespace string) v1alpha1.ApigeeNATAddressInterface {
-	return newFakeApigeeNATAddresses(c, namespace)
+	return &FakeApigeeNATAddresses{c, namespace}
 }
 
 func (c *FakeApigeeV1alpha1) ApigeeSyncAuthorizations(namespace string) v1alpha1.ApigeeSyncAuthorizationInterface {
-	return newFakeApigeeSyncAuthorizations(c, namespace)
+	return &FakeApigeeSyncAuthorizations{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
