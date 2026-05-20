@@ -32,7 +32,7 @@ type FakeAiplatformV1alpha1 struct {
 }
 
 func (c *FakeAiplatformV1alpha1) AIPlatformModels(namespace string) v1alpha1.AIPlatformModelInterface {
-	return newFakeAIPlatformModels(c, namespace)
+	return &FakeAIPlatformModels{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

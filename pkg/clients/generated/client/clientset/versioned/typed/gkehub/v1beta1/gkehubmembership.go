@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // GKEHubMembershipsGetter has a method to return a GKEHubMembershipInterface.
@@ -40,34 +41,158 @@ type GKEHubMembershipsGetter interface {
 
 // GKEHubMembershipInterface has methods to work with GKEHubMembership resources.
 type GKEHubMembershipInterface interface {
-	Create(ctx context.Context, gKEHubMembership *gkehubv1beta1.GKEHubMembership, opts v1.CreateOptions) (*gkehubv1beta1.GKEHubMembership, error)
-	Update(ctx context.Context, gKEHubMembership *gkehubv1beta1.GKEHubMembership, opts v1.UpdateOptions) (*gkehubv1beta1.GKEHubMembership, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, gKEHubMembership *gkehubv1beta1.GKEHubMembership, opts v1.UpdateOptions) (*gkehubv1beta1.GKEHubMembership, error)
+	Create(ctx context.Context, gKEHubMembership *v1beta1.GKEHubMembership, opts v1.CreateOptions) (*v1beta1.GKEHubMembership, error)
+	Update(ctx context.Context, gKEHubMembership *v1beta1.GKEHubMembership, opts v1.UpdateOptions) (*v1beta1.GKEHubMembership, error)
+	UpdateStatus(ctx context.Context, gKEHubMembership *v1beta1.GKEHubMembership, opts v1.UpdateOptions) (*v1beta1.GKEHubMembership, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*gkehubv1beta1.GKEHubMembership, error)
-	List(ctx context.Context, opts v1.ListOptions) (*gkehubv1beta1.GKEHubMembershipList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.GKEHubMembership, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.GKEHubMembershipList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *gkehubv1beta1.GKEHubMembership, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.GKEHubMembership, err error)
 	GKEHubMembershipExpansion
 }
 
 // gKEHubMemberships implements GKEHubMembershipInterface
 type gKEHubMemberships struct {
-	*gentype.ClientWithList[*gkehubv1beta1.GKEHubMembership, *gkehubv1beta1.GKEHubMembershipList]
+	client rest.Interface
+	ns     string
 }
 
 // newGKEHubMemberships returns a GKEHubMemberships
 func newGKEHubMemberships(c *GkehubV1beta1Client, namespace string) *gKEHubMemberships {
 	return &gKEHubMemberships{
-		gentype.NewClientWithList[*gkehubv1beta1.GKEHubMembership, *gkehubv1beta1.GKEHubMembershipList](
-			"gkehubmemberships",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *gkehubv1beta1.GKEHubMembership { return &gkehubv1beta1.GKEHubMembership{} },
-			func() *gkehubv1beta1.GKEHubMembershipList { return &gkehubv1beta1.GKEHubMembershipList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the gKEHubMembership, and returns the corresponding gKEHubMembership object, and an error if there is any.
+func (c *gKEHubMemberships) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.GKEHubMembership, err error) {
+	result = &v1beta1.GKEHubMembership{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("gkehubmemberships").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of GKEHubMemberships that match those selectors.
+func (c *gKEHubMemberships) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.GKEHubMembershipList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.GKEHubMembershipList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("gkehubmemberships").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested gKEHubMemberships.
+func (c *gKEHubMemberships) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("gkehubmemberships").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a gKEHubMembership and creates it.  Returns the server's representation of the gKEHubMembership, and an error, if there is any.
+func (c *gKEHubMemberships) Create(ctx context.Context, gKEHubMembership *v1beta1.GKEHubMembership, opts v1.CreateOptions) (result *v1beta1.GKEHubMembership, err error) {
+	result = &v1beta1.GKEHubMembership{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("gkehubmemberships").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(gKEHubMembership).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a gKEHubMembership and updates it. Returns the server's representation of the gKEHubMembership, and an error, if there is any.
+func (c *gKEHubMemberships) Update(ctx context.Context, gKEHubMembership *v1beta1.GKEHubMembership, opts v1.UpdateOptions) (result *v1beta1.GKEHubMembership, err error) {
+	result = &v1beta1.GKEHubMembership{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("gkehubmemberships").
+		Name(gKEHubMembership.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(gKEHubMembership).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *gKEHubMemberships) UpdateStatus(ctx context.Context, gKEHubMembership *v1beta1.GKEHubMembership, opts v1.UpdateOptions) (result *v1beta1.GKEHubMembership, err error) {
+	result = &v1beta1.GKEHubMembership{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("gkehubmemberships").
+		Name(gKEHubMembership.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(gKEHubMembership).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the gKEHubMembership and deletes it. Returns an error if one occurs.
+func (c *gKEHubMemberships) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("gkehubmemberships").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *gKEHubMemberships) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("gkehubmemberships").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched gKEHubMembership.
+func (c *gKEHubMemberships) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.GKEHubMembership, err error) {
+	result = &v1beta1.GKEHubMembership{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("gkehubmemberships").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

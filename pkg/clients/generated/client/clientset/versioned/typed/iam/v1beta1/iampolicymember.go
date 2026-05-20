@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // IAMPolicyMembersGetter has a method to return a IAMPolicyMemberInterface.
@@ -40,34 +41,158 @@ type IAMPolicyMembersGetter interface {
 
 // IAMPolicyMemberInterface has methods to work with IAMPolicyMember resources.
 type IAMPolicyMemberInterface interface {
-	Create(ctx context.Context, iAMPolicyMember *iamv1beta1.IAMPolicyMember, opts v1.CreateOptions) (*iamv1beta1.IAMPolicyMember, error)
-	Update(ctx context.Context, iAMPolicyMember *iamv1beta1.IAMPolicyMember, opts v1.UpdateOptions) (*iamv1beta1.IAMPolicyMember, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, iAMPolicyMember *iamv1beta1.IAMPolicyMember, opts v1.UpdateOptions) (*iamv1beta1.IAMPolicyMember, error)
+	Create(ctx context.Context, iAMPolicyMember *v1beta1.IAMPolicyMember, opts v1.CreateOptions) (*v1beta1.IAMPolicyMember, error)
+	Update(ctx context.Context, iAMPolicyMember *v1beta1.IAMPolicyMember, opts v1.UpdateOptions) (*v1beta1.IAMPolicyMember, error)
+	UpdateStatus(ctx context.Context, iAMPolicyMember *v1beta1.IAMPolicyMember, opts v1.UpdateOptions) (*v1beta1.IAMPolicyMember, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*iamv1beta1.IAMPolicyMember, error)
-	List(ctx context.Context, opts v1.ListOptions) (*iamv1beta1.IAMPolicyMemberList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.IAMPolicyMember, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.IAMPolicyMemberList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *iamv1beta1.IAMPolicyMember, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAMPolicyMember, err error)
 	IAMPolicyMemberExpansion
 }
 
 // iAMPolicyMembers implements IAMPolicyMemberInterface
 type iAMPolicyMembers struct {
-	*gentype.ClientWithList[*iamv1beta1.IAMPolicyMember, *iamv1beta1.IAMPolicyMemberList]
+	client rest.Interface
+	ns     string
 }
 
 // newIAMPolicyMembers returns a IAMPolicyMembers
 func newIAMPolicyMembers(c *IamV1beta1Client, namespace string) *iAMPolicyMembers {
 	return &iAMPolicyMembers{
-		gentype.NewClientWithList[*iamv1beta1.IAMPolicyMember, *iamv1beta1.IAMPolicyMemberList](
-			"iampolicymembers",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *iamv1beta1.IAMPolicyMember { return &iamv1beta1.IAMPolicyMember{} },
-			func() *iamv1beta1.IAMPolicyMemberList { return &iamv1beta1.IAMPolicyMemberList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the iAMPolicyMember, and returns the corresponding iAMPolicyMember object, and an error if there is any.
+func (c *iAMPolicyMembers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IAMPolicyMember, err error) {
+	result = &v1beta1.IAMPolicyMember{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("iampolicymembers").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of IAMPolicyMembers that match those selectors.
+func (c *iAMPolicyMembers) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.IAMPolicyMemberList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.IAMPolicyMemberList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("iampolicymembers").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested iAMPolicyMembers.
+func (c *iAMPolicyMembers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("iampolicymembers").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a iAMPolicyMember and creates it.  Returns the server's representation of the iAMPolicyMember, and an error, if there is any.
+func (c *iAMPolicyMembers) Create(ctx context.Context, iAMPolicyMember *v1beta1.IAMPolicyMember, opts v1.CreateOptions) (result *v1beta1.IAMPolicyMember, err error) {
+	result = &v1beta1.IAMPolicyMember{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("iampolicymembers").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(iAMPolicyMember).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a iAMPolicyMember and updates it. Returns the server's representation of the iAMPolicyMember, and an error, if there is any.
+func (c *iAMPolicyMembers) Update(ctx context.Context, iAMPolicyMember *v1beta1.IAMPolicyMember, opts v1.UpdateOptions) (result *v1beta1.IAMPolicyMember, err error) {
+	result = &v1beta1.IAMPolicyMember{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("iampolicymembers").
+		Name(iAMPolicyMember.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(iAMPolicyMember).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *iAMPolicyMembers) UpdateStatus(ctx context.Context, iAMPolicyMember *v1beta1.IAMPolicyMember, opts v1.UpdateOptions) (result *v1beta1.IAMPolicyMember, err error) {
+	result = &v1beta1.IAMPolicyMember{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("iampolicymembers").
+		Name(iAMPolicyMember.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(iAMPolicyMember).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the iAMPolicyMember and deletes it. Returns an error if one occurs.
+func (c *iAMPolicyMembers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("iampolicymembers").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *iAMPolicyMembers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("iampolicymembers").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched iAMPolicyMember.
+func (c *iAMPolicyMembers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAMPolicyMember, err error) {
+	result = &v1beta1.IAMPolicyMember{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("iampolicymembers").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

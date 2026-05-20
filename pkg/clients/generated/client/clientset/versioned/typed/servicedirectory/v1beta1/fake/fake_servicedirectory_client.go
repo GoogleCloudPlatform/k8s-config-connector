@@ -32,15 +32,15 @@ type FakeServicedirectoryV1beta1 struct {
 }
 
 func (c *FakeServicedirectoryV1beta1) ServiceDirectoryEndpoints(namespace string) v1beta1.ServiceDirectoryEndpointInterface {
-	return newFakeServiceDirectoryEndpoints(c, namespace)
+	return &FakeServiceDirectoryEndpoints{c, namespace}
 }
 
 func (c *FakeServicedirectoryV1beta1) ServiceDirectoryNamespaces(namespace string) v1beta1.ServiceDirectoryNamespaceInterface {
-	return newFakeServiceDirectoryNamespaces(c, namespace)
+	return &FakeServiceDirectoryNamespaces{c, namespace}
 }
 
 func (c *FakeServicedirectoryV1beta1) ServiceDirectoryServices(namespace string) v1beta1.ServiceDirectoryServiceInterface {
-	return newFakeServiceDirectoryServices(c, namespace)
+	return &FakeServiceDirectoryServices{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

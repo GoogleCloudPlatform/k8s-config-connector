@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1beta1"
-	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeBinaryAuthorizationPolicies implements BinaryAuthorizationPolicyInterface
-type fakeBinaryAuthorizationPolicies struct {
-	*gentype.FakeClientWithList[*v1beta1.BinaryAuthorizationPolicy, *v1beta1.BinaryAuthorizationPolicyList]
+// FakeBinaryAuthorizationPolicies implements BinaryAuthorizationPolicyInterface
+type FakeBinaryAuthorizationPolicies struct {
 	Fake *FakeBinaryauthorizationV1beta1
+	ns   string
 }
 
-func newFakeBinaryAuthorizationPolicies(fake *FakeBinaryauthorizationV1beta1, namespace string) binaryauthorizationv1beta1.BinaryAuthorizationPolicyInterface {
-	return &fakeBinaryAuthorizationPolicies{
-		gentype.NewFakeClientWithList[*v1beta1.BinaryAuthorizationPolicy, *v1beta1.BinaryAuthorizationPolicyList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("binaryauthorizationpolicies"),
-			v1beta1.SchemeGroupVersion.WithKind("BinaryAuthorizationPolicy"),
-			func() *v1beta1.BinaryAuthorizationPolicy { return &v1beta1.BinaryAuthorizationPolicy{} },
-			func() *v1beta1.BinaryAuthorizationPolicyList { return &v1beta1.BinaryAuthorizationPolicyList{} },
-			func(dst, src *v1beta1.BinaryAuthorizationPolicyList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.BinaryAuthorizationPolicyList) []*v1beta1.BinaryAuthorizationPolicy {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.BinaryAuthorizationPolicyList, items []*v1beta1.BinaryAuthorizationPolicy) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var binaryauthorizationpoliciesResource = v1beta1.SchemeGroupVersion.WithResource("binaryauthorizationpolicies")
+
+var binaryauthorizationpoliciesKind = v1beta1.SchemeGroupVersion.WithKind("BinaryAuthorizationPolicy")
+
+// Get takes name of the binaryAuthorizationPolicy, and returns the corresponding binaryAuthorizationPolicy object, and an error if there is any.
+func (c *FakeBinaryAuthorizationPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BinaryAuthorizationPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(binaryauthorizationpoliciesResource, c.ns, name), &v1beta1.BinaryAuthorizationPolicy{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.BinaryAuthorizationPolicy), err
+}
+
+// List takes label and field selectors, and returns the list of BinaryAuthorizationPolicies that match those selectors.
+func (c *FakeBinaryAuthorizationPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BinaryAuthorizationPolicyList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(binaryauthorizationpoliciesResource, binaryauthorizationpoliciesKind, c.ns, opts), &v1beta1.BinaryAuthorizationPolicyList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.BinaryAuthorizationPolicyList{ListMeta: obj.(*v1beta1.BinaryAuthorizationPolicyList).ListMeta}
+	for _, item := range obj.(*v1beta1.BinaryAuthorizationPolicyList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested binaryAuthorizationPolicies.
+func (c *FakeBinaryAuthorizationPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(binaryauthorizationpoliciesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a binaryAuthorizationPolicy and creates it.  Returns the server's representation of the binaryAuthorizationPolicy, and an error, if there is any.
+func (c *FakeBinaryAuthorizationPolicies) Create(ctx context.Context, binaryAuthorizationPolicy *v1beta1.BinaryAuthorizationPolicy, opts v1.CreateOptions) (result *v1beta1.BinaryAuthorizationPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(binaryauthorizationpoliciesResource, c.ns, binaryAuthorizationPolicy), &v1beta1.BinaryAuthorizationPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BinaryAuthorizationPolicy), err
+}
+
+// Update takes the representation of a binaryAuthorizationPolicy and updates it. Returns the server's representation of the binaryAuthorizationPolicy, and an error, if there is any.
+func (c *FakeBinaryAuthorizationPolicies) Update(ctx context.Context, binaryAuthorizationPolicy *v1beta1.BinaryAuthorizationPolicy, opts v1.UpdateOptions) (result *v1beta1.BinaryAuthorizationPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(binaryauthorizationpoliciesResource, c.ns, binaryAuthorizationPolicy), &v1beta1.BinaryAuthorizationPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BinaryAuthorizationPolicy), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeBinaryAuthorizationPolicies) UpdateStatus(ctx context.Context, binaryAuthorizationPolicy *v1beta1.BinaryAuthorizationPolicy, opts v1.UpdateOptions) (*v1beta1.BinaryAuthorizationPolicy, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(binaryauthorizationpoliciesResource, "status", c.ns, binaryAuthorizationPolicy), &v1beta1.BinaryAuthorizationPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BinaryAuthorizationPolicy), err
+}
+
+// Delete takes name of the binaryAuthorizationPolicy and deletes it. Returns an error if one occurs.
+func (c *FakeBinaryAuthorizationPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(binaryauthorizationpoliciesResource, c.ns, name, opts), &v1beta1.BinaryAuthorizationPolicy{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeBinaryAuthorizationPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(binaryauthorizationpoliciesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.BinaryAuthorizationPolicyList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched binaryAuthorizationPolicy.
+func (c *FakeBinaryAuthorizationPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BinaryAuthorizationPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(binaryauthorizationpoliciesResource, c.ns, name, pt, data, subresources...), &v1beta1.BinaryAuthorizationPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BinaryAuthorizationPolicy), err
 }

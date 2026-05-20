@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
-	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeLoggingLogSinks implements LoggingLogSinkInterface
-type fakeLoggingLogSinks struct {
-	*gentype.FakeClientWithList[*v1beta1.LoggingLogSink, *v1beta1.LoggingLogSinkList]
+// FakeLoggingLogSinks implements LoggingLogSinkInterface
+type FakeLoggingLogSinks struct {
 	Fake *FakeLoggingV1beta1
+	ns   string
 }
 
-func newFakeLoggingLogSinks(fake *FakeLoggingV1beta1, namespace string) loggingv1beta1.LoggingLogSinkInterface {
-	return &fakeLoggingLogSinks{
-		gentype.NewFakeClientWithList[*v1beta1.LoggingLogSink, *v1beta1.LoggingLogSinkList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("logginglogsinks"),
-			v1beta1.SchemeGroupVersion.WithKind("LoggingLogSink"),
-			func() *v1beta1.LoggingLogSink { return &v1beta1.LoggingLogSink{} },
-			func() *v1beta1.LoggingLogSinkList { return &v1beta1.LoggingLogSinkList{} },
-			func(dst, src *v1beta1.LoggingLogSinkList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.LoggingLogSinkList) []*v1beta1.LoggingLogSink {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.LoggingLogSinkList, items []*v1beta1.LoggingLogSink) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var logginglogsinksResource = v1beta1.SchemeGroupVersion.WithResource("logginglogsinks")
+
+var logginglogsinksKind = v1beta1.SchemeGroupVersion.WithKind("LoggingLogSink")
+
+// Get takes name of the loggingLogSink, and returns the corresponding loggingLogSink object, and an error if there is any.
+func (c *FakeLoggingLogSinks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.LoggingLogSink, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(logginglogsinksResource, c.ns, name), &v1beta1.LoggingLogSink{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.LoggingLogSink), err
+}
+
+// List takes label and field selectors, and returns the list of LoggingLogSinks that match those selectors.
+func (c *FakeLoggingLogSinks) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.LoggingLogSinkList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(logginglogsinksResource, logginglogsinksKind, c.ns, opts), &v1beta1.LoggingLogSinkList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.LoggingLogSinkList{ListMeta: obj.(*v1beta1.LoggingLogSinkList).ListMeta}
+	for _, item := range obj.(*v1beta1.LoggingLogSinkList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested loggingLogSinks.
+func (c *FakeLoggingLogSinks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(logginglogsinksResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a loggingLogSink and creates it.  Returns the server's representation of the loggingLogSink, and an error, if there is any.
+func (c *FakeLoggingLogSinks) Create(ctx context.Context, loggingLogSink *v1beta1.LoggingLogSink, opts v1.CreateOptions) (result *v1beta1.LoggingLogSink, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(logginglogsinksResource, c.ns, loggingLogSink), &v1beta1.LoggingLogSink{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.LoggingLogSink), err
+}
+
+// Update takes the representation of a loggingLogSink and updates it. Returns the server's representation of the loggingLogSink, and an error, if there is any.
+func (c *FakeLoggingLogSinks) Update(ctx context.Context, loggingLogSink *v1beta1.LoggingLogSink, opts v1.UpdateOptions) (result *v1beta1.LoggingLogSink, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(logginglogsinksResource, c.ns, loggingLogSink), &v1beta1.LoggingLogSink{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.LoggingLogSink), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeLoggingLogSinks) UpdateStatus(ctx context.Context, loggingLogSink *v1beta1.LoggingLogSink, opts v1.UpdateOptions) (*v1beta1.LoggingLogSink, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(logginglogsinksResource, "status", c.ns, loggingLogSink), &v1beta1.LoggingLogSink{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.LoggingLogSink), err
+}
+
+// Delete takes name of the loggingLogSink and deletes it. Returns an error if one occurs.
+func (c *FakeLoggingLogSinks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(logginglogsinksResource, c.ns, name, opts), &v1beta1.LoggingLogSink{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeLoggingLogSinks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(logginglogsinksResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.LoggingLogSinkList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched loggingLogSink.
+func (c *FakeLoggingLogSinks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.LoggingLogSink, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(logginglogsinksResource, c.ns, name, pt, data, subresources...), &v1beta1.LoggingLogSink{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.LoggingLogSink), err
 }

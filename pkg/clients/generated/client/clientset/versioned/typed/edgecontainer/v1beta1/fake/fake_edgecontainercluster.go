@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1beta1"
-	edgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeEdgeContainerClusters implements EdgeContainerClusterInterface
-type fakeEdgeContainerClusters struct {
-	*gentype.FakeClientWithList[*v1beta1.EdgeContainerCluster, *v1beta1.EdgeContainerClusterList]
+// FakeEdgeContainerClusters implements EdgeContainerClusterInterface
+type FakeEdgeContainerClusters struct {
 	Fake *FakeEdgecontainerV1beta1
+	ns   string
 }
 
-func newFakeEdgeContainerClusters(fake *FakeEdgecontainerV1beta1, namespace string) edgecontainerv1beta1.EdgeContainerClusterInterface {
-	return &fakeEdgeContainerClusters{
-		gentype.NewFakeClientWithList[*v1beta1.EdgeContainerCluster, *v1beta1.EdgeContainerClusterList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("edgecontainerclusters"),
-			v1beta1.SchemeGroupVersion.WithKind("EdgeContainerCluster"),
-			func() *v1beta1.EdgeContainerCluster { return &v1beta1.EdgeContainerCluster{} },
-			func() *v1beta1.EdgeContainerClusterList { return &v1beta1.EdgeContainerClusterList{} },
-			func(dst, src *v1beta1.EdgeContainerClusterList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.EdgeContainerClusterList) []*v1beta1.EdgeContainerCluster {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.EdgeContainerClusterList, items []*v1beta1.EdgeContainerCluster) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var edgecontainerclustersResource = v1beta1.SchemeGroupVersion.WithResource("edgecontainerclusters")
+
+var edgecontainerclustersKind = v1beta1.SchemeGroupVersion.WithKind("EdgeContainerCluster")
+
+// Get takes name of the edgeContainerCluster, and returns the corresponding edgeContainerCluster object, and an error if there is any.
+func (c *FakeEdgeContainerClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EdgeContainerCluster, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(edgecontainerclustersResource, c.ns, name), &v1beta1.EdgeContainerCluster{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.EdgeContainerCluster), err
+}
+
+// List takes label and field selectors, and returns the list of EdgeContainerClusters that match those selectors.
+func (c *FakeEdgeContainerClusters) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.EdgeContainerClusterList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(edgecontainerclustersResource, edgecontainerclustersKind, c.ns, opts), &v1beta1.EdgeContainerClusterList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.EdgeContainerClusterList{ListMeta: obj.(*v1beta1.EdgeContainerClusterList).ListMeta}
+	for _, item := range obj.(*v1beta1.EdgeContainerClusterList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested edgeContainerClusters.
+func (c *FakeEdgeContainerClusters) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(edgecontainerclustersResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a edgeContainerCluster and creates it.  Returns the server's representation of the edgeContainerCluster, and an error, if there is any.
+func (c *FakeEdgeContainerClusters) Create(ctx context.Context, edgeContainerCluster *v1beta1.EdgeContainerCluster, opts v1.CreateOptions) (result *v1beta1.EdgeContainerCluster, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(edgecontainerclustersResource, c.ns, edgeContainerCluster), &v1beta1.EdgeContainerCluster{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EdgeContainerCluster), err
+}
+
+// Update takes the representation of a edgeContainerCluster and updates it. Returns the server's representation of the edgeContainerCluster, and an error, if there is any.
+func (c *FakeEdgeContainerClusters) Update(ctx context.Context, edgeContainerCluster *v1beta1.EdgeContainerCluster, opts v1.UpdateOptions) (result *v1beta1.EdgeContainerCluster, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(edgecontainerclustersResource, c.ns, edgeContainerCluster), &v1beta1.EdgeContainerCluster{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EdgeContainerCluster), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeEdgeContainerClusters) UpdateStatus(ctx context.Context, edgeContainerCluster *v1beta1.EdgeContainerCluster, opts v1.UpdateOptions) (*v1beta1.EdgeContainerCluster, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(edgecontainerclustersResource, "status", c.ns, edgeContainerCluster), &v1beta1.EdgeContainerCluster{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EdgeContainerCluster), err
+}
+
+// Delete takes name of the edgeContainerCluster and deletes it. Returns an error if one occurs.
+func (c *FakeEdgeContainerClusters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(edgecontainerclustersResource, c.ns, name, opts), &v1beta1.EdgeContainerCluster{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeEdgeContainerClusters) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(edgecontainerclustersResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.EdgeContainerClusterList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched edgeContainerCluster.
+func (c *FakeEdgeContainerClusters) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EdgeContainerCluster, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(edgecontainerclustersResource, c.ns, name, pt, data, subresources...), &v1beta1.EdgeContainerCluster{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EdgeContainerCluster), err
 }

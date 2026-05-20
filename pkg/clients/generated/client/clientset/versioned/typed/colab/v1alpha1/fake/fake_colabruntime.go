@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/colab/v1alpha1"
-	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeColabRuntimes implements ColabRuntimeInterface
-type fakeColabRuntimes struct {
-	*gentype.FakeClientWithList[*v1alpha1.ColabRuntime, *v1alpha1.ColabRuntimeList]
+// FakeColabRuntimes implements ColabRuntimeInterface
+type FakeColabRuntimes struct {
 	Fake *FakeColabV1alpha1
+	ns   string
 }
 
-func newFakeColabRuntimes(fake *FakeColabV1alpha1, namespace string) colabv1alpha1.ColabRuntimeInterface {
-	return &fakeColabRuntimes{
-		gentype.NewFakeClientWithList[*v1alpha1.ColabRuntime, *v1alpha1.ColabRuntimeList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("colabruntimes"),
-			v1alpha1.SchemeGroupVersion.WithKind("ColabRuntime"),
-			func() *v1alpha1.ColabRuntime { return &v1alpha1.ColabRuntime{} },
-			func() *v1alpha1.ColabRuntimeList { return &v1alpha1.ColabRuntimeList{} },
-			func(dst, src *v1alpha1.ColabRuntimeList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ColabRuntimeList) []*v1alpha1.ColabRuntime {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.ColabRuntimeList, items []*v1alpha1.ColabRuntime) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var colabruntimesResource = v1alpha1.SchemeGroupVersion.WithResource("colabruntimes")
+
+var colabruntimesKind = v1alpha1.SchemeGroupVersion.WithKind("ColabRuntime")
+
+// Get takes name of the colabRuntime, and returns the corresponding colabRuntime object, and an error if there is any.
+func (c *FakeColabRuntimes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ColabRuntime, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(colabruntimesResource, c.ns, name), &v1alpha1.ColabRuntime{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.ColabRuntime), err
+}
+
+// List takes label and field selectors, and returns the list of ColabRuntimes that match those selectors.
+func (c *FakeColabRuntimes) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ColabRuntimeList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(colabruntimesResource, colabruntimesKind, c.ns, opts), &v1alpha1.ColabRuntimeList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.ColabRuntimeList{ListMeta: obj.(*v1alpha1.ColabRuntimeList).ListMeta}
+	for _, item := range obj.(*v1alpha1.ColabRuntimeList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested colabRuntimes.
+func (c *FakeColabRuntimes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(colabruntimesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a colabRuntime and creates it.  Returns the server's representation of the colabRuntime, and an error, if there is any.
+func (c *FakeColabRuntimes) Create(ctx context.Context, colabRuntime *v1alpha1.ColabRuntime, opts v1.CreateOptions) (result *v1alpha1.ColabRuntime, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(colabruntimesResource, c.ns, colabRuntime), &v1alpha1.ColabRuntime{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ColabRuntime), err
+}
+
+// Update takes the representation of a colabRuntime and updates it. Returns the server's representation of the colabRuntime, and an error, if there is any.
+func (c *FakeColabRuntimes) Update(ctx context.Context, colabRuntime *v1alpha1.ColabRuntime, opts v1.UpdateOptions) (result *v1alpha1.ColabRuntime, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(colabruntimesResource, c.ns, colabRuntime), &v1alpha1.ColabRuntime{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ColabRuntime), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeColabRuntimes) UpdateStatus(ctx context.Context, colabRuntime *v1alpha1.ColabRuntime, opts v1.UpdateOptions) (*v1alpha1.ColabRuntime, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(colabruntimesResource, "status", c.ns, colabRuntime), &v1alpha1.ColabRuntime{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ColabRuntime), err
+}
+
+// Delete takes name of the colabRuntime and deletes it. Returns an error if one occurs.
+func (c *FakeColabRuntimes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(colabruntimesResource, c.ns, name, opts), &v1alpha1.ColabRuntime{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeColabRuntimes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(colabruntimesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.ColabRuntimeList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched colabRuntime.
+func (c *FakeColabRuntimes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ColabRuntime, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(colabruntimesResource, c.ns, name, pt, data, subresources...), &v1alpha1.ColabRuntime{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ColabRuntime), err
 }

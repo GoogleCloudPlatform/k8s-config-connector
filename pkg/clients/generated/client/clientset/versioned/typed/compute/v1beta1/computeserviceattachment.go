@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeServiceAttachmentsGetter has a method to return a ComputeServiceAttachmentInterface.
@@ -40,36 +41,158 @@ type ComputeServiceAttachmentsGetter interface {
 
 // ComputeServiceAttachmentInterface has methods to work with ComputeServiceAttachment resources.
 type ComputeServiceAttachmentInterface interface {
-	Create(ctx context.Context, computeServiceAttachment *computev1beta1.ComputeServiceAttachment, opts v1.CreateOptions) (*computev1beta1.ComputeServiceAttachment, error)
-	Update(ctx context.Context, computeServiceAttachment *computev1beta1.ComputeServiceAttachment, opts v1.UpdateOptions) (*computev1beta1.ComputeServiceAttachment, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeServiceAttachment *computev1beta1.ComputeServiceAttachment, opts v1.UpdateOptions) (*computev1beta1.ComputeServiceAttachment, error)
+	Create(ctx context.Context, computeServiceAttachment *v1beta1.ComputeServiceAttachment, opts v1.CreateOptions) (*v1beta1.ComputeServiceAttachment, error)
+	Update(ctx context.Context, computeServiceAttachment *v1beta1.ComputeServiceAttachment, opts v1.UpdateOptions) (*v1beta1.ComputeServiceAttachment, error)
+	UpdateStatus(ctx context.Context, computeServiceAttachment *v1beta1.ComputeServiceAttachment, opts v1.UpdateOptions) (*v1beta1.ComputeServiceAttachment, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeServiceAttachment, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeServiceAttachmentList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeServiceAttachment, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeServiceAttachmentList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeServiceAttachment, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeServiceAttachment, err error)
 	ComputeServiceAttachmentExpansion
 }
 
 // computeServiceAttachments implements ComputeServiceAttachmentInterface
 type computeServiceAttachments struct {
-	*gentype.ClientWithList[*computev1beta1.ComputeServiceAttachment, *computev1beta1.ComputeServiceAttachmentList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeServiceAttachments returns a ComputeServiceAttachments
 func newComputeServiceAttachments(c *ComputeV1beta1Client, namespace string) *computeServiceAttachments {
 	return &computeServiceAttachments{
-		gentype.NewClientWithList[*computev1beta1.ComputeServiceAttachment, *computev1beta1.ComputeServiceAttachmentList](
-			"computeserviceattachments",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1beta1.ComputeServiceAttachment { return &computev1beta1.ComputeServiceAttachment{} },
-			func() *computev1beta1.ComputeServiceAttachmentList {
-				return &computev1beta1.ComputeServiceAttachmentList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeServiceAttachment, and returns the corresponding computeServiceAttachment object, and an error if there is any.
+func (c *computeServiceAttachments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeServiceAttachment, err error) {
+	result = &v1beta1.ComputeServiceAttachment{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computeserviceattachments").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeServiceAttachments that match those selectors.
+func (c *computeServiceAttachments) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeServiceAttachmentList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ComputeServiceAttachmentList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computeserviceattachments").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeServiceAttachments.
+func (c *computeServiceAttachments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computeserviceattachments").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeServiceAttachment and creates it.  Returns the server's representation of the computeServiceAttachment, and an error, if there is any.
+func (c *computeServiceAttachments) Create(ctx context.Context, computeServiceAttachment *v1beta1.ComputeServiceAttachment, opts v1.CreateOptions) (result *v1beta1.ComputeServiceAttachment, err error) {
+	result = &v1beta1.ComputeServiceAttachment{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computeserviceattachments").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeServiceAttachment).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeServiceAttachment and updates it. Returns the server's representation of the computeServiceAttachment, and an error, if there is any.
+func (c *computeServiceAttachments) Update(ctx context.Context, computeServiceAttachment *v1beta1.ComputeServiceAttachment, opts v1.UpdateOptions) (result *v1beta1.ComputeServiceAttachment, err error) {
+	result = &v1beta1.ComputeServiceAttachment{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computeserviceattachments").
+		Name(computeServiceAttachment.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeServiceAttachment).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeServiceAttachments) UpdateStatus(ctx context.Context, computeServiceAttachment *v1beta1.ComputeServiceAttachment, opts v1.UpdateOptions) (result *v1beta1.ComputeServiceAttachment, err error) {
+	result = &v1beta1.ComputeServiceAttachment{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computeserviceattachments").
+		Name(computeServiceAttachment.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeServiceAttachment).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeServiceAttachment and deletes it. Returns an error if one occurs.
+func (c *computeServiceAttachments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computeserviceattachments").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeServiceAttachments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computeserviceattachments").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeServiceAttachment.
+func (c *computeServiceAttachments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeServiceAttachment, err error) {
+	result = &v1beta1.ComputeServiceAttachment{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computeserviceattachments").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

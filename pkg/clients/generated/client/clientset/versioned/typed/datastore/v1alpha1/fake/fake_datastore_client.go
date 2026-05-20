@@ -32,7 +32,7 @@ type FakeDatastoreV1alpha1 struct {
 }
 
 func (c *FakeDatastoreV1alpha1) DatastoreIndexes(namespace string) v1alpha1.DatastoreIndexInterface {
-	return newFakeDatastoreIndexes(c, namespace)
+	return &FakeDatastoreIndexes{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1alpha1"
-	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDataprocJobs implements DataprocJobInterface
-type fakeDataprocJobs struct {
-	*gentype.FakeClientWithList[*v1alpha1.DataprocJob, *v1alpha1.DataprocJobList]
+// FakeDataprocJobs implements DataprocJobInterface
+type FakeDataprocJobs struct {
 	Fake *FakeDataprocV1alpha1
+	ns   string
 }
 
-func newFakeDataprocJobs(fake *FakeDataprocV1alpha1, namespace string) dataprocv1alpha1.DataprocJobInterface {
-	return &fakeDataprocJobs{
-		gentype.NewFakeClientWithList[*v1alpha1.DataprocJob, *v1alpha1.DataprocJobList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("dataprocjobs"),
-			v1alpha1.SchemeGroupVersion.WithKind("DataprocJob"),
-			func() *v1alpha1.DataprocJob { return &v1alpha1.DataprocJob{} },
-			func() *v1alpha1.DataprocJobList { return &v1alpha1.DataprocJobList{} },
-			func(dst, src *v1alpha1.DataprocJobList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DataprocJobList) []*v1alpha1.DataprocJob {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DataprocJobList, items []*v1alpha1.DataprocJob) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var dataprocjobsResource = v1alpha1.SchemeGroupVersion.WithResource("dataprocjobs")
+
+var dataprocjobsKind = v1alpha1.SchemeGroupVersion.WithKind("DataprocJob")
+
+// Get takes name of the dataprocJob, and returns the corresponding dataprocJob object, and an error if there is any.
+func (c *FakeDataprocJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataprocJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(dataprocjobsResource, c.ns, name), &v1alpha1.DataprocJob{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DataprocJob), err
+}
+
+// List takes label and field selectors, and returns the list of DataprocJobs that match those selectors.
+func (c *FakeDataprocJobs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DataprocJobList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(dataprocjobsResource, dataprocjobsKind, c.ns, opts), &v1alpha1.DataprocJobList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DataprocJobList{ListMeta: obj.(*v1alpha1.DataprocJobList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DataprocJobList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested dataprocJobs.
+func (c *FakeDataprocJobs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(dataprocjobsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a dataprocJob and creates it.  Returns the server's representation of the dataprocJob, and an error, if there is any.
+func (c *FakeDataprocJobs) Create(ctx context.Context, dataprocJob *v1alpha1.DataprocJob, opts v1.CreateOptions) (result *v1alpha1.DataprocJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(dataprocjobsResource, c.ns, dataprocJob), &v1alpha1.DataprocJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataprocJob), err
+}
+
+// Update takes the representation of a dataprocJob and updates it. Returns the server's representation of the dataprocJob, and an error, if there is any.
+func (c *FakeDataprocJobs) Update(ctx context.Context, dataprocJob *v1alpha1.DataprocJob, opts v1.UpdateOptions) (result *v1alpha1.DataprocJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(dataprocjobsResource, c.ns, dataprocJob), &v1alpha1.DataprocJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataprocJob), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDataprocJobs) UpdateStatus(ctx context.Context, dataprocJob *v1alpha1.DataprocJob, opts v1.UpdateOptions) (*v1alpha1.DataprocJob, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(dataprocjobsResource, "status", c.ns, dataprocJob), &v1alpha1.DataprocJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataprocJob), err
+}
+
+// Delete takes name of the dataprocJob and deletes it. Returns an error if one occurs.
+func (c *FakeDataprocJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(dataprocjobsResource, c.ns, name, opts), &v1alpha1.DataprocJob{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDataprocJobs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(dataprocjobsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DataprocJobList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched dataprocJob.
+func (c *FakeDataprocJobs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataprocJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(dataprocjobsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DataprocJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataprocJob), err
 }

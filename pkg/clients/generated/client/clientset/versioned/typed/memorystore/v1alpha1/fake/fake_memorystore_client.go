@@ -32,7 +32,7 @@ type FakeMemorystoreV1alpha1 struct {
 }
 
 func (c *FakeMemorystoreV1alpha1) MemorystoreInstanceEndpoints(namespace string) v1alpha1.MemorystoreInstanceEndpointInterface {
-	return newFakeMemorystoreInstanceEndpoints(c, namespace)
+	return &FakeMemorystoreInstanceEndpoints{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

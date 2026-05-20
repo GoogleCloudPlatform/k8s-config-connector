@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memorystore/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memorystore/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // MemorystoreInstancesGetter has a method to return a MemorystoreInstanceInterface.
@@ -40,36 +41,158 @@ type MemorystoreInstancesGetter interface {
 
 // MemorystoreInstanceInterface has methods to work with MemorystoreInstance resources.
 type MemorystoreInstanceInterface interface {
-	Create(ctx context.Context, memorystoreInstance *memorystorev1beta1.MemorystoreInstance, opts v1.CreateOptions) (*memorystorev1beta1.MemorystoreInstance, error)
-	Update(ctx context.Context, memorystoreInstance *memorystorev1beta1.MemorystoreInstance, opts v1.UpdateOptions) (*memorystorev1beta1.MemorystoreInstance, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, memorystoreInstance *memorystorev1beta1.MemorystoreInstance, opts v1.UpdateOptions) (*memorystorev1beta1.MemorystoreInstance, error)
+	Create(ctx context.Context, memorystoreInstance *v1beta1.MemorystoreInstance, opts v1.CreateOptions) (*v1beta1.MemorystoreInstance, error)
+	Update(ctx context.Context, memorystoreInstance *v1beta1.MemorystoreInstance, opts v1.UpdateOptions) (*v1beta1.MemorystoreInstance, error)
+	UpdateStatus(ctx context.Context, memorystoreInstance *v1beta1.MemorystoreInstance, opts v1.UpdateOptions) (*v1beta1.MemorystoreInstance, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*memorystorev1beta1.MemorystoreInstance, error)
-	List(ctx context.Context, opts v1.ListOptions) (*memorystorev1beta1.MemorystoreInstanceList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.MemorystoreInstance, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.MemorystoreInstanceList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *memorystorev1beta1.MemorystoreInstance, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.MemorystoreInstance, err error)
 	MemorystoreInstanceExpansion
 }
 
 // memorystoreInstances implements MemorystoreInstanceInterface
 type memorystoreInstances struct {
-	*gentype.ClientWithList[*memorystorev1beta1.MemorystoreInstance, *memorystorev1beta1.MemorystoreInstanceList]
+	client rest.Interface
+	ns     string
 }
 
 // newMemorystoreInstances returns a MemorystoreInstances
 func newMemorystoreInstances(c *MemorystoreV1beta1Client, namespace string) *memorystoreInstances {
 	return &memorystoreInstances{
-		gentype.NewClientWithList[*memorystorev1beta1.MemorystoreInstance, *memorystorev1beta1.MemorystoreInstanceList](
-			"memorystoreinstances",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *memorystorev1beta1.MemorystoreInstance { return &memorystorev1beta1.MemorystoreInstance{} },
-			func() *memorystorev1beta1.MemorystoreInstanceList {
-				return &memorystorev1beta1.MemorystoreInstanceList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the memorystoreInstance, and returns the corresponding memorystoreInstance object, and an error if there is any.
+func (c *memorystoreInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.MemorystoreInstance, err error) {
+	result = &v1beta1.MemorystoreInstance{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("memorystoreinstances").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of MemorystoreInstances that match those selectors.
+func (c *memorystoreInstances) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.MemorystoreInstanceList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.MemorystoreInstanceList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("memorystoreinstances").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested memorystoreInstances.
+func (c *memorystoreInstances) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("memorystoreinstances").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a memorystoreInstance and creates it.  Returns the server's representation of the memorystoreInstance, and an error, if there is any.
+func (c *memorystoreInstances) Create(ctx context.Context, memorystoreInstance *v1beta1.MemorystoreInstance, opts v1.CreateOptions) (result *v1beta1.MemorystoreInstance, err error) {
+	result = &v1beta1.MemorystoreInstance{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("memorystoreinstances").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(memorystoreInstance).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a memorystoreInstance and updates it. Returns the server's representation of the memorystoreInstance, and an error, if there is any.
+func (c *memorystoreInstances) Update(ctx context.Context, memorystoreInstance *v1beta1.MemorystoreInstance, opts v1.UpdateOptions) (result *v1beta1.MemorystoreInstance, err error) {
+	result = &v1beta1.MemorystoreInstance{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("memorystoreinstances").
+		Name(memorystoreInstance.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(memorystoreInstance).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *memorystoreInstances) UpdateStatus(ctx context.Context, memorystoreInstance *v1beta1.MemorystoreInstance, opts v1.UpdateOptions) (result *v1beta1.MemorystoreInstance, err error) {
+	result = &v1beta1.MemorystoreInstance{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("memorystoreinstances").
+		Name(memorystoreInstance.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(memorystoreInstance).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the memorystoreInstance and deletes it. Returns an error if one occurs.
+func (c *memorystoreInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("memorystoreinstances").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *memorystoreInstances) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("memorystoreinstances").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched memorystoreInstance.
+func (c *memorystoreInstances) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.MemorystoreInstance, err error) {
+	result = &v1beta1.MemorystoreInstance{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("memorystoreinstances").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

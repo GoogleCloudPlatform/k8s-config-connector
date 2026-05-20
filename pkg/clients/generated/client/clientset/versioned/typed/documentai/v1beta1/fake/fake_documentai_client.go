@@ -32,7 +32,7 @@ type FakeDocumentaiV1beta1 struct {
 }
 
 func (c *FakeDocumentaiV1beta1) DocumentAIProcessorVersions(namespace string) v1beta1.DocumentAIProcessorVersionInterface {
-	return newFakeDocumentAIProcessorVersions(c, namespace)
+	return &FakeDocumentAIProcessorVersions{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -32,15 +32,15 @@ type FakeDnsV1beta1 struct {
 }
 
 func (c *FakeDnsV1beta1) DNSManagedZones(namespace string) v1beta1.DNSManagedZoneInterface {
-	return newFakeDNSManagedZones(c, namespace)
+	return &FakeDNSManagedZones{c, namespace}
 }
 
 func (c *FakeDnsV1beta1) DNSPolicies(namespace string) v1beta1.DNSPolicyInterface {
-	return newFakeDNSPolicies(c, namespace)
+	return &FakeDNSPolicies{c, namespace}
 }
 
 func (c *FakeDnsV1beta1) DNSRecordSets(namespace string) v1beta1.DNSRecordSetInterface {
-	return newFakeDNSRecordSets(c, namespace)
+	return &FakeDNSRecordSets{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
