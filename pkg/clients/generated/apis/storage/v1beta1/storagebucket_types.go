@@ -69,8 +69,7 @@ type BucketCondition struct {
 	// +optional
 	DaysSinceCustomTime *int64 `json:"daysSinceCustomTime,omitempty"`
 
-	/* Number of days elapsed since the noncurrent timestamp of an object. This
-	condition is relevant only for versioned objects. */
+	/* Number of days elapsed since the noncurrent timestamp of an object. This condition is relevant only for versioned objects. */
 	// +optional
 	DaysSinceNoncurrentTime *int64 `json:"daysSinceNoncurrentTime,omitempty"`
 
@@ -123,6 +122,7 @@ type BucketCustomPlacementConfig struct {
 }
 
 type BucketEncryption struct {
+	/* A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
@@ -178,8 +178,7 @@ type StorageBucketSpec struct {
 	// +optional
 	Autoclass *BucketAutoclass `json:"autoclass,omitempty"`
 
-	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
-	Enables Bucket PolicyOnly access to a bucket. */
+	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field. Enables Bucket PolicyOnly access to a bucket. */
 	// +optional
 	BucketPolicyOnly *bool `json:"bucketPolicyOnly,omitempty"`
 
@@ -276,7 +275,7 @@ type StorageBucketStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
 	ObservedState *BucketObservedStateStatus `json:"observedState,omitempty"`
 

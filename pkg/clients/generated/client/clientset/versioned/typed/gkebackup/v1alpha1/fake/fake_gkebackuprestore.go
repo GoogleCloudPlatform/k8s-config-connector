@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkebackup/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeGKEBackupRestores implements GKEBackupRestoreInterface
-type FakeGKEBackupRestores struct {
+// fakeGKEBackupRestores implements GKEBackupRestoreInterface
+type fakeGKEBackupRestores struct {
+	*gentype.FakeClientWithList[*v1alpha1.GKEBackupRestore, *v1alpha1.GKEBackupRestoreList]
 	Fake *FakeGkebackupV1alpha1
-	ns   string
 }
 
-var gkebackuprestoresResource = v1alpha1.SchemeGroupVersion.WithResource("gkebackuprestores")
-
-var gkebackuprestoresKind = v1alpha1.SchemeGroupVersion.WithKind("GKEBackupRestore")
-
-// Get takes name of the gKEBackupRestore, and returns the corresponding gKEBackupRestore object, and an error if there is any.
-func (c *FakeGKEBackupRestores) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.GKEBackupRestore, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(gkebackuprestoresResource, c.ns, name), &v1alpha1.GKEBackupRestore{})
-
-	if obj == nil {
-		return nil, err
+func newFakeGKEBackupRestores(fake *FakeGkebackupV1alpha1, namespace string) gkebackupv1alpha1.GKEBackupRestoreInterface {
+	return &fakeGKEBackupRestores{
+		gentype.NewFakeClientWithList[*v1alpha1.GKEBackupRestore, *v1alpha1.GKEBackupRestoreList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("gkebackuprestores"),
+			v1alpha1.SchemeGroupVersion.WithKind("GKEBackupRestore"),
+			func() *v1alpha1.GKEBackupRestore { return &v1alpha1.GKEBackupRestore{} },
+			func() *v1alpha1.GKEBackupRestoreList { return &v1alpha1.GKEBackupRestoreList{} },
+			func(dst, src *v1alpha1.GKEBackupRestoreList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.GKEBackupRestoreList) []*v1alpha1.GKEBackupRestore {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.GKEBackupRestoreList, items []*v1alpha1.GKEBackupRestore) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.GKEBackupRestore), err
-}
-
-// List takes label and field selectors, and returns the list of GKEBackupRestores that match those selectors.
-func (c *FakeGKEBackupRestores) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.GKEBackupRestoreList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(gkebackuprestoresResource, gkebackuprestoresKind, c.ns, opts), &v1alpha1.GKEBackupRestoreList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.GKEBackupRestoreList{ListMeta: obj.(*v1alpha1.GKEBackupRestoreList).ListMeta}
-	for _, item := range obj.(*v1alpha1.GKEBackupRestoreList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested gKEBackupRestores.
-func (c *FakeGKEBackupRestores) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(gkebackuprestoresResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a gKEBackupRestore and creates it.  Returns the server's representation of the gKEBackupRestore, and an error, if there is any.
-func (c *FakeGKEBackupRestores) Create(ctx context.Context, gKEBackupRestore *v1alpha1.GKEBackupRestore, opts v1.CreateOptions) (result *v1alpha1.GKEBackupRestore, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(gkebackuprestoresResource, c.ns, gKEBackupRestore), &v1alpha1.GKEBackupRestore{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEBackupRestore), err
-}
-
-// Update takes the representation of a gKEBackupRestore and updates it. Returns the server's representation of the gKEBackupRestore, and an error, if there is any.
-func (c *FakeGKEBackupRestores) Update(ctx context.Context, gKEBackupRestore *v1alpha1.GKEBackupRestore, opts v1.UpdateOptions) (result *v1alpha1.GKEBackupRestore, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(gkebackuprestoresResource, c.ns, gKEBackupRestore), &v1alpha1.GKEBackupRestore{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEBackupRestore), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeGKEBackupRestores) UpdateStatus(ctx context.Context, gKEBackupRestore *v1alpha1.GKEBackupRestore, opts v1.UpdateOptions) (*v1alpha1.GKEBackupRestore, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(gkebackuprestoresResource, "status", c.ns, gKEBackupRestore), &v1alpha1.GKEBackupRestore{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEBackupRestore), err
-}
-
-// Delete takes name of the gKEBackupRestore and deletes it. Returns an error if one occurs.
-func (c *FakeGKEBackupRestores) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(gkebackuprestoresResource, c.ns, name, opts), &v1alpha1.GKEBackupRestore{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeGKEBackupRestores) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(gkebackuprestoresResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.GKEBackupRestoreList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched gKEBackupRestore.
-func (c *FakeGKEBackupRestores) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.GKEBackupRestore, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(gkebackuprestoresResource, c.ns, name, pt, data, subresources...), &v1alpha1.GKEBackupRestore{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.GKEBackupRestore), err
 }

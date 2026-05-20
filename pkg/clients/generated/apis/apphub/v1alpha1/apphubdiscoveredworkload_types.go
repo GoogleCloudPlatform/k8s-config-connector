@@ -39,11 +39,11 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type AppHubDiscoveredWorkloadSpec struct {
-	/* Required. The location of the application. */
+	/* Required. The location of the resource. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
-	/* Required. The host project of the application. */
+	/* Required. The host project of the resource. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
@@ -63,15 +63,15 @@ type DiscoveredworkloadObservedStateStatus struct {
 }
 
 type DiscoveredworkloadWorkloadPropertiesStatus struct {
-	/* Output only. The service project identifier that the underlying cloud resource resides in. Empty for non cloud resources. */
+	/* Output only. The service project identifier that the underlying cloud resource resides in. Empty for non-cloud resources. */
 	// +optional
 	GcpProject *string `json:"gcpProject,omitempty"`
 
-	/* Output only. The location that the underlying compute resource resides in (e.g us-west1). */
+	/* Output only. The location that the underlying compute resource resides in (for example, us-west1). */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
-	/* Output only. The location that the underlying compute resource resides in if it is zonal (e.g us-west1-a). */
+	/* Output only. The location that the underlying compute resource resides in if it is zonal (for example, us-west1-a). */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
 }

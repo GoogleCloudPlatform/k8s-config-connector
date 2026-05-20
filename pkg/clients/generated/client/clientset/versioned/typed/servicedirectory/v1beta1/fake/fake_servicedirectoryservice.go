@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicedirectory/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeServiceDirectoryServices implements ServiceDirectoryServiceInterface
-type FakeServiceDirectoryServices struct {
+// fakeServiceDirectoryServices implements ServiceDirectoryServiceInterface
+type fakeServiceDirectoryServices struct {
+	*gentype.FakeClientWithList[*v1beta1.ServiceDirectoryService, *v1beta1.ServiceDirectoryServiceList]
 	Fake *FakeServicedirectoryV1beta1
-	ns   string
 }
 
-var servicedirectoryservicesResource = v1beta1.SchemeGroupVersion.WithResource("servicedirectoryservices")
-
-var servicedirectoryservicesKind = v1beta1.SchemeGroupVersion.WithKind("ServiceDirectoryService")
-
-// Get takes name of the serviceDirectoryService, and returns the corresponding serviceDirectoryService object, and an error if there is any.
-func (c *FakeServiceDirectoryServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ServiceDirectoryService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(servicedirectoryservicesResource, c.ns, name), &v1beta1.ServiceDirectoryService{})
-
-	if obj == nil {
-		return nil, err
+func newFakeServiceDirectoryServices(fake *FakeServicedirectoryV1beta1, namespace string) servicedirectoryv1beta1.ServiceDirectoryServiceInterface {
+	return &fakeServiceDirectoryServices{
+		gentype.NewFakeClientWithList[*v1beta1.ServiceDirectoryService, *v1beta1.ServiceDirectoryServiceList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("servicedirectoryservices"),
+			v1beta1.SchemeGroupVersion.WithKind("ServiceDirectoryService"),
+			func() *v1beta1.ServiceDirectoryService { return &v1beta1.ServiceDirectoryService{} },
+			func() *v1beta1.ServiceDirectoryServiceList { return &v1beta1.ServiceDirectoryServiceList{} },
+			func(dst, src *v1beta1.ServiceDirectoryServiceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.ServiceDirectoryServiceList) []*v1beta1.ServiceDirectoryService {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.ServiceDirectoryServiceList, items []*v1beta1.ServiceDirectoryService) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.ServiceDirectoryService), err
-}
-
-// List takes label and field selectors, and returns the list of ServiceDirectoryServices that match those selectors.
-func (c *FakeServiceDirectoryServices) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ServiceDirectoryServiceList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(servicedirectoryservicesResource, servicedirectoryservicesKind, c.ns, opts), &v1beta1.ServiceDirectoryServiceList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.ServiceDirectoryServiceList{ListMeta: obj.(*v1beta1.ServiceDirectoryServiceList).ListMeta}
-	for _, item := range obj.(*v1beta1.ServiceDirectoryServiceList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested serviceDirectoryServices.
-func (c *FakeServiceDirectoryServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(servicedirectoryservicesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a serviceDirectoryService and creates it.  Returns the server's representation of the serviceDirectoryService, and an error, if there is any.
-func (c *FakeServiceDirectoryServices) Create(ctx context.Context, serviceDirectoryService *v1beta1.ServiceDirectoryService, opts v1.CreateOptions) (result *v1beta1.ServiceDirectoryService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(servicedirectoryservicesResource, c.ns, serviceDirectoryService), &v1beta1.ServiceDirectoryService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ServiceDirectoryService), err
-}
-
-// Update takes the representation of a serviceDirectoryService and updates it. Returns the server's representation of the serviceDirectoryService, and an error, if there is any.
-func (c *FakeServiceDirectoryServices) Update(ctx context.Context, serviceDirectoryService *v1beta1.ServiceDirectoryService, opts v1.UpdateOptions) (result *v1beta1.ServiceDirectoryService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(servicedirectoryservicesResource, c.ns, serviceDirectoryService), &v1beta1.ServiceDirectoryService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ServiceDirectoryService), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeServiceDirectoryServices) UpdateStatus(ctx context.Context, serviceDirectoryService *v1beta1.ServiceDirectoryService, opts v1.UpdateOptions) (*v1beta1.ServiceDirectoryService, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(servicedirectoryservicesResource, "status", c.ns, serviceDirectoryService), &v1beta1.ServiceDirectoryService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ServiceDirectoryService), err
-}
-
-// Delete takes name of the serviceDirectoryService and deletes it. Returns an error if one occurs.
-func (c *FakeServiceDirectoryServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(servicedirectoryservicesResource, c.ns, name, opts), &v1beta1.ServiceDirectoryService{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeServiceDirectoryServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(servicedirectoryservicesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.ServiceDirectoryServiceList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched serviceDirectoryService.
-func (c *FakeServiceDirectoryServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ServiceDirectoryService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(servicedirectoryservicesResource, c.ns, name, pt, data, subresources...), &v1beta1.ServiceDirectoryService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ServiceDirectoryService), err
 }

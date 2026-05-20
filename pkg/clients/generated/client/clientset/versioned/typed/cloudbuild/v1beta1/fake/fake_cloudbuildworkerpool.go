@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudbuild/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeCloudBuildWorkerPools implements CloudBuildWorkerPoolInterface
-type FakeCloudBuildWorkerPools struct {
+// fakeCloudBuildWorkerPools implements CloudBuildWorkerPoolInterface
+type fakeCloudBuildWorkerPools struct {
+	*gentype.FakeClientWithList[*v1beta1.CloudBuildWorkerPool, *v1beta1.CloudBuildWorkerPoolList]
 	Fake *FakeCloudbuildV1beta1
-	ns   string
 }
 
-var cloudbuildworkerpoolsResource = v1beta1.SchemeGroupVersion.WithResource("cloudbuildworkerpools")
-
-var cloudbuildworkerpoolsKind = v1beta1.SchemeGroupVersion.WithKind("CloudBuildWorkerPool")
-
-// Get takes name of the cloudBuildWorkerPool, and returns the corresponding cloudBuildWorkerPool object, and an error if there is any.
-func (c *FakeCloudBuildWorkerPools) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.CloudBuildWorkerPool, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(cloudbuildworkerpoolsResource, c.ns, name), &v1beta1.CloudBuildWorkerPool{})
-
-	if obj == nil {
-		return nil, err
+func newFakeCloudBuildWorkerPools(fake *FakeCloudbuildV1beta1, namespace string) cloudbuildv1beta1.CloudBuildWorkerPoolInterface {
+	return &fakeCloudBuildWorkerPools{
+		gentype.NewFakeClientWithList[*v1beta1.CloudBuildWorkerPool, *v1beta1.CloudBuildWorkerPoolList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("cloudbuildworkerpools"),
+			v1beta1.SchemeGroupVersion.WithKind("CloudBuildWorkerPool"),
+			func() *v1beta1.CloudBuildWorkerPool { return &v1beta1.CloudBuildWorkerPool{} },
+			func() *v1beta1.CloudBuildWorkerPoolList { return &v1beta1.CloudBuildWorkerPoolList{} },
+			func(dst, src *v1beta1.CloudBuildWorkerPoolList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.CloudBuildWorkerPoolList) []*v1beta1.CloudBuildWorkerPool {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.CloudBuildWorkerPoolList, items []*v1beta1.CloudBuildWorkerPool) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.CloudBuildWorkerPool), err
-}
-
-// List takes label and field selectors, and returns the list of CloudBuildWorkerPools that match those selectors.
-func (c *FakeCloudBuildWorkerPools) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.CloudBuildWorkerPoolList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(cloudbuildworkerpoolsResource, cloudbuildworkerpoolsKind, c.ns, opts), &v1beta1.CloudBuildWorkerPoolList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.CloudBuildWorkerPoolList{ListMeta: obj.(*v1beta1.CloudBuildWorkerPoolList).ListMeta}
-	for _, item := range obj.(*v1beta1.CloudBuildWorkerPoolList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested cloudBuildWorkerPools.
-func (c *FakeCloudBuildWorkerPools) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(cloudbuildworkerpoolsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a cloudBuildWorkerPool and creates it.  Returns the server's representation of the cloudBuildWorkerPool, and an error, if there is any.
-func (c *FakeCloudBuildWorkerPools) Create(ctx context.Context, cloudBuildWorkerPool *v1beta1.CloudBuildWorkerPool, opts v1.CreateOptions) (result *v1beta1.CloudBuildWorkerPool, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(cloudbuildworkerpoolsResource, c.ns, cloudBuildWorkerPool), &v1beta1.CloudBuildWorkerPool{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.CloudBuildWorkerPool), err
-}
-
-// Update takes the representation of a cloudBuildWorkerPool and updates it. Returns the server's representation of the cloudBuildWorkerPool, and an error, if there is any.
-func (c *FakeCloudBuildWorkerPools) Update(ctx context.Context, cloudBuildWorkerPool *v1beta1.CloudBuildWorkerPool, opts v1.UpdateOptions) (result *v1beta1.CloudBuildWorkerPool, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(cloudbuildworkerpoolsResource, c.ns, cloudBuildWorkerPool), &v1beta1.CloudBuildWorkerPool{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.CloudBuildWorkerPool), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeCloudBuildWorkerPools) UpdateStatus(ctx context.Context, cloudBuildWorkerPool *v1beta1.CloudBuildWorkerPool, opts v1.UpdateOptions) (*v1beta1.CloudBuildWorkerPool, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(cloudbuildworkerpoolsResource, "status", c.ns, cloudBuildWorkerPool), &v1beta1.CloudBuildWorkerPool{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.CloudBuildWorkerPool), err
-}
-
-// Delete takes name of the cloudBuildWorkerPool and deletes it. Returns an error if one occurs.
-func (c *FakeCloudBuildWorkerPools) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(cloudbuildworkerpoolsResource, c.ns, name, opts), &v1beta1.CloudBuildWorkerPool{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeCloudBuildWorkerPools) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(cloudbuildworkerpoolsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.CloudBuildWorkerPoolList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched cloudBuildWorkerPool.
-func (c *FakeCloudBuildWorkerPools) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.CloudBuildWorkerPool, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(cloudbuildworkerpoolsResource, c.ns, name, pt, data, subresources...), &v1beta1.CloudBuildWorkerPool{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.CloudBuildWorkerPool), err
 }

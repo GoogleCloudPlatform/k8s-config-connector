@@ -22,123 +22,36 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicenetworking/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	servicenetworkingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeServiceNetworkingPeeredDNSDomains implements ServiceNetworkingPeeredDNSDomainInterface
-type FakeServiceNetworkingPeeredDNSDomains struct {
+// fakeServiceNetworkingPeeredDNSDomains implements ServiceNetworkingPeeredDNSDomainInterface
+type fakeServiceNetworkingPeeredDNSDomains struct {
+	*gentype.FakeClientWithList[*v1alpha1.ServiceNetworkingPeeredDNSDomain, *v1alpha1.ServiceNetworkingPeeredDNSDomainList]
 	Fake *FakeServicenetworkingV1alpha1
-	ns   string
 }
 
-var servicenetworkingpeereddnsdomainsResource = v1alpha1.SchemeGroupVersion.WithResource("servicenetworkingpeereddnsdomains")
-
-var servicenetworkingpeereddnsdomainsKind = v1alpha1.SchemeGroupVersion.WithKind("ServiceNetworkingPeeredDNSDomain")
-
-// Get takes name of the serviceNetworkingPeeredDNSDomain, and returns the corresponding serviceNetworkingPeeredDNSDomain object, and an error if there is any.
-func (c *FakeServiceNetworkingPeeredDNSDomains) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ServiceNetworkingPeeredDNSDomain, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(servicenetworkingpeereddnsdomainsResource, c.ns, name), &v1alpha1.ServiceNetworkingPeeredDNSDomain{})
-
-	if obj == nil {
-		return nil, err
+func newFakeServiceNetworkingPeeredDNSDomains(fake *FakeServicenetworkingV1alpha1, namespace string) servicenetworkingv1alpha1.ServiceNetworkingPeeredDNSDomainInterface {
+	return &fakeServiceNetworkingPeeredDNSDomains{
+		gentype.NewFakeClientWithList[*v1alpha1.ServiceNetworkingPeeredDNSDomain, *v1alpha1.ServiceNetworkingPeeredDNSDomainList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("servicenetworkingpeereddnsdomains"),
+			v1alpha1.SchemeGroupVersion.WithKind("ServiceNetworkingPeeredDNSDomain"),
+			func() *v1alpha1.ServiceNetworkingPeeredDNSDomain { return &v1alpha1.ServiceNetworkingPeeredDNSDomain{} },
+			func() *v1alpha1.ServiceNetworkingPeeredDNSDomainList {
+				return &v1alpha1.ServiceNetworkingPeeredDNSDomainList{}
+			},
+			func(dst, src *v1alpha1.ServiceNetworkingPeeredDNSDomainList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.ServiceNetworkingPeeredDNSDomainList) []*v1alpha1.ServiceNetworkingPeeredDNSDomain {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.ServiceNetworkingPeeredDNSDomainList, items []*v1alpha1.ServiceNetworkingPeeredDNSDomain) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.ServiceNetworkingPeeredDNSDomain), err
-}
-
-// List takes label and field selectors, and returns the list of ServiceNetworkingPeeredDNSDomains that match those selectors.
-func (c *FakeServiceNetworkingPeeredDNSDomains) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ServiceNetworkingPeeredDNSDomainList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(servicenetworkingpeereddnsdomainsResource, servicenetworkingpeereddnsdomainsKind, c.ns, opts), &v1alpha1.ServiceNetworkingPeeredDNSDomainList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.ServiceNetworkingPeeredDNSDomainList{ListMeta: obj.(*v1alpha1.ServiceNetworkingPeeredDNSDomainList).ListMeta}
-	for _, item := range obj.(*v1alpha1.ServiceNetworkingPeeredDNSDomainList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested serviceNetworkingPeeredDNSDomains.
-func (c *FakeServiceNetworkingPeeredDNSDomains) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(servicenetworkingpeereddnsdomainsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a serviceNetworkingPeeredDNSDomain and creates it.  Returns the server's representation of the serviceNetworkingPeeredDNSDomain, and an error, if there is any.
-func (c *FakeServiceNetworkingPeeredDNSDomains) Create(ctx context.Context, serviceNetworkingPeeredDNSDomain *v1alpha1.ServiceNetworkingPeeredDNSDomain, opts v1.CreateOptions) (result *v1alpha1.ServiceNetworkingPeeredDNSDomain, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(servicenetworkingpeereddnsdomainsResource, c.ns, serviceNetworkingPeeredDNSDomain), &v1alpha1.ServiceNetworkingPeeredDNSDomain{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ServiceNetworkingPeeredDNSDomain), err
-}
-
-// Update takes the representation of a serviceNetworkingPeeredDNSDomain and updates it. Returns the server's representation of the serviceNetworkingPeeredDNSDomain, and an error, if there is any.
-func (c *FakeServiceNetworkingPeeredDNSDomains) Update(ctx context.Context, serviceNetworkingPeeredDNSDomain *v1alpha1.ServiceNetworkingPeeredDNSDomain, opts v1.UpdateOptions) (result *v1alpha1.ServiceNetworkingPeeredDNSDomain, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(servicenetworkingpeereddnsdomainsResource, c.ns, serviceNetworkingPeeredDNSDomain), &v1alpha1.ServiceNetworkingPeeredDNSDomain{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ServiceNetworkingPeeredDNSDomain), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeServiceNetworkingPeeredDNSDomains) UpdateStatus(ctx context.Context, serviceNetworkingPeeredDNSDomain *v1alpha1.ServiceNetworkingPeeredDNSDomain, opts v1.UpdateOptions) (*v1alpha1.ServiceNetworkingPeeredDNSDomain, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(servicenetworkingpeereddnsdomainsResource, "status", c.ns, serviceNetworkingPeeredDNSDomain), &v1alpha1.ServiceNetworkingPeeredDNSDomain{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ServiceNetworkingPeeredDNSDomain), err
-}
-
-// Delete takes name of the serviceNetworkingPeeredDNSDomain and deletes it. Returns an error if one occurs.
-func (c *FakeServiceNetworkingPeeredDNSDomains) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(servicenetworkingpeereddnsdomainsResource, c.ns, name, opts), &v1alpha1.ServiceNetworkingPeeredDNSDomain{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeServiceNetworkingPeeredDNSDomains) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(servicenetworkingpeereddnsdomainsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.ServiceNetworkingPeeredDNSDomainList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched serviceNetworkingPeeredDNSDomain.
-func (c *FakeServiceNetworkingPeeredDNSDomains) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ServiceNetworkingPeeredDNSDomain, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(servicenetworkingpeereddnsdomainsResource, c.ns, name, pt, data, subresources...), &v1alpha1.ServiceNetworkingPeeredDNSDomain{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ServiceNetworkingPeeredDNSDomain), err
 }

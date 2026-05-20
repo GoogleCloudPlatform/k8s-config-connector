@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dlp/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDLPJobTriggers implements DLPJobTriggerInterface
-type FakeDLPJobTriggers struct {
+// fakeDLPJobTriggers implements DLPJobTriggerInterface
+type fakeDLPJobTriggers struct {
+	*gentype.FakeClientWithList[*v1beta1.DLPJobTrigger, *v1beta1.DLPJobTriggerList]
 	Fake *FakeDlpV1beta1
-	ns   string
 }
 
-var dlpjobtriggersResource = v1beta1.SchemeGroupVersion.WithResource("dlpjobtriggers")
-
-var dlpjobtriggersKind = v1beta1.SchemeGroupVersion.WithKind("DLPJobTrigger")
-
-// Get takes name of the dLPJobTrigger, and returns the corresponding dLPJobTrigger object, and an error if there is any.
-func (c *FakeDLPJobTriggers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DLPJobTrigger, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(dlpjobtriggersResource, c.ns, name), &v1beta1.DLPJobTrigger{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDLPJobTriggers(fake *FakeDlpV1beta1, namespace string) dlpv1beta1.DLPJobTriggerInterface {
+	return &fakeDLPJobTriggers{
+		gentype.NewFakeClientWithList[*v1beta1.DLPJobTrigger, *v1beta1.DLPJobTriggerList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("dlpjobtriggers"),
+			v1beta1.SchemeGroupVersion.WithKind("DLPJobTrigger"),
+			func() *v1beta1.DLPJobTrigger { return &v1beta1.DLPJobTrigger{} },
+			func() *v1beta1.DLPJobTriggerList { return &v1beta1.DLPJobTriggerList{} },
+			func(dst, src *v1beta1.DLPJobTriggerList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.DLPJobTriggerList) []*v1beta1.DLPJobTrigger {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.DLPJobTriggerList, items []*v1beta1.DLPJobTrigger) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.DLPJobTrigger), err
-}
-
-// List takes label and field selectors, and returns the list of DLPJobTriggers that match those selectors.
-func (c *FakeDLPJobTriggers) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.DLPJobTriggerList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(dlpjobtriggersResource, dlpjobtriggersKind, c.ns, opts), &v1beta1.DLPJobTriggerList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.DLPJobTriggerList{ListMeta: obj.(*v1beta1.DLPJobTriggerList).ListMeta}
-	for _, item := range obj.(*v1beta1.DLPJobTriggerList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dLPJobTriggers.
-func (c *FakeDLPJobTriggers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(dlpjobtriggersResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dLPJobTrigger and creates it.  Returns the server's representation of the dLPJobTrigger, and an error, if there is any.
-func (c *FakeDLPJobTriggers) Create(ctx context.Context, dLPJobTrigger *v1beta1.DLPJobTrigger, opts v1.CreateOptions) (result *v1beta1.DLPJobTrigger, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(dlpjobtriggersResource, c.ns, dLPJobTrigger), &v1beta1.DLPJobTrigger{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DLPJobTrigger), err
-}
-
-// Update takes the representation of a dLPJobTrigger and updates it. Returns the server's representation of the dLPJobTrigger, and an error, if there is any.
-func (c *FakeDLPJobTriggers) Update(ctx context.Context, dLPJobTrigger *v1beta1.DLPJobTrigger, opts v1.UpdateOptions) (result *v1beta1.DLPJobTrigger, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(dlpjobtriggersResource, c.ns, dLPJobTrigger), &v1beta1.DLPJobTrigger{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DLPJobTrigger), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDLPJobTriggers) UpdateStatus(ctx context.Context, dLPJobTrigger *v1beta1.DLPJobTrigger, opts v1.UpdateOptions) (*v1beta1.DLPJobTrigger, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(dlpjobtriggersResource, "status", c.ns, dLPJobTrigger), &v1beta1.DLPJobTrigger{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DLPJobTrigger), err
-}
-
-// Delete takes name of the dLPJobTrigger and deletes it. Returns an error if one occurs.
-func (c *FakeDLPJobTriggers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(dlpjobtriggersResource, c.ns, name, opts), &v1beta1.DLPJobTrigger{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDLPJobTriggers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(dlpjobtriggersResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.DLPJobTriggerList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dLPJobTrigger.
-func (c *FakeDLPJobTriggers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DLPJobTrigger, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(dlpjobtriggersResource, c.ns, name, pt, data, subresources...), &v1beta1.DLPJobTrigger{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DLPJobTrigger), err
 }
