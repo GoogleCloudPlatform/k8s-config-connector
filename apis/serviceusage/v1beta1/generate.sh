@@ -41,8 +41,6 @@ go run . generate-mapper \
   --api-version serviceusage.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 
-sed -i 's/Copyright 2026/Copyright 2025/g' "${REPO_ROOT}/pkg/controller/direct/serviceusage/mapper.generated.go"
-
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
