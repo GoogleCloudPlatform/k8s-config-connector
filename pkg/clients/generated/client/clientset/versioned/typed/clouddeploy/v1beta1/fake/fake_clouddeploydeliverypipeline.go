@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1beta1"
-	clouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeCloudDeployDeliveryPipelines implements CloudDeployDeliveryPipelineInterface
-type fakeCloudDeployDeliveryPipelines struct {
-	*gentype.FakeClientWithList[*v1beta1.CloudDeployDeliveryPipeline, *v1beta1.CloudDeployDeliveryPipelineList]
+// FakeCloudDeployDeliveryPipelines implements CloudDeployDeliveryPipelineInterface
+type FakeCloudDeployDeliveryPipelines struct {
 	Fake *FakeClouddeployV1beta1
+	ns   string
 }
 
-func newFakeCloudDeployDeliveryPipelines(fake *FakeClouddeployV1beta1, namespace string) clouddeployv1beta1.CloudDeployDeliveryPipelineInterface {
-	return &fakeCloudDeployDeliveryPipelines{
-		gentype.NewFakeClientWithList[*v1beta1.CloudDeployDeliveryPipeline, *v1beta1.CloudDeployDeliveryPipelineList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("clouddeploydeliverypipelines"),
-			v1beta1.SchemeGroupVersion.WithKind("CloudDeployDeliveryPipeline"),
-			func() *v1beta1.CloudDeployDeliveryPipeline { return &v1beta1.CloudDeployDeliveryPipeline{} },
-			func() *v1beta1.CloudDeployDeliveryPipelineList { return &v1beta1.CloudDeployDeliveryPipelineList{} },
-			func(dst, src *v1beta1.CloudDeployDeliveryPipelineList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.CloudDeployDeliveryPipelineList) []*v1beta1.CloudDeployDeliveryPipeline {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.CloudDeployDeliveryPipelineList, items []*v1beta1.CloudDeployDeliveryPipeline) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var clouddeploydeliverypipelinesResource = v1beta1.SchemeGroupVersion.WithResource("clouddeploydeliverypipelines")
+
+var clouddeploydeliverypipelinesKind = v1beta1.SchemeGroupVersion.WithKind("CloudDeployDeliveryPipeline")
+
+// Get takes name of the cloudDeployDeliveryPipeline, and returns the corresponding cloudDeployDeliveryPipeline object, and an error if there is any.
+func (c *FakeCloudDeployDeliveryPipelines) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.CloudDeployDeliveryPipeline, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(clouddeploydeliverypipelinesResource, c.ns, name), &v1beta1.CloudDeployDeliveryPipeline{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.CloudDeployDeliveryPipeline), err
+}
+
+// List takes label and field selectors, and returns the list of CloudDeployDeliveryPipelines that match those selectors.
+func (c *FakeCloudDeployDeliveryPipelines) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.CloudDeployDeliveryPipelineList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(clouddeploydeliverypipelinesResource, clouddeploydeliverypipelinesKind, c.ns, opts), &v1beta1.CloudDeployDeliveryPipelineList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.CloudDeployDeliveryPipelineList{ListMeta: obj.(*v1beta1.CloudDeployDeliveryPipelineList).ListMeta}
+	for _, item := range obj.(*v1beta1.CloudDeployDeliveryPipelineList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested cloudDeployDeliveryPipelines.
+func (c *FakeCloudDeployDeliveryPipelines) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(clouddeploydeliverypipelinesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a cloudDeployDeliveryPipeline and creates it.  Returns the server's representation of the cloudDeployDeliveryPipeline, and an error, if there is any.
+func (c *FakeCloudDeployDeliveryPipelines) Create(ctx context.Context, cloudDeployDeliveryPipeline *v1beta1.CloudDeployDeliveryPipeline, opts v1.CreateOptions) (result *v1beta1.CloudDeployDeliveryPipeline, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(clouddeploydeliverypipelinesResource, c.ns, cloudDeployDeliveryPipeline), &v1beta1.CloudDeployDeliveryPipeline{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.CloudDeployDeliveryPipeline), err
+}
+
+// Update takes the representation of a cloudDeployDeliveryPipeline and updates it. Returns the server's representation of the cloudDeployDeliveryPipeline, and an error, if there is any.
+func (c *FakeCloudDeployDeliveryPipelines) Update(ctx context.Context, cloudDeployDeliveryPipeline *v1beta1.CloudDeployDeliveryPipeline, opts v1.UpdateOptions) (result *v1beta1.CloudDeployDeliveryPipeline, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(clouddeploydeliverypipelinesResource, c.ns, cloudDeployDeliveryPipeline), &v1beta1.CloudDeployDeliveryPipeline{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.CloudDeployDeliveryPipeline), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeCloudDeployDeliveryPipelines) UpdateStatus(ctx context.Context, cloudDeployDeliveryPipeline *v1beta1.CloudDeployDeliveryPipeline, opts v1.UpdateOptions) (*v1beta1.CloudDeployDeliveryPipeline, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(clouddeploydeliverypipelinesResource, "status", c.ns, cloudDeployDeliveryPipeline), &v1beta1.CloudDeployDeliveryPipeline{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.CloudDeployDeliveryPipeline), err
+}
+
+// Delete takes name of the cloudDeployDeliveryPipeline and deletes it. Returns an error if one occurs.
+func (c *FakeCloudDeployDeliveryPipelines) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(clouddeploydeliverypipelinesResource, c.ns, name, opts), &v1beta1.CloudDeployDeliveryPipeline{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeCloudDeployDeliveryPipelines) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(clouddeploydeliverypipelinesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.CloudDeployDeliveryPipelineList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched cloudDeployDeliveryPipeline.
+func (c *FakeCloudDeployDeliveryPipelines) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.CloudDeployDeliveryPipeline, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(clouddeploydeliverypipelinesResource, c.ns, name, pt, data, subresources...), &v1beta1.CloudDeployDeliveryPipeline{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.CloudDeployDeliveryPipeline), err
 }

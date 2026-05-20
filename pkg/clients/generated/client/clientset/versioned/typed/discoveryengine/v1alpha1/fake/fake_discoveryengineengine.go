@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/discoveryengine/v1alpha1"
-	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDiscoveryEngineEngines implements DiscoveryEngineEngineInterface
-type fakeDiscoveryEngineEngines struct {
-	*gentype.FakeClientWithList[*v1alpha1.DiscoveryEngineEngine, *v1alpha1.DiscoveryEngineEngineList]
+// FakeDiscoveryEngineEngines implements DiscoveryEngineEngineInterface
+type FakeDiscoveryEngineEngines struct {
 	Fake *FakeDiscoveryengineV1alpha1
+	ns   string
 }
 
-func newFakeDiscoveryEngineEngines(fake *FakeDiscoveryengineV1alpha1, namespace string) discoveryenginev1alpha1.DiscoveryEngineEngineInterface {
-	return &fakeDiscoveryEngineEngines{
-		gentype.NewFakeClientWithList[*v1alpha1.DiscoveryEngineEngine, *v1alpha1.DiscoveryEngineEngineList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("discoveryengineengines"),
-			v1alpha1.SchemeGroupVersion.WithKind("DiscoveryEngineEngine"),
-			func() *v1alpha1.DiscoveryEngineEngine { return &v1alpha1.DiscoveryEngineEngine{} },
-			func() *v1alpha1.DiscoveryEngineEngineList { return &v1alpha1.DiscoveryEngineEngineList{} },
-			func(dst, src *v1alpha1.DiscoveryEngineEngineList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DiscoveryEngineEngineList) []*v1alpha1.DiscoveryEngineEngine {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DiscoveryEngineEngineList, items []*v1alpha1.DiscoveryEngineEngine) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var discoveryengineenginesResource = v1alpha1.SchemeGroupVersion.WithResource("discoveryengineengines")
+
+var discoveryengineenginesKind = v1alpha1.SchemeGroupVersion.WithKind("DiscoveryEngineEngine")
+
+// Get takes name of the discoveryEngineEngine, and returns the corresponding discoveryEngineEngine object, and an error if there is any.
+func (c *FakeDiscoveryEngineEngines) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DiscoveryEngineEngine, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(discoveryengineenginesResource, c.ns, name), &v1alpha1.DiscoveryEngineEngine{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DiscoveryEngineEngine), err
+}
+
+// List takes label and field selectors, and returns the list of DiscoveryEngineEngines that match those selectors.
+func (c *FakeDiscoveryEngineEngines) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DiscoveryEngineEngineList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(discoveryengineenginesResource, discoveryengineenginesKind, c.ns, opts), &v1alpha1.DiscoveryEngineEngineList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DiscoveryEngineEngineList{ListMeta: obj.(*v1alpha1.DiscoveryEngineEngineList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DiscoveryEngineEngineList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested discoveryEngineEngines.
+func (c *FakeDiscoveryEngineEngines) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(discoveryengineenginesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a discoveryEngineEngine and creates it.  Returns the server's representation of the discoveryEngineEngine, and an error, if there is any.
+func (c *FakeDiscoveryEngineEngines) Create(ctx context.Context, discoveryEngineEngine *v1alpha1.DiscoveryEngineEngine, opts v1.CreateOptions) (result *v1alpha1.DiscoveryEngineEngine, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(discoveryengineenginesResource, c.ns, discoveryEngineEngine), &v1alpha1.DiscoveryEngineEngine{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DiscoveryEngineEngine), err
+}
+
+// Update takes the representation of a discoveryEngineEngine and updates it. Returns the server's representation of the discoveryEngineEngine, and an error, if there is any.
+func (c *FakeDiscoveryEngineEngines) Update(ctx context.Context, discoveryEngineEngine *v1alpha1.DiscoveryEngineEngine, opts v1.UpdateOptions) (result *v1alpha1.DiscoveryEngineEngine, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(discoveryengineenginesResource, c.ns, discoveryEngineEngine), &v1alpha1.DiscoveryEngineEngine{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DiscoveryEngineEngine), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDiscoveryEngineEngines) UpdateStatus(ctx context.Context, discoveryEngineEngine *v1alpha1.DiscoveryEngineEngine, opts v1.UpdateOptions) (*v1alpha1.DiscoveryEngineEngine, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(discoveryengineenginesResource, "status", c.ns, discoveryEngineEngine), &v1alpha1.DiscoveryEngineEngine{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DiscoveryEngineEngine), err
+}
+
+// Delete takes name of the discoveryEngineEngine and deletes it. Returns an error if one occurs.
+func (c *FakeDiscoveryEngineEngines) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(discoveryengineenginesResource, c.ns, name, opts), &v1alpha1.DiscoveryEngineEngine{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDiscoveryEngineEngines) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(discoveryengineenginesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DiscoveryEngineEngineList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched discoveryEngineEngine.
+func (c *FakeDiscoveryEngineEngines) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DiscoveryEngineEngine, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(discoveryengineenginesResource, c.ns, name, pt, data, subresources...), &v1alpha1.DiscoveryEngineEngine{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DiscoveryEngineEngine), err
 }

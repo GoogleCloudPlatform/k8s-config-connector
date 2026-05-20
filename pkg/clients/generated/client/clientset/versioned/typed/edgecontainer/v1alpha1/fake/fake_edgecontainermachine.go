@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1alpha1"
-	edgecontainerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeEdgeContainerMachines implements EdgeContainerMachineInterface
-type fakeEdgeContainerMachines struct {
-	*gentype.FakeClientWithList[*v1alpha1.EdgeContainerMachine, *v1alpha1.EdgeContainerMachineList]
+// FakeEdgeContainerMachines implements EdgeContainerMachineInterface
+type FakeEdgeContainerMachines struct {
 	Fake *FakeEdgecontainerV1alpha1
+	ns   string
 }
 
-func newFakeEdgeContainerMachines(fake *FakeEdgecontainerV1alpha1, namespace string) edgecontainerv1alpha1.EdgeContainerMachineInterface {
-	return &fakeEdgeContainerMachines{
-		gentype.NewFakeClientWithList[*v1alpha1.EdgeContainerMachine, *v1alpha1.EdgeContainerMachineList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("edgecontainermachines"),
-			v1alpha1.SchemeGroupVersion.WithKind("EdgeContainerMachine"),
-			func() *v1alpha1.EdgeContainerMachine { return &v1alpha1.EdgeContainerMachine{} },
-			func() *v1alpha1.EdgeContainerMachineList { return &v1alpha1.EdgeContainerMachineList{} },
-			func(dst, src *v1alpha1.EdgeContainerMachineList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.EdgeContainerMachineList) []*v1alpha1.EdgeContainerMachine {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.EdgeContainerMachineList, items []*v1alpha1.EdgeContainerMachine) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var edgecontainermachinesResource = v1alpha1.SchemeGroupVersion.WithResource("edgecontainermachines")
+
+var edgecontainermachinesKind = v1alpha1.SchemeGroupVersion.WithKind("EdgeContainerMachine")
+
+// Get takes name of the edgeContainerMachine, and returns the corresponding edgeContainerMachine object, and an error if there is any.
+func (c *FakeEdgeContainerMachines) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.EdgeContainerMachine, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(edgecontainermachinesResource, c.ns, name), &v1alpha1.EdgeContainerMachine{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.EdgeContainerMachine), err
+}
+
+// List takes label and field selectors, and returns the list of EdgeContainerMachines that match those selectors.
+func (c *FakeEdgeContainerMachines) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.EdgeContainerMachineList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(edgecontainermachinesResource, edgecontainermachinesKind, c.ns, opts), &v1alpha1.EdgeContainerMachineList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.EdgeContainerMachineList{ListMeta: obj.(*v1alpha1.EdgeContainerMachineList).ListMeta}
+	for _, item := range obj.(*v1alpha1.EdgeContainerMachineList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested edgeContainerMachines.
+func (c *FakeEdgeContainerMachines) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(edgecontainermachinesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a edgeContainerMachine and creates it.  Returns the server's representation of the edgeContainerMachine, and an error, if there is any.
+func (c *FakeEdgeContainerMachines) Create(ctx context.Context, edgeContainerMachine *v1alpha1.EdgeContainerMachine, opts v1.CreateOptions) (result *v1alpha1.EdgeContainerMachine, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(edgecontainermachinesResource, c.ns, edgeContainerMachine), &v1alpha1.EdgeContainerMachine{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.EdgeContainerMachine), err
+}
+
+// Update takes the representation of a edgeContainerMachine and updates it. Returns the server's representation of the edgeContainerMachine, and an error, if there is any.
+func (c *FakeEdgeContainerMachines) Update(ctx context.Context, edgeContainerMachine *v1alpha1.EdgeContainerMachine, opts v1.UpdateOptions) (result *v1alpha1.EdgeContainerMachine, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(edgecontainermachinesResource, c.ns, edgeContainerMachine), &v1alpha1.EdgeContainerMachine{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.EdgeContainerMachine), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeEdgeContainerMachines) UpdateStatus(ctx context.Context, edgeContainerMachine *v1alpha1.EdgeContainerMachine, opts v1.UpdateOptions) (*v1alpha1.EdgeContainerMachine, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(edgecontainermachinesResource, "status", c.ns, edgeContainerMachine), &v1alpha1.EdgeContainerMachine{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.EdgeContainerMachine), err
+}
+
+// Delete takes name of the edgeContainerMachine and deletes it. Returns an error if one occurs.
+func (c *FakeEdgeContainerMachines) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(edgecontainermachinesResource, c.ns, name, opts), &v1alpha1.EdgeContainerMachine{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeEdgeContainerMachines) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(edgecontainermachinesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.EdgeContainerMachineList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched edgeContainerMachine.
+func (c *FakeEdgeContainerMachines) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.EdgeContainerMachine, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(edgecontainermachinesResource, c.ns, name, pt, data, subresources...), &v1alpha1.EdgeContainerMachine{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.EdgeContainerMachine), err
 }

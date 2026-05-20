@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
-	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeMonitoringGroups implements MonitoringGroupInterface
-type fakeMonitoringGroups struct {
-	*gentype.FakeClientWithList[*v1beta1.MonitoringGroup, *v1beta1.MonitoringGroupList]
+// FakeMonitoringGroups implements MonitoringGroupInterface
+type FakeMonitoringGroups struct {
 	Fake *FakeMonitoringV1beta1
+	ns   string
 }
 
-func newFakeMonitoringGroups(fake *FakeMonitoringV1beta1, namespace string) monitoringv1beta1.MonitoringGroupInterface {
-	return &fakeMonitoringGroups{
-		gentype.NewFakeClientWithList[*v1beta1.MonitoringGroup, *v1beta1.MonitoringGroupList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("monitoringgroups"),
-			v1beta1.SchemeGroupVersion.WithKind("MonitoringGroup"),
-			func() *v1beta1.MonitoringGroup { return &v1beta1.MonitoringGroup{} },
-			func() *v1beta1.MonitoringGroupList { return &v1beta1.MonitoringGroupList{} },
-			func(dst, src *v1beta1.MonitoringGroupList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.MonitoringGroupList) []*v1beta1.MonitoringGroup {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.MonitoringGroupList, items []*v1beta1.MonitoringGroup) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var monitoringgroupsResource = v1beta1.SchemeGroupVersion.WithResource("monitoringgroups")
+
+var monitoringgroupsKind = v1beta1.SchemeGroupVersion.WithKind("MonitoringGroup")
+
+// Get takes name of the monitoringGroup, and returns the corresponding monitoringGroup object, and an error if there is any.
+func (c *FakeMonitoringGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.MonitoringGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(monitoringgroupsResource, c.ns, name), &v1beta1.MonitoringGroup{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.MonitoringGroup), err
+}
+
+// List takes label and field selectors, and returns the list of MonitoringGroups that match those selectors.
+func (c *FakeMonitoringGroups) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.MonitoringGroupList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(monitoringgroupsResource, monitoringgroupsKind, c.ns, opts), &v1beta1.MonitoringGroupList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.MonitoringGroupList{ListMeta: obj.(*v1beta1.MonitoringGroupList).ListMeta}
+	for _, item := range obj.(*v1beta1.MonitoringGroupList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested monitoringGroups.
+func (c *FakeMonitoringGroups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(monitoringgroupsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a monitoringGroup and creates it.  Returns the server's representation of the monitoringGroup, and an error, if there is any.
+func (c *FakeMonitoringGroups) Create(ctx context.Context, monitoringGroup *v1beta1.MonitoringGroup, opts v1.CreateOptions) (result *v1beta1.MonitoringGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(monitoringgroupsResource, c.ns, monitoringGroup), &v1beta1.MonitoringGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MonitoringGroup), err
+}
+
+// Update takes the representation of a monitoringGroup and updates it. Returns the server's representation of the monitoringGroup, and an error, if there is any.
+func (c *FakeMonitoringGroups) Update(ctx context.Context, monitoringGroup *v1beta1.MonitoringGroup, opts v1.UpdateOptions) (result *v1beta1.MonitoringGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(monitoringgroupsResource, c.ns, monitoringGroup), &v1beta1.MonitoringGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MonitoringGroup), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeMonitoringGroups) UpdateStatus(ctx context.Context, monitoringGroup *v1beta1.MonitoringGroup, opts v1.UpdateOptions) (*v1beta1.MonitoringGroup, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(monitoringgroupsResource, "status", c.ns, monitoringGroup), &v1beta1.MonitoringGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MonitoringGroup), err
+}
+
+// Delete takes name of the monitoringGroup and deletes it. Returns an error if one occurs.
+func (c *FakeMonitoringGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(monitoringgroupsResource, c.ns, name, opts), &v1beta1.MonitoringGroup{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeMonitoringGroups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(monitoringgroupsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.MonitoringGroupList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched monitoringGroup.
+func (c *FakeMonitoringGroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.MonitoringGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(monitoringgroupsResource, c.ns, name, pt, data, subresources...), &v1beta1.MonitoringGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MonitoringGroup), err
 }

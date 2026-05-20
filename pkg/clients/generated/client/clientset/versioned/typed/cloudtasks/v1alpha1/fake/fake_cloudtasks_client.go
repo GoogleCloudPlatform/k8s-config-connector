@@ -32,7 +32,7 @@ type FakeCloudtasksV1alpha1 struct {
 }
 
 func (c *FakeCloudtasksV1alpha1) TasksQueues(namespace string) v1alpha1.TasksQueueInterface {
-	return newFakeTasksQueues(c, namespace)
+	return &FakeTasksQueues{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

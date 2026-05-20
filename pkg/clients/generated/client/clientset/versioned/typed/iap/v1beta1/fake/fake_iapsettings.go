@@ -22,32 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iap/v1beta1"
-	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iap/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeIAPSettingses implements IAPSettingsInterface
-type fakeIAPSettingses struct {
-	*gentype.FakeClientWithList[*v1beta1.IAPSettings, *v1beta1.IAPSettingsList]
+// FakeIAPSettingses implements IAPSettingsInterface
+type FakeIAPSettingses struct {
 	Fake *FakeIapV1beta1
+	ns   string
 }
 
-func newFakeIAPSettingses(fake *FakeIapV1beta1, namespace string) iapv1beta1.IAPSettingsInterface {
-	return &fakeIAPSettingses{
-		gentype.NewFakeClientWithList[*v1beta1.IAPSettings, *v1beta1.IAPSettingsList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("iapsettingses"),
-			v1beta1.SchemeGroupVersion.WithKind("IAPSettings"),
-			func() *v1beta1.IAPSettings { return &v1beta1.IAPSettings{} },
-			func() *v1beta1.IAPSettingsList { return &v1beta1.IAPSettingsList{} },
-			func(dst, src *v1beta1.IAPSettingsList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.IAPSettingsList) []*v1beta1.IAPSettings { return gentype.ToPointerSlice(list.Items) },
-			func(list *v1beta1.IAPSettingsList, items []*v1beta1.IAPSettings) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var iapsettingsesResource = v1beta1.SchemeGroupVersion.WithResource("iapsettingses")
+
+var iapsettingsesKind = v1beta1.SchemeGroupVersion.WithKind("IAPSettings")
+
+// Get takes name of the iAPSettings, and returns the corresponding iAPSettings object, and an error if there is any.
+func (c *FakeIAPSettingses) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IAPSettings, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(iapsettingsesResource, c.ns, name), &v1beta1.IAPSettings{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.IAPSettings), err
+}
+
+// List takes label and field selectors, and returns the list of IAPSettingses that match those selectors.
+func (c *FakeIAPSettingses) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.IAPSettingsList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(iapsettingsesResource, iapsettingsesKind, c.ns, opts), &v1beta1.IAPSettingsList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.IAPSettingsList{ListMeta: obj.(*v1beta1.IAPSettingsList).ListMeta}
+	for _, item := range obj.(*v1beta1.IAPSettingsList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested iAPSettingses.
+func (c *FakeIAPSettingses) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(iapsettingsesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a iAPSettings and creates it.  Returns the server's representation of the iAPSettings, and an error, if there is any.
+func (c *FakeIAPSettingses) Create(ctx context.Context, iAPSettings *v1beta1.IAPSettings, opts v1.CreateOptions) (result *v1beta1.IAPSettings, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(iapsettingsesResource, c.ns, iAPSettings), &v1beta1.IAPSettings{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAPSettings), err
+}
+
+// Update takes the representation of a iAPSettings and updates it. Returns the server's representation of the iAPSettings, and an error, if there is any.
+func (c *FakeIAPSettingses) Update(ctx context.Context, iAPSettings *v1beta1.IAPSettings, opts v1.UpdateOptions) (result *v1beta1.IAPSettings, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(iapsettingsesResource, c.ns, iAPSettings), &v1beta1.IAPSettings{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAPSettings), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeIAPSettingses) UpdateStatus(ctx context.Context, iAPSettings *v1beta1.IAPSettings, opts v1.UpdateOptions) (*v1beta1.IAPSettings, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(iapsettingsesResource, "status", c.ns, iAPSettings), &v1beta1.IAPSettings{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAPSettings), err
+}
+
+// Delete takes name of the iAPSettings and deletes it. Returns an error if one occurs.
+func (c *FakeIAPSettingses) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(iapsettingsesResource, c.ns, name, opts), &v1beta1.IAPSettings{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeIAPSettingses) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(iapsettingsesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.IAPSettingsList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched iAPSettings.
+func (c *FakeIAPSettingses) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAPSettings, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(iapsettingsesResource, c.ns, name, pt, data, subresources...), &v1beta1.IAPSettings{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAPSettings), err
 }

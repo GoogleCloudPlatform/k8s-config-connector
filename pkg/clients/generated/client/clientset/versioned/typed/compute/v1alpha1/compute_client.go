@@ -22,10 +22,10 @@
 package v1alpha1
 
 import (
-	http "net/http"
+	"net/http"
 
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
-	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
@@ -35,7 +35,6 @@ type ComputeV1alpha1Interface interface {
 	ComputeBackendBucketSignedURLKeysGetter
 	ComputeBackendServiceSignedURLKeysGetter
 	ComputeDiskResourcePolicyAttachmentsGetter
-	ComputeFutureReservationsGetter
 	ComputeGlobalNetworkEndpointsGetter
 	ComputeGlobalNetworkEndpointGroupsGetter
 	ComputeInstanceGroupNamedPortsGetter
@@ -75,10 +74,6 @@ func (c *ComputeV1alpha1Client) ComputeBackendServiceSignedURLKeys(namespace str
 
 func (c *ComputeV1alpha1Client) ComputeDiskResourcePolicyAttachments(namespace string) ComputeDiskResourcePolicyAttachmentInterface {
 	return newComputeDiskResourcePolicyAttachments(c, namespace)
-}
-
-func (c *ComputeV1alpha1Client) ComputeFutureReservations(namespace string) ComputeFutureReservationInterface {
-	return newComputeFutureReservations(c, namespace)
 }
 
 func (c *ComputeV1alpha1Client) ComputeGlobalNetworkEndpoints(namespace string) ComputeGlobalNetworkEndpointInterface {
@@ -158,7 +153,9 @@ func (c *ComputeV1alpha1Client) ComputeRegionSSLPolicies(namespace string) Compu
 // where httpClient was generated with rest.HTTPClientFor(c).
 func NewForConfig(c *rest.Config) (*ComputeV1alpha1Client, error) {
 	config := *c
-	setConfigDefaults(&config)
+	if err := setConfigDefaults(&config); err != nil {
+		return nil, err
+	}
 	httpClient, err := rest.HTTPClientFor(&config)
 	if err != nil {
 		return nil, err
@@ -170,7 +167,9 @@ func NewForConfig(c *rest.Config) (*ComputeV1alpha1Client, error) {
 // Note the http client provided takes precedence over the configured transport values.
 func NewForConfigAndClient(c *rest.Config, h *http.Client) (*ComputeV1alpha1Client, error) {
 	config := *c
-	setConfigDefaults(&config)
+	if err := setConfigDefaults(&config); err != nil {
+		return nil, err
+	}
 	client, err := rest.RESTClientForConfigAndClient(&config, h)
 	if err != nil {
 		return nil, err
@@ -193,15 +192,17 @@ func New(c rest.Interface) *ComputeV1alpha1Client {
 	return &ComputeV1alpha1Client{c}
 }
 
-func setConfigDefaults(config *rest.Config) {
-	gv := computev1alpha1.SchemeGroupVersion
+func setConfigDefaults(config *rest.Config) error {
+	gv := v1alpha1.SchemeGroupVersion
 	config.GroupVersion = &gv
 	config.APIPath = "/apis"
-	config.NegotiatedSerializer = rest.CodecFactoryForGeneratedClient(scheme.Scheme, scheme.Codecs).WithoutConversion()
+	config.NegotiatedSerializer = scheme.Codecs.WithoutConversion()
 
 	if config.UserAgent == "" {
 		config.UserAgent = rest.DefaultKubernetesUserAgent()
 	}
+
+	return nil
 }
 
 // RESTClient returns a RESTClient that is used to communicate

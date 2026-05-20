@@ -22,38 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/discoveryengine/v1alpha1"
-	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDiscoveryEngineDataStoreTargetSites implements DiscoveryEngineDataStoreTargetSiteInterface
-type fakeDiscoveryEngineDataStoreTargetSites struct {
-	*gentype.FakeClientWithList[*v1alpha1.DiscoveryEngineDataStoreTargetSite, *v1alpha1.DiscoveryEngineDataStoreTargetSiteList]
+// FakeDiscoveryEngineDataStoreTargetSites implements DiscoveryEngineDataStoreTargetSiteInterface
+type FakeDiscoveryEngineDataStoreTargetSites struct {
 	Fake *FakeDiscoveryengineV1alpha1
+	ns   string
 }
 
-func newFakeDiscoveryEngineDataStoreTargetSites(fake *FakeDiscoveryengineV1alpha1, namespace string) discoveryenginev1alpha1.DiscoveryEngineDataStoreTargetSiteInterface {
-	return &fakeDiscoveryEngineDataStoreTargetSites{
-		gentype.NewFakeClientWithList[*v1alpha1.DiscoveryEngineDataStoreTargetSite, *v1alpha1.DiscoveryEngineDataStoreTargetSiteList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("discoveryenginedatastoretargetsites"),
-			v1alpha1.SchemeGroupVersion.WithKind("DiscoveryEngineDataStoreTargetSite"),
-			func() *v1alpha1.DiscoveryEngineDataStoreTargetSite {
-				return &v1alpha1.DiscoveryEngineDataStoreTargetSite{}
-			},
-			func() *v1alpha1.DiscoveryEngineDataStoreTargetSiteList {
-				return &v1alpha1.DiscoveryEngineDataStoreTargetSiteList{}
-			},
-			func(dst, src *v1alpha1.DiscoveryEngineDataStoreTargetSiteList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DiscoveryEngineDataStoreTargetSiteList) []*v1alpha1.DiscoveryEngineDataStoreTargetSite {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DiscoveryEngineDataStoreTargetSiteList, items []*v1alpha1.DiscoveryEngineDataStoreTargetSite) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var discoveryenginedatastoretargetsitesResource = v1alpha1.SchemeGroupVersion.WithResource("discoveryenginedatastoretargetsites")
+
+var discoveryenginedatastoretargetsitesKind = v1alpha1.SchemeGroupVersion.WithKind("DiscoveryEngineDataStoreTargetSite")
+
+// Get takes name of the discoveryEngineDataStoreTargetSite, and returns the corresponding discoveryEngineDataStoreTargetSite object, and an error if there is any.
+func (c *FakeDiscoveryEngineDataStoreTargetSites) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DiscoveryEngineDataStoreTargetSite, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(discoveryenginedatastoretargetsitesResource, c.ns, name), &v1alpha1.DiscoveryEngineDataStoreTargetSite{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DiscoveryEngineDataStoreTargetSite), err
+}
+
+// List takes label and field selectors, and returns the list of DiscoveryEngineDataStoreTargetSites that match those selectors.
+func (c *FakeDiscoveryEngineDataStoreTargetSites) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DiscoveryEngineDataStoreTargetSiteList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(discoveryenginedatastoretargetsitesResource, discoveryenginedatastoretargetsitesKind, c.ns, opts), &v1alpha1.DiscoveryEngineDataStoreTargetSiteList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DiscoveryEngineDataStoreTargetSiteList{ListMeta: obj.(*v1alpha1.DiscoveryEngineDataStoreTargetSiteList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DiscoveryEngineDataStoreTargetSiteList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested discoveryEngineDataStoreTargetSites.
+func (c *FakeDiscoveryEngineDataStoreTargetSites) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(discoveryenginedatastoretargetsitesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a discoveryEngineDataStoreTargetSite and creates it.  Returns the server's representation of the discoveryEngineDataStoreTargetSite, and an error, if there is any.
+func (c *FakeDiscoveryEngineDataStoreTargetSites) Create(ctx context.Context, discoveryEngineDataStoreTargetSite *v1alpha1.DiscoveryEngineDataStoreTargetSite, opts v1.CreateOptions) (result *v1alpha1.DiscoveryEngineDataStoreTargetSite, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(discoveryenginedatastoretargetsitesResource, c.ns, discoveryEngineDataStoreTargetSite), &v1alpha1.DiscoveryEngineDataStoreTargetSite{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DiscoveryEngineDataStoreTargetSite), err
+}
+
+// Update takes the representation of a discoveryEngineDataStoreTargetSite and updates it. Returns the server's representation of the discoveryEngineDataStoreTargetSite, and an error, if there is any.
+func (c *FakeDiscoveryEngineDataStoreTargetSites) Update(ctx context.Context, discoveryEngineDataStoreTargetSite *v1alpha1.DiscoveryEngineDataStoreTargetSite, opts v1.UpdateOptions) (result *v1alpha1.DiscoveryEngineDataStoreTargetSite, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(discoveryenginedatastoretargetsitesResource, c.ns, discoveryEngineDataStoreTargetSite), &v1alpha1.DiscoveryEngineDataStoreTargetSite{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DiscoveryEngineDataStoreTargetSite), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDiscoveryEngineDataStoreTargetSites) UpdateStatus(ctx context.Context, discoveryEngineDataStoreTargetSite *v1alpha1.DiscoveryEngineDataStoreTargetSite, opts v1.UpdateOptions) (*v1alpha1.DiscoveryEngineDataStoreTargetSite, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(discoveryenginedatastoretargetsitesResource, "status", c.ns, discoveryEngineDataStoreTargetSite), &v1alpha1.DiscoveryEngineDataStoreTargetSite{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DiscoveryEngineDataStoreTargetSite), err
+}
+
+// Delete takes name of the discoveryEngineDataStoreTargetSite and deletes it. Returns an error if one occurs.
+func (c *FakeDiscoveryEngineDataStoreTargetSites) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(discoveryenginedatastoretargetsitesResource, c.ns, name, opts), &v1alpha1.DiscoveryEngineDataStoreTargetSite{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDiscoveryEngineDataStoreTargetSites) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(discoveryenginedatastoretargetsitesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DiscoveryEngineDataStoreTargetSiteList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched discoveryEngineDataStoreTargetSite.
+func (c *FakeDiscoveryEngineDataStoreTargetSites) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DiscoveryEngineDataStoreTargetSite, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(discoveryenginedatastoretargetsitesResource, c.ns, name, pt, data, subresources...), &v1alpha1.DiscoveryEngineDataStoreTargetSite{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DiscoveryEngineDataStoreTargetSite), err
 }

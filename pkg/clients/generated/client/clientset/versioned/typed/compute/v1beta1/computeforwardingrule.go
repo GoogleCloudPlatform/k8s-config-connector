@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeForwardingRulesGetter has a method to return a ComputeForwardingRuleInterface.
@@ -40,34 +41,158 @@ type ComputeForwardingRulesGetter interface {
 
 // ComputeForwardingRuleInterface has methods to work with ComputeForwardingRule resources.
 type ComputeForwardingRuleInterface interface {
-	Create(ctx context.Context, computeForwardingRule *computev1beta1.ComputeForwardingRule, opts v1.CreateOptions) (*computev1beta1.ComputeForwardingRule, error)
-	Update(ctx context.Context, computeForwardingRule *computev1beta1.ComputeForwardingRule, opts v1.UpdateOptions) (*computev1beta1.ComputeForwardingRule, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeForwardingRule *computev1beta1.ComputeForwardingRule, opts v1.UpdateOptions) (*computev1beta1.ComputeForwardingRule, error)
+	Create(ctx context.Context, computeForwardingRule *v1beta1.ComputeForwardingRule, opts v1.CreateOptions) (*v1beta1.ComputeForwardingRule, error)
+	Update(ctx context.Context, computeForwardingRule *v1beta1.ComputeForwardingRule, opts v1.UpdateOptions) (*v1beta1.ComputeForwardingRule, error)
+	UpdateStatus(ctx context.Context, computeForwardingRule *v1beta1.ComputeForwardingRule, opts v1.UpdateOptions) (*v1beta1.ComputeForwardingRule, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeForwardingRule, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeForwardingRuleList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeForwardingRule, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeForwardingRuleList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeForwardingRule, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeForwardingRule, err error)
 	ComputeForwardingRuleExpansion
 }
 
 // computeForwardingRules implements ComputeForwardingRuleInterface
 type computeForwardingRules struct {
-	*gentype.ClientWithList[*computev1beta1.ComputeForwardingRule, *computev1beta1.ComputeForwardingRuleList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeForwardingRules returns a ComputeForwardingRules
 func newComputeForwardingRules(c *ComputeV1beta1Client, namespace string) *computeForwardingRules {
 	return &computeForwardingRules{
-		gentype.NewClientWithList[*computev1beta1.ComputeForwardingRule, *computev1beta1.ComputeForwardingRuleList](
-			"computeforwardingrules",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1beta1.ComputeForwardingRule { return &computev1beta1.ComputeForwardingRule{} },
-			func() *computev1beta1.ComputeForwardingRuleList { return &computev1beta1.ComputeForwardingRuleList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeForwardingRule, and returns the corresponding computeForwardingRule object, and an error if there is any.
+func (c *computeForwardingRules) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeForwardingRule, err error) {
+	result = &v1beta1.ComputeForwardingRule{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computeforwardingrules").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeForwardingRules that match those selectors.
+func (c *computeForwardingRules) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeForwardingRuleList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ComputeForwardingRuleList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computeforwardingrules").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeForwardingRules.
+func (c *computeForwardingRules) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computeforwardingrules").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeForwardingRule and creates it.  Returns the server's representation of the computeForwardingRule, and an error, if there is any.
+func (c *computeForwardingRules) Create(ctx context.Context, computeForwardingRule *v1beta1.ComputeForwardingRule, opts v1.CreateOptions) (result *v1beta1.ComputeForwardingRule, err error) {
+	result = &v1beta1.ComputeForwardingRule{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computeforwardingrules").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeForwardingRule).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeForwardingRule and updates it. Returns the server's representation of the computeForwardingRule, and an error, if there is any.
+func (c *computeForwardingRules) Update(ctx context.Context, computeForwardingRule *v1beta1.ComputeForwardingRule, opts v1.UpdateOptions) (result *v1beta1.ComputeForwardingRule, err error) {
+	result = &v1beta1.ComputeForwardingRule{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computeforwardingrules").
+		Name(computeForwardingRule.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeForwardingRule).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeForwardingRules) UpdateStatus(ctx context.Context, computeForwardingRule *v1beta1.ComputeForwardingRule, opts v1.UpdateOptions) (result *v1beta1.ComputeForwardingRule, err error) {
+	result = &v1beta1.ComputeForwardingRule{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computeforwardingrules").
+		Name(computeForwardingRule.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeForwardingRule).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeForwardingRule and deletes it. Returns an error if one occurs.
+func (c *computeForwardingRules) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computeforwardingrules").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeForwardingRules) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computeforwardingrules").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeForwardingRule.
+func (c *computeForwardingRules) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeForwardingRule, err error) {
+	result = &v1beta1.ComputeForwardingRule{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computeforwardingrules").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

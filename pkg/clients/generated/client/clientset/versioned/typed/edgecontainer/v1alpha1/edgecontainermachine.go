@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	edgecontainerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // EdgeContainerMachinesGetter has a method to return a EdgeContainerMachineInterface.
@@ -40,38 +41,158 @@ type EdgeContainerMachinesGetter interface {
 
 // EdgeContainerMachineInterface has methods to work with EdgeContainerMachine resources.
 type EdgeContainerMachineInterface interface {
-	Create(ctx context.Context, edgeContainerMachine *edgecontainerv1alpha1.EdgeContainerMachine, opts v1.CreateOptions) (*edgecontainerv1alpha1.EdgeContainerMachine, error)
-	Update(ctx context.Context, edgeContainerMachine *edgecontainerv1alpha1.EdgeContainerMachine, opts v1.UpdateOptions) (*edgecontainerv1alpha1.EdgeContainerMachine, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, edgeContainerMachine *edgecontainerv1alpha1.EdgeContainerMachine, opts v1.UpdateOptions) (*edgecontainerv1alpha1.EdgeContainerMachine, error)
+	Create(ctx context.Context, edgeContainerMachine *v1alpha1.EdgeContainerMachine, opts v1.CreateOptions) (*v1alpha1.EdgeContainerMachine, error)
+	Update(ctx context.Context, edgeContainerMachine *v1alpha1.EdgeContainerMachine, opts v1.UpdateOptions) (*v1alpha1.EdgeContainerMachine, error)
+	UpdateStatus(ctx context.Context, edgeContainerMachine *v1alpha1.EdgeContainerMachine, opts v1.UpdateOptions) (*v1alpha1.EdgeContainerMachine, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*edgecontainerv1alpha1.EdgeContainerMachine, error)
-	List(ctx context.Context, opts v1.ListOptions) (*edgecontainerv1alpha1.EdgeContainerMachineList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.EdgeContainerMachine, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.EdgeContainerMachineList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *edgecontainerv1alpha1.EdgeContainerMachine, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.EdgeContainerMachine, err error)
 	EdgeContainerMachineExpansion
 }
 
 // edgeContainerMachines implements EdgeContainerMachineInterface
 type edgeContainerMachines struct {
-	*gentype.ClientWithList[*edgecontainerv1alpha1.EdgeContainerMachine, *edgecontainerv1alpha1.EdgeContainerMachineList]
+	client rest.Interface
+	ns     string
 }
 
 // newEdgeContainerMachines returns a EdgeContainerMachines
 func newEdgeContainerMachines(c *EdgecontainerV1alpha1Client, namespace string) *edgeContainerMachines {
 	return &edgeContainerMachines{
-		gentype.NewClientWithList[*edgecontainerv1alpha1.EdgeContainerMachine, *edgecontainerv1alpha1.EdgeContainerMachineList](
-			"edgecontainermachines",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *edgecontainerv1alpha1.EdgeContainerMachine {
-				return &edgecontainerv1alpha1.EdgeContainerMachine{}
-			},
-			func() *edgecontainerv1alpha1.EdgeContainerMachineList {
-				return &edgecontainerv1alpha1.EdgeContainerMachineList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the edgeContainerMachine, and returns the corresponding edgeContainerMachine object, and an error if there is any.
+func (c *edgeContainerMachines) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.EdgeContainerMachine, err error) {
+	result = &v1alpha1.EdgeContainerMachine{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("edgecontainermachines").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of EdgeContainerMachines that match those selectors.
+func (c *edgeContainerMachines) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.EdgeContainerMachineList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.EdgeContainerMachineList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("edgecontainermachines").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested edgeContainerMachines.
+func (c *edgeContainerMachines) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("edgecontainermachines").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a edgeContainerMachine and creates it.  Returns the server's representation of the edgeContainerMachine, and an error, if there is any.
+func (c *edgeContainerMachines) Create(ctx context.Context, edgeContainerMachine *v1alpha1.EdgeContainerMachine, opts v1.CreateOptions) (result *v1alpha1.EdgeContainerMachine, err error) {
+	result = &v1alpha1.EdgeContainerMachine{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("edgecontainermachines").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(edgeContainerMachine).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a edgeContainerMachine and updates it. Returns the server's representation of the edgeContainerMachine, and an error, if there is any.
+func (c *edgeContainerMachines) Update(ctx context.Context, edgeContainerMachine *v1alpha1.EdgeContainerMachine, opts v1.UpdateOptions) (result *v1alpha1.EdgeContainerMachine, err error) {
+	result = &v1alpha1.EdgeContainerMachine{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("edgecontainermachines").
+		Name(edgeContainerMachine.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(edgeContainerMachine).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *edgeContainerMachines) UpdateStatus(ctx context.Context, edgeContainerMachine *v1alpha1.EdgeContainerMachine, opts v1.UpdateOptions) (result *v1alpha1.EdgeContainerMachine, err error) {
+	result = &v1alpha1.EdgeContainerMachine{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("edgecontainermachines").
+		Name(edgeContainerMachine.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(edgeContainerMachine).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the edgeContainerMachine and deletes it. Returns an error if one occurs.
+func (c *edgeContainerMachines) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("edgecontainermachines").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *edgeContainerMachines) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("edgecontainermachines").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched edgeContainerMachine.
+func (c *edgeContainerMachines) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.EdgeContainerMachine, err error) {
+	result = &v1alpha1.EdgeContainerMachine{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("edgecontainermachines").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

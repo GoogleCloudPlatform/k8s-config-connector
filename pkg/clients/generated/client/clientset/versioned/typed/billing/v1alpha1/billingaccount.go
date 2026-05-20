@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billing/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billing/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // BillingAccountsGetter has a method to return a BillingAccountInterface.
@@ -40,34 +41,158 @@ type BillingAccountsGetter interface {
 
 // BillingAccountInterface has methods to work with BillingAccount resources.
 type BillingAccountInterface interface {
-	Create(ctx context.Context, billingAccount *billingv1alpha1.BillingAccount, opts v1.CreateOptions) (*billingv1alpha1.BillingAccount, error)
-	Update(ctx context.Context, billingAccount *billingv1alpha1.BillingAccount, opts v1.UpdateOptions) (*billingv1alpha1.BillingAccount, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, billingAccount *billingv1alpha1.BillingAccount, opts v1.UpdateOptions) (*billingv1alpha1.BillingAccount, error)
+	Create(ctx context.Context, billingAccount *v1alpha1.BillingAccount, opts v1.CreateOptions) (*v1alpha1.BillingAccount, error)
+	Update(ctx context.Context, billingAccount *v1alpha1.BillingAccount, opts v1.UpdateOptions) (*v1alpha1.BillingAccount, error)
+	UpdateStatus(ctx context.Context, billingAccount *v1alpha1.BillingAccount, opts v1.UpdateOptions) (*v1alpha1.BillingAccount, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*billingv1alpha1.BillingAccount, error)
-	List(ctx context.Context, opts v1.ListOptions) (*billingv1alpha1.BillingAccountList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.BillingAccount, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.BillingAccountList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *billingv1alpha1.BillingAccount, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BillingAccount, err error)
 	BillingAccountExpansion
 }
 
 // billingAccounts implements BillingAccountInterface
 type billingAccounts struct {
-	*gentype.ClientWithList[*billingv1alpha1.BillingAccount, *billingv1alpha1.BillingAccountList]
+	client rest.Interface
+	ns     string
 }
 
 // newBillingAccounts returns a BillingAccounts
 func newBillingAccounts(c *BillingV1alpha1Client, namespace string) *billingAccounts {
 	return &billingAccounts{
-		gentype.NewClientWithList[*billingv1alpha1.BillingAccount, *billingv1alpha1.BillingAccountList](
-			"billingaccounts",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *billingv1alpha1.BillingAccount { return &billingv1alpha1.BillingAccount{} },
-			func() *billingv1alpha1.BillingAccountList { return &billingv1alpha1.BillingAccountList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the billingAccount, and returns the corresponding billingAccount object, and an error if there is any.
+func (c *billingAccounts) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BillingAccount, err error) {
+	result = &v1alpha1.BillingAccount{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("billingaccounts").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of BillingAccounts that match those selectors.
+func (c *billingAccounts) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BillingAccountList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.BillingAccountList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("billingaccounts").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested billingAccounts.
+func (c *billingAccounts) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("billingaccounts").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a billingAccount and creates it.  Returns the server's representation of the billingAccount, and an error, if there is any.
+func (c *billingAccounts) Create(ctx context.Context, billingAccount *v1alpha1.BillingAccount, opts v1.CreateOptions) (result *v1alpha1.BillingAccount, err error) {
+	result = &v1alpha1.BillingAccount{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("billingaccounts").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(billingAccount).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a billingAccount and updates it. Returns the server's representation of the billingAccount, and an error, if there is any.
+func (c *billingAccounts) Update(ctx context.Context, billingAccount *v1alpha1.BillingAccount, opts v1.UpdateOptions) (result *v1alpha1.BillingAccount, err error) {
+	result = &v1alpha1.BillingAccount{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("billingaccounts").
+		Name(billingAccount.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(billingAccount).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *billingAccounts) UpdateStatus(ctx context.Context, billingAccount *v1alpha1.BillingAccount, opts v1.UpdateOptions) (result *v1alpha1.BillingAccount, err error) {
+	result = &v1alpha1.BillingAccount{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("billingaccounts").
+		Name(billingAccount.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(billingAccount).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the billingAccount and deletes it. Returns an error if one occurs.
+func (c *billingAccounts) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("billingaccounts").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *billingAccounts) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("billingaccounts").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched billingAccount.
+func (c *billingAccounts) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BillingAccount, err error) {
+	result = &v1alpha1.BillingAccount{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("billingaccounts").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

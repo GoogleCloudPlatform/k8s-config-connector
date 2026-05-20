@@ -32,15 +32,15 @@ type FakeBackupdrV1beta1 struct {
 }
 
 func (c *FakeBackupdrV1beta1) BackupDRBackupPlans(namespace string) v1beta1.BackupDRBackupPlanInterface {
-	return newFakeBackupDRBackupPlans(c, namespace)
+	return &FakeBackupDRBackupPlans{c, namespace}
 }
 
 func (c *FakeBackupdrV1beta1) BackupDRBackupPlanAssociations(namespace string) v1beta1.BackupDRBackupPlanAssociationInterface {
-	return newFakeBackupDRBackupPlanAssociations(c, namespace)
+	return &FakeBackupDRBackupPlanAssociations{c, namespace}
 }
 
 func (c *FakeBackupdrV1beta1) BackupDRBackupVaults(namespace string) v1beta1.BackupDRBackupVaultInterface {
-	return newFakeBackupDRBackupVaults(c, namespace)
+	return &FakeBackupDRBackupVaults{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

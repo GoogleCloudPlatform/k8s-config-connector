@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // LoggingLogViewsGetter has a method to return a LoggingLogViewInterface.
@@ -40,34 +41,158 @@ type LoggingLogViewsGetter interface {
 
 // LoggingLogViewInterface has methods to work with LoggingLogView resources.
 type LoggingLogViewInterface interface {
-	Create(ctx context.Context, loggingLogView *loggingv1beta1.LoggingLogView, opts v1.CreateOptions) (*loggingv1beta1.LoggingLogView, error)
-	Update(ctx context.Context, loggingLogView *loggingv1beta1.LoggingLogView, opts v1.UpdateOptions) (*loggingv1beta1.LoggingLogView, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, loggingLogView *loggingv1beta1.LoggingLogView, opts v1.UpdateOptions) (*loggingv1beta1.LoggingLogView, error)
+	Create(ctx context.Context, loggingLogView *v1beta1.LoggingLogView, opts v1.CreateOptions) (*v1beta1.LoggingLogView, error)
+	Update(ctx context.Context, loggingLogView *v1beta1.LoggingLogView, opts v1.UpdateOptions) (*v1beta1.LoggingLogView, error)
+	UpdateStatus(ctx context.Context, loggingLogView *v1beta1.LoggingLogView, opts v1.UpdateOptions) (*v1beta1.LoggingLogView, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*loggingv1beta1.LoggingLogView, error)
-	List(ctx context.Context, opts v1.ListOptions) (*loggingv1beta1.LoggingLogViewList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.LoggingLogView, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.LoggingLogViewList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *loggingv1beta1.LoggingLogView, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.LoggingLogView, err error)
 	LoggingLogViewExpansion
 }
 
 // loggingLogViews implements LoggingLogViewInterface
 type loggingLogViews struct {
-	*gentype.ClientWithList[*loggingv1beta1.LoggingLogView, *loggingv1beta1.LoggingLogViewList]
+	client rest.Interface
+	ns     string
 }
 
 // newLoggingLogViews returns a LoggingLogViews
 func newLoggingLogViews(c *LoggingV1beta1Client, namespace string) *loggingLogViews {
 	return &loggingLogViews{
-		gentype.NewClientWithList[*loggingv1beta1.LoggingLogView, *loggingv1beta1.LoggingLogViewList](
-			"logginglogviews",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *loggingv1beta1.LoggingLogView { return &loggingv1beta1.LoggingLogView{} },
-			func() *loggingv1beta1.LoggingLogViewList { return &loggingv1beta1.LoggingLogViewList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the loggingLogView, and returns the corresponding loggingLogView object, and an error if there is any.
+func (c *loggingLogViews) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.LoggingLogView, err error) {
+	result = &v1beta1.LoggingLogView{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("logginglogviews").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of LoggingLogViews that match those selectors.
+func (c *loggingLogViews) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.LoggingLogViewList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.LoggingLogViewList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("logginglogviews").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested loggingLogViews.
+func (c *loggingLogViews) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("logginglogviews").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a loggingLogView and creates it.  Returns the server's representation of the loggingLogView, and an error, if there is any.
+func (c *loggingLogViews) Create(ctx context.Context, loggingLogView *v1beta1.LoggingLogView, opts v1.CreateOptions) (result *v1beta1.LoggingLogView, err error) {
+	result = &v1beta1.LoggingLogView{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("logginglogviews").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(loggingLogView).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a loggingLogView and updates it. Returns the server's representation of the loggingLogView, and an error, if there is any.
+func (c *loggingLogViews) Update(ctx context.Context, loggingLogView *v1beta1.LoggingLogView, opts v1.UpdateOptions) (result *v1beta1.LoggingLogView, err error) {
+	result = &v1beta1.LoggingLogView{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("logginglogviews").
+		Name(loggingLogView.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(loggingLogView).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *loggingLogViews) UpdateStatus(ctx context.Context, loggingLogView *v1beta1.LoggingLogView, opts v1.UpdateOptions) (result *v1beta1.LoggingLogView, err error) {
+	result = &v1beta1.LoggingLogView{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("logginglogviews").
+		Name(loggingLogView.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(loggingLogView).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the loggingLogView and deletes it. Returns an error if one occurs.
+func (c *loggingLogViews) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("logginglogviews").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *loggingLogViews) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("logginglogviews").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched loggingLogView.
+func (c *loggingLogViews) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.LoggingLogView, err error) {
+	result = &v1beta1.LoggingLogView{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("logginglogviews").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }
