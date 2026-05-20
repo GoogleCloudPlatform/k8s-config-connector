@@ -35,7 +35,6 @@ mv google/container/ mockgcp/
 mv google/dataflow/ mockgcp/
 mv google/firestore/ mockgcp/
 mv google/iam/ mockgcp/
-mv google/logging/ mockgcp/
 mv google/pubsub/ mockgcp/
 mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
@@ -66,8 +65,6 @@ find . -type f -print0 | xargs -0 sed -i \
   -e "s@google\.firestore@mockgcp.firestore@g" \
   -e "s@google/iam/@mockgcp/iam/@g" \
   -e "s@google\.iam@mockgcp.iam@g" \
-  -e "s@google/logging/@mockgcp/logging/@g" \
-  -e "s@google\.logging@mockgcp.logging@g" \
   -e "s@google/pubsub/@mockgcp/pubsub/@g" \
   -e "s@google\.pubsub@mockgcp.pubsub@g" \
   -e "s@google/monitoring/@mockgcp/monitoring/@g" \

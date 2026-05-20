@@ -287,7 +287,7 @@ service OrganizationsApiproductsServer {
     };
   };
 
-  // Updates an existing API product. You must include all required values, whether or not you are updating them, as well as any optional values that you are updating. The API product name required in the request URL is the internal name of the product, not the display name. While they may be the same, it depends on whether the API product was created via UI or API. View the list of API products to identify their internal names.
+  // Updates an existing API product. You must include all required values, whether or not you are updating them, as well as any optional values that you are updating. The API product name required in the request URL is the internal name of the product, not the display name. While they may be the same, it depends on whether the API product was created via UI or API. View the list of API products to identify their internal names. **Note:** We recommend that you avoid making concurrent update requests for the same resource. Near-simultaneous writes to the same entity can result in conflicts and unexpected behavior. Ensure operations are sequential when modifying a single resource.
   rpc UpdateOrganizationsApiproduct(UpdateOrganizationsApiproductRequest) returns (GoogleCloudApigeeV1ApiProduct) {
     option (google.api.http) = {
       put: "/v1/{name=organizations/*/apiproducts/*}"
@@ -589,7 +589,7 @@ service OrganizationsAppgroupsServer {
     };
   };
 
-  // Updates an AppGroup. This API replaces the existing AppGroup details with those specified in the request. Include or exclude any existing details that you want to retain or delete, respectively. Note that the state of the AppGroup should be updated using `action`, and not via AppGroup.
+  // Updates an AppGroup. This API replaces the existing AppGroup details with those specified in the request. Include or exclude any existing details that you want to retain or delete, respectively. Note that the state of the AppGroup should be updated using `action`, and not via AppGroup. **Note:** We recommend that you avoid making concurrent update requests for the same resource. Near-simultaneous writes to the same entity can result in conflicts and unexpected behavior. Ensure operations are sequential when modifying a single resource.
   rpc UpdateOrganizationsAppgroup(UpdateOrganizationsAppgroupRequest) returns (GoogleCloudApigeeV1AppGroup) {
     option (google.api.http) = {
       put: "/v1/{name=organizations/*/appgroups/*}"
@@ -597,7 +597,7 @@ service OrganizationsAppgroupsServer {
     };
   };
 
-  // Updates the monetization configuration for the AppGroup.
+  // Updates the monetization configuration for the AppGroup. **Note:** We recommend that you avoid making concurrent update requests for the same resource. Near-simultaneous writes to the same entity can result in conflicts and unexpected behavior. Ensure operations are sequential when modifying a single resource.
   rpc UpdateMonetizationConfigOrganizationsAppgroup(UpdateMonetizationConfigOrganizationsAppgroupRequest) returns (GoogleCloudApigeeV1AppGroupMonetizationConfig) {
     option (google.api.http) = {
       put: "/v1/{name=organizations/*/appgroups/*/monetizationConfig}"
@@ -637,7 +637,7 @@ service OrganizationsAppgroupsAppsServer {
     };
   };
 
-  // Updates the details for an AppGroup app. In addition, you can add an API product to an AppGroup app and automatically generate an API key for the app to use when calling APIs in the API product. If you want to use an existing API key for the API product, add the API product to the API key using the UpdateAppGroupAppKey API. Using this API, you cannot update the app name, as it is the primary key used to identify the app and cannot be changed. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively.
+  // Updates the details for an AppGroup app. In addition, you can add an API product to an AppGroup app and automatically generate an API key for the app to use when calling APIs in the API product. If you want to use an existing API key for the API product, add the API product to the API key using the UpdateAppGroupAppKey API. Using this API, you cannot update the app name, as it is the primary key used to identify the app and cannot be changed. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. **Note:** We recommend that you avoid making concurrent update requests for the same resource. Near-simultaneous writes to the same entity can result in conflicts and unexpected behavior. Ensure operations are sequential when modifying a single resource.
   rpc UpdateOrganizationsAppgroupsApp(UpdateOrganizationsAppgroupsAppRequest) returns (GoogleCloudApigeeV1AppGroupApp) {
     option (google.api.http) = {
       put: "/v1/{name=organizations/*/appgroups/*/apps/*}"
@@ -875,7 +875,7 @@ service OrganizationsDevelopersServer {
     };
   };
 
-  // Updates a developer. This API replaces the existing developer details with those specified in the request. Include or exclude any existing details that you want to retain or delete, respectively. The custom attribute limit is 18. **Note**: OAuth access tokens and Key Management Service (KMS) entities (apps, developers, and API products) are cached for 180 seconds (current default). Any custom attributes associated with these entities are cached for at least 180 seconds after the entity is accessed at runtime. Therefore, an `ExpiresIn` element on the OAuthV2 policy won't be able to expire an access token in less than 180 seconds.
+  // Updates a developer. This API replaces the existing developer details with those specified in the request. Include or exclude any existing details that you want to retain or delete, respectively. The custom attribute limit is 18. **Note**: OAuth access tokens and Key Management Service (KMS) entities (apps, developers, and API products) are cached for 180 seconds (current default). Any custom attributes associated with these entities are cached for at least 180 seconds after the entity is accessed at runtime. Therefore, an `ExpiresIn` element on the OAuthV2 policy won't be able to expire an access token in less than 180 seconds. **Note:** We recommend that you avoid making concurrent update requests for the same resource. Near-simultaneous writes to the same entity can result in conflicts and unexpected behavior. Ensure operations are sequential when modifying a single resource.
   rpc UpdateOrganizationsDeveloper(UpdateOrganizationsDeveloperRequest) returns (GoogleCloudApigeeV1Developer) {
     option (google.api.http) = {
       put: "/v1/{name=organizations/*/developers/*}"
@@ -939,7 +939,7 @@ service OrganizationsDevelopersAppsServer {
     };
   };
 
-  // Updates the details for a developer app. In addition, you can add an API product to a developer app and automatically generate an API key for the app to use when calling APIs in the API product. If you want to use an existing API key for the API product, add the API product to the API key using the UpdateDeveloperAppKey API. Using this API, you cannot update the following: * App name as it is the primary key used to identify the app and cannot be changed. * Scopes associated with the app. Instead, use the ReplaceDeveloperAppKey API. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively.
+  // Updates the details for a developer app. In addition, you can add an API product to a developer app and automatically generate an API key for the app to use when calling APIs in the API product. If you want to use an existing API key for the API product, add the API product to the API key using the UpdateDeveloperAppKey API. Using this API, you cannot update the following: * App name as it is the primary key used to identify the app and cannot be changed. * Scopes associated with the app. Instead, use the ReplaceDeveloperAppKey API. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. **Note:** We recommend that you avoid making concurrent update requests for the same resource. Near-simultaneous writes to the same entity can result in conflicts and unexpected behavior. Ensure operations are sequential when modifying a single resource.
   rpc UpdateOrganizationsDevelopersApp(UpdateOrganizationsDevelopersAppRequest) returns (GoogleCloudApigeeV1DeveloperApp) {
     option (google.api.http) = {
       put: "/v1/{name=organizations/*/developers/*/apps/*}"
@@ -3335,34 +3335,36 @@ message GoogleCloudApigeeV1ApiProxyRevision {
   repeated string integration_endpoints = 10 [json_name="integrationEndpoints"];
   // Time that the API proxy revision was last modified in milliseconds since epoch.
   int64 last_modified_at = 11 [json_name="lastModifiedAt"];
+  // Output only. Whether this proxy revision is detected as an MCP (Model Context Protocol) proxy. A proxy revision is identified as MCP if it has a proxy endpoint with the `/mcp` base path that routes to the MCP target URL.
+  bool mcp = 12 [json_name="mcp"];
   // Name of the API proxy.
-  string name = 12 [json_name="name"];
+  string name = 13 [json_name="name"];
   // List of policy names included in the API proxy revision..
-  repeated string policies = 13 [json_name="policies"];
+  repeated string policies = 14 [json_name="policies"];
   // List of proxy names included in the API proxy revision.
-  repeated string proxies = 14 [json_name="proxies"];
+  repeated string proxies = 15 [json_name="proxies"];
   // List of ProxyEndpoints in the `/proxies` directory of the API proxy. Typically, this element is included only when the API proxy was created using the Edge UI. This is a 'manifest' setting designed to provide visibility into the contents of the API proxy.
-  repeated string proxy_endpoints = 15 [json_name="proxyEndpoints"];
+  repeated string proxy_endpoints = 16 [json_name="proxyEndpoints"];
   // List of resource files included in the API proxy revision.
-  GoogleCloudApigeeV1ResourceFiles resource_files = 16 [json_name="resourceFiles"];
+  GoogleCloudApigeeV1ResourceFiles resource_files = 17 [json_name="resourceFiles"];
   // List of the resources included in the API proxy revision formatted as "{type}://{name}".
-  repeated string resources = 17 [json_name="resources"];
+  repeated string resources = 18 [json_name="resources"];
   // API proxy revision.
-  string revision = 18 [json_name="revision"];
+  string revision = 19 [json_name="revision"];
   // List of the shared flows included in the API proxy revision.
-  repeated string shared_flows = 19 [json_name="sharedFlows"];
+  repeated string shared_flows = 20 [json_name="sharedFlows"];
   // OpenAPI Specification that is associated with the API proxy. The value is set to a URL or to a path in the specification store.
-  string spec = 20 [json_name="spec"];
+  string spec = 21 [json_name="spec"];
   // List of TargetEndpoints in the `/targets` directory of the API proxy. Typically, this element is included only when the API proxy was created using the Edge UI. This is a 'manifest' setting designed to provide visibility into the contents of the API proxy.
-  repeated string target_endpoints = 21 [json_name="targetEndpoints"];
+  repeated string target_endpoints = 22 [json_name="targetEndpoints"];
   // List of TargetServers referenced in any TargetEndpoint in the API proxy. Typically, you will see this element only when the API proxy was created using the Edge UI. This is a 'manifest' setting designed to provide visibility into the contents of the API proxy.
-  repeated string target_servers = 22 [json_name="targetServers"];
+  repeated string target_servers = 23 [json_name="targetServers"];
   // List of the targets included in the API proxy revision.
-  repeated string targets = 23 [json_name="targets"];
+  repeated string targets = 24 [json_name="targets"];
   // List of the teams included in the API proxy revision.
-  repeated string teams = 24 [json_name="teams"];
+  repeated string teams = 25 [json_name="teams"];
   // Type. Set to `Application`. Maintained for compatibility with the Apigee Edge API.
-  string type = 25 [json_name="type"];
+  string type = 26 [json_name="type"];
 }
 
 // Configurations of the API Security add-on.

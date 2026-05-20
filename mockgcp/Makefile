@@ -112,6 +112,9 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \
+<<<<<<< ours
+		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
+>>>>>>> theirs
 		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
@@ -140,10 +143,15 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
 		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
-		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto	 \
+		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/v1/resource_policy_member.proto \
+<<<<<<< ours
 		./third_party/googleapis/mockgcp/spanner/admin/database/v1/*.proto \
+		./apis/mockgcp/logging/v2/*.proto \
+		./apis/mockgcp/logging/type/*.proto \
+		./third_party/googleapis/mockgcp/pubsub/v1/*.proto \		./third_party/googleapis/mockgcp/spanner/admin/database/v1/*.proto \
+>>>>>>> theirs
 		./third_party/googleapis/mockgcp/spanner/admin/instance/v1/*.proto \
 		./third_party/googleapis/mockgrafeas/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/biglake/v1/*.proto \
