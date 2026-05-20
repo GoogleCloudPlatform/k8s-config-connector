@@ -255,6 +255,12 @@ type ComputeHealthCheckSpec struct {
 	UnhealthyThreshold *int64 `json:"unhealthyThreshold,omitempty"`
 }
 
+type HealthcheckObservedStateStatus struct {
+	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
 type ComputeHealthCheckStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeHealthCheck's current state. */
@@ -263,16 +269,16 @@ type ComputeHealthCheckStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* ComputeHealthCheckObservedState is the state of the ComputeHealthCheck resource as most recently observed in GCP. */
 	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
-
-	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */
-	// +optional
-	Type *string `json:"type,omitempty"`
+	ObservedState *HealthcheckObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

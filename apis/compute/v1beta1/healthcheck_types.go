@@ -366,16 +366,18 @@ type ComputeHealthCheckStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */
 	// +optional
-	Type *string `json:"type,omitempty"`
+	ObservedState *ComputeHealthCheckObservedState `json:"observedState,omitempty"`
 }
 
 // ComputeHealthCheckObservedState is the state of the ComputeHealthCheck resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1.HealthCheck
 type ComputeHealthCheckObservedState struct {
+	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 // +genclient
