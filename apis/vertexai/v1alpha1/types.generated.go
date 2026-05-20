@@ -61,7 +61,6 @@ type Blob struct {
 	Data []byte `json:"data,omitempty"`
 }
 
-/* unreachable type CachedContent
 // +kcc:proto=google.cloud.aiplatform.v1.CachedContent
 type CachedContent struct {
 	// Timestamp of when this resource is considered expired.
@@ -117,7 +116,6 @@ type CachedContent struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.encryption_spec
 	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.CachedContent.UsageMetadata
 type CachedContent_UsageMetadata struct {
@@ -287,7 +285,7 @@ type FunctionDeclaration struct {
 	//
 	//  This field is mutually exclusive with `parameters`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.parameters_json_schema
-	ParametersJsonSchema *apiextensionsv1.JSON `json:"parametersJsonSchema,omitempty"`
+	ParametersJsonSchema *Value `json:"parametersJsonSchema,omitempty"`
 
 	// Optional. Describes the output from this function in JSON Schema format.
 	//  Reflects the Open API 3.03 Response Object. The Schema defines the type
@@ -300,7 +298,7 @@ type FunctionDeclaration struct {
 	//
 	//  This field is mutually exclusive with `response`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.response_json_schema
-	ResponseJsonSchema *apiextensionsv1.JSON `json:"responseJsonSchema,omitempty"`
+	ResponseJsonSchema *Value `json:"responseJsonSchema,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.FunctionResponse
@@ -319,7 +317,6 @@ type FunctionResponse struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.GoogleMaps
-// +kubebuilder:validation:Type=object
 type GoogleMaps struct {
 }
 
@@ -511,7 +508,7 @@ type Schema struct {
 
 	// Optional. Default value of the data.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.default
-	Default *apiextensionsv1.JSON `json:"default,omitempty"`
+	Default *Value `json:"default,omitempty"`
 
 	// Optional. SCHEMA FIELDS FOR TYPE ARRAY
 	//  Schema of the elements of Type.ARRAY.
@@ -581,7 +578,7 @@ type Schema struct {
 	// Optional. Example of the object. Will only populated when the object is the
 	//  root.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.example
-	Example *apiextensionsv1.JSON `json:"example,omitempty"`
+	Example *Value `json:"example,omitempty"`
 
 	// Optional. The value should be validated against any (one or more) of the
 	//  subschemas in the list.
@@ -591,7 +588,7 @@ type Schema struct {
 	// Optional. Can either be a boolean or an object; controls the presence of
 	//  additional properties.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.additional_properties
-	AdditionalProperties *apiextensionsv1.JSON `json:"additionalProperties,omitempty"`
+	AdditionalProperties *Value `json:"additionalProperties,omitempty"`
 
 	// Optional. Allows indirect references between schema nodes. The value should
 	//  be a valid reference to a child of the root `defs`.
@@ -679,7 +676,6 @@ type Tool struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.Tool.CodeExecution
-// +kubebuilder:validation:Type=object
 type Tool_CodeExecution struct {
 }
 
@@ -719,7 +715,6 @@ type TrainingConfig struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.UrlContext
-// +kubebuilder:validation:Type=object
 type URLContext struct {
 }
 
@@ -856,8 +851,38 @@ type Any struct {
 }
 
 // +kcc:proto=google.protobuf.ListValue
+type ListValue struct {
+	// Repeated field of dynamically typed values.
+	// +kcc:proto:field=google.protobuf.ListValue.values
+	Values []Value `json:"values,omitempty"`
+}
 
 // +kcc:proto=google.protobuf.Value
+type Value struct {
+	// Represents a null value.
+	// +kcc:proto:field=google.protobuf.Value.null_value
+	NullValue *string `json:"nullValue,omitempty"`
+
+	// Represents a double value.
+	// +kcc:proto:field=google.protobuf.Value.number_value
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	// Represents a string value.
+	// +kcc:proto:field=google.protobuf.Value.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Represents a boolean value.
+	// +kcc:proto:field=google.protobuf.Value.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// Represents a structured value.
+	// +kcc:proto:field=google.protobuf.Value.struct_value
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+
+	// Represents a repeated `Value`.
+	// +kcc:proto:field=google.protobuf.Value.list_value
+	ListValue *ListValue `json:"listValue,omitempty"`
+}
 
 // +kcc:proto=google.rpc.Status
 type Status struct {
@@ -911,7 +936,6 @@ type Money struct {
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
-/* unreachable type CachedContentObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.CachedContent
 type CachedContentObservedState struct {
 	// Output only. Creation time of the cache entry.
@@ -926,4 +950,3 @@ type CachedContentObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.usage_metadata
 	UsageMetadata *CachedContent_UsageMetadata `json:"usageMetadata,omitempty"`
 }
-*/

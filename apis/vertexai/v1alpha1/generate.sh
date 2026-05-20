@@ -17,7 +17,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-REPO_ROOT=$(git rev-parse --show-toplevel)
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd "${REPO_ROOT}/dev/tools/controllerbuilder"
 
@@ -29,7 +29,8 @@ go run . generate-types \
     --resource VertexAIFeaturestore:Featurestore \
     --resource VertexAIMetadataStore:MetadataStore \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
-    --resource VertexAIExampleStore:ExampleStore
+    --resource VertexAIExampleStore:ExampleStore \
+    --prune-unused-types=false
 
 mv "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/vertexai/v1alpha1/types_v1beta1.go"
 
@@ -37,15 +38,10 @@ go run . generate-types \
     --service google.cloud.aiplatform.v1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
-    --resource VertexAICachedContent:CachedContent
+    --resource VertexAICachedContent:CachedContent \
+    --prune-unused-types=false
 
 sed -i 's/package v1alpha1/package v1alpha1\n\nimport (\n\tapiextensionsv1 "k8s.io\/apiextensions-apiserver\/pkg\/apis\/apiextensions\/v1"\n)/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
-
-# Replace generated Value and ListValue with apiextensionsv1.JSON to fix CRD generation
-sed -i 's/\*Value/*apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
-sed -i 's/\[\]Value/\[\]apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
-sed -i '/type Value struct/,/^}/d' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
-sed -i '/type ListValue struct/,/^}/d' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
 
 # We leave generate-mapper for v1beta1 so that `generate.sh` stays functionally the same as before
 # (even though it's broken on HEAD, we won't fix the pre-existing issue here).

@@ -16,6 +16,7 @@ package cachedcontent
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	latlng "google.golang.org/genproto/googleapis/type/latlng"
@@ -741,6 +742,12 @@ func VideoMetadata_FromProto(mapCtx *direct.MapContext, in *pb.VideoMetadata) *k
 		return nil
 	}
 	out := &krm.VideoMetadata{}
+	if in.GetStartOffset() != nil {
+		out.StartOffset = direct.StringDuration_FromProto(mapCtx, in.GetStartOffset())
+	}
+	if in.GetEndOffset() != nil {
+		out.EndOffset = direct.StringDuration_FromProto(mapCtx, in.GetEndOffset())
+	}
 	return out
 }
 func VideoMetadata_ToProto(mapCtx *direct.MapContext, in *krm.VideoMetadata) *pb.VideoMetadata {
@@ -748,6 +755,12 @@ func VideoMetadata_ToProto(mapCtx *direct.MapContext, in *krm.VideoMetadata) *pb
 		return nil
 	}
 	out := &pb.VideoMetadata{}
+	if in.StartOffset != nil {
+		out.StartOffset = direct.StringDuration_ToProto(mapCtx, in.StartOffset)
+	}
+	if in.EndOffset != nil {
+		out.EndOffset = direct.StringDuration_ToProto(mapCtx, in.EndOffset)
+	}
 	return out
 }
 
@@ -758,6 +771,8 @@ func DynamicRetrievalConfig_FromProto(mapCtx *direct.MapContext, in *pb.DynamicR
 		return nil
 	}
 	out := &krm.DynamicRetrievalConfig{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.DynamicThreshold = direct.LazyPtr(in.GetDynamicThreshold())
 	return out
 }
 func DynamicRetrievalConfig_ToProto(mapCtx *direct.MapContext, in *krm.DynamicRetrievalConfig) *pb.DynamicRetrievalConfig {
@@ -765,5 +780,117 @@ func DynamicRetrievalConfig_ToProto(mapCtx *direct.MapContext, in *krm.DynamicRe
 		return nil
 	}
 	out := &pb.DynamicRetrievalConfig{}
+	out.Mode = direct.Enum_ToProto[pb.DynamicRetrievalConfig_Mode](mapCtx, in.Mode)
+	out.DynamicThreshold = in.DynamicThreshold
+	return out
+}
+
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpec{}
+	out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	return out
+}
+
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
+	return out
+}
+
+func VertexAICachedContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAICachedContentSpec) *pb.CachedContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CachedContent{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Model = direct.ValueOf(in.Model)
+	out.SystemInstruction = Content_ToProto(mapCtx, in.SystemInstruction)
+	if in.Contents != nil {
+		out.Contents = make([]*pb.Content, len(in.Contents))
+		for i, v := range in.Contents {
+			out.Contents[i] = Content_ToProto(mapCtx, &v)
+		}
+	}
+	if in.Tools != nil {
+		out.Tools = make([]*pb.Tool, len(in.Tools))
+		for i, v := range in.Tools {
+			out.Tools[i] = Tool_ToProto(mapCtx, &v)
+		}
+	}
+	out.ToolConfig = ToolConfig_ToProto(mapCtx, in.ToolConfig)
+
+	if in.ExpireTime != nil {
+		out.Expiration = &pb.CachedContent_ExpireTime{ExpireTime: direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)}
+	} else if in.TTL != nil {
+		out.Expiration = &pb.CachedContent_Ttl{Ttl: direct.StringDuration_ToProto(mapCtx, in.TTL)}
+	}
+
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+
+	return out
+}
+
+func CachedContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent) *krm.VertexAICachedContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAICachedContentObservedState{}
+
+	if in.GetCreateTime() != nil {
+		out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	}
+	if in.GetUpdateTime() != nil {
+		out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	}
+
+	// Handle Expiration
+	switch expiration := in.Expiration.(type) {
+	case *pb.CachedContent_ExpireTime:
+		out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, expiration.ExpireTime)
+	case *pb.CachedContent_Ttl:
+		// TTL is a duration, usually not mapped back to a string in ObservedState unless explicitly asked.
+		_ = expiration
+	}
+
+	// Fallback to in.GetExpireTime() if present
+	if in.GetExpireTime() != nil {
+		out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	}
+
+	out.UsageMetadata = CachedContent_UsageMetadata_FromProto(mapCtx, in.GetUsageMetadata())
+	return out
+}
+
+func CachedContent_UsageMetadata_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent_UsageMetadata) *krm.CachedContent_UsageMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CachedContent_UsageMetadata{}
+	out.TotalTokenCount = direct.LazyPtr(in.GetTotalTokenCount())
+	out.AudioDurationSeconds = direct.LazyPtr(in.GetAudioDurationSeconds())
+	out.VideoDurationSeconds = direct.LazyPtr(in.GetVideoDurationSeconds())
+	out.TextCount = direct.LazyPtr(in.GetTextCount())
+	out.ImageCount = direct.LazyPtr(in.GetImageCount())
+	return out
+}
+
+func CachedContent_UsageMetadata_ToProto(mapCtx *direct.MapContext, in *krm.CachedContent_UsageMetadata) *pb.CachedContent_UsageMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CachedContent_UsageMetadata{}
+	out.TotalTokenCount = direct.ValueOf(in.TotalTokenCount)
+	out.AudioDurationSeconds = direct.ValueOf(in.AudioDurationSeconds)
+	out.VideoDurationSeconds = direct.ValueOf(in.VideoDurationSeconds)
+	out.TextCount = direct.ValueOf(in.TextCount)
+	out.ImageCount = direct.ValueOf(in.ImageCount)
 	return out
 }

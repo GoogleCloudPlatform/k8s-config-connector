@@ -2247,6 +2247,7 @@
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.contents[].parts[].videoMetadata.startOffset" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.contents[].role" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.expireTime" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.model" is not set in unstructured objects

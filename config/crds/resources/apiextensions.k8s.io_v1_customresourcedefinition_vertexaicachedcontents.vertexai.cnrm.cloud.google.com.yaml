@@ -191,6 +191,44 @@ spec:
                 description: Optional. The user-generated meaningful display name
                   of the cached content.
                 type: string
+              encryptionSpec:
+                description: Customer-managed encryption key spec for a CachedContent.
+                  If set, this CachedContent will be secured by this key.
+                properties:
+                  kmsKeyRef:
+                    description: Required. The Cloud KMS resource identifier of the
+                      customer managed encryption key used to protect a resource.
+                      The key needs to be in the same region as where the compute
+                      resource is created.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
+                required:
+                - kmsKeyRef
+                type: object
               expireTime:
                 description: Timestamp of when this resource is considered expired.
                 type: string
@@ -408,7 +446,6 @@ spec:
                       description: Optional. CodeExecution tool type. Enables the
                         model to execute code as part of generation.
                       type: object
-                      x-kubernetes-preserve-unknown-fields: true
                     computerUse:
                       description: Optional. Tool to support the model interacting
                         directly with the computer. If enabled, it automatically populates
@@ -468,7 +505,32 @@ spec:
                               additionalProperties:
                                 description: Optional. Can either be a boolean or
                                   an object; controls the presence of additional properties.
-                                x-kubernetes-preserve-unknown-fields: true
+                                properties:
+                                  boolValue:
+                                    description: Represents a boolean value.
+                                    type: boolean
+                                  listValue:
+                                    description: Represents a repeated `Value`.
+                                    properties:
+                                      values:
+                                        description: Repeated field of dynamically
+                                          typed values.
+                                        items: {}
+                                        type: array
+                                    type: object
+                                  nullValue:
+                                    description: Represents a null value.
+                                    type: string
+                                  numberValue:
+                                    description: Represents a double value.
+                                    type: number
+                                  stringValue:
+                                    description: Represents a string value.
+                                    type: string
+                                  structValue:
+                                    description: Represents a structured value.
+                                    x-kubernetes-preserve-unknown-fields: true
+                                type: object
                               anyOf:
                                 description: Optional. The value should be validated
                                   against any (one or more) of the subschemas in the
@@ -477,7 +539,32 @@ spec:
                                 type: array
                               default:
                                 description: Optional. Default value of the data.
-                                x-kubernetes-preserve-unknown-fields: true
+                                properties:
+                                  boolValue:
+                                    description: Represents a boolean value.
+                                    type: boolean
+                                  listValue:
+                                    description: Represents a repeated `Value`.
+                                    properties:
+                                      values:
+                                        description: Repeated field of dynamically
+                                          typed values.
+                                        items: {}
+                                        type: array
+                                    type: object
+                                  nullValue:
+                                    description: Represents a null value.
+                                    type: string
+                                  numberValue:
+                                    description: Represents a double value.
+                                    type: number
+                                  stringValue:
+                                    description: Represents a string value.
+                                    type: string
+                                  structValue:
+                                    description: Represents a structured value.
+                                    x-kubernetes-preserve-unknown-fields: true
+                                type: object
                               description:
                                 description: Optional. The description of the data.
                                 type: string
@@ -494,7 +581,32 @@ spec:
                               example:
                                 description: Optional. Example of the object. Will
                                   only populated when the object is the root.
-                                x-kubernetes-preserve-unknown-fields: true
+                                properties:
+                                  boolValue:
+                                    description: Represents a boolean value.
+                                    type: boolean
+                                  listValue:
+                                    description: Represents a repeated `Value`.
+                                    properties:
+                                      values:
+                                        description: Repeated field of dynamically
+                                          typed values.
+                                        items: {}
+                                        type: array
+                                    type: object
+                                  nullValue:
+                                    description: Represents a null value.
+                                    type: string
+                                  numberValue:
+                                    description: Represents a double value.
+                                    type: number
+                                  stringValue:
+                                    description: Represents a string value.
+                                    type: string
+                                  structValue:
+                                    description: Represents a structured value.
+                                    x-kubernetes-preserve-unknown-fields: true
+                                type: object
                               format:
                                 description: 'Optional. The format of the data. Supported
                                   formats: for NUMBER type: "float", "double" for
@@ -613,7 +725,32 @@ spec:
                                ```
 
                                This field is mutually exclusive with `parameters`.
-                            x-kubernetes-preserve-unknown-fields: true
+                            properties:
+                              boolValue:
+                                description: Represents a boolean value.
+                                type: boolean
+                              listValue:
+                                description: Represents a repeated `Value`.
+                                properties:
+                                  values:
+                                    description: Repeated field of dynamically typed
+                                      values.
+                                    items: {}
+                                    type: array
+                                type: object
+                              nullValue:
+                                description: Represents a null value.
+                                type: string
+                              numberValue:
+                                description: Represents a double value.
+                                type: number
+                              stringValue:
+                                description: Represents a string value.
+                                type: string
+                              structValue:
+                                description: Represents a structured value.
+                                x-kubernetes-preserve-unknown-fields: true
+                            type: object
                           response:
                             description: Optional. Describes the output from this
                               function in JSON Schema format. Reflects the Open API
@@ -623,7 +760,32 @@ spec:
                               additionalProperties:
                                 description: Optional. Can either be a boolean or
                                   an object; controls the presence of additional properties.
-                                x-kubernetes-preserve-unknown-fields: true
+                                properties:
+                                  boolValue:
+                                    description: Represents a boolean value.
+                                    type: boolean
+                                  listValue:
+                                    description: Represents a repeated `Value`.
+                                    properties:
+                                      values:
+                                        description: Repeated field of dynamically
+                                          typed values.
+                                        items: {}
+                                        type: array
+                                    type: object
+                                  nullValue:
+                                    description: Represents a null value.
+                                    type: string
+                                  numberValue:
+                                    description: Represents a double value.
+                                    type: number
+                                  stringValue:
+                                    description: Represents a string value.
+                                    type: string
+                                  structValue:
+                                    description: Represents a structured value.
+                                    x-kubernetes-preserve-unknown-fields: true
+                                type: object
                               anyOf:
                                 description: Optional. The value should be validated
                                   against any (one or more) of the subschemas in the
@@ -632,7 +794,32 @@ spec:
                                 type: array
                               default:
                                 description: Optional. Default value of the data.
-                                x-kubernetes-preserve-unknown-fields: true
+                                properties:
+                                  boolValue:
+                                    description: Represents a boolean value.
+                                    type: boolean
+                                  listValue:
+                                    description: Represents a repeated `Value`.
+                                    properties:
+                                      values:
+                                        description: Repeated field of dynamically
+                                          typed values.
+                                        items: {}
+                                        type: array
+                                    type: object
+                                  nullValue:
+                                    description: Represents a null value.
+                                    type: string
+                                  numberValue:
+                                    description: Represents a double value.
+                                    type: number
+                                  stringValue:
+                                    description: Represents a string value.
+                                    type: string
+                                  structValue:
+                                    description: Represents a structured value.
+                                    x-kubernetes-preserve-unknown-fields: true
+                                type: object
                               description:
                                 description: Optional. The description of the data.
                                 type: string
@@ -649,7 +836,32 @@ spec:
                               example:
                                 description: Optional. Example of the object. Will
                                   only populated when the object is the root.
-                                x-kubernetes-preserve-unknown-fields: true
+                                properties:
+                                  boolValue:
+                                    description: Represents a boolean value.
+                                    type: boolean
+                                  listValue:
+                                    description: Represents a repeated `Value`.
+                                    properties:
+                                      values:
+                                        description: Repeated field of dynamically
+                                          typed values.
+                                        items: {}
+                                        type: array
+                                    type: object
+                                  nullValue:
+                                    description: Represents a null value.
+                                    type: string
+                                  numberValue:
+                                    description: Represents a double value.
+                                    type: number
+                                  stringValue:
+                                    description: Represents a string value.
+                                    type: string
+                                  structValue:
+                                    description: Represents a structured value.
+                                    x-kubernetes-preserve-unknown-fields: true
+                                type: object
                               format:
                                 description: 'Optional. The format of the data. Supported
                                   formats: for NUMBER type: "float", "double" for
@@ -754,14 +966,38 @@ spec:
                                The value specified by the schema is the response value of the function.
 
                                This field is mutually exclusive with `response`.
-                            x-kubernetes-preserve-unknown-fields: true
+                            properties:
+                              boolValue:
+                                description: Represents a boolean value.
+                                type: boolean
+                              listValue:
+                                description: Represents a repeated `Value`.
+                                properties:
+                                  values:
+                                    description: Repeated field of dynamically typed
+                                      values.
+                                    items: {}
+                                    type: array
+                                type: object
+                              nullValue:
+                                description: Represents a null value.
+                                type: string
+                              numberValue:
+                                description: Represents a double value.
+                                type: number
+                              stringValue:
+                                description: Represents a string value.
+                                type: string
+                              structValue:
+                                description: Represents a structured value.
+                                x-kubernetes-preserve-unknown-fields: true
+                            type: object
                         type: object
                       type: array
                     googleMaps:
                       description: Optional. GoogleMaps tool type. Tool to support
                         Google Maps in Model.
                       type: object
-                      x-kubernetes-preserve-unknown-fields: true
                     googleSearch:
                       description: Optional. GoogleSearch tool type. Tool to support
                         Google Search in Model. Powered by Google.
@@ -929,7 +1165,6 @@ spec:
                     urlContext:
                       description: Optional. Tool to support URL context retrieval.
                       type: object
-                      x-kubernetes-preserve-unknown-fields: true
                   type: object
                 type: array
               ttl:
@@ -988,6 +1223,10 @@ spec:
                 properties:
                   createTime:
                     description: Output only. Creation time of the cache entry.
+                    type: string
+                  expireTime:
+                    description: Output only. Timestamp of when this resource is considered
+                      expired.
                     type: string
                   updateTime:
                     description: Output only. When the cache entry was last updated

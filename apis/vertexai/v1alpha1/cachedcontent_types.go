@@ -69,6 +69,11 @@ type VertexAICachedContentSpec struct {
 	// Input only. The TTL for this resource. The expiration time is computed: now + TTL.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CachedContent.ttl
 	TTL *string `json:"ttl,omitempty"`
+
+	// Customer-managed encryption key spec for a CachedContent. If set,
+	// this CachedContent will be secured by this key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
 }
 
 // VertexAICachedContentStatus defines the config connector machine state of VertexAICachedContent
@@ -101,6 +106,10 @@ type VertexAICachedContentObservedState struct {
 	// Output only. Metadata on the usage of the cached content.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CachedContent.usage_metadata
 	UsageMetadata *CachedContent_UsageMetadata `json:"usageMetadata,omitempty"`
+
+	// Output only. Timestamp of when this resource is considered expired.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
 }
 
 // +genclient

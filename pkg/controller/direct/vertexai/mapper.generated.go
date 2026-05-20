@@ -742,11 +742,11 @@ func VertexAICachedContentObservedState_FromProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &krm.VertexAICachedContentObservedState{}
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.UsageMetadata = CachedContent_UsageMetadata_FromProto(mapCtx, in.GetUsageMetadata())
-	// MISSING: EncryptionSpec
 	return out
 }
 func VertexAICachedContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAICachedContentObservedState) *pb.CachedContent {
@@ -754,11 +754,13 @@ func VertexAICachedContentObservedState_ToProto(mapCtx *direct.MapContext, in *k
 		return nil
 	}
 	out := &pb.CachedContent{}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime); oneof != nil {
+		out.Expiration = &pb.CachedContent_ExpireTime{ExpireTime: oneof}
+	}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.UsageMetadata = CachedContent_UsageMetadata_ToProto(mapCtx, in.UsageMetadata)
-	// MISSING: EncryptionSpec
 	return out
 }
 func VertexAICachedContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent) *krm.VertexAICachedContentSpec {
@@ -775,7 +777,7 @@ func VertexAICachedContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cache
 	out.Contents = direct.Slice_FromProto(mapCtx, in.Contents, Content_FromProto)
 	out.Tools = direct.Slice_FromProto(mapCtx, in.Tools, Tool_FromProto)
 	out.ToolConfig = ToolConfig_FromProto(mapCtx, in.GetToolConfig())
-	// MISSING: EncryptionSpec
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
 func VertexAICachedContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAICachedContentSpec) *pb.CachedContent {
@@ -796,7 +798,7 @@ func VertexAICachedContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Vertex
 	out.Contents = direct.Slice_ToProto(mapCtx, in.Contents, Content_ToProto)
 	out.Tools = direct.Slice_ToProto(mapCtx, in.Tools, Tool_ToProto)
 	out.ToolConfig = ToolConfig_ToProto(mapCtx, in.ToolConfig)
-	// MISSING: EncryptionSpec
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
 func VertexAIDeploymentResourcePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentResourcePool) *krm.VertexAIDeploymentResourcePoolObservedState {
