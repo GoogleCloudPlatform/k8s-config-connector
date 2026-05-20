@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // VMwareEngineNetworksGetter has a method to return a VMwareEngineNetworkInterface.
@@ -40,36 +41,158 @@ type VMwareEngineNetworksGetter interface {
 
 // VMwareEngineNetworkInterface has methods to work with VMwareEngineNetwork resources.
 type VMwareEngineNetworkInterface interface {
-	Create(ctx context.Context, vMwareEngineNetwork *vmwareenginev1alpha1.VMwareEngineNetwork, opts v1.CreateOptions) (*vmwareenginev1alpha1.VMwareEngineNetwork, error)
-	Update(ctx context.Context, vMwareEngineNetwork *vmwareenginev1alpha1.VMwareEngineNetwork, opts v1.UpdateOptions) (*vmwareenginev1alpha1.VMwareEngineNetwork, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, vMwareEngineNetwork *vmwareenginev1alpha1.VMwareEngineNetwork, opts v1.UpdateOptions) (*vmwareenginev1alpha1.VMwareEngineNetwork, error)
+	Create(ctx context.Context, vMwareEngineNetwork *v1alpha1.VMwareEngineNetwork, opts v1.CreateOptions) (*v1alpha1.VMwareEngineNetwork, error)
+	Update(ctx context.Context, vMwareEngineNetwork *v1alpha1.VMwareEngineNetwork, opts v1.UpdateOptions) (*v1alpha1.VMwareEngineNetwork, error)
+	UpdateStatus(ctx context.Context, vMwareEngineNetwork *v1alpha1.VMwareEngineNetwork, opts v1.UpdateOptions) (*v1alpha1.VMwareEngineNetwork, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*vmwareenginev1alpha1.VMwareEngineNetwork, error)
-	List(ctx context.Context, opts v1.ListOptions) (*vmwareenginev1alpha1.VMwareEngineNetworkList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.VMwareEngineNetwork, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.VMwareEngineNetworkList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *vmwareenginev1alpha1.VMwareEngineNetwork, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VMwareEngineNetwork, err error)
 	VMwareEngineNetworkExpansion
 }
 
 // vMwareEngineNetworks implements VMwareEngineNetworkInterface
 type vMwareEngineNetworks struct {
-	*gentype.ClientWithList[*vmwareenginev1alpha1.VMwareEngineNetwork, *vmwareenginev1alpha1.VMwareEngineNetworkList]
+	client rest.Interface
+	ns     string
 }
 
 // newVMwareEngineNetworks returns a VMwareEngineNetworks
 func newVMwareEngineNetworks(c *VmwareengineV1alpha1Client, namespace string) *vMwareEngineNetworks {
 	return &vMwareEngineNetworks{
-		gentype.NewClientWithList[*vmwareenginev1alpha1.VMwareEngineNetwork, *vmwareenginev1alpha1.VMwareEngineNetworkList](
-			"vmwareenginenetworks",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *vmwareenginev1alpha1.VMwareEngineNetwork { return &vmwareenginev1alpha1.VMwareEngineNetwork{} },
-			func() *vmwareenginev1alpha1.VMwareEngineNetworkList {
-				return &vmwareenginev1alpha1.VMwareEngineNetworkList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the vMwareEngineNetwork, and returns the corresponding vMwareEngineNetwork object, and an error if there is any.
+func (c *vMwareEngineNetworks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VMwareEngineNetwork, err error) {
+	result = &v1alpha1.VMwareEngineNetwork{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("vmwareenginenetworks").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of VMwareEngineNetworks that match those selectors.
+func (c *vMwareEngineNetworks) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VMwareEngineNetworkList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.VMwareEngineNetworkList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("vmwareenginenetworks").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested vMwareEngineNetworks.
+func (c *vMwareEngineNetworks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("vmwareenginenetworks").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a vMwareEngineNetwork and creates it.  Returns the server's representation of the vMwareEngineNetwork, and an error, if there is any.
+func (c *vMwareEngineNetworks) Create(ctx context.Context, vMwareEngineNetwork *v1alpha1.VMwareEngineNetwork, opts v1.CreateOptions) (result *v1alpha1.VMwareEngineNetwork, err error) {
+	result = &v1alpha1.VMwareEngineNetwork{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("vmwareenginenetworks").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(vMwareEngineNetwork).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a vMwareEngineNetwork and updates it. Returns the server's representation of the vMwareEngineNetwork, and an error, if there is any.
+func (c *vMwareEngineNetworks) Update(ctx context.Context, vMwareEngineNetwork *v1alpha1.VMwareEngineNetwork, opts v1.UpdateOptions) (result *v1alpha1.VMwareEngineNetwork, err error) {
+	result = &v1alpha1.VMwareEngineNetwork{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("vmwareenginenetworks").
+		Name(vMwareEngineNetwork.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(vMwareEngineNetwork).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *vMwareEngineNetworks) UpdateStatus(ctx context.Context, vMwareEngineNetwork *v1alpha1.VMwareEngineNetwork, opts v1.UpdateOptions) (result *v1alpha1.VMwareEngineNetwork, err error) {
+	result = &v1alpha1.VMwareEngineNetwork{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("vmwareenginenetworks").
+		Name(vMwareEngineNetwork.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(vMwareEngineNetwork).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the vMwareEngineNetwork and deletes it. Returns an error if one occurs.
+func (c *vMwareEngineNetworks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("vmwareenginenetworks").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *vMwareEngineNetworks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("vmwareenginenetworks").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched vMwareEngineNetwork.
+func (c *vMwareEngineNetworks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VMwareEngineNetwork, err error) {
+	result = &v1alpha1.VMwareEngineNetwork{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("vmwareenginenetworks").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

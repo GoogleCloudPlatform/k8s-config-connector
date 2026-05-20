@@ -69,7 +69,8 @@ type BucketCondition struct {
 	// +optional
 	DaysSinceCustomTime *int64 `json:"daysSinceCustomTime,omitempty"`
 
-	/* Number of days elapsed since the noncurrent timestamp of an object. This condition is relevant only for versioned objects. */
+	/* Number of days elapsed since the noncurrent timestamp of an object. This
+	condition is relevant only for versioned objects. */
 	// +optional
 	DaysSinceNoncurrentTime *int64 `json:"daysSinceNoncurrentTime,omitempty"`
 
@@ -122,7 +123,6 @@ type BucketCustomPlacementConfig struct {
 }
 
 type BucketEncryption struct {
-	/* A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
@@ -178,7 +178,8 @@ type StorageBucketSpec struct {
 	// +optional
 	Autoclass *BucketAutoclass `json:"autoclass,omitempty"`
 
-	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field. Enables Bucket PolicyOnly access to a bucket. */
+	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
+	Enables Bucket PolicyOnly access to a bucket. */
 	// +optional
 	BucketPolicyOnly *bool `json:"bucketPolicyOnly,omitempty"`
 
@@ -267,15 +268,11 @@ type StorageBucketStatus struct {
 	/* Conditions represent the latest available observations of the
 	   StorageBucket's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the StorageBucket resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
 	ObservedState *BucketObservedStateStatus `json:"observedState,omitempty"`
 

@@ -32,7 +32,7 @@ type FakeEdgecontainerV1alpha1 struct {
 }
 
 func (c *FakeEdgecontainerV1alpha1) EdgeContainerMachines(namespace string) v1alpha1.EdgeContainerMachineInterface {
-	return newFakeEdgeContainerMachines(c, namespace)
+	return &FakeEdgeContainerMachines{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

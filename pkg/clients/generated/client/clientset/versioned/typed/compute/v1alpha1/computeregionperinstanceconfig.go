@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeRegionPerInstanceConfigsGetter has a method to return a ComputeRegionPerInstanceConfigInterface.
@@ -40,38 +41,158 @@ type ComputeRegionPerInstanceConfigsGetter interface {
 
 // ComputeRegionPerInstanceConfigInterface has methods to work with ComputeRegionPerInstanceConfig resources.
 type ComputeRegionPerInstanceConfigInterface interface {
-	Create(ctx context.Context, computeRegionPerInstanceConfig *computev1alpha1.ComputeRegionPerInstanceConfig, opts v1.CreateOptions) (*computev1alpha1.ComputeRegionPerInstanceConfig, error)
-	Update(ctx context.Context, computeRegionPerInstanceConfig *computev1alpha1.ComputeRegionPerInstanceConfig, opts v1.UpdateOptions) (*computev1alpha1.ComputeRegionPerInstanceConfig, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeRegionPerInstanceConfig *computev1alpha1.ComputeRegionPerInstanceConfig, opts v1.UpdateOptions) (*computev1alpha1.ComputeRegionPerInstanceConfig, error)
+	Create(ctx context.Context, computeRegionPerInstanceConfig *v1alpha1.ComputeRegionPerInstanceConfig, opts v1.CreateOptions) (*v1alpha1.ComputeRegionPerInstanceConfig, error)
+	Update(ctx context.Context, computeRegionPerInstanceConfig *v1alpha1.ComputeRegionPerInstanceConfig, opts v1.UpdateOptions) (*v1alpha1.ComputeRegionPerInstanceConfig, error)
+	UpdateStatus(ctx context.Context, computeRegionPerInstanceConfig *v1alpha1.ComputeRegionPerInstanceConfig, opts v1.UpdateOptions) (*v1alpha1.ComputeRegionPerInstanceConfig, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1alpha1.ComputeRegionPerInstanceConfig, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1alpha1.ComputeRegionPerInstanceConfigList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.ComputeRegionPerInstanceConfig, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.ComputeRegionPerInstanceConfigList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1alpha1.ComputeRegionPerInstanceConfig, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeRegionPerInstanceConfig, err error)
 	ComputeRegionPerInstanceConfigExpansion
 }
 
 // computeRegionPerInstanceConfigs implements ComputeRegionPerInstanceConfigInterface
 type computeRegionPerInstanceConfigs struct {
-	*gentype.ClientWithList[*computev1alpha1.ComputeRegionPerInstanceConfig, *computev1alpha1.ComputeRegionPerInstanceConfigList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeRegionPerInstanceConfigs returns a ComputeRegionPerInstanceConfigs
 func newComputeRegionPerInstanceConfigs(c *ComputeV1alpha1Client, namespace string) *computeRegionPerInstanceConfigs {
 	return &computeRegionPerInstanceConfigs{
-		gentype.NewClientWithList[*computev1alpha1.ComputeRegionPerInstanceConfig, *computev1alpha1.ComputeRegionPerInstanceConfigList](
-			"computeregionperinstanceconfigs",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1alpha1.ComputeRegionPerInstanceConfig {
-				return &computev1alpha1.ComputeRegionPerInstanceConfig{}
-			},
-			func() *computev1alpha1.ComputeRegionPerInstanceConfigList {
-				return &computev1alpha1.ComputeRegionPerInstanceConfigList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeRegionPerInstanceConfig, and returns the corresponding computeRegionPerInstanceConfig object, and an error if there is any.
+func (c *computeRegionPerInstanceConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeRegionPerInstanceConfig, err error) {
+	result = &v1alpha1.ComputeRegionPerInstanceConfig{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computeregionperinstanceconfigs").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeRegionPerInstanceConfigs that match those selectors.
+func (c *computeRegionPerInstanceConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeRegionPerInstanceConfigList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.ComputeRegionPerInstanceConfigList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computeregionperinstanceconfigs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeRegionPerInstanceConfigs.
+func (c *computeRegionPerInstanceConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computeregionperinstanceconfigs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeRegionPerInstanceConfig and creates it.  Returns the server's representation of the computeRegionPerInstanceConfig, and an error, if there is any.
+func (c *computeRegionPerInstanceConfigs) Create(ctx context.Context, computeRegionPerInstanceConfig *v1alpha1.ComputeRegionPerInstanceConfig, opts v1.CreateOptions) (result *v1alpha1.ComputeRegionPerInstanceConfig, err error) {
+	result = &v1alpha1.ComputeRegionPerInstanceConfig{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computeregionperinstanceconfigs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeRegionPerInstanceConfig).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeRegionPerInstanceConfig and updates it. Returns the server's representation of the computeRegionPerInstanceConfig, and an error, if there is any.
+func (c *computeRegionPerInstanceConfigs) Update(ctx context.Context, computeRegionPerInstanceConfig *v1alpha1.ComputeRegionPerInstanceConfig, opts v1.UpdateOptions) (result *v1alpha1.ComputeRegionPerInstanceConfig, err error) {
+	result = &v1alpha1.ComputeRegionPerInstanceConfig{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computeregionperinstanceconfigs").
+		Name(computeRegionPerInstanceConfig.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeRegionPerInstanceConfig).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeRegionPerInstanceConfigs) UpdateStatus(ctx context.Context, computeRegionPerInstanceConfig *v1alpha1.ComputeRegionPerInstanceConfig, opts v1.UpdateOptions) (result *v1alpha1.ComputeRegionPerInstanceConfig, err error) {
+	result = &v1alpha1.ComputeRegionPerInstanceConfig{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computeregionperinstanceconfigs").
+		Name(computeRegionPerInstanceConfig.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeRegionPerInstanceConfig).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeRegionPerInstanceConfig and deletes it. Returns an error if one occurs.
+func (c *computeRegionPerInstanceConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computeregionperinstanceconfigs").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeRegionPerInstanceConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computeregionperinstanceconfigs").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeRegionPerInstanceConfig.
+func (c *computeRegionPerInstanceConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeRegionPerInstanceConfig, err error) {
+	result = &v1alpha1.ComputeRegionPerInstanceConfig{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computeregionperinstanceconfigs").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

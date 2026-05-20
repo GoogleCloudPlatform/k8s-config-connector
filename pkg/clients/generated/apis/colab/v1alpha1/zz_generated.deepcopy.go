@@ -603,19 +603,9 @@ func (in *RuntimetemplateMachineSpec) DeepCopyInto(out *RuntimetemplateMachineSp
 		*out = new(string)
 		**out = **in
 	}
-	if in.GpuPartitionSize != nil {
-		in, out := &in.GpuPartitionSize, &out.GpuPartitionSize
-		*out = new(string)
-		**out = **in
-	}
 	if in.MachineType != nil {
 		in, out := &in.MachineType, &out.MachineType
 		*out = new(string)
-		**out = **in
-	}
-	if in.MultihostGpuNodeCount != nil {
-		in, out := &in.MultihostGpuNodeCount, &out.MultihostGpuNodeCount
-		*out = new(int32)
 		**out = **in
 	}
 	if in.ReservationAffinity != nil {

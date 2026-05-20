@@ -32,23 +32,23 @@ type FakeVmwareengineV1alpha1 struct {
 }
 
 func (c *FakeVmwareengineV1alpha1) VMwareEngineExternalAccessRules(namespace string) v1alpha1.VMwareEngineExternalAccessRuleInterface {
-	return newFakeVMwareEngineExternalAccessRules(c, namespace)
+	return &FakeVMwareEngineExternalAccessRules{c, namespace}
 }
 
 func (c *FakeVmwareengineV1alpha1) VMwareEngineNetworks(namespace string) v1alpha1.VMwareEngineNetworkInterface {
-	return newFakeVMwareEngineNetworks(c, namespace)
+	return &FakeVMwareEngineNetworks{c, namespace}
 }
 
 func (c *FakeVmwareengineV1alpha1) VMwareEngineNetworkPeerings(namespace string) v1alpha1.VMwareEngineNetworkPeeringInterface {
-	return newFakeVMwareEngineNetworkPeerings(c, namespace)
+	return &FakeVMwareEngineNetworkPeerings{c, namespace}
 }
 
 func (c *FakeVmwareengineV1alpha1) VMwareEngineNetworkPolicies(namespace string) v1alpha1.VMwareEngineNetworkPolicyInterface {
-	return newFakeVMwareEngineNetworkPolicies(c, namespace)
+	return &FakeVMwareEngineNetworkPolicies{c, namespace}
 }
 
 func (c *FakeVmwareengineV1alpha1) VMwareEnginePrivateClouds(namespace string) v1alpha1.VMwareEnginePrivateCloudInterface {
-	return newFakeVMwareEnginePrivateClouds(c, namespace)
+	return &FakeVMwareEnginePrivateClouds{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

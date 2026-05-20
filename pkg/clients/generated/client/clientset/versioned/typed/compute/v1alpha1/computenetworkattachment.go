@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeNetworkAttachmentsGetter has a method to return a ComputeNetworkAttachmentInterface.
@@ -40,36 +41,158 @@ type ComputeNetworkAttachmentsGetter interface {
 
 // ComputeNetworkAttachmentInterface has methods to work with ComputeNetworkAttachment resources.
 type ComputeNetworkAttachmentInterface interface {
-	Create(ctx context.Context, computeNetworkAttachment *computev1alpha1.ComputeNetworkAttachment, opts v1.CreateOptions) (*computev1alpha1.ComputeNetworkAttachment, error)
-	Update(ctx context.Context, computeNetworkAttachment *computev1alpha1.ComputeNetworkAttachment, opts v1.UpdateOptions) (*computev1alpha1.ComputeNetworkAttachment, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeNetworkAttachment *computev1alpha1.ComputeNetworkAttachment, opts v1.UpdateOptions) (*computev1alpha1.ComputeNetworkAttachment, error)
+	Create(ctx context.Context, computeNetworkAttachment *v1alpha1.ComputeNetworkAttachment, opts v1.CreateOptions) (*v1alpha1.ComputeNetworkAttachment, error)
+	Update(ctx context.Context, computeNetworkAttachment *v1alpha1.ComputeNetworkAttachment, opts v1.UpdateOptions) (*v1alpha1.ComputeNetworkAttachment, error)
+	UpdateStatus(ctx context.Context, computeNetworkAttachment *v1alpha1.ComputeNetworkAttachment, opts v1.UpdateOptions) (*v1alpha1.ComputeNetworkAttachment, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1alpha1.ComputeNetworkAttachment, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1alpha1.ComputeNetworkAttachmentList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.ComputeNetworkAttachment, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.ComputeNetworkAttachmentList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1alpha1.ComputeNetworkAttachment, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeNetworkAttachment, err error)
 	ComputeNetworkAttachmentExpansion
 }
 
 // computeNetworkAttachments implements ComputeNetworkAttachmentInterface
 type computeNetworkAttachments struct {
-	*gentype.ClientWithList[*computev1alpha1.ComputeNetworkAttachment, *computev1alpha1.ComputeNetworkAttachmentList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeNetworkAttachments returns a ComputeNetworkAttachments
 func newComputeNetworkAttachments(c *ComputeV1alpha1Client, namespace string) *computeNetworkAttachments {
 	return &computeNetworkAttachments{
-		gentype.NewClientWithList[*computev1alpha1.ComputeNetworkAttachment, *computev1alpha1.ComputeNetworkAttachmentList](
-			"computenetworkattachments",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1alpha1.ComputeNetworkAttachment { return &computev1alpha1.ComputeNetworkAttachment{} },
-			func() *computev1alpha1.ComputeNetworkAttachmentList {
-				return &computev1alpha1.ComputeNetworkAttachmentList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeNetworkAttachment, and returns the corresponding computeNetworkAttachment object, and an error if there is any.
+func (c *computeNetworkAttachments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeNetworkAttachment, err error) {
+	result = &v1alpha1.ComputeNetworkAttachment{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computenetworkattachments").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeNetworkAttachments that match those selectors.
+func (c *computeNetworkAttachments) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeNetworkAttachmentList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.ComputeNetworkAttachmentList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computenetworkattachments").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeNetworkAttachments.
+func (c *computeNetworkAttachments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computenetworkattachments").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeNetworkAttachment and creates it.  Returns the server's representation of the computeNetworkAttachment, and an error, if there is any.
+func (c *computeNetworkAttachments) Create(ctx context.Context, computeNetworkAttachment *v1alpha1.ComputeNetworkAttachment, opts v1.CreateOptions) (result *v1alpha1.ComputeNetworkAttachment, err error) {
+	result = &v1alpha1.ComputeNetworkAttachment{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computenetworkattachments").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeNetworkAttachment).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeNetworkAttachment and updates it. Returns the server's representation of the computeNetworkAttachment, and an error, if there is any.
+func (c *computeNetworkAttachments) Update(ctx context.Context, computeNetworkAttachment *v1alpha1.ComputeNetworkAttachment, opts v1.UpdateOptions) (result *v1alpha1.ComputeNetworkAttachment, err error) {
+	result = &v1alpha1.ComputeNetworkAttachment{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computenetworkattachments").
+		Name(computeNetworkAttachment.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeNetworkAttachment).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeNetworkAttachments) UpdateStatus(ctx context.Context, computeNetworkAttachment *v1alpha1.ComputeNetworkAttachment, opts v1.UpdateOptions) (result *v1alpha1.ComputeNetworkAttachment, err error) {
+	result = &v1alpha1.ComputeNetworkAttachment{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computenetworkattachments").
+		Name(computeNetworkAttachment.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeNetworkAttachment).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeNetworkAttachment and deletes it. Returns an error if one occurs.
+func (c *computeNetworkAttachments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computenetworkattachments").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeNetworkAttachments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computenetworkattachments").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeNetworkAttachment.
+func (c *computeNetworkAttachments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeNetworkAttachment, err error) {
+	result = &v1alpha1.ComputeNetworkAttachment{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computenetworkattachments").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

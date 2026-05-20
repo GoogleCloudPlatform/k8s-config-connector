@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	bigquerybiglakev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // BigLakeCatalogsGetter has a method to return a BigLakeCatalogInterface.
@@ -40,36 +41,158 @@ type BigLakeCatalogsGetter interface {
 
 // BigLakeCatalogInterface has methods to work with BigLakeCatalog resources.
 type BigLakeCatalogInterface interface {
-	Create(ctx context.Context, bigLakeCatalog *bigquerybiglakev1alpha1.BigLakeCatalog, opts v1.CreateOptions) (*bigquerybiglakev1alpha1.BigLakeCatalog, error)
-	Update(ctx context.Context, bigLakeCatalog *bigquerybiglakev1alpha1.BigLakeCatalog, opts v1.UpdateOptions) (*bigquerybiglakev1alpha1.BigLakeCatalog, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, bigLakeCatalog *bigquerybiglakev1alpha1.BigLakeCatalog, opts v1.UpdateOptions) (*bigquerybiglakev1alpha1.BigLakeCatalog, error)
+	Create(ctx context.Context, bigLakeCatalog *v1alpha1.BigLakeCatalog, opts v1.CreateOptions) (*v1alpha1.BigLakeCatalog, error)
+	Update(ctx context.Context, bigLakeCatalog *v1alpha1.BigLakeCatalog, opts v1.UpdateOptions) (*v1alpha1.BigLakeCatalog, error)
+	UpdateStatus(ctx context.Context, bigLakeCatalog *v1alpha1.BigLakeCatalog, opts v1.UpdateOptions) (*v1alpha1.BigLakeCatalog, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*bigquerybiglakev1alpha1.BigLakeCatalog, error)
-	List(ctx context.Context, opts v1.ListOptions) (*bigquerybiglakev1alpha1.BigLakeCatalogList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.BigLakeCatalog, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.BigLakeCatalogList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *bigquerybiglakev1alpha1.BigLakeCatalog, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigLakeCatalog, err error)
 	BigLakeCatalogExpansion
 }
 
 // bigLakeCatalogs implements BigLakeCatalogInterface
 type bigLakeCatalogs struct {
-	*gentype.ClientWithList[*bigquerybiglakev1alpha1.BigLakeCatalog, *bigquerybiglakev1alpha1.BigLakeCatalogList]
+	client rest.Interface
+	ns     string
 }
 
 // newBigLakeCatalogs returns a BigLakeCatalogs
 func newBigLakeCatalogs(c *BigquerybiglakeV1alpha1Client, namespace string) *bigLakeCatalogs {
 	return &bigLakeCatalogs{
-		gentype.NewClientWithList[*bigquerybiglakev1alpha1.BigLakeCatalog, *bigquerybiglakev1alpha1.BigLakeCatalogList](
-			"biglakecatalogs",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *bigquerybiglakev1alpha1.BigLakeCatalog { return &bigquerybiglakev1alpha1.BigLakeCatalog{} },
-			func() *bigquerybiglakev1alpha1.BigLakeCatalogList {
-				return &bigquerybiglakev1alpha1.BigLakeCatalogList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the bigLakeCatalog, and returns the corresponding bigLakeCatalog object, and an error if there is any.
+func (c *bigLakeCatalogs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigLakeCatalog, err error) {
+	result = &v1alpha1.BigLakeCatalog{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("biglakecatalogs").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of BigLakeCatalogs that match those selectors.
+func (c *bigLakeCatalogs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigLakeCatalogList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.BigLakeCatalogList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("biglakecatalogs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested bigLakeCatalogs.
+func (c *bigLakeCatalogs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("biglakecatalogs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a bigLakeCatalog and creates it.  Returns the server's representation of the bigLakeCatalog, and an error, if there is any.
+func (c *bigLakeCatalogs) Create(ctx context.Context, bigLakeCatalog *v1alpha1.BigLakeCatalog, opts v1.CreateOptions) (result *v1alpha1.BigLakeCatalog, err error) {
+	result = &v1alpha1.BigLakeCatalog{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("biglakecatalogs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(bigLakeCatalog).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a bigLakeCatalog and updates it. Returns the server's representation of the bigLakeCatalog, and an error, if there is any.
+func (c *bigLakeCatalogs) Update(ctx context.Context, bigLakeCatalog *v1alpha1.BigLakeCatalog, opts v1.UpdateOptions) (result *v1alpha1.BigLakeCatalog, err error) {
+	result = &v1alpha1.BigLakeCatalog{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("biglakecatalogs").
+		Name(bigLakeCatalog.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(bigLakeCatalog).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *bigLakeCatalogs) UpdateStatus(ctx context.Context, bigLakeCatalog *v1alpha1.BigLakeCatalog, opts v1.UpdateOptions) (result *v1alpha1.BigLakeCatalog, err error) {
+	result = &v1alpha1.BigLakeCatalog{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("biglakecatalogs").
+		Name(bigLakeCatalog.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(bigLakeCatalog).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the bigLakeCatalog and deletes it. Returns an error if one occurs.
+func (c *bigLakeCatalogs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("biglakecatalogs").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *bigLakeCatalogs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("biglakecatalogs").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched bigLakeCatalog.
+func (c *bigLakeCatalogs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigLakeCatalog, err error) {
+	result = &v1alpha1.BigLakeCatalog{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("biglakecatalogs").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

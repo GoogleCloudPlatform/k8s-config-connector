@@ -238,11 +238,6 @@ func (in *ClusterPscConnectionsStatus) DeepCopyInto(out *ClusterPscConnectionsSt
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServiceAttachment != nil {
-		in, out := &in.ServiceAttachment, &out.ServiceAttachment
-		*out = new(string)
-		**out = **in
-	}
 	return
 }
 

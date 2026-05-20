@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // TPUNodesGetter has a method to return a TPUNodeInterface.
@@ -40,34 +41,158 @@ type TPUNodesGetter interface {
 
 // TPUNodeInterface has methods to work with TPUNode resources.
 type TPUNodeInterface interface {
-	Create(ctx context.Context, tPUNode *tpuv1alpha1.TPUNode, opts v1.CreateOptions) (*tpuv1alpha1.TPUNode, error)
-	Update(ctx context.Context, tPUNode *tpuv1alpha1.TPUNode, opts v1.UpdateOptions) (*tpuv1alpha1.TPUNode, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, tPUNode *tpuv1alpha1.TPUNode, opts v1.UpdateOptions) (*tpuv1alpha1.TPUNode, error)
+	Create(ctx context.Context, tPUNode *v1alpha1.TPUNode, opts v1.CreateOptions) (*v1alpha1.TPUNode, error)
+	Update(ctx context.Context, tPUNode *v1alpha1.TPUNode, opts v1.UpdateOptions) (*v1alpha1.TPUNode, error)
+	UpdateStatus(ctx context.Context, tPUNode *v1alpha1.TPUNode, opts v1.UpdateOptions) (*v1alpha1.TPUNode, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*tpuv1alpha1.TPUNode, error)
-	List(ctx context.Context, opts v1.ListOptions) (*tpuv1alpha1.TPUNodeList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.TPUNode, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.TPUNodeList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *tpuv1alpha1.TPUNode, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.TPUNode, err error)
 	TPUNodeExpansion
 }
 
 // tPUNodes implements TPUNodeInterface
 type tPUNodes struct {
-	*gentype.ClientWithList[*tpuv1alpha1.TPUNode, *tpuv1alpha1.TPUNodeList]
+	client rest.Interface
+	ns     string
 }
 
 // newTPUNodes returns a TPUNodes
 func newTPUNodes(c *TpuV1alpha1Client, namespace string) *tPUNodes {
 	return &tPUNodes{
-		gentype.NewClientWithList[*tpuv1alpha1.TPUNode, *tpuv1alpha1.TPUNodeList](
-			"tpunodes",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *tpuv1alpha1.TPUNode { return &tpuv1alpha1.TPUNode{} },
-			func() *tpuv1alpha1.TPUNodeList { return &tpuv1alpha1.TPUNodeList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the tPUNode, and returns the corresponding tPUNode object, and an error if there is any.
+func (c *tPUNodes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.TPUNode, err error) {
+	result = &v1alpha1.TPUNode{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("tpunodes").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of TPUNodes that match those selectors.
+func (c *tPUNodes) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.TPUNodeList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.TPUNodeList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("tpunodes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested tPUNodes.
+func (c *tPUNodes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("tpunodes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a tPUNode and creates it.  Returns the server's representation of the tPUNode, and an error, if there is any.
+func (c *tPUNodes) Create(ctx context.Context, tPUNode *v1alpha1.TPUNode, opts v1.CreateOptions) (result *v1alpha1.TPUNode, err error) {
+	result = &v1alpha1.TPUNode{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("tpunodes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(tPUNode).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a tPUNode and updates it. Returns the server's representation of the tPUNode, and an error, if there is any.
+func (c *tPUNodes) Update(ctx context.Context, tPUNode *v1alpha1.TPUNode, opts v1.UpdateOptions) (result *v1alpha1.TPUNode, err error) {
+	result = &v1alpha1.TPUNode{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("tpunodes").
+		Name(tPUNode.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(tPUNode).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *tPUNodes) UpdateStatus(ctx context.Context, tPUNode *v1alpha1.TPUNode, opts v1.UpdateOptions) (result *v1alpha1.TPUNode, err error) {
+	result = &v1alpha1.TPUNode{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("tpunodes").
+		Name(tPUNode.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(tPUNode).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the tPUNode and deletes it. Returns an error if one occurs.
+func (c *tPUNodes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("tpunodes").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *tPUNodes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("tpunodes").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched tPUNode.
+func (c *tPUNodes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.TPUNode, err error) {
+	result = &v1alpha1.TPUNode{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("tpunodes").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

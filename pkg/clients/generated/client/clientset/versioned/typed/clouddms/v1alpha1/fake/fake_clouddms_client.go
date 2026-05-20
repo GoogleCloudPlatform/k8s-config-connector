@@ -32,15 +32,15 @@ type FakeClouddmsV1alpha1 struct {
 }
 
 func (c *FakeClouddmsV1alpha1) CloudDMSConversionWorkspaces(namespace string) v1alpha1.CloudDMSConversionWorkspaceInterface {
-	return newFakeCloudDMSConversionWorkspaces(c, namespace)
+	return &FakeCloudDMSConversionWorkspaces{c, namespace}
 }
 
 func (c *FakeClouddmsV1alpha1) CloudDMSMigrationJobs(namespace string) v1alpha1.CloudDMSMigrationJobInterface {
-	return newFakeCloudDMSMigrationJobs(c, namespace)
+	return &FakeCloudDMSMigrationJobs{c, namespace}
 }
 
 func (c *FakeClouddmsV1alpha1) CloudDMSPrivateConnections(namespace string) v1alpha1.CloudDMSPrivateConnectionInterface {
-	return newFakeCloudDMSPrivateConnections(c, namespace)
+	return &FakeCloudDMSPrivateConnections{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

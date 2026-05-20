@@ -31,36 +31,24 @@ type FakeVertexaiV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeVertexaiV1alpha1) VertexAIDataLabelingJobs(namespace string) v1alpha1.VertexAIDataLabelingJobInterface {
-	return newFakeVertexAIDataLabelingJobs(c, namespace)
-}
-
-func (c *FakeVertexaiV1alpha1) VertexAIDeploymentResourcePools(namespace string) v1alpha1.VertexAIDeploymentResourcePoolInterface {
-	return newFakeVertexAIDeploymentResourcePools(c, namespace)
-}
-
-func (c *FakeVertexaiV1alpha1) VertexAIExampleStores(namespace string) v1alpha1.VertexAIExampleStoreInterface {
-	return newFakeVertexAIExampleStores(c, namespace)
-}
-
 func (c *FakeVertexaiV1alpha1) VertexAIFeaturestores(namespace string) v1alpha1.VertexAIFeaturestoreInterface {
-	return newFakeVertexAIFeaturestores(c, namespace)
+	return &FakeVertexAIFeaturestores{c, namespace}
 }
 
 func (c *FakeVertexaiV1alpha1) VertexAIFeaturestoreEntityTypes(namespace string) v1alpha1.VertexAIFeaturestoreEntityTypeInterface {
-	return newFakeVertexAIFeaturestoreEntityTypes(c, namespace)
+	return &FakeVertexAIFeaturestoreEntityTypes{c, namespace}
 }
 
 func (c *FakeVertexaiV1alpha1) VertexAIFeaturestoreEntityTypeFeatures(namespace string) v1alpha1.VertexAIFeaturestoreEntityTypeFeatureInterface {
-	return newFakeVertexAIFeaturestoreEntityTypeFeatures(c, namespace)
+	return &FakeVertexAIFeaturestoreEntityTypeFeatures{c, namespace}
 }
 
 func (c *FakeVertexaiV1alpha1) VertexAIIndexEndpoints(namespace string) v1alpha1.VertexAIIndexEndpointInterface {
-	return newFakeVertexAIIndexEndpoints(c, namespace)
+	return &FakeVertexAIIndexEndpoints{c, namespace}
 }
 
 func (c *FakeVertexaiV1alpha1) VertexAITensorboards(namespace string) v1alpha1.VertexAITensorboardInterface {
-	return newFakeVertexAITensorboards(c, namespace)
+	return &FakeVertexAITensorboards{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

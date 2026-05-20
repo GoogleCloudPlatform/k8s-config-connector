@@ -32,15 +32,15 @@ type FakeWorkstationsV1beta1 struct {
 }
 
 func (c *FakeWorkstationsV1beta1) Workstations(namespace string) v1beta1.WorkstationInterface {
-	return newFakeWorkstations(c, namespace)
+	return &FakeWorkstations{c, namespace}
 }
 
 func (c *FakeWorkstationsV1beta1) WorkstationClusters(namespace string) v1beta1.WorkstationClusterInterface {
-	return newFakeWorkstationClusters(c, namespace)
+	return &FakeWorkstationClusters{c, namespace}
 }
 
 func (c *FakeWorkstationsV1beta1) WorkstationConfigs(namespace string) v1beta1.WorkstationConfigInterface {
-	return newFakeWorkstationConfigs(c, namespace)
+	return &FakeWorkstationConfigs{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

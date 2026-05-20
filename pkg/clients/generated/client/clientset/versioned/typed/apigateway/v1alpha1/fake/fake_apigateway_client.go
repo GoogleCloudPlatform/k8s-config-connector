@@ -32,11 +32,11 @@ type FakeApigatewayV1alpha1 struct {
 }
 
 func (c *FakeApigatewayV1alpha1) APIGatewayAPIConfigs(namespace string) v1alpha1.APIGatewayAPIConfigInterface {
-	return newFakeAPIGatewayAPIConfigs(c, namespace)
+	return &FakeAPIGatewayAPIConfigs{c, namespace}
 }
 
 func (c *FakeApigatewayV1alpha1) APIGatewayGateways(namespace string) v1alpha1.APIGatewayGatewayInterface {
-	return newFakeAPIGatewayGateways(c, namespace)
+	return &FakeAPIGatewayGateways{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

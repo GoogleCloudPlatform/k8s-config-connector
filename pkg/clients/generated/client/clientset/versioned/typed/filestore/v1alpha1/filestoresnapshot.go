@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	filestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // FilestoreSnapshotsGetter has a method to return a FilestoreSnapshotInterface.
@@ -40,34 +41,158 @@ type FilestoreSnapshotsGetter interface {
 
 // FilestoreSnapshotInterface has methods to work with FilestoreSnapshot resources.
 type FilestoreSnapshotInterface interface {
-	Create(ctx context.Context, filestoreSnapshot *filestorev1alpha1.FilestoreSnapshot, opts v1.CreateOptions) (*filestorev1alpha1.FilestoreSnapshot, error)
-	Update(ctx context.Context, filestoreSnapshot *filestorev1alpha1.FilestoreSnapshot, opts v1.UpdateOptions) (*filestorev1alpha1.FilestoreSnapshot, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, filestoreSnapshot *filestorev1alpha1.FilestoreSnapshot, opts v1.UpdateOptions) (*filestorev1alpha1.FilestoreSnapshot, error)
+	Create(ctx context.Context, filestoreSnapshot *v1alpha1.FilestoreSnapshot, opts v1.CreateOptions) (*v1alpha1.FilestoreSnapshot, error)
+	Update(ctx context.Context, filestoreSnapshot *v1alpha1.FilestoreSnapshot, opts v1.UpdateOptions) (*v1alpha1.FilestoreSnapshot, error)
+	UpdateStatus(ctx context.Context, filestoreSnapshot *v1alpha1.FilestoreSnapshot, opts v1.UpdateOptions) (*v1alpha1.FilestoreSnapshot, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*filestorev1alpha1.FilestoreSnapshot, error)
-	List(ctx context.Context, opts v1.ListOptions) (*filestorev1alpha1.FilestoreSnapshotList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.FilestoreSnapshot, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.FilestoreSnapshotList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *filestorev1alpha1.FilestoreSnapshot, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.FilestoreSnapshot, err error)
 	FilestoreSnapshotExpansion
 }
 
 // filestoreSnapshots implements FilestoreSnapshotInterface
 type filestoreSnapshots struct {
-	*gentype.ClientWithList[*filestorev1alpha1.FilestoreSnapshot, *filestorev1alpha1.FilestoreSnapshotList]
+	client rest.Interface
+	ns     string
 }
 
 // newFilestoreSnapshots returns a FilestoreSnapshots
 func newFilestoreSnapshots(c *FilestoreV1alpha1Client, namespace string) *filestoreSnapshots {
 	return &filestoreSnapshots{
-		gentype.NewClientWithList[*filestorev1alpha1.FilestoreSnapshot, *filestorev1alpha1.FilestoreSnapshotList](
-			"filestoresnapshots",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *filestorev1alpha1.FilestoreSnapshot { return &filestorev1alpha1.FilestoreSnapshot{} },
-			func() *filestorev1alpha1.FilestoreSnapshotList { return &filestorev1alpha1.FilestoreSnapshotList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the filestoreSnapshot, and returns the corresponding filestoreSnapshot object, and an error if there is any.
+func (c *filestoreSnapshots) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.FilestoreSnapshot, err error) {
+	result = &v1alpha1.FilestoreSnapshot{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("filestoresnapshots").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of FilestoreSnapshots that match those selectors.
+func (c *filestoreSnapshots) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.FilestoreSnapshotList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.FilestoreSnapshotList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("filestoresnapshots").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested filestoreSnapshots.
+func (c *filestoreSnapshots) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("filestoresnapshots").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a filestoreSnapshot and creates it.  Returns the server's representation of the filestoreSnapshot, and an error, if there is any.
+func (c *filestoreSnapshots) Create(ctx context.Context, filestoreSnapshot *v1alpha1.FilestoreSnapshot, opts v1.CreateOptions) (result *v1alpha1.FilestoreSnapshot, err error) {
+	result = &v1alpha1.FilestoreSnapshot{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("filestoresnapshots").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(filestoreSnapshot).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a filestoreSnapshot and updates it. Returns the server's representation of the filestoreSnapshot, and an error, if there is any.
+func (c *filestoreSnapshots) Update(ctx context.Context, filestoreSnapshot *v1alpha1.FilestoreSnapshot, opts v1.UpdateOptions) (result *v1alpha1.FilestoreSnapshot, err error) {
+	result = &v1alpha1.FilestoreSnapshot{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("filestoresnapshots").
+		Name(filestoreSnapshot.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(filestoreSnapshot).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *filestoreSnapshots) UpdateStatus(ctx context.Context, filestoreSnapshot *v1alpha1.FilestoreSnapshot, opts v1.UpdateOptions) (result *v1alpha1.FilestoreSnapshot, err error) {
+	result = &v1alpha1.FilestoreSnapshot{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("filestoresnapshots").
+		Name(filestoreSnapshot.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(filestoreSnapshot).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the filestoreSnapshot and deletes it. Returns an error if one occurs.
+func (c *filestoreSnapshots) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("filestoresnapshots").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *filestoreSnapshots) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("filestoresnapshots").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched filestoreSnapshot.
+func (c *filestoreSnapshots) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.FilestoreSnapshot, err error) {
+	result = &v1alpha1.FilestoreSnapshot{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("filestoresnapshots").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

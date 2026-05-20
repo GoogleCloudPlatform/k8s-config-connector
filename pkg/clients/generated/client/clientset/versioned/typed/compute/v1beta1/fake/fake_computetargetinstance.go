@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeTargetInstances implements ComputeTargetInstanceInterface
-type fakeComputeTargetInstances struct {
-	*gentype.FakeClientWithList[*v1beta1.ComputeTargetInstance, *v1beta1.ComputeTargetInstanceList]
+// FakeComputeTargetInstances implements ComputeTargetInstanceInterface
+type FakeComputeTargetInstances struct {
 	Fake *FakeComputeV1beta1
+	ns   string
 }
 
-func newFakeComputeTargetInstances(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeTargetInstanceInterface {
-	return &fakeComputeTargetInstances{
-		gentype.NewFakeClientWithList[*v1beta1.ComputeTargetInstance, *v1beta1.ComputeTargetInstanceList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("computetargetinstances"),
-			v1beta1.SchemeGroupVersion.WithKind("ComputeTargetInstance"),
-			func() *v1beta1.ComputeTargetInstance { return &v1beta1.ComputeTargetInstance{} },
-			func() *v1beta1.ComputeTargetInstanceList { return &v1beta1.ComputeTargetInstanceList{} },
-			func(dst, src *v1beta1.ComputeTargetInstanceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.ComputeTargetInstanceList) []*v1beta1.ComputeTargetInstance {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.ComputeTargetInstanceList, items []*v1beta1.ComputeTargetInstance) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computetargetinstancesResource = v1beta1.SchemeGroupVersion.WithResource("computetargetinstances")
+
+var computetargetinstancesKind = v1beta1.SchemeGroupVersion.WithKind("ComputeTargetInstance")
+
+// Get takes name of the computeTargetInstance, and returns the corresponding computeTargetInstance object, and an error if there is any.
+func (c *FakeComputeTargetInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeTargetInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computetargetinstancesResource, c.ns, name), &v1beta1.ComputeTargetInstance{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.ComputeTargetInstance), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeTargetInstances that match those selectors.
+func (c *FakeComputeTargetInstances) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeTargetInstanceList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computetargetinstancesResource, computetargetinstancesKind, c.ns, opts), &v1beta1.ComputeTargetInstanceList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.ComputeTargetInstanceList{ListMeta: obj.(*v1beta1.ComputeTargetInstanceList).ListMeta}
+	for _, item := range obj.(*v1beta1.ComputeTargetInstanceList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeTargetInstances.
+func (c *FakeComputeTargetInstances) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computetargetinstancesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeTargetInstance and creates it.  Returns the server's representation of the computeTargetInstance, and an error, if there is any.
+func (c *FakeComputeTargetInstances) Create(ctx context.Context, computeTargetInstance *v1beta1.ComputeTargetInstance, opts v1.CreateOptions) (result *v1beta1.ComputeTargetInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computetargetinstancesResource, c.ns, computeTargetInstance), &v1beta1.ComputeTargetInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeTargetInstance), err
+}
+
+// Update takes the representation of a computeTargetInstance and updates it. Returns the server's representation of the computeTargetInstance, and an error, if there is any.
+func (c *FakeComputeTargetInstances) Update(ctx context.Context, computeTargetInstance *v1beta1.ComputeTargetInstance, opts v1.UpdateOptions) (result *v1beta1.ComputeTargetInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computetargetinstancesResource, c.ns, computeTargetInstance), &v1beta1.ComputeTargetInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeTargetInstance), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeTargetInstances) UpdateStatus(ctx context.Context, computeTargetInstance *v1beta1.ComputeTargetInstance, opts v1.UpdateOptions) (*v1beta1.ComputeTargetInstance, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computetargetinstancesResource, "status", c.ns, computeTargetInstance), &v1beta1.ComputeTargetInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeTargetInstance), err
+}
+
+// Delete takes name of the computeTargetInstance and deletes it. Returns an error if one occurs.
+func (c *FakeComputeTargetInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computetargetinstancesResource, c.ns, name, opts), &v1beta1.ComputeTargetInstance{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeTargetInstances) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computetargetinstancesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.ComputeTargetInstanceList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeTargetInstance.
+func (c *FakeComputeTargetInstances) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeTargetInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computetargetinstancesResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeTargetInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeTargetInstance), err
 }

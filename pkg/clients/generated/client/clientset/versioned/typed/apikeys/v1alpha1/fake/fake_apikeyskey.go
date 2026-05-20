@@ -22,32 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
-	apikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeAPIKeysKeys implements APIKeysKeyInterface
-type fakeAPIKeysKeys struct {
-	*gentype.FakeClientWithList[*v1alpha1.APIKeysKey, *v1alpha1.APIKeysKeyList]
+// FakeAPIKeysKeys implements APIKeysKeyInterface
+type FakeAPIKeysKeys struct {
 	Fake *FakeApikeysV1alpha1
+	ns   string
 }
 
-func newFakeAPIKeysKeys(fake *FakeApikeysV1alpha1, namespace string) apikeysv1alpha1.APIKeysKeyInterface {
-	return &fakeAPIKeysKeys{
-		gentype.NewFakeClientWithList[*v1alpha1.APIKeysKey, *v1alpha1.APIKeysKeyList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("apikeyskeys"),
-			v1alpha1.SchemeGroupVersion.WithKind("APIKeysKey"),
-			func() *v1alpha1.APIKeysKey { return &v1alpha1.APIKeysKey{} },
-			func() *v1alpha1.APIKeysKeyList { return &v1alpha1.APIKeysKeyList{} },
-			func(dst, src *v1alpha1.APIKeysKeyList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.APIKeysKeyList) []*v1alpha1.APIKeysKey { return gentype.ToPointerSlice(list.Items) },
-			func(list *v1alpha1.APIKeysKeyList, items []*v1alpha1.APIKeysKey) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var apikeyskeysResource = v1alpha1.SchemeGroupVersion.WithResource("apikeyskeys")
+
+var apikeyskeysKind = v1alpha1.SchemeGroupVersion.WithKind("APIKeysKey")
+
+// Get takes name of the aPIKeysKey, and returns the corresponding aPIKeysKey object, and an error if there is any.
+func (c *FakeAPIKeysKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.APIKeysKey, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(apikeyskeysResource, c.ns, name), &v1alpha1.APIKeysKey{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.APIKeysKey), err
+}
+
+// List takes label and field selectors, and returns the list of APIKeysKeys that match those selectors.
+func (c *FakeAPIKeysKeys) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.APIKeysKeyList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(apikeyskeysResource, apikeyskeysKind, c.ns, opts), &v1alpha1.APIKeysKeyList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.APIKeysKeyList{ListMeta: obj.(*v1alpha1.APIKeysKeyList).ListMeta}
+	for _, item := range obj.(*v1alpha1.APIKeysKeyList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested aPIKeysKeys.
+func (c *FakeAPIKeysKeys) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(apikeyskeysResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a aPIKeysKey and creates it.  Returns the server's representation of the aPIKeysKey, and an error, if there is any.
+func (c *FakeAPIKeysKeys) Create(ctx context.Context, aPIKeysKey *v1alpha1.APIKeysKey, opts v1.CreateOptions) (result *v1alpha1.APIKeysKey, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(apikeyskeysResource, c.ns, aPIKeysKey), &v1alpha1.APIKeysKey{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.APIKeysKey), err
+}
+
+// Update takes the representation of a aPIKeysKey and updates it. Returns the server's representation of the aPIKeysKey, and an error, if there is any.
+func (c *FakeAPIKeysKeys) Update(ctx context.Context, aPIKeysKey *v1alpha1.APIKeysKey, opts v1.UpdateOptions) (result *v1alpha1.APIKeysKey, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(apikeyskeysResource, c.ns, aPIKeysKey), &v1alpha1.APIKeysKey{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.APIKeysKey), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeAPIKeysKeys) UpdateStatus(ctx context.Context, aPIKeysKey *v1alpha1.APIKeysKey, opts v1.UpdateOptions) (*v1alpha1.APIKeysKey, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(apikeyskeysResource, "status", c.ns, aPIKeysKey), &v1alpha1.APIKeysKey{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.APIKeysKey), err
+}
+
+// Delete takes name of the aPIKeysKey and deletes it. Returns an error if one occurs.
+func (c *FakeAPIKeysKeys) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(apikeyskeysResource, c.ns, name, opts), &v1alpha1.APIKeysKey{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeAPIKeysKeys) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(apikeyskeysResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.APIKeysKeyList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched aPIKeysKey.
+func (c *FakeAPIKeysKeys) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.APIKeysKey, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(apikeyskeysResource, c.ns, name, pt, data, subresources...), &v1alpha1.APIKeysKey{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.APIKeysKey), err
 }
