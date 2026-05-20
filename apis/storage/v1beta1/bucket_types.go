@@ -104,7 +104,7 @@ type StorageBucketAutoclass struct {
 
 type StorageBucketCors struct {
 	/* The value, in seconds, to return in the Access-Control-Max-Age header used in preflight responses. */
-	MaxAgeSeconds *int `json:"maxAgeSeconds,omitempty"`
+	MaxAgeSeconds *int64 `json:"maxAgeSeconds,omitempty"`
 
 	/* The list of HTTP methods on which to include CORS response headers, (GET, OPTIONS, POST, etc) Note: "*" is permitted in the list of methods, and means "any method". */
 	Method []string `json:"method,omitempty"`
@@ -149,7 +149,7 @@ type StorageBucketLifecycleRuleAction struct {
 
 type StorageBucketLifecycleRuleCondition struct {
 	/* Minimum age of an object in days to satisfy this condition. */
-	Age *int `json:"age,omitempty"`
+	Age *int64 `json:"age,omitempty"`
 
 	/* Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition. */
 	CreatedBefore *string `json:"createdBefore,omitempty"`
@@ -158,11 +158,11 @@ type StorageBucketLifecycleRuleCondition struct {
 	CustomTimeBefore *string `json:"customTimeBefore,omitempty"`
 
 	/* Number of days elapsed since the user-specified timestamp set on an object. */
-	DaysSinceCustomTime *int `json:"daysSinceCustomTime,omitempty"`
+	DaysSinceCustomTime *int64 `json:"daysSinceCustomTime,omitempty"`
 
 	/* Number of days elapsed since the noncurrent timestamp of an object. This
 	condition is relevant only for versioned objects. */
-	DaysSinceNoncurrentTime *int `json:"daysSinceNoncurrentTime,omitempty"`
+	DaysSinceNoncurrentTime *int64 `json:"daysSinceNoncurrentTime,omitempty"`
 
 	/* One or more matching name prefixes to satisfy this condition. */
 	MatchesPrefix []string `json:"matchesPrefix,omitempty"`
@@ -177,7 +177,7 @@ type StorageBucketLifecycleRuleCondition struct {
 	NoncurrentTimeBefore *string `json:"noncurrentTimeBefore,omitempty"`
 
 	/* Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition. */
-	NumNewerVersions *int `json:"numNewerVersions,omitempty"`
+	NumNewerVersions *int64 `json:"numNewerVersions,omitempty"`
 
 	/* Match to live and/or archived objects. Unversioned buckets have only live objects. Supported values include: "LIVE", "ARCHIVED", "ANY". */
 	WithState *string `json:"withState,omitempty"`
@@ -198,12 +198,12 @@ type StorageBucketRetentionPolicy struct {
 
 	/* The period of time, in seconds, that objects in the bucket must be retained and cannot be deleted, overwritten, or archived. The value must be less than 3,155,760,000 seconds. */
 	// +required
-	RetentionPeriod int `json:"retentionPeriod"`
+	RetentionPeriod int64 `json:"retentionPeriod"`
 }
 
 type StorageBucketSoftDeletePolicy struct {
 	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
-	RetentionDurationSeconds *int `json:"retentionDurationSeconds,omitempty"`
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
 }
 
 type StorageBucketVersioning struct {
@@ -227,7 +227,7 @@ type StorageBucketStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	ObservedState *StorageBucketObservedState `json:"observedState,omitempty"`
@@ -250,7 +250,7 @@ type StorageBucketSoftDeletePolicyObservedState struct {
 	EffectiveTime *string `json:"effectiveTime,omitempty"`
 
 	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
-	RetentionDurationSeconds *int `json:"retentionDurationSeconds,omitempty"`
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
 }
 
 // +genclient
