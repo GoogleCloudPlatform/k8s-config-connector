@@ -32,7 +32,7 @@ type FakeClouddeployV1beta1 struct {
 }
 
 func (c *FakeClouddeployV1beta1) CloudDeployDeliveryPipelines(namespace string) v1beta1.CloudDeployDeliveryPipelineInterface {
-	return &FakeCloudDeployDeliveryPipelines{c, namespace}
+	return newFakeCloudDeployDeliveryPipelines(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

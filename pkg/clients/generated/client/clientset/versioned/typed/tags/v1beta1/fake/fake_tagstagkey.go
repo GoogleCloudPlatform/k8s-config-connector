@@ -22,123 +22,32 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeTagsTagKeys implements TagsTagKeyInterface
-type FakeTagsTagKeys struct {
+// fakeTagsTagKeys implements TagsTagKeyInterface
+type fakeTagsTagKeys struct {
+	*gentype.FakeClientWithList[*v1beta1.TagsTagKey, *v1beta1.TagsTagKeyList]
 	Fake *FakeTagsV1beta1
-	ns   string
 }
 
-var tagstagkeysResource = v1beta1.SchemeGroupVersion.WithResource("tagstagkeys")
-
-var tagstagkeysKind = v1beta1.SchemeGroupVersion.WithKind("TagsTagKey")
-
-// Get takes name of the tagsTagKey, and returns the corresponding tagsTagKey object, and an error if there is any.
-func (c *FakeTagsTagKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.TagsTagKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(tagstagkeysResource, c.ns, name), &v1beta1.TagsTagKey{})
-
-	if obj == nil {
-		return nil, err
+func newFakeTagsTagKeys(fake *FakeTagsV1beta1, namespace string) tagsv1beta1.TagsTagKeyInterface {
+	return &fakeTagsTagKeys{
+		gentype.NewFakeClientWithList[*v1beta1.TagsTagKey, *v1beta1.TagsTagKeyList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("tagstagkeys"),
+			v1beta1.SchemeGroupVersion.WithKind("TagsTagKey"),
+			func() *v1beta1.TagsTagKey { return &v1beta1.TagsTagKey{} },
+			func() *v1beta1.TagsTagKeyList { return &v1beta1.TagsTagKeyList{} },
+			func(dst, src *v1beta1.TagsTagKeyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.TagsTagKeyList) []*v1beta1.TagsTagKey { return gentype.ToPointerSlice(list.Items) },
+			func(list *v1beta1.TagsTagKeyList, items []*v1beta1.TagsTagKey) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.TagsTagKey), err
-}
-
-// List takes label and field selectors, and returns the list of TagsTagKeys that match those selectors.
-func (c *FakeTagsTagKeys) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.TagsTagKeyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(tagstagkeysResource, tagstagkeysKind, c.ns, opts), &v1beta1.TagsTagKeyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.TagsTagKeyList{ListMeta: obj.(*v1beta1.TagsTagKeyList).ListMeta}
-	for _, item := range obj.(*v1beta1.TagsTagKeyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested tagsTagKeys.
-func (c *FakeTagsTagKeys) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(tagstagkeysResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a tagsTagKey and creates it.  Returns the server's representation of the tagsTagKey, and an error, if there is any.
-func (c *FakeTagsTagKeys) Create(ctx context.Context, tagsTagKey *v1beta1.TagsTagKey, opts v1.CreateOptions) (result *v1beta1.TagsTagKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(tagstagkeysResource, c.ns, tagsTagKey), &v1beta1.TagsTagKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.TagsTagKey), err
-}
-
-// Update takes the representation of a tagsTagKey and updates it. Returns the server's representation of the tagsTagKey, and an error, if there is any.
-func (c *FakeTagsTagKeys) Update(ctx context.Context, tagsTagKey *v1beta1.TagsTagKey, opts v1.UpdateOptions) (result *v1beta1.TagsTagKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(tagstagkeysResource, c.ns, tagsTagKey), &v1beta1.TagsTagKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.TagsTagKey), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeTagsTagKeys) UpdateStatus(ctx context.Context, tagsTagKey *v1beta1.TagsTagKey, opts v1.UpdateOptions) (*v1beta1.TagsTagKey, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(tagstagkeysResource, "status", c.ns, tagsTagKey), &v1beta1.TagsTagKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.TagsTagKey), err
-}
-
-// Delete takes name of the tagsTagKey and deletes it. Returns an error if one occurs.
-func (c *FakeTagsTagKeys) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(tagstagkeysResource, c.ns, name, opts), &v1beta1.TagsTagKey{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeTagsTagKeys) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(tagstagkeysResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.TagsTagKeyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched tagsTagKey.
-func (c *FakeTagsTagKeys) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.TagsTagKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(tagstagkeysResource, c.ns, name, pt, data, subresources...), &v1beta1.TagsTagKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.TagsTagKey), err
 }

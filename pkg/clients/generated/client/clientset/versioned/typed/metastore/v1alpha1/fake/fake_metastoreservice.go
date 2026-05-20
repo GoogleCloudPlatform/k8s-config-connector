@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeMetastoreServices implements MetastoreServiceInterface
-type FakeMetastoreServices struct {
+// fakeMetastoreServices implements MetastoreServiceInterface
+type fakeMetastoreServices struct {
+	*gentype.FakeClientWithList[*v1alpha1.MetastoreService, *v1alpha1.MetastoreServiceList]
 	Fake *FakeMetastoreV1alpha1
-	ns   string
 }
 
-var metastoreservicesResource = v1alpha1.SchemeGroupVersion.WithResource("metastoreservices")
-
-var metastoreservicesKind = v1alpha1.SchemeGroupVersion.WithKind("MetastoreService")
-
-// Get takes name of the metastoreService, and returns the corresponding metastoreService object, and an error if there is any.
-func (c *FakeMetastoreServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.MetastoreService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(metastoreservicesResource, c.ns, name), &v1alpha1.MetastoreService{})
-
-	if obj == nil {
-		return nil, err
+func newFakeMetastoreServices(fake *FakeMetastoreV1alpha1, namespace string) metastorev1alpha1.MetastoreServiceInterface {
+	return &fakeMetastoreServices{
+		gentype.NewFakeClientWithList[*v1alpha1.MetastoreService, *v1alpha1.MetastoreServiceList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("metastoreservices"),
+			v1alpha1.SchemeGroupVersion.WithKind("MetastoreService"),
+			func() *v1alpha1.MetastoreService { return &v1alpha1.MetastoreService{} },
+			func() *v1alpha1.MetastoreServiceList { return &v1alpha1.MetastoreServiceList{} },
+			func(dst, src *v1alpha1.MetastoreServiceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.MetastoreServiceList) []*v1alpha1.MetastoreService {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.MetastoreServiceList, items []*v1alpha1.MetastoreService) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.MetastoreService), err
-}
-
-// List takes label and field selectors, and returns the list of MetastoreServices that match those selectors.
-func (c *FakeMetastoreServices) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.MetastoreServiceList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(metastoreservicesResource, metastoreservicesKind, c.ns, opts), &v1alpha1.MetastoreServiceList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.MetastoreServiceList{ListMeta: obj.(*v1alpha1.MetastoreServiceList).ListMeta}
-	for _, item := range obj.(*v1alpha1.MetastoreServiceList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested metastoreServices.
-func (c *FakeMetastoreServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(metastoreservicesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a metastoreService and creates it.  Returns the server's representation of the metastoreService, and an error, if there is any.
-func (c *FakeMetastoreServices) Create(ctx context.Context, metastoreService *v1alpha1.MetastoreService, opts v1.CreateOptions) (result *v1alpha1.MetastoreService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(metastoreservicesResource, c.ns, metastoreService), &v1alpha1.MetastoreService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MetastoreService), err
-}
-
-// Update takes the representation of a metastoreService and updates it. Returns the server's representation of the metastoreService, and an error, if there is any.
-func (c *FakeMetastoreServices) Update(ctx context.Context, metastoreService *v1alpha1.MetastoreService, opts v1.UpdateOptions) (result *v1alpha1.MetastoreService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(metastoreservicesResource, c.ns, metastoreService), &v1alpha1.MetastoreService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MetastoreService), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeMetastoreServices) UpdateStatus(ctx context.Context, metastoreService *v1alpha1.MetastoreService, opts v1.UpdateOptions) (*v1alpha1.MetastoreService, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(metastoreservicesResource, "status", c.ns, metastoreService), &v1alpha1.MetastoreService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MetastoreService), err
-}
-
-// Delete takes name of the metastoreService and deletes it. Returns an error if one occurs.
-func (c *FakeMetastoreServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(metastoreservicesResource, c.ns, name, opts), &v1alpha1.MetastoreService{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeMetastoreServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(metastoreservicesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.MetastoreServiceList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched metastoreService.
-func (c *FakeMetastoreServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.MetastoreService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(metastoreservicesResource, c.ns, name, pt, data, subresources...), &v1alpha1.MetastoreService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MetastoreService), err
 }

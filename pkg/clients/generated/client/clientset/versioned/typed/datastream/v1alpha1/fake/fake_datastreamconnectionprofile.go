@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastream/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	datastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDatastreamConnectionProfiles implements DatastreamConnectionProfileInterface
-type FakeDatastreamConnectionProfiles struct {
+// fakeDatastreamConnectionProfiles implements DatastreamConnectionProfileInterface
+type fakeDatastreamConnectionProfiles struct {
+	*gentype.FakeClientWithList[*v1alpha1.DatastreamConnectionProfile, *v1alpha1.DatastreamConnectionProfileList]
 	Fake *FakeDatastreamV1alpha1
-	ns   string
 }
 
-var datastreamconnectionprofilesResource = v1alpha1.SchemeGroupVersion.WithResource("datastreamconnectionprofiles")
-
-var datastreamconnectionprofilesKind = v1alpha1.SchemeGroupVersion.WithKind("DatastreamConnectionProfile")
-
-// Get takes name of the datastreamConnectionProfile, and returns the corresponding datastreamConnectionProfile object, and an error if there is any.
-func (c *FakeDatastreamConnectionProfiles) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DatastreamConnectionProfile, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(datastreamconnectionprofilesResource, c.ns, name), &v1alpha1.DatastreamConnectionProfile{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDatastreamConnectionProfiles(fake *FakeDatastreamV1alpha1, namespace string) datastreamv1alpha1.DatastreamConnectionProfileInterface {
+	return &fakeDatastreamConnectionProfiles{
+		gentype.NewFakeClientWithList[*v1alpha1.DatastreamConnectionProfile, *v1alpha1.DatastreamConnectionProfileList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("datastreamconnectionprofiles"),
+			v1alpha1.SchemeGroupVersion.WithKind("DatastreamConnectionProfile"),
+			func() *v1alpha1.DatastreamConnectionProfile { return &v1alpha1.DatastreamConnectionProfile{} },
+			func() *v1alpha1.DatastreamConnectionProfileList { return &v1alpha1.DatastreamConnectionProfileList{} },
+			func(dst, src *v1alpha1.DatastreamConnectionProfileList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DatastreamConnectionProfileList) []*v1alpha1.DatastreamConnectionProfile {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DatastreamConnectionProfileList, items []*v1alpha1.DatastreamConnectionProfile) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DatastreamConnectionProfile), err
-}
-
-// List takes label and field selectors, and returns the list of DatastreamConnectionProfiles that match those selectors.
-func (c *FakeDatastreamConnectionProfiles) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DatastreamConnectionProfileList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(datastreamconnectionprofilesResource, datastreamconnectionprofilesKind, c.ns, opts), &v1alpha1.DatastreamConnectionProfileList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DatastreamConnectionProfileList{ListMeta: obj.(*v1alpha1.DatastreamConnectionProfileList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DatastreamConnectionProfileList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested datastreamConnectionProfiles.
-func (c *FakeDatastreamConnectionProfiles) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(datastreamconnectionprofilesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a datastreamConnectionProfile and creates it.  Returns the server's representation of the datastreamConnectionProfile, and an error, if there is any.
-func (c *FakeDatastreamConnectionProfiles) Create(ctx context.Context, datastreamConnectionProfile *v1alpha1.DatastreamConnectionProfile, opts v1.CreateOptions) (result *v1alpha1.DatastreamConnectionProfile, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(datastreamconnectionprofilesResource, c.ns, datastreamConnectionProfile), &v1alpha1.DatastreamConnectionProfile{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DatastreamConnectionProfile), err
-}
-
-// Update takes the representation of a datastreamConnectionProfile and updates it. Returns the server's representation of the datastreamConnectionProfile, and an error, if there is any.
-func (c *FakeDatastreamConnectionProfiles) Update(ctx context.Context, datastreamConnectionProfile *v1alpha1.DatastreamConnectionProfile, opts v1.UpdateOptions) (result *v1alpha1.DatastreamConnectionProfile, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(datastreamconnectionprofilesResource, c.ns, datastreamConnectionProfile), &v1alpha1.DatastreamConnectionProfile{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DatastreamConnectionProfile), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDatastreamConnectionProfiles) UpdateStatus(ctx context.Context, datastreamConnectionProfile *v1alpha1.DatastreamConnectionProfile, opts v1.UpdateOptions) (*v1alpha1.DatastreamConnectionProfile, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(datastreamconnectionprofilesResource, "status", c.ns, datastreamConnectionProfile), &v1alpha1.DatastreamConnectionProfile{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DatastreamConnectionProfile), err
-}
-
-// Delete takes name of the datastreamConnectionProfile and deletes it. Returns an error if one occurs.
-func (c *FakeDatastreamConnectionProfiles) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(datastreamconnectionprofilesResource, c.ns, name, opts), &v1alpha1.DatastreamConnectionProfile{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDatastreamConnectionProfiles) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(datastreamconnectionprofilesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DatastreamConnectionProfileList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched datastreamConnectionProfile.
-func (c *FakeDatastreamConnectionProfiles) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DatastreamConnectionProfile, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(datastreamconnectionprofilesResource, c.ns, name, pt, data, subresources...), &v1alpha1.DatastreamConnectionProfile{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DatastreamConnectionProfile), err
 }
