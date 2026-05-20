@@ -15,7 +15,7 @@ It is used to identify gaps in resource coverage and prioritize the "easiest" ne
 ## Usage
 
 ```bash
-python3 hack/tools/calculate_coverage.py <googleapis_sha> <kcc_sha> [k]
+python3 hack/tools/greenfield/calculate_coverage.py <googleapis_sha> <kcc_sha> [k]
 ```
 
 ### Parameters
@@ -28,7 +28,7 @@ python3 hack/tools/calculate_coverage.py <googleapis_sha> <kcc_sha> [k]
 
 Compare the latest protos against your local KCC state:
 ```bash
-python3 hack/tools/calculate_coverage.py master LOCAL 20
+python3 hack/tools/greenfield/calculate_coverage.py master LOCAL 20
 ```
 
 ## Metric Definitions
@@ -38,6 +38,14 @@ python3 hack/tools/calculate_coverage.py master LOCAL 20
 - **Full Lifecycle Missing**: Resources that have both a creation RPC and a termination RPC (`Delete`, `Finish`, `Abort`, etc.).
 - **Leaf (Easy) Missing**: Resources that support the full lifecycle and have a flat parentage (Project, Folder, Org, or Location). These are generally the most straightforward to implement as direct resources.
 
+## Unified Resource Policy
+
+When implementing missing resources identified by this tool, follow the **Unified Direct Pattern**:
+
+1.  **Single logical Kind**: If a GCP resource supports multiple hierarchies (e.g., Global and Regional) but shares the same logical name, do **not** create separate KRM Kinds.
+2.  **Extended Existing Kinds**: If a resource identified as "missing" is actually a hierarchical variant of an existing KCC Kind (e.g., Regional Secret Manager Secret), the correct action is to **extend the existing Kind** with a `location` field rather than creating a new one.
+3.  **Location-Aware Identity**: Use `gcpurls.Template` to implement identity logic that branches based on the `location` field.
+
 ## Implementation Workflow
 
-This tool is integrated into the project's agentic workflows. The chore file `.agents/direct-new-resource-scaffolding.md` uses this script to automatically identify and create implementation tasks for missing resources.
+This tool is integrated into the project's agentic workflows. The chore file `.agents/greenfield-direct-new-resource-types.md` uses this script to automatically identify and create implementation tasks for missing resources.
