@@ -30,7 +30,7 @@ func StorageBucketCors_FromProto(mapCtx *direct.MapContext, in *pb.Bucket_Cors) 
 		return nil
 	}
 	out := &krm.StorageBucketCors{}
-	out.MaxAgeSeconds = direct.PtrTo(int(in.MaxAgeSeconds))
+	out.MaxAgeSeconds = direct.PtrTo(int64(in.MaxAgeSeconds))
 	out.Method = in.Method
 	out.Origin = in.Origin
 	out.ResponseHeader = in.ResponseHeader
@@ -144,7 +144,7 @@ func StorageBucketRetentionPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Bu
 	}
 	out := &krm.StorageBucketRetentionPolicy{}
 	out.IsLocked = direct.PtrTo(in.IsLocked)
-	out.RetentionPeriod = int(in.RetentionPeriod)
+	out.RetentionPeriod = in.RetentionPeriod
 	return out
 }
 func StorageBucketRetentionPolicy_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketRetentionPolicy) *pb.Bucket_RetentionPolicy {
