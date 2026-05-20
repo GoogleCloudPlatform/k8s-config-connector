@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securesourcemanager/v1beta1"
-	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeSecureSourceManagerRepositories implements SecureSourceManagerRepositoryInterface
-type fakeSecureSourceManagerRepositories struct {
-	*gentype.FakeClientWithList[*v1beta1.SecureSourceManagerRepository, *v1beta1.SecureSourceManagerRepositoryList]
+// FakeSecureSourceManagerRepositories implements SecureSourceManagerRepositoryInterface
+type FakeSecureSourceManagerRepositories struct {
 	Fake *FakeSecuresourcemanagerV1beta1
+	ns   string
 }
 
-func newFakeSecureSourceManagerRepositories(fake *FakeSecuresourcemanagerV1beta1, namespace string) securesourcemanagerv1beta1.SecureSourceManagerRepositoryInterface {
-	return &fakeSecureSourceManagerRepositories{
-		gentype.NewFakeClientWithList[*v1beta1.SecureSourceManagerRepository, *v1beta1.SecureSourceManagerRepositoryList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("securesourcemanagerrepositories"),
-			v1beta1.SchemeGroupVersion.WithKind("SecureSourceManagerRepository"),
-			func() *v1beta1.SecureSourceManagerRepository { return &v1beta1.SecureSourceManagerRepository{} },
-			func() *v1beta1.SecureSourceManagerRepositoryList { return &v1beta1.SecureSourceManagerRepositoryList{} },
-			func(dst, src *v1beta1.SecureSourceManagerRepositoryList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.SecureSourceManagerRepositoryList) []*v1beta1.SecureSourceManagerRepository {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.SecureSourceManagerRepositoryList, items []*v1beta1.SecureSourceManagerRepository) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var securesourcemanagerrepositoriesResource = v1beta1.SchemeGroupVersion.WithResource("securesourcemanagerrepositories")
+
+var securesourcemanagerrepositoriesKind = v1beta1.SchemeGroupVersion.WithKind("SecureSourceManagerRepository")
+
+// Get takes name of the secureSourceManagerRepository, and returns the corresponding secureSourceManagerRepository object, and an error if there is any.
+func (c *FakeSecureSourceManagerRepositories) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SecureSourceManagerRepository, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(securesourcemanagerrepositoriesResource, c.ns, name), &v1beta1.SecureSourceManagerRepository{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.SecureSourceManagerRepository), err
+}
+
+// List takes label and field selectors, and returns the list of SecureSourceManagerRepositories that match those selectors.
+func (c *FakeSecureSourceManagerRepositories) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SecureSourceManagerRepositoryList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(securesourcemanagerrepositoriesResource, securesourcemanagerrepositoriesKind, c.ns, opts), &v1beta1.SecureSourceManagerRepositoryList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.SecureSourceManagerRepositoryList{ListMeta: obj.(*v1beta1.SecureSourceManagerRepositoryList).ListMeta}
+	for _, item := range obj.(*v1beta1.SecureSourceManagerRepositoryList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested secureSourceManagerRepositories.
+func (c *FakeSecureSourceManagerRepositories) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(securesourcemanagerrepositoriesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a secureSourceManagerRepository and creates it.  Returns the server's representation of the secureSourceManagerRepository, and an error, if there is any.
+func (c *FakeSecureSourceManagerRepositories) Create(ctx context.Context, secureSourceManagerRepository *v1beta1.SecureSourceManagerRepository, opts v1.CreateOptions) (result *v1beta1.SecureSourceManagerRepository, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(securesourcemanagerrepositoriesResource, c.ns, secureSourceManagerRepository), &v1beta1.SecureSourceManagerRepository{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SecureSourceManagerRepository), err
+}
+
+// Update takes the representation of a secureSourceManagerRepository and updates it. Returns the server's representation of the secureSourceManagerRepository, and an error, if there is any.
+func (c *FakeSecureSourceManagerRepositories) Update(ctx context.Context, secureSourceManagerRepository *v1beta1.SecureSourceManagerRepository, opts v1.UpdateOptions) (result *v1beta1.SecureSourceManagerRepository, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(securesourcemanagerrepositoriesResource, c.ns, secureSourceManagerRepository), &v1beta1.SecureSourceManagerRepository{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SecureSourceManagerRepository), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeSecureSourceManagerRepositories) UpdateStatus(ctx context.Context, secureSourceManagerRepository *v1beta1.SecureSourceManagerRepository, opts v1.UpdateOptions) (*v1beta1.SecureSourceManagerRepository, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(securesourcemanagerrepositoriesResource, "status", c.ns, secureSourceManagerRepository), &v1beta1.SecureSourceManagerRepository{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SecureSourceManagerRepository), err
+}
+
+// Delete takes name of the secureSourceManagerRepository and deletes it. Returns an error if one occurs.
+func (c *FakeSecureSourceManagerRepositories) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(securesourcemanagerrepositoriesResource, c.ns, name, opts), &v1beta1.SecureSourceManagerRepository{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeSecureSourceManagerRepositories) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(securesourcemanagerrepositoriesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.SecureSourceManagerRepositoryList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched secureSourceManagerRepository.
+func (c *FakeSecureSourceManagerRepositories) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SecureSourceManagerRepository, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(securesourcemanagerrepositoriesResource, c.ns, name, pt, data, subresources...), &v1beta1.SecureSourceManagerRepository{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.SecureSourceManagerRepository), err
 }

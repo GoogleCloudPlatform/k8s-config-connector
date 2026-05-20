@@ -22,36 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1alpha1"
-	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeNetworkServicesEdgeCacheServices implements NetworkServicesEdgeCacheServiceInterface
-type fakeNetworkServicesEdgeCacheServices struct {
-	*gentype.FakeClientWithList[*v1alpha1.NetworkServicesEdgeCacheService, *v1alpha1.NetworkServicesEdgeCacheServiceList]
+// FakeNetworkServicesEdgeCacheServices implements NetworkServicesEdgeCacheServiceInterface
+type FakeNetworkServicesEdgeCacheServices struct {
 	Fake *FakeNetworkservicesV1alpha1
+	ns   string
 }
 
-func newFakeNetworkServicesEdgeCacheServices(fake *FakeNetworkservicesV1alpha1, namespace string) networkservicesv1alpha1.NetworkServicesEdgeCacheServiceInterface {
-	return &fakeNetworkServicesEdgeCacheServices{
-		gentype.NewFakeClientWithList[*v1alpha1.NetworkServicesEdgeCacheService, *v1alpha1.NetworkServicesEdgeCacheServiceList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("networkservicesedgecacheservices"),
-			v1alpha1.SchemeGroupVersion.WithKind("NetworkServicesEdgeCacheService"),
-			func() *v1alpha1.NetworkServicesEdgeCacheService { return &v1alpha1.NetworkServicesEdgeCacheService{} },
-			func() *v1alpha1.NetworkServicesEdgeCacheServiceList {
-				return &v1alpha1.NetworkServicesEdgeCacheServiceList{}
-			},
-			func(dst, src *v1alpha1.NetworkServicesEdgeCacheServiceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.NetworkServicesEdgeCacheServiceList) []*v1alpha1.NetworkServicesEdgeCacheService {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.NetworkServicesEdgeCacheServiceList, items []*v1alpha1.NetworkServicesEdgeCacheService) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var networkservicesedgecacheservicesResource = v1alpha1.SchemeGroupVersion.WithResource("networkservicesedgecacheservices")
+
+var networkservicesedgecacheservicesKind = v1alpha1.SchemeGroupVersion.WithKind("NetworkServicesEdgeCacheService")
+
+// Get takes name of the networkServicesEdgeCacheService, and returns the corresponding networkServicesEdgeCacheService object, and an error if there is any.
+func (c *FakeNetworkServicesEdgeCacheServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkServicesEdgeCacheService, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(networkservicesedgecacheservicesResource, c.ns, name), &v1alpha1.NetworkServicesEdgeCacheService{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.NetworkServicesEdgeCacheService), err
+}
+
+// List takes label and field selectors, and returns the list of NetworkServicesEdgeCacheServices that match those selectors.
+func (c *FakeNetworkServicesEdgeCacheServices) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetworkServicesEdgeCacheServiceList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(networkservicesedgecacheservicesResource, networkservicesedgecacheservicesKind, c.ns, opts), &v1alpha1.NetworkServicesEdgeCacheServiceList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.NetworkServicesEdgeCacheServiceList{ListMeta: obj.(*v1alpha1.NetworkServicesEdgeCacheServiceList).ListMeta}
+	for _, item := range obj.(*v1alpha1.NetworkServicesEdgeCacheServiceList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested networkServicesEdgeCacheServices.
+func (c *FakeNetworkServicesEdgeCacheServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(networkservicesedgecacheservicesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a networkServicesEdgeCacheService and creates it.  Returns the server's representation of the networkServicesEdgeCacheService, and an error, if there is any.
+func (c *FakeNetworkServicesEdgeCacheServices) Create(ctx context.Context, networkServicesEdgeCacheService *v1alpha1.NetworkServicesEdgeCacheService, opts v1.CreateOptions) (result *v1alpha1.NetworkServicesEdgeCacheService, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(networkservicesedgecacheservicesResource, c.ns, networkServicesEdgeCacheService), &v1alpha1.NetworkServicesEdgeCacheService{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetworkServicesEdgeCacheService), err
+}
+
+// Update takes the representation of a networkServicesEdgeCacheService and updates it. Returns the server's representation of the networkServicesEdgeCacheService, and an error, if there is any.
+func (c *FakeNetworkServicesEdgeCacheServices) Update(ctx context.Context, networkServicesEdgeCacheService *v1alpha1.NetworkServicesEdgeCacheService, opts v1.UpdateOptions) (result *v1alpha1.NetworkServicesEdgeCacheService, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(networkservicesedgecacheservicesResource, c.ns, networkServicesEdgeCacheService), &v1alpha1.NetworkServicesEdgeCacheService{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetworkServicesEdgeCacheService), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeNetworkServicesEdgeCacheServices) UpdateStatus(ctx context.Context, networkServicesEdgeCacheService *v1alpha1.NetworkServicesEdgeCacheService, opts v1.UpdateOptions) (*v1alpha1.NetworkServicesEdgeCacheService, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(networkservicesedgecacheservicesResource, "status", c.ns, networkServicesEdgeCacheService), &v1alpha1.NetworkServicesEdgeCacheService{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetworkServicesEdgeCacheService), err
+}
+
+// Delete takes name of the networkServicesEdgeCacheService and deletes it. Returns an error if one occurs.
+func (c *FakeNetworkServicesEdgeCacheServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(networkservicesedgecacheservicesResource, c.ns, name, opts), &v1alpha1.NetworkServicesEdgeCacheService{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeNetworkServicesEdgeCacheServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(networkservicesedgecacheservicesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.NetworkServicesEdgeCacheServiceList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched networkServicesEdgeCacheService.
+func (c *FakeNetworkServicesEdgeCacheServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkServicesEdgeCacheService, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(networkservicesedgecacheservicesResource, c.ns, name, pt, data, subresources...), &v1alpha1.NetworkServicesEdgeCacheService{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetworkServicesEdgeCacheService), err
 }

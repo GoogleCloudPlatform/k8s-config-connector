@@ -32,19 +32,19 @@ type FakeBigtableV1beta1 struct {
 }
 
 func (c *FakeBigtableV1beta1) BigtableAppProfiles(namespace string) v1beta1.BigtableAppProfileInterface {
-	return newFakeBigtableAppProfiles(c, namespace)
+	return &FakeBigtableAppProfiles{c, namespace}
 }
 
 func (c *FakeBigtableV1beta1) BigtableGCPolicies(namespace string) v1beta1.BigtableGCPolicyInterface {
-	return newFakeBigtableGCPolicies(c, namespace)
+	return &FakeBigtableGCPolicies{c, namespace}
 }
 
 func (c *FakeBigtableV1beta1) BigtableInstances(namespace string) v1beta1.BigtableInstanceInterface {
-	return newFakeBigtableInstances(c, namespace)
+	return &FakeBigtableInstances{c, namespace}
 }
 
 func (c *FakeBigtableV1beta1) BigtableTables(namespace string) v1beta1.BigtableTableInterface {
-	return newFakeBigtableTables(c, namespace)
+	return &FakeBigtableTables{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

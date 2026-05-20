@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1alpha1"
-	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeStorageFolders implements StorageFolderInterface
-type fakeStorageFolders struct {
-	*gentype.FakeClientWithList[*v1alpha1.StorageFolder, *v1alpha1.StorageFolderList]
+// FakeStorageFolders implements StorageFolderInterface
+type FakeStorageFolders struct {
 	Fake *FakeStorageV1alpha1
+	ns   string
 }
 
-func newFakeStorageFolders(fake *FakeStorageV1alpha1, namespace string) storagev1alpha1.StorageFolderInterface {
-	return &fakeStorageFolders{
-		gentype.NewFakeClientWithList[*v1alpha1.StorageFolder, *v1alpha1.StorageFolderList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("storagefolders"),
-			v1alpha1.SchemeGroupVersion.WithKind("StorageFolder"),
-			func() *v1alpha1.StorageFolder { return &v1alpha1.StorageFolder{} },
-			func() *v1alpha1.StorageFolderList { return &v1alpha1.StorageFolderList{} },
-			func(dst, src *v1alpha1.StorageFolderList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.StorageFolderList) []*v1alpha1.StorageFolder {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.StorageFolderList, items []*v1alpha1.StorageFolder) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var storagefoldersResource = v1alpha1.SchemeGroupVersion.WithResource("storagefolders")
+
+var storagefoldersKind = v1alpha1.SchemeGroupVersion.WithKind("StorageFolder")
+
+// Get takes name of the storageFolder, and returns the corresponding storageFolder object, and an error if there is any.
+func (c *FakeStorageFolders) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.StorageFolder, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(storagefoldersResource, c.ns, name), &v1alpha1.StorageFolder{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.StorageFolder), err
+}
+
+// List takes label and field selectors, and returns the list of StorageFolders that match those selectors.
+func (c *FakeStorageFolders) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.StorageFolderList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(storagefoldersResource, storagefoldersKind, c.ns, opts), &v1alpha1.StorageFolderList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.StorageFolderList{ListMeta: obj.(*v1alpha1.StorageFolderList).ListMeta}
+	for _, item := range obj.(*v1alpha1.StorageFolderList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested storageFolders.
+func (c *FakeStorageFolders) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(storagefoldersResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a storageFolder and creates it.  Returns the server's representation of the storageFolder, and an error, if there is any.
+func (c *FakeStorageFolders) Create(ctx context.Context, storageFolder *v1alpha1.StorageFolder, opts v1.CreateOptions) (result *v1alpha1.StorageFolder, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(storagefoldersResource, c.ns, storageFolder), &v1alpha1.StorageFolder{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.StorageFolder), err
+}
+
+// Update takes the representation of a storageFolder and updates it. Returns the server's representation of the storageFolder, and an error, if there is any.
+func (c *FakeStorageFolders) Update(ctx context.Context, storageFolder *v1alpha1.StorageFolder, opts v1.UpdateOptions) (result *v1alpha1.StorageFolder, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(storagefoldersResource, c.ns, storageFolder), &v1alpha1.StorageFolder{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.StorageFolder), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeStorageFolders) UpdateStatus(ctx context.Context, storageFolder *v1alpha1.StorageFolder, opts v1.UpdateOptions) (*v1alpha1.StorageFolder, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(storagefoldersResource, "status", c.ns, storageFolder), &v1alpha1.StorageFolder{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.StorageFolder), err
+}
+
+// Delete takes name of the storageFolder and deletes it. Returns an error if one occurs.
+func (c *FakeStorageFolders) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(storagefoldersResource, c.ns, name, opts), &v1alpha1.StorageFolder{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeStorageFolders) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(storagefoldersResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.StorageFolderList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched storageFolder.
+func (c *FakeStorageFolders) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.StorageFolder, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(storagefoldersResource, c.ns, name, pt, data, subresources...), &v1alpha1.StorageFolder{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.StorageFolder), err
 }

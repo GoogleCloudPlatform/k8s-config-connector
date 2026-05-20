@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicenetworking/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicenetworking/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ServiceNetworkingConnectionsGetter has a method to return a ServiceNetworkingConnectionInterface.
@@ -40,38 +41,158 @@ type ServiceNetworkingConnectionsGetter interface {
 
 // ServiceNetworkingConnectionInterface has methods to work with ServiceNetworkingConnection resources.
 type ServiceNetworkingConnectionInterface interface {
-	Create(ctx context.Context, serviceNetworkingConnection *servicenetworkingv1beta1.ServiceNetworkingConnection, opts v1.CreateOptions) (*servicenetworkingv1beta1.ServiceNetworkingConnection, error)
-	Update(ctx context.Context, serviceNetworkingConnection *servicenetworkingv1beta1.ServiceNetworkingConnection, opts v1.UpdateOptions) (*servicenetworkingv1beta1.ServiceNetworkingConnection, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, serviceNetworkingConnection *servicenetworkingv1beta1.ServiceNetworkingConnection, opts v1.UpdateOptions) (*servicenetworkingv1beta1.ServiceNetworkingConnection, error)
+	Create(ctx context.Context, serviceNetworkingConnection *v1beta1.ServiceNetworkingConnection, opts v1.CreateOptions) (*v1beta1.ServiceNetworkingConnection, error)
+	Update(ctx context.Context, serviceNetworkingConnection *v1beta1.ServiceNetworkingConnection, opts v1.UpdateOptions) (*v1beta1.ServiceNetworkingConnection, error)
+	UpdateStatus(ctx context.Context, serviceNetworkingConnection *v1beta1.ServiceNetworkingConnection, opts v1.UpdateOptions) (*v1beta1.ServiceNetworkingConnection, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*servicenetworkingv1beta1.ServiceNetworkingConnection, error)
-	List(ctx context.Context, opts v1.ListOptions) (*servicenetworkingv1beta1.ServiceNetworkingConnectionList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ServiceNetworkingConnection, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ServiceNetworkingConnectionList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *servicenetworkingv1beta1.ServiceNetworkingConnection, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ServiceNetworkingConnection, err error)
 	ServiceNetworkingConnectionExpansion
 }
 
 // serviceNetworkingConnections implements ServiceNetworkingConnectionInterface
 type serviceNetworkingConnections struct {
-	*gentype.ClientWithList[*servicenetworkingv1beta1.ServiceNetworkingConnection, *servicenetworkingv1beta1.ServiceNetworkingConnectionList]
+	client rest.Interface
+	ns     string
 }
 
 // newServiceNetworkingConnections returns a ServiceNetworkingConnections
 func newServiceNetworkingConnections(c *ServicenetworkingV1beta1Client, namespace string) *serviceNetworkingConnections {
 	return &serviceNetworkingConnections{
-		gentype.NewClientWithList[*servicenetworkingv1beta1.ServiceNetworkingConnection, *servicenetworkingv1beta1.ServiceNetworkingConnectionList](
-			"servicenetworkingconnections",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *servicenetworkingv1beta1.ServiceNetworkingConnection {
-				return &servicenetworkingv1beta1.ServiceNetworkingConnection{}
-			},
-			func() *servicenetworkingv1beta1.ServiceNetworkingConnectionList {
-				return &servicenetworkingv1beta1.ServiceNetworkingConnectionList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the serviceNetworkingConnection, and returns the corresponding serviceNetworkingConnection object, and an error if there is any.
+func (c *serviceNetworkingConnections) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ServiceNetworkingConnection, err error) {
+	result = &v1beta1.ServiceNetworkingConnection{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("servicenetworkingconnections").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ServiceNetworkingConnections that match those selectors.
+func (c *serviceNetworkingConnections) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ServiceNetworkingConnectionList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ServiceNetworkingConnectionList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("servicenetworkingconnections").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested serviceNetworkingConnections.
+func (c *serviceNetworkingConnections) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("servicenetworkingconnections").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a serviceNetworkingConnection and creates it.  Returns the server's representation of the serviceNetworkingConnection, and an error, if there is any.
+func (c *serviceNetworkingConnections) Create(ctx context.Context, serviceNetworkingConnection *v1beta1.ServiceNetworkingConnection, opts v1.CreateOptions) (result *v1beta1.ServiceNetworkingConnection, err error) {
+	result = &v1beta1.ServiceNetworkingConnection{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("servicenetworkingconnections").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(serviceNetworkingConnection).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a serviceNetworkingConnection and updates it. Returns the server's representation of the serviceNetworkingConnection, and an error, if there is any.
+func (c *serviceNetworkingConnections) Update(ctx context.Context, serviceNetworkingConnection *v1beta1.ServiceNetworkingConnection, opts v1.UpdateOptions) (result *v1beta1.ServiceNetworkingConnection, err error) {
+	result = &v1beta1.ServiceNetworkingConnection{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("servicenetworkingconnections").
+		Name(serviceNetworkingConnection.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(serviceNetworkingConnection).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *serviceNetworkingConnections) UpdateStatus(ctx context.Context, serviceNetworkingConnection *v1beta1.ServiceNetworkingConnection, opts v1.UpdateOptions) (result *v1beta1.ServiceNetworkingConnection, err error) {
+	result = &v1beta1.ServiceNetworkingConnection{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("servicenetworkingconnections").
+		Name(serviceNetworkingConnection.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(serviceNetworkingConnection).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the serviceNetworkingConnection and deletes it. Returns an error if one occurs.
+func (c *serviceNetworkingConnections) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("servicenetworkingconnections").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *serviceNetworkingConnections) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("servicenetworkingconnections").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched serviceNetworkingConnection.
+func (c *serviceNetworkingConnections) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ServiceNetworkingConnection, err error) {
+	result = &v1beta1.ServiceNetworkingConnection{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("servicenetworkingconnections").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

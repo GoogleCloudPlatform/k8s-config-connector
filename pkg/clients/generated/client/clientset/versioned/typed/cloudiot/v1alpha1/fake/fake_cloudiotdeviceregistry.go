@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudiot/v1alpha1"
-	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeCloudIOTDeviceRegistries implements CloudIOTDeviceRegistryInterface
-type fakeCloudIOTDeviceRegistries struct {
-	*gentype.FakeClientWithList[*v1alpha1.CloudIOTDeviceRegistry, *v1alpha1.CloudIOTDeviceRegistryList]
+// FakeCloudIOTDeviceRegistries implements CloudIOTDeviceRegistryInterface
+type FakeCloudIOTDeviceRegistries struct {
 	Fake *FakeCloudiotV1alpha1
+	ns   string
 }
 
-func newFakeCloudIOTDeviceRegistries(fake *FakeCloudiotV1alpha1, namespace string) cloudiotv1alpha1.CloudIOTDeviceRegistryInterface {
-	return &fakeCloudIOTDeviceRegistries{
-		gentype.NewFakeClientWithList[*v1alpha1.CloudIOTDeviceRegistry, *v1alpha1.CloudIOTDeviceRegistryList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("cloudiotdeviceregistries"),
-			v1alpha1.SchemeGroupVersion.WithKind("CloudIOTDeviceRegistry"),
-			func() *v1alpha1.CloudIOTDeviceRegistry { return &v1alpha1.CloudIOTDeviceRegistry{} },
-			func() *v1alpha1.CloudIOTDeviceRegistryList { return &v1alpha1.CloudIOTDeviceRegistryList{} },
-			func(dst, src *v1alpha1.CloudIOTDeviceRegistryList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.CloudIOTDeviceRegistryList) []*v1alpha1.CloudIOTDeviceRegistry {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.CloudIOTDeviceRegistryList, items []*v1alpha1.CloudIOTDeviceRegistry) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var cloudiotdeviceregistriesResource = v1alpha1.SchemeGroupVersion.WithResource("cloudiotdeviceregistries")
+
+var cloudiotdeviceregistriesKind = v1alpha1.SchemeGroupVersion.WithKind("CloudIOTDeviceRegistry")
+
+// Get takes name of the cloudIOTDeviceRegistry, and returns the corresponding cloudIOTDeviceRegistry object, and an error if there is any.
+func (c *FakeCloudIOTDeviceRegistries) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudIOTDeviceRegistry, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(cloudiotdeviceregistriesResource, c.ns, name), &v1alpha1.CloudIOTDeviceRegistry{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.CloudIOTDeviceRegistry), err
+}
+
+// List takes label and field selectors, and returns the list of CloudIOTDeviceRegistries that match those selectors.
+func (c *FakeCloudIOTDeviceRegistries) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudIOTDeviceRegistryList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(cloudiotdeviceregistriesResource, cloudiotdeviceregistriesKind, c.ns, opts), &v1alpha1.CloudIOTDeviceRegistryList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.CloudIOTDeviceRegistryList{ListMeta: obj.(*v1alpha1.CloudIOTDeviceRegistryList).ListMeta}
+	for _, item := range obj.(*v1alpha1.CloudIOTDeviceRegistryList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested cloudIOTDeviceRegistries.
+func (c *FakeCloudIOTDeviceRegistries) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(cloudiotdeviceregistriesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a cloudIOTDeviceRegistry and creates it.  Returns the server's representation of the cloudIOTDeviceRegistry, and an error, if there is any.
+func (c *FakeCloudIOTDeviceRegistries) Create(ctx context.Context, cloudIOTDeviceRegistry *v1alpha1.CloudIOTDeviceRegistry, opts v1.CreateOptions) (result *v1alpha1.CloudIOTDeviceRegistry, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(cloudiotdeviceregistriesResource, c.ns, cloudIOTDeviceRegistry), &v1alpha1.CloudIOTDeviceRegistry{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudIOTDeviceRegistry), err
+}
+
+// Update takes the representation of a cloudIOTDeviceRegistry and updates it. Returns the server's representation of the cloudIOTDeviceRegistry, and an error, if there is any.
+func (c *FakeCloudIOTDeviceRegistries) Update(ctx context.Context, cloudIOTDeviceRegistry *v1alpha1.CloudIOTDeviceRegistry, opts v1.UpdateOptions) (result *v1alpha1.CloudIOTDeviceRegistry, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(cloudiotdeviceregistriesResource, c.ns, cloudIOTDeviceRegistry), &v1alpha1.CloudIOTDeviceRegistry{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudIOTDeviceRegistry), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeCloudIOTDeviceRegistries) UpdateStatus(ctx context.Context, cloudIOTDeviceRegistry *v1alpha1.CloudIOTDeviceRegistry, opts v1.UpdateOptions) (*v1alpha1.CloudIOTDeviceRegistry, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(cloudiotdeviceregistriesResource, "status", c.ns, cloudIOTDeviceRegistry), &v1alpha1.CloudIOTDeviceRegistry{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudIOTDeviceRegistry), err
+}
+
+// Delete takes name of the cloudIOTDeviceRegistry and deletes it. Returns an error if one occurs.
+func (c *FakeCloudIOTDeviceRegistries) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(cloudiotdeviceregistriesResource, c.ns, name, opts), &v1alpha1.CloudIOTDeviceRegistry{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeCloudIOTDeviceRegistries) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(cloudiotdeviceregistriesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.CloudIOTDeviceRegistryList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched cloudIOTDeviceRegistry.
+func (c *FakeCloudIOTDeviceRegistries) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudIOTDeviceRegistry, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(cloudiotdeviceregistriesResource, c.ns, name, pt, data, subresources...), &v1alpha1.CloudIOTDeviceRegistry{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudIOTDeviceRegistry), err
 }

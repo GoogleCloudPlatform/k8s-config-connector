@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // NetworkServicesHTTPRoutesGetter has a method to return a NetworkServicesHTTPRouteInterface.
@@ -40,38 +41,158 @@ type NetworkServicesHTTPRoutesGetter interface {
 
 // NetworkServicesHTTPRouteInterface has methods to work with NetworkServicesHTTPRoute resources.
 type NetworkServicesHTTPRouteInterface interface {
-	Create(ctx context.Context, networkServicesHTTPRoute *networkservicesv1beta1.NetworkServicesHTTPRoute, opts v1.CreateOptions) (*networkservicesv1beta1.NetworkServicesHTTPRoute, error)
-	Update(ctx context.Context, networkServicesHTTPRoute *networkservicesv1beta1.NetworkServicesHTTPRoute, opts v1.UpdateOptions) (*networkservicesv1beta1.NetworkServicesHTTPRoute, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, networkServicesHTTPRoute *networkservicesv1beta1.NetworkServicesHTTPRoute, opts v1.UpdateOptions) (*networkservicesv1beta1.NetworkServicesHTTPRoute, error)
+	Create(ctx context.Context, networkServicesHTTPRoute *v1beta1.NetworkServicesHTTPRoute, opts v1.CreateOptions) (*v1beta1.NetworkServicesHTTPRoute, error)
+	Update(ctx context.Context, networkServicesHTTPRoute *v1beta1.NetworkServicesHTTPRoute, opts v1.UpdateOptions) (*v1beta1.NetworkServicesHTTPRoute, error)
+	UpdateStatus(ctx context.Context, networkServicesHTTPRoute *v1beta1.NetworkServicesHTTPRoute, opts v1.UpdateOptions) (*v1beta1.NetworkServicesHTTPRoute, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*networkservicesv1beta1.NetworkServicesHTTPRoute, error)
-	List(ctx context.Context, opts v1.ListOptions) (*networkservicesv1beta1.NetworkServicesHTTPRouteList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.NetworkServicesHTTPRoute, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.NetworkServicesHTTPRouteList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *networkservicesv1beta1.NetworkServicesHTTPRoute, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NetworkServicesHTTPRoute, err error)
 	NetworkServicesHTTPRouteExpansion
 }
 
 // networkServicesHTTPRoutes implements NetworkServicesHTTPRouteInterface
 type networkServicesHTTPRoutes struct {
-	*gentype.ClientWithList[*networkservicesv1beta1.NetworkServicesHTTPRoute, *networkservicesv1beta1.NetworkServicesHTTPRouteList]
+	client rest.Interface
+	ns     string
 }
 
 // newNetworkServicesHTTPRoutes returns a NetworkServicesHTTPRoutes
 func newNetworkServicesHTTPRoutes(c *NetworkservicesV1beta1Client, namespace string) *networkServicesHTTPRoutes {
 	return &networkServicesHTTPRoutes{
-		gentype.NewClientWithList[*networkservicesv1beta1.NetworkServicesHTTPRoute, *networkservicesv1beta1.NetworkServicesHTTPRouteList](
-			"networkserviceshttproutes",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *networkservicesv1beta1.NetworkServicesHTTPRoute {
-				return &networkservicesv1beta1.NetworkServicesHTTPRoute{}
-			},
-			func() *networkservicesv1beta1.NetworkServicesHTTPRouteList {
-				return &networkservicesv1beta1.NetworkServicesHTTPRouteList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the networkServicesHTTPRoute, and returns the corresponding networkServicesHTTPRoute object, and an error if there is any.
+func (c *networkServicesHTTPRoutes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.NetworkServicesHTTPRoute, err error) {
+	result = &v1beta1.NetworkServicesHTTPRoute{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("networkserviceshttproutes").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of NetworkServicesHTTPRoutes that match those selectors.
+func (c *networkServicesHTTPRoutes) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.NetworkServicesHTTPRouteList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.NetworkServicesHTTPRouteList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("networkserviceshttproutes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested networkServicesHTTPRoutes.
+func (c *networkServicesHTTPRoutes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("networkserviceshttproutes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a networkServicesHTTPRoute and creates it.  Returns the server's representation of the networkServicesHTTPRoute, and an error, if there is any.
+func (c *networkServicesHTTPRoutes) Create(ctx context.Context, networkServicesHTTPRoute *v1beta1.NetworkServicesHTTPRoute, opts v1.CreateOptions) (result *v1beta1.NetworkServicesHTTPRoute, err error) {
+	result = &v1beta1.NetworkServicesHTTPRoute{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("networkserviceshttproutes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkServicesHTTPRoute).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a networkServicesHTTPRoute and updates it. Returns the server's representation of the networkServicesHTTPRoute, and an error, if there is any.
+func (c *networkServicesHTTPRoutes) Update(ctx context.Context, networkServicesHTTPRoute *v1beta1.NetworkServicesHTTPRoute, opts v1.UpdateOptions) (result *v1beta1.NetworkServicesHTTPRoute, err error) {
+	result = &v1beta1.NetworkServicesHTTPRoute{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("networkserviceshttproutes").
+		Name(networkServicesHTTPRoute.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkServicesHTTPRoute).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *networkServicesHTTPRoutes) UpdateStatus(ctx context.Context, networkServicesHTTPRoute *v1beta1.NetworkServicesHTTPRoute, opts v1.UpdateOptions) (result *v1beta1.NetworkServicesHTTPRoute, err error) {
+	result = &v1beta1.NetworkServicesHTTPRoute{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("networkserviceshttproutes").
+		Name(networkServicesHTTPRoute.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkServicesHTTPRoute).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the networkServicesHTTPRoute and deletes it. Returns an error if one occurs.
+func (c *networkServicesHTTPRoutes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("networkserviceshttproutes").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *networkServicesHTTPRoutes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("networkserviceshttproutes").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched networkServicesHTTPRoute.
+func (c *networkServicesHTTPRoutes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NetworkServicesHTTPRoute, err error) {
+	result = &v1beta1.NetworkServicesHTTPRoute{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("networkserviceshttproutes").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // VertexAIFeaturestoreEntityTypesGetter has a method to return a VertexAIFeaturestoreEntityTypeInterface.
@@ -40,38 +41,158 @@ type VertexAIFeaturestoreEntityTypesGetter interface {
 
 // VertexAIFeaturestoreEntityTypeInterface has methods to work with VertexAIFeaturestoreEntityType resources.
 type VertexAIFeaturestoreEntityTypeInterface interface {
-	Create(ctx context.Context, vertexAIFeaturestoreEntityType *vertexaiv1alpha1.VertexAIFeaturestoreEntityType, opts v1.CreateOptions) (*vertexaiv1alpha1.VertexAIFeaturestoreEntityType, error)
-	Update(ctx context.Context, vertexAIFeaturestoreEntityType *vertexaiv1alpha1.VertexAIFeaturestoreEntityType, opts v1.UpdateOptions) (*vertexaiv1alpha1.VertexAIFeaturestoreEntityType, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, vertexAIFeaturestoreEntityType *vertexaiv1alpha1.VertexAIFeaturestoreEntityType, opts v1.UpdateOptions) (*vertexaiv1alpha1.VertexAIFeaturestoreEntityType, error)
+	Create(ctx context.Context, vertexAIFeaturestoreEntityType *v1alpha1.VertexAIFeaturestoreEntityType, opts v1.CreateOptions) (*v1alpha1.VertexAIFeaturestoreEntityType, error)
+	Update(ctx context.Context, vertexAIFeaturestoreEntityType *v1alpha1.VertexAIFeaturestoreEntityType, opts v1.UpdateOptions) (*v1alpha1.VertexAIFeaturestoreEntityType, error)
+	UpdateStatus(ctx context.Context, vertexAIFeaturestoreEntityType *v1alpha1.VertexAIFeaturestoreEntityType, opts v1.UpdateOptions) (*v1alpha1.VertexAIFeaturestoreEntityType, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*vertexaiv1alpha1.VertexAIFeaturestoreEntityType, error)
-	List(ctx context.Context, opts v1.ListOptions) (*vertexaiv1alpha1.VertexAIFeaturestoreEntityTypeList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.VertexAIFeaturestoreEntityType, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.VertexAIFeaturestoreEntityTypeList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *vertexaiv1alpha1.VertexAIFeaturestoreEntityType, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VertexAIFeaturestoreEntityType, err error)
 	VertexAIFeaturestoreEntityTypeExpansion
 }
 
 // vertexAIFeaturestoreEntityTypes implements VertexAIFeaturestoreEntityTypeInterface
 type vertexAIFeaturestoreEntityTypes struct {
-	*gentype.ClientWithList[*vertexaiv1alpha1.VertexAIFeaturestoreEntityType, *vertexaiv1alpha1.VertexAIFeaturestoreEntityTypeList]
+	client rest.Interface
+	ns     string
 }
 
 // newVertexAIFeaturestoreEntityTypes returns a VertexAIFeaturestoreEntityTypes
 func newVertexAIFeaturestoreEntityTypes(c *VertexaiV1alpha1Client, namespace string) *vertexAIFeaturestoreEntityTypes {
 	return &vertexAIFeaturestoreEntityTypes{
-		gentype.NewClientWithList[*vertexaiv1alpha1.VertexAIFeaturestoreEntityType, *vertexaiv1alpha1.VertexAIFeaturestoreEntityTypeList](
-			"vertexaifeaturestoreentitytypes",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *vertexaiv1alpha1.VertexAIFeaturestoreEntityType {
-				return &vertexaiv1alpha1.VertexAIFeaturestoreEntityType{}
-			},
-			func() *vertexaiv1alpha1.VertexAIFeaturestoreEntityTypeList {
-				return &vertexaiv1alpha1.VertexAIFeaturestoreEntityTypeList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the vertexAIFeaturestoreEntityType, and returns the corresponding vertexAIFeaturestoreEntityType object, and an error if there is any.
+func (c *vertexAIFeaturestoreEntityTypes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VertexAIFeaturestoreEntityType, err error) {
+	result = &v1alpha1.VertexAIFeaturestoreEntityType{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("vertexaifeaturestoreentitytypes").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of VertexAIFeaturestoreEntityTypes that match those selectors.
+func (c *vertexAIFeaturestoreEntityTypes) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VertexAIFeaturestoreEntityTypeList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.VertexAIFeaturestoreEntityTypeList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("vertexaifeaturestoreentitytypes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested vertexAIFeaturestoreEntityTypes.
+func (c *vertexAIFeaturestoreEntityTypes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("vertexaifeaturestoreentitytypes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a vertexAIFeaturestoreEntityType and creates it.  Returns the server's representation of the vertexAIFeaturestoreEntityType, and an error, if there is any.
+func (c *vertexAIFeaturestoreEntityTypes) Create(ctx context.Context, vertexAIFeaturestoreEntityType *v1alpha1.VertexAIFeaturestoreEntityType, opts v1.CreateOptions) (result *v1alpha1.VertexAIFeaturestoreEntityType, err error) {
+	result = &v1alpha1.VertexAIFeaturestoreEntityType{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("vertexaifeaturestoreentitytypes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(vertexAIFeaturestoreEntityType).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a vertexAIFeaturestoreEntityType and updates it. Returns the server's representation of the vertexAIFeaturestoreEntityType, and an error, if there is any.
+func (c *vertexAIFeaturestoreEntityTypes) Update(ctx context.Context, vertexAIFeaturestoreEntityType *v1alpha1.VertexAIFeaturestoreEntityType, opts v1.UpdateOptions) (result *v1alpha1.VertexAIFeaturestoreEntityType, err error) {
+	result = &v1alpha1.VertexAIFeaturestoreEntityType{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("vertexaifeaturestoreentitytypes").
+		Name(vertexAIFeaturestoreEntityType.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(vertexAIFeaturestoreEntityType).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *vertexAIFeaturestoreEntityTypes) UpdateStatus(ctx context.Context, vertexAIFeaturestoreEntityType *v1alpha1.VertexAIFeaturestoreEntityType, opts v1.UpdateOptions) (result *v1alpha1.VertexAIFeaturestoreEntityType, err error) {
+	result = &v1alpha1.VertexAIFeaturestoreEntityType{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("vertexaifeaturestoreentitytypes").
+		Name(vertexAIFeaturestoreEntityType.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(vertexAIFeaturestoreEntityType).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the vertexAIFeaturestoreEntityType and deletes it. Returns an error if one occurs.
+func (c *vertexAIFeaturestoreEntityTypes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("vertexaifeaturestoreentitytypes").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *vertexAIFeaturestoreEntityTypes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("vertexaifeaturestoreentitytypes").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched vertexAIFeaturestoreEntityType.
+func (c *vertexAIFeaturestoreEntityTypes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VertexAIFeaturestoreEntityType, err error) {
+	result = &v1alpha1.VertexAIFeaturestoreEntityType{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("vertexaifeaturestoreentitytypes").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

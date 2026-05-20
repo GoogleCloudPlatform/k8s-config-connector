@@ -32,7 +32,7 @@ type FakeComposerV1beta1 struct {
 }
 
 func (c *FakeComposerV1beta1) ComposerEnvironments(namespace string) v1beta1.ComposerEnvironmentInterface {
-	return newFakeComposerEnvironments(c, namespace)
+	return &FakeComposerEnvironments{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
