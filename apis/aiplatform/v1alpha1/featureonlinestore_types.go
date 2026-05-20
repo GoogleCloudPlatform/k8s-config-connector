@@ -168,6 +168,7 @@ type FeatureOnlineStore_Bigtable_AutoScaling struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.FeatureOnlineStore.Optimized
+// +kubebuilder:validation:XPreserveUnknownFields
 type FeatureOnlineStore_Optimized struct {
 }
 

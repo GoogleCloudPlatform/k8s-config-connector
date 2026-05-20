@@ -162,6 +162,7 @@ spec:
                   When choose Optimized storage type, need to set [PrivateServiceConnectConfig.enable_private_service_connect][google.cloud.aiplatform.v1.PrivateServiceConnectConfig.enable_private_service_connect]
                   to use private endpoint. Otherwise will use public endpoint by default.
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
