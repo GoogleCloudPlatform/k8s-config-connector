@@ -386,6 +386,8 @@ spec:
               creationTimestamp:
                 description: Creation timestamp in RFC3339 text format.
                 type: string
+              externalRef:
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -394,12 +396,15 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              selfLink:
-                type: string
-              type:
-                description: The type of the health check. One of HTTP, HTTPS, TCP,
-                  or SSL.
-                type: string
+              observedState:
+                description: ComputeHealthCheckObservedState is the state of the ComputeHealthCheck
+                  resource as most recently observed in GCP.
+                properties:
+                  type:
+                    description: The type of the health check. One of HTTP, HTTPS,
+                      TCP, or SSL.
+                    type: string
+                type: object
             type: object
         required:
         - spec

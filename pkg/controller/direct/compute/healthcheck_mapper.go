@@ -236,8 +236,8 @@ func ComputeHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	out := &krm.ComputeHealthCheckStatus{}
 	out.CreationTimestamp = in.CreationTimestamp
-	out.SelfLink = in.SelfLink
-	out.Type = in.Type
+	out.ExternalRef = in.SelfLink
+	out.ObservedState = ComputeHealthCheckObservedState_v1beta1_FromProto(mapCtx, in)
 	return out
 }
 
@@ -245,9 +245,11 @@ func ComputeHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	if in == nil {
 		return nil
 	}
-	out := &pb.HealthCheck{}
+	out := ComputeHealthCheckObservedState_v1beta1_ToProto(mapCtx, in.ObservedState)
+	if out == nil {
+		out = &pb.HealthCheck{}
+	}
 	out.CreationTimestamp = in.CreationTimestamp
-	out.SelfLink = in.SelfLink
-	out.Type = in.Type
+	out.SelfLink = in.ExternalRef
 	return out
 }

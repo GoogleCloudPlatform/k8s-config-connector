@@ -504,7 +504,7 @@ func ComputeHealthCheckObservedState_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: Region
 	// MISSING: SelfLink
 	// MISSING: SourceRegions
-	// MISSING: Type
+	out.Type = in.Type
 	return out
 }
 func ComputeHealthCheckObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHealthCheckObservedState) *pb.HealthCheck {
@@ -521,7 +521,7 @@ func ComputeHealthCheckObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Region
 	// MISSING: SelfLink
 	// MISSING: SourceRegions
-	// MISSING: Type
+	out.Type = in.Type
 	return out
 }
 
@@ -551,7 +551,6 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.SSLHealthCheck = HealthCheckSSLHealthCheck_v1beta1_FromProto(mapCtx, in.GetSslHealthCheck())
 	out.TCPHealthCheck = HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx, in.GetTcpHealthCheck())
 	out.TimeoutSec = in.TimeoutSec
-	// MISSING: Type
 	out.UnhealthyThreshold = in.UnhealthyThreshold
 	return out
 }
@@ -583,7 +582,6 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
 	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
 	out.TimeoutSec = in.TimeoutSec
-	// MISSING: Type
 	out.UnhealthyThreshold = in.UnhealthyThreshold
 	return out
 }
