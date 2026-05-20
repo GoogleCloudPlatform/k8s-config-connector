@@ -22,123 +22,36 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeVMwareEngineExternalAccessRules implements VMwareEngineExternalAccessRuleInterface
-type FakeVMwareEngineExternalAccessRules struct {
+// fakeVMwareEngineExternalAccessRules implements VMwareEngineExternalAccessRuleInterface
+type fakeVMwareEngineExternalAccessRules struct {
+	*gentype.FakeClientWithList[*v1alpha1.VMwareEngineExternalAccessRule, *v1alpha1.VMwareEngineExternalAccessRuleList]
 	Fake *FakeVmwareengineV1alpha1
-	ns   string
 }
 
-var vmwareengineexternalaccessrulesResource = v1alpha1.SchemeGroupVersion.WithResource("vmwareengineexternalaccessrules")
-
-var vmwareengineexternalaccessrulesKind = v1alpha1.SchemeGroupVersion.WithKind("VMwareEngineExternalAccessRule")
-
-// Get takes name of the vMwareEngineExternalAccessRule, and returns the corresponding vMwareEngineExternalAccessRule object, and an error if there is any.
-func (c *FakeVMwareEngineExternalAccessRules) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VMwareEngineExternalAccessRule, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(vmwareengineexternalaccessrulesResource, c.ns, name), &v1alpha1.VMwareEngineExternalAccessRule{})
-
-	if obj == nil {
-		return nil, err
+func newFakeVMwareEngineExternalAccessRules(fake *FakeVmwareengineV1alpha1, namespace string) vmwareenginev1alpha1.VMwareEngineExternalAccessRuleInterface {
+	return &fakeVMwareEngineExternalAccessRules{
+		gentype.NewFakeClientWithList[*v1alpha1.VMwareEngineExternalAccessRule, *v1alpha1.VMwareEngineExternalAccessRuleList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("vmwareengineexternalaccessrules"),
+			v1alpha1.SchemeGroupVersion.WithKind("VMwareEngineExternalAccessRule"),
+			func() *v1alpha1.VMwareEngineExternalAccessRule { return &v1alpha1.VMwareEngineExternalAccessRule{} },
+			func() *v1alpha1.VMwareEngineExternalAccessRuleList {
+				return &v1alpha1.VMwareEngineExternalAccessRuleList{}
+			},
+			func(dst, src *v1alpha1.VMwareEngineExternalAccessRuleList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.VMwareEngineExternalAccessRuleList) []*v1alpha1.VMwareEngineExternalAccessRule {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.VMwareEngineExternalAccessRuleList, items []*v1alpha1.VMwareEngineExternalAccessRule) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.VMwareEngineExternalAccessRule), err
-}
-
-// List takes label and field selectors, and returns the list of VMwareEngineExternalAccessRules that match those selectors.
-func (c *FakeVMwareEngineExternalAccessRules) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VMwareEngineExternalAccessRuleList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(vmwareengineexternalaccessrulesResource, vmwareengineexternalaccessrulesKind, c.ns, opts), &v1alpha1.VMwareEngineExternalAccessRuleList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.VMwareEngineExternalAccessRuleList{ListMeta: obj.(*v1alpha1.VMwareEngineExternalAccessRuleList).ListMeta}
-	for _, item := range obj.(*v1alpha1.VMwareEngineExternalAccessRuleList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested vMwareEngineExternalAccessRules.
-func (c *FakeVMwareEngineExternalAccessRules) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(vmwareengineexternalaccessrulesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a vMwareEngineExternalAccessRule and creates it.  Returns the server's representation of the vMwareEngineExternalAccessRule, and an error, if there is any.
-func (c *FakeVMwareEngineExternalAccessRules) Create(ctx context.Context, vMwareEngineExternalAccessRule *v1alpha1.VMwareEngineExternalAccessRule, opts v1.CreateOptions) (result *v1alpha1.VMwareEngineExternalAccessRule, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(vmwareengineexternalaccessrulesResource, c.ns, vMwareEngineExternalAccessRule), &v1alpha1.VMwareEngineExternalAccessRule{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VMwareEngineExternalAccessRule), err
-}
-
-// Update takes the representation of a vMwareEngineExternalAccessRule and updates it. Returns the server's representation of the vMwareEngineExternalAccessRule, and an error, if there is any.
-func (c *FakeVMwareEngineExternalAccessRules) Update(ctx context.Context, vMwareEngineExternalAccessRule *v1alpha1.VMwareEngineExternalAccessRule, opts v1.UpdateOptions) (result *v1alpha1.VMwareEngineExternalAccessRule, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(vmwareengineexternalaccessrulesResource, c.ns, vMwareEngineExternalAccessRule), &v1alpha1.VMwareEngineExternalAccessRule{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VMwareEngineExternalAccessRule), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeVMwareEngineExternalAccessRules) UpdateStatus(ctx context.Context, vMwareEngineExternalAccessRule *v1alpha1.VMwareEngineExternalAccessRule, opts v1.UpdateOptions) (*v1alpha1.VMwareEngineExternalAccessRule, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(vmwareengineexternalaccessrulesResource, "status", c.ns, vMwareEngineExternalAccessRule), &v1alpha1.VMwareEngineExternalAccessRule{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VMwareEngineExternalAccessRule), err
-}
-
-// Delete takes name of the vMwareEngineExternalAccessRule and deletes it. Returns an error if one occurs.
-func (c *FakeVMwareEngineExternalAccessRules) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(vmwareengineexternalaccessrulesResource, c.ns, name, opts), &v1alpha1.VMwareEngineExternalAccessRule{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeVMwareEngineExternalAccessRules) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(vmwareengineexternalaccessrulesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.VMwareEngineExternalAccessRuleList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched vMwareEngineExternalAccessRule.
-func (c *FakeVMwareEngineExternalAccessRules) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VMwareEngineExternalAccessRule, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(vmwareengineexternalaccessrulesResource, c.ns, name, pt, data, subresources...), &v1alpha1.VMwareEngineExternalAccessRule{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VMwareEngineExternalAccessRule), err
 }

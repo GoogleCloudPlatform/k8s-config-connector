@@ -32,7 +32,7 @@ type FakeRecaptchaenterpriseV1beta1 struct {
 }
 
 func (c *FakeRecaptchaenterpriseV1beta1) RecaptchaEnterpriseKeys(namespace string) v1beta1.RecaptchaEnterpriseKeyInterface {
-	return &FakeRecaptchaEnterpriseKeys{c, namespace}
+	return newFakeRecaptchaEnterpriseKeys(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

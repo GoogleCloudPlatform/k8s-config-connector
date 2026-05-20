@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1alpha1"
+	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // DataplexLakesGetter has a method to return a DataplexLakeInterface.
@@ -41,158 +40,34 @@ type DataplexLakesGetter interface {
 
 // DataplexLakeInterface has methods to work with DataplexLake resources.
 type DataplexLakeInterface interface {
-	Create(ctx context.Context, dataplexLake *v1alpha1.DataplexLake, opts v1.CreateOptions) (*v1alpha1.DataplexLake, error)
-	Update(ctx context.Context, dataplexLake *v1alpha1.DataplexLake, opts v1.UpdateOptions) (*v1alpha1.DataplexLake, error)
-	UpdateStatus(ctx context.Context, dataplexLake *v1alpha1.DataplexLake, opts v1.UpdateOptions) (*v1alpha1.DataplexLake, error)
+	Create(ctx context.Context, dataplexLake *dataplexv1alpha1.DataplexLake, opts v1.CreateOptions) (*dataplexv1alpha1.DataplexLake, error)
+	Update(ctx context.Context, dataplexLake *dataplexv1alpha1.DataplexLake, opts v1.UpdateOptions) (*dataplexv1alpha1.DataplexLake, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, dataplexLake *dataplexv1alpha1.DataplexLake, opts v1.UpdateOptions) (*dataplexv1alpha1.DataplexLake, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.DataplexLake, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.DataplexLakeList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*dataplexv1alpha1.DataplexLake, error)
+	List(ctx context.Context, opts v1.ListOptions) (*dataplexv1alpha1.DataplexLakeList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataplexLake, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *dataplexv1alpha1.DataplexLake, err error)
 	DataplexLakeExpansion
 }
 
 // dataplexLakes implements DataplexLakeInterface
 type dataplexLakes struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*dataplexv1alpha1.DataplexLake, *dataplexv1alpha1.DataplexLakeList]
 }
 
 // newDataplexLakes returns a DataplexLakes
 func newDataplexLakes(c *DataplexV1alpha1Client, namespace string) *dataplexLakes {
 	return &dataplexLakes{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*dataplexv1alpha1.DataplexLake, *dataplexv1alpha1.DataplexLakeList](
+			"dataplexlakes",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *dataplexv1alpha1.DataplexLake { return &dataplexv1alpha1.DataplexLake{} },
+			func() *dataplexv1alpha1.DataplexLakeList { return &dataplexv1alpha1.DataplexLakeList{} },
+		),
 	}
-}
-
-// Get takes name of the dataplexLake, and returns the corresponding dataplexLake object, and an error if there is any.
-func (c *dataplexLakes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataplexLake, err error) {
-	result = &v1alpha1.DataplexLake{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("dataplexlakes").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of DataplexLakes that match those selectors.
-func (c *dataplexLakes) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DataplexLakeList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.DataplexLakeList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("dataplexlakes").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested dataplexLakes.
-func (c *dataplexLakes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("dataplexlakes").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a dataplexLake and creates it.  Returns the server's representation of the dataplexLake, and an error, if there is any.
-func (c *dataplexLakes) Create(ctx context.Context, dataplexLake *v1alpha1.DataplexLake, opts v1.CreateOptions) (result *v1alpha1.DataplexLake, err error) {
-	result = &v1alpha1.DataplexLake{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("dataplexlakes").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(dataplexLake).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a dataplexLake and updates it. Returns the server's representation of the dataplexLake, and an error, if there is any.
-func (c *dataplexLakes) Update(ctx context.Context, dataplexLake *v1alpha1.DataplexLake, opts v1.UpdateOptions) (result *v1alpha1.DataplexLake, err error) {
-	result = &v1alpha1.DataplexLake{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("dataplexlakes").
-		Name(dataplexLake.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(dataplexLake).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *dataplexLakes) UpdateStatus(ctx context.Context, dataplexLake *v1alpha1.DataplexLake, opts v1.UpdateOptions) (result *v1alpha1.DataplexLake, err error) {
-	result = &v1alpha1.DataplexLake{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("dataplexlakes").
-		Name(dataplexLake.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(dataplexLake).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the dataplexLake and deletes it. Returns an error if one occurs.
-func (c *dataplexLakes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("dataplexlakes").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *dataplexLakes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("dataplexlakes").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched dataplexLake.
-func (c *dataplexLakes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataplexLake, err error) {
-	result = &v1alpha1.DataplexLake{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("dataplexlakes").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

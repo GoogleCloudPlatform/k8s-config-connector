@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBigtableAuthorizedViews implements BigtableAuthorizedViewInterface
-type FakeBigtableAuthorizedViews struct {
+// fakeBigtableAuthorizedViews implements BigtableAuthorizedViewInterface
+type fakeBigtableAuthorizedViews struct {
+	*gentype.FakeClientWithList[*v1alpha1.BigtableAuthorizedView, *v1alpha1.BigtableAuthorizedViewList]
 	Fake *FakeBigtableV1alpha1
-	ns   string
 }
 
-var bigtableauthorizedviewsResource = v1alpha1.SchemeGroupVersion.WithResource("bigtableauthorizedviews")
-
-var bigtableauthorizedviewsKind = v1alpha1.SchemeGroupVersion.WithKind("BigtableAuthorizedView")
-
-// Get takes name of the bigtableAuthorizedView, and returns the corresponding bigtableAuthorizedView object, and an error if there is any.
-func (c *FakeBigtableAuthorizedViews) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigtableAuthorizedView, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(bigtableauthorizedviewsResource, c.ns, name), &v1alpha1.BigtableAuthorizedView{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBigtableAuthorizedViews(fake *FakeBigtableV1alpha1, namespace string) bigtablev1alpha1.BigtableAuthorizedViewInterface {
+	return &fakeBigtableAuthorizedViews{
+		gentype.NewFakeClientWithList[*v1alpha1.BigtableAuthorizedView, *v1alpha1.BigtableAuthorizedViewList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("bigtableauthorizedviews"),
+			v1alpha1.SchemeGroupVersion.WithKind("BigtableAuthorizedView"),
+			func() *v1alpha1.BigtableAuthorizedView { return &v1alpha1.BigtableAuthorizedView{} },
+			func() *v1alpha1.BigtableAuthorizedViewList { return &v1alpha1.BigtableAuthorizedViewList{} },
+			func(dst, src *v1alpha1.BigtableAuthorizedViewList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.BigtableAuthorizedViewList) []*v1alpha1.BigtableAuthorizedView {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.BigtableAuthorizedViewList, items []*v1alpha1.BigtableAuthorizedView) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.BigtableAuthorizedView), err
-}
-
-// List takes label and field selectors, and returns the list of BigtableAuthorizedViews that match those selectors.
-func (c *FakeBigtableAuthorizedViews) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigtableAuthorizedViewList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(bigtableauthorizedviewsResource, bigtableauthorizedviewsKind, c.ns, opts), &v1alpha1.BigtableAuthorizedViewList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.BigtableAuthorizedViewList{ListMeta: obj.(*v1alpha1.BigtableAuthorizedViewList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BigtableAuthorizedViewList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested bigtableAuthorizedViews.
-func (c *FakeBigtableAuthorizedViews) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(bigtableauthorizedviewsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a bigtableAuthorizedView and creates it.  Returns the server's representation of the bigtableAuthorizedView, and an error, if there is any.
-func (c *FakeBigtableAuthorizedViews) Create(ctx context.Context, bigtableAuthorizedView *v1alpha1.BigtableAuthorizedView, opts v1.CreateOptions) (result *v1alpha1.BigtableAuthorizedView, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(bigtableauthorizedviewsResource, c.ns, bigtableAuthorizedView), &v1alpha1.BigtableAuthorizedView{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableAuthorizedView), err
-}
-
-// Update takes the representation of a bigtableAuthorizedView and updates it. Returns the server's representation of the bigtableAuthorizedView, and an error, if there is any.
-func (c *FakeBigtableAuthorizedViews) Update(ctx context.Context, bigtableAuthorizedView *v1alpha1.BigtableAuthorizedView, opts v1.UpdateOptions) (result *v1alpha1.BigtableAuthorizedView, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(bigtableauthorizedviewsResource, c.ns, bigtableAuthorizedView), &v1alpha1.BigtableAuthorizedView{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableAuthorizedView), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigtableAuthorizedViews) UpdateStatus(ctx context.Context, bigtableAuthorizedView *v1alpha1.BigtableAuthorizedView, opts v1.UpdateOptions) (*v1alpha1.BigtableAuthorizedView, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(bigtableauthorizedviewsResource, "status", c.ns, bigtableAuthorizedView), &v1alpha1.BigtableAuthorizedView{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableAuthorizedView), err
-}
-
-// Delete takes name of the bigtableAuthorizedView and deletes it. Returns an error if one occurs.
-func (c *FakeBigtableAuthorizedViews) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(bigtableauthorizedviewsResource, c.ns, name, opts), &v1alpha1.BigtableAuthorizedView{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBigtableAuthorizedViews) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(bigtableauthorizedviewsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.BigtableAuthorizedViewList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched bigtableAuthorizedView.
-func (c *FakeBigtableAuthorizedViews) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigtableAuthorizedView, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(bigtableauthorizedviewsResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigtableAuthorizedView{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableAuthorizedView), err
 }

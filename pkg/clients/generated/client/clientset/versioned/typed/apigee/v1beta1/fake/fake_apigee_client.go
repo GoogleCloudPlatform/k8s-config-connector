@@ -32,31 +32,31 @@ type FakeApigeeV1beta1 struct {
 }
 
 func (c *FakeApigeeV1beta1) ApigeeEndpointAttachments(namespace string) v1beta1.ApigeeEndpointAttachmentInterface {
-	return &FakeApigeeEndpointAttachments{c, namespace}
+	return newFakeApigeeEndpointAttachments(c, namespace)
 }
 
 func (c *FakeApigeeV1beta1) ApigeeEnvgroups(namespace string) v1beta1.ApigeeEnvgroupInterface {
-	return &FakeApigeeEnvgroups{c, namespace}
+	return newFakeApigeeEnvgroups(c, namespace)
 }
 
 func (c *FakeApigeeV1beta1) ApigeeEnvgroupAttachments(namespace string) v1beta1.ApigeeEnvgroupAttachmentInterface {
-	return &FakeApigeeEnvgroupAttachments{c, namespace}
+	return newFakeApigeeEnvgroupAttachments(c, namespace)
 }
 
 func (c *FakeApigeeV1beta1) ApigeeEnvironments(namespace string) v1beta1.ApigeeEnvironmentInterface {
-	return &FakeApigeeEnvironments{c, namespace}
+	return newFakeApigeeEnvironments(c, namespace)
 }
 
 func (c *FakeApigeeV1beta1) ApigeeInstances(namespace string) v1beta1.ApigeeInstanceInterface {
-	return &FakeApigeeInstances{c, namespace}
+	return newFakeApigeeInstances(c, namespace)
 }
 
 func (c *FakeApigeeV1beta1) ApigeeInstanceAttachments(namespace string) v1beta1.ApigeeInstanceAttachmentInterface {
-	return &FakeApigeeInstanceAttachments{c, namespace}
+	return newFakeApigeeInstanceAttachments(c, namespace)
 }
 
 func (c *FakeApigeeV1beta1) ApigeeOrganizations(namespace string) v1beta1.ApigeeOrganizationInterface {
-	return &FakeApigeeOrganizations{c, namespace}
+	return newFakeApigeeOrganizations(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

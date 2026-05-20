@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/mlengine/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeMLEngineModels implements MLEngineModelInterface
-type FakeMLEngineModels struct {
+// fakeMLEngineModels implements MLEngineModelInterface
+type fakeMLEngineModels struct {
+	*gentype.FakeClientWithList[*v1alpha1.MLEngineModel, *v1alpha1.MLEngineModelList]
 	Fake *FakeMlengineV1alpha1
-	ns   string
 }
 
-var mlenginemodelsResource = v1alpha1.SchemeGroupVersion.WithResource("mlenginemodels")
-
-var mlenginemodelsKind = v1alpha1.SchemeGroupVersion.WithKind("MLEngineModel")
-
-// Get takes name of the mLEngineModel, and returns the corresponding mLEngineModel object, and an error if there is any.
-func (c *FakeMLEngineModels) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.MLEngineModel, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(mlenginemodelsResource, c.ns, name), &v1alpha1.MLEngineModel{})
-
-	if obj == nil {
-		return nil, err
+func newFakeMLEngineModels(fake *FakeMlengineV1alpha1, namespace string) mlenginev1alpha1.MLEngineModelInterface {
+	return &fakeMLEngineModels{
+		gentype.NewFakeClientWithList[*v1alpha1.MLEngineModel, *v1alpha1.MLEngineModelList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("mlenginemodels"),
+			v1alpha1.SchemeGroupVersion.WithKind("MLEngineModel"),
+			func() *v1alpha1.MLEngineModel { return &v1alpha1.MLEngineModel{} },
+			func() *v1alpha1.MLEngineModelList { return &v1alpha1.MLEngineModelList{} },
+			func(dst, src *v1alpha1.MLEngineModelList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.MLEngineModelList) []*v1alpha1.MLEngineModel {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.MLEngineModelList, items []*v1alpha1.MLEngineModel) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.MLEngineModel), err
-}
-
-// List takes label and field selectors, and returns the list of MLEngineModels that match those selectors.
-func (c *FakeMLEngineModels) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.MLEngineModelList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(mlenginemodelsResource, mlenginemodelsKind, c.ns, opts), &v1alpha1.MLEngineModelList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.MLEngineModelList{ListMeta: obj.(*v1alpha1.MLEngineModelList).ListMeta}
-	for _, item := range obj.(*v1alpha1.MLEngineModelList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested mLEngineModels.
-func (c *FakeMLEngineModels) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(mlenginemodelsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a mLEngineModel and creates it.  Returns the server's representation of the mLEngineModel, and an error, if there is any.
-func (c *FakeMLEngineModels) Create(ctx context.Context, mLEngineModel *v1alpha1.MLEngineModel, opts v1.CreateOptions) (result *v1alpha1.MLEngineModel, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(mlenginemodelsResource, c.ns, mLEngineModel), &v1alpha1.MLEngineModel{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MLEngineModel), err
-}
-
-// Update takes the representation of a mLEngineModel and updates it. Returns the server's representation of the mLEngineModel, and an error, if there is any.
-func (c *FakeMLEngineModels) Update(ctx context.Context, mLEngineModel *v1alpha1.MLEngineModel, opts v1.UpdateOptions) (result *v1alpha1.MLEngineModel, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(mlenginemodelsResource, c.ns, mLEngineModel), &v1alpha1.MLEngineModel{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MLEngineModel), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeMLEngineModels) UpdateStatus(ctx context.Context, mLEngineModel *v1alpha1.MLEngineModel, opts v1.UpdateOptions) (*v1alpha1.MLEngineModel, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(mlenginemodelsResource, "status", c.ns, mLEngineModel), &v1alpha1.MLEngineModel{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MLEngineModel), err
-}
-
-// Delete takes name of the mLEngineModel and deletes it. Returns an error if one occurs.
-func (c *FakeMLEngineModels) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(mlenginemodelsResource, c.ns, name, opts), &v1alpha1.MLEngineModel{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeMLEngineModels) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(mlenginemodelsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.MLEngineModelList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched mLEngineModel.
-func (c *FakeMLEngineModels) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.MLEngineModel, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(mlenginemodelsResource, c.ns, name, pt, data, subresources...), &v1alpha1.MLEngineModel{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.MLEngineModel), err
 }
