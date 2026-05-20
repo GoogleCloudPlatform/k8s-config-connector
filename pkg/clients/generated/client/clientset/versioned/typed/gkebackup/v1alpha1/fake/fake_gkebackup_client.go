@@ -32,19 +32,19 @@ type FakeGkebackupV1alpha1 struct {
 }
 
 func (c *FakeGkebackupV1alpha1) GKEBackupBackups(namespace string) v1alpha1.GKEBackupBackupInterface {
-	return newFakeGKEBackupBackups(c, namespace)
+	return &FakeGKEBackupBackups{c, namespace}
 }
 
 func (c *FakeGkebackupV1alpha1) GKEBackupBackupPlans(namespace string) v1alpha1.GKEBackupBackupPlanInterface {
-	return newFakeGKEBackupBackupPlans(c, namespace)
+	return &FakeGKEBackupBackupPlans{c, namespace}
 }
 
 func (c *FakeGkebackupV1alpha1) GKEBackupRestores(namespace string) v1alpha1.GKEBackupRestoreInterface {
-	return newFakeGKEBackupRestores(c, namespace)
+	return &FakeGKEBackupRestores{c, namespace}
 }
 
 func (c *FakeGkebackupV1alpha1) GKEBackupRestorePlans(namespace string) v1alpha1.GKEBackupRestorePlanInterface {
-	return newFakeGKEBackupRestorePlans(c, namespace)
+	return &FakeGKEBackupRestorePlans{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // DataformRepositoriesGetter has a method to return a DataformRepositoryInterface.
@@ -40,34 +41,158 @@ type DataformRepositoriesGetter interface {
 
 // DataformRepositoryInterface has methods to work with DataformRepository resources.
 type DataformRepositoryInterface interface {
-	Create(ctx context.Context, dataformRepository *dataformv1beta1.DataformRepository, opts v1.CreateOptions) (*dataformv1beta1.DataformRepository, error)
-	Update(ctx context.Context, dataformRepository *dataformv1beta1.DataformRepository, opts v1.UpdateOptions) (*dataformv1beta1.DataformRepository, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, dataformRepository *dataformv1beta1.DataformRepository, opts v1.UpdateOptions) (*dataformv1beta1.DataformRepository, error)
+	Create(ctx context.Context, dataformRepository *v1beta1.DataformRepository, opts v1.CreateOptions) (*v1beta1.DataformRepository, error)
+	Update(ctx context.Context, dataformRepository *v1beta1.DataformRepository, opts v1.UpdateOptions) (*v1beta1.DataformRepository, error)
+	UpdateStatus(ctx context.Context, dataformRepository *v1beta1.DataformRepository, opts v1.UpdateOptions) (*v1beta1.DataformRepository, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*dataformv1beta1.DataformRepository, error)
-	List(ctx context.Context, opts v1.ListOptions) (*dataformv1beta1.DataformRepositoryList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.DataformRepository, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.DataformRepositoryList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *dataformv1beta1.DataformRepository, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DataformRepository, err error)
 	DataformRepositoryExpansion
 }
 
 // dataformRepositories implements DataformRepositoryInterface
 type dataformRepositories struct {
-	*gentype.ClientWithList[*dataformv1beta1.DataformRepository, *dataformv1beta1.DataformRepositoryList]
+	client rest.Interface
+	ns     string
 }
 
 // newDataformRepositories returns a DataformRepositories
 func newDataformRepositories(c *DataformV1beta1Client, namespace string) *dataformRepositories {
 	return &dataformRepositories{
-		gentype.NewClientWithList[*dataformv1beta1.DataformRepository, *dataformv1beta1.DataformRepositoryList](
-			"dataformrepositories",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *dataformv1beta1.DataformRepository { return &dataformv1beta1.DataformRepository{} },
-			func() *dataformv1beta1.DataformRepositoryList { return &dataformv1beta1.DataformRepositoryList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the dataformRepository, and returns the corresponding dataformRepository object, and an error if there is any.
+func (c *dataformRepositories) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataformRepository, err error) {
+	result = &v1beta1.DataformRepository{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dataformrepositories").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of DataformRepositories that match those selectors.
+func (c *dataformRepositories) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.DataformRepositoryList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.DataformRepositoryList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dataformrepositories").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested dataformRepositories.
+func (c *dataformRepositories) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("dataformrepositories").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a dataformRepository and creates it.  Returns the server's representation of the dataformRepository, and an error, if there is any.
+func (c *dataformRepositories) Create(ctx context.Context, dataformRepository *v1beta1.DataformRepository, opts v1.CreateOptions) (result *v1beta1.DataformRepository, err error) {
+	result = &v1beta1.DataformRepository{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("dataformrepositories").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataformRepository).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a dataformRepository and updates it. Returns the server's representation of the dataformRepository, and an error, if there is any.
+func (c *dataformRepositories) Update(ctx context.Context, dataformRepository *v1beta1.DataformRepository, opts v1.UpdateOptions) (result *v1beta1.DataformRepository, err error) {
+	result = &v1beta1.DataformRepository{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dataformrepositories").
+		Name(dataformRepository.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataformRepository).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *dataformRepositories) UpdateStatus(ctx context.Context, dataformRepository *v1beta1.DataformRepository, opts v1.UpdateOptions) (result *v1beta1.DataformRepository, err error) {
+	result = &v1beta1.DataformRepository{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dataformrepositories").
+		Name(dataformRepository.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataformRepository).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the dataformRepository and deletes it. Returns an error if one occurs.
+func (c *dataformRepositories) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dataformrepositories").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *dataformRepositories) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dataformrepositories").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched dataformRepository.
+func (c *dataformRepositories) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DataformRepository, err error) {
+	result = &v1beta1.DataformRepository{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("dataformrepositories").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

@@ -32,11 +32,11 @@ type FakeMetastoreV1alpha1 struct {
 }
 
 func (c *FakeMetastoreV1alpha1) MetastoreFederations(namespace string) v1alpha1.MetastoreFederationInterface {
-	return newFakeMetastoreFederations(c, namespace)
+	return &FakeMetastoreFederations{c, namespace}
 }
 
 func (c *FakeMetastoreV1alpha1) MetastoreServices(namespace string) v1alpha1.MetastoreServiceInterface {
-	return newFakeMetastoreServices(c, namespace)
+	return &FakeMetastoreServices{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

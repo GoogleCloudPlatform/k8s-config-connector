@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1beta1"
-	edgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeEdgeContainerNodePools implements EdgeContainerNodePoolInterface
-type fakeEdgeContainerNodePools struct {
-	*gentype.FakeClientWithList[*v1beta1.EdgeContainerNodePool, *v1beta1.EdgeContainerNodePoolList]
+// FakeEdgeContainerNodePools implements EdgeContainerNodePoolInterface
+type FakeEdgeContainerNodePools struct {
 	Fake *FakeEdgecontainerV1beta1
+	ns   string
 }
 
-func newFakeEdgeContainerNodePools(fake *FakeEdgecontainerV1beta1, namespace string) edgecontainerv1beta1.EdgeContainerNodePoolInterface {
-	return &fakeEdgeContainerNodePools{
-		gentype.NewFakeClientWithList[*v1beta1.EdgeContainerNodePool, *v1beta1.EdgeContainerNodePoolList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("edgecontainernodepools"),
-			v1beta1.SchemeGroupVersion.WithKind("EdgeContainerNodePool"),
-			func() *v1beta1.EdgeContainerNodePool { return &v1beta1.EdgeContainerNodePool{} },
-			func() *v1beta1.EdgeContainerNodePoolList { return &v1beta1.EdgeContainerNodePoolList{} },
-			func(dst, src *v1beta1.EdgeContainerNodePoolList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.EdgeContainerNodePoolList) []*v1beta1.EdgeContainerNodePool {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.EdgeContainerNodePoolList, items []*v1beta1.EdgeContainerNodePool) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var edgecontainernodepoolsResource = v1beta1.SchemeGroupVersion.WithResource("edgecontainernodepools")
+
+var edgecontainernodepoolsKind = v1beta1.SchemeGroupVersion.WithKind("EdgeContainerNodePool")
+
+// Get takes name of the edgeContainerNodePool, and returns the corresponding edgeContainerNodePool object, and an error if there is any.
+func (c *FakeEdgeContainerNodePools) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EdgeContainerNodePool, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(edgecontainernodepoolsResource, c.ns, name), &v1beta1.EdgeContainerNodePool{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.EdgeContainerNodePool), err
+}
+
+// List takes label and field selectors, and returns the list of EdgeContainerNodePools that match those selectors.
+func (c *FakeEdgeContainerNodePools) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.EdgeContainerNodePoolList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(edgecontainernodepoolsResource, edgecontainernodepoolsKind, c.ns, opts), &v1beta1.EdgeContainerNodePoolList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.EdgeContainerNodePoolList{ListMeta: obj.(*v1beta1.EdgeContainerNodePoolList).ListMeta}
+	for _, item := range obj.(*v1beta1.EdgeContainerNodePoolList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested edgeContainerNodePools.
+func (c *FakeEdgeContainerNodePools) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(edgecontainernodepoolsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a edgeContainerNodePool and creates it.  Returns the server's representation of the edgeContainerNodePool, and an error, if there is any.
+func (c *FakeEdgeContainerNodePools) Create(ctx context.Context, edgeContainerNodePool *v1beta1.EdgeContainerNodePool, opts v1.CreateOptions) (result *v1beta1.EdgeContainerNodePool, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(edgecontainernodepoolsResource, c.ns, edgeContainerNodePool), &v1beta1.EdgeContainerNodePool{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EdgeContainerNodePool), err
+}
+
+// Update takes the representation of a edgeContainerNodePool and updates it. Returns the server's representation of the edgeContainerNodePool, and an error, if there is any.
+func (c *FakeEdgeContainerNodePools) Update(ctx context.Context, edgeContainerNodePool *v1beta1.EdgeContainerNodePool, opts v1.UpdateOptions) (result *v1beta1.EdgeContainerNodePool, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(edgecontainernodepoolsResource, c.ns, edgeContainerNodePool), &v1beta1.EdgeContainerNodePool{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EdgeContainerNodePool), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeEdgeContainerNodePools) UpdateStatus(ctx context.Context, edgeContainerNodePool *v1beta1.EdgeContainerNodePool, opts v1.UpdateOptions) (*v1beta1.EdgeContainerNodePool, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(edgecontainernodepoolsResource, "status", c.ns, edgeContainerNodePool), &v1beta1.EdgeContainerNodePool{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EdgeContainerNodePool), err
+}
+
+// Delete takes name of the edgeContainerNodePool and deletes it. Returns an error if one occurs.
+func (c *FakeEdgeContainerNodePools) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(edgecontainernodepoolsResource, c.ns, name, opts), &v1beta1.EdgeContainerNodePool{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeEdgeContainerNodePools) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(edgecontainernodepoolsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.EdgeContainerNodePoolList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched edgeContainerNodePool.
+func (c *FakeEdgeContainerNodePools) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EdgeContainerNodePool, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(edgecontainernodepoolsResource, c.ns, name, pt, data, subresources...), &v1beta1.EdgeContainerNodePool{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EdgeContainerNodePool), err
 }

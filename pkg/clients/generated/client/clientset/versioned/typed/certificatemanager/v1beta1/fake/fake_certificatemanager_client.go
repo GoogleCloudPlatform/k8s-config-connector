@@ -32,19 +32,19 @@ type FakeCertificatemanagerV1beta1 struct {
 }
 
 func (c *FakeCertificatemanagerV1beta1) CertificateManagerCertificates(namespace string) v1beta1.CertificateManagerCertificateInterface {
-	return newFakeCertificateManagerCertificates(c, namespace)
+	return &FakeCertificateManagerCertificates{c, namespace}
 }
 
 func (c *FakeCertificatemanagerV1beta1) CertificateManagerCertificateMaps(namespace string) v1beta1.CertificateManagerCertificateMapInterface {
-	return newFakeCertificateManagerCertificateMaps(c, namespace)
+	return &FakeCertificateManagerCertificateMaps{c, namespace}
 }
 
 func (c *FakeCertificatemanagerV1beta1) CertificateManagerCertificateMapEntries(namespace string) v1beta1.CertificateManagerCertificateMapEntryInterface {
-	return newFakeCertificateManagerCertificateMapEntries(c, namespace)
+	return &FakeCertificateManagerCertificateMapEntries{c, namespace}
 }
 
 func (c *FakeCertificatemanagerV1beta1) CertificateManagerDNSAuthorizations(namespace string) v1beta1.CertificateManagerDNSAuthorizationInterface {
-	return newFakeCertificateManagerDNSAuthorizations(c, namespace)
+	return &FakeCertificateManagerDNSAuthorizations{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

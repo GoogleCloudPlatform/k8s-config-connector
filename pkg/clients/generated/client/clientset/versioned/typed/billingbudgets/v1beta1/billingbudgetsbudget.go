@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billingbudgets/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billingbudgets/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // BillingBudgetsBudgetsGetter has a method to return a BillingBudgetsBudgetInterface.
@@ -40,38 +41,158 @@ type BillingBudgetsBudgetsGetter interface {
 
 // BillingBudgetsBudgetInterface has methods to work with BillingBudgetsBudget resources.
 type BillingBudgetsBudgetInterface interface {
-	Create(ctx context.Context, billingBudgetsBudget *billingbudgetsv1beta1.BillingBudgetsBudget, opts v1.CreateOptions) (*billingbudgetsv1beta1.BillingBudgetsBudget, error)
-	Update(ctx context.Context, billingBudgetsBudget *billingbudgetsv1beta1.BillingBudgetsBudget, opts v1.UpdateOptions) (*billingbudgetsv1beta1.BillingBudgetsBudget, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, billingBudgetsBudget *billingbudgetsv1beta1.BillingBudgetsBudget, opts v1.UpdateOptions) (*billingbudgetsv1beta1.BillingBudgetsBudget, error)
+	Create(ctx context.Context, billingBudgetsBudget *v1beta1.BillingBudgetsBudget, opts v1.CreateOptions) (*v1beta1.BillingBudgetsBudget, error)
+	Update(ctx context.Context, billingBudgetsBudget *v1beta1.BillingBudgetsBudget, opts v1.UpdateOptions) (*v1beta1.BillingBudgetsBudget, error)
+	UpdateStatus(ctx context.Context, billingBudgetsBudget *v1beta1.BillingBudgetsBudget, opts v1.UpdateOptions) (*v1beta1.BillingBudgetsBudget, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*billingbudgetsv1beta1.BillingBudgetsBudget, error)
-	List(ctx context.Context, opts v1.ListOptions) (*billingbudgetsv1beta1.BillingBudgetsBudgetList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.BillingBudgetsBudget, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.BillingBudgetsBudgetList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *billingbudgetsv1beta1.BillingBudgetsBudget, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BillingBudgetsBudget, err error)
 	BillingBudgetsBudgetExpansion
 }
 
 // billingBudgetsBudgets implements BillingBudgetsBudgetInterface
 type billingBudgetsBudgets struct {
-	*gentype.ClientWithList[*billingbudgetsv1beta1.BillingBudgetsBudget, *billingbudgetsv1beta1.BillingBudgetsBudgetList]
+	client rest.Interface
+	ns     string
 }
 
 // newBillingBudgetsBudgets returns a BillingBudgetsBudgets
 func newBillingBudgetsBudgets(c *BillingbudgetsV1beta1Client, namespace string) *billingBudgetsBudgets {
 	return &billingBudgetsBudgets{
-		gentype.NewClientWithList[*billingbudgetsv1beta1.BillingBudgetsBudget, *billingbudgetsv1beta1.BillingBudgetsBudgetList](
-			"billingbudgetsbudgets",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *billingbudgetsv1beta1.BillingBudgetsBudget {
-				return &billingbudgetsv1beta1.BillingBudgetsBudget{}
-			},
-			func() *billingbudgetsv1beta1.BillingBudgetsBudgetList {
-				return &billingbudgetsv1beta1.BillingBudgetsBudgetList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the billingBudgetsBudget, and returns the corresponding billingBudgetsBudget object, and an error if there is any.
+func (c *billingBudgetsBudgets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BillingBudgetsBudget, err error) {
+	result = &v1beta1.BillingBudgetsBudget{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("billingbudgetsbudgets").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of BillingBudgetsBudgets that match those selectors.
+func (c *billingBudgetsBudgets) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BillingBudgetsBudgetList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.BillingBudgetsBudgetList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("billingbudgetsbudgets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested billingBudgetsBudgets.
+func (c *billingBudgetsBudgets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("billingbudgetsbudgets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a billingBudgetsBudget and creates it.  Returns the server's representation of the billingBudgetsBudget, and an error, if there is any.
+func (c *billingBudgetsBudgets) Create(ctx context.Context, billingBudgetsBudget *v1beta1.BillingBudgetsBudget, opts v1.CreateOptions) (result *v1beta1.BillingBudgetsBudget, err error) {
+	result = &v1beta1.BillingBudgetsBudget{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("billingbudgetsbudgets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(billingBudgetsBudget).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a billingBudgetsBudget and updates it. Returns the server's representation of the billingBudgetsBudget, and an error, if there is any.
+func (c *billingBudgetsBudgets) Update(ctx context.Context, billingBudgetsBudget *v1beta1.BillingBudgetsBudget, opts v1.UpdateOptions) (result *v1beta1.BillingBudgetsBudget, err error) {
+	result = &v1beta1.BillingBudgetsBudget{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("billingbudgetsbudgets").
+		Name(billingBudgetsBudget.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(billingBudgetsBudget).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *billingBudgetsBudgets) UpdateStatus(ctx context.Context, billingBudgetsBudget *v1beta1.BillingBudgetsBudget, opts v1.UpdateOptions) (result *v1beta1.BillingBudgetsBudget, err error) {
+	result = &v1beta1.BillingBudgetsBudget{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("billingbudgetsbudgets").
+		Name(billingBudgetsBudget.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(billingBudgetsBudget).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the billingBudgetsBudget and deletes it. Returns an error if one occurs.
+func (c *billingBudgetsBudgets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("billingbudgetsbudgets").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *billingBudgetsBudgets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("billingbudgetsbudgets").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched billingBudgetsBudget.
+func (c *billingBudgetsBudgets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BillingBudgetsBudget, err error) {
+	result = &v1beta1.BillingBudgetsBudget{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("billingbudgetsbudgets").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

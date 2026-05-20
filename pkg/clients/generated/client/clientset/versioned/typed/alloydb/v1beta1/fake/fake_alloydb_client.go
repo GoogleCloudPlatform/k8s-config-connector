@@ -32,19 +32,19 @@ type FakeAlloydbV1beta1 struct {
 }
 
 func (c *FakeAlloydbV1beta1) AlloyDBBackups(namespace string) v1beta1.AlloyDBBackupInterface {
-	return newFakeAlloyDBBackups(c, namespace)
+	return &FakeAlloyDBBackups{c, namespace}
 }
 
 func (c *FakeAlloydbV1beta1) AlloyDBClusters(namespace string) v1beta1.AlloyDBClusterInterface {
-	return newFakeAlloyDBClusters(c, namespace)
+	return &FakeAlloyDBClusters{c, namespace}
 }
 
 func (c *FakeAlloydbV1beta1) AlloyDBInstances(namespace string) v1beta1.AlloyDBInstanceInterface {
-	return newFakeAlloyDBInstances(c, namespace)
+	return &FakeAlloyDBInstances{c, namespace}
 }
 
 func (c *FakeAlloydbV1beta1) AlloyDBUsers(namespace string) v1beta1.AlloyDBUserInterface {
-	return newFakeAlloyDBUsers(c, namespace)
+	return &FakeAlloyDBUsers{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

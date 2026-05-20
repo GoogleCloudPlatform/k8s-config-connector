@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ApigeeEnvgroupsGetter has a method to return a ApigeeEnvgroupInterface.
@@ -40,34 +41,158 @@ type ApigeeEnvgroupsGetter interface {
 
 // ApigeeEnvgroupInterface has methods to work with ApigeeEnvgroup resources.
 type ApigeeEnvgroupInterface interface {
-	Create(ctx context.Context, apigeeEnvgroup *apigeev1beta1.ApigeeEnvgroup, opts v1.CreateOptions) (*apigeev1beta1.ApigeeEnvgroup, error)
-	Update(ctx context.Context, apigeeEnvgroup *apigeev1beta1.ApigeeEnvgroup, opts v1.UpdateOptions) (*apigeev1beta1.ApigeeEnvgroup, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, apigeeEnvgroup *apigeev1beta1.ApigeeEnvgroup, opts v1.UpdateOptions) (*apigeev1beta1.ApigeeEnvgroup, error)
+	Create(ctx context.Context, apigeeEnvgroup *v1beta1.ApigeeEnvgroup, opts v1.CreateOptions) (*v1beta1.ApigeeEnvgroup, error)
+	Update(ctx context.Context, apigeeEnvgroup *v1beta1.ApigeeEnvgroup, opts v1.UpdateOptions) (*v1beta1.ApigeeEnvgroup, error)
+	UpdateStatus(ctx context.Context, apigeeEnvgroup *v1beta1.ApigeeEnvgroup, opts v1.UpdateOptions) (*v1beta1.ApigeeEnvgroup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*apigeev1beta1.ApigeeEnvgroup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*apigeev1beta1.ApigeeEnvgroupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ApigeeEnvgroup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ApigeeEnvgroupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apigeev1beta1.ApigeeEnvgroup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ApigeeEnvgroup, err error)
 	ApigeeEnvgroupExpansion
 }
 
 // apigeeEnvgroups implements ApigeeEnvgroupInterface
 type apigeeEnvgroups struct {
-	*gentype.ClientWithList[*apigeev1beta1.ApigeeEnvgroup, *apigeev1beta1.ApigeeEnvgroupList]
+	client rest.Interface
+	ns     string
 }
 
 // newApigeeEnvgroups returns a ApigeeEnvgroups
 func newApigeeEnvgroups(c *ApigeeV1beta1Client, namespace string) *apigeeEnvgroups {
 	return &apigeeEnvgroups{
-		gentype.NewClientWithList[*apigeev1beta1.ApigeeEnvgroup, *apigeev1beta1.ApigeeEnvgroupList](
-			"apigeeenvgroups",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *apigeev1beta1.ApigeeEnvgroup { return &apigeev1beta1.ApigeeEnvgroup{} },
-			func() *apigeev1beta1.ApigeeEnvgroupList { return &apigeev1beta1.ApigeeEnvgroupList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the apigeeEnvgroup, and returns the corresponding apigeeEnvgroup object, and an error if there is any.
+func (c *apigeeEnvgroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ApigeeEnvgroup, err error) {
+	result = &v1beta1.ApigeeEnvgroup{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("apigeeenvgroups").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ApigeeEnvgroups that match those selectors.
+func (c *apigeeEnvgroups) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ApigeeEnvgroupList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ApigeeEnvgroupList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("apigeeenvgroups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested apigeeEnvgroups.
+func (c *apigeeEnvgroups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("apigeeenvgroups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a apigeeEnvgroup and creates it.  Returns the server's representation of the apigeeEnvgroup, and an error, if there is any.
+func (c *apigeeEnvgroups) Create(ctx context.Context, apigeeEnvgroup *v1beta1.ApigeeEnvgroup, opts v1.CreateOptions) (result *v1beta1.ApigeeEnvgroup, err error) {
+	result = &v1beta1.ApigeeEnvgroup{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("apigeeenvgroups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(apigeeEnvgroup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a apigeeEnvgroup and updates it. Returns the server's representation of the apigeeEnvgroup, and an error, if there is any.
+func (c *apigeeEnvgroups) Update(ctx context.Context, apigeeEnvgroup *v1beta1.ApigeeEnvgroup, opts v1.UpdateOptions) (result *v1beta1.ApigeeEnvgroup, err error) {
+	result = &v1beta1.ApigeeEnvgroup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("apigeeenvgroups").
+		Name(apigeeEnvgroup.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(apigeeEnvgroup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *apigeeEnvgroups) UpdateStatus(ctx context.Context, apigeeEnvgroup *v1beta1.ApigeeEnvgroup, opts v1.UpdateOptions) (result *v1beta1.ApigeeEnvgroup, err error) {
+	result = &v1beta1.ApigeeEnvgroup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("apigeeenvgroups").
+		Name(apigeeEnvgroup.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(apigeeEnvgroup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the apigeeEnvgroup and deletes it. Returns an error if one occurs.
+func (c *apigeeEnvgroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("apigeeenvgroups").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *apigeeEnvgroups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("apigeeenvgroups").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched apigeeEnvgroup.
+func (c *apigeeEnvgroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ApigeeEnvgroup, err error) {
+	result = &v1beta1.ApigeeEnvgroup{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("apigeeenvgroups").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

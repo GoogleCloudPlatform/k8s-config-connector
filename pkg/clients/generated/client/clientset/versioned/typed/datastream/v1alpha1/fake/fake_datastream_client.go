@@ -32,19 +32,19 @@ type FakeDatastreamV1alpha1 struct {
 }
 
 func (c *FakeDatastreamV1alpha1) DatastreamConnectionProfiles(namespace string) v1alpha1.DatastreamConnectionProfileInterface {
-	return newFakeDatastreamConnectionProfiles(c, namespace)
+	return &FakeDatastreamConnectionProfiles{c, namespace}
 }
 
 func (c *FakeDatastreamV1alpha1) DatastreamPrivateConnections(namespace string) v1alpha1.DatastreamPrivateConnectionInterface {
-	return newFakeDatastreamPrivateConnections(c, namespace)
+	return &FakeDatastreamPrivateConnections{c, namespace}
 }
 
 func (c *FakeDatastreamV1alpha1) DatastreamRoutes(namespace string) v1alpha1.DatastreamRouteInterface {
-	return newFakeDatastreamRoutes(c, namespace)
+	return &FakeDatastreamRoutes{c, namespace}
 }
 
 func (c *FakeDatastreamV1alpha1) DatastreamStreams(namespace string) v1alpha1.DatastreamStreamInterface {
-	return newFakeDatastreamStreams(c, namespace)
+	return &FakeDatastreamStreams{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeTargetHTTPSProxiesGetter has a method to return a ComputeTargetHTTPSProxyInterface.
@@ -40,36 +41,158 @@ type ComputeTargetHTTPSProxiesGetter interface {
 
 // ComputeTargetHTTPSProxyInterface has methods to work with ComputeTargetHTTPSProxy resources.
 type ComputeTargetHTTPSProxyInterface interface {
-	Create(ctx context.Context, computeTargetHTTPSProxy *computev1beta1.ComputeTargetHTTPSProxy, opts v1.CreateOptions) (*computev1beta1.ComputeTargetHTTPSProxy, error)
-	Update(ctx context.Context, computeTargetHTTPSProxy *computev1beta1.ComputeTargetHTTPSProxy, opts v1.UpdateOptions) (*computev1beta1.ComputeTargetHTTPSProxy, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeTargetHTTPSProxy *computev1beta1.ComputeTargetHTTPSProxy, opts v1.UpdateOptions) (*computev1beta1.ComputeTargetHTTPSProxy, error)
+	Create(ctx context.Context, computeTargetHTTPSProxy *v1beta1.ComputeTargetHTTPSProxy, opts v1.CreateOptions) (*v1beta1.ComputeTargetHTTPSProxy, error)
+	Update(ctx context.Context, computeTargetHTTPSProxy *v1beta1.ComputeTargetHTTPSProxy, opts v1.UpdateOptions) (*v1beta1.ComputeTargetHTTPSProxy, error)
+	UpdateStatus(ctx context.Context, computeTargetHTTPSProxy *v1beta1.ComputeTargetHTTPSProxy, opts v1.UpdateOptions) (*v1beta1.ComputeTargetHTTPSProxy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeTargetHTTPSProxy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeTargetHTTPSProxyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeTargetHTTPSProxy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeTargetHTTPSProxyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeTargetHTTPSProxy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeTargetHTTPSProxy, err error)
 	ComputeTargetHTTPSProxyExpansion
 }
 
 // computeTargetHTTPSProxies implements ComputeTargetHTTPSProxyInterface
 type computeTargetHTTPSProxies struct {
-	*gentype.ClientWithList[*computev1beta1.ComputeTargetHTTPSProxy, *computev1beta1.ComputeTargetHTTPSProxyList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeTargetHTTPSProxies returns a ComputeTargetHTTPSProxies
 func newComputeTargetHTTPSProxies(c *ComputeV1beta1Client, namespace string) *computeTargetHTTPSProxies {
 	return &computeTargetHTTPSProxies{
-		gentype.NewClientWithList[*computev1beta1.ComputeTargetHTTPSProxy, *computev1beta1.ComputeTargetHTTPSProxyList](
-			"computetargethttpsproxies",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1beta1.ComputeTargetHTTPSProxy { return &computev1beta1.ComputeTargetHTTPSProxy{} },
-			func() *computev1beta1.ComputeTargetHTTPSProxyList {
-				return &computev1beta1.ComputeTargetHTTPSProxyList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeTargetHTTPSProxy, and returns the corresponding computeTargetHTTPSProxy object, and an error if there is any.
+func (c *computeTargetHTTPSProxies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeTargetHTTPSProxy, err error) {
+	result = &v1beta1.ComputeTargetHTTPSProxy{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computetargethttpsproxies").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeTargetHTTPSProxies that match those selectors.
+func (c *computeTargetHTTPSProxies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeTargetHTTPSProxyList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ComputeTargetHTTPSProxyList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computetargethttpsproxies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeTargetHTTPSProxies.
+func (c *computeTargetHTTPSProxies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computetargethttpsproxies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeTargetHTTPSProxy and creates it.  Returns the server's representation of the computeTargetHTTPSProxy, and an error, if there is any.
+func (c *computeTargetHTTPSProxies) Create(ctx context.Context, computeTargetHTTPSProxy *v1beta1.ComputeTargetHTTPSProxy, opts v1.CreateOptions) (result *v1beta1.ComputeTargetHTTPSProxy, err error) {
+	result = &v1beta1.ComputeTargetHTTPSProxy{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computetargethttpsproxies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeTargetHTTPSProxy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeTargetHTTPSProxy and updates it. Returns the server's representation of the computeTargetHTTPSProxy, and an error, if there is any.
+func (c *computeTargetHTTPSProxies) Update(ctx context.Context, computeTargetHTTPSProxy *v1beta1.ComputeTargetHTTPSProxy, opts v1.UpdateOptions) (result *v1beta1.ComputeTargetHTTPSProxy, err error) {
+	result = &v1beta1.ComputeTargetHTTPSProxy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computetargethttpsproxies").
+		Name(computeTargetHTTPSProxy.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeTargetHTTPSProxy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeTargetHTTPSProxies) UpdateStatus(ctx context.Context, computeTargetHTTPSProxy *v1beta1.ComputeTargetHTTPSProxy, opts v1.UpdateOptions) (result *v1beta1.ComputeTargetHTTPSProxy, err error) {
+	result = &v1beta1.ComputeTargetHTTPSProxy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computetargethttpsproxies").
+		Name(computeTargetHTTPSProxy.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeTargetHTTPSProxy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeTargetHTTPSProxy and deletes it. Returns an error if one occurs.
+func (c *computeTargetHTTPSProxies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computetargethttpsproxies").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeTargetHTTPSProxies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computetargethttpsproxies").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeTargetHTTPSProxy.
+func (c *computeTargetHTTPSProxies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeTargetHTTPSProxy, err error) {
+	result = &v1beta1.ComputeTargetHTTPSProxy{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computetargethttpsproxies").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

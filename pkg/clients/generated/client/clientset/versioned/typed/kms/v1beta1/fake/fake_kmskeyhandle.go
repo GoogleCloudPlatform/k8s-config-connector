@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
-	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeKMSKeyHandles implements KMSKeyHandleInterface
-type fakeKMSKeyHandles struct {
-	*gentype.FakeClientWithList[*v1beta1.KMSKeyHandle, *v1beta1.KMSKeyHandleList]
+// FakeKMSKeyHandles implements KMSKeyHandleInterface
+type FakeKMSKeyHandles struct {
 	Fake *FakeKmsV1beta1
+	ns   string
 }
 
-func newFakeKMSKeyHandles(fake *FakeKmsV1beta1, namespace string) kmsv1beta1.KMSKeyHandleInterface {
-	return &fakeKMSKeyHandles{
-		gentype.NewFakeClientWithList[*v1beta1.KMSKeyHandle, *v1beta1.KMSKeyHandleList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("kmskeyhandles"),
-			v1beta1.SchemeGroupVersion.WithKind("KMSKeyHandle"),
-			func() *v1beta1.KMSKeyHandle { return &v1beta1.KMSKeyHandle{} },
-			func() *v1beta1.KMSKeyHandleList { return &v1beta1.KMSKeyHandleList{} },
-			func(dst, src *v1beta1.KMSKeyHandleList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.KMSKeyHandleList) []*v1beta1.KMSKeyHandle {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.KMSKeyHandleList, items []*v1beta1.KMSKeyHandle) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var kmskeyhandlesResource = v1beta1.SchemeGroupVersion.WithResource("kmskeyhandles")
+
+var kmskeyhandlesKind = v1beta1.SchemeGroupVersion.WithKind("KMSKeyHandle")
+
+// Get takes name of the kMSKeyHandle, and returns the corresponding kMSKeyHandle object, and an error if there is any.
+func (c *FakeKMSKeyHandles) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.KMSKeyHandle, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(kmskeyhandlesResource, c.ns, name), &v1beta1.KMSKeyHandle{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.KMSKeyHandle), err
+}
+
+// List takes label and field selectors, and returns the list of KMSKeyHandles that match those selectors.
+func (c *FakeKMSKeyHandles) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.KMSKeyHandleList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(kmskeyhandlesResource, kmskeyhandlesKind, c.ns, opts), &v1beta1.KMSKeyHandleList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.KMSKeyHandleList{ListMeta: obj.(*v1beta1.KMSKeyHandleList).ListMeta}
+	for _, item := range obj.(*v1beta1.KMSKeyHandleList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested kMSKeyHandles.
+func (c *FakeKMSKeyHandles) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(kmskeyhandlesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a kMSKeyHandle and creates it.  Returns the server's representation of the kMSKeyHandle, and an error, if there is any.
+func (c *FakeKMSKeyHandles) Create(ctx context.Context, kMSKeyHandle *v1beta1.KMSKeyHandle, opts v1.CreateOptions) (result *v1beta1.KMSKeyHandle, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(kmskeyhandlesResource, c.ns, kMSKeyHandle), &v1beta1.KMSKeyHandle{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.KMSKeyHandle), err
+}
+
+// Update takes the representation of a kMSKeyHandle and updates it. Returns the server's representation of the kMSKeyHandle, and an error, if there is any.
+func (c *FakeKMSKeyHandles) Update(ctx context.Context, kMSKeyHandle *v1beta1.KMSKeyHandle, opts v1.UpdateOptions) (result *v1beta1.KMSKeyHandle, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(kmskeyhandlesResource, c.ns, kMSKeyHandle), &v1beta1.KMSKeyHandle{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.KMSKeyHandle), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeKMSKeyHandles) UpdateStatus(ctx context.Context, kMSKeyHandle *v1beta1.KMSKeyHandle, opts v1.UpdateOptions) (*v1beta1.KMSKeyHandle, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(kmskeyhandlesResource, "status", c.ns, kMSKeyHandle), &v1beta1.KMSKeyHandle{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.KMSKeyHandle), err
+}
+
+// Delete takes name of the kMSKeyHandle and deletes it. Returns an error if one occurs.
+func (c *FakeKMSKeyHandles) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(kmskeyhandlesResource, c.ns, name, opts), &v1beta1.KMSKeyHandle{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeKMSKeyHandles) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(kmskeyhandlesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.KMSKeyHandleList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched kMSKeyHandle.
+func (c *FakeKMSKeyHandles) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.KMSKeyHandle, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(kmskeyhandlesResource, c.ns, name, pt, data, subresources...), &v1beta1.KMSKeyHandle{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.KMSKeyHandle), err
 }
