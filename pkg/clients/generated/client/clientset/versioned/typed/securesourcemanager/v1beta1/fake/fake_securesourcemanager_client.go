@@ -32,11 +32,11 @@ type FakeSecuresourcemanagerV1beta1 struct {
 }
 
 func (c *FakeSecuresourcemanagerV1beta1) SecureSourceManagerInstances(namespace string) v1beta1.SecureSourceManagerInstanceInterface {
-	return newFakeSecureSourceManagerInstances(c, namespace)
+	return &FakeSecureSourceManagerInstances{c, namespace}
 }
 
 func (c *FakeSecuresourcemanagerV1beta1) SecureSourceManagerRepositories(namespace string) v1beta1.SecureSourceManagerRepositoryInterface {
-	return newFakeSecureSourceManagerRepositories(c, namespace)
+	return &FakeSecureSourceManagerRepositories{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // AlloyDBBackupsGetter has a method to return a AlloyDBBackupInterface.
@@ -40,34 +41,158 @@ type AlloyDBBackupsGetter interface {
 
 // AlloyDBBackupInterface has methods to work with AlloyDBBackup resources.
 type AlloyDBBackupInterface interface {
-	Create(ctx context.Context, alloyDBBackup *alloydbv1beta1.AlloyDBBackup, opts v1.CreateOptions) (*alloydbv1beta1.AlloyDBBackup, error)
-	Update(ctx context.Context, alloyDBBackup *alloydbv1beta1.AlloyDBBackup, opts v1.UpdateOptions) (*alloydbv1beta1.AlloyDBBackup, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, alloyDBBackup *alloydbv1beta1.AlloyDBBackup, opts v1.UpdateOptions) (*alloydbv1beta1.AlloyDBBackup, error)
+	Create(ctx context.Context, alloyDBBackup *v1beta1.AlloyDBBackup, opts v1.CreateOptions) (*v1beta1.AlloyDBBackup, error)
+	Update(ctx context.Context, alloyDBBackup *v1beta1.AlloyDBBackup, opts v1.UpdateOptions) (*v1beta1.AlloyDBBackup, error)
+	UpdateStatus(ctx context.Context, alloyDBBackup *v1beta1.AlloyDBBackup, opts v1.UpdateOptions) (*v1beta1.AlloyDBBackup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*alloydbv1beta1.AlloyDBBackup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*alloydbv1beta1.AlloyDBBackupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.AlloyDBBackup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.AlloyDBBackupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *alloydbv1beta1.AlloyDBBackup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AlloyDBBackup, err error)
 	AlloyDBBackupExpansion
 }
 
 // alloyDBBackups implements AlloyDBBackupInterface
 type alloyDBBackups struct {
-	*gentype.ClientWithList[*alloydbv1beta1.AlloyDBBackup, *alloydbv1beta1.AlloyDBBackupList]
+	client rest.Interface
+	ns     string
 }
 
 // newAlloyDBBackups returns a AlloyDBBackups
 func newAlloyDBBackups(c *AlloydbV1beta1Client, namespace string) *alloyDBBackups {
 	return &alloyDBBackups{
-		gentype.NewClientWithList[*alloydbv1beta1.AlloyDBBackup, *alloydbv1beta1.AlloyDBBackupList](
-			"alloydbbackups",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *alloydbv1beta1.AlloyDBBackup { return &alloydbv1beta1.AlloyDBBackup{} },
-			func() *alloydbv1beta1.AlloyDBBackupList { return &alloydbv1beta1.AlloyDBBackupList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the alloyDBBackup, and returns the corresponding alloyDBBackup object, and an error if there is any.
+func (c *alloyDBBackups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.AlloyDBBackup, err error) {
+	result = &v1beta1.AlloyDBBackup{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("alloydbbackups").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of AlloyDBBackups that match those selectors.
+func (c *alloyDBBackups) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.AlloyDBBackupList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.AlloyDBBackupList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("alloydbbackups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested alloyDBBackups.
+func (c *alloyDBBackups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("alloydbbackups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a alloyDBBackup and creates it.  Returns the server's representation of the alloyDBBackup, and an error, if there is any.
+func (c *alloyDBBackups) Create(ctx context.Context, alloyDBBackup *v1beta1.AlloyDBBackup, opts v1.CreateOptions) (result *v1beta1.AlloyDBBackup, err error) {
+	result = &v1beta1.AlloyDBBackup{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("alloydbbackups").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(alloyDBBackup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a alloyDBBackup and updates it. Returns the server's representation of the alloyDBBackup, and an error, if there is any.
+func (c *alloyDBBackups) Update(ctx context.Context, alloyDBBackup *v1beta1.AlloyDBBackup, opts v1.UpdateOptions) (result *v1beta1.AlloyDBBackup, err error) {
+	result = &v1beta1.AlloyDBBackup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("alloydbbackups").
+		Name(alloyDBBackup.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(alloyDBBackup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *alloyDBBackups) UpdateStatus(ctx context.Context, alloyDBBackup *v1beta1.AlloyDBBackup, opts v1.UpdateOptions) (result *v1beta1.AlloyDBBackup, err error) {
+	result = &v1beta1.AlloyDBBackup{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("alloydbbackups").
+		Name(alloyDBBackup.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(alloyDBBackup).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the alloyDBBackup and deletes it. Returns an error if one occurs.
+func (c *alloyDBBackups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("alloydbbackups").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *alloyDBBackups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("alloydbbackups").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched alloyDBBackup.
+func (c *alloyDBBackups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AlloyDBBackup, err error) {
+	result = &v1beta1.AlloyDBBackup{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("alloydbbackups").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

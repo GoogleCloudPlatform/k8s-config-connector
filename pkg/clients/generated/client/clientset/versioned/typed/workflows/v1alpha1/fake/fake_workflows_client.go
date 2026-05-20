@@ -32,7 +32,7 @@ type FakeWorkflowsV1alpha1 struct {
 }
 
 func (c *FakeWorkflowsV1alpha1) WorkflowsWorkflows(namespace string) v1alpha1.WorkflowsWorkflowInterface {
-	return newFakeWorkflowsWorkflows(c, namespace)
+	return &FakeWorkflowsWorkflows{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

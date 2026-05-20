@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudiot/v1alpha1"
-	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeCloudIOTDevices implements CloudIOTDeviceInterface
-type fakeCloudIOTDevices struct {
-	*gentype.FakeClientWithList[*v1alpha1.CloudIOTDevice, *v1alpha1.CloudIOTDeviceList]
+// FakeCloudIOTDevices implements CloudIOTDeviceInterface
+type FakeCloudIOTDevices struct {
 	Fake *FakeCloudiotV1alpha1
+	ns   string
 }
 
-func newFakeCloudIOTDevices(fake *FakeCloudiotV1alpha1, namespace string) cloudiotv1alpha1.CloudIOTDeviceInterface {
-	return &fakeCloudIOTDevices{
-		gentype.NewFakeClientWithList[*v1alpha1.CloudIOTDevice, *v1alpha1.CloudIOTDeviceList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("cloudiotdevices"),
-			v1alpha1.SchemeGroupVersion.WithKind("CloudIOTDevice"),
-			func() *v1alpha1.CloudIOTDevice { return &v1alpha1.CloudIOTDevice{} },
-			func() *v1alpha1.CloudIOTDeviceList { return &v1alpha1.CloudIOTDeviceList{} },
-			func(dst, src *v1alpha1.CloudIOTDeviceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.CloudIOTDeviceList) []*v1alpha1.CloudIOTDevice {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.CloudIOTDeviceList, items []*v1alpha1.CloudIOTDevice) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var cloudiotdevicesResource = v1alpha1.SchemeGroupVersion.WithResource("cloudiotdevices")
+
+var cloudiotdevicesKind = v1alpha1.SchemeGroupVersion.WithKind("CloudIOTDevice")
+
+// Get takes name of the cloudIOTDevice, and returns the corresponding cloudIOTDevice object, and an error if there is any.
+func (c *FakeCloudIOTDevices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudIOTDevice, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(cloudiotdevicesResource, c.ns, name), &v1alpha1.CloudIOTDevice{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.CloudIOTDevice), err
+}
+
+// List takes label and field selectors, and returns the list of CloudIOTDevices that match those selectors.
+func (c *FakeCloudIOTDevices) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudIOTDeviceList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(cloudiotdevicesResource, cloudiotdevicesKind, c.ns, opts), &v1alpha1.CloudIOTDeviceList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.CloudIOTDeviceList{ListMeta: obj.(*v1alpha1.CloudIOTDeviceList).ListMeta}
+	for _, item := range obj.(*v1alpha1.CloudIOTDeviceList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested cloudIOTDevices.
+func (c *FakeCloudIOTDevices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(cloudiotdevicesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a cloudIOTDevice and creates it.  Returns the server's representation of the cloudIOTDevice, and an error, if there is any.
+func (c *FakeCloudIOTDevices) Create(ctx context.Context, cloudIOTDevice *v1alpha1.CloudIOTDevice, opts v1.CreateOptions) (result *v1alpha1.CloudIOTDevice, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(cloudiotdevicesResource, c.ns, cloudIOTDevice), &v1alpha1.CloudIOTDevice{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudIOTDevice), err
+}
+
+// Update takes the representation of a cloudIOTDevice and updates it. Returns the server's representation of the cloudIOTDevice, and an error, if there is any.
+func (c *FakeCloudIOTDevices) Update(ctx context.Context, cloudIOTDevice *v1alpha1.CloudIOTDevice, opts v1.UpdateOptions) (result *v1alpha1.CloudIOTDevice, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(cloudiotdevicesResource, c.ns, cloudIOTDevice), &v1alpha1.CloudIOTDevice{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudIOTDevice), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeCloudIOTDevices) UpdateStatus(ctx context.Context, cloudIOTDevice *v1alpha1.CloudIOTDevice, opts v1.UpdateOptions) (*v1alpha1.CloudIOTDevice, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(cloudiotdevicesResource, "status", c.ns, cloudIOTDevice), &v1alpha1.CloudIOTDevice{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudIOTDevice), err
+}
+
+// Delete takes name of the cloudIOTDevice and deletes it. Returns an error if one occurs.
+func (c *FakeCloudIOTDevices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(cloudiotdevicesResource, c.ns, name, opts), &v1alpha1.CloudIOTDevice{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeCloudIOTDevices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(cloudiotdevicesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.CloudIOTDeviceList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched cloudIOTDevice.
+func (c *FakeCloudIOTDevices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudIOTDevice, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(cloudiotdevicesResource, c.ns, name, pt, data, subresources...), &v1alpha1.CloudIOTDevice{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudIOTDevice), err
 }

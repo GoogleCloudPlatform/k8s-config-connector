@@ -32,7 +32,7 @@ type FakeNetworkmanagementV1alpha1 struct {
 }
 
 func (c *FakeNetworkmanagementV1alpha1) NetworkManagementConnectivityTests(namespace string) v1alpha1.NetworkManagementConnectivityTestInterface {
-	return newFakeNetworkManagementConnectivityTests(c, namespace)
+	return &FakeNetworkManagementConnectivityTests{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

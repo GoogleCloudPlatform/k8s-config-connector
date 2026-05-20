@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // DialogflowCXAgentsGetter has a method to return a DialogflowCXAgentInterface.
@@ -40,36 +41,158 @@ type DialogflowCXAgentsGetter interface {
 
 // DialogflowCXAgentInterface has methods to work with DialogflowCXAgent resources.
 type DialogflowCXAgentInterface interface {
-	Create(ctx context.Context, dialogflowCXAgent *dialogflowcxv1alpha1.DialogflowCXAgent, opts v1.CreateOptions) (*dialogflowcxv1alpha1.DialogflowCXAgent, error)
-	Update(ctx context.Context, dialogflowCXAgent *dialogflowcxv1alpha1.DialogflowCXAgent, opts v1.UpdateOptions) (*dialogflowcxv1alpha1.DialogflowCXAgent, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, dialogflowCXAgent *dialogflowcxv1alpha1.DialogflowCXAgent, opts v1.UpdateOptions) (*dialogflowcxv1alpha1.DialogflowCXAgent, error)
+	Create(ctx context.Context, dialogflowCXAgent *v1alpha1.DialogflowCXAgent, opts v1.CreateOptions) (*v1alpha1.DialogflowCXAgent, error)
+	Update(ctx context.Context, dialogflowCXAgent *v1alpha1.DialogflowCXAgent, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXAgent, error)
+	UpdateStatus(ctx context.Context, dialogflowCXAgent *v1alpha1.DialogflowCXAgent, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXAgent, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*dialogflowcxv1alpha1.DialogflowCXAgent, error)
-	List(ctx context.Context, opts v1.ListOptions) (*dialogflowcxv1alpha1.DialogflowCXAgentList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.DialogflowCXAgent, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.DialogflowCXAgentList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *dialogflowcxv1alpha1.DialogflowCXAgent, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXAgent, err error)
 	DialogflowCXAgentExpansion
 }
 
 // dialogflowCXAgents implements DialogflowCXAgentInterface
 type dialogflowCXAgents struct {
-	*gentype.ClientWithList[*dialogflowcxv1alpha1.DialogflowCXAgent, *dialogflowcxv1alpha1.DialogflowCXAgentList]
+	client rest.Interface
+	ns     string
 }
 
 // newDialogflowCXAgents returns a DialogflowCXAgents
 func newDialogflowCXAgents(c *DialogflowcxV1alpha1Client, namespace string) *dialogflowCXAgents {
 	return &dialogflowCXAgents{
-		gentype.NewClientWithList[*dialogflowcxv1alpha1.DialogflowCXAgent, *dialogflowcxv1alpha1.DialogflowCXAgentList](
-			"dialogflowcxagents",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *dialogflowcxv1alpha1.DialogflowCXAgent { return &dialogflowcxv1alpha1.DialogflowCXAgent{} },
-			func() *dialogflowcxv1alpha1.DialogflowCXAgentList {
-				return &dialogflowcxv1alpha1.DialogflowCXAgentList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the dialogflowCXAgent, and returns the corresponding dialogflowCXAgent object, and an error if there is any.
+func (c *dialogflowCXAgents) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowCXAgent, err error) {
+	result = &v1alpha1.DialogflowCXAgent{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dialogflowcxagents").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of DialogflowCXAgents that match those selectors.
+func (c *dialogflowCXAgents) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DialogflowCXAgentList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.DialogflowCXAgentList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dialogflowcxagents").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested dialogflowCXAgents.
+func (c *dialogflowCXAgents) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("dialogflowcxagents").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a dialogflowCXAgent and creates it.  Returns the server's representation of the dialogflowCXAgent, and an error, if there is any.
+func (c *dialogflowCXAgents) Create(ctx context.Context, dialogflowCXAgent *v1alpha1.DialogflowCXAgent, opts v1.CreateOptions) (result *v1alpha1.DialogflowCXAgent, err error) {
+	result = &v1alpha1.DialogflowCXAgent{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("dialogflowcxagents").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dialogflowCXAgent).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a dialogflowCXAgent and updates it. Returns the server's representation of the dialogflowCXAgent, and an error, if there is any.
+func (c *dialogflowCXAgents) Update(ctx context.Context, dialogflowCXAgent *v1alpha1.DialogflowCXAgent, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXAgent, err error) {
+	result = &v1alpha1.DialogflowCXAgent{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dialogflowcxagents").
+		Name(dialogflowCXAgent.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dialogflowCXAgent).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *dialogflowCXAgents) UpdateStatus(ctx context.Context, dialogflowCXAgent *v1alpha1.DialogflowCXAgent, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXAgent, err error) {
+	result = &v1alpha1.DialogflowCXAgent{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dialogflowcxagents").
+		Name(dialogflowCXAgent.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dialogflowCXAgent).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the dialogflowCXAgent and deletes it. Returns an error if one occurs.
+func (c *dialogflowCXAgents) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dialogflowcxagents").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *dialogflowCXAgents) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dialogflowcxagents").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched dialogflowCXAgent.
+func (c *dialogflowCXAgents) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXAgent, err error) {
+	result = &v1alpha1.DialogflowCXAgent{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("dialogflowcxagents").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

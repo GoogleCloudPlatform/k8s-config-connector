@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // VertexAIIndexesGetter has a method to return a VertexAIIndexInterface.
@@ -40,34 +41,158 @@ type VertexAIIndexesGetter interface {
 
 // VertexAIIndexInterface has methods to work with VertexAIIndex resources.
 type VertexAIIndexInterface interface {
-	Create(ctx context.Context, vertexAIIndex *vertexaiv1beta1.VertexAIIndex, opts v1.CreateOptions) (*vertexaiv1beta1.VertexAIIndex, error)
-	Update(ctx context.Context, vertexAIIndex *vertexaiv1beta1.VertexAIIndex, opts v1.UpdateOptions) (*vertexaiv1beta1.VertexAIIndex, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, vertexAIIndex *vertexaiv1beta1.VertexAIIndex, opts v1.UpdateOptions) (*vertexaiv1beta1.VertexAIIndex, error)
+	Create(ctx context.Context, vertexAIIndex *v1beta1.VertexAIIndex, opts v1.CreateOptions) (*v1beta1.VertexAIIndex, error)
+	Update(ctx context.Context, vertexAIIndex *v1beta1.VertexAIIndex, opts v1.UpdateOptions) (*v1beta1.VertexAIIndex, error)
+	UpdateStatus(ctx context.Context, vertexAIIndex *v1beta1.VertexAIIndex, opts v1.UpdateOptions) (*v1beta1.VertexAIIndex, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*vertexaiv1beta1.VertexAIIndex, error)
-	List(ctx context.Context, opts v1.ListOptions) (*vertexaiv1beta1.VertexAIIndexList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.VertexAIIndex, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.VertexAIIndexList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *vertexaiv1beta1.VertexAIIndex, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.VertexAIIndex, err error)
 	VertexAIIndexExpansion
 }
 
 // vertexAIIndexes implements VertexAIIndexInterface
 type vertexAIIndexes struct {
-	*gentype.ClientWithList[*vertexaiv1beta1.VertexAIIndex, *vertexaiv1beta1.VertexAIIndexList]
+	client rest.Interface
+	ns     string
 }
 
 // newVertexAIIndexes returns a VertexAIIndexes
 func newVertexAIIndexes(c *VertexaiV1beta1Client, namespace string) *vertexAIIndexes {
 	return &vertexAIIndexes{
-		gentype.NewClientWithList[*vertexaiv1beta1.VertexAIIndex, *vertexaiv1beta1.VertexAIIndexList](
-			"vertexaiindexes",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *vertexaiv1beta1.VertexAIIndex { return &vertexaiv1beta1.VertexAIIndex{} },
-			func() *vertexaiv1beta1.VertexAIIndexList { return &vertexaiv1beta1.VertexAIIndexList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the vertexAIIndex, and returns the corresponding vertexAIIndex object, and an error if there is any.
+func (c *vertexAIIndexes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.VertexAIIndex, err error) {
+	result = &v1beta1.VertexAIIndex{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("vertexaiindexes").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of VertexAIIndexes that match those selectors.
+func (c *vertexAIIndexes) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.VertexAIIndexList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.VertexAIIndexList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("vertexaiindexes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested vertexAIIndexes.
+func (c *vertexAIIndexes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("vertexaiindexes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a vertexAIIndex and creates it.  Returns the server's representation of the vertexAIIndex, and an error, if there is any.
+func (c *vertexAIIndexes) Create(ctx context.Context, vertexAIIndex *v1beta1.VertexAIIndex, opts v1.CreateOptions) (result *v1beta1.VertexAIIndex, err error) {
+	result = &v1beta1.VertexAIIndex{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("vertexaiindexes").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(vertexAIIndex).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a vertexAIIndex and updates it. Returns the server's representation of the vertexAIIndex, and an error, if there is any.
+func (c *vertexAIIndexes) Update(ctx context.Context, vertexAIIndex *v1beta1.VertexAIIndex, opts v1.UpdateOptions) (result *v1beta1.VertexAIIndex, err error) {
+	result = &v1beta1.VertexAIIndex{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("vertexaiindexes").
+		Name(vertexAIIndex.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(vertexAIIndex).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *vertexAIIndexes) UpdateStatus(ctx context.Context, vertexAIIndex *v1beta1.VertexAIIndex, opts v1.UpdateOptions) (result *v1beta1.VertexAIIndex, err error) {
+	result = &v1beta1.VertexAIIndex{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("vertexaiindexes").
+		Name(vertexAIIndex.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(vertexAIIndex).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the vertexAIIndex and deletes it. Returns an error if one occurs.
+func (c *vertexAIIndexes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("vertexaiindexes").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *vertexAIIndexes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("vertexaiindexes").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched vertexAIIndex.
+func (c *vertexAIIndexes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.VertexAIIndex, err error) {
+	result = &v1beta1.VertexAIIndex{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("vertexaiindexes").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

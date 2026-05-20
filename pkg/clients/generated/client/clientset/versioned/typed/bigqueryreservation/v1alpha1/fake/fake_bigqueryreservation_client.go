@@ -32,7 +32,7 @@ type FakeBigqueryreservationV1alpha1 struct {
 }
 
 func (c *FakeBigqueryreservationV1alpha1) BigQueryReservationCapacityCommitments(namespace string) v1alpha1.BigQueryReservationCapacityCommitmentInterface {
-	return newFakeBigQueryReservationCapacityCommitments(c, namespace)
+	return &FakeBigQueryReservationCapacityCommitments{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

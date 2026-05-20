@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeSecurityPolicies implements ComputeSecurityPolicyInterface
-type fakeComputeSecurityPolicies struct {
-	*gentype.FakeClientWithList[*v1beta1.ComputeSecurityPolicy, *v1beta1.ComputeSecurityPolicyList]
+// FakeComputeSecurityPolicies implements ComputeSecurityPolicyInterface
+type FakeComputeSecurityPolicies struct {
 	Fake *FakeComputeV1beta1
+	ns   string
 }
 
-func newFakeComputeSecurityPolicies(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeSecurityPolicyInterface {
-	return &fakeComputeSecurityPolicies{
-		gentype.NewFakeClientWithList[*v1beta1.ComputeSecurityPolicy, *v1beta1.ComputeSecurityPolicyList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("computesecuritypolicies"),
-			v1beta1.SchemeGroupVersion.WithKind("ComputeSecurityPolicy"),
-			func() *v1beta1.ComputeSecurityPolicy { return &v1beta1.ComputeSecurityPolicy{} },
-			func() *v1beta1.ComputeSecurityPolicyList { return &v1beta1.ComputeSecurityPolicyList{} },
-			func(dst, src *v1beta1.ComputeSecurityPolicyList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.ComputeSecurityPolicyList) []*v1beta1.ComputeSecurityPolicy {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.ComputeSecurityPolicyList, items []*v1beta1.ComputeSecurityPolicy) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computesecuritypoliciesResource = v1beta1.SchemeGroupVersion.WithResource("computesecuritypolicies")
+
+var computesecuritypoliciesKind = v1beta1.SchemeGroupVersion.WithKind("ComputeSecurityPolicy")
+
+// Get takes name of the computeSecurityPolicy, and returns the corresponding computeSecurityPolicy object, and an error if there is any.
+func (c *FakeComputeSecurityPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeSecurityPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computesecuritypoliciesResource, c.ns, name), &v1beta1.ComputeSecurityPolicy{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.ComputeSecurityPolicy), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeSecurityPolicies that match those selectors.
+func (c *FakeComputeSecurityPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeSecurityPolicyList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computesecuritypoliciesResource, computesecuritypoliciesKind, c.ns, opts), &v1beta1.ComputeSecurityPolicyList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.ComputeSecurityPolicyList{ListMeta: obj.(*v1beta1.ComputeSecurityPolicyList).ListMeta}
+	for _, item := range obj.(*v1beta1.ComputeSecurityPolicyList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeSecurityPolicies.
+func (c *FakeComputeSecurityPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computesecuritypoliciesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeSecurityPolicy and creates it.  Returns the server's representation of the computeSecurityPolicy, and an error, if there is any.
+func (c *FakeComputeSecurityPolicies) Create(ctx context.Context, computeSecurityPolicy *v1beta1.ComputeSecurityPolicy, opts v1.CreateOptions) (result *v1beta1.ComputeSecurityPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computesecuritypoliciesResource, c.ns, computeSecurityPolicy), &v1beta1.ComputeSecurityPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeSecurityPolicy), err
+}
+
+// Update takes the representation of a computeSecurityPolicy and updates it. Returns the server's representation of the computeSecurityPolicy, and an error, if there is any.
+func (c *FakeComputeSecurityPolicies) Update(ctx context.Context, computeSecurityPolicy *v1beta1.ComputeSecurityPolicy, opts v1.UpdateOptions) (result *v1beta1.ComputeSecurityPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computesecuritypoliciesResource, c.ns, computeSecurityPolicy), &v1beta1.ComputeSecurityPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeSecurityPolicy), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeSecurityPolicies) UpdateStatus(ctx context.Context, computeSecurityPolicy *v1beta1.ComputeSecurityPolicy, opts v1.UpdateOptions) (*v1beta1.ComputeSecurityPolicy, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computesecuritypoliciesResource, "status", c.ns, computeSecurityPolicy), &v1beta1.ComputeSecurityPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeSecurityPolicy), err
+}
+
+// Delete takes name of the computeSecurityPolicy and deletes it. Returns an error if one occurs.
+func (c *FakeComputeSecurityPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computesecuritypoliciesResource, c.ns, name, opts), &v1beta1.ComputeSecurityPolicy{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeSecurityPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computesecuritypoliciesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.ComputeSecurityPolicyList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeSecurityPolicy.
+func (c *FakeComputeSecurityPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeSecurityPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computesecuritypoliciesResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeSecurityPolicy{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeSecurityPolicy), err
 }

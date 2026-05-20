@@ -32,7 +32,7 @@ type FakeBigqueryV1alpha1 struct {
 }
 
 func (c *FakeBigqueryV1alpha1) BigQueryDatasetAccesses(namespace string) v1alpha1.BigQueryDatasetAccessInterface {
-	return newFakeBigQueryDatasetAccesses(c, namespace)
+	return &FakeBigQueryDatasetAccesses{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

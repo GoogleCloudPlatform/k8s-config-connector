@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudquota/v1beta1"
-	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeAPIQuotaPreferences implements APIQuotaPreferenceInterface
-type fakeAPIQuotaPreferences struct {
-	*gentype.FakeClientWithList[*v1beta1.APIQuotaPreference, *v1beta1.APIQuotaPreferenceList]
+// FakeAPIQuotaPreferences implements APIQuotaPreferenceInterface
+type FakeAPIQuotaPreferences struct {
 	Fake *FakeCloudquotaV1beta1
+	ns   string
 }
 
-func newFakeAPIQuotaPreferences(fake *FakeCloudquotaV1beta1, namespace string) cloudquotav1beta1.APIQuotaPreferenceInterface {
-	return &fakeAPIQuotaPreferences{
-		gentype.NewFakeClientWithList[*v1beta1.APIQuotaPreference, *v1beta1.APIQuotaPreferenceList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("apiquotapreferences"),
-			v1beta1.SchemeGroupVersion.WithKind("APIQuotaPreference"),
-			func() *v1beta1.APIQuotaPreference { return &v1beta1.APIQuotaPreference{} },
-			func() *v1beta1.APIQuotaPreferenceList { return &v1beta1.APIQuotaPreferenceList{} },
-			func(dst, src *v1beta1.APIQuotaPreferenceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.APIQuotaPreferenceList) []*v1beta1.APIQuotaPreference {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.APIQuotaPreferenceList, items []*v1beta1.APIQuotaPreference) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var apiquotapreferencesResource = v1beta1.SchemeGroupVersion.WithResource("apiquotapreferences")
+
+var apiquotapreferencesKind = v1beta1.SchemeGroupVersion.WithKind("APIQuotaPreference")
+
+// Get takes name of the aPIQuotaPreference, and returns the corresponding aPIQuotaPreference object, and an error if there is any.
+func (c *FakeAPIQuotaPreferences) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.APIQuotaPreference, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(apiquotapreferencesResource, c.ns, name), &v1beta1.APIQuotaPreference{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.APIQuotaPreference), err
+}
+
+// List takes label and field selectors, and returns the list of APIQuotaPreferences that match those selectors.
+func (c *FakeAPIQuotaPreferences) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.APIQuotaPreferenceList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(apiquotapreferencesResource, apiquotapreferencesKind, c.ns, opts), &v1beta1.APIQuotaPreferenceList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.APIQuotaPreferenceList{ListMeta: obj.(*v1beta1.APIQuotaPreferenceList).ListMeta}
+	for _, item := range obj.(*v1beta1.APIQuotaPreferenceList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested aPIQuotaPreferences.
+func (c *FakeAPIQuotaPreferences) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(apiquotapreferencesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a aPIQuotaPreference and creates it.  Returns the server's representation of the aPIQuotaPreference, and an error, if there is any.
+func (c *FakeAPIQuotaPreferences) Create(ctx context.Context, aPIQuotaPreference *v1beta1.APIQuotaPreference, opts v1.CreateOptions) (result *v1beta1.APIQuotaPreference, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(apiquotapreferencesResource, c.ns, aPIQuotaPreference), &v1beta1.APIQuotaPreference{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.APIQuotaPreference), err
+}
+
+// Update takes the representation of a aPIQuotaPreference and updates it. Returns the server's representation of the aPIQuotaPreference, and an error, if there is any.
+func (c *FakeAPIQuotaPreferences) Update(ctx context.Context, aPIQuotaPreference *v1beta1.APIQuotaPreference, opts v1.UpdateOptions) (result *v1beta1.APIQuotaPreference, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(apiquotapreferencesResource, c.ns, aPIQuotaPreference), &v1beta1.APIQuotaPreference{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.APIQuotaPreference), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeAPIQuotaPreferences) UpdateStatus(ctx context.Context, aPIQuotaPreference *v1beta1.APIQuotaPreference, opts v1.UpdateOptions) (*v1beta1.APIQuotaPreference, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(apiquotapreferencesResource, "status", c.ns, aPIQuotaPreference), &v1beta1.APIQuotaPreference{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.APIQuotaPreference), err
+}
+
+// Delete takes name of the aPIQuotaPreference and deletes it. Returns an error if one occurs.
+func (c *FakeAPIQuotaPreferences) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(apiquotapreferencesResource, c.ns, name, opts), &v1beta1.APIQuotaPreference{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeAPIQuotaPreferences) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(apiquotapreferencesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.APIQuotaPreferenceList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched aPIQuotaPreference.
+func (c *FakeAPIQuotaPreferences) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.APIQuotaPreference, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(apiquotapreferencesResource, c.ns, name, pt, data, subresources...), &v1beta1.APIQuotaPreference{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.APIQuotaPreference), err
 }

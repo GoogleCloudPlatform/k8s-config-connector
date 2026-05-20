@@ -32,11 +32,11 @@ type FakeColabV1alpha1 struct {
 }
 
 func (c *FakeColabV1alpha1) ColabRuntimes(namespace string) v1alpha1.ColabRuntimeInterface {
-	return newFakeColabRuntimes(c, namespace)
+	return &FakeColabRuntimes{c, namespace}
 }
 
 func (c *FakeColabV1alpha1) ColabRuntimeTemplates(namespace string) v1alpha1.ColabRuntimeTemplateInterface {
-	return newFakeColabRuntimeTemplates(c, namespace)
+	return &FakeColabRuntimeTemplates{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

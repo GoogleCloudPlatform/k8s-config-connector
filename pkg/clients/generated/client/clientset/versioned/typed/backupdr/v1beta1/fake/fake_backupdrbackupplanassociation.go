@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1beta1"
-	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeBackupDRBackupPlanAssociations implements BackupDRBackupPlanAssociationInterface
-type fakeBackupDRBackupPlanAssociations struct {
-	*gentype.FakeClientWithList[*v1beta1.BackupDRBackupPlanAssociation, *v1beta1.BackupDRBackupPlanAssociationList]
+// FakeBackupDRBackupPlanAssociations implements BackupDRBackupPlanAssociationInterface
+type FakeBackupDRBackupPlanAssociations struct {
 	Fake *FakeBackupdrV1beta1
+	ns   string
 }
 
-func newFakeBackupDRBackupPlanAssociations(fake *FakeBackupdrV1beta1, namespace string) backupdrv1beta1.BackupDRBackupPlanAssociationInterface {
-	return &fakeBackupDRBackupPlanAssociations{
-		gentype.NewFakeClientWithList[*v1beta1.BackupDRBackupPlanAssociation, *v1beta1.BackupDRBackupPlanAssociationList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("backupdrbackupplanassociations"),
-			v1beta1.SchemeGroupVersion.WithKind("BackupDRBackupPlanAssociation"),
-			func() *v1beta1.BackupDRBackupPlanAssociation { return &v1beta1.BackupDRBackupPlanAssociation{} },
-			func() *v1beta1.BackupDRBackupPlanAssociationList { return &v1beta1.BackupDRBackupPlanAssociationList{} },
-			func(dst, src *v1beta1.BackupDRBackupPlanAssociationList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.BackupDRBackupPlanAssociationList) []*v1beta1.BackupDRBackupPlanAssociation {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.BackupDRBackupPlanAssociationList, items []*v1beta1.BackupDRBackupPlanAssociation) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var backupdrbackupplanassociationsResource = v1beta1.SchemeGroupVersion.WithResource("backupdrbackupplanassociations")
+
+var backupdrbackupplanassociationsKind = v1beta1.SchemeGroupVersion.WithKind("BackupDRBackupPlanAssociation")
+
+// Get takes name of the backupDRBackupPlanAssociation, and returns the corresponding backupDRBackupPlanAssociation object, and an error if there is any.
+func (c *FakeBackupDRBackupPlanAssociations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BackupDRBackupPlanAssociation, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(backupdrbackupplanassociationsResource, c.ns, name), &v1beta1.BackupDRBackupPlanAssociation{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.BackupDRBackupPlanAssociation), err
+}
+
+// List takes label and field selectors, and returns the list of BackupDRBackupPlanAssociations that match those selectors.
+func (c *FakeBackupDRBackupPlanAssociations) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BackupDRBackupPlanAssociationList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(backupdrbackupplanassociationsResource, backupdrbackupplanassociationsKind, c.ns, opts), &v1beta1.BackupDRBackupPlanAssociationList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.BackupDRBackupPlanAssociationList{ListMeta: obj.(*v1beta1.BackupDRBackupPlanAssociationList).ListMeta}
+	for _, item := range obj.(*v1beta1.BackupDRBackupPlanAssociationList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested backupDRBackupPlanAssociations.
+func (c *FakeBackupDRBackupPlanAssociations) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(backupdrbackupplanassociationsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a backupDRBackupPlanAssociation and creates it.  Returns the server's representation of the backupDRBackupPlanAssociation, and an error, if there is any.
+func (c *FakeBackupDRBackupPlanAssociations) Create(ctx context.Context, backupDRBackupPlanAssociation *v1beta1.BackupDRBackupPlanAssociation, opts v1.CreateOptions) (result *v1beta1.BackupDRBackupPlanAssociation, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(backupdrbackupplanassociationsResource, c.ns, backupDRBackupPlanAssociation), &v1beta1.BackupDRBackupPlanAssociation{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BackupDRBackupPlanAssociation), err
+}
+
+// Update takes the representation of a backupDRBackupPlanAssociation and updates it. Returns the server's representation of the backupDRBackupPlanAssociation, and an error, if there is any.
+func (c *FakeBackupDRBackupPlanAssociations) Update(ctx context.Context, backupDRBackupPlanAssociation *v1beta1.BackupDRBackupPlanAssociation, opts v1.UpdateOptions) (result *v1beta1.BackupDRBackupPlanAssociation, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(backupdrbackupplanassociationsResource, c.ns, backupDRBackupPlanAssociation), &v1beta1.BackupDRBackupPlanAssociation{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BackupDRBackupPlanAssociation), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeBackupDRBackupPlanAssociations) UpdateStatus(ctx context.Context, backupDRBackupPlanAssociation *v1beta1.BackupDRBackupPlanAssociation, opts v1.UpdateOptions) (*v1beta1.BackupDRBackupPlanAssociation, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(backupdrbackupplanassociationsResource, "status", c.ns, backupDRBackupPlanAssociation), &v1beta1.BackupDRBackupPlanAssociation{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BackupDRBackupPlanAssociation), err
+}
+
+// Delete takes name of the backupDRBackupPlanAssociation and deletes it. Returns an error if one occurs.
+func (c *FakeBackupDRBackupPlanAssociations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(backupdrbackupplanassociationsResource, c.ns, name, opts), &v1beta1.BackupDRBackupPlanAssociation{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeBackupDRBackupPlanAssociations) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(backupdrbackupplanassociationsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.BackupDRBackupPlanAssociationList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched backupDRBackupPlanAssociation.
+func (c *FakeBackupDRBackupPlanAssociations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BackupDRBackupPlanAssociation, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(backupdrbackupplanassociationsResource, c.ns, name, pt, data, subresources...), &v1beta1.BackupDRBackupPlanAssociation{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.BackupDRBackupPlanAssociation), err
 }
