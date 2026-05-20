@@ -32,19 +32,19 @@ type FakeTagsV1beta1 struct {
 }
 
 func (c *FakeTagsV1beta1) TagsLocationTagBindings(namespace string) v1beta1.TagsLocationTagBindingInterface {
-	return &FakeTagsLocationTagBindings{c, namespace}
+	return newFakeTagsLocationTagBindings(c, namespace)
 }
 
 func (c *FakeTagsV1beta1) TagsTagBindings(namespace string) v1beta1.TagsTagBindingInterface {
-	return &FakeTagsTagBindings{c, namespace}
+	return newFakeTagsTagBindings(c, namespace)
 }
 
 func (c *FakeTagsV1beta1) TagsTagKeys(namespace string) v1beta1.TagsTagKeyInterface {
-	return &FakeTagsTagKeys{c, namespace}
+	return newFakeTagsTagKeys(c, namespace)
 }
 
 func (c *FakeTagsV1beta1) TagsTagValues(namespace string) v1beta1.TagsTagValueInterface {
-	return &FakeTagsTagValues{c, namespace}
+	return newFakeTagsTagValues(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

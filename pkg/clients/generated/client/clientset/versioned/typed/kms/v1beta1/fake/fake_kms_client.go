@@ -32,23 +32,23 @@ type FakeKmsV1beta1 struct {
 }
 
 func (c *FakeKmsV1beta1) KMSAutokeyConfigs(namespace string) v1beta1.KMSAutokeyConfigInterface {
-	return &FakeKMSAutokeyConfigs{c, namespace}
+	return newFakeKMSAutokeyConfigs(c, namespace)
 }
 
 func (c *FakeKmsV1beta1) KMSCryptoKeys(namespace string) v1beta1.KMSCryptoKeyInterface {
-	return &FakeKMSCryptoKeys{c, namespace}
+	return newFakeKMSCryptoKeys(c, namespace)
 }
 
 func (c *FakeKmsV1beta1) KMSImportJobs(namespace string) v1beta1.KMSImportJobInterface {
-	return &FakeKMSImportJobs{c, namespace}
+	return newFakeKMSImportJobs(c, namespace)
 }
 
 func (c *FakeKmsV1beta1) KMSKeyHandles(namespace string) v1beta1.KMSKeyHandleInterface {
-	return &FakeKMSKeyHandles{c, namespace}
+	return newFakeKMSKeyHandles(c, namespace)
 }
 
 func (c *FakeKmsV1beta1) KMSKeyRings(namespace string) v1beta1.KMSKeyRingInterface {
-	return &FakeKMSKeyRings{c, namespace}
+	return newFakeKMSKeyRings(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

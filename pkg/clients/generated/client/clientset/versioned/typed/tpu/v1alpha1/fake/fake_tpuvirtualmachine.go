@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeTPUVirtualMachines implements TPUVirtualMachineInterface
-type FakeTPUVirtualMachines struct {
+// fakeTPUVirtualMachines implements TPUVirtualMachineInterface
+type fakeTPUVirtualMachines struct {
+	*gentype.FakeClientWithList[*v1alpha1.TPUVirtualMachine, *v1alpha1.TPUVirtualMachineList]
 	Fake *FakeTpuV1alpha1
-	ns   string
 }
 
-var tpuvirtualmachinesResource = v1alpha1.SchemeGroupVersion.WithResource("tpuvirtualmachines")
-
-var tpuvirtualmachinesKind = v1alpha1.SchemeGroupVersion.WithKind("TPUVirtualMachine")
-
-// Get takes name of the tPUVirtualMachine, and returns the corresponding tPUVirtualMachine object, and an error if there is any.
-func (c *FakeTPUVirtualMachines) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.TPUVirtualMachine, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(tpuvirtualmachinesResource, c.ns, name), &v1alpha1.TPUVirtualMachine{})
-
-	if obj == nil {
-		return nil, err
+func newFakeTPUVirtualMachines(fake *FakeTpuV1alpha1, namespace string) tpuv1alpha1.TPUVirtualMachineInterface {
+	return &fakeTPUVirtualMachines{
+		gentype.NewFakeClientWithList[*v1alpha1.TPUVirtualMachine, *v1alpha1.TPUVirtualMachineList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("tpuvirtualmachines"),
+			v1alpha1.SchemeGroupVersion.WithKind("TPUVirtualMachine"),
+			func() *v1alpha1.TPUVirtualMachine { return &v1alpha1.TPUVirtualMachine{} },
+			func() *v1alpha1.TPUVirtualMachineList { return &v1alpha1.TPUVirtualMachineList{} },
+			func(dst, src *v1alpha1.TPUVirtualMachineList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.TPUVirtualMachineList) []*v1alpha1.TPUVirtualMachine {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.TPUVirtualMachineList, items []*v1alpha1.TPUVirtualMachine) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.TPUVirtualMachine), err
-}
-
-// List takes label and field selectors, and returns the list of TPUVirtualMachines that match those selectors.
-func (c *FakeTPUVirtualMachines) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.TPUVirtualMachineList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(tpuvirtualmachinesResource, tpuvirtualmachinesKind, c.ns, opts), &v1alpha1.TPUVirtualMachineList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.TPUVirtualMachineList{ListMeta: obj.(*v1alpha1.TPUVirtualMachineList).ListMeta}
-	for _, item := range obj.(*v1alpha1.TPUVirtualMachineList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested tPUVirtualMachines.
-func (c *FakeTPUVirtualMachines) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(tpuvirtualmachinesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a tPUVirtualMachine and creates it.  Returns the server's representation of the tPUVirtualMachine, and an error, if there is any.
-func (c *FakeTPUVirtualMachines) Create(ctx context.Context, tPUVirtualMachine *v1alpha1.TPUVirtualMachine, opts v1.CreateOptions) (result *v1alpha1.TPUVirtualMachine, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(tpuvirtualmachinesResource, c.ns, tPUVirtualMachine), &v1alpha1.TPUVirtualMachine{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.TPUVirtualMachine), err
-}
-
-// Update takes the representation of a tPUVirtualMachine and updates it. Returns the server's representation of the tPUVirtualMachine, and an error, if there is any.
-func (c *FakeTPUVirtualMachines) Update(ctx context.Context, tPUVirtualMachine *v1alpha1.TPUVirtualMachine, opts v1.UpdateOptions) (result *v1alpha1.TPUVirtualMachine, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(tpuvirtualmachinesResource, c.ns, tPUVirtualMachine), &v1alpha1.TPUVirtualMachine{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.TPUVirtualMachine), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeTPUVirtualMachines) UpdateStatus(ctx context.Context, tPUVirtualMachine *v1alpha1.TPUVirtualMachine, opts v1.UpdateOptions) (*v1alpha1.TPUVirtualMachine, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(tpuvirtualmachinesResource, "status", c.ns, tPUVirtualMachine), &v1alpha1.TPUVirtualMachine{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.TPUVirtualMachine), err
-}
-
-// Delete takes name of the tPUVirtualMachine and deletes it. Returns an error if one occurs.
-func (c *FakeTPUVirtualMachines) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(tpuvirtualmachinesResource, c.ns, name, opts), &v1alpha1.TPUVirtualMachine{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeTPUVirtualMachines) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(tpuvirtualmachinesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.TPUVirtualMachineList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched tPUVirtualMachine.
-func (c *FakeTPUVirtualMachines) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.TPUVirtualMachine, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(tpuvirtualmachinesResource, c.ns, name, pt, data, subresources...), &v1alpha1.TPUVirtualMachine{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.TPUVirtualMachine), err
 }

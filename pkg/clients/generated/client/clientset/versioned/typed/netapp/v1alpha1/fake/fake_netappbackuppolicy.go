@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/netapp/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	netappv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/netapp/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeNetAppBackupPolicies implements NetAppBackupPolicyInterface
-type FakeNetAppBackupPolicies struct {
+// fakeNetAppBackupPolicies implements NetAppBackupPolicyInterface
+type fakeNetAppBackupPolicies struct {
+	*gentype.FakeClientWithList[*v1alpha1.NetAppBackupPolicy, *v1alpha1.NetAppBackupPolicyList]
 	Fake *FakeNetappV1alpha1
-	ns   string
 }
 
-var netappbackuppoliciesResource = v1alpha1.SchemeGroupVersion.WithResource("netappbackuppolicies")
-
-var netappbackuppoliciesKind = v1alpha1.SchemeGroupVersion.WithKind("NetAppBackupPolicy")
-
-// Get takes name of the netAppBackupPolicy, and returns the corresponding netAppBackupPolicy object, and an error if there is any.
-func (c *FakeNetAppBackupPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetAppBackupPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(netappbackuppoliciesResource, c.ns, name), &v1alpha1.NetAppBackupPolicy{})
-
-	if obj == nil {
-		return nil, err
+func newFakeNetAppBackupPolicies(fake *FakeNetappV1alpha1, namespace string) netappv1alpha1.NetAppBackupPolicyInterface {
+	return &fakeNetAppBackupPolicies{
+		gentype.NewFakeClientWithList[*v1alpha1.NetAppBackupPolicy, *v1alpha1.NetAppBackupPolicyList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("netappbackuppolicies"),
+			v1alpha1.SchemeGroupVersion.WithKind("NetAppBackupPolicy"),
+			func() *v1alpha1.NetAppBackupPolicy { return &v1alpha1.NetAppBackupPolicy{} },
+			func() *v1alpha1.NetAppBackupPolicyList { return &v1alpha1.NetAppBackupPolicyList{} },
+			func(dst, src *v1alpha1.NetAppBackupPolicyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.NetAppBackupPolicyList) []*v1alpha1.NetAppBackupPolicy {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.NetAppBackupPolicyList, items []*v1alpha1.NetAppBackupPolicy) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.NetAppBackupPolicy), err
-}
-
-// List takes label and field selectors, and returns the list of NetAppBackupPolicies that match those selectors.
-func (c *FakeNetAppBackupPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetAppBackupPolicyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(netappbackuppoliciesResource, netappbackuppoliciesKind, c.ns, opts), &v1alpha1.NetAppBackupPolicyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.NetAppBackupPolicyList{ListMeta: obj.(*v1alpha1.NetAppBackupPolicyList).ListMeta}
-	for _, item := range obj.(*v1alpha1.NetAppBackupPolicyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested netAppBackupPolicies.
-func (c *FakeNetAppBackupPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(netappbackuppoliciesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a netAppBackupPolicy and creates it.  Returns the server's representation of the netAppBackupPolicy, and an error, if there is any.
-func (c *FakeNetAppBackupPolicies) Create(ctx context.Context, netAppBackupPolicy *v1alpha1.NetAppBackupPolicy, opts v1.CreateOptions) (result *v1alpha1.NetAppBackupPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(netappbackuppoliciesResource, c.ns, netAppBackupPolicy), &v1alpha1.NetAppBackupPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetAppBackupPolicy), err
-}
-
-// Update takes the representation of a netAppBackupPolicy and updates it. Returns the server's representation of the netAppBackupPolicy, and an error, if there is any.
-func (c *FakeNetAppBackupPolicies) Update(ctx context.Context, netAppBackupPolicy *v1alpha1.NetAppBackupPolicy, opts v1.UpdateOptions) (result *v1alpha1.NetAppBackupPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(netappbackuppoliciesResource, c.ns, netAppBackupPolicy), &v1alpha1.NetAppBackupPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetAppBackupPolicy), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeNetAppBackupPolicies) UpdateStatus(ctx context.Context, netAppBackupPolicy *v1alpha1.NetAppBackupPolicy, opts v1.UpdateOptions) (*v1alpha1.NetAppBackupPolicy, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(netappbackuppoliciesResource, "status", c.ns, netAppBackupPolicy), &v1alpha1.NetAppBackupPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetAppBackupPolicy), err
-}
-
-// Delete takes name of the netAppBackupPolicy and deletes it. Returns an error if one occurs.
-func (c *FakeNetAppBackupPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(netappbackuppoliciesResource, c.ns, name, opts), &v1alpha1.NetAppBackupPolicy{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeNetAppBackupPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(netappbackuppoliciesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.NetAppBackupPolicyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched netAppBackupPolicy.
-func (c *FakeNetAppBackupPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetAppBackupPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(netappbackuppoliciesResource, c.ns, name, pt, data, subresources...), &v1alpha1.NetAppBackupPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetAppBackupPolicy), err
 }

@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasestorage/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasestorage/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeFirebaseStorageBuckets implements FirebaseStorageBucketInterface
-type FakeFirebaseStorageBuckets struct {
+// fakeFirebaseStorageBuckets implements FirebaseStorageBucketInterface
+type fakeFirebaseStorageBuckets struct {
+	*gentype.FakeClientWithList[*v1alpha1.FirebaseStorageBucket, *v1alpha1.FirebaseStorageBucketList]
 	Fake *FakeFirebasestorageV1alpha1
-	ns   string
 }
 
-var firebasestoragebucketsResource = v1alpha1.SchemeGroupVersion.WithResource("firebasestoragebuckets")
-
-var firebasestoragebucketsKind = v1alpha1.SchemeGroupVersion.WithKind("FirebaseStorageBucket")
-
-// Get takes name of the firebaseStorageBucket, and returns the corresponding firebaseStorageBucket object, and an error if there is any.
-func (c *FakeFirebaseStorageBuckets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.FirebaseStorageBucket, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(firebasestoragebucketsResource, c.ns, name), &v1alpha1.FirebaseStorageBucket{})
-
-	if obj == nil {
-		return nil, err
+func newFakeFirebaseStorageBuckets(fake *FakeFirebasestorageV1alpha1, namespace string) firebasestoragev1alpha1.FirebaseStorageBucketInterface {
+	return &fakeFirebaseStorageBuckets{
+		gentype.NewFakeClientWithList[*v1alpha1.FirebaseStorageBucket, *v1alpha1.FirebaseStorageBucketList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("firebasestoragebuckets"),
+			v1alpha1.SchemeGroupVersion.WithKind("FirebaseStorageBucket"),
+			func() *v1alpha1.FirebaseStorageBucket { return &v1alpha1.FirebaseStorageBucket{} },
+			func() *v1alpha1.FirebaseStorageBucketList { return &v1alpha1.FirebaseStorageBucketList{} },
+			func(dst, src *v1alpha1.FirebaseStorageBucketList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.FirebaseStorageBucketList) []*v1alpha1.FirebaseStorageBucket {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.FirebaseStorageBucketList, items []*v1alpha1.FirebaseStorageBucket) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.FirebaseStorageBucket), err
-}
-
-// List takes label and field selectors, and returns the list of FirebaseStorageBuckets that match those selectors.
-func (c *FakeFirebaseStorageBuckets) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.FirebaseStorageBucketList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(firebasestoragebucketsResource, firebasestoragebucketsKind, c.ns, opts), &v1alpha1.FirebaseStorageBucketList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.FirebaseStorageBucketList{ListMeta: obj.(*v1alpha1.FirebaseStorageBucketList).ListMeta}
-	for _, item := range obj.(*v1alpha1.FirebaseStorageBucketList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested firebaseStorageBuckets.
-func (c *FakeFirebaseStorageBuckets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(firebasestoragebucketsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a firebaseStorageBucket and creates it.  Returns the server's representation of the firebaseStorageBucket, and an error, if there is any.
-func (c *FakeFirebaseStorageBuckets) Create(ctx context.Context, firebaseStorageBucket *v1alpha1.FirebaseStorageBucket, opts v1.CreateOptions) (result *v1alpha1.FirebaseStorageBucket, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(firebasestoragebucketsResource, c.ns, firebaseStorageBucket), &v1alpha1.FirebaseStorageBucket{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FirebaseStorageBucket), err
-}
-
-// Update takes the representation of a firebaseStorageBucket and updates it. Returns the server's representation of the firebaseStorageBucket, and an error, if there is any.
-func (c *FakeFirebaseStorageBuckets) Update(ctx context.Context, firebaseStorageBucket *v1alpha1.FirebaseStorageBucket, opts v1.UpdateOptions) (result *v1alpha1.FirebaseStorageBucket, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(firebasestoragebucketsResource, c.ns, firebaseStorageBucket), &v1alpha1.FirebaseStorageBucket{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FirebaseStorageBucket), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeFirebaseStorageBuckets) UpdateStatus(ctx context.Context, firebaseStorageBucket *v1alpha1.FirebaseStorageBucket, opts v1.UpdateOptions) (*v1alpha1.FirebaseStorageBucket, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(firebasestoragebucketsResource, "status", c.ns, firebaseStorageBucket), &v1alpha1.FirebaseStorageBucket{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FirebaseStorageBucket), err
-}
-
-// Delete takes name of the firebaseStorageBucket and deletes it. Returns an error if one occurs.
-func (c *FakeFirebaseStorageBuckets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(firebasestoragebucketsResource, c.ns, name, opts), &v1alpha1.FirebaseStorageBucket{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeFirebaseStorageBuckets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(firebasestoragebucketsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.FirebaseStorageBucketList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched firebaseStorageBucket.
-func (c *FakeFirebaseStorageBuckets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.FirebaseStorageBucket, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(firebasestoragebucketsResource, c.ns, name, pt, data, subresources...), &v1alpha1.FirebaseStorageBucket{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FirebaseStorageBucket), err
 }
