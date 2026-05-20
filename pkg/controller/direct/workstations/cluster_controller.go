@@ -109,50 +109,11 @@ func (m *modelWorkstationCluster) AdapterForObject(ctx context.Context, op *dire
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get ResourceID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), &obj.Spec.ProjectRef)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	// Get location
-	location := obj.Spec.Location
-
-	var id *WorkstationClusterIdentity
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildID(projectID, location, resourceID)
-	} else {
-		id, err = asID(externalRef)
-		if err != nil {
-			return nil, err
-		}
-
-		if id.Parent.Project != projectID {
-			return nil, fmt.Errorf("WorkstationCluster %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Project, projectID)
-		}
-		if id.Parent.Location != location {
-			return nil, fmt.Errorf("WorkstationCluster %s/%s has spec.location changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Location, location)
-		}
-		if id.WorkstationCluster != resourceID {
-			return nil, fmt.Errorf("WorkstationCluster  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.WorkstationCluster, resourceID)
-		}
-	}
+	workstationClusterID := id.(*krm.WorkstationClusterIdentity)
 
 	if err := NormalizeWorkstationCluster(ctx, reader, obj); err != nil {
 		return nil, err
@@ -164,7 +125,7 @@ func (m *modelWorkstationCluster) AdapterForObject(ctx context.Context, op *dire
 		return nil, err
 	}
 	return &Adapter{
-		id:        id,
+		id:        workstationClusterID,
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -176,7 +137,7 @@ func (m *modelWorkstationCluster) AdapterForURL(ctx context.Context, url string)
 }
 
 type Adapter struct {
-	id        *WorkstationClusterIdentity
+	id        *krm.WorkstationClusterIdentity
 	gcpClient *gcp.Client
 	desired   *krm.WorkstationCluster
 	actual    *pb.WorkstationCluster
@@ -186,15 +147,15 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting WorkstationCluster", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("getting WorkstationCluster", "name", a.id.String())
 
-	req := &pb.GetWorkstationClusterRequest{Name: a.id.FullyQualifiedName()}
+	req := &pb.GetWorkstationClusterRequest{Name: a.id.String()}
 	workstationclusterpb, err := a.gcpClient.GetWorkstationCluster(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting WorkstationCluster %q: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("getting WorkstationCluster %q: %w", a.id.String(), err)
 	}
 
 	a.actual = workstationclusterpb
@@ -205,7 +166,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating WorkstationCluster", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("creating WorkstationCluster", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -215,26 +176,26 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 
 	req := &pb.CreateWorkstationClusterRequest{
-		Parent:               a.id.Parent.String(),
+		Parent:               fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
 		WorkstationClusterId: a.id.WorkstationCluster,
 		WorkstationCluster:   resource,
 	}
 	op, err := a.gcpClient.CreateWorkstationCluster(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating WorkstationCluster %s: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("creating WorkstationCluster %s: %w", a.id.String(), err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("WorkstationCluster %s waiting creation: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("WorkstationCluster %s waiting creation: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created WorkstationCluster", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully created WorkstationCluster", "name", a.id.String())
 
 	status := &krm.WorkstationClusterStatus{}
 	status.ObservedState = WorkstationClusterObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.AsExternalRef()
+	status.ExternalRef = direct.PtrTo(a.id.String())
 	return setStatus(u, status)
 }
 
@@ -242,7 +203,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	u := updateOp.GetUnstructured()
 
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating WorkstationCluster", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("updating WorkstationCluster", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -250,7 +211,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = a.id.FullyQualifiedName()
+	resource.Name = a.id.String()
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
@@ -276,13 +237,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	op, err := a.gcpClient.UpdateWorkstationCluster(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating WorkstationCluster %s: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("updating WorkstationCluster %s: %w", a.id.String(), err)
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("WorkstationCluster %s waiting update: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("WorkstationCluster %s waiting update: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully updated WorkstationCluster", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully updated WorkstationCluster", "name", a.id.String())
 
 	status := &krm.WorkstationClusterStatus{}
 	status.ObservedState = WorkstationClusterObservedState_FromProto(mapCtx, updated)
@@ -304,8 +265,8 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = refs.ProjectRef{Name: a.id.Parent.Project}
-	obj.Spec.Location = a.id.Parent.Location
+	obj.Spec.ProjectRef = refs.ProjectRef{Name: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -316,28 +277,28 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting WorkstationCluster", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("deleting WorkstationCluster", "name", a.id.String())
 
-	req := &pb.DeleteWorkstationClusterRequest{Name: a.id.FullyQualifiedName()}
+	req := &pb.DeleteWorkstationClusterRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteWorkstationCluster(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent WorkstationCluster, assuming it was already deleted", "name", a.id.FullyQualifiedName())
+			log.V(2).Info("skipping delete for non-existent WorkstationCluster, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting WorkstationCluster %s: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting WorkstationCluster %s: %w", a.id.String(), err)
 	}
 
 	_, err = op.Wait(ctx)
 	if err != nil {
 		// todo (b/368419476): Workstation service does not provide a valid response on success.
 		if err.Error() != "unsupported result type <nil>: <nil>" {
-			return false, fmt.Errorf("waiting delete WorkstationCluster %s: %w", a.id.FullyQualifiedName(), err)
+			return false, fmt.Errorf("waiting delete WorkstationCluster %s: %w", a.id.String(), err)
 		}
 	}
 
-	log.V(2).Info("successfully deleted WorkstationCluster", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully deleted WorkstationCluster", "name", a.id.String())
 	return true, nil
 }
 
