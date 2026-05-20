@@ -30,7 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -352,71 +351,27 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 		desired.MaintenanceWindow = actual.MaintenanceWindow
 	}
 
-	if desired.NodeConfig == nil && actual.NodeConfig != nil {
-		desired.NodeConfig = proto.Clone(actual.NodeConfig).(*composerpb.NodeConfig)
-	} else if desired.NodeConfig != nil && actual.NodeConfig != nil {
-		// Preserve immutable, server-assigned fields.
-		// These fields are not sent in update requests (see NodeConfig_ToProto),
-		// but we need to match them in the desired state so CompareProtoMessage
-		// doesn't flag them as changed (drift).
-		if desired.NodeConfig.ComposerInternalIpv4CidrBlock == "" {
-			desired.NodeConfig.ComposerInternalIpv4CidrBlock = actual.NodeConfig.ComposerInternalIpv4CidrBlock
-		}
-		if desired.NodeConfig.ComposerNetworkAttachment == "" {
-			desired.NodeConfig.ComposerNetworkAttachment = actual.NodeConfig.ComposerNetworkAttachment
-		}
-		if desired.NodeConfig.ServiceAccount == "" {
-			desired.NodeConfig.ServiceAccount = actual.NodeConfig.ServiceAccount
-		}
-		if desired.NodeConfig.Network == "" {
-			desired.NodeConfig.Network = actual.NodeConfig.Network
-		}
-		if desired.NodeConfig.Subnetwork == "" {
-			desired.NodeConfig.Subnetwork = actual.NodeConfig.Subnetwork
-		}
-		if desired.NodeConfig.IpAllocationPolicy == nil && actual.NodeConfig.IpAllocationPolicy != nil {
-			desired.NodeConfig.IpAllocationPolicy = proto.Clone(actual.NodeConfig.IpAllocationPolicy).(*composerpb.IPAllocationPolicy)
-		}
-		if desired.NodeConfig.MachineType == "" {
-			desired.NodeConfig.MachineType = actual.NodeConfig.MachineType
-		}
-		if desired.NodeConfig.DiskSizeGb == 0 {
-			desired.NodeConfig.DiskSizeGb = actual.NodeConfig.DiskSizeGb
-		}
-		if desired.NodeConfig.Location == "" {
-			desired.NodeConfig.Location = actual.NodeConfig.Location
+	if actual.NodeConfig != nil {
+		if desired.NodeConfig == nil {
+			desired.NodeConfig = actual.NodeConfig
+		} else {
+			populateDefaultsForNodeConfig(desired.NodeConfig, actual.NodeConfig)
 		}
 	}
 
 	if actual.PrivateEnvironmentConfig != nil {
 		if desired.PrivateEnvironmentConfig == nil {
 			desired.PrivateEnvironmentConfig = actual.PrivateEnvironmentConfig
-		}
-		if desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange == "" {
-			desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange = actual.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange
-		}
-		if desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange == "" {
-			desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange = actual.PrivateEnvironmentConfig.WebServerIpv4ReservedRange
-		}
-		if actual.PrivateEnvironmentConfig.PrivateClusterConfig != nil {
-			if desired.PrivateEnvironmentConfig.PrivateClusterConfig == nil {
-				desired.PrivateEnvironmentConfig.PrivateClusterConfig = actual.PrivateEnvironmentConfig.PrivateClusterConfig
-			}
-			if desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange == "" {
-				desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange = actual.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange
-			}
+		} else {
+			populateDefaultsForPrivateEnvironmentConfig(desired.PrivateEnvironmentConfig, actual.PrivateEnvironmentConfig)
 		}
 	}
 
 	if actual.SoftwareConfig != nil {
 		if desired.SoftwareConfig == nil {
 			desired.SoftwareConfig = actual.SoftwareConfig
-		}
-		if desired.SoftwareConfig.CloudDataLineageIntegration == nil {
-			desired.SoftwareConfig.CloudDataLineageIntegration = &composerpb.CloudDataLineageIntegration{}
-		}
-		if desired.SoftwareConfig.ImageVersion == "" {
-			desired.SoftwareConfig.ImageVersion = actual.SoftwareConfig.ImageVersion
+		} else {
+			populateDefaultsForSoftwareConfig(desired.SoftwareConfig, actual.SoftwareConfig)
 		}
 	}
 
@@ -425,5 +380,140 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 	}
 	if desired.WorkloadsConfig == nil {
 		desired.WorkloadsConfig = actual.WorkloadsConfig
+	}
+}
+
+func populateDefaultsForNodeConfig(desired, actual *composerpb.NodeConfig) {
+	if actual == nil {
+		return
+	}
+	if desired.Location == "" {
+		desired.Location = actual.Location
+	}
+	if desired.MachineType == "" {
+		desired.MachineType = actual.MachineType
+	}
+	if desired.Network == "" {
+		desired.Network = actual.Network
+	}
+	if desired.Subnetwork == "" {
+		desired.Subnetwork = actual.Subnetwork
+	}
+	if desired.DiskSizeGb == 0 {
+		desired.DiskSizeGb = actual.DiskSizeGb
+	}
+	if len(desired.OauthScopes) == 0 {
+		desired.OauthScopes = actual.OauthScopes
+	}
+	if desired.ServiceAccount == "" {
+		desired.ServiceAccount = actual.ServiceAccount
+	}
+	if len(desired.Tags) == 0 {
+		desired.Tags = actual.Tags
+	}
+	if desired.IpAllocationPolicy == nil {
+		desired.IpAllocationPolicy = actual.IpAllocationPolicy
+	} else {
+		populateDefaultsForIPAllocationPolicy(desired.IpAllocationPolicy, actual.IpAllocationPolicy)
+	}
+	if !desired.EnableIpMasqAgent && actual.EnableIpMasqAgent {
+		desired.EnableIpMasqAgent = actual.EnableIpMasqAgent
+	}
+	if desired.ComposerNetworkAttachment == "" {
+		desired.ComposerNetworkAttachment = actual.ComposerNetworkAttachment
+	}
+	if desired.ComposerInternalIpv4CidrBlock == "" {
+		desired.ComposerInternalIpv4CidrBlock = actual.ComposerInternalIpv4CidrBlock
+	}
+}
+
+func populateDefaultsForIPAllocationPolicy(desired, actual *composerpb.IPAllocationPolicy) {
+	if actual == nil {
+		return
+	}
+	if !desired.UseIpAliases && actual.UseIpAliases {
+		desired.UseIpAliases = actual.UseIpAliases
+	}
+	if desired.ClusterIpAllocation == nil && actual.ClusterIpAllocation != nil {
+		desired.ClusterIpAllocation = actual.ClusterIpAllocation
+	}
+	if desired.ServicesIpAllocation == nil && actual.ServicesIpAllocation != nil {
+		desired.ServicesIpAllocation = actual.ServicesIpAllocation
+	}
+}
+
+func populateDefaultsForPrivateEnvironmentConfig(desired, actual *composerpb.PrivateEnvironmentConfig) {
+	if actual == nil {
+		return
+	}
+	if !desired.EnablePrivateEnvironment && actual.EnablePrivateEnvironment {
+		desired.EnablePrivateEnvironment = actual.EnablePrivateEnvironment
+	}
+	if !desired.EnablePrivateBuildsOnly && actual.EnablePrivateBuildsOnly {
+		desired.EnablePrivateBuildsOnly = actual.EnablePrivateBuildsOnly
+	}
+	if desired.PrivateClusterConfig == nil {
+		desired.PrivateClusterConfig = actual.PrivateClusterConfig
+	} else if actual.PrivateClusterConfig != nil {
+		if !desired.PrivateClusterConfig.EnablePrivateEndpoint && actual.PrivateClusterConfig.EnablePrivateEndpoint {
+			desired.PrivateClusterConfig.EnablePrivateEndpoint = actual.PrivateClusterConfig.EnablePrivateEndpoint
+		}
+		if desired.PrivateClusterConfig.MasterIpv4CidrBlock == "" {
+			desired.PrivateClusterConfig.MasterIpv4CidrBlock = actual.PrivateClusterConfig.MasterIpv4CidrBlock
+		}
+		if desired.PrivateClusterConfig.MasterIpv4ReservedRange == "" {
+			desired.PrivateClusterConfig.MasterIpv4ReservedRange = actual.PrivateClusterConfig.MasterIpv4ReservedRange
+		}
+	}
+	if desired.WebServerIpv4CidrBlock == "" {
+		desired.WebServerIpv4CidrBlock = actual.WebServerIpv4CidrBlock
+	}
+	if desired.WebServerIpv4ReservedRange == "" {
+		desired.WebServerIpv4ReservedRange = actual.WebServerIpv4ReservedRange
+	}
+	if desired.CloudSqlIpv4CidrBlock == "" {
+		desired.CloudSqlIpv4CidrBlock = actual.CloudSqlIpv4CidrBlock
+	}
+	if desired.CloudComposerNetworkIpv4CidrBlock == "" {
+		desired.CloudComposerNetworkIpv4CidrBlock = actual.CloudComposerNetworkIpv4CidrBlock
+	}
+	if desired.CloudComposerNetworkIpv4ReservedRange == "" {
+		desired.CloudComposerNetworkIpv4ReservedRange = actual.CloudComposerNetworkIpv4ReservedRange
+	}
+	if !desired.EnablePrivatelyUsedPublicIps && actual.EnablePrivatelyUsedPublicIps {
+		desired.EnablePrivatelyUsedPublicIps = actual.EnablePrivatelyUsedPublicIps
+	}
+	if desired.CloudComposerConnectionSubnetwork == "" {
+		desired.CloudComposerConnectionSubnetwork = actual.CloudComposerConnectionSubnetwork
+	}
+	if desired.NetworkingConfig == nil {
+		desired.NetworkingConfig = actual.NetworkingConfig
+	}
+}
+
+func populateDefaultsForSoftwareConfig(desired, actual *composerpb.SoftwareConfig) {
+	if actual == nil {
+		return
+	}
+	if desired.ImageVersion == "" {
+		desired.ImageVersion = actual.ImageVersion
+	}
+	if len(desired.AirflowConfigOverrides) == 0 {
+		desired.AirflowConfigOverrides = actual.AirflowConfigOverrides
+	}
+	if len(desired.PypiPackages) == 0 {
+		desired.PypiPackages = actual.PypiPackages
+	}
+	if len(desired.EnvVariables) == 0 {
+		desired.EnvVariables = actual.EnvVariables
+	}
+	if desired.PythonVersion == "" {
+		desired.PythonVersion = actual.PythonVersion
+	}
+	if desired.SchedulerCount == 0 {
+		desired.SchedulerCount = actual.SchedulerCount
+	}
+	if desired.CloudDataLineageIntegration == nil {
+		desired.CloudDataLineageIntegration = actual.CloudDataLineageIntegration
 	}
 }
