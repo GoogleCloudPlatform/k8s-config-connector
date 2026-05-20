@@ -32,11 +32,11 @@ type FakeDatacatalogV1beta1 struct {
 }
 
 func (c *FakeDatacatalogV1beta1) DataCatalogPolicyTags(namespace string) v1beta1.DataCatalogPolicyTagInterface {
-	return newFakeDataCatalogPolicyTags(c, namespace)
+	return &FakeDataCatalogPolicyTags{c, namespace}
 }
 
 func (c *FakeDatacatalogV1beta1) DataCatalogTaxonomies(namespace string) v1beta1.DataCatalogTaxonomyInterface {
-	return newFakeDataCatalogTaxonomies(c, namespace)
+	return &FakeDataCatalogTaxonomies{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

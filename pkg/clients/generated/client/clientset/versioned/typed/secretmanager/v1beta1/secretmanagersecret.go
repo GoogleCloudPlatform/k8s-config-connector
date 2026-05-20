@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/secretmanager/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/secretmanager/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // SecretManagerSecretsGetter has a method to return a SecretManagerSecretInterface.
@@ -40,36 +41,158 @@ type SecretManagerSecretsGetter interface {
 
 // SecretManagerSecretInterface has methods to work with SecretManagerSecret resources.
 type SecretManagerSecretInterface interface {
-	Create(ctx context.Context, secretManagerSecret *secretmanagerv1beta1.SecretManagerSecret, opts v1.CreateOptions) (*secretmanagerv1beta1.SecretManagerSecret, error)
-	Update(ctx context.Context, secretManagerSecret *secretmanagerv1beta1.SecretManagerSecret, opts v1.UpdateOptions) (*secretmanagerv1beta1.SecretManagerSecret, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, secretManagerSecret *secretmanagerv1beta1.SecretManagerSecret, opts v1.UpdateOptions) (*secretmanagerv1beta1.SecretManagerSecret, error)
+	Create(ctx context.Context, secretManagerSecret *v1beta1.SecretManagerSecret, opts v1.CreateOptions) (*v1beta1.SecretManagerSecret, error)
+	Update(ctx context.Context, secretManagerSecret *v1beta1.SecretManagerSecret, opts v1.UpdateOptions) (*v1beta1.SecretManagerSecret, error)
+	UpdateStatus(ctx context.Context, secretManagerSecret *v1beta1.SecretManagerSecret, opts v1.UpdateOptions) (*v1beta1.SecretManagerSecret, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*secretmanagerv1beta1.SecretManagerSecret, error)
-	List(ctx context.Context, opts v1.ListOptions) (*secretmanagerv1beta1.SecretManagerSecretList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.SecretManagerSecret, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.SecretManagerSecretList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *secretmanagerv1beta1.SecretManagerSecret, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SecretManagerSecret, err error)
 	SecretManagerSecretExpansion
 }
 
 // secretManagerSecrets implements SecretManagerSecretInterface
 type secretManagerSecrets struct {
-	*gentype.ClientWithList[*secretmanagerv1beta1.SecretManagerSecret, *secretmanagerv1beta1.SecretManagerSecretList]
+	client rest.Interface
+	ns     string
 }
 
 // newSecretManagerSecrets returns a SecretManagerSecrets
 func newSecretManagerSecrets(c *SecretmanagerV1beta1Client, namespace string) *secretManagerSecrets {
 	return &secretManagerSecrets{
-		gentype.NewClientWithList[*secretmanagerv1beta1.SecretManagerSecret, *secretmanagerv1beta1.SecretManagerSecretList](
-			"secretmanagersecrets",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *secretmanagerv1beta1.SecretManagerSecret { return &secretmanagerv1beta1.SecretManagerSecret{} },
-			func() *secretmanagerv1beta1.SecretManagerSecretList {
-				return &secretmanagerv1beta1.SecretManagerSecretList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the secretManagerSecret, and returns the corresponding secretManagerSecret object, and an error if there is any.
+func (c *secretManagerSecrets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SecretManagerSecret, err error) {
+	result = &v1beta1.SecretManagerSecret{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("secretmanagersecrets").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of SecretManagerSecrets that match those selectors.
+func (c *secretManagerSecrets) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SecretManagerSecretList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.SecretManagerSecretList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("secretmanagersecrets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested secretManagerSecrets.
+func (c *secretManagerSecrets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("secretmanagersecrets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a secretManagerSecret and creates it.  Returns the server's representation of the secretManagerSecret, and an error, if there is any.
+func (c *secretManagerSecrets) Create(ctx context.Context, secretManagerSecret *v1beta1.SecretManagerSecret, opts v1.CreateOptions) (result *v1beta1.SecretManagerSecret, err error) {
+	result = &v1beta1.SecretManagerSecret{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("secretmanagersecrets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(secretManagerSecret).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a secretManagerSecret and updates it. Returns the server's representation of the secretManagerSecret, and an error, if there is any.
+func (c *secretManagerSecrets) Update(ctx context.Context, secretManagerSecret *v1beta1.SecretManagerSecret, opts v1.UpdateOptions) (result *v1beta1.SecretManagerSecret, err error) {
+	result = &v1beta1.SecretManagerSecret{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("secretmanagersecrets").
+		Name(secretManagerSecret.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(secretManagerSecret).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *secretManagerSecrets) UpdateStatus(ctx context.Context, secretManagerSecret *v1beta1.SecretManagerSecret, opts v1.UpdateOptions) (result *v1beta1.SecretManagerSecret, err error) {
+	result = &v1beta1.SecretManagerSecret{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("secretmanagersecrets").
+		Name(secretManagerSecret.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(secretManagerSecret).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the secretManagerSecret and deletes it. Returns an error if one occurs.
+func (c *secretManagerSecrets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("secretmanagersecrets").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *secretManagerSecrets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("secretmanagersecrets").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched secretManagerSecret.
+func (c *secretManagerSecrets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SecretManagerSecret, err error) {
+	result = &v1beta1.SecretManagerSecret{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("secretmanagersecrets").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

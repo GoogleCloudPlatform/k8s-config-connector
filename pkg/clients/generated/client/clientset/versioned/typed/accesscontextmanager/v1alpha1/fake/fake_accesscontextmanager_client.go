@@ -32,11 +32,11 @@ type FakeAccesscontextmanagerV1alpha1 struct {
 }
 
 func (c *FakeAccesscontextmanagerV1alpha1) AccessContextManagerAccessLevelConditions(namespace string) v1alpha1.AccessContextManagerAccessLevelConditionInterface {
-	return newFakeAccessContextManagerAccessLevelConditions(c, namespace)
+	return &FakeAccessContextManagerAccessLevelConditions{c, namespace}
 }
 
 func (c *FakeAccesscontextmanagerV1alpha1) AccessContextManagerGCPUserAccessBindings(namespace string) v1alpha1.AccessContextManagerGCPUserAccessBindingInterface {
-	return newFakeAccessContextManagerGCPUserAccessBindings(c, namespace)
+	return &FakeAccessContextManagerGCPUserAccessBindings{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -32,15 +32,15 @@ type FakeDataprocV1alpha1 struct {
 }
 
 func (c *FakeDataprocV1alpha1) DataprocBatches(namespace string) v1alpha1.DataprocBatchInterface {
-	return newFakeDataprocBatches(c, namespace)
+	return &FakeDataprocBatches{c, namespace}
 }
 
 func (c *FakeDataprocV1alpha1) DataprocJobs(namespace string) v1alpha1.DataprocJobInterface {
-	return newFakeDataprocJobs(c, namespace)
+	return &FakeDataprocJobs{c, namespace}
 }
 
 func (c *FakeDataprocV1alpha1) DataprocNodeGroups(namespace string) v1alpha1.DataprocNodeGroupInterface {
-	return newFakeDataprocNodeGroups(c, namespace)
+	return &FakeDataprocNodeGroups{c, namespace}
 }
 
 func (c *FakeDataprocV1alpha1) DataprocSessions(namespace string) v1alpha1.DataprocSessionInterface {

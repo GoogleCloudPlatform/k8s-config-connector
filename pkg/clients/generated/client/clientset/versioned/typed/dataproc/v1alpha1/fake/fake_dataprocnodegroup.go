@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1alpha1"
-	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDataprocNodeGroups implements DataprocNodeGroupInterface
-type fakeDataprocNodeGroups struct {
-	*gentype.FakeClientWithList[*v1alpha1.DataprocNodeGroup, *v1alpha1.DataprocNodeGroupList]
+// FakeDataprocNodeGroups implements DataprocNodeGroupInterface
+type FakeDataprocNodeGroups struct {
 	Fake *FakeDataprocV1alpha1
+	ns   string
 }
 
-func newFakeDataprocNodeGroups(fake *FakeDataprocV1alpha1, namespace string) dataprocv1alpha1.DataprocNodeGroupInterface {
-	return &fakeDataprocNodeGroups{
-		gentype.NewFakeClientWithList[*v1alpha1.DataprocNodeGroup, *v1alpha1.DataprocNodeGroupList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("dataprocnodegroups"),
-			v1alpha1.SchemeGroupVersion.WithKind("DataprocNodeGroup"),
-			func() *v1alpha1.DataprocNodeGroup { return &v1alpha1.DataprocNodeGroup{} },
-			func() *v1alpha1.DataprocNodeGroupList { return &v1alpha1.DataprocNodeGroupList{} },
-			func(dst, src *v1alpha1.DataprocNodeGroupList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DataprocNodeGroupList) []*v1alpha1.DataprocNodeGroup {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DataprocNodeGroupList, items []*v1alpha1.DataprocNodeGroup) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var dataprocnodegroupsResource = v1alpha1.SchemeGroupVersion.WithResource("dataprocnodegroups")
+
+var dataprocnodegroupsKind = v1alpha1.SchemeGroupVersion.WithKind("DataprocNodeGroup")
+
+// Get takes name of the dataprocNodeGroup, and returns the corresponding dataprocNodeGroup object, and an error if there is any.
+func (c *FakeDataprocNodeGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataprocNodeGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(dataprocnodegroupsResource, c.ns, name), &v1alpha1.DataprocNodeGroup{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DataprocNodeGroup), err
+}
+
+// List takes label and field selectors, and returns the list of DataprocNodeGroups that match those selectors.
+func (c *FakeDataprocNodeGroups) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DataprocNodeGroupList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(dataprocnodegroupsResource, dataprocnodegroupsKind, c.ns, opts), &v1alpha1.DataprocNodeGroupList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DataprocNodeGroupList{ListMeta: obj.(*v1alpha1.DataprocNodeGroupList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DataprocNodeGroupList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested dataprocNodeGroups.
+func (c *FakeDataprocNodeGroups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(dataprocnodegroupsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a dataprocNodeGroup and creates it.  Returns the server's representation of the dataprocNodeGroup, and an error, if there is any.
+func (c *FakeDataprocNodeGroups) Create(ctx context.Context, dataprocNodeGroup *v1alpha1.DataprocNodeGroup, opts v1.CreateOptions) (result *v1alpha1.DataprocNodeGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(dataprocnodegroupsResource, c.ns, dataprocNodeGroup), &v1alpha1.DataprocNodeGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataprocNodeGroup), err
+}
+
+// Update takes the representation of a dataprocNodeGroup and updates it. Returns the server's representation of the dataprocNodeGroup, and an error, if there is any.
+func (c *FakeDataprocNodeGroups) Update(ctx context.Context, dataprocNodeGroup *v1alpha1.DataprocNodeGroup, opts v1.UpdateOptions) (result *v1alpha1.DataprocNodeGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(dataprocnodegroupsResource, c.ns, dataprocNodeGroup), &v1alpha1.DataprocNodeGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataprocNodeGroup), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDataprocNodeGroups) UpdateStatus(ctx context.Context, dataprocNodeGroup *v1alpha1.DataprocNodeGroup, opts v1.UpdateOptions) (*v1alpha1.DataprocNodeGroup, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(dataprocnodegroupsResource, "status", c.ns, dataprocNodeGroup), &v1alpha1.DataprocNodeGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataprocNodeGroup), err
+}
+
+// Delete takes name of the dataprocNodeGroup and deletes it. Returns an error if one occurs.
+func (c *FakeDataprocNodeGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(dataprocnodegroupsResource, c.ns, name, opts), &v1alpha1.DataprocNodeGroup{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDataprocNodeGroups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(dataprocnodegroupsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DataprocNodeGroupList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched dataprocNodeGroup.
+func (c *FakeDataprocNodeGroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataprocNodeGroup, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(dataprocnodegroupsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DataprocNodeGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DataprocNodeGroup), err
 }

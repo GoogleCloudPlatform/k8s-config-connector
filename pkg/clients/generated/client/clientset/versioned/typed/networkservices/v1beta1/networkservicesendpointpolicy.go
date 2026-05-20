@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // NetworkServicesEndpointPoliciesGetter has a method to return a NetworkServicesEndpointPolicyInterface.
@@ -40,38 +41,158 @@ type NetworkServicesEndpointPoliciesGetter interface {
 
 // NetworkServicesEndpointPolicyInterface has methods to work with NetworkServicesEndpointPolicy resources.
 type NetworkServicesEndpointPolicyInterface interface {
-	Create(ctx context.Context, networkServicesEndpointPolicy *networkservicesv1beta1.NetworkServicesEndpointPolicy, opts v1.CreateOptions) (*networkservicesv1beta1.NetworkServicesEndpointPolicy, error)
-	Update(ctx context.Context, networkServicesEndpointPolicy *networkservicesv1beta1.NetworkServicesEndpointPolicy, opts v1.UpdateOptions) (*networkservicesv1beta1.NetworkServicesEndpointPolicy, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, networkServicesEndpointPolicy *networkservicesv1beta1.NetworkServicesEndpointPolicy, opts v1.UpdateOptions) (*networkservicesv1beta1.NetworkServicesEndpointPolicy, error)
+	Create(ctx context.Context, networkServicesEndpointPolicy *v1beta1.NetworkServicesEndpointPolicy, opts v1.CreateOptions) (*v1beta1.NetworkServicesEndpointPolicy, error)
+	Update(ctx context.Context, networkServicesEndpointPolicy *v1beta1.NetworkServicesEndpointPolicy, opts v1.UpdateOptions) (*v1beta1.NetworkServicesEndpointPolicy, error)
+	UpdateStatus(ctx context.Context, networkServicesEndpointPolicy *v1beta1.NetworkServicesEndpointPolicy, opts v1.UpdateOptions) (*v1beta1.NetworkServicesEndpointPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*networkservicesv1beta1.NetworkServicesEndpointPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*networkservicesv1beta1.NetworkServicesEndpointPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.NetworkServicesEndpointPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.NetworkServicesEndpointPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *networkservicesv1beta1.NetworkServicesEndpointPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NetworkServicesEndpointPolicy, err error)
 	NetworkServicesEndpointPolicyExpansion
 }
 
 // networkServicesEndpointPolicies implements NetworkServicesEndpointPolicyInterface
 type networkServicesEndpointPolicies struct {
-	*gentype.ClientWithList[*networkservicesv1beta1.NetworkServicesEndpointPolicy, *networkservicesv1beta1.NetworkServicesEndpointPolicyList]
+	client rest.Interface
+	ns     string
 }
 
 // newNetworkServicesEndpointPolicies returns a NetworkServicesEndpointPolicies
 func newNetworkServicesEndpointPolicies(c *NetworkservicesV1beta1Client, namespace string) *networkServicesEndpointPolicies {
 	return &networkServicesEndpointPolicies{
-		gentype.NewClientWithList[*networkservicesv1beta1.NetworkServicesEndpointPolicy, *networkservicesv1beta1.NetworkServicesEndpointPolicyList](
-			"networkservicesendpointpolicies",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *networkservicesv1beta1.NetworkServicesEndpointPolicy {
-				return &networkservicesv1beta1.NetworkServicesEndpointPolicy{}
-			},
-			func() *networkservicesv1beta1.NetworkServicesEndpointPolicyList {
-				return &networkservicesv1beta1.NetworkServicesEndpointPolicyList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the networkServicesEndpointPolicy, and returns the corresponding networkServicesEndpointPolicy object, and an error if there is any.
+func (c *networkServicesEndpointPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.NetworkServicesEndpointPolicy, err error) {
+	result = &v1beta1.NetworkServicesEndpointPolicy{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("networkservicesendpointpolicies").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of NetworkServicesEndpointPolicies that match those selectors.
+func (c *networkServicesEndpointPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.NetworkServicesEndpointPolicyList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.NetworkServicesEndpointPolicyList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("networkservicesendpointpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested networkServicesEndpointPolicies.
+func (c *networkServicesEndpointPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("networkservicesendpointpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a networkServicesEndpointPolicy and creates it.  Returns the server's representation of the networkServicesEndpointPolicy, and an error, if there is any.
+func (c *networkServicesEndpointPolicies) Create(ctx context.Context, networkServicesEndpointPolicy *v1beta1.NetworkServicesEndpointPolicy, opts v1.CreateOptions) (result *v1beta1.NetworkServicesEndpointPolicy, err error) {
+	result = &v1beta1.NetworkServicesEndpointPolicy{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("networkservicesendpointpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkServicesEndpointPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a networkServicesEndpointPolicy and updates it. Returns the server's representation of the networkServicesEndpointPolicy, and an error, if there is any.
+func (c *networkServicesEndpointPolicies) Update(ctx context.Context, networkServicesEndpointPolicy *v1beta1.NetworkServicesEndpointPolicy, opts v1.UpdateOptions) (result *v1beta1.NetworkServicesEndpointPolicy, err error) {
+	result = &v1beta1.NetworkServicesEndpointPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("networkservicesendpointpolicies").
+		Name(networkServicesEndpointPolicy.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkServicesEndpointPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *networkServicesEndpointPolicies) UpdateStatus(ctx context.Context, networkServicesEndpointPolicy *v1beta1.NetworkServicesEndpointPolicy, opts v1.UpdateOptions) (result *v1beta1.NetworkServicesEndpointPolicy, err error) {
+	result = &v1beta1.NetworkServicesEndpointPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("networkservicesendpointpolicies").
+		Name(networkServicesEndpointPolicy.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(networkServicesEndpointPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the networkServicesEndpointPolicy and deletes it. Returns an error if one occurs.
+func (c *networkServicesEndpointPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("networkservicesendpointpolicies").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *networkServicesEndpointPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("networkservicesendpointpolicies").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched networkServicesEndpointPolicy.
+func (c *networkServicesEndpointPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NetworkServicesEndpointPolicy, err error) {
+	result = &v1beta1.NetworkServicesEndpointPolicy{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("networkservicesendpointpolicies").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

@@ -32,15 +32,15 @@ type FakeSpannerV1beta1 struct {
 }
 
 func (c *FakeSpannerV1beta1) SpannerBackupSchedules(namespace string) v1beta1.SpannerBackupScheduleInterface {
-	return newFakeSpannerBackupSchedules(c, namespace)
+	return &FakeSpannerBackupSchedules{c, namespace}
 }
 
 func (c *FakeSpannerV1beta1) SpannerDatabases(namespace string) v1beta1.SpannerDatabaseInterface {
-	return newFakeSpannerDatabases(c, namespace)
+	return &FakeSpannerDatabases{c, namespace}
 }
 
 func (c *FakeSpannerV1beta1) SpannerInstances(namespace string) v1beta1.SpannerInstanceInterface {
-	return newFakeSpannerInstances(c, namespace)
+	return &FakeSpannerInstances{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

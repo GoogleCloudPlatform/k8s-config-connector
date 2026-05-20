@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeFirewallPolicyRulesGetter has a method to return a ComputeFirewallPolicyRuleInterface.
@@ -40,36 +41,158 @@ type ComputeFirewallPolicyRulesGetter interface {
 
 // ComputeFirewallPolicyRuleInterface has methods to work with ComputeFirewallPolicyRule resources.
 type ComputeFirewallPolicyRuleInterface interface {
-	Create(ctx context.Context, computeFirewallPolicyRule *computev1beta1.ComputeFirewallPolicyRule, opts v1.CreateOptions) (*computev1beta1.ComputeFirewallPolicyRule, error)
-	Update(ctx context.Context, computeFirewallPolicyRule *computev1beta1.ComputeFirewallPolicyRule, opts v1.UpdateOptions) (*computev1beta1.ComputeFirewallPolicyRule, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeFirewallPolicyRule *computev1beta1.ComputeFirewallPolicyRule, opts v1.UpdateOptions) (*computev1beta1.ComputeFirewallPolicyRule, error)
+	Create(ctx context.Context, computeFirewallPolicyRule *v1beta1.ComputeFirewallPolicyRule, opts v1.CreateOptions) (*v1beta1.ComputeFirewallPolicyRule, error)
+	Update(ctx context.Context, computeFirewallPolicyRule *v1beta1.ComputeFirewallPolicyRule, opts v1.UpdateOptions) (*v1beta1.ComputeFirewallPolicyRule, error)
+	UpdateStatus(ctx context.Context, computeFirewallPolicyRule *v1beta1.ComputeFirewallPolicyRule, opts v1.UpdateOptions) (*v1beta1.ComputeFirewallPolicyRule, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeFirewallPolicyRule, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeFirewallPolicyRuleList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeFirewallPolicyRule, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeFirewallPolicyRuleList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeFirewallPolicyRule, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeFirewallPolicyRule, err error)
 	ComputeFirewallPolicyRuleExpansion
 }
 
 // computeFirewallPolicyRules implements ComputeFirewallPolicyRuleInterface
 type computeFirewallPolicyRules struct {
-	*gentype.ClientWithList[*computev1beta1.ComputeFirewallPolicyRule, *computev1beta1.ComputeFirewallPolicyRuleList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeFirewallPolicyRules returns a ComputeFirewallPolicyRules
 func newComputeFirewallPolicyRules(c *ComputeV1beta1Client, namespace string) *computeFirewallPolicyRules {
 	return &computeFirewallPolicyRules{
-		gentype.NewClientWithList[*computev1beta1.ComputeFirewallPolicyRule, *computev1beta1.ComputeFirewallPolicyRuleList](
-			"computefirewallpolicyrules",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1beta1.ComputeFirewallPolicyRule { return &computev1beta1.ComputeFirewallPolicyRule{} },
-			func() *computev1beta1.ComputeFirewallPolicyRuleList {
-				return &computev1beta1.ComputeFirewallPolicyRuleList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeFirewallPolicyRule, and returns the corresponding computeFirewallPolicyRule object, and an error if there is any.
+func (c *computeFirewallPolicyRules) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeFirewallPolicyRule, err error) {
+	result = &v1beta1.ComputeFirewallPolicyRule{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computefirewallpolicyrules").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeFirewallPolicyRules that match those selectors.
+func (c *computeFirewallPolicyRules) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeFirewallPolicyRuleList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ComputeFirewallPolicyRuleList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computefirewallpolicyrules").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeFirewallPolicyRules.
+func (c *computeFirewallPolicyRules) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computefirewallpolicyrules").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeFirewallPolicyRule and creates it.  Returns the server's representation of the computeFirewallPolicyRule, and an error, if there is any.
+func (c *computeFirewallPolicyRules) Create(ctx context.Context, computeFirewallPolicyRule *v1beta1.ComputeFirewallPolicyRule, opts v1.CreateOptions) (result *v1beta1.ComputeFirewallPolicyRule, err error) {
+	result = &v1beta1.ComputeFirewallPolicyRule{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computefirewallpolicyrules").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeFirewallPolicyRule).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeFirewallPolicyRule and updates it. Returns the server's representation of the computeFirewallPolicyRule, and an error, if there is any.
+func (c *computeFirewallPolicyRules) Update(ctx context.Context, computeFirewallPolicyRule *v1beta1.ComputeFirewallPolicyRule, opts v1.UpdateOptions) (result *v1beta1.ComputeFirewallPolicyRule, err error) {
+	result = &v1beta1.ComputeFirewallPolicyRule{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computefirewallpolicyrules").
+		Name(computeFirewallPolicyRule.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeFirewallPolicyRule).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeFirewallPolicyRules) UpdateStatus(ctx context.Context, computeFirewallPolicyRule *v1beta1.ComputeFirewallPolicyRule, opts v1.UpdateOptions) (result *v1beta1.ComputeFirewallPolicyRule, err error) {
+	result = &v1beta1.ComputeFirewallPolicyRule{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computefirewallpolicyrules").
+		Name(computeFirewallPolicyRule.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeFirewallPolicyRule).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeFirewallPolicyRule and deletes it. Returns an error if one occurs.
+func (c *computeFirewallPolicyRules) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computefirewallpolicyrules").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeFirewallPolicyRules) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computefirewallpolicyrules").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeFirewallPolicyRule.
+func (c *computeFirewallPolicyRules) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeFirewallPolicyRule, err error) {
+	result = &v1beta1.ComputeFirewallPolicyRule{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computefirewallpolicyrules").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

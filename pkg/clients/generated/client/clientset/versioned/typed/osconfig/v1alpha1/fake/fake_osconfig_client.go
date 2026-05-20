@@ -32,7 +32,7 @@ type FakeOsconfigV1alpha1 struct {
 }
 
 func (c *FakeOsconfigV1alpha1) OSConfigPatchDeployments(namespace string) v1alpha1.OSConfigPatchDeploymentInterface {
-	return newFakeOSConfigPatchDeployments(c, namespace)
+	return &FakeOSConfigPatchDeployments{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

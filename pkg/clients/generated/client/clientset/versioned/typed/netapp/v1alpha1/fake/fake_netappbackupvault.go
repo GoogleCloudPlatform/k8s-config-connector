@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/netapp/v1alpha1"
-	netappv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/netapp/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeNetAppBackupVaults implements NetAppBackupVaultInterface
-type fakeNetAppBackupVaults struct {
-	*gentype.FakeClientWithList[*v1alpha1.NetAppBackupVault, *v1alpha1.NetAppBackupVaultList]
+// FakeNetAppBackupVaults implements NetAppBackupVaultInterface
+type FakeNetAppBackupVaults struct {
 	Fake *FakeNetappV1alpha1
+	ns   string
 }
 
-func newFakeNetAppBackupVaults(fake *FakeNetappV1alpha1, namespace string) netappv1alpha1.NetAppBackupVaultInterface {
-	return &fakeNetAppBackupVaults{
-		gentype.NewFakeClientWithList[*v1alpha1.NetAppBackupVault, *v1alpha1.NetAppBackupVaultList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("netappbackupvaults"),
-			v1alpha1.SchemeGroupVersion.WithKind("NetAppBackupVault"),
-			func() *v1alpha1.NetAppBackupVault { return &v1alpha1.NetAppBackupVault{} },
-			func() *v1alpha1.NetAppBackupVaultList { return &v1alpha1.NetAppBackupVaultList{} },
-			func(dst, src *v1alpha1.NetAppBackupVaultList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.NetAppBackupVaultList) []*v1alpha1.NetAppBackupVault {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.NetAppBackupVaultList, items []*v1alpha1.NetAppBackupVault) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var netappbackupvaultsResource = v1alpha1.SchemeGroupVersion.WithResource("netappbackupvaults")
+
+var netappbackupvaultsKind = v1alpha1.SchemeGroupVersion.WithKind("NetAppBackupVault")
+
+// Get takes name of the netAppBackupVault, and returns the corresponding netAppBackupVault object, and an error if there is any.
+func (c *FakeNetAppBackupVaults) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetAppBackupVault, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(netappbackupvaultsResource, c.ns, name), &v1alpha1.NetAppBackupVault{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.NetAppBackupVault), err
+}
+
+// List takes label and field selectors, and returns the list of NetAppBackupVaults that match those selectors.
+func (c *FakeNetAppBackupVaults) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetAppBackupVaultList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(netappbackupvaultsResource, netappbackupvaultsKind, c.ns, opts), &v1alpha1.NetAppBackupVaultList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.NetAppBackupVaultList{ListMeta: obj.(*v1alpha1.NetAppBackupVaultList).ListMeta}
+	for _, item := range obj.(*v1alpha1.NetAppBackupVaultList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested netAppBackupVaults.
+func (c *FakeNetAppBackupVaults) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(netappbackupvaultsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a netAppBackupVault and creates it.  Returns the server's representation of the netAppBackupVault, and an error, if there is any.
+func (c *FakeNetAppBackupVaults) Create(ctx context.Context, netAppBackupVault *v1alpha1.NetAppBackupVault, opts v1.CreateOptions) (result *v1alpha1.NetAppBackupVault, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(netappbackupvaultsResource, c.ns, netAppBackupVault), &v1alpha1.NetAppBackupVault{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetAppBackupVault), err
+}
+
+// Update takes the representation of a netAppBackupVault and updates it. Returns the server's representation of the netAppBackupVault, and an error, if there is any.
+func (c *FakeNetAppBackupVaults) Update(ctx context.Context, netAppBackupVault *v1alpha1.NetAppBackupVault, opts v1.UpdateOptions) (result *v1alpha1.NetAppBackupVault, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(netappbackupvaultsResource, c.ns, netAppBackupVault), &v1alpha1.NetAppBackupVault{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetAppBackupVault), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeNetAppBackupVaults) UpdateStatus(ctx context.Context, netAppBackupVault *v1alpha1.NetAppBackupVault, opts v1.UpdateOptions) (*v1alpha1.NetAppBackupVault, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(netappbackupvaultsResource, "status", c.ns, netAppBackupVault), &v1alpha1.NetAppBackupVault{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetAppBackupVault), err
+}
+
+// Delete takes name of the netAppBackupVault and deletes it. Returns an error if one occurs.
+func (c *FakeNetAppBackupVaults) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(netappbackupvaultsResource, c.ns, name, opts), &v1alpha1.NetAppBackupVault{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeNetAppBackupVaults) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(netappbackupvaultsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.NetAppBackupVaultList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched netAppBackupVault.
+func (c *FakeNetAppBackupVaults) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetAppBackupVault, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(netappbackupvaultsResource, c.ns, name, pt, data, subresources...), &v1alpha1.NetAppBackupVault{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.NetAppBackupVault), err
 }

@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workflows/v1alpha1"
-	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeWorkflowsWorkflows implements WorkflowsWorkflowInterface
-type fakeWorkflowsWorkflows struct {
-	*gentype.FakeClientWithList[*v1alpha1.WorkflowsWorkflow, *v1alpha1.WorkflowsWorkflowList]
+// FakeWorkflowsWorkflows implements WorkflowsWorkflowInterface
+type FakeWorkflowsWorkflows struct {
 	Fake *FakeWorkflowsV1alpha1
+	ns   string
 }
 
-func newFakeWorkflowsWorkflows(fake *FakeWorkflowsV1alpha1, namespace string) workflowsv1alpha1.WorkflowsWorkflowInterface {
-	return &fakeWorkflowsWorkflows{
-		gentype.NewFakeClientWithList[*v1alpha1.WorkflowsWorkflow, *v1alpha1.WorkflowsWorkflowList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("workflowsworkflows"),
-			v1alpha1.SchemeGroupVersion.WithKind("WorkflowsWorkflow"),
-			func() *v1alpha1.WorkflowsWorkflow { return &v1alpha1.WorkflowsWorkflow{} },
-			func() *v1alpha1.WorkflowsWorkflowList { return &v1alpha1.WorkflowsWorkflowList{} },
-			func(dst, src *v1alpha1.WorkflowsWorkflowList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.WorkflowsWorkflowList) []*v1alpha1.WorkflowsWorkflow {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.WorkflowsWorkflowList, items []*v1alpha1.WorkflowsWorkflow) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var workflowsworkflowsResource = v1alpha1.SchemeGroupVersion.WithResource("workflowsworkflows")
+
+var workflowsworkflowsKind = v1alpha1.SchemeGroupVersion.WithKind("WorkflowsWorkflow")
+
+// Get takes name of the workflowsWorkflow, and returns the corresponding workflowsWorkflow object, and an error if there is any.
+func (c *FakeWorkflowsWorkflows) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.WorkflowsWorkflow, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(workflowsworkflowsResource, c.ns, name), &v1alpha1.WorkflowsWorkflow{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.WorkflowsWorkflow), err
+}
+
+// List takes label and field selectors, and returns the list of WorkflowsWorkflows that match those selectors.
+func (c *FakeWorkflowsWorkflows) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.WorkflowsWorkflowList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(workflowsworkflowsResource, workflowsworkflowsKind, c.ns, opts), &v1alpha1.WorkflowsWorkflowList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.WorkflowsWorkflowList{ListMeta: obj.(*v1alpha1.WorkflowsWorkflowList).ListMeta}
+	for _, item := range obj.(*v1alpha1.WorkflowsWorkflowList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested workflowsWorkflows.
+func (c *FakeWorkflowsWorkflows) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(workflowsworkflowsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a workflowsWorkflow and creates it.  Returns the server's representation of the workflowsWorkflow, and an error, if there is any.
+func (c *FakeWorkflowsWorkflows) Create(ctx context.Context, workflowsWorkflow *v1alpha1.WorkflowsWorkflow, opts v1.CreateOptions) (result *v1alpha1.WorkflowsWorkflow, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(workflowsworkflowsResource, c.ns, workflowsWorkflow), &v1alpha1.WorkflowsWorkflow{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.WorkflowsWorkflow), err
+}
+
+// Update takes the representation of a workflowsWorkflow and updates it. Returns the server's representation of the workflowsWorkflow, and an error, if there is any.
+func (c *FakeWorkflowsWorkflows) Update(ctx context.Context, workflowsWorkflow *v1alpha1.WorkflowsWorkflow, opts v1.UpdateOptions) (result *v1alpha1.WorkflowsWorkflow, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(workflowsworkflowsResource, c.ns, workflowsWorkflow), &v1alpha1.WorkflowsWorkflow{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.WorkflowsWorkflow), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeWorkflowsWorkflows) UpdateStatus(ctx context.Context, workflowsWorkflow *v1alpha1.WorkflowsWorkflow, opts v1.UpdateOptions) (*v1alpha1.WorkflowsWorkflow, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(workflowsworkflowsResource, "status", c.ns, workflowsWorkflow), &v1alpha1.WorkflowsWorkflow{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.WorkflowsWorkflow), err
+}
+
+// Delete takes name of the workflowsWorkflow and deletes it. Returns an error if one occurs.
+func (c *FakeWorkflowsWorkflows) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(workflowsworkflowsResource, c.ns, name, opts), &v1alpha1.WorkflowsWorkflow{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeWorkflowsWorkflows) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(workflowsworkflowsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.WorkflowsWorkflowList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched workflowsWorkflow.
+func (c *FakeWorkflowsWorkflows) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.WorkflowsWorkflow, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(workflowsworkflowsResource, c.ns, name, pt, data, subresources...), &v1alpha1.WorkflowsWorkflow{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.WorkflowsWorkflow), err
 }

@@ -36,15 +36,15 @@ func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineConversations(namespace str
 }
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineDataStores(namespace string) v1alpha1.DiscoveryEngineDataStoreInterface {
-	return newFakeDiscoveryEngineDataStores(c, namespace)
+	return &FakeDiscoveryEngineDataStores{c, namespace}
 }
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineDataStoreTargetSites(namespace string) v1alpha1.DiscoveryEngineDataStoreTargetSiteInterface {
-	return newFakeDiscoveryEngineDataStoreTargetSites(c, namespace)
+	return &FakeDiscoveryEngineDataStoreTargetSites{c, namespace}
 }
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineEngines(namespace string) v1alpha1.DiscoveryEngineEngineInterface {
-	return newFakeDiscoveryEngineEngines(c, namespace)
+	return &FakeDiscoveryEngineEngines{c, namespace}
 }
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineIdentityMappingStores(namespace string) v1alpha1.DiscoveryEngineIdentityMappingStoreInterface {

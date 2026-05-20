@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsub/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsub/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // PubSubTopicsGetter has a method to return a PubSubTopicInterface.
@@ -40,34 +41,158 @@ type PubSubTopicsGetter interface {
 
 // PubSubTopicInterface has methods to work with PubSubTopic resources.
 type PubSubTopicInterface interface {
-	Create(ctx context.Context, pubSubTopic *pubsubv1beta1.PubSubTopic, opts v1.CreateOptions) (*pubsubv1beta1.PubSubTopic, error)
-	Update(ctx context.Context, pubSubTopic *pubsubv1beta1.PubSubTopic, opts v1.UpdateOptions) (*pubsubv1beta1.PubSubTopic, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, pubSubTopic *pubsubv1beta1.PubSubTopic, opts v1.UpdateOptions) (*pubsubv1beta1.PubSubTopic, error)
+	Create(ctx context.Context, pubSubTopic *v1beta1.PubSubTopic, opts v1.CreateOptions) (*v1beta1.PubSubTopic, error)
+	Update(ctx context.Context, pubSubTopic *v1beta1.PubSubTopic, opts v1.UpdateOptions) (*v1beta1.PubSubTopic, error)
+	UpdateStatus(ctx context.Context, pubSubTopic *v1beta1.PubSubTopic, opts v1.UpdateOptions) (*v1beta1.PubSubTopic, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*pubsubv1beta1.PubSubTopic, error)
-	List(ctx context.Context, opts v1.ListOptions) (*pubsubv1beta1.PubSubTopicList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.PubSubTopic, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.PubSubTopicList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *pubsubv1beta1.PubSubTopic, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.PubSubTopic, err error)
 	PubSubTopicExpansion
 }
 
 // pubSubTopics implements PubSubTopicInterface
 type pubSubTopics struct {
-	*gentype.ClientWithList[*pubsubv1beta1.PubSubTopic, *pubsubv1beta1.PubSubTopicList]
+	client rest.Interface
+	ns     string
 }
 
 // newPubSubTopics returns a PubSubTopics
 func newPubSubTopics(c *PubsubV1beta1Client, namespace string) *pubSubTopics {
 	return &pubSubTopics{
-		gentype.NewClientWithList[*pubsubv1beta1.PubSubTopic, *pubsubv1beta1.PubSubTopicList](
-			"pubsubtopics",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *pubsubv1beta1.PubSubTopic { return &pubsubv1beta1.PubSubTopic{} },
-			func() *pubsubv1beta1.PubSubTopicList { return &pubsubv1beta1.PubSubTopicList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the pubSubTopic, and returns the corresponding pubSubTopic object, and an error if there is any.
+func (c *pubSubTopics) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.PubSubTopic, err error) {
+	result = &v1beta1.PubSubTopic{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("pubsubtopics").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of PubSubTopics that match those selectors.
+func (c *pubSubTopics) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.PubSubTopicList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.PubSubTopicList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("pubsubtopics").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested pubSubTopics.
+func (c *pubSubTopics) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("pubsubtopics").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a pubSubTopic and creates it.  Returns the server's representation of the pubSubTopic, and an error, if there is any.
+func (c *pubSubTopics) Create(ctx context.Context, pubSubTopic *v1beta1.PubSubTopic, opts v1.CreateOptions) (result *v1beta1.PubSubTopic, err error) {
+	result = &v1beta1.PubSubTopic{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("pubsubtopics").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(pubSubTopic).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a pubSubTopic and updates it. Returns the server's representation of the pubSubTopic, and an error, if there is any.
+func (c *pubSubTopics) Update(ctx context.Context, pubSubTopic *v1beta1.PubSubTopic, opts v1.UpdateOptions) (result *v1beta1.PubSubTopic, err error) {
+	result = &v1beta1.PubSubTopic{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("pubsubtopics").
+		Name(pubSubTopic.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(pubSubTopic).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *pubSubTopics) UpdateStatus(ctx context.Context, pubSubTopic *v1beta1.PubSubTopic, opts v1.UpdateOptions) (result *v1beta1.PubSubTopic, err error) {
+	result = &v1beta1.PubSubTopic{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("pubsubtopics").
+		Name(pubSubTopic.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(pubSubTopic).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the pubSubTopic and deletes it. Returns an error if one occurs.
+func (c *pubSubTopics) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("pubsubtopics").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *pubSubTopics) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("pubsubtopics").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched pubSubTopic.
+func (c *pubSubTopics) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.PubSubTopic, err error) {
+	result = &v1beta1.PubSubTopic{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("pubsubtopics").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }
