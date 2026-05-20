@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securesourcemanager/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeSecureSourceManagerInstances implements SecureSourceManagerInstanceInterface
-type FakeSecureSourceManagerInstances struct {
+// fakeSecureSourceManagerInstances implements SecureSourceManagerInstanceInterface
+type fakeSecureSourceManagerInstances struct {
+	*gentype.FakeClientWithList[*v1beta1.SecureSourceManagerInstance, *v1beta1.SecureSourceManagerInstanceList]
 	Fake *FakeSecuresourcemanagerV1beta1
-	ns   string
 }
 
-var securesourcemanagerinstancesResource = v1beta1.SchemeGroupVersion.WithResource("securesourcemanagerinstances")
-
-var securesourcemanagerinstancesKind = v1beta1.SchemeGroupVersion.WithKind("SecureSourceManagerInstance")
-
-// Get takes name of the secureSourceManagerInstance, and returns the corresponding secureSourceManagerInstance object, and an error if there is any.
-func (c *FakeSecureSourceManagerInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SecureSourceManagerInstance, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(securesourcemanagerinstancesResource, c.ns, name), &v1beta1.SecureSourceManagerInstance{})
-
-	if obj == nil {
-		return nil, err
+func newFakeSecureSourceManagerInstances(fake *FakeSecuresourcemanagerV1beta1, namespace string) securesourcemanagerv1beta1.SecureSourceManagerInstanceInterface {
+	return &fakeSecureSourceManagerInstances{
+		gentype.NewFakeClientWithList[*v1beta1.SecureSourceManagerInstance, *v1beta1.SecureSourceManagerInstanceList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("securesourcemanagerinstances"),
+			v1beta1.SchemeGroupVersion.WithKind("SecureSourceManagerInstance"),
+			func() *v1beta1.SecureSourceManagerInstance { return &v1beta1.SecureSourceManagerInstance{} },
+			func() *v1beta1.SecureSourceManagerInstanceList { return &v1beta1.SecureSourceManagerInstanceList{} },
+			func(dst, src *v1beta1.SecureSourceManagerInstanceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.SecureSourceManagerInstanceList) []*v1beta1.SecureSourceManagerInstance {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.SecureSourceManagerInstanceList, items []*v1beta1.SecureSourceManagerInstance) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.SecureSourceManagerInstance), err
-}
-
-// List takes label and field selectors, and returns the list of SecureSourceManagerInstances that match those selectors.
-func (c *FakeSecureSourceManagerInstances) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SecureSourceManagerInstanceList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(securesourcemanagerinstancesResource, securesourcemanagerinstancesKind, c.ns, opts), &v1beta1.SecureSourceManagerInstanceList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.SecureSourceManagerInstanceList{ListMeta: obj.(*v1beta1.SecureSourceManagerInstanceList).ListMeta}
-	for _, item := range obj.(*v1beta1.SecureSourceManagerInstanceList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested secureSourceManagerInstances.
-func (c *FakeSecureSourceManagerInstances) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(securesourcemanagerinstancesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a secureSourceManagerInstance and creates it.  Returns the server's representation of the secureSourceManagerInstance, and an error, if there is any.
-func (c *FakeSecureSourceManagerInstances) Create(ctx context.Context, secureSourceManagerInstance *v1beta1.SecureSourceManagerInstance, opts v1.CreateOptions) (result *v1beta1.SecureSourceManagerInstance, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(securesourcemanagerinstancesResource, c.ns, secureSourceManagerInstance), &v1beta1.SecureSourceManagerInstance{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SecureSourceManagerInstance), err
-}
-
-// Update takes the representation of a secureSourceManagerInstance and updates it. Returns the server's representation of the secureSourceManagerInstance, and an error, if there is any.
-func (c *FakeSecureSourceManagerInstances) Update(ctx context.Context, secureSourceManagerInstance *v1beta1.SecureSourceManagerInstance, opts v1.UpdateOptions) (result *v1beta1.SecureSourceManagerInstance, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(securesourcemanagerinstancesResource, c.ns, secureSourceManagerInstance), &v1beta1.SecureSourceManagerInstance{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SecureSourceManagerInstance), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeSecureSourceManagerInstances) UpdateStatus(ctx context.Context, secureSourceManagerInstance *v1beta1.SecureSourceManagerInstance, opts v1.UpdateOptions) (*v1beta1.SecureSourceManagerInstance, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(securesourcemanagerinstancesResource, "status", c.ns, secureSourceManagerInstance), &v1beta1.SecureSourceManagerInstance{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SecureSourceManagerInstance), err
-}
-
-// Delete takes name of the secureSourceManagerInstance and deletes it. Returns an error if one occurs.
-func (c *FakeSecureSourceManagerInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(securesourcemanagerinstancesResource, c.ns, name, opts), &v1beta1.SecureSourceManagerInstance{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeSecureSourceManagerInstances) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(securesourcemanagerinstancesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.SecureSourceManagerInstanceList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched secureSourceManagerInstance.
-func (c *FakeSecureSourceManagerInstances) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SecureSourceManagerInstance, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(securesourcemanagerinstancesResource, c.ns, name, pt, data, subresources...), &v1beta1.SecureSourceManagerInstance{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SecureSourceManagerInstance), err
 }

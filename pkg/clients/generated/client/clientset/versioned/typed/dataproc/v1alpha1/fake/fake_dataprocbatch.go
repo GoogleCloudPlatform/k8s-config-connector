@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDataprocBatches implements DataprocBatchInterface
-type FakeDataprocBatches struct {
+// fakeDataprocBatches implements DataprocBatchInterface
+type fakeDataprocBatches struct {
+	*gentype.FakeClientWithList[*v1alpha1.DataprocBatch, *v1alpha1.DataprocBatchList]
 	Fake *FakeDataprocV1alpha1
-	ns   string
 }
 
-var dataprocbatchesResource = v1alpha1.SchemeGroupVersion.WithResource("dataprocbatches")
-
-var dataprocbatchesKind = v1alpha1.SchemeGroupVersion.WithKind("DataprocBatch")
-
-// Get takes name of the dataprocBatch, and returns the corresponding dataprocBatch object, and an error if there is any.
-func (c *FakeDataprocBatches) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataprocBatch, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(dataprocbatchesResource, c.ns, name), &v1alpha1.DataprocBatch{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDataprocBatches(fake *FakeDataprocV1alpha1, namespace string) dataprocv1alpha1.DataprocBatchInterface {
+	return &fakeDataprocBatches{
+		gentype.NewFakeClientWithList[*v1alpha1.DataprocBatch, *v1alpha1.DataprocBatchList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("dataprocbatches"),
+			v1alpha1.SchemeGroupVersion.WithKind("DataprocBatch"),
+			func() *v1alpha1.DataprocBatch { return &v1alpha1.DataprocBatch{} },
+			func() *v1alpha1.DataprocBatchList { return &v1alpha1.DataprocBatchList{} },
+			func(dst, src *v1alpha1.DataprocBatchList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DataprocBatchList) []*v1alpha1.DataprocBatch {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DataprocBatchList, items []*v1alpha1.DataprocBatch) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DataprocBatch), err
-}
-
-// List takes label and field selectors, and returns the list of DataprocBatches that match those selectors.
-func (c *FakeDataprocBatches) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DataprocBatchList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(dataprocbatchesResource, dataprocbatchesKind, c.ns, opts), &v1alpha1.DataprocBatchList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DataprocBatchList{ListMeta: obj.(*v1alpha1.DataprocBatchList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DataprocBatchList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dataprocBatches.
-func (c *FakeDataprocBatches) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(dataprocbatchesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dataprocBatch and creates it.  Returns the server's representation of the dataprocBatch, and an error, if there is any.
-func (c *FakeDataprocBatches) Create(ctx context.Context, dataprocBatch *v1alpha1.DataprocBatch, opts v1.CreateOptions) (result *v1alpha1.DataprocBatch, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(dataprocbatchesResource, c.ns, dataprocBatch), &v1alpha1.DataprocBatch{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DataprocBatch), err
-}
-
-// Update takes the representation of a dataprocBatch and updates it. Returns the server's representation of the dataprocBatch, and an error, if there is any.
-func (c *FakeDataprocBatches) Update(ctx context.Context, dataprocBatch *v1alpha1.DataprocBatch, opts v1.UpdateOptions) (result *v1alpha1.DataprocBatch, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(dataprocbatchesResource, c.ns, dataprocBatch), &v1alpha1.DataprocBatch{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DataprocBatch), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDataprocBatches) UpdateStatus(ctx context.Context, dataprocBatch *v1alpha1.DataprocBatch, opts v1.UpdateOptions) (*v1alpha1.DataprocBatch, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(dataprocbatchesResource, "status", c.ns, dataprocBatch), &v1alpha1.DataprocBatch{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DataprocBatch), err
-}
-
-// Delete takes name of the dataprocBatch and deletes it. Returns an error if one occurs.
-func (c *FakeDataprocBatches) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(dataprocbatchesResource, c.ns, name, opts), &v1alpha1.DataprocBatch{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDataprocBatches) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(dataprocbatchesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DataprocBatchList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dataprocBatch.
-func (c *FakeDataprocBatches) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataprocBatch, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(dataprocbatchesResource, c.ns, name, pt, data, subresources...), &v1alpha1.DataprocBatch{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DataprocBatch), err
 }

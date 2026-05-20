@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflow/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDialogflowFulfillments implements DialogflowFulfillmentInterface
-type FakeDialogflowFulfillments struct {
+// fakeDialogflowFulfillments implements DialogflowFulfillmentInterface
+type fakeDialogflowFulfillments struct {
+	*gentype.FakeClientWithList[*v1alpha1.DialogflowFulfillment, *v1alpha1.DialogflowFulfillmentList]
 	Fake *FakeDialogflowV1alpha1
-	ns   string
 }
 
-var dialogflowfulfillmentsResource = v1alpha1.SchemeGroupVersion.WithResource("dialogflowfulfillments")
-
-var dialogflowfulfillmentsKind = v1alpha1.SchemeGroupVersion.WithKind("DialogflowFulfillment")
-
-// Get takes name of the dialogflowFulfillment, and returns the corresponding dialogflowFulfillment object, and an error if there is any.
-func (c *FakeDialogflowFulfillments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowFulfillment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(dialogflowfulfillmentsResource, c.ns, name), &v1alpha1.DialogflowFulfillment{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDialogflowFulfillments(fake *FakeDialogflowV1alpha1, namespace string) dialogflowv1alpha1.DialogflowFulfillmentInterface {
+	return &fakeDialogflowFulfillments{
+		gentype.NewFakeClientWithList[*v1alpha1.DialogflowFulfillment, *v1alpha1.DialogflowFulfillmentList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("dialogflowfulfillments"),
+			v1alpha1.SchemeGroupVersion.WithKind("DialogflowFulfillment"),
+			func() *v1alpha1.DialogflowFulfillment { return &v1alpha1.DialogflowFulfillment{} },
+			func() *v1alpha1.DialogflowFulfillmentList { return &v1alpha1.DialogflowFulfillmentList{} },
+			func(dst, src *v1alpha1.DialogflowFulfillmentList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DialogflowFulfillmentList) []*v1alpha1.DialogflowFulfillment {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DialogflowFulfillmentList, items []*v1alpha1.DialogflowFulfillment) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DialogflowFulfillment), err
-}
-
-// List takes label and field selectors, and returns the list of DialogflowFulfillments that match those selectors.
-func (c *FakeDialogflowFulfillments) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DialogflowFulfillmentList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(dialogflowfulfillmentsResource, dialogflowfulfillmentsKind, c.ns, opts), &v1alpha1.DialogflowFulfillmentList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DialogflowFulfillmentList{ListMeta: obj.(*v1alpha1.DialogflowFulfillmentList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DialogflowFulfillmentList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dialogflowFulfillments.
-func (c *FakeDialogflowFulfillments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(dialogflowfulfillmentsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dialogflowFulfillment and creates it.  Returns the server's representation of the dialogflowFulfillment, and an error, if there is any.
-func (c *FakeDialogflowFulfillments) Create(ctx context.Context, dialogflowFulfillment *v1alpha1.DialogflowFulfillment, opts v1.CreateOptions) (result *v1alpha1.DialogflowFulfillment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(dialogflowfulfillmentsResource, c.ns, dialogflowFulfillment), &v1alpha1.DialogflowFulfillment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowFulfillment), err
-}
-
-// Update takes the representation of a dialogflowFulfillment and updates it. Returns the server's representation of the dialogflowFulfillment, and an error, if there is any.
-func (c *FakeDialogflowFulfillments) Update(ctx context.Context, dialogflowFulfillment *v1alpha1.DialogflowFulfillment, opts v1.UpdateOptions) (result *v1alpha1.DialogflowFulfillment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(dialogflowfulfillmentsResource, c.ns, dialogflowFulfillment), &v1alpha1.DialogflowFulfillment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowFulfillment), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDialogflowFulfillments) UpdateStatus(ctx context.Context, dialogflowFulfillment *v1alpha1.DialogflowFulfillment, opts v1.UpdateOptions) (*v1alpha1.DialogflowFulfillment, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(dialogflowfulfillmentsResource, "status", c.ns, dialogflowFulfillment), &v1alpha1.DialogflowFulfillment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowFulfillment), err
-}
-
-// Delete takes name of the dialogflowFulfillment and deletes it. Returns an error if one occurs.
-func (c *FakeDialogflowFulfillments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(dialogflowfulfillmentsResource, c.ns, name, opts), &v1alpha1.DialogflowFulfillment{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDialogflowFulfillments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(dialogflowfulfillmentsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DialogflowFulfillmentList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dialogflowFulfillment.
-func (c *FakeDialogflowFulfillments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowFulfillment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(dialogflowfulfillmentsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DialogflowFulfillment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowFulfillment), err
 }

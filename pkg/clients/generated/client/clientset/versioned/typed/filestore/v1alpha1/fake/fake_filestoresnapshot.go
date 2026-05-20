@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	filestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeFilestoreSnapshots implements FilestoreSnapshotInterface
-type FakeFilestoreSnapshots struct {
+// fakeFilestoreSnapshots implements FilestoreSnapshotInterface
+type fakeFilestoreSnapshots struct {
+	*gentype.FakeClientWithList[*v1alpha1.FilestoreSnapshot, *v1alpha1.FilestoreSnapshotList]
 	Fake *FakeFilestoreV1alpha1
-	ns   string
 }
 
-var filestoresnapshotsResource = v1alpha1.SchemeGroupVersion.WithResource("filestoresnapshots")
-
-var filestoresnapshotsKind = v1alpha1.SchemeGroupVersion.WithKind("FilestoreSnapshot")
-
-// Get takes name of the filestoreSnapshot, and returns the corresponding filestoreSnapshot object, and an error if there is any.
-func (c *FakeFilestoreSnapshots) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.FilestoreSnapshot, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(filestoresnapshotsResource, c.ns, name), &v1alpha1.FilestoreSnapshot{})
-
-	if obj == nil {
-		return nil, err
+func newFakeFilestoreSnapshots(fake *FakeFilestoreV1alpha1, namespace string) filestorev1alpha1.FilestoreSnapshotInterface {
+	return &fakeFilestoreSnapshots{
+		gentype.NewFakeClientWithList[*v1alpha1.FilestoreSnapshot, *v1alpha1.FilestoreSnapshotList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("filestoresnapshots"),
+			v1alpha1.SchemeGroupVersion.WithKind("FilestoreSnapshot"),
+			func() *v1alpha1.FilestoreSnapshot { return &v1alpha1.FilestoreSnapshot{} },
+			func() *v1alpha1.FilestoreSnapshotList { return &v1alpha1.FilestoreSnapshotList{} },
+			func(dst, src *v1alpha1.FilestoreSnapshotList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.FilestoreSnapshotList) []*v1alpha1.FilestoreSnapshot {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.FilestoreSnapshotList, items []*v1alpha1.FilestoreSnapshot) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.FilestoreSnapshot), err
-}
-
-// List takes label and field selectors, and returns the list of FilestoreSnapshots that match those selectors.
-func (c *FakeFilestoreSnapshots) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.FilestoreSnapshotList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(filestoresnapshotsResource, filestoresnapshotsKind, c.ns, opts), &v1alpha1.FilestoreSnapshotList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.FilestoreSnapshotList{ListMeta: obj.(*v1alpha1.FilestoreSnapshotList).ListMeta}
-	for _, item := range obj.(*v1alpha1.FilestoreSnapshotList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested filestoreSnapshots.
-func (c *FakeFilestoreSnapshots) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(filestoresnapshotsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a filestoreSnapshot and creates it.  Returns the server's representation of the filestoreSnapshot, and an error, if there is any.
-func (c *FakeFilestoreSnapshots) Create(ctx context.Context, filestoreSnapshot *v1alpha1.FilestoreSnapshot, opts v1.CreateOptions) (result *v1alpha1.FilestoreSnapshot, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(filestoresnapshotsResource, c.ns, filestoreSnapshot), &v1alpha1.FilestoreSnapshot{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FilestoreSnapshot), err
-}
-
-// Update takes the representation of a filestoreSnapshot and updates it. Returns the server's representation of the filestoreSnapshot, and an error, if there is any.
-func (c *FakeFilestoreSnapshots) Update(ctx context.Context, filestoreSnapshot *v1alpha1.FilestoreSnapshot, opts v1.UpdateOptions) (result *v1alpha1.FilestoreSnapshot, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(filestoresnapshotsResource, c.ns, filestoreSnapshot), &v1alpha1.FilestoreSnapshot{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FilestoreSnapshot), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeFilestoreSnapshots) UpdateStatus(ctx context.Context, filestoreSnapshot *v1alpha1.FilestoreSnapshot, opts v1.UpdateOptions) (*v1alpha1.FilestoreSnapshot, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(filestoresnapshotsResource, "status", c.ns, filestoreSnapshot), &v1alpha1.FilestoreSnapshot{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FilestoreSnapshot), err
-}
-
-// Delete takes name of the filestoreSnapshot and deletes it. Returns an error if one occurs.
-func (c *FakeFilestoreSnapshots) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(filestoresnapshotsResource, c.ns, name, opts), &v1alpha1.FilestoreSnapshot{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeFilestoreSnapshots) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(filestoresnapshotsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.FilestoreSnapshotList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched filestoreSnapshot.
-func (c *FakeFilestoreSnapshots) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.FilestoreSnapshot, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(filestoresnapshotsResource, c.ns, name, pt, data, subresources...), &v1alpha1.FilestoreSnapshot{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.FilestoreSnapshot), err
 }

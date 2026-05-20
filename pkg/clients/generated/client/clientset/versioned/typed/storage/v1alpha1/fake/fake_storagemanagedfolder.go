@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeStorageManagedFolders implements StorageManagedFolderInterface
-type FakeStorageManagedFolders struct {
+// fakeStorageManagedFolders implements StorageManagedFolderInterface
+type fakeStorageManagedFolders struct {
+	*gentype.FakeClientWithList[*v1alpha1.StorageManagedFolder, *v1alpha1.StorageManagedFolderList]
 	Fake *FakeStorageV1alpha1
-	ns   string
 }
 
-var storagemanagedfoldersResource = v1alpha1.SchemeGroupVersion.WithResource("storagemanagedfolders")
-
-var storagemanagedfoldersKind = v1alpha1.SchemeGroupVersion.WithKind("StorageManagedFolder")
-
-// Get takes name of the storageManagedFolder, and returns the corresponding storageManagedFolder object, and an error if there is any.
-func (c *FakeStorageManagedFolders) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.StorageManagedFolder, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(storagemanagedfoldersResource, c.ns, name), &v1alpha1.StorageManagedFolder{})
-
-	if obj == nil {
-		return nil, err
+func newFakeStorageManagedFolders(fake *FakeStorageV1alpha1, namespace string) storagev1alpha1.StorageManagedFolderInterface {
+	return &fakeStorageManagedFolders{
+		gentype.NewFakeClientWithList[*v1alpha1.StorageManagedFolder, *v1alpha1.StorageManagedFolderList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("storagemanagedfolders"),
+			v1alpha1.SchemeGroupVersion.WithKind("StorageManagedFolder"),
+			func() *v1alpha1.StorageManagedFolder { return &v1alpha1.StorageManagedFolder{} },
+			func() *v1alpha1.StorageManagedFolderList { return &v1alpha1.StorageManagedFolderList{} },
+			func(dst, src *v1alpha1.StorageManagedFolderList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.StorageManagedFolderList) []*v1alpha1.StorageManagedFolder {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.StorageManagedFolderList, items []*v1alpha1.StorageManagedFolder) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.StorageManagedFolder), err
-}
-
-// List takes label and field selectors, and returns the list of StorageManagedFolders that match those selectors.
-func (c *FakeStorageManagedFolders) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.StorageManagedFolderList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(storagemanagedfoldersResource, storagemanagedfoldersKind, c.ns, opts), &v1alpha1.StorageManagedFolderList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.StorageManagedFolderList{ListMeta: obj.(*v1alpha1.StorageManagedFolderList).ListMeta}
-	for _, item := range obj.(*v1alpha1.StorageManagedFolderList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested storageManagedFolders.
-func (c *FakeStorageManagedFolders) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(storagemanagedfoldersResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a storageManagedFolder and creates it.  Returns the server's representation of the storageManagedFolder, and an error, if there is any.
-func (c *FakeStorageManagedFolders) Create(ctx context.Context, storageManagedFolder *v1alpha1.StorageManagedFolder, opts v1.CreateOptions) (result *v1alpha1.StorageManagedFolder, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(storagemanagedfoldersResource, c.ns, storageManagedFolder), &v1alpha1.StorageManagedFolder{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageManagedFolder), err
-}
-
-// Update takes the representation of a storageManagedFolder and updates it. Returns the server's representation of the storageManagedFolder, and an error, if there is any.
-func (c *FakeStorageManagedFolders) Update(ctx context.Context, storageManagedFolder *v1alpha1.StorageManagedFolder, opts v1.UpdateOptions) (result *v1alpha1.StorageManagedFolder, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(storagemanagedfoldersResource, c.ns, storageManagedFolder), &v1alpha1.StorageManagedFolder{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageManagedFolder), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeStorageManagedFolders) UpdateStatus(ctx context.Context, storageManagedFolder *v1alpha1.StorageManagedFolder, opts v1.UpdateOptions) (*v1alpha1.StorageManagedFolder, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(storagemanagedfoldersResource, "status", c.ns, storageManagedFolder), &v1alpha1.StorageManagedFolder{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageManagedFolder), err
-}
-
-// Delete takes name of the storageManagedFolder and deletes it. Returns an error if one occurs.
-func (c *FakeStorageManagedFolders) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(storagemanagedfoldersResource, c.ns, name, opts), &v1alpha1.StorageManagedFolder{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeStorageManagedFolders) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(storagemanagedfoldersResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.StorageManagedFolderList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched storageManagedFolder.
-func (c *FakeStorageManagedFolders) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.StorageManagedFolder, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(storagemanagedfoldersResource, c.ns, name, pt, data, subresources...), &v1alpha1.StorageManagedFolder{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageManagedFolder), err
 }

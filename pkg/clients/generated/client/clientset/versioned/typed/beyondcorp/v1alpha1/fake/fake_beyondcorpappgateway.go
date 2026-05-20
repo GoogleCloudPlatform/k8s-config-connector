@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/beyondcorp/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	beyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBeyondCorpAppGateways implements BeyondCorpAppGatewayInterface
-type FakeBeyondCorpAppGateways struct {
+// fakeBeyondCorpAppGateways implements BeyondCorpAppGatewayInterface
+type fakeBeyondCorpAppGateways struct {
+	*gentype.FakeClientWithList[*v1alpha1.BeyondCorpAppGateway, *v1alpha1.BeyondCorpAppGatewayList]
 	Fake *FakeBeyondcorpV1alpha1
-	ns   string
 }
 
-var beyondcorpappgatewaysResource = v1alpha1.SchemeGroupVersion.WithResource("beyondcorpappgateways")
-
-var beyondcorpappgatewaysKind = v1alpha1.SchemeGroupVersion.WithKind("BeyondCorpAppGateway")
-
-// Get takes name of the beyondCorpAppGateway, and returns the corresponding beyondCorpAppGateway object, and an error if there is any.
-func (c *FakeBeyondCorpAppGateways) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BeyondCorpAppGateway, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(beyondcorpappgatewaysResource, c.ns, name), &v1alpha1.BeyondCorpAppGateway{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBeyondCorpAppGateways(fake *FakeBeyondcorpV1alpha1, namespace string) beyondcorpv1alpha1.BeyondCorpAppGatewayInterface {
+	return &fakeBeyondCorpAppGateways{
+		gentype.NewFakeClientWithList[*v1alpha1.BeyondCorpAppGateway, *v1alpha1.BeyondCorpAppGatewayList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("beyondcorpappgateways"),
+			v1alpha1.SchemeGroupVersion.WithKind("BeyondCorpAppGateway"),
+			func() *v1alpha1.BeyondCorpAppGateway { return &v1alpha1.BeyondCorpAppGateway{} },
+			func() *v1alpha1.BeyondCorpAppGatewayList { return &v1alpha1.BeyondCorpAppGatewayList{} },
+			func(dst, src *v1alpha1.BeyondCorpAppGatewayList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.BeyondCorpAppGatewayList) []*v1alpha1.BeyondCorpAppGateway {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.BeyondCorpAppGatewayList, items []*v1alpha1.BeyondCorpAppGateway) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.BeyondCorpAppGateway), err
-}
-
-// List takes label and field selectors, and returns the list of BeyondCorpAppGateways that match those selectors.
-func (c *FakeBeyondCorpAppGateways) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BeyondCorpAppGatewayList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(beyondcorpappgatewaysResource, beyondcorpappgatewaysKind, c.ns, opts), &v1alpha1.BeyondCorpAppGatewayList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.BeyondCorpAppGatewayList{ListMeta: obj.(*v1alpha1.BeyondCorpAppGatewayList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BeyondCorpAppGatewayList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested beyondCorpAppGateways.
-func (c *FakeBeyondCorpAppGateways) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(beyondcorpappgatewaysResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a beyondCorpAppGateway and creates it.  Returns the server's representation of the beyondCorpAppGateway, and an error, if there is any.
-func (c *FakeBeyondCorpAppGateways) Create(ctx context.Context, beyondCorpAppGateway *v1alpha1.BeyondCorpAppGateway, opts v1.CreateOptions) (result *v1alpha1.BeyondCorpAppGateway, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(beyondcorpappgatewaysResource, c.ns, beyondCorpAppGateway), &v1alpha1.BeyondCorpAppGateway{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BeyondCorpAppGateway), err
-}
-
-// Update takes the representation of a beyondCorpAppGateway and updates it. Returns the server's representation of the beyondCorpAppGateway, and an error, if there is any.
-func (c *FakeBeyondCorpAppGateways) Update(ctx context.Context, beyondCorpAppGateway *v1alpha1.BeyondCorpAppGateway, opts v1.UpdateOptions) (result *v1alpha1.BeyondCorpAppGateway, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(beyondcorpappgatewaysResource, c.ns, beyondCorpAppGateway), &v1alpha1.BeyondCorpAppGateway{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BeyondCorpAppGateway), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBeyondCorpAppGateways) UpdateStatus(ctx context.Context, beyondCorpAppGateway *v1alpha1.BeyondCorpAppGateway, opts v1.UpdateOptions) (*v1alpha1.BeyondCorpAppGateway, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(beyondcorpappgatewaysResource, "status", c.ns, beyondCorpAppGateway), &v1alpha1.BeyondCorpAppGateway{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BeyondCorpAppGateway), err
-}
-
-// Delete takes name of the beyondCorpAppGateway and deletes it. Returns an error if one occurs.
-func (c *FakeBeyondCorpAppGateways) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(beyondcorpappgatewaysResource, c.ns, name, opts), &v1alpha1.BeyondCorpAppGateway{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBeyondCorpAppGateways) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(beyondcorpappgatewaysResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.BeyondCorpAppGatewayList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched beyondCorpAppGateway.
-func (c *FakeBeyondCorpAppGateways) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BeyondCorpAppGateway, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(beyondcorpappgatewaysResource, c.ns, name, pt, data, subresources...), &v1alpha1.BeyondCorpAppGateway{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BeyondCorpAppGateway), err
 }
