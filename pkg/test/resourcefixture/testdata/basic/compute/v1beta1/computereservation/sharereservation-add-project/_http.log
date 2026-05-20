@@ -258,37 +258,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/projects/project-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2Fproject-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "project-${uniqueId}",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectNumber}",
-  "parent": "organizations/${organizationID}",
-  "projectId": "project-${uniqueId}",
-  "state": 1
-}
-
----
-
 POST https://compute.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a/reservations
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -298,9 +267,6 @@ X-Goog-Request-Params: project=shared-reservations-project&zone=us-central1-a
   "name": "${reservationID}",
   "shareSettings": {
     "projectMap": {
-      "${projectNumber}": {
-        "projectId": "${projectNumber}"
-      },
       "${projectNumber}": {
         "projectId": "${projectNumber}"
       }
@@ -407,9 +373,6 @@ X-Xss-Protection: 0
     "projectMap": {
       "${projectNumber}": {
         "projectId": "${projectNumber}"
-      },
-      "${projectNumber}": {
-        "projectId": "${projectNumber}"
       }
     },
     "shareType": "SPECIFIC_PROJECTS"
@@ -425,6 +388,37 @@ X-Xss-Protection: 0
   "specificReservationRequired": false,
   "status": "READY",
   "zone": "https://www.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/projects/project-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2Fproject-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "project-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}",
+  "parent": "organizations/${organizationID}",
+  "projectId": "project-${uniqueId}",
+  "state": 1
 }
 
 ---
@@ -445,6 +439,9 @@ X-Goog-Request-Params: project=shared-reservations-project&zone=us-central1-a&re
   "selfLink": "https://www.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a/reservations/${reservationID}",
   "shareSettings": {
     "projectMap": {
+      "${projectNumber}": {
+        "projectId": "${projectNumber}"
+      },
       "${projectNumber}": {
         "projectId": "${projectNumber}"
       }

@@ -23,6 +23,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -169,7 +170,6 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Reservation", "name", a.id)
@@ -179,16 +179,16 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if err := ResolveComputeReservationRefs(ctx, a.reader, a.projectMapper, desired); err != nil {
 		return err
 	}
-	desiredPb := ComputeReservationSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
+	resource := ComputeReservationSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	desiredPb.Name = direct.LazyPtr(a.id.Reservation)
+	resource.Name = direct.LazyPtr(a.id.Reservation)
 
 	// Handle output-only fields from GCP
-	a.assignGCPDefaults(desiredPb, a.actual)
+	a.assignGCPDefaults(resource, a.actual)
 
-	paths, report, err := common.CompareProtoMessageStructuredDiff(desiredPb, a.actual, common.BasicDiff)
+	paths, report, err := common.CompareProtoMessageStructuredDiff(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -204,7 +204,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	for path := range paths {
-		if path != "specific_reservation.count" {
+		if path != "specific_reservation.count" && !strings.HasPrefix(path, "share_settings") {
 			return fmt.Errorf("field %q is immutable", path)
 		}
 	}
@@ -214,24 +214,48 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	updateOp.RecordUpdatingEvent()
 
-	req := &computepb.ResizeReservationRequest{
-		Project:     a.id.Project,
-		Zone:        a.id.Zone,
-		Reservation: a.id.Reservation,
-		ReservationsResizeRequestResource: &computepb.ReservationsResizeRequest{
-			SpecificSkuCount: direct.PtrTo(int64(desiredPb.GetSpecificReservation().GetCount())),
-		},
-	}
-	op, err := a.gcpClient.Resize(ctx, req)
-	if err != nil {
-		return fmt.Errorf("resizing compute Reservation %s: %w", a.id.String(), err)
+	if _, ok := paths["specific_reservation.count"]; ok {
+		req := &computepb.ResizeReservationRequest{
+			Project:     a.id.Project,
+			Zone:        a.id.Zone,
+			Reservation: a.id.Reservation,
+			ReservationsResizeRequestResource: &computepb.ReservationsResizeRequest{
+				SpecificSkuCount: direct.PtrTo(int64(resource.GetSpecificReservation().GetCount())),
+			},
+		}
+		op, err := a.gcpClient.Resize(ctx, req)
+		if err != nil {
+			return fmt.Errorf("resizing compute Reservation %s: %w", a.id.String(), err)
+		}
+
+		err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("waiting for resize of compute Reservation %s: %w", a.id.String(), err)
+		}
+		log.V(2).Info("successfully resized compute Reservation", "name", a.id)
 	}
 
-	err = op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("waiting for resize of compute Reservation %s: %w", a.id.String(), err)
+	for path := range paths {
+		if strings.HasPrefix(path, "share_settings") {
+			req := &computepb.UpdateReservationRequest{
+				Project:             a.id.Project,
+				Zone:                a.id.Zone,
+				Reservation:         a.id.Reservation,
+				Paths:               direct.LazyPtr("share_settings"),
+				ReservationResource: resource,
+			}
+
+			op, err := a.gcpClient.Update(ctx, req)
+			if err != nil {
+				return fmt.Errorf("updating shareSettings for compute Reservation %s: %w", a.id.String(), err)
+			}
+			err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting for update shareSettings of compute Reservation %s: %w", a.id.String(), err)
+			}
+			log.V(2).Info("successfully updated shareSettings of compute Reservation", "name", a.id)
+		}
 	}
-	log.V(2).Info("successfully resized compute Reservation", "name", a.id)
 
 	// Get the updated resource
 	updated, err := a.get(ctx)
@@ -333,8 +357,9 @@ func (a *ReservationAdapter) assignGCPDefaults(desired *computepb.Reservation, a
 	if desired.ReservationSharingPolicy == nil {
 		desired.ReservationSharingPolicy = actual.ReservationSharingPolicy
 	}
-	if desired.ShareSettings == nil {
-		desired.ShareSettings = actual.ShareSettings
+	desiredShareSettings := desired.GetShareSettings()
+	if desiredShareSettings != nil && desiredShareSettings.GetShareType() == "LOCAL" {
+		desiredShareSettings = nil
 	}
 	if desired.SpecificReservation != nil && desired.SpecificReservation.AssuredCount == nil {
 		desired.SpecificReservation.AssuredCount = actual.SpecificReservation.AssuredCount
