@@ -53,6 +53,10 @@ type MemorystoreInstanceEndpointStatus struct {
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *MemorystoreInstanceEndpointObservedState `json:"observedState,omitempty"`
+
+	// ExternalRef is a reference to the GCP resource.
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 }
 
 // MemorystoreInstanceEndpointObservedState is the state of the MemorystoreInstanceEndpoint resource as most recently observed in GCP.
