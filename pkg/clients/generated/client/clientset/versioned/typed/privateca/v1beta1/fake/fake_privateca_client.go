@@ -32,19 +32,19 @@ type FakePrivatecaV1beta1 struct {
 }
 
 func (c *FakePrivatecaV1beta1) PrivateCACAPools(namespace string) v1beta1.PrivateCACAPoolInterface {
-	return &FakePrivateCACAPools{c, namespace}
+	return newFakePrivateCACAPools(c, namespace)
 }
 
 func (c *FakePrivatecaV1beta1) PrivateCACertificates(namespace string) v1beta1.PrivateCACertificateInterface {
-	return &FakePrivateCACertificates{c, namespace}
+	return newFakePrivateCACertificates(c, namespace)
 }
 
 func (c *FakePrivatecaV1beta1) PrivateCACertificateAuthorities(namespace string) v1beta1.PrivateCACertificateAuthorityInterface {
-	return &FakePrivateCACertificateAuthorities{c, namespace}
+	return newFakePrivateCACertificateAuthorities(c, namespace)
 }
 
 func (c *FakePrivatecaV1beta1) PrivateCACertificateTemplates(namespace string) v1beta1.PrivateCACertificateTemplateInterface {
-	return &FakePrivateCACertificateTemplates{c, namespace}
+	return newFakePrivateCACertificateTemplates(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

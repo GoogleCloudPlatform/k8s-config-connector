@@ -22,123 +22,38 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeComputeNetworkEdgeSecurityServices implements ComputeNetworkEdgeSecurityServiceInterface
-type FakeComputeNetworkEdgeSecurityServices struct {
+// fakeComputeNetworkEdgeSecurityServices implements ComputeNetworkEdgeSecurityServiceInterface
+type fakeComputeNetworkEdgeSecurityServices struct {
+	*gentype.FakeClientWithList[*v1alpha1.ComputeNetworkEdgeSecurityService, *v1alpha1.ComputeNetworkEdgeSecurityServiceList]
 	Fake *FakeComputeV1alpha1
-	ns   string
 }
 
-var computenetworkedgesecurityservicesResource = v1alpha1.SchemeGroupVersion.WithResource("computenetworkedgesecurityservices")
-
-var computenetworkedgesecurityservicesKind = v1alpha1.SchemeGroupVersion.WithKind("ComputeNetworkEdgeSecurityService")
-
-// Get takes name of the computeNetworkEdgeSecurityService, and returns the corresponding computeNetworkEdgeSecurityService object, and an error if there is any.
-func (c *FakeComputeNetworkEdgeSecurityServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(computenetworkedgesecurityservicesResource, c.ns, name), &v1alpha1.ComputeNetworkEdgeSecurityService{})
-
-	if obj == nil {
-		return nil, err
+func newFakeComputeNetworkEdgeSecurityServices(fake *FakeComputeV1alpha1, namespace string) computev1alpha1.ComputeNetworkEdgeSecurityServiceInterface {
+	return &fakeComputeNetworkEdgeSecurityServices{
+		gentype.NewFakeClientWithList[*v1alpha1.ComputeNetworkEdgeSecurityService, *v1alpha1.ComputeNetworkEdgeSecurityServiceList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("computenetworkedgesecurityservices"),
+			v1alpha1.SchemeGroupVersion.WithKind("ComputeNetworkEdgeSecurityService"),
+			func() *v1alpha1.ComputeNetworkEdgeSecurityService {
+				return &v1alpha1.ComputeNetworkEdgeSecurityService{}
+			},
+			func() *v1alpha1.ComputeNetworkEdgeSecurityServiceList {
+				return &v1alpha1.ComputeNetworkEdgeSecurityServiceList{}
+			},
+			func(dst, src *v1alpha1.ComputeNetworkEdgeSecurityServiceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.ComputeNetworkEdgeSecurityServiceList) []*v1alpha1.ComputeNetworkEdgeSecurityService {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.ComputeNetworkEdgeSecurityServiceList, items []*v1alpha1.ComputeNetworkEdgeSecurityService) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.ComputeNetworkEdgeSecurityService), err
-}
-
-// List takes label and field selectors, and returns the list of ComputeNetworkEdgeSecurityServices that match those selectors.
-func (c *FakeComputeNetworkEdgeSecurityServices) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeNetworkEdgeSecurityServiceList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(computenetworkedgesecurityservicesResource, computenetworkedgesecurityservicesKind, c.ns, opts), &v1alpha1.ComputeNetworkEdgeSecurityServiceList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.ComputeNetworkEdgeSecurityServiceList{ListMeta: obj.(*v1alpha1.ComputeNetworkEdgeSecurityServiceList).ListMeta}
-	for _, item := range obj.(*v1alpha1.ComputeNetworkEdgeSecurityServiceList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested computeNetworkEdgeSecurityServices.
-func (c *FakeComputeNetworkEdgeSecurityServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(computenetworkedgesecurityservicesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a computeNetworkEdgeSecurityService and creates it.  Returns the server's representation of the computeNetworkEdgeSecurityService, and an error, if there is any.
-func (c *FakeComputeNetworkEdgeSecurityServices) Create(ctx context.Context, computeNetworkEdgeSecurityService *v1alpha1.ComputeNetworkEdgeSecurityService, opts v1.CreateOptions) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(computenetworkedgesecurityservicesResource, c.ns, computeNetworkEdgeSecurityService), &v1alpha1.ComputeNetworkEdgeSecurityService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeNetworkEdgeSecurityService), err
-}
-
-// Update takes the representation of a computeNetworkEdgeSecurityService and updates it. Returns the server's representation of the computeNetworkEdgeSecurityService, and an error, if there is any.
-func (c *FakeComputeNetworkEdgeSecurityServices) Update(ctx context.Context, computeNetworkEdgeSecurityService *v1alpha1.ComputeNetworkEdgeSecurityService, opts v1.UpdateOptions) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(computenetworkedgesecurityservicesResource, c.ns, computeNetworkEdgeSecurityService), &v1alpha1.ComputeNetworkEdgeSecurityService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeNetworkEdgeSecurityService), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeComputeNetworkEdgeSecurityServices) UpdateStatus(ctx context.Context, computeNetworkEdgeSecurityService *v1alpha1.ComputeNetworkEdgeSecurityService, opts v1.UpdateOptions) (*v1alpha1.ComputeNetworkEdgeSecurityService, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(computenetworkedgesecurityservicesResource, "status", c.ns, computeNetworkEdgeSecurityService), &v1alpha1.ComputeNetworkEdgeSecurityService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeNetworkEdgeSecurityService), err
-}
-
-// Delete takes name of the computeNetworkEdgeSecurityService and deletes it. Returns an error if one occurs.
-func (c *FakeComputeNetworkEdgeSecurityServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(computenetworkedgesecurityservicesResource, c.ns, name, opts), &v1alpha1.ComputeNetworkEdgeSecurityService{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeComputeNetworkEdgeSecurityServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(computenetworkedgesecurityservicesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.ComputeNetworkEdgeSecurityServiceList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched computeNetworkEdgeSecurityService.
-func (c *FakeComputeNetworkEdgeSecurityServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeNetworkEdgeSecurityService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(computenetworkedgesecurityservicesResource, c.ns, name, pt, data, subresources...), &v1alpha1.ComputeNetworkEdgeSecurityService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ComputeNetworkEdgeSecurityService), err
 }

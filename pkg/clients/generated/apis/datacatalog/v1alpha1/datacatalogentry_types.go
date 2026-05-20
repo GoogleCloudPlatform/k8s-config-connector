@@ -216,7 +216,7 @@ type EntryDataSourceConnectionSpec struct {
 }
 
 type EntryDatabaseTableSpec struct {
-	/* Spec what aplies to tables that are actually views. Not set for "real" tables. */
+	/* Spec what applies to tables that are actually views. Not set for "real" tables. */
 	// +optional
 	DatabaseViewSpec *EntryDatabaseViewSpec `json:"databaseViewSpec,omitempty"`
 
@@ -294,7 +294,7 @@ type EntryGcsFilesetSpec struct {
 	/* Required. Patterns to identify a set of files in Google Cloud Storage.
 
 	For more information, see [Wildcard Names]
-	(https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames).
+	(https://cloud.google.com/storage/docs/wildcards).
 
 	Note: Currently, bucket wildcards are not supported.
 
@@ -320,7 +320,8 @@ type EntryGcsFilesetSpec struct {
 	You can combine wildcards to match complex sets of files, for example:
 
 	`gs://bucket_name/[a-m]??.j*g` */
-	FilePatterns []string `json:"filePatterns"`
+	// +optional
+	FilePatterns []string `json:"filePatterns,omitempty"`
 }
 
 type EntryLookerColumnSpec struct {
@@ -385,7 +386,8 @@ type EntryProtobuf struct {
 
 type EntryRangeElementType struct {
 	/* Required. The type of a field element. See [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type]. */
-	Type string `json:"type"`
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type EntryRoutineArguments struct {
@@ -827,7 +829,7 @@ type EntryExternalTablesStatus struct {
 }
 
 type EntryFeatureOnlineStoreSpecStatus struct {
-	/* Output only. Type of underelaying storage for the FeatureOnlineStore. */
+	/* Output only. Type of underlying storage for the FeatureOnlineStore. */
 	// +optional
 	StorageType *string `json:"storageType,omitempty"`
 }
@@ -922,7 +924,8 @@ type EntryProtobufStatus struct {
 
 type EntrySampleGCSFileSpecsStatus struct {
 	/* Required. Full file path. Example: `gs://bucket_name/a/b.txt`. */
-	FilePath string `json:"filePath"`
+	// +optional
+	FilePath *string `json:"filePath,omitempty"`
 }
 
 type EntryStoragePropertiesStatus struct {

@@ -73,7 +73,7 @@ type SecureSourceManagerInstanceSpec struct {
 }
 
 type InstanceHostConfigStatus struct {
-	/* Output only. API hostname. This is the hostname to use for **Host: Data Plane** endpoints. */
+	/* Output only. API hostname. */
 	// +optional
 	Api *string `json:"api,omitempty"`
 

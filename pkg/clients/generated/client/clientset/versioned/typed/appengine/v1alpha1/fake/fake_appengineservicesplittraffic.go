@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appengine/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeAppEngineServiceSplitTraffics implements AppEngineServiceSplitTrafficInterface
-type FakeAppEngineServiceSplitTraffics struct {
+// fakeAppEngineServiceSplitTraffics implements AppEngineServiceSplitTrafficInterface
+type fakeAppEngineServiceSplitTraffics struct {
+	*gentype.FakeClientWithList[*v1alpha1.AppEngineServiceSplitTraffic, *v1alpha1.AppEngineServiceSplitTrafficList]
 	Fake *FakeAppengineV1alpha1
-	ns   string
 }
 
-var appengineservicesplittrafficsResource = v1alpha1.SchemeGroupVersion.WithResource("appengineservicesplittraffics")
-
-var appengineservicesplittrafficsKind = v1alpha1.SchemeGroupVersion.WithKind("AppEngineServiceSplitTraffic")
-
-// Get takes name of the appEngineServiceSplitTraffic, and returns the corresponding appEngineServiceSplitTraffic object, and an error if there is any.
-func (c *FakeAppEngineServiceSplitTraffics) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AppEngineServiceSplitTraffic, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(appengineservicesplittrafficsResource, c.ns, name), &v1alpha1.AppEngineServiceSplitTraffic{})
-
-	if obj == nil {
-		return nil, err
+func newFakeAppEngineServiceSplitTraffics(fake *FakeAppengineV1alpha1, namespace string) appenginev1alpha1.AppEngineServiceSplitTrafficInterface {
+	return &fakeAppEngineServiceSplitTraffics{
+		gentype.NewFakeClientWithList[*v1alpha1.AppEngineServiceSplitTraffic, *v1alpha1.AppEngineServiceSplitTrafficList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("appengineservicesplittraffics"),
+			v1alpha1.SchemeGroupVersion.WithKind("AppEngineServiceSplitTraffic"),
+			func() *v1alpha1.AppEngineServiceSplitTraffic { return &v1alpha1.AppEngineServiceSplitTraffic{} },
+			func() *v1alpha1.AppEngineServiceSplitTrafficList { return &v1alpha1.AppEngineServiceSplitTrafficList{} },
+			func(dst, src *v1alpha1.AppEngineServiceSplitTrafficList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.AppEngineServiceSplitTrafficList) []*v1alpha1.AppEngineServiceSplitTraffic {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.AppEngineServiceSplitTrafficList, items []*v1alpha1.AppEngineServiceSplitTraffic) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.AppEngineServiceSplitTraffic), err
-}
-
-// List takes label and field selectors, and returns the list of AppEngineServiceSplitTraffics that match those selectors.
-func (c *FakeAppEngineServiceSplitTraffics) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.AppEngineServiceSplitTrafficList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(appengineservicesplittrafficsResource, appengineservicesplittrafficsKind, c.ns, opts), &v1alpha1.AppEngineServiceSplitTrafficList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.AppEngineServiceSplitTrafficList{ListMeta: obj.(*v1alpha1.AppEngineServiceSplitTrafficList).ListMeta}
-	for _, item := range obj.(*v1alpha1.AppEngineServiceSplitTrafficList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested appEngineServiceSplitTraffics.
-func (c *FakeAppEngineServiceSplitTraffics) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(appengineservicesplittrafficsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a appEngineServiceSplitTraffic and creates it.  Returns the server's representation of the appEngineServiceSplitTraffic, and an error, if there is any.
-func (c *FakeAppEngineServiceSplitTraffics) Create(ctx context.Context, appEngineServiceSplitTraffic *v1alpha1.AppEngineServiceSplitTraffic, opts v1.CreateOptions) (result *v1alpha1.AppEngineServiceSplitTraffic, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(appengineservicesplittrafficsResource, c.ns, appEngineServiceSplitTraffic), &v1alpha1.AppEngineServiceSplitTraffic{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppEngineServiceSplitTraffic), err
-}
-
-// Update takes the representation of a appEngineServiceSplitTraffic and updates it. Returns the server's representation of the appEngineServiceSplitTraffic, and an error, if there is any.
-func (c *FakeAppEngineServiceSplitTraffics) Update(ctx context.Context, appEngineServiceSplitTraffic *v1alpha1.AppEngineServiceSplitTraffic, opts v1.UpdateOptions) (result *v1alpha1.AppEngineServiceSplitTraffic, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(appengineservicesplittrafficsResource, c.ns, appEngineServiceSplitTraffic), &v1alpha1.AppEngineServiceSplitTraffic{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppEngineServiceSplitTraffic), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeAppEngineServiceSplitTraffics) UpdateStatus(ctx context.Context, appEngineServiceSplitTraffic *v1alpha1.AppEngineServiceSplitTraffic, opts v1.UpdateOptions) (*v1alpha1.AppEngineServiceSplitTraffic, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(appengineservicesplittrafficsResource, "status", c.ns, appEngineServiceSplitTraffic), &v1alpha1.AppEngineServiceSplitTraffic{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppEngineServiceSplitTraffic), err
-}
-
-// Delete takes name of the appEngineServiceSplitTraffic and deletes it. Returns an error if one occurs.
-func (c *FakeAppEngineServiceSplitTraffics) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(appengineservicesplittrafficsResource, c.ns, name, opts), &v1alpha1.AppEngineServiceSplitTraffic{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeAppEngineServiceSplitTraffics) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(appengineservicesplittrafficsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.AppEngineServiceSplitTrafficList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched appEngineServiceSplitTraffic.
-func (c *FakeAppEngineServiceSplitTraffics) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppEngineServiceSplitTraffic, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(appengineservicesplittrafficsResource, c.ns, name, pt, data, subresources...), &v1alpha1.AppEngineServiceSplitTraffic{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppEngineServiceSplitTraffic), err
 }

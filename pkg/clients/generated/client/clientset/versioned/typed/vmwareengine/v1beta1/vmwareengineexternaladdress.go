@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1beta1"
+	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // VMwareEngineExternalAddressesGetter has a method to return a VMwareEngineExternalAddressInterface.
@@ -41,158 +40,38 @@ type VMwareEngineExternalAddressesGetter interface {
 
 // VMwareEngineExternalAddressInterface has methods to work with VMwareEngineExternalAddress resources.
 type VMwareEngineExternalAddressInterface interface {
-	Create(ctx context.Context, vMwareEngineExternalAddress *v1beta1.VMwareEngineExternalAddress, opts v1.CreateOptions) (*v1beta1.VMwareEngineExternalAddress, error)
-	Update(ctx context.Context, vMwareEngineExternalAddress *v1beta1.VMwareEngineExternalAddress, opts v1.UpdateOptions) (*v1beta1.VMwareEngineExternalAddress, error)
-	UpdateStatus(ctx context.Context, vMwareEngineExternalAddress *v1beta1.VMwareEngineExternalAddress, opts v1.UpdateOptions) (*v1beta1.VMwareEngineExternalAddress, error)
+	Create(ctx context.Context, vMwareEngineExternalAddress *vmwareenginev1beta1.VMwareEngineExternalAddress, opts v1.CreateOptions) (*vmwareenginev1beta1.VMwareEngineExternalAddress, error)
+	Update(ctx context.Context, vMwareEngineExternalAddress *vmwareenginev1beta1.VMwareEngineExternalAddress, opts v1.UpdateOptions) (*vmwareenginev1beta1.VMwareEngineExternalAddress, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, vMwareEngineExternalAddress *vmwareenginev1beta1.VMwareEngineExternalAddress, opts v1.UpdateOptions) (*vmwareenginev1beta1.VMwareEngineExternalAddress, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.VMwareEngineExternalAddress, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.VMwareEngineExternalAddressList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*vmwareenginev1beta1.VMwareEngineExternalAddress, error)
+	List(ctx context.Context, opts v1.ListOptions) (*vmwareenginev1beta1.VMwareEngineExternalAddressList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.VMwareEngineExternalAddress, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *vmwareenginev1beta1.VMwareEngineExternalAddress, err error)
 	VMwareEngineExternalAddressExpansion
 }
 
 // vMwareEngineExternalAddresses implements VMwareEngineExternalAddressInterface
 type vMwareEngineExternalAddresses struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*vmwareenginev1beta1.VMwareEngineExternalAddress, *vmwareenginev1beta1.VMwareEngineExternalAddressList]
 }
 
 // newVMwareEngineExternalAddresses returns a VMwareEngineExternalAddresses
 func newVMwareEngineExternalAddresses(c *VmwareengineV1beta1Client, namespace string) *vMwareEngineExternalAddresses {
 	return &vMwareEngineExternalAddresses{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*vmwareenginev1beta1.VMwareEngineExternalAddress, *vmwareenginev1beta1.VMwareEngineExternalAddressList](
+			"vmwareengineexternaladdresses",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *vmwareenginev1beta1.VMwareEngineExternalAddress {
+				return &vmwareenginev1beta1.VMwareEngineExternalAddress{}
+			},
+			func() *vmwareenginev1beta1.VMwareEngineExternalAddressList {
+				return &vmwareenginev1beta1.VMwareEngineExternalAddressList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the vMwareEngineExternalAddress, and returns the corresponding vMwareEngineExternalAddress object, and an error if there is any.
-func (c *vMwareEngineExternalAddresses) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.VMwareEngineExternalAddress, err error) {
-	result = &v1beta1.VMwareEngineExternalAddress{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("vmwareengineexternaladdresses").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of VMwareEngineExternalAddresses that match those selectors.
-func (c *vMwareEngineExternalAddresses) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.VMwareEngineExternalAddressList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.VMwareEngineExternalAddressList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("vmwareengineexternaladdresses").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested vMwareEngineExternalAddresses.
-func (c *vMwareEngineExternalAddresses) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("vmwareengineexternaladdresses").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a vMwareEngineExternalAddress and creates it.  Returns the server's representation of the vMwareEngineExternalAddress, and an error, if there is any.
-func (c *vMwareEngineExternalAddresses) Create(ctx context.Context, vMwareEngineExternalAddress *v1beta1.VMwareEngineExternalAddress, opts v1.CreateOptions) (result *v1beta1.VMwareEngineExternalAddress, err error) {
-	result = &v1beta1.VMwareEngineExternalAddress{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("vmwareengineexternaladdresses").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(vMwareEngineExternalAddress).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a vMwareEngineExternalAddress and updates it. Returns the server's representation of the vMwareEngineExternalAddress, and an error, if there is any.
-func (c *vMwareEngineExternalAddresses) Update(ctx context.Context, vMwareEngineExternalAddress *v1beta1.VMwareEngineExternalAddress, opts v1.UpdateOptions) (result *v1beta1.VMwareEngineExternalAddress, err error) {
-	result = &v1beta1.VMwareEngineExternalAddress{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("vmwareengineexternaladdresses").
-		Name(vMwareEngineExternalAddress.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(vMwareEngineExternalAddress).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *vMwareEngineExternalAddresses) UpdateStatus(ctx context.Context, vMwareEngineExternalAddress *v1beta1.VMwareEngineExternalAddress, opts v1.UpdateOptions) (result *v1beta1.VMwareEngineExternalAddress, err error) {
-	result = &v1beta1.VMwareEngineExternalAddress{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("vmwareengineexternaladdresses").
-		Name(vMwareEngineExternalAddress.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(vMwareEngineExternalAddress).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the vMwareEngineExternalAddress and deletes it. Returns an error if one occurs.
-func (c *vMwareEngineExternalAddresses) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("vmwareengineexternaladdresses").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *vMwareEngineExternalAddresses) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("vmwareengineexternaladdresses").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched vMwareEngineExternalAddress.
-func (c *vMwareEngineExternalAddresses) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.VMwareEngineExternalAddress, err error) {
-	result = &v1beta1.VMwareEngineExternalAddress{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("vmwareengineexternaladdresses").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }
