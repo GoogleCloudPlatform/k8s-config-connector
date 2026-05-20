@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 
 	compute "cloud.google.com/go/compute/apiv1"
@@ -77,10 +78,11 @@ func (m *reservationModel) AdapterForObject(ctx context.Context, op *directbase.
 	}
 
 	return &ReservationAdapter{
-		gcpClient: reservationsClient,
-		id:        id.(*krm.ComputeReservationIdentity),
-		desired:   obj,
-		reader:    reader,
+		gcpClient:     reservationsClient,
+		id:            id.(*krm.ComputeReservationIdentity),
+		desired:       obj,
+		reader:        reader,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
@@ -90,11 +92,12 @@ func (m *reservationModel) AdapterForURL(ctx context.Context, url string) (direc
 }
 
 type ReservationAdapter struct {
-	gcpClient *compute.ReservationsClient
-	id        *krm.ComputeReservationIdentity
-	desired   *krm.ComputeReservation
-	actual    *computepb.Reservation
-	reader    client.Reader
+	gcpClient     *compute.ReservationsClient
+	id            *krm.ComputeReservationIdentity
+	desired       *krm.ComputeReservation
+	actual        *computepb.Reservation
+	reader        client.Reader
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &ReservationAdapter{}
@@ -128,6 +131,9 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if err := ResolveComputeReservationRefs(ctx, a.reader, a.projectMapper, desired); err != nil {
+		return err
+	}
 	resource := ComputeReservationSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -170,6 +176,9 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
+	if err := ResolveComputeReservationRefs(ctx, a.reader, a.projectMapper, desired); err != nil {
+		return err
+	}
 	desiredPb := ComputeReservationSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()

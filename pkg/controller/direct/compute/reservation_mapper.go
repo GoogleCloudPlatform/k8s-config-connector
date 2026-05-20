@@ -17,6 +17,7 @@ package compute
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -129,5 +130,114 @@ func ComputeReservationStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.CreationTimestamp = in.CreationTimestamp
 	out.SelfLink = in.SelfLink
 	out.Status = in.Status
+	return out
+}
+
+func ShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krm.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShareSettings{}
+	if in.ProjectMap != nil {
+		for k, v := range in.ProjectMap {
+			out.ProjectMap = append(out.ProjectMap, krm.ShareSettingsProjectMap{
+				KeyRef: &refsv1beta1.ExtendedProjectRef{
+					External: k,
+				},
+				Value: ShareSettingsProjectConfig_v1beta1_FromProto(mapCtx, v),
+			})
+		}
+	}
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSettings) *pb.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettings{}
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig)
+		for _, entry := range in.ProjectMap {
+			if entry.KeyRef != nil {
+				if entry.KeyRef.External == "" {
+					mapCtx.Errorf("reference %s was not pre-resolved", entry.KeyRef.Name)
+					continue
+				}
+			}
+			out.ProjectMap[entry.KeyRef.External] = ShareSettingsProjectConfig_v1beta1_ToProto(mapCtx, entry.Value)
+		}
+	}
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettingsProjectConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krm.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShareSettingsProjectConfig{}
+	if in.GetProjectId() != "" {
+		out.ProjectIDRef = &refsv1beta1.ProjectRef{External: in.GetProjectId()}
+	}
+	return out
+}
+func ShareSettingsProjectConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSettingsProjectConfig) *pb.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettingsProjectConfig{}
+	if in.ProjectIDRef != nil {
+		if in.ProjectIDRef.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", in.ProjectIDRef.Name)
+		}
+		out.ProjectId = &in.ProjectIDRef.External
+	}
+	return out
+}
+func ShareSettingsObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krm.ShareSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShareSettingsObservedState{}
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]krm.ShareSettingsProjectConfigObservedState)
+		for k, v := range in.ProjectMap {
+			val := ShareSettingsProjectConfigObservedState_v1beta1_FromProto(mapCtx, v)
+			if val != nil {
+				out.ProjectMap[k] = *val
+			}
+		}
+	}
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettingsObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSettingsObservedState) *pb.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettings{}
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig)
+		for k, v := range in.ProjectMap {
+			out.ProjectMap[k] = ShareSettingsProjectConfigObservedState_v1beta1_ToProto(mapCtx, &v)
+		}
+	}
+	out.ShareType = in.ShareType
+	return out
+}
+func ShareSettingsProjectConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krm.ShareSettingsProjectConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShareSettingsProjectConfigObservedState{}
+	out.ProjectID = in.ProjectId
+	return out
+}
+func ShareSettingsProjectConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSettingsProjectConfigObservedState) *pb.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettingsProjectConfig{}
+	out.ProjectId = in.ProjectID
 	return out
 }
