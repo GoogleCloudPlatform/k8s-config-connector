@@ -32,19 +32,19 @@ type FakeSqlV1beta1 struct {
 }
 
 func (c *FakeSqlV1beta1) SQLDatabases(namespace string) v1beta1.SQLDatabaseInterface {
-	return &FakeSQLDatabases{c, namespace}
+	return newFakeSQLDatabases(c, namespace)
 }
 
 func (c *FakeSqlV1beta1) SQLInstances(namespace string) v1beta1.SQLInstanceInterface {
-	return &FakeSQLInstances{c, namespace}
+	return newFakeSQLInstances(c, namespace)
 }
 
 func (c *FakeSqlV1beta1) SQLSSLCerts(namespace string) v1beta1.SQLSSLCertInterface {
-	return &FakeSQLSSLCerts{c, namespace}
+	return newFakeSQLSSLCerts(c, namespace)
 }
 
 func (c *FakeSqlV1beta1) SQLUsers(namespace string) v1beta1.SQLUserInterface {
-	return &FakeSQLUsers{c, namespace}
+	return newFakeSQLUsers(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

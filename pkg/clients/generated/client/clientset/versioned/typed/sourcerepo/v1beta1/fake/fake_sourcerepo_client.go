@@ -32,7 +32,7 @@ type FakeSourcerepoV1beta1 struct {
 }
 
 func (c *FakeSourcerepoV1beta1) SourceRepoRepositories(namespace string) v1beta1.SourceRepoRepositoryInterface {
-	return &FakeSourceRepoRepositories{c, namespace}
+	return newFakeSourceRepoRepositories(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

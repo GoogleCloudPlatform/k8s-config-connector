@@ -22,123 +22,30 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeRunJobs implements RunJobInterface
-type FakeRunJobs struct {
+// fakeRunJobs implements RunJobInterface
+type fakeRunJobs struct {
+	*gentype.FakeClientWithList[*v1beta1.RunJob, *v1beta1.RunJobList]
 	Fake *FakeRunV1beta1
-	ns   string
 }
 
-var runjobsResource = v1beta1.SchemeGroupVersion.WithResource("runjobs")
-
-var runjobsKind = v1beta1.SchemeGroupVersion.WithKind("RunJob")
-
-// Get takes name of the runJob, and returns the corresponding runJob object, and an error if there is any.
-func (c *FakeRunJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.RunJob, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(runjobsResource, c.ns, name), &v1beta1.RunJob{})
-
-	if obj == nil {
-		return nil, err
+func newFakeRunJobs(fake *FakeRunV1beta1, namespace string) runv1beta1.RunJobInterface {
+	return &fakeRunJobs{
+		gentype.NewFakeClientWithList[*v1beta1.RunJob, *v1beta1.RunJobList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("runjobs"),
+			v1beta1.SchemeGroupVersion.WithKind("RunJob"),
+			func() *v1beta1.RunJob { return &v1beta1.RunJob{} },
+			func() *v1beta1.RunJobList { return &v1beta1.RunJobList{} },
+			func(dst, src *v1beta1.RunJobList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.RunJobList) []*v1beta1.RunJob { return gentype.ToPointerSlice(list.Items) },
+			func(list *v1beta1.RunJobList, items []*v1beta1.RunJob) { list.Items = gentype.FromPointerSlice(items) },
+		),
+		fake,
 	}
-	return obj.(*v1beta1.RunJob), err
-}
-
-// List takes label and field selectors, and returns the list of RunJobs that match those selectors.
-func (c *FakeRunJobs) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.RunJobList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(runjobsResource, runjobsKind, c.ns, opts), &v1beta1.RunJobList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.RunJobList{ListMeta: obj.(*v1beta1.RunJobList).ListMeta}
-	for _, item := range obj.(*v1beta1.RunJobList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested runJobs.
-func (c *FakeRunJobs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(runjobsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a runJob and creates it.  Returns the server's representation of the runJob, and an error, if there is any.
-func (c *FakeRunJobs) Create(ctx context.Context, runJob *v1beta1.RunJob, opts v1.CreateOptions) (result *v1beta1.RunJob, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(runjobsResource, c.ns, runJob), &v1beta1.RunJob{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.RunJob), err
-}
-
-// Update takes the representation of a runJob and updates it. Returns the server's representation of the runJob, and an error, if there is any.
-func (c *FakeRunJobs) Update(ctx context.Context, runJob *v1beta1.RunJob, opts v1.UpdateOptions) (result *v1beta1.RunJob, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(runjobsResource, c.ns, runJob), &v1beta1.RunJob{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.RunJob), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeRunJobs) UpdateStatus(ctx context.Context, runJob *v1beta1.RunJob, opts v1.UpdateOptions) (*v1beta1.RunJob, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(runjobsResource, "status", c.ns, runJob), &v1beta1.RunJob{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.RunJob), err
-}
-
-// Delete takes name of the runJob and deletes it. Returns an error if one occurs.
-func (c *FakeRunJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(runjobsResource, c.ns, name, opts), &v1beta1.RunJob{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeRunJobs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(runjobsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.RunJobList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched runJob.
-func (c *FakeRunJobs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.RunJob, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(runjobsResource, c.ns, name, pt, data, subresources...), &v1beta1.RunJob{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.RunJob), err
 }
