@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/assuredworkloads/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/assuredworkloads/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeAssuredWorkloadsWorkloads implements AssuredWorkloadsWorkloadInterface
-type FakeAssuredWorkloadsWorkloads struct {
+// fakeAssuredWorkloadsWorkloads implements AssuredWorkloadsWorkloadInterface
+type fakeAssuredWorkloadsWorkloads struct {
+	*gentype.FakeClientWithList[*v1alpha1.AssuredWorkloadsWorkload, *v1alpha1.AssuredWorkloadsWorkloadList]
 	Fake *FakeAssuredworkloadsV1alpha1
-	ns   string
 }
 
-var assuredworkloadsworkloadsResource = v1alpha1.SchemeGroupVersion.WithResource("assuredworkloadsworkloads")
-
-var assuredworkloadsworkloadsKind = v1alpha1.SchemeGroupVersion.WithKind("AssuredWorkloadsWorkload")
-
-// Get takes name of the assuredWorkloadsWorkload, and returns the corresponding assuredWorkloadsWorkload object, and an error if there is any.
-func (c *FakeAssuredWorkloadsWorkloads) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AssuredWorkloadsWorkload, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(assuredworkloadsworkloadsResource, c.ns, name), &v1alpha1.AssuredWorkloadsWorkload{})
-
-	if obj == nil {
-		return nil, err
+func newFakeAssuredWorkloadsWorkloads(fake *FakeAssuredworkloadsV1alpha1, namespace string) assuredworkloadsv1alpha1.AssuredWorkloadsWorkloadInterface {
+	return &fakeAssuredWorkloadsWorkloads{
+		gentype.NewFakeClientWithList[*v1alpha1.AssuredWorkloadsWorkload, *v1alpha1.AssuredWorkloadsWorkloadList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("assuredworkloadsworkloads"),
+			v1alpha1.SchemeGroupVersion.WithKind("AssuredWorkloadsWorkload"),
+			func() *v1alpha1.AssuredWorkloadsWorkload { return &v1alpha1.AssuredWorkloadsWorkload{} },
+			func() *v1alpha1.AssuredWorkloadsWorkloadList { return &v1alpha1.AssuredWorkloadsWorkloadList{} },
+			func(dst, src *v1alpha1.AssuredWorkloadsWorkloadList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.AssuredWorkloadsWorkloadList) []*v1alpha1.AssuredWorkloadsWorkload {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.AssuredWorkloadsWorkloadList, items []*v1alpha1.AssuredWorkloadsWorkload) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.AssuredWorkloadsWorkload), err
-}
-
-// List takes label and field selectors, and returns the list of AssuredWorkloadsWorkloads that match those selectors.
-func (c *FakeAssuredWorkloadsWorkloads) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.AssuredWorkloadsWorkloadList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(assuredworkloadsworkloadsResource, assuredworkloadsworkloadsKind, c.ns, opts), &v1alpha1.AssuredWorkloadsWorkloadList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.AssuredWorkloadsWorkloadList{ListMeta: obj.(*v1alpha1.AssuredWorkloadsWorkloadList).ListMeta}
-	for _, item := range obj.(*v1alpha1.AssuredWorkloadsWorkloadList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested assuredWorkloadsWorkloads.
-func (c *FakeAssuredWorkloadsWorkloads) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(assuredworkloadsworkloadsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a assuredWorkloadsWorkload and creates it.  Returns the server's representation of the assuredWorkloadsWorkload, and an error, if there is any.
-func (c *FakeAssuredWorkloadsWorkloads) Create(ctx context.Context, assuredWorkloadsWorkload *v1alpha1.AssuredWorkloadsWorkload, opts v1.CreateOptions) (result *v1alpha1.AssuredWorkloadsWorkload, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(assuredworkloadsworkloadsResource, c.ns, assuredWorkloadsWorkload), &v1alpha1.AssuredWorkloadsWorkload{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AssuredWorkloadsWorkload), err
-}
-
-// Update takes the representation of a assuredWorkloadsWorkload and updates it. Returns the server's representation of the assuredWorkloadsWorkload, and an error, if there is any.
-func (c *FakeAssuredWorkloadsWorkloads) Update(ctx context.Context, assuredWorkloadsWorkload *v1alpha1.AssuredWorkloadsWorkload, opts v1.UpdateOptions) (result *v1alpha1.AssuredWorkloadsWorkload, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(assuredworkloadsworkloadsResource, c.ns, assuredWorkloadsWorkload), &v1alpha1.AssuredWorkloadsWorkload{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AssuredWorkloadsWorkload), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeAssuredWorkloadsWorkloads) UpdateStatus(ctx context.Context, assuredWorkloadsWorkload *v1alpha1.AssuredWorkloadsWorkload, opts v1.UpdateOptions) (*v1alpha1.AssuredWorkloadsWorkload, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(assuredworkloadsworkloadsResource, "status", c.ns, assuredWorkloadsWorkload), &v1alpha1.AssuredWorkloadsWorkload{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AssuredWorkloadsWorkload), err
-}
-
-// Delete takes name of the assuredWorkloadsWorkload and deletes it. Returns an error if one occurs.
-func (c *FakeAssuredWorkloadsWorkloads) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(assuredworkloadsworkloadsResource, c.ns, name, opts), &v1alpha1.AssuredWorkloadsWorkload{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeAssuredWorkloadsWorkloads) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(assuredworkloadsworkloadsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.AssuredWorkloadsWorkloadList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched assuredWorkloadsWorkload.
-func (c *FakeAssuredWorkloadsWorkloads) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AssuredWorkloadsWorkload, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(assuredworkloadsworkloadsResource, c.ns, name, pt, data, subresources...), &v1alpha1.AssuredWorkloadsWorkload{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AssuredWorkloadsWorkload), err
 }

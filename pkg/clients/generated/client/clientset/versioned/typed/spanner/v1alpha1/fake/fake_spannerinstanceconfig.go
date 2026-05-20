@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/spanner/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	spannerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/spanner/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeSpannerInstanceConfigs implements SpannerInstanceConfigInterface
-type FakeSpannerInstanceConfigs struct {
+// fakeSpannerInstanceConfigs implements SpannerInstanceConfigInterface
+type fakeSpannerInstanceConfigs struct {
+	*gentype.FakeClientWithList[*v1alpha1.SpannerInstanceConfig, *v1alpha1.SpannerInstanceConfigList]
 	Fake *FakeSpannerV1alpha1
-	ns   string
 }
 
-var spannerinstanceconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("spannerinstanceconfigs")
-
-var spannerinstanceconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("SpannerInstanceConfig")
-
-// Get takes name of the spannerInstanceConfig, and returns the corresponding spannerInstanceConfig object, and an error if there is any.
-func (c *FakeSpannerInstanceConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.SpannerInstanceConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(spannerinstanceconfigsResource, c.ns, name), &v1alpha1.SpannerInstanceConfig{})
-
-	if obj == nil {
-		return nil, err
+func newFakeSpannerInstanceConfigs(fake *FakeSpannerV1alpha1, namespace string) spannerv1alpha1.SpannerInstanceConfigInterface {
+	return &fakeSpannerInstanceConfigs{
+		gentype.NewFakeClientWithList[*v1alpha1.SpannerInstanceConfig, *v1alpha1.SpannerInstanceConfigList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("spannerinstanceconfigs"),
+			v1alpha1.SchemeGroupVersion.WithKind("SpannerInstanceConfig"),
+			func() *v1alpha1.SpannerInstanceConfig { return &v1alpha1.SpannerInstanceConfig{} },
+			func() *v1alpha1.SpannerInstanceConfigList { return &v1alpha1.SpannerInstanceConfigList{} },
+			func(dst, src *v1alpha1.SpannerInstanceConfigList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.SpannerInstanceConfigList) []*v1alpha1.SpannerInstanceConfig {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.SpannerInstanceConfigList, items []*v1alpha1.SpannerInstanceConfig) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.SpannerInstanceConfig), err
-}
-
-// List takes label and field selectors, and returns the list of SpannerInstanceConfigs that match those selectors.
-func (c *FakeSpannerInstanceConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.SpannerInstanceConfigList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(spannerinstanceconfigsResource, spannerinstanceconfigsKind, c.ns, opts), &v1alpha1.SpannerInstanceConfigList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.SpannerInstanceConfigList{ListMeta: obj.(*v1alpha1.SpannerInstanceConfigList).ListMeta}
-	for _, item := range obj.(*v1alpha1.SpannerInstanceConfigList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested spannerInstanceConfigs.
-func (c *FakeSpannerInstanceConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(spannerinstanceconfigsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a spannerInstanceConfig and creates it.  Returns the server's representation of the spannerInstanceConfig, and an error, if there is any.
-func (c *FakeSpannerInstanceConfigs) Create(ctx context.Context, spannerInstanceConfig *v1alpha1.SpannerInstanceConfig, opts v1.CreateOptions) (result *v1alpha1.SpannerInstanceConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(spannerinstanceconfigsResource, c.ns, spannerInstanceConfig), &v1alpha1.SpannerInstanceConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.SpannerInstanceConfig), err
-}
-
-// Update takes the representation of a spannerInstanceConfig and updates it. Returns the server's representation of the spannerInstanceConfig, and an error, if there is any.
-func (c *FakeSpannerInstanceConfigs) Update(ctx context.Context, spannerInstanceConfig *v1alpha1.SpannerInstanceConfig, opts v1.UpdateOptions) (result *v1alpha1.SpannerInstanceConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(spannerinstanceconfigsResource, c.ns, spannerInstanceConfig), &v1alpha1.SpannerInstanceConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.SpannerInstanceConfig), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeSpannerInstanceConfigs) UpdateStatus(ctx context.Context, spannerInstanceConfig *v1alpha1.SpannerInstanceConfig, opts v1.UpdateOptions) (*v1alpha1.SpannerInstanceConfig, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(spannerinstanceconfigsResource, "status", c.ns, spannerInstanceConfig), &v1alpha1.SpannerInstanceConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.SpannerInstanceConfig), err
-}
-
-// Delete takes name of the spannerInstanceConfig and deletes it. Returns an error if one occurs.
-func (c *FakeSpannerInstanceConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(spannerinstanceconfigsResource, c.ns, name, opts), &v1alpha1.SpannerInstanceConfig{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeSpannerInstanceConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(spannerinstanceconfigsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.SpannerInstanceConfigList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched spannerInstanceConfig.
-func (c *FakeSpannerInstanceConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.SpannerInstanceConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(spannerinstanceconfigsResource, c.ns, name, pt, data, subresources...), &v1alpha1.SpannerInstanceConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.SpannerInstanceConfig), err
 }

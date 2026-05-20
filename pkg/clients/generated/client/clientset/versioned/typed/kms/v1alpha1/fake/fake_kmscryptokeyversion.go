@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeKMSCryptoKeyVersions implements KMSCryptoKeyVersionInterface
-type FakeKMSCryptoKeyVersions struct {
+// fakeKMSCryptoKeyVersions implements KMSCryptoKeyVersionInterface
+type fakeKMSCryptoKeyVersions struct {
+	*gentype.FakeClientWithList[*v1alpha1.KMSCryptoKeyVersion, *v1alpha1.KMSCryptoKeyVersionList]
 	Fake *FakeKmsV1alpha1
-	ns   string
 }
 
-var kmscryptokeyversionsResource = v1alpha1.SchemeGroupVersion.WithResource("kmscryptokeyversions")
-
-var kmscryptokeyversionsKind = v1alpha1.SchemeGroupVersion.WithKind("KMSCryptoKeyVersion")
-
-// Get takes name of the kMSCryptoKeyVersion, and returns the corresponding kMSCryptoKeyVersion object, and an error if there is any.
-func (c *FakeKMSCryptoKeyVersions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.KMSCryptoKeyVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(kmscryptokeyversionsResource, c.ns, name), &v1alpha1.KMSCryptoKeyVersion{})
-
-	if obj == nil {
-		return nil, err
+func newFakeKMSCryptoKeyVersions(fake *FakeKmsV1alpha1, namespace string) kmsv1alpha1.KMSCryptoKeyVersionInterface {
+	return &fakeKMSCryptoKeyVersions{
+		gentype.NewFakeClientWithList[*v1alpha1.KMSCryptoKeyVersion, *v1alpha1.KMSCryptoKeyVersionList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("kmscryptokeyversions"),
+			v1alpha1.SchemeGroupVersion.WithKind("KMSCryptoKeyVersion"),
+			func() *v1alpha1.KMSCryptoKeyVersion { return &v1alpha1.KMSCryptoKeyVersion{} },
+			func() *v1alpha1.KMSCryptoKeyVersionList { return &v1alpha1.KMSCryptoKeyVersionList{} },
+			func(dst, src *v1alpha1.KMSCryptoKeyVersionList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.KMSCryptoKeyVersionList) []*v1alpha1.KMSCryptoKeyVersion {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.KMSCryptoKeyVersionList, items []*v1alpha1.KMSCryptoKeyVersion) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.KMSCryptoKeyVersion), err
-}
-
-// List takes label and field selectors, and returns the list of KMSCryptoKeyVersions that match those selectors.
-func (c *FakeKMSCryptoKeyVersions) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.KMSCryptoKeyVersionList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(kmscryptokeyversionsResource, kmscryptokeyversionsKind, c.ns, opts), &v1alpha1.KMSCryptoKeyVersionList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.KMSCryptoKeyVersionList{ListMeta: obj.(*v1alpha1.KMSCryptoKeyVersionList).ListMeta}
-	for _, item := range obj.(*v1alpha1.KMSCryptoKeyVersionList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested kMSCryptoKeyVersions.
-func (c *FakeKMSCryptoKeyVersions) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(kmscryptokeyversionsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a kMSCryptoKeyVersion and creates it.  Returns the server's representation of the kMSCryptoKeyVersion, and an error, if there is any.
-func (c *FakeKMSCryptoKeyVersions) Create(ctx context.Context, kMSCryptoKeyVersion *v1alpha1.KMSCryptoKeyVersion, opts v1.CreateOptions) (result *v1alpha1.KMSCryptoKeyVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(kmscryptokeyversionsResource, c.ns, kMSCryptoKeyVersion), &v1alpha1.KMSCryptoKeyVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.KMSCryptoKeyVersion), err
-}
-
-// Update takes the representation of a kMSCryptoKeyVersion and updates it. Returns the server's representation of the kMSCryptoKeyVersion, and an error, if there is any.
-func (c *FakeKMSCryptoKeyVersions) Update(ctx context.Context, kMSCryptoKeyVersion *v1alpha1.KMSCryptoKeyVersion, opts v1.UpdateOptions) (result *v1alpha1.KMSCryptoKeyVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(kmscryptokeyversionsResource, c.ns, kMSCryptoKeyVersion), &v1alpha1.KMSCryptoKeyVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.KMSCryptoKeyVersion), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeKMSCryptoKeyVersions) UpdateStatus(ctx context.Context, kMSCryptoKeyVersion *v1alpha1.KMSCryptoKeyVersion, opts v1.UpdateOptions) (*v1alpha1.KMSCryptoKeyVersion, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(kmscryptokeyversionsResource, "status", c.ns, kMSCryptoKeyVersion), &v1alpha1.KMSCryptoKeyVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.KMSCryptoKeyVersion), err
-}
-
-// Delete takes name of the kMSCryptoKeyVersion and deletes it. Returns an error if one occurs.
-func (c *FakeKMSCryptoKeyVersions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(kmscryptokeyversionsResource, c.ns, name, opts), &v1alpha1.KMSCryptoKeyVersion{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeKMSCryptoKeyVersions) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(kmscryptokeyversionsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.KMSCryptoKeyVersionList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched kMSCryptoKeyVersion.
-func (c *FakeKMSCryptoKeyVersions) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.KMSCryptoKeyVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(kmscryptokeyversionsResource, c.ns, name, pt, data, subresources...), &v1alpha1.KMSCryptoKeyVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.KMSCryptoKeyVersion), err
 }

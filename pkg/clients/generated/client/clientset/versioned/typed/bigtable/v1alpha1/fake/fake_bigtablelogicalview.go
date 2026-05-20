@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBigtableLogicalViews implements BigtableLogicalViewInterface
-type FakeBigtableLogicalViews struct {
+// fakeBigtableLogicalViews implements BigtableLogicalViewInterface
+type fakeBigtableLogicalViews struct {
+	*gentype.FakeClientWithList[*v1alpha1.BigtableLogicalView, *v1alpha1.BigtableLogicalViewList]
 	Fake *FakeBigtableV1alpha1
-	ns   string
 }
 
-var bigtablelogicalviewsResource = v1alpha1.SchemeGroupVersion.WithResource("bigtablelogicalviews")
-
-var bigtablelogicalviewsKind = v1alpha1.SchemeGroupVersion.WithKind("BigtableLogicalView")
-
-// Get takes name of the bigtableLogicalView, and returns the corresponding bigtableLogicalView object, and an error if there is any.
-func (c *FakeBigtableLogicalViews) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigtableLogicalView, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(bigtablelogicalviewsResource, c.ns, name), &v1alpha1.BigtableLogicalView{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBigtableLogicalViews(fake *FakeBigtableV1alpha1, namespace string) bigtablev1alpha1.BigtableLogicalViewInterface {
+	return &fakeBigtableLogicalViews{
+		gentype.NewFakeClientWithList[*v1alpha1.BigtableLogicalView, *v1alpha1.BigtableLogicalViewList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("bigtablelogicalviews"),
+			v1alpha1.SchemeGroupVersion.WithKind("BigtableLogicalView"),
+			func() *v1alpha1.BigtableLogicalView { return &v1alpha1.BigtableLogicalView{} },
+			func() *v1alpha1.BigtableLogicalViewList { return &v1alpha1.BigtableLogicalViewList{} },
+			func(dst, src *v1alpha1.BigtableLogicalViewList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.BigtableLogicalViewList) []*v1alpha1.BigtableLogicalView {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.BigtableLogicalViewList, items []*v1alpha1.BigtableLogicalView) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.BigtableLogicalView), err
-}
-
-// List takes label and field selectors, and returns the list of BigtableLogicalViews that match those selectors.
-func (c *FakeBigtableLogicalViews) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigtableLogicalViewList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(bigtablelogicalviewsResource, bigtablelogicalviewsKind, c.ns, opts), &v1alpha1.BigtableLogicalViewList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.BigtableLogicalViewList{ListMeta: obj.(*v1alpha1.BigtableLogicalViewList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BigtableLogicalViewList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested bigtableLogicalViews.
-func (c *FakeBigtableLogicalViews) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(bigtablelogicalviewsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a bigtableLogicalView and creates it.  Returns the server's representation of the bigtableLogicalView, and an error, if there is any.
-func (c *FakeBigtableLogicalViews) Create(ctx context.Context, bigtableLogicalView *v1alpha1.BigtableLogicalView, opts v1.CreateOptions) (result *v1alpha1.BigtableLogicalView, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(bigtablelogicalviewsResource, c.ns, bigtableLogicalView), &v1alpha1.BigtableLogicalView{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableLogicalView), err
-}
-
-// Update takes the representation of a bigtableLogicalView and updates it. Returns the server's representation of the bigtableLogicalView, and an error, if there is any.
-func (c *FakeBigtableLogicalViews) Update(ctx context.Context, bigtableLogicalView *v1alpha1.BigtableLogicalView, opts v1.UpdateOptions) (result *v1alpha1.BigtableLogicalView, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(bigtablelogicalviewsResource, c.ns, bigtableLogicalView), &v1alpha1.BigtableLogicalView{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableLogicalView), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigtableLogicalViews) UpdateStatus(ctx context.Context, bigtableLogicalView *v1alpha1.BigtableLogicalView, opts v1.UpdateOptions) (*v1alpha1.BigtableLogicalView, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(bigtablelogicalviewsResource, "status", c.ns, bigtableLogicalView), &v1alpha1.BigtableLogicalView{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableLogicalView), err
-}
-
-// Delete takes name of the bigtableLogicalView and deletes it. Returns an error if one occurs.
-func (c *FakeBigtableLogicalViews) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(bigtablelogicalviewsResource, c.ns, name, opts), &v1alpha1.BigtableLogicalView{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBigtableLogicalViews) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(bigtablelogicalviewsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.BigtableLogicalViewList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched bigtableLogicalView.
-func (c *FakeBigtableLogicalViews) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigtableLogicalView, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(bigtablelogicalviewsResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigtableLogicalView{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableLogicalView), err
 }
