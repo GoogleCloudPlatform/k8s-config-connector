@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ResourceManagerLiensGetter has a method to return a ResourceManagerLienInterface.
@@ -40,38 +41,158 @@ type ResourceManagerLiensGetter interface {
 
 // ResourceManagerLienInterface has methods to work with ResourceManagerLien resources.
 type ResourceManagerLienInterface interface {
-	Create(ctx context.Context, resourceManagerLien *resourcemanagerv1beta1.ResourceManagerLien, opts v1.CreateOptions) (*resourcemanagerv1beta1.ResourceManagerLien, error)
-	Update(ctx context.Context, resourceManagerLien *resourcemanagerv1beta1.ResourceManagerLien, opts v1.UpdateOptions) (*resourcemanagerv1beta1.ResourceManagerLien, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, resourceManagerLien *resourcemanagerv1beta1.ResourceManagerLien, opts v1.UpdateOptions) (*resourcemanagerv1beta1.ResourceManagerLien, error)
+	Create(ctx context.Context, resourceManagerLien *v1beta1.ResourceManagerLien, opts v1.CreateOptions) (*v1beta1.ResourceManagerLien, error)
+	Update(ctx context.Context, resourceManagerLien *v1beta1.ResourceManagerLien, opts v1.UpdateOptions) (*v1beta1.ResourceManagerLien, error)
+	UpdateStatus(ctx context.Context, resourceManagerLien *v1beta1.ResourceManagerLien, opts v1.UpdateOptions) (*v1beta1.ResourceManagerLien, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*resourcemanagerv1beta1.ResourceManagerLien, error)
-	List(ctx context.Context, opts v1.ListOptions) (*resourcemanagerv1beta1.ResourceManagerLienList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ResourceManagerLien, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ResourceManagerLienList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *resourcemanagerv1beta1.ResourceManagerLien, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ResourceManagerLien, err error)
 	ResourceManagerLienExpansion
 }
 
 // resourceManagerLiens implements ResourceManagerLienInterface
 type resourceManagerLiens struct {
-	*gentype.ClientWithList[*resourcemanagerv1beta1.ResourceManagerLien, *resourcemanagerv1beta1.ResourceManagerLienList]
+	client rest.Interface
+	ns     string
 }
 
 // newResourceManagerLiens returns a ResourceManagerLiens
 func newResourceManagerLiens(c *ResourcemanagerV1beta1Client, namespace string) *resourceManagerLiens {
 	return &resourceManagerLiens{
-		gentype.NewClientWithList[*resourcemanagerv1beta1.ResourceManagerLien, *resourcemanagerv1beta1.ResourceManagerLienList](
-			"resourcemanagerliens",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *resourcemanagerv1beta1.ResourceManagerLien {
-				return &resourcemanagerv1beta1.ResourceManagerLien{}
-			},
-			func() *resourcemanagerv1beta1.ResourceManagerLienList {
-				return &resourcemanagerv1beta1.ResourceManagerLienList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the resourceManagerLien, and returns the corresponding resourceManagerLien object, and an error if there is any.
+func (c *resourceManagerLiens) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ResourceManagerLien, err error) {
+	result = &v1beta1.ResourceManagerLien{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("resourcemanagerliens").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ResourceManagerLiens that match those selectors.
+func (c *resourceManagerLiens) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ResourceManagerLienList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ResourceManagerLienList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("resourcemanagerliens").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested resourceManagerLiens.
+func (c *resourceManagerLiens) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("resourcemanagerliens").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a resourceManagerLien and creates it.  Returns the server's representation of the resourceManagerLien, and an error, if there is any.
+func (c *resourceManagerLiens) Create(ctx context.Context, resourceManagerLien *v1beta1.ResourceManagerLien, opts v1.CreateOptions) (result *v1beta1.ResourceManagerLien, err error) {
+	result = &v1beta1.ResourceManagerLien{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("resourcemanagerliens").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(resourceManagerLien).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a resourceManagerLien and updates it. Returns the server's representation of the resourceManagerLien, and an error, if there is any.
+func (c *resourceManagerLiens) Update(ctx context.Context, resourceManagerLien *v1beta1.ResourceManagerLien, opts v1.UpdateOptions) (result *v1beta1.ResourceManagerLien, err error) {
+	result = &v1beta1.ResourceManagerLien{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("resourcemanagerliens").
+		Name(resourceManagerLien.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(resourceManagerLien).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *resourceManagerLiens) UpdateStatus(ctx context.Context, resourceManagerLien *v1beta1.ResourceManagerLien, opts v1.UpdateOptions) (result *v1beta1.ResourceManagerLien, err error) {
+	result = &v1beta1.ResourceManagerLien{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("resourcemanagerliens").
+		Name(resourceManagerLien.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(resourceManagerLien).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the resourceManagerLien and deletes it. Returns an error if one occurs.
+func (c *resourceManagerLiens) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("resourcemanagerliens").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *resourceManagerLiens) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("resourcemanagerliens").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched resourceManagerLien.
+func (c *resourceManagerLiens) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ResourceManagerLien, err error) {
+	result = &v1beta1.ResourceManagerLien{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("resourcemanagerliens").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeDisksGetter has a method to return a ComputeDiskInterface.
@@ -40,34 +41,158 @@ type ComputeDisksGetter interface {
 
 // ComputeDiskInterface has methods to work with ComputeDisk resources.
 type ComputeDiskInterface interface {
-	Create(ctx context.Context, computeDisk *computev1beta1.ComputeDisk, opts v1.CreateOptions) (*computev1beta1.ComputeDisk, error)
-	Update(ctx context.Context, computeDisk *computev1beta1.ComputeDisk, opts v1.UpdateOptions) (*computev1beta1.ComputeDisk, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeDisk *computev1beta1.ComputeDisk, opts v1.UpdateOptions) (*computev1beta1.ComputeDisk, error)
+	Create(ctx context.Context, computeDisk *v1beta1.ComputeDisk, opts v1.CreateOptions) (*v1beta1.ComputeDisk, error)
+	Update(ctx context.Context, computeDisk *v1beta1.ComputeDisk, opts v1.UpdateOptions) (*v1beta1.ComputeDisk, error)
+	UpdateStatus(ctx context.Context, computeDisk *v1beta1.ComputeDisk, opts v1.UpdateOptions) (*v1beta1.ComputeDisk, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeDisk, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeDiskList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeDisk, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeDiskList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeDisk, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeDisk, err error)
 	ComputeDiskExpansion
 }
 
 // computeDisks implements ComputeDiskInterface
 type computeDisks struct {
-	*gentype.ClientWithList[*computev1beta1.ComputeDisk, *computev1beta1.ComputeDiskList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeDisks returns a ComputeDisks
 func newComputeDisks(c *ComputeV1beta1Client, namespace string) *computeDisks {
 	return &computeDisks{
-		gentype.NewClientWithList[*computev1beta1.ComputeDisk, *computev1beta1.ComputeDiskList](
-			"computedisks",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1beta1.ComputeDisk { return &computev1beta1.ComputeDisk{} },
-			func() *computev1beta1.ComputeDiskList { return &computev1beta1.ComputeDiskList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeDisk, and returns the corresponding computeDisk object, and an error if there is any.
+func (c *computeDisks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeDisk, err error) {
+	result = &v1beta1.ComputeDisk{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computedisks").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeDisks that match those selectors.
+func (c *computeDisks) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeDiskList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ComputeDiskList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computedisks").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeDisks.
+func (c *computeDisks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computedisks").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeDisk and creates it.  Returns the server's representation of the computeDisk, and an error, if there is any.
+func (c *computeDisks) Create(ctx context.Context, computeDisk *v1beta1.ComputeDisk, opts v1.CreateOptions) (result *v1beta1.ComputeDisk, err error) {
+	result = &v1beta1.ComputeDisk{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computedisks").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeDisk).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeDisk and updates it. Returns the server's representation of the computeDisk, and an error, if there is any.
+func (c *computeDisks) Update(ctx context.Context, computeDisk *v1beta1.ComputeDisk, opts v1.UpdateOptions) (result *v1beta1.ComputeDisk, err error) {
+	result = &v1beta1.ComputeDisk{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computedisks").
+		Name(computeDisk.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeDisk).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeDisks) UpdateStatus(ctx context.Context, computeDisk *v1beta1.ComputeDisk, opts v1.UpdateOptions) (result *v1beta1.ComputeDisk, err error) {
+	result = &v1beta1.ComputeDisk{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computedisks").
+		Name(computeDisk.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeDisk).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeDisk and deletes it. Returns an error if one occurs.
+func (c *computeDisks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computedisks").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeDisks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computedisks").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeDisk.
+func (c *computeDisks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeDisk, err error) {
+	result = &v1beta1.ComputeDisk{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computedisks").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

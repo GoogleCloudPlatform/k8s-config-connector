@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // DataCatalogEntriesGetter has a method to return a DataCatalogEntryInterface.
@@ -40,34 +41,158 @@ type DataCatalogEntriesGetter interface {
 
 // DataCatalogEntryInterface has methods to work with DataCatalogEntry resources.
 type DataCatalogEntryInterface interface {
-	Create(ctx context.Context, dataCatalogEntry *datacatalogv1alpha1.DataCatalogEntry, opts v1.CreateOptions) (*datacatalogv1alpha1.DataCatalogEntry, error)
-	Update(ctx context.Context, dataCatalogEntry *datacatalogv1alpha1.DataCatalogEntry, opts v1.UpdateOptions) (*datacatalogv1alpha1.DataCatalogEntry, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, dataCatalogEntry *datacatalogv1alpha1.DataCatalogEntry, opts v1.UpdateOptions) (*datacatalogv1alpha1.DataCatalogEntry, error)
+	Create(ctx context.Context, dataCatalogEntry *v1alpha1.DataCatalogEntry, opts v1.CreateOptions) (*v1alpha1.DataCatalogEntry, error)
+	Update(ctx context.Context, dataCatalogEntry *v1alpha1.DataCatalogEntry, opts v1.UpdateOptions) (*v1alpha1.DataCatalogEntry, error)
+	UpdateStatus(ctx context.Context, dataCatalogEntry *v1alpha1.DataCatalogEntry, opts v1.UpdateOptions) (*v1alpha1.DataCatalogEntry, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*datacatalogv1alpha1.DataCatalogEntry, error)
-	List(ctx context.Context, opts v1.ListOptions) (*datacatalogv1alpha1.DataCatalogEntryList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.DataCatalogEntry, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.DataCatalogEntryList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *datacatalogv1alpha1.DataCatalogEntry, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataCatalogEntry, err error)
 	DataCatalogEntryExpansion
 }
 
 // dataCatalogEntries implements DataCatalogEntryInterface
 type dataCatalogEntries struct {
-	*gentype.ClientWithList[*datacatalogv1alpha1.DataCatalogEntry, *datacatalogv1alpha1.DataCatalogEntryList]
+	client rest.Interface
+	ns     string
 }
 
 // newDataCatalogEntries returns a DataCatalogEntries
 func newDataCatalogEntries(c *DatacatalogV1alpha1Client, namespace string) *dataCatalogEntries {
 	return &dataCatalogEntries{
-		gentype.NewClientWithList[*datacatalogv1alpha1.DataCatalogEntry, *datacatalogv1alpha1.DataCatalogEntryList](
-			"datacatalogentries",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *datacatalogv1alpha1.DataCatalogEntry { return &datacatalogv1alpha1.DataCatalogEntry{} },
-			func() *datacatalogv1alpha1.DataCatalogEntryList { return &datacatalogv1alpha1.DataCatalogEntryList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the dataCatalogEntry, and returns the corresponding dataCatalogEntry object, and an error if there is any.
+func (c *dataCatalogEntries) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataCatalogEntry, err error) {
+	result = &v1alpha1.DataCatalogEntry{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("datacatalogentries").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of DataCatalogEntries that match those selectors.
+func (c *dataCatalogEntries) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DataCatalogEntryList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.DataCatalogEntryList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("datacatalogentries").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested dataCatalogEntries.
+func (c *dataCatalogEntries) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("datacatalogentries").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a dataCatalogEntry and creates it.  Returns the server's representation of the dataCatalogEntry, and an error, if there is any.
+func (c *dataCatalogEntries) Create(ctx context.Context, dataCatalogEntry *v1alpha1.DataCatalogEntry, opts v1.CreateOptions) (result *v1alpha1.DataCatalogEntry, err error) {
+	result = &v1alpha1.DataCatalogEntry{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("datacatalogentries").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataCatalogEntry).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a dataCatalogEntry and updates it. Returns the server's representation of the dataCatalogEntry, and an error, if there is any.
+func (c *dataCatalogEntries) Update(ctx context.Context, dataCatalogEntry *v1alpha1.DataCatalogEntry, opts v1.UpdateOptions) (result *v1alpha1.DataCatalogEntry, err error) {
+	result = &v1alpha1.DataCatalogEntry{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("datacatalogentries").
+		Name(dataCatalogEntry.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataCatalogEntry).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *dataCatalogEntries) UpdateStatus(ctx context.Context, dataCatalogEntry *v1alpha1.DataCatalogEntry, opts v1.UpdateOptions) (result *v1alpha1.DataCatalogEntry, err error) {
+	result = &v1alpha1.DataCatalogEntry{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("datacatalogentries").
+		Name(dataCatalogEntry.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataCatalogEntry).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the dataCatalogEntry and deletes it. Returns an error if one occurs.
+func (c *dataCatalogEntries) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("datacatalogentries").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *dataCatalogEntries) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("datacatalogentries").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched dataCatalogEntry.
+func (c *dataCatalogEntries) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataCatalogEntry, err error) {
+	result = &v1alpha1.DataCatalogEntry{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("datacatalogentries").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

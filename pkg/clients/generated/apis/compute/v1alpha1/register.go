@@ -77,12 +77,6 @@ var (
 		Kind:    reflect.TypeOf(ComputeDiskResourcePolicyAttachment{}).Name(),
 	}
 
-	ComputeFutureReservationGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeFutureReservation{}).Name(),
-	}
-
 	ComputeGlobalNetworkEndpointGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

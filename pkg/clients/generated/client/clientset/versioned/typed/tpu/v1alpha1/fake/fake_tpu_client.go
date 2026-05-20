@@ -32,11 +32,11 @@ type FakeTpuV1alpha1 struct {
 }
 
 func (c *FakeTpuV1alpha1) TPUNodes(namespace string) v1alpha1.TPUNodeInterface {
-	return newFakeTPUNodes(c, namespace)
+	return &FakeTPUNodes{c, namespace}
 }
 
 func (c *FakeTpuV1alpha1) TPUVirtualMachines(namespace string) v1alpha1.TPUVirtualMachineInterface {
-	return newFakeTPUVirtualMachines(c, namespace)
+	return &FakeTPUVirtualMachines{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

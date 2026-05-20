@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddms/v1alpha1"
-	clouddmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddms/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeCloudDMSMigrationJobs implements CloudDMSMigrationJobInterface
-type fakeCloudDMSMigrationJobs struct {
-	*gentype.FakeClientWithList[*v1alpha1.CloudDMSMigrationJob, *v1alpha1.CloudDMSMigrationJobList]
+// FakeCloudDMSMigrationJobs implements CloudDMSMigrationJobInterface
+type FakeCloudDMSMigrationJobs struct {
 	Fake *FakeClouddmsV1alpha1
+	ns   string
 }
 
-func newFakeCloudDMSMigrationJobs(fake *FakeClouddmsV1alpha1, namespace string) clouddmsv1alpha1.CloudDMSMigrationJobInterface {
-	return &fakeCloudDMSMigrationJobs{
-		gentype.NewFakeClientWithList[*v1alpha1.CloudDMSMigrationJob, *v1alpha1.CloudDMSMigrationJobList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("clouddmsmigrationjobs"),
-			v1alpha1.SchemeGroupVersion.WithKind("CloudDMSMigrationJob"),
-			func() *v1alpha1.CloudDMSMigrationJob { return &v1alpha1.CloudDMSMigrationJob{} },
-			func() *v1alpha1.CloudDMSMigrationJobList { return &v1alpha1.CloudDMSMigrationJobList{} },
-			func(dst, src *v1alpha1.CloudDMSMigrationJobList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.CloudDMSMigrationJobList) []*v1alpha1.CloudDMSMigrationJob {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.CloudDMSMigrationJobList, items []*v1alpha1.CloudDMSMigrationJob) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var clouddmsmigrationjobsResource = v1alpha1.SchemeGroupVersion.WithResource("clouddmsmigrationjobs")
+
+var clouddmsmigrationjobsKind = v1alpha1.SchemeGroupVersion.WithKind("CloudDMSMigrationJob")
+
+// Get takes name of the cloudDMSMigrationJob, and returns the corresponding cloudDMSMigrationJob object, and an error if there is any.
+func (c *FakeCloudDMSMigrationJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudDMSMigrationJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(clouddmsmigrationjobsResource, c.ns, name), &v1alpha1.CloudDMSMigrationJob{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.CloudDMSMigrationJob), err
+}
+
+// List takes label and field selectors, and returns the list of CloudDMSMigrationJobs that match those selectors.
+func (c *FakeCloudDMSMigrationJobs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudDMSMigrationJobList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(clouddmsmigrationjobsResource, clouddmsmigrationjobsKind, c.ns, opts), &v1alpha1.CloudDMSMigrationJobList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.CloudDMSMigrationJobList{ListMeta: obj.(*v1alpha1.CloudDMSMigrationJobList).ListMeta}
+	for _, item := range obj.(*v1alpha1.CloudDMSMigrationJobList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested cloudDMSMigrationJobs.
+func (c *FakeCloudDMSMigrationJobs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(clouddmsmigrationjobsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a cloudDMSMigrationJob and creates it.  Returns the server's representation of the cloudDMSMigrationJob, and an error, if there is any.
+func (c *FakeCloudDMSMigrationJobs) Create(ctx context.Context, cloudDMSMigrationJob *v1alpha1.CloudDMSMigrationJob, opts v1.CreateOptions) (result *v1alpha1.CloudDMSMigrationJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(clouddmsmigrationjobsResource, c.ns, cloudDMSMigrationJob), &v1alpha1.CloudDMSMigrationJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudDMSMigrationJob), err
+}
+
+// Update takes the representation of a cloudDMSMigrationJob and updates it. Returns the server's representation of the cloudDMSMigrationJob, and an error, if there is any.
+func (c *FakeCloudDMSMigrationJobs) Update(ctx context.Context, cloudDMSMigrationJob *v1alpha1.CloudDMSMigrationJob, opts v1.UpdateOptions) (result *v1alpha1.CloudDMSMigrationJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(clouddmsmigrationjobsResource, c.ns, cloudDMSMigrationJob), &v1alpha1.CloudDMSMigrationJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudDMSMigrationJob), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeCloudDMSMigrationJobs) UpdateStatus(ctx context.Context, cloudDMSMigrationJob *v1alpha1.CloudDMSMigrationJob, opts v1.UpdateOptions) (*v1alpha1.CloudDMSMigrationJob, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(clouddmsmigrationjobsResource, "status", c.ns, cloudDMSMigrationJob), &v1alpha1.CloudDMSMigrationJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudDMSMigrationJob), err
+}
+
+// Delete takes name of the cloudDMSMigrationJob and deletes it. Returns an error if one occurs.
+func (c *FakeCloudDMSMigrationJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(clouddmsmigrationjobsResource, c.ns, name, opts), &v1alpha1.CloudDMSMigrationJob{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeCloudDMSMigrationJobs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(clouddmsmigrationjobsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.CloudDMSMigrationJobList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched cloudDMSMigrationJob.
+func (c *FakeCloudDMSMigrationJobs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudDMSMigrationJob, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(clouddmsmigrationjobsResource, c.ns, name, pt, data, subresources...), &v1alpha1.CloudDMSMigrationJob{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudDMSMigrationJob), err
 }

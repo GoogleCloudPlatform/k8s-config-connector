@@ -32,15 +32,15 @@ type FakeKmsV1alpha1 struct {
 }
 
 func (c *FakeKmsV1alpha1) KMSCryptoKeyVersions(namespace string) v1alpha1.KMSCryptoKeyVersionInterface {
-	return newFakeKMSCryptoKeyVersions(c, namespace)
+	return &FakeKMSCryptoKeyVersions{c, namespace}
 }
 
 func (c *FakeKmsV1alpha1) KMSKeyRingImportJobs(namespace string) v1alpha1.KMSKeyRingImportJobInterface {
-	return newFakeKMSKeyRingImportJobs(c, namespace)
+	return &FakeKMSKeyRingImportJobs{c, namespace}
 }
 
 func (c *FakeKmsV1alpha1) KMSSecretCiphertexts(namespace string) v1alpha1.KMSSecretCiphertextInterface {
-	return newFakeKMSSecretCiphertexts(c, namespace)
+	return &FakeKMSSecretCiphertexts{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

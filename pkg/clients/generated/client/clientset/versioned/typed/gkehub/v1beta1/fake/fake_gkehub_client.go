@@ -32,15 +32,15 @@ type FakeGkehubV1beta1 struct {
 }
 
 func (c *FakeGkehubV1beta1) GKEHubFeatures(namespace string) v1beta1.GKEHubFeatureInterface {
-	return newFakeGKEHubFeatures(c, namespace)
+	return &FakeGKEHubFeatures{c, namespace}
 }
 
 func (c *FakeGkehubV1beta1) GKEHubFeatureMemberships(namespace string) v1beta1.GKEHubFeatureMembershipInterface {
-	return newFakeGKEHubFeatureMemberships(c, namespace)
+	return &FakeGKEHubFeatureMemberships{c, namespace}
 }
 
 func (c *FakeGkehubV1beta1) GKEHubMemberships(namespace string) v1beta1.GKEHubMembershipInterface {
-	return newFakeGKEHubMemberships(c, namespace)
+	return &FakeGKEHubMemberships{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

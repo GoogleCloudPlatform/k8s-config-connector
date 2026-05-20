@@ -32,11 +32,11 @@ type FakeRedisV1beta1 struct {
 }
 
 func (c *FakeRedisV1beta1) RedisClusters(namespace string) v1beta1.RedisClusterInterface {
-	return newFakeRedisClusters(c, namespace)
+	return &FakeRedisClusters{c, namespace}
 }
 
 func (c *FakeRedisV1beta1) RedisInstances(namespace string) v1beta1.RedisInstanceInterface {
-	return newFakeRedisInstances(c, namespace)
+	return &FakeRedisInstances{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

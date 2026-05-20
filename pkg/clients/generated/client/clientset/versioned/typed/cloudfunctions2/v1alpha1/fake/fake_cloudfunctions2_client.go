@@ -32,7 +32,7 @@ type FakeCloudfunctions2V1alpha1 struct {
 }
 
 func (c *FakeCloudfunctions2V1alpha1) CloudFunctions2Functions(namespace string) v1alpha1.CloudFunctions2FunctionInterface {
-	return newFakeCloudFunctions2Functions(c, namespace)
+	return &FakeCloudFunctions2Functions{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

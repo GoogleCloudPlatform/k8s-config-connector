@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memorystore/v1alpha1"
-	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeMemorystoreInstanceEndpoints implements MemorystoreInstanceEndpointInterface
-type fakeMemorystoreInstanceEndpoints struct {
-	*gentype.FakeClientWithList[*v1alpha1.MemorystoreInstanceEndpoint, *v1alpha1.MemorystoreInstanceEndpointList]
+// FakeMemorystoreInstanceEndpoints implements MemorystoreInstanceEndpointInterface
+type FakeMemorystoreInstanceEndpoints struct {
 	Fake *FakeMemorystoreV1alpha1
+	ns   string
 }
 
-func newFakeMemorystoreInstanceEndpoints(fake *FakeMemorystoreV1alpha1, namespace string) memorystorev1alpha1.MemorystoreInstanceEndpointInterface {
-	return &fakeMemorystoreInstanceEndpoints{
-		gentype.NewFakeClientWithList[*v1alpha1.MemorystoreInstanceEndpoint, *v1alpha1.MemorystoreInstanceEndpointList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("memorystoreinstanceendpoints"),
-			v1alpha1.SchemeGroupVersion.WithKind("MemorystoreInstanceEndpoint"),
-			func() *v1alpha1.MemorystoreInstanceEndpoint { return &v1alpha1.MemorystoreInstanceEndpoint{} },
-			func() *v1alpha1.MemorystoreInstanceEndpointList { return &v1alpha1.MemorystoreInstanceEndpointList{} },
-			func(dst, src *v1alpha1.MemorystoreInstanceEndpointList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.MemorystoreInstanceEndpointList) []*v1alpha1.MemorystoreInstanceEndpoint {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.MemorystoreInstanceEndpointList, items []*v1alpha1.MemorystoreInstanceEndpoint) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var memorystoreinstanceendpointsResource = v1alpha1.SchemeGroupVersion.WithResource("memorystoreinstanceendpoints")
+
+var memorystoreinstanceendpointsKind = v1alpha1.SchemeGroupVersion.WithKind("MemorystoreInstanceEndpoint")
+
+// Get takes name of the memorystoreInstanceEndpoint, and returns the corresponding memorystoreInstanceEndpoint object, and an error if there is any.
+func (c *FakeMemorystoreInstanceEndpoints) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.MemorystoreInstanceEndpoint, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(memorystoreinstanceendpointsResource, c.ns, name), &v1alpha1.MemorystoreInstanceEndpoint{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.MemorystoreInstanceEndpoint), err
+}
+
+// List takes label and field selectors, and returns the list of MemorystoreInstanceEndpoints that match those selectors.
+func (c *FakeMemorystoreInstanceEndpoints) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.MemorystoreInstanceEndpointList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(memorystoreinstanceendpointsResource, memorystoreinstanceendpointsKind, c.ns, opts), &v1alpha1.MemorystoreInstanceEndpointList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.MemorystoreInstanceEndpointList{ListMeta: obj.(*v1alpha1.MemorystoreInstanceEndpointList).ListMeta}
+	for _, item := range obj.(*v1alpha1.MemorystoreInstanceEndpointList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested memorystoreInstanceEndpoints.
+func (c *FakeMemorystoreInstanceEndpoints) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(memorystoreinstanceendpointsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a memorystoreInstanceEndpoint and creates it.  Returns the server's representation of the memorystoreInstanceEndpoint, and an error, if there is any.
+func (c *FakeMemorystoreInstanceEndpoints) Create(ctx context.Context, memorystoreInstanceEndpoint *v1alpha1.MemorystoreInstanceEndpoint, opts v1.CreateOptions) (result *v1alpha1.MemorystoreInstanceEndpoint, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(memorystoreinstanceendpointsResource, c.ns, memorystoreInstanceEndpoint), &v1alpha1.MemorystoreInstanceEndpoint{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.MemorystoreInstanceEndpoint), err
+}
+
+// Update takes the representation of a memorystoreInstanceEndpoint and updates it. Returns the server's representation of the memorystoreInstanceEndpoint, and an error, if there is any.
+func (c *FakeMemorystoreInstanceEndpoints) Update(ctx context.Context, memorystoreInstanceEndpoint *v1alpha1.MemorystoreInstanceEndpoint, opts v1.UpdateOptions) (result *v1alpha1.MemorystoreInstanceEndpoint, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(memorystoreinstanceendpointsResource, c.ns, memorystoreInstanceEndpoint), &v1alpha1.MemorystoreInstanceEndpoint{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.MemorystoreInstanceEndpoint), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeMemorystoreInstanceEndpoints) UpdateStatus(ctx context.Context, memorystoreInstanceEndpoint *v1alpha1.MemorystoreInstanceEndpoint, opts v1.UpdateOptions) (*v1alpha1.MemorystoreInstanceEndpoint, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(memorystoreinstanceendpointsResource, "status", c.ns, memorystoreInstanceEndpoint), &v1alpha1.MemorystoreInstanceEndpoint{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.MemorystoreInstanceEndpoint), err
+}
+
+// Delete takes name of the memorystoreInstanceEndpoint and deletes it. Returns an error if one occurs.
+func (c *FakeMemorystoreInstanceEndpoints) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(memorystoreinstanceendpointsResource, c.ns, name, opts), &v1alpha1.MemorystoreInstanceEndpoint{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeMemorystoreInstanceEndpoints) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(memorystoreinstanceendpointsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.MemorystoreInstanceEndpointList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched memorystoreInstanceEndpoint.
+func (c *FakeMemorystoreInstanceEndpoints) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.MemorystoreInstanceEndpoint, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(memorystoreinstanceendpointsResource, c.ns, name, pt, data, subresources...), &v1alpha1.MemorystoreInstanceEndpoint{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.MemorystoreInstanceEndpoint), err
 }

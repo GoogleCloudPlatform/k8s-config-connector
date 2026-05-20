@@ -32,7 +32,7 @@ type FakeDataformV1beta1 struct {
 }
 
 func (c *FakeDataformV1beta1) DataformRepositories(namespace string) v1beta1.DataformRepositoryInterface {
-	return newFakeDataformRepositories(c, namespace)
+	return &FakeDataformRepositories{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

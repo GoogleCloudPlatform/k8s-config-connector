@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
-	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeApigeeInstanceAttachments implements ApigeeInstanceAttachmentInterface
-type fakeApigeeInstanceAttachments struct {
-	*gentype.FakeClientWithList[*v1beta1.ApigeeInstanceAttachment, *v1beta1.ApigeeInstanceAttachmentList]
+// FakeApigeeInstanceAttachments implements ApigeeInstanceAttachmentInterface
+type FakeApigeeInstanceAttachments struct {
 	Fake *FakeApigeeV1beta1
+	ns   string
 }
 
-func newFakeApigeeInstanceAttachments(fake *FakeApigeeV1beta1, namespace string) apigeev1beta1.ApigeeInstanceAttachmentInterface {
-	return &fakeApigeeInstanceAttachments{
-		gentype.NewFakeClientWithList[*v1beta1.ApigeeInstanceAttachment, *v1beta1.ApigeeInstanceAttachmentList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("apigeeinstanceattachments"),
-			v1beta1.SchemeGroupVersion.WithKind("ApigeeInstanceAttachment"),
-			func() *v1beta1.ApigeeInstanceAttachment { return &v1beta1.ApigeeInstanceAttachment{} },
-			func() *v1beta1.ApigeeInstanceAttachmentList { return &v1beta1.ApigeeInstanceAttachmentList{} },
-			func(dst, src *v1beta1.ApigeeInstanceAttachmentList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.ApigeeInstanceAttachmentList) []*v1beta1.ApigeeInstanceAttachment {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.ApigeeInstanceAttachmentList, items []*v1beta1.ApigeeInstanceAttachment) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var apigeeinstanceattachmentsResource = v1beta1.SchemeGroupVersion.WithResource("apigeeinstanceattachments")
+
+var apigeeinstanceattachmentsKind = v1beta1.SchemeGroupVersion.WithKind("ApigeeInstanceAttachment")
+
+// Get takes name of the apigeeInstanceAttachment, and returns the corresponding apigeeInstanceAttachment object, and an error if there is any.
+func (c *FakeApigeeInstanceAttachments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ApigeeInstanceAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(apigeeinstanceattachmentsResource, c.ns, name), &v1beta1.ApigeeInstanceAttachment{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.ApigeeInstanceAttachment), err
+}
+
+// List takes label and field selectors, and returns the list of ApigeeInstanceAttachments that match those selectors.
+func (c *FakeApigeeInstanceAttachments) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ApigeeInstanceAttachmentList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(apigeeinstanceattachmentsResource, apigeeinstanceattachmentsKind, c.ns, opts), &v1beta1.ApigeeInstanceAttachmentList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.ApigeeInstanceAttachmentList{ListMeta: obj.(*v1beta1.ApigeeInstanceAttachmentList).ListMeta}
+	for _, item := range obj.(*v1beta1.ApigeeInstanceAttachmentList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested apigeeInstanceAttachments.
+func (c *FakeApigeeInstanceAttachments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(apigeeinstanceattachmentsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a apigeeInstanceAttachment and creates it.  Returns the server's representation of the apigeeInstanceAttachment, and an error, if there is any.
+func (c *FakeApigeeInstanceAttachments) Create(ctx context.Context, apigeeInstanceAttachment *v1beta1.ApigeeInstanceAttachment, opts v1.CreateOptions) (result *v1beta1.ApigeeInstanceAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(apigeeinstanceattachmentsResource, c.ns, apigeeInstanceAttachment), &v1beta1.ApigeeInstanceAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ApigeeInstanceAttachment), err
+}
+
+// Update takes the representation of a apigeeInstanceAttachment and updates it. Returns the server's representation of the apigeeInstanceAttachment, and an error, if there is any.
+func (c *FakeApigeeInstanceAttachments) Update(ctx context.Context, apigeeInstanceAttachment *v1beta1.ApigeeInstanceAttachment, opts v1.UpdateOptions) (result *v1beta1.ApigeeInstanceAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(apigeeinstanceattachmentsResource, c.ns, apigeeInstanceAttachment), &v1beta1.ApigeeInstanceAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ApigeeInstanceAttachment), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeApigeeInstanceAttachments) UpdateStatus(ctx context.Context, apigeeInstanceAttachment *v1beta1.ApigeeInstanceAttachment, opts v1.UpdateOptions) (*v1beta1.ApigeeInstanceAttachment, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(apigeeinstanceattachmentsResource, "status", c.ns, apigeeInstanceAttachment), &v1beta1.ApigeeInstanceAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ApigeeInstanceAttachment), err
+}
+
+// Delete takes name of the apigeeInstanceAttachment and deletes it. Returns an error if one occurs.
+func (c *FakeApigeeInstanceAttachments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(apigeeinstanceattachmentsResource, c.ns, name, opts), &v1beta1.ApigeeInstanceAttachment{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeApigeeInstanceAttachments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(apigeeinstanceattachmentsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.ApigeeInstanceAttachmentList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched apigeeInstanceAttachment.
+func (c *FakeApigeeInstanceAttachments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ApigeeInstanceAttachment, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(apigeeinstanceattachmentsResource, c.ns, name, pt, data, subresources...), &v1beta1.ApigeeInstanceAttachment{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ApigeeInstanceAttachment), err
 }

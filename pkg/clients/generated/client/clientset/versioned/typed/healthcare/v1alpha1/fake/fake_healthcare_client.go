@@ -32,23 +32,23 @@ type FakeHealthcareV1alpha1 struct {
 }
 
 func (c *FakeHealthcareV1alpha1) HealthcareConsentStores(namespace string) v1alpha1.HealthcareConsentStoreInterface {
-	return newFakeHealthcareConsentStores(c, namespace)
+	return &FakeHealthcareConsentStores{c, namespace}
 }
 
 func (c *FakeHealthcareV1alpha1) HealthcareDICOMStores(namespace string) v1alpha1.HealthcareDICOMStoreInterface {
-	return newFakeHealthcareDICOMStores(c, namespace)
+	return &FakeHealthcareDICOMStores{c, namespace}
 }
 
 func (c *FakeHealthcareV1alpha1) HealthcareDatasets(namespace string) v1alpha1.HealthcareDatasetInterface {
-	return newFakeHealthcareDatasets(c, namespace)
+	return &FakeHealthcareDatasets{c, namespace}
 }
 
 func (c *FakeHealthcareV1alpha1) HealthcareFHIRStores(namespace string) v1alpha1.HealthcareFHIRStoreInterface {
-	return newFakeHealthcareFHIRStores(c, namespace)
+	return &FakeHealthcareFHIRStores{c, namespace}
 }
 
 func (c *FakeHealthcareV1alpha1) HealthcareHL7V2Stores(namespace string) v1alpha1.HealthcareHL7V2StoreInterface {
-	return newFakeHealthcareHL7V2Stores(c, namespace)
+	return &FakeHealthcareHL7V2Stores{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

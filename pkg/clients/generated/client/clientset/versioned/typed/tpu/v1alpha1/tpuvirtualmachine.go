@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // TPUVirtualMachinesGetter has a method to return a TPUVirtualMachineInterface.
@@ -40,34 +41,158 @@ type TPUVirtualMachinesGetter interface {
 
 // TPUVirtualMachineInterface has methods to work with TPUVirtualMachine resources.
 type TPUVirtualMachineInterface interface {
-	Create(ctx context.Context, tPUVirtualMachine *tpuv1alpha1.TPUVirtualMachine, opts v1.CreateOptions) (*tpuv1alpha1.TPUVirtualMachine, error)
-	Update(ctx context.Context, tPUVirtualMachine *tpuv1alpha1.TPUVirtualMachine, opts v1.UpdateOptions) (*tpuv1alpha1.TPUVirtualMachine, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, tPUVirtualMachine *tpuv1alpha1.TPUVirtualMachine, opts v1.UpdateOptions) (*tpuv1alpha1.TPUVirtualMachine, error)
+	Create(ctx context.Context, tPUVirtualMachine *v1alpha1.TPUVirtualMachine, opts v1.CreateOptions) (*v1alpha1.TPUVirtualMachine, error)
+	Update(ctx context.Context, tPUVirtualMachine *v1alpha1.TPUVirtualMachine, opts v1.UpdateOptions) (*v1alpha1.TPUVirtualMachine, error)
+	UpdateStatus(ctx context.Context, tPUVirtualMachine *v1alpha1.TPUVirtualMachine, opts v1.UpdateOptions) (*v1alpha1.TPUVirtualMachine, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*tpuv1alpha1.TPUVirtualMachine, error)
-	List(ctx context.Context, opts v1.ListOptions) (*tpuv1alpha1.TPUVirtualMachineList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.TPUVirtualMachine, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.TPUVirtualMachineList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *tpuv1alpha1.TPUVirtualMachine, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.TPUVirtualMachine, err error)
 	TPUVirtualMachineExpansion
 }
 
 // tPUVirtualMachines implements TPUVirtualMachineInterface
 type tPUVirtualMachines struct {
-	*gentype.ClientWithList[*tpuv1alpha1.TPUVirtualMachine, *tpuv1alpha1.TPUVirtualMachineList]
+	client rest.Interface
+	ns     string
 }
 
 // newTPUVirtualMachines returns a TPUVirtualMachines
 func newTPUVirtualMachines(c *TpuV1alpha1Client, namespace string) *tPUVirtualMachines {
 	return &tPUVirtualMachines{
-		gentype.NewClientWithList[*tpuv1alpha1.TPUVirtualMachine, *tpuv1alpha1.TPUVirtualMachineList](
-			"tpuvirtualmachines",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *tpuv1alpha1.TPUVirtualMachine { return &tpuv1alpha1.TPUVirtualMachine{} },
-			func() *tpuv1alpha1.TPUVirtualMachineList { return &tpuv1alpha1.TPUVirtualMachineList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the tPUVirtualMachine, and returns the corresponding tPUVirtualMachine object, and an error if there is any.
+func (c *tPUVirtualMachines) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.TPUVirtualMachine, err error) {
+	result = &v1alpha1.TPUVirtualMachine{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("tpuvirtualmachines").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of TPUVirtualMachines that match those selectors.
+func (c *tPUVirtualMachines) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.TPUVirtualMachineList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.TPUVirtualMachineList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("tpuvirtualmachines").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested tPUVirtualMachines.
+func (c *tPUVirtualMachines) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("tpuvirtualmachines").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a tPUVirtualMachine and creates it.  Returns the server's representation of the tPUVirtualMachine, and an error, if there is any.
+func (c *tPUVirtualMachines) Create(ctx context.Context, tPUVirtualMachine *v1alpha1.TPUVirtualMachine, opts v1.CreateOptions) (result *v1alpha1.TPUVirtualMachine, err error) {
+	result = &v1alpha1.TPUVirtualMachine{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("tpuvirtualmachines").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(tPUVirtualMachine).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a tPUVirtualMachine and updates it. Returns the server's representation of the tPUVirtualMachine, and an error, if there is any.
+func (c *tPUVirtualMachines) Update(ctx context.Context, tPUVirtualMachine *v1alpha1.TPUVirtualMachine, opts v1.UpdateOptions) (result *v1alpha1.TPUVirtualMachine, err error) {
+	result = &v1alpha1.TPUVirtualMachine{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("tpuvirtualmachines").
+		Name(tPUVirtualMachine.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(tPUVirtualMachine).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *tPUVirtualMachines) UpdateStatus(ctx context.Context, tPUVirtualMachine *v1alpha1.TPUVirtualMachine, opts v1.UpdateOptions) (result *v1alpha1.TPUVirtualMachine, err error) {
+	result = &v1alpha1.TPUVirtualMachine{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("tpuvirtualmachines").
+		Name(tPUVirtualMachine.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(tPUVirtualMachine).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the tPUVirtualMachine and deletes it. Returns an error if one occurs.
+func (c *tPUVirtualMachines) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("tpuvirtualmachines").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *tPUVirtualMachines) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("tpuvirtualmachines").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched tPUVirtualMachine.
+func (c *tPUVirtualMachines) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.TPUVirtualMachine, err error) {
+	result = &v1alpha1.TPUVirtualMachine{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("tpuvirtualmachines").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

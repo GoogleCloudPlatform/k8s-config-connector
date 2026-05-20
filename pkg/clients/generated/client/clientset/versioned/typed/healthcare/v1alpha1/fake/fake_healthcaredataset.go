@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
-	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeHealthcareDatasets implements HealthcareDatasetInterface
-type fakeHealthcareDatasets struct {
-	*gentype.FakeClientWithList[*v1alpha1.HealthcareDataset, *v1alpha1.HealthcareDatasetList]
+// FakeHealthcareDatasets implements HealthcareDatasetInterface
+type FakeHealthcareDatasets struct {
 	Fake *FakeHealthcareV1alpha1
+	ns   string
 }
 
-func newFakeHealthcareDatasets(fake *FakeHealthcareV1alpha1, namespace string) healthcarev1alpha1.HealthcareDatasetInterface {
-	return &fakeHealthcareDatasets{
-		gentype.NewFakeClientWithList[*v1alpha1.HealthcareDataset, *v1alpha1.HealthcareDatasetList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("healthcaredatasets"),
-			v1alpha1.SchemeGroupVersion.WithKind("HealthcareDataset"),
-			func() *v1alpha1.HealthcareDataset { return &v1alpha1.HealthcareDataset{} },
-			func() *v1alpha1.HealthcareDatasetList { return &v1alpha1.HealthcareDatasetList{} },
-			func(dst, src *v1alpha1.HealthcareDatasetList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.HealthcareDatasetList) []*v1alpha1.HealthcareDataset {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.HealthcareDatasetList, items []*v1alpha1.HealthcareDataset) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var healthcaredatasetsResource = v1alpha1.SchemeGroupVersion.WithResource("healthcaredatasets")
+
+var healthcaredatasetsKind = v1alpha1.SchemeGroupVersion.WithKind("HealthcareDataset")
+
+// Get takes name of the healthcareDataset, and returns the corresponding healthcareDataset object, and an error if there is any.
+func (c *FakeHealthcareDatasets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.HealthcareDataset, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(healthcaredatasetsResource, c.ns, name), &v1alpha1.HealthcareDataset{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.HealthcareDataset), err
+}
+
+// List takes label and field selectors, and returns the list of HealthcareDatasets that match those selectors.
+func (c *FakeHealthcareDatasets) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.HealthcareDatasetList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(healthcaredatasetsResource, healthcaredatasetsKind, c.ns, opts), &v1alpha1.HealthcareDatasetList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.HealthcareDatasetList{ListMeta: obj.(*v1alpha1.HealthcareDatasetList).ListMeta}
+	for _, item := range obj.(*v1alpha1.HealthcareDatasetList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested healthcareDatasets.
+func (c *FakeHealthcareDatasets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(healthcaredatasetsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a healthcareDataset and creates it.  Returns the server's representation of the healthcareDataset, and an error, if there is any.
+func (c *FakeHealthcareDatasets) Create(ctx context.Context, healthcareDataset *v1alpha1.HealthcareDataset, opts v1.CreateOptions) (result *v1alpha1.HealthcareDataset, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(healthcaredatasetsResource, c.ns, healthcareDataset), &v1alpha1.HealthcareDataset{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.HealthcareDataset), err
+}
+
+// Update takes the representation of a healthcareDataset and updates it. Returns the server's representation of the healthcareDataset, and an error, if there is any.
+func (c *FakeHealthcareDatasets) Update(ctx context.Context, healthcareDataset *v1alpha1.HealthcareDataset, opts v1.UpdateOptions) (result *v1alpha1.HealthcareDataset, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(healthcaredatasetsResource, c.ns, healthcareDataset), &v1alpha1.HealthcareDataset{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.HealthcareDataset), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeHealthcareDatasets) UpdateStatus(ctx context.Context, healthcareDataset *v1alpha1.HealthcareDataset, opts v1.UpdateOptions) (*v1alpha1.HealthcareDataset, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(healthcaredatasetsResource, "status", c.ns, healthcareDataset), &v1alpha1.HealthcareDataset{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.HealthcareDataset), err
+}
+
+// Delete takes name of the healthcareDataset and deletes it. Returns an error if one occurs.
+func (c *FakeHealthcareDatasets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(healthcaredatasetsResource, c.ns, name, opts), &v1alpha1.HealthcareDataset{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeHealthcareDatasets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(healthcaredatasetsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.HealthcareDatasetList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched healthcareDataset.
+func (c *FakeHealthcareDatasets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.HealthcareDataset, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(healthcaredatasetsResource, c.ns, name, pt, data, subresources...), &v1alpha1.HealthcareDataset{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.HealthcareDataset), err
 }
