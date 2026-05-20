@@ -341,6 +341,7 @@ type CloudDeployAutomationStatus struct {
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
 // CloudDeployAutomation is the Schema for the clouddeploy API
 // +k8s:openapi-gen=true
 type CloudDeployAutomation struct {
@@ -352,6 +353,7 @@ type CloudDeployAutomation struct {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 // CloudDeployAutomationList contains a list of CloudDeployAutomation
 type CloudDeployAutomationList struct {
 	metav1.TypeMeta `json:",inline"`
