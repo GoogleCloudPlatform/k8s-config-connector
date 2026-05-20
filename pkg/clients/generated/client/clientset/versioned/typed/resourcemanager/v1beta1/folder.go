@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // FoldersGetter has a method to return a FolderInterface.
@@ -41,158 +40,34 @@ type FoldersGetter interface {
 
 // FolderInterface has methods to work with Folder resources.
 type FolderInterface interface {
-	Create(ctx context.Context, folder *v1beta1.Folder, opts v1.CreateOptions) (*v1beta1.Folder, error)
-	Update(ctx context.Context, folder *v1beta1.Folder, opts v1.UpdateOptions) (*v1beta1.Folder, error)
-	UpdateStatus(ctx context.Context, folder *v1beta1.Folder, opts v1.UpdateOptions) (*v1beta1.Folder, error)
+	Create(ctx context.Context, folder *resourcemanagerv1beta1.Folder, opts v1.CreateOptions) (*resourcemanagerv1beta1.Folder, error)
+	Update(ctx context.Context, folder *resourcemanagerv1beta1.Folder, opts v1.UpdateOptions) (*resourcemanagerv1beta1.Folder, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, folder *resourcemanagerv1beta1.Folder, opts v1.UpdateOptions) (*resourcemanagerv1beta1.Folder, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.Folder, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.FolderList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*resourcemanagerv1beta1.Folder, error)
+	List(ctx context.Context, opts v1.ListOptions) (*resourcemanagerv1beta1.FolderList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Folder, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *resourcemanagerv1beta1.Folder, err error)
 	FolderExpansion
 }
 
 // folders implements FolderInterface
 type folders struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*resourcemanagerv1beta1.Folder, *resourcemanagerv1beta1.FolderList]
 }
 
 // newFolders returns a Folders
 func newFolders(c *ResourcemanagerV1beta1Client, namespace string) *folders {
 	return &folders{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*resourcemanagerv1beta1.Folder, *resourcemanagerv1beta1.FolderList](
+			"folders",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *resourcemanagerv1beta1.Folder { return &resourcemanagerv1beta1.Folder{} },
+			func() *resourcemanagerv1beta1.FolderList { return &resourcemanagerv1beta1.FolderList{} },
+		),
 	}
-}
-
-// Get takes name of the folder, and returns the corresponding folder object, and an error if there is any.
-func (c *folders) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.Folder, err error) {
-	result = &v1beta1.Folder{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("folders").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of Folders that match those selectors.
-func (c *folders) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.FolderList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.FolderList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("folders").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested folders.
-func (c *folders) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("folders").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a folder and creates it.  Returns the server's representation of the folder, and an error, if there is any.
-func (c *folders) Create(ctx context.Context, folder *v1beta1.Folder, opts v1.CreateOptions) (result *v1beta1.Folder, err error) {
-	result = &v1beta1.Folder{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("folders").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(folder).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a folder and updates it. Returns the server's representation of the folder, and an error, if there is any.
-func (c *folders) Update(ctx context.Context, folder *v1beta1.Folder, opts v1.UpdateOptions) (result *v1beta1.Folder, err error) {
-	result = &v1beta1.Folder{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("folders").
-		Name(folder.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(folder).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *folders) UpdateStatus(ctx context.Context, folder *v1beta1.Folder, opts v1.UpdateOptions) (result *v1beta1.Folder, err error) {
-	result = &v1beta1.Folder{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("folders").
-		Name(folder.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(folder).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the folder and deletes it. Returns an error if one occurs.
-func (c *folders) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("folders").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *folders) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("folders").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched folder.
-func (c *folders) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Folder, err error) {
-	result = &v1beta1.Folder{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("folders").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

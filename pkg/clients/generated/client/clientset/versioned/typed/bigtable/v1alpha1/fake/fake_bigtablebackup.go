@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBigtableBackups implements BigtableBackupInterface
-type FakeBigtableBackups struct {
+// fakeBigtableBackups implements BigtableBackupInterface
+type fakeBigtableBackups struct {
+	*gentype.FakeClientWithList[*v1alpha1.BigtableBackup, *v1alpha1.BigtableBackupList]
 	Fake *FakeBigtableV1alpha1
-	ns   string
 }
 
-var bigtablebackupsResource = v1alpha1.SchemeGroupVersion.WithResource("bigtablebackups")
-
-var bigtablebackupsKind = v1alpha1.SchemeGroupVersion.WithKind("BigtableBackup")
-
-// Get takes name of the bigtableBackup, and returns the corresponding bigtableBackup object, and an error if there is any.
-func (c *FakeBigtableBackups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigtableBackup, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(bigtablebackupsResource, c.ns, name), &v1alpha1.BigtableBackup{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBigtableBackups(fake *FakeBigtableV1alpha1, namespace string) bigtablev1alpha1.BigtableBackupInterface {
+	return &fakeBigtableBackups{
+		gentype.NewFakeClientWithList[*v1alpha1.BigtableBackup, *v1alpha1.BigtableBackupList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("bigtablebackups"),
+			v1alpha1.SchemeGroupVersion.WithKind("BigtableBackup"),
+			func() *v1alpha1.BigtableBackup { return &v1alpha1.BigtableBackup{} },
+			func() *v1alpha1.BigtableBackupList { return &v1alpha1.BigtableBackupList{} },
+			func(dst, src *v1alpha1.BigtableBackupList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.BigtableBackupList) []*v1alpha1.BigtableBackup {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.BigtableBackupList, items []*v1alpha1.BigtableBackup) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.BigtableBackup), err
-}
-
-// List takes label and field selectors, and returns the list of BigtableBackups that match those selectors.
-func (c *FakeBigtableBackups) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigtableBackupList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(bigtablebackupsResource, bigtablebackupsKind, c.ns, opts), &v1alpha1.BigtableBackupList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.BigtableBackupList{ListMeta: obj.(*v1alpha1.BigtableBackupList).ListMeta}
-	for _, item := range obj.(*v1alpha1.BigtableBackupList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested bigtableBackups.
-func (c *FakeBigtableBackups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(bigtablebackupsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a bigtableBackup and creates it.  Returns the server's representation of the bigtableBackup, and an error, if there is any.
-func (c *FakeBigtableBackups) Create(ctx context.Context, bigtableBackup *v1alpha1.BigtableBackup, opts v1.CreateOptions) (result *v1alpha1.BigtableBackup, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(bigtablebackupsResource, c.ns, bigtableBackup), &v1alpha1.BigtableBackup{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableBackup), err
-}
-
-// Update takes the representation of a bigtableBackup and updates it. Returns the server's representation of the bigtableBackup, and an error, if there is any.
-func (c *FakeBigtableBackups) Update(ctx context.Context, bigtableBackup *v1alpha1.BigtableBackup, opts v1.UpdateOptions) (result *v1alpha1.BigtableBackup, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(bigtablebackupsResource, c.ns, bigtableBackup), &v1alpha1.BigtableBackup{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableBackup), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigtableBackups) UpdateStatus(ctx context.Context, bigtableBackup *v1alpha1.BigtableBackup, opts v1.UpdateOptions) (*v1alpha1.BigtableBackup, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(bigtablebackupsResource, "status", c.ns, bigtableBackup), &v1alpha1.BigtableBackup{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableBackup), err
-}
-
-// Delete takes name of the bigtableBackup and deletes it. Returns an error if one occurs.
-func (c *FakeBigtableBackups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(bigtablebackupsResource, c.ns, name, opts), &v1alpha1.BigtableBackup{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBigtableBackups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(bigtablebackupsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.BigtableBackupList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched bigtableBackup.
-func (c *FakeBigtableBackups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigtableBackup, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(bigtablebackupsResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigtableBackup{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.BigtableBackup), err
 }

@@ -32,7 +32,7 @@ type FakeBigqueryconnectionV1beta1 struct {
 }
 
 func (c *FakeBigqueryconnectionV1beta1) BigQueryConnectionConnections(namespace string) v1beta1.BigQueryConnectionConnectionInterface {
-	return &FakeBigQueryConnectionConnections{c, namespace}
+	return newFakeBigQueryConnectionConnections(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

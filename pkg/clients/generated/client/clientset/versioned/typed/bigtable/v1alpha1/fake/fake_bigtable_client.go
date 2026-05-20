@@ -32,23 +32,23 @@ type FakeBigtableV1alpha1 struct {
 }
 
 func (c *FakeBigtableV1alpha1) BigtableAuthorizedViews(namespace string) v1alpha1.BigtableAuthorizedViewInterface {
-	return &FakeBigtableAuthorizedViews{c, namespace}
+	return newFakeBigtableAuthorizedViews(c, namespace)
 }
 
 func (c *FakeBigtableV1alpha1) BigtableBackups(namespace string) v1alpha1.BigtableBackupInterface {
-	return &FakeBigtableBackups{c, namespace}
+	return newFakeBigtableBackups(c, namespace)
 }
 
 func (c *FakeBigtableV1alpha1) BigtableClusters(namespace string) v1alpha1.BigtableClusterInterface {
-	return &FakeBigtableClusters{c, namespace}
+	return newFakeBigtableClusters(c, namespace)
 }
 
 func (c *FakeBigtableV1alpha1) BigtableLogicalViews(namespace string) v1alpha1.BigtableLogicalViewInterface {
-	return &FakeBigtableLogicalViews{c, namespace}
+	return newFakeBigtableLogicalViews(c, namespace)
 }
 
 func (c *FakeBigtableV1alpha1) BigtableMaterializedViews(namespace string) v1alpha1.BigtableMaterializedViewInterface {
-	return &FakeBigtableMaterializedViews{c, namespace}
+	return newFakeBigtableMaterializedViews(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

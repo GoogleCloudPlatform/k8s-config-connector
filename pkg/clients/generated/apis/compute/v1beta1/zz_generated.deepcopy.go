@@ -6335,6 +6335,11 @@ func (in *ComputeReservationStatus) DeepCopyInto(out *ComputeReservationStatus) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
 		*out = new(int64)
@@ -13771,7 +13776,7 @@ func (in *ReservationSpecificReservation) DeepCopyInto(out *ReservationSpecificR
 	*out = *in
 	if in.InUseCount != nil {
 		in, out := &in.InUseCount, &out.InUseCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	in.InstanceProperties.DeepCopyInto(&out.InstanceProperties)

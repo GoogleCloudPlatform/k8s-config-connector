@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDialogflowCXWebhooks implements DialogflowCXWebhookInterface
-type FakeDialogflowCXWebhooks struct {
+// fakeDialogflowCXWebhooks implements DialogflowCXWebhookInterface
+type fakeDialogflowCXWebhooks struct {
+	*gentype.FakeClientWithList[*v1alpha1.DialogflowCXWebhook, *v1alpha1.DialogflowCXWebhookList]
 	Fake *FakeDialogflowcxV1alpha1
-	ns   string
 }
 
-var dialogflowcxwebhooksResource = v1alpha1.SchemeGroupVersion.WithResource("dialogflowcxwebhooks")
-
-var dialogflowcxwebhooksKind = v1alpha1.SchemeGroupVersion.WithKind("DialogflowCXWebhook")
-
-// Get takes name of the dialogflowCXWebhook, and returns the corresponding dialogflowCXWebhook object, and an error if there is any.
-func (c *FakeDialogflowCXWebhooks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowCXWebhook, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(dialogflowcxwebhooksResource, c.ns, name), &v1alpha1.DialogflowCXWebhook{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDialogflowCXWebhooks(fake *FakeDialogflowcxV1alpha1, namespace string) dialogflowcxv1alpha1.DialogflowCXWebhookInterface {
+	return &fakeDialogflowCXWebhooks{
+		gentype.NewFakeClientWithList[*v1alpha1.DialogflowCXWebhook, *v1alpha1.DialogflowCXWebhookList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("dialogflowcxwebhooks"),
+			v1alpha1.SchemeGroupVersion.WithKind("DialogflowCXWebhook"),
+			func() *v1alpha1.DialogflowCXWebhook { return &v1alpha1.DialogflowCXWebhook{} },
+			func() *v1alpha1.DialogflowCXWebhookList { return &v1alpha1.DialogflowCXWebhookList{} },
+			func(dst, src *v1alpha1.DialogflowCXWebhookList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DialogflowCXWebhookList) []*v1alpha1.DialogflowCXWebhook {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DialogflowCXWebhookList, items []*v1alpha1.DialogflowCXWebhook) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DialogflowCXWebhook), err
-}
-
-// List takes label and field selectors, and returns the list of DialogflowCXWebhooks that match those selectors.
-func (c *FakeDialogflowCXWebhooks) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DialogflowCXWebhookList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(dialogflowcxwebhooksResource, dialogflowcxwebhooksKind, c.ns, opts), &v1alpha1.DialogflowCXWebhookList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DialogflowCXWebhookList{ListMeta: obj.(*v1alpha1.DialogflowCXWebhookList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DialogflowCXWebhookList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dialogflowCXWebhooks.
-func (c *FakeDialogflowCXWebhooks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(dialogflowcxwebhooksResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dialogflowCXWebhook and creates it.  Returns the server's representation of the dialogflowCXWebhook, and an error, if there is any.
-func (c *FakeDialogflowCXWebhooks) Create(ctx context.Context, dialogflowCXWebhook *v1alpha1.DialogflowCXWebhook, opts v1.CreateOptions) (result *v1alpha1.DialogflowCXWebhook, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(dialogflowcxwebhooksResource, c.ns, dialogflowCXWebhook), &v1alpha1.DialogflowCXWebhook{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXWebhook), err
-}
-
-// Update takes the representation of a dialogflowCXWebhook and updates it. Returns the server's representation of the dialogflowCXWebhook, and an error, if there is any.
-func (c *FakeDialogflowCXWebhooks) Update(ctx context.Context, dialogflowCXWebhook *v1alpha1.DialogflowCXWebhook, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXWebhook, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(dialogflowcxwebhooksResource, c.ns, dialogflowCXWebhook), &v1alpha1.DialogflowCXWebhook{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXWebhook), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDialogflowCXWebhooks) UpdateStatus(ctx context.Context, dialogflowCXWebhook *v1alpha1.DialogflowCXWebhook, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXWebhook, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(dialogflowcxwebhooksResource, "status", c.ns, dialogflowCXWebhook), &v1alpha1.DialogflowCXWebhook{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXWebhook), err
-}
-
-// Delete takes name of the dialogflowCXWebhook and deletes it. Returns an error if one occurs.
-func (c *FakeDialogflowCXWebhooks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(dialogflowcxwebhooksResource, c.ns, name, opts), &v1alpha1.DialogflowCXWebhook{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDialogflowCXWebhooks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(dialogflowcxwebhooksResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DialogflowCXWebhookList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dialogflowCXWebhook.
-func (c *FakeDialogflowCXWebhooks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXWebhook, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(dialogflowcxwebhooksResource, c.ns, name, pt, data, subresources...), &v1alpha1.DialogflowCXWebhook{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXWebhook), err
 }

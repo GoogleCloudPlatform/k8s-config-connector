@@ -32,7 +32,7 @@ type FakeAssuredworkloadsV1alpha1 struct {
 }
 
 func (c *FakeAssuredworkloadsV1alpha1) AssuredWorkloadsWorkloads(namespace string) v1alpha1.AssuredWorkloadsWorkloadInterface {
-	return &FakeAssuredWorkloadsWorkloads{c, namespace}
+	return newFakeAssuredWorkloadsWorkloads(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
