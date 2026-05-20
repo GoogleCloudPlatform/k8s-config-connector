@@ -221,23 +221,3 @@ type ShareSettingsProjectConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
 	ProjectIDRef *refsv1beta1.ProjectRef `json:"projectIDRef,omitempty"`
 }
-
-// +kcc:proto=google.cloud.compute.v1.ShareSettings
-type ShareSettingsObservedState struct {
-	// A map of project id and project config. This is only valid when shareType's value is SPECIFIC_PROJECTS.
-	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_map
-	ProjectMap map[string]ShareSettingsProjectConfigObservedState `json:"projectMap,omitempty"`
-
-	// Type of sharing for this shared-reservation
-	//  Check the ShareType enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.share_type
-	ShareType *string `json:"shareType,omitempty"`
-}
-
-// +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
-type ShareSettingsProjectConfigObservedState struct {
-	// The project ID, should be same as the key of this project config in the
-	//  parent map.
-	// +kcc:proto:field=google.cloud.compute.v1.ShareSettingsProjectConfig.project_id
-	ProjectID *string `json:"projectID,omitempty"`
-}
