@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: ${reservationID}
@@ -21,6 +21,11 @@ spec:
       value:
         projectIDRef:
           external: ${projectId}
+    - keyRef:
+        name: project-${uniqueId}
+      value:
+        projectIDRef:
+          name: project-${uniqueId}
     shareType: SPECIFIC_PROJECTS
   specificReservation:
     count: 1
@@ -37,6 +42,6 @@ status:
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   externalRef: projects/shared-reservations-project/zones/us-central1-a/reservations/${reservationID}
-  observedGeneration: 1
+  observedGeneration: 2
   selfLink: https://www.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a/reservations/${reservationID}
   status: READY

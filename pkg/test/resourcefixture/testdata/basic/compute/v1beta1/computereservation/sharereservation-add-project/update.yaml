@@ -29,14 +29,13 @@ spec:
   shareSettings:
     shareType: SPECIFIC_PROJECTS
     projectMap:
-      - keyRef:
+    - keyRef:
+        external: ${projectId}
+      value:
+        projectIDRef:
           external: ${projectId}
-        value:
-          projectIDRef:
-            external: ${projectId}
-      - keyRef:
+    - keyRef:
+        name: project-${uniqueId}
+      value:
+        projectIDRef:
           name: project-${uniqueId}
-        value:
-          projectIDRef:
-            name: project-${uniqueId}
-
