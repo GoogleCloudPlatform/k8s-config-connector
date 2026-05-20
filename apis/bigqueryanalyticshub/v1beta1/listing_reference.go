@@ -90,3 +90,10 @@ func (r *BigQueryAnalyticsHubListingRef) Normalize(ctx context.Context, reader c
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
+
+func (r *BigQueryAnalyticsHubListingRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
+	}
+	return r.External, nil
+}
