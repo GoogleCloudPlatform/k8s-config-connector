@@ -464,6 +464,15 @@ type GCEPersistentDiskCsiDriverConfig struct {
 }
 */
 
+/* unreachable type GcpFilestoreCsiDriverConfig
+// +kcc:proto=google.container.v1.GcpFilestoreCsiDriverConfig
+type GcpFilestoreCsiDriverConfig struct {
+	// Whether the GCP Filestore CSI driver is enabled for this cluster.
+	// +kcc:proto:field=google.container.v1.GcpFilestoreCsiDriverConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
 /* unreachable type GCSFuseCsiDriverConfig
 // +kcc:proto=google.container.v1.GcsFuseCsiDriverConfig
 type GCSFuseCsiDriverConfig struct {
@@ -511,19 +520,6 @@ type LegacyAbac struct {
 	//  provided by the RBAC configuration or IAM.
 	// +kcc:proto:field=google.container.v1.LegacyAbac.enabled
 	Enabled *bool `json:"enabled,omitempty"`
-}
-*/
-
-/* unreachable type LinuxNodeConfig_HugepagesConfig
-// +kcc:proto=google.container.v1.LinuxNodeConfig.HugepagesConfig
-type LinuxNodeConfig_HugepagesConfig struct {
-	// Optional. Amount of 2M hugepages
-	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size2m
-	HugepageSize2m *int32 `json:"hugepageSize2m,omitempty"`
-
-	// Optional. Amount of 1G hugepages
-	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size1g
-	HugepageSize1g *int32 `json:"hugepageSize1g,omitempty"`
 }
 */
 
@@ -580,19 +576,6 @@ type LustreCsiDriverConfig struct {
 	//  using port 6988.
 	// +kcc:proto:field=google.container.v1.LustreCsiDriverConfig.enable_legacy_lustre_port
 	EnableLegacyLustrePort *bool `json:"enableLegacyLustrePort,omitempty"`
-}
-*/
-
-/* unreachable type MasterAuthorizedNetworksConfig_CIDRBlock
-// +kcc:proto=google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock
-type MasterAuthorizedNetworksConfig_CIDRBlock struct {
-	// display_name is an optional field for users to identify CIDR blocks.
-	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// cidr_block must be specified in CIDR notation.
-	// +kcc:proto:field=google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock.cidr_block
-	CIDRBlock *string `json:"cidrBlock,omitempty"`
 }
 */
 

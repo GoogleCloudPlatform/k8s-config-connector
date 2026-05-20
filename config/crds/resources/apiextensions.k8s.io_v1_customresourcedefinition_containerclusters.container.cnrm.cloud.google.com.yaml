@@ -376,6 +376,7 @@ spec:
                                   batchNodeCount:
                                     description: Number of blue nodes to drain in
                                       a batch.
+                                    format: int32
                                     type: integer
                                   batchPercentage:
                                     description: Percentage of the bool pool nodes
@@ -394,10 +395,12 @@ spec:
                             description: The maximum number of nodes that can be created
                               beyond the current size of the node pool during the
                               upgrade process.
+                            format: int32
                             type: integer
                           maxUnavailable:
                             description: The maximum number of nodes that can be simultaneously
                               unavailable during the upgrade process.
+                            format: int32
                             type: integer
                           strategy:
                             description: Update strategy of the node pool.
@@ -657,6 +660,7 @@ spec:
                   If you're using google_container_node_pool objects with no default
                   node pool, you'll need to set this to a value of at least 1, alongside
                   setting remove_default_node_pool to true.
+                format: int32
                 type: integer
               ipAllocationPolicy:
                 description: Immutable. Configuration of cluster IP allocation for
@@ -1147,6 +1151,7 @@ spec:
                           ephemeral storage. Uses NVMe interfaces. Each local SSD
                           must be 375 or 3000 GB in size, and all local SSDs must
                           share the same size.
+                        format: int32
                         type: integer
                     required:
                     - localSsdCount
@@ -1158,12 +1163,14 @@ spec:
                       dataCacheCount:
                         description: Immutable. Number of local SSDs to be utilized
                           for GKE Data Cache. Uses NVMe interfaces.
+                        format: int32
                         type: integer
                       localSsdCount:
                         description: Immutable. Number of local SSDs to use to back
                           ephemeral storage. Uses NVMe interfaces. Each local SSD
                           must be 375 or 3000 GB in size, and all local SSDs must
                           share the same size.
+                        format: int32
                         type: integer
                     required:
                     - localSsdCount
@@ -1292,6 +1299,19 @@ spec:
                         description: cgroupMode specifies the cgroup mode to be used
                           on the node.
                         type: string
+                      hugepagesConfig:
+                        description: HugepagesConfig specifies hugepages configuration
+                          for the node.
+                        properties:
+                          hugepageSize1G:
+                            description: Amount of 1G hugepages.
+                            format: int32
+                            type: integer
+                          hugepageSize2M:
+                            description: Amount of 2M hugepages.
+                            format: int32
+                            type: integer
+                        type: object
                       sysctls:
                         additionalProperties:
                           type: string
@@ -1306,6 +1326,7 @@ spec:
                         description: Immutable. Number of raw-block local NVMe SSD
                           disks to be attached to the node. Each local SSD is 375
                           GB in size.
+                        format: int32
                         type: integer
                     required:
                     - localSsdCount
@@ -1313,6 +1334,7 @@ spec:
                   localSsdCount:
                     description: Immutable. The number of local SSD disks to be attached
                       to the node.
+                    format: int32
                     type: integer
                   loggingVariant:
                     description: Type of logging agent that is used as the default
@@ -1628,6 +1650,9 @@ spec:
                 required:
                 - pubsub
                 type: object
+              podPidsLimit:
+                description: The pods' PIDs limit.
+                type: integer
               podSecurityPolicyConfig:
                 description: Configuration for the PodSecurityPolicy feature.
                 properties:
