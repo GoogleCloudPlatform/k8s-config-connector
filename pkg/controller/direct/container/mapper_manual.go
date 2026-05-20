@@ -16,10 +16,10 @@ package container
 
 import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	secretv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
