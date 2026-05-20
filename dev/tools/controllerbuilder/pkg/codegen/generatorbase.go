@@ -87,6 +87,11 @@ func (f *generatedFile) addImport(alias string, pkgName string) {
 }
 
 func (f *generatedFile) addBuildTag(tag string) {
+	for _, t := range f.buildTags {
+		if t == tag {
+			return
+		}
+	}
 	f.buildTags = append(f.buildTags, tag)
 }
 
