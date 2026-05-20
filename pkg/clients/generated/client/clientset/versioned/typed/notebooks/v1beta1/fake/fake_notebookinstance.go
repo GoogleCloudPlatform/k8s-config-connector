@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/notebooks/v1beta1"
-	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeNotebookInstances implements NotebookInstanceInterface
-type fakeNotebookInstances struct {
-	*gentype.FakeClientWithList[*v1beta1.NotebookInstance, *v1beta1.NotebookInstanceList]
+// FakeNotebookInstances implements NotebookInstanceInterface
+type FakeNotebookInstances struct {
 	Fake *FakeNotebooksV1beta1
+	ns   string
 }
 
-func newFakeNotebookInstances(fake *FakeNotebooksV1beta1, namespace string) notebooksv1beta1.NotebookInstanceInterface {
-	return &fakeNotebookInstances{
-		gentype.NewFakeClientWithList[*v1beta1.NotebookInstance, *v1beta1.NotebookInstanceList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("notebookinstances"),
-			v1beta1.SchemeGroupVersion.WithKind("NotebookInstance"),
-			func() *v1beta1.NotebookInstance { return &v1beta1.NotebookInstance{} },
-			func() *v1beta1.NotebookInstanceList { return &v1beta1.NotebookInstanceList{} },
-			func(dst, src *v1beta1.NotebookInstanceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.NotebookInstanceList) []*v1beta1.NotebookInstance {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.NotebookInstanceList, items []*v1beta1.NotebookInstance) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var notebookinstancesResource = v1beta1.SchemeGroupVersion.WithResource("notebookinstances")
+
+var notebookinstancesKind = v1beta1.SchemeGroupVersion.WithKind("NotebookInstance")
+
+// Get takes name of the notebookInstance, and returns the corresponding notebookInstance object, and an error if there is any.
+func (c *FakeNotebookInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.NotebookInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(notebookinstancesResource, c.ns, name), &v1beta1.NotebookInstance{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.NotebookInstance), err
+}
+
+// List takes label and field selectors, and returns the list of NotebookInstances that match those selectors.
+func (c *FakeNotebookInstances) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.NotebookInstanceList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(notebookinstancesResource, notebookinstancesKind, c.ns, opts), &v1beta1.NotebookInstanceList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.NotebookInstanceList{ListMeta: obj.(*v1beta1.NotebookInstanceList).ListMeta}
+	for _, item := range obj.(*v1beta1.NotebookInstanceList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested notebookInstances.
+func (c *FakeNotebookInstances) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(notebookinstancesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a notebookInstance and creates it.  Returns the server's representation of the notebookInstance, and an error, if there is any.
+func (c *FakeNotebookInstances) Create(ctx context.Context, notebookInstance *v1beta1.NotebookInstance, opts v1.CreateOptions) (result *v1beta1.NotebookInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(notebookinstancesResource, c.ns, notebookInstance), &v1beta1.NotebookInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.NotebookInstance), err
+}
+
+// Update takes the representation of a notebookInstance and updates it. Returns the server's representation of the notebookInstance, and an error, if there is any.
+func (c *FakeNotebookInstances) Update(ctx context.Context, notebookInstance *v1beta1.NotebookInstance, opts v1.UpdateOptions) (result *v1beta1.NotebookInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(notebookinstancesResource, c.ns, notebookInstance), &v1beta1.NotebookInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.NotebookInstance), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeNotebookInstances) UpdateStatus(ctx context.Context, notebookInstance *v1beta1.NotebookInstance, opts v1.UpdateOptions) (*v1beta1.NotebookInstance, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(notebookinstancesResource, "status", c.ns, notebookInstance), &v1beta1.NotebookInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.NotebookInstance), err
+}
+
+// Delete takes name of the notebookInstance and deletes it. Returns an error if one occurs.
+func (c *FakeNotebookInstances) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(notebookinstancesResource, c.ns, name, opts), &v1beta1.NotebookInstance{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeNotebookInstances) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(notebookinstancesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.NotebookInstanceList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched notebookInstance.
+func (c *FakeNotebookInstances) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NotebookInstance, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(notebookinstancesResource, c.ns, name, pt, data, subresources...), &v1beta1.NotebookInstance{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.NotebookInstance), err
 }

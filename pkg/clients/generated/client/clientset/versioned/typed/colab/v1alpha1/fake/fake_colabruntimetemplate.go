@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/colab/v1alpha1"
-	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeColabRuntimeTemplates implements ColabRuntimeTemplateInterface
-type fakeColabRuntimeTemplates struct {
-	*gentype.FakeClientWithList[*v1alpha1.ColabRuntimeTemplate, *v1alpha1.ColabRuntimeTemplateList]
+// FakeColabRuntimeTemplates implements ColabRuntimeTemplateInterface
+type FakeColabRuntimeTemplates struct {
 	Fake *FakeColabV1alpha1
+	ns   string
 }
 
-func newFakeColabRuntimeTemplates(fake *FakeColabV1alpha1, namespace string) colabv1alpha1.ColabRuntimeTemplateInterface {
-	return &fakeColabRuntimeTemplates{
-		gentype.NewFakeClientWithList[*v1alpha1.ColabRuntimeTemplate, *v1alpha1.ColabRuntimeTemplateList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("colabruntimetemplates"),
-			v1alpha1.SchemeGroupVersion.WithKind("ColabRuntimeTemplate"),
-			func() *v1alpha1.ColabRuntimeTemplate { return &v1alpha1.ColabRuntimeTemplate{} },
-			func() *v1alpha1.ColabRuntimeTemplateList { return &v1alpha1.ColabRuntimeTemplateList{} },
-			func(dst, src *v1alpha1.ColabRuntimeTemplateList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ColabRuntimeTemplateList) []*v1alpha1.ColabRuntimeTemplate {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.ColabRuntimeTemplateList, items []*v1alpha1.ColabRuntimeTemplate) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var colabruntimetemplatesResource = v1alpha1.SchemeGroupVersion.WithResource("colabruntimetemplates")
+
+var colabruntimetemplatesKind = v1alpha1.SchemeGroupVersion.WithKind("ColabRuntimeTemplate")
+
+// Get takes name of the colabRuntimeTemplate, and returns the corresponding colabRuntimeTemplate object, and an error if there is any.
+func (c *FakeColabRuntimeTemplates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ColabRuntimeTemplate, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(colabruntimetemplatesResource, c.ns, name), &v1alpha1.ColabRuntimeTemplate{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.ColabRuntimeTemplate), err
+}
+
+// List takes label and field selectors, and returns the list of ColabRuntimeTemplates that match those selectors.
+func (c *FakeColabRuntimeTemplates) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ColabRuntimeTemplateList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(colabruntimetemplatesResource, colabruntimetemplatesKind, c.ns, opts), &v1alpha1.ColabRuntimeTemplateList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.ColabRuntimeTemplateList{ListMeta: obj.(*v1alpha1.ColabRuntimeTemplateList).ListMeta}
+	for _, item := range obj.(*v1alpha1.ColabRuntimeTemplateList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested colabRuntimeTemplates.
+func (c *FakeColabRuntimeTemplates) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(colabruntimetemplatesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a colabRuntimeTemplate and creates it.  Returns the server's representation of the colabRuntimeTemplate, and an error, if there is any.
+func (c *FakeColabRuntimeTemplates) Create(ctx context.Context, colabRuntimeTemplate *v1alpha1.ColabRuntimeTemplate, opts v1.CreateOptions) (result *v1alpha1.ColabRuntimeTemplate, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(colabruntimetemplatesResource, c.ns, colabRuntimeTemplate), &v1alpha1.ColabRuntimeTemplate{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ColabRuntimeTemplate), err
+}
+
+// Update takes the representation of a colabRuntimeTemplate and updates it. Returns the server's representation of the colabRuntimeTemplate, and an error, if there is any.
+func (c *FakeColabRuntimeTemplates) Update(ctx context.Context, colabRuntimeTemplate *v1alpha1.ColabRuntimeTemplate, opts v1.UpdateOptions) (result *v1alpha1.ColabRuntimeTemplate, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(colabruntimetemplatesResource, c.ns, colabRuntimeTemplate), &v1alpha1.ColabRuntimeTemplate{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ColabRuntimeTemplate), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeColabRuntimeTemplates) UpdateStatus(ctx context.Context, colabRuntimeTemplate *v1alpha1.ColabRuntimeTemplate, opts v1.UpdateOptions) (*v1alpha1.ColabRuntimeTemplate, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(colabruntimetemplatesResource, "status", c.ns, colabRuntimeTemplate), &v1alpha1.ColabRuntimeTemplate{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ColabRuntimeTemplate), err
+}
+
+// Delete takes name of the colabRuntimeTemplate and deletes it. Returns an error if one occurs.
+func (c *FakeColabRuntimeTemplates) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(colabruntimetemplatesResource, c.ns, name, opts), &v1alpha1.ColabRuntimeTemplate{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeColabRuntimeTemplates) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(colabruntimetemplatesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.ColabRuntimeTemplateList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched colabRuntimeTemplate.
+func (c *FakeColabRuntimeTemplates) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ColabRuntimeTemplate, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(colabruntimetemplatesResource, c.ns, name, pt, data, subresources...), &v1alpha1.ColabRuntimeTemplate{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ColabRuntimeTemplate), err
 }

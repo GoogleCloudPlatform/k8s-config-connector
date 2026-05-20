@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/asset/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/asset/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // AssetSavedQueriesGetter has a method to return a AssetSavedQueryInterface.
@@ -40,34 +41,158 @@ type AssetSavedQueriesGetter interface {
 
 // AssetSavedQueryInterface has methods to work with AssetSavedQuery resources.
 type AssetSavedQueryInterface interface {
-	Create(ctx context.Context, assetSavedQuery *assetv1beta1.AssetSavedQuery, opts v1.CreateOptions) (*assetv1beta1.AssetSavedQuery, error)
-	Update(ctx context.Context, assetSavedQuery *assetv1beta1.AssetSavedQuery, opts v1.UpdateOptions) (*assetv1beta1.AssetSavedQuery, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, assetSavedQuery *assetv1beta1.AssetSavedQuery, opts v1.UpdateOptions) (*assetv1beta1.AssetSavedQuery, error)
+	Create(ctx context.Context, assetSavedQuery *v1beta1.AssetSavedQuery, opts v1.CreateOptions) (*v1beta1.AssetSavedQuery, error)
+	Update(ctx context.Context, assetSavedQuery *v1beta1.AssetSavedQuery, opts v1.UpdateOptions) (*v1beta1.AssetSavedQuery, error)
+	UpdateStatus(ctx context.Context, assetSavedQuery *v1beta1.AssetSavedQuery, opts v1.UpdateOptions) (*v1beta1.AssetSavedQuery, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*assetv1beta1.AssetSavedQuery, error)
-	List(ctx context.Context, opts v1.ListOptions) (*assetv1beta1.AssetSavedQueryList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.AssetSavedQuery, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.AssetSavedQueryList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *assetv1beta1.AssetSavedQuery, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AssetSavedQuery, err error)
 	AssetSavedQueryExpansion
 }
 
 // assetSavedQueries implements AssetSavedQueryInterface
 type assetSavedQueries struct {
-	*gentype.ClientWithList[*assetv1beta1.AssetSavedQuery, *assetv1beta1.AssetSavedQueryList]
+	client rest.Interface
+	ns     string
 }
 
 // newAssetSavedQueries returns a AssetSavedQueries
 func newAssetSavedQueries(c *AssetV1beta1Client, namespace string) *assetSavedQueries {
 	return &assetSavedQueries{
-		gentype.NewClientWithList[*assetv1beta1.AssetSavedQuery, *assetv1beta1.AssetSavedQueryList](
-			"assetsavedqueries",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *assetv1beta1.AssetSavedQuery { return &assetv1beta1.AssetSavedQuery{} },
-			func() *assetv1beta1.AssetSavedQueryList { return &assetv1beta1.AssetSavedQueryList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the assetSavedQuery, and returns the corresponding assetSavedQuery object, and an error if there is any.
+func (c *assetSavedQueries) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.AssetSavedQuery, err error) {
+	result = &v1beta1.AssetSavedQuery{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("assetsavedqueries").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of AssetSavedQueries that match those selectors.
+func (c *assetSavedQueries) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.AssetSavedQueryList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.AssetSavedQueryList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("assetsavedqueries").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested assetSavedQueries.
+func (c *assetSavedQueries) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("assetsavedqueries").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a assetSavedQuery and creates it.  Returns the server's representation of the assetSavedQuery, and an error, if there is any.
+func (c *assetSavedQueries) Create(ctx context.Context, assetSavedQuery *v1beta1.AssetSavedQuery, opts v1.CreateOptions) (result *v1beta1.AssetSavedQuery, err error) {
+	result = &v1beta1.AssetSavedQuery{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("assetsavedqueries").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(assetSavedQuery).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a assetSavedQuery and updates it. Returns the server's representation of the assetSavedQuery, and an error, if there is any.
+func (c *assetSavedQueries) Update(ctx context.Context, assetSavedQuery *v1beta1.AssetSavedQuery, opts v1.UpdateOptions) (result *v1beta1.AssetSavedQuery, err error) {
+	result = &v1beta1.AssetSavedQuery{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("assetsavedqueries").
+		Name(assetSavedQuery.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(assetSavedQuery).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *assetSavedQueries) UpdateStatus(ctx context.Context, assetSavedQuery *v1beta1.AssetSavedQuery, opts v1.UpdateOptions) (result *v1beta1.AssetSavedQuery, err error) {
+	result = &v1beta1.AssetSavedQuery{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("assetsavedqueries").
+		Name(assetSavedQuery.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(assetSavedQuery).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the assetSavedQuery and deletes it. Returns an error if one occurs.
+func (c *assetSavedQueries) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("assetsavedqueries").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *assetSavedQueries) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("assetsavedqueries").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched assetSavedQuery.
+func (c *assetSavedQueries) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AssetSavedQuery, err error) {
+	result = &v1beta1.AssetSavedQuery{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("assetsavedqueries").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

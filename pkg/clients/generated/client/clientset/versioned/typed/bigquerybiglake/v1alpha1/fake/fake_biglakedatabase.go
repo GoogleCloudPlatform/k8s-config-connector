@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1alpha1"
-	bigquerybiglakev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerybiglake/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeBigLakeDatabases implements BigLakeDatabaseInterface
-type fakeBigLakeDatabases struct {
-	*gentype.FakeClientWithList[*v1alpha1.BigLakeDatabase, *v1alpha1.BigLakeDatabaseList]
+// FakeBigLakeDatabases implements BigLakeDatabaseInterface
+type FakeBigLakeDatabases struct {
 	Fake *FakeBigquerybiglakeV1alpha1
+	ns   string
 }
 
-func newFakeBigLakeDatabases(fake *FakeBigquerybiglakeV1alpha1, namespace string) bigquerybiglakev1alpha1.BigLakeDatabaseInterface {
-	return &fakeBigLakeDatabases{
-		gentype.NewFakeClientWithList[*v1alpha1.BigLakeDatabase, *v1alpha1.BigLakeDatabaseList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("biglakedatabases"),
-			v1alpha1.SchemeGroupVersion.WithKind("BigLakeDatabase"),
-			func() *v1alpha1.BigLakeDatabase { return &v1alpha1.BigLakeDatabase{} },
-			func() *v1alpha1.BigLakeDatabaseList { return &v1alpha1.BigLakeDatabaseList{} },
-			func(dst, src *v1alpha1.BigLakeDatabaseList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.BigLakeDatabaseList) []*v1alpha1.BigLakeDatabase {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.BigLakeDatabaseList, items []*v1alpha1.BigLakeDatabase) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var biglakedatabasesResource = v1alpha1.SchemeGroupVersion.WithResource("biglakedatabases")
+
+var biglakedatabasesKind = v1alpha1.SchemeGroupVersion.WithKind("BigLakeDatabase")
+
+// Get takes name of the bigLakeDatabase, and returns the corresponding bigLakeDatabase object, and an error if there is any.
+func (c *FakeBigLakeDatabases) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigLakeDatabase, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(biglakedatabasesResource, c.ns, name), &v1alpha1.BigLakeDatabase{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.BigLakeDatabase), err
+}
+
+// List takes label and field selectors, and returns the list of BigLakeDatabases that match those selectors.
+func (c *FakeBigLakeDatabases) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.BigLakeDatabaseList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(biglakedatabasesResource, biglakedatabasesKind, c.ns, opts), &v1alpha1.BigLakeDatabaseList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.BigLakeDatabaseList{ListMeta: obj.(*v1alpha1.BigLakeDatabaseList).ListMeta}
+	for _, item := range obj.(*v1alpha1.BigLakeDatabaseList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested bigLakeDatabases.
+func (c *FakeBigLakeDatabases) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(biglakedatabasesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a bigLakeDatabase and creates it.  Returns the server's representation of the bigLakeDatabase, and an error, if there is any.
+func (c *FakeBigLakeDatabases) Create(ctx context.Context, bigLakeDatabase *v1alpha1.BigLakeDatabase, opts v1.CreateOptions) (result *v1alpha1.BigLakeDatabase, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(biglakedatabasesResource, c.ns, bigLakeDatabase), &v1alpha1.BigLakeDatabase{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigLakeDatabase), err
+}
+
+// Update takes the representation of a bigLakeDatabase and updates it. Returns the server's representation of the bigLakeDatabase, and an error, if there is any.
+func (c *FakeBigLakeDatabases) Update(ctx context.Context, bigLakeDatabase *v1alpha1.BigLakeDatabase, opts v1.UpdateOptions) (result *v1alpha1.BigLakeDatabase, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(biglakedatabasesResource, c.ns, bigLakeDatabase), &v1alpha1.BigLakeDatabase{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigLakeDatabase), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeBigLakeDatabases) UpdateStatus(ctx context.Context, bigLakeDatabase *v1alpha1.BigLakeDatabase, opts v1.UpdateOptions) (*v1alpha1.BigLakeDatabase, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(biglakedatabasesResource, "status", c.ns, bigLakeDatabase), &v1alpha1.BigLakeDatabase{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigLakeDatabase), err
+}
+
+// Delete takes name of the bigLakeDatabase and deletes it. Returns an error if one occurs.
+func (c *FakeBigLakeDatabases) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(biglakedatabasesResource, c.ns, name, opts), &v1alpha1.BigLakeDatabase{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeBigLakeDatabases) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(biglakedatabasesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.BigLakeDatabaseList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched bigLakeDatabase.
+func (c *FakeBigLakeDatabases) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.BigLakeDatabase, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(biglakedatabasesResource, c.ns, name, pt, data, subresources...), &v1alpha1.BigLakeDatabase{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.BigLakeDatabase), err
 }

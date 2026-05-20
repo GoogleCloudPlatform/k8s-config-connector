@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeIAMServiceAccountKeys implements IAMServiceAccountKeyInterface
-type fakeIAMServiceAccountKeys struct {
-	*gentype.FakeClientWithList[*v1beta1.IAMServiceAccountKey, *v1beta1.IAMServiceAccountKeyList]
+// FakeIAMServiceAccountKeys implements IAMServiceAccountKeyInterface
+type FakeIAMServiceAccountKeys struct {
 	Fake *FakeIamV1beta1
+	ns   string
 }
 
-func newFakeIAMServiceAccountKeys(fake *FakeIamV1beta1, namespace string) iamv1beta1.IAMServiceAccountKeyInterface {
-	return &fakeIAMServiceAccountKeys{
-		gentype.NewFakeClientWithList[*v1beta1.IAMServiceAccountKey, *v1beta1.IAMServiceAccountKeyList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("iamserviceaccountkeys"),
-			v1beta1.SchemeGroupVersion.WithKind("IAMServiceAccountKey"),
-			func() *v1beta1.IAMServiceAccountKey { return &v1beta1.IAMServiceAccountKey{} },
-			func() *v1beta1.IAMServiceAccountKeyList { return &v1beta1.IAMServiceAccountKeyList{} },
-			func(dst, src *v1beta1.IAMServiceAccountKeyList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.IAMServiceAccountKeyList) []*v1beta1.IAMServiceAccountKey {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.IAMServiceAccountKeyList, items []*v1beta1.IAMServiceAccountKey) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var iamserviceaccountkeysResource = v1beta1.SchemeGroupVersion.WithResource("iamserviceaccountkeys")
+
+var iamserviceaccountkeysKind = v1beta1.SchemeGroupVersion.WithKind("IAMServiceAccountKey")
+
+// Get takes name of the iAMServiceAccountKey, and returns the corresponding iAMServiceAccountKey object, and an error if there is any.
+func (c *FakeIAMServiceAccountKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IAMServiceAccountKey, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(iamserviceaccountkeysResource, c.ns, name), &v1beta1.IAMServiceAccountKey{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.IAMServiceAccountKey), err
+}
+
+// List takes label and field selectors, and returns the list of IAMServiceAccountKeys that match those selectors.
+func (c *FakeIAMServiceAccountKeys) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.IAMServiceAccountKeyList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(iamserviceaccountkeysResource, iamserviceaccountkeysKind, c.ns, opts), &v1beta1.IAMServiceAccountKeyList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.IAMServiceAccountKeyList{ListMeta: obj.(*v1beta1.IAMServiceAccountKeyList).ListMeta}
+	for _, item := range obj.(*v1beta1.IAMServiceAccountKeyList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested iAMServiceAccountKeys.
+func (c *FakeIAMServiceAccountKeys) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(iamserviceaccountkeysResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a iAMServiceAccountKey and creates it.  Returns the server's representation of the iAMServiceAccountKey, and an error, if there is any.
+func (c *FakeIAMServiceAccountKeys) Create(ctx context.Context, iAMServiceAccountKey *v1beta1.IAMServiceAccountKey, opts v1.CreateOptions) (result *v1beta1.IAMServiceAccountKey, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(iamserviceaccountkeysResource, c.ns, iAMServiceAccountKey), &v1beta1.IAMServiceAccountKey{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAMServiceAccountKey), err
+}
+
+// Update takes the representation of a iAMServiceAccountKey and updates it. Returns the server's representation of the iAMServiceAccountKey, and an error, if there is any.
+func (c *FakeIAMServiceAccountKeys) Update(ctx context.Context, iAMServiceAccountKey *v1beta1.IAMServiceAccountKey, opts v1.UpdateOptions) (result *v1beta1.IAMServiceAccountKey, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(iamserviceaccountkeysResource, c.ns, iAMServiceAccountKey), &v1beta1.IAMServiceAccountKey{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAMServiceAccountKey), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeIAMServiceAccountKeys) UpdateStatus(ctx context.Context, iAMServiceAccountKey *v1beta1.IAMServiceAccountKey, opts v1.UpdateOptions) (*v1beta1.IAMServiceAccountKey, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(iamserviceaccountkeysResource, "status", c.ns, iAMServiceAccountKey), &v1beta1.IAMServiceAccountKey{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAMServiceAccountKey), err
+}
+
+// Delete takes name of the iAMServiceAccountKey and deletes it. Returns an error if one occurs.
+func (c *FakeIAMServiceAccountKeys) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(iamserviceaccountkeysResource, c.ns, name, opts), &v1beta1.IAMServiceAccountKey{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeIAMServiceAccountKeys) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(iamserviceaccountkeysResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.IAMServiceAccountKeyList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched iAMServiceAccountKey.
+func (c *FakeIAMServiceAccountKeys) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IAMServiceAccountKey, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(iamserviceaccountkeysResource, c.ns, name, pt, data, subresources...), &v1beta1.IAMServiceAccountKey{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.IAMServiceAccountKey), err
 }

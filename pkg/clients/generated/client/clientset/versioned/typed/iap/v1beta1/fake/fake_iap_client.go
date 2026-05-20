@@ -32,15 +32,15 @@ type FakeIapV1beta1 struct {
 }
 
 func (c *FakeIapV1beta1) IAPBrands(namespace string) v1beta1.IAPBrandInterface {
-	return newFakeIAPBrands(c, namespace)
+	return &FakeIAPBrands{c, namespace}
 }
 
 func (c *FakeIapV1beta1) IAPIdentityAwareProxyClients(namespace string) v1beta1.IAPIdentityAwareProxyClientInterface {
-	return newFakeIAPIdentityAwareProxyClients(c, namespace)
+	return &FakeIAPIdentityAwareProxyClients{c, namespace}
 }
 
 func (c *FakeIapV1beta1) IAPSettingses(namespace string) v1beta1.IAPSettingsInterface {
-	return newFakeIAPSettingses(c, namespace)
+	return &FakeIAPSettingses{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

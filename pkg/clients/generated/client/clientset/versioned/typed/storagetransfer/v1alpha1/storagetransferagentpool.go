@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // StorageTransferAgentPoolsGetter has a method to return a StorageTransferAgentPoolInterface.
@@ -40,38 +41,158 @@ type StorageTransferAgentPoolsGetter interface {
 
 // StorageTransferAgentPoolInterface has methods to work with StorageTransferAgentPool resources.
 type StorageTransferAgentPoolInterface interface {
-	Create(ctx context.Context, storageTransferAgentPool *storagetransferv1alpha1.StorageTransferAgentPool, opts v1.CreateOptions) (*storagetransferv1alpha1.StorageTransferAgentPool, error)
-	Update(ctx context.Context, storageTransferAgentPool *storagetransferv1alpha1.StorageTransferAgentPool, opts v1.UpdateOptions) (*storagetransferv1alpha1.StorageTransferAgentPool, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, storageTransferAgentPool *storagetransferv1alpha1.StorageTransferAgentPool, opts v1.UpdateOptions) (*storagetransferv1alpha1.StorageTransferAgentPool, error)
+	Create(ctx context.Context, storageTransferAgentPool *v1alpha1.StorageTransferAgentPool, opts v1.CreateOptions) (*v1alpha1.StorageTransferAgentPool, error)
+	Update(ctx context.Context, storageTransferAgentPool *v1alpha1.StorageTransferAgentPool, opts v1.UpdateOptions) (*v1alpha1.StorageTransferAgentPool, error)
+	UpdateStatus(ctx context.Context, storageTransferAgentPool *v1alpha1.StorageTransferAgentPool, opts v1.UpdateOptions) (*v1alpha1.StorageTransferAgentPool, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*storagetransferv1alpha1.StorageTransferAgentPool, error)
-	List(ctx context.Context, opts v1.ListOptions) (*storagetransferv1alpha1.StorageTransferAgentPoolList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.StorageTransferAgentPool, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.StorageTransferAgentPoolList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *storagetransferv1alpha1.StorageTransferAgentPool, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.StorageTransferAgentPool, err error)
 	StorageTransferAgentPoolExpansion
 }
 
 // storageTransferAgentPools implements StorageTransferAgentPoolInterface
 type storageTransferAgentPools struct {
-	*gentype.ClientWithList[*storagetransferv1alpha1.StorageTransferAgentPool, *storagetransferv1alpha1.StorageTransferAgentPoolList]
+	client rest.Interface
+	ns     string
 }
 
 // newStorageTransferAgentPools returns a StorageTransferAgentPools
 func newStorageTransferAgentPools(c *StoragetransferV1alpha1Client, namespace string) *storageTransferAgentPools {
 	return &storageTransferAgentPools{
-		gentype.NewClientWithList[*storagetransferv1alpha1.StorageTransferAgentPool, *storagetransferv1alpha1.StorageTransferAgentPoolList](
-			"storagetransferagentpools",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *storagetransferv1alpha1.StorageTransferAgentPool {
-				return &storagetransferv1alpha1.StorageTransferAgentPool{}
-			},
-			func() *storagetransferv1alpha1.StorageTransferAgentPoolList {
-				return &storagetransferv1alpha1.StorageTransferAgentPoolList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the storageTransferAgentPool, and returns the corresponding storageTransferAgentPool object, and an error if there is any.
+func (c *storageTransferAgentPools) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.StorageTransferAgentPool, err error) {
+	result = &v1alpha1.StorageTransferAgentPool{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("storagetransferagentpools").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of StorageTransferAgentPools that match those selectors.
+func (c *storageTransferAgentPools) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.StorageTransferAgentPoolList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.StorageTransferAgentPoolList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("storagetransferagentpools").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested storageTransferAgentPools.
+func (c *storageTransferAgentPools) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("storagetransferagentpools").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a storageTransferAgentPool and creates it.  Returns the server's representation of the storageTransferAgentPool, and an error, if there is any.
+func (c *storageTransferAgentPools) Create(ctx context.Context, storageTransferAgentPool *v1alpha1.StorageTransferAgentPool, opts v1.CreateOptions) (result *v1alpha1.StorageTransferAgentPool, err error) {
+	result = &v1alpha1.StorageTransferAgentPool{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("storagetransferagentpools").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(storageTransferAgentPool).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a storageTransferAgentPool and updates it. Returns the server's representation of the storageTransferAgentPool, and an error, if there is any.
+func (c *storageTransferAgentPools) Update(ctx context.Context, storageTransferAgentPool *v1alpha1.StorageTransferAgentPool, opts v1.UpdateOptions) (result *v1alpha1.StorageTransferAgentPool, err error) {
+	result = &v1alpha1.StorageTransferAgentPool{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("storagetransferagentpools").
+		Name(storageTransferAgentPool.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(storageTransferAgentPool).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *storageTransferAgentPools) UpdateStatus(ctx context.Context, storageTransferAgentPool *v1alpha1.StorageTransferAgentPool, opts v1.UpdateOptions) (result *v1alpha1.StorageTransferAgentPool, err error) {
+	result = &v1alpha1.StorageTransferAgentPool{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("storagetransferagentpools").
+		Name(storageTransferAgentPool.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(storageTransferAgentPool).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the storageTransferAgentPool and deletes it. Returns an error if one occurs.
+func (c *storageTransferAgentPools) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("storagetransferagentpools").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *storageTransferAgentPools) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("storagetransferagentpools").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched storageTransferAgentPool.
+func (c *storageTransferAgentPools) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.StorageTransferAgentPool, err error) {
+	result = &v1alpha1.StorageTransferAgentPool{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("storagetransferagentpools").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

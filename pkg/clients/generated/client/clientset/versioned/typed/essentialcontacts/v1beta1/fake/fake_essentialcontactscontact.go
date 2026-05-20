@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/essentialcontacts/v1beta1"
-	essentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeEssentialContactsContacts implements EssentialContactsContactInterface
-type fakeEssentialContactsContacts struct {
-	*gentype.FakeClientWithList[*v1beta1.EssentialContactsContact, *v1beta1.EssentialContactsContactList]
+// FakeEssentialContactsContacts implements EssentialContactsContactInterface
+type FakeEssentialContactsContacts struct {
 	Fake *FakeEssentialcontactsV1beta1
+	ns   string
 }
 
-func newFakeEssentialContactsContacts(fake *FakeEssentialcontactsV1beta1, namespace string) essentialcontactsv1beta1.EssentialContactsContactInterface {
-	return &fakeEssentialContactsContacts{
-		gentype.NewFakeClientWithList[*v1beta1.EssentialContactsContact, *v1beta1.EssentialContactsContactList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("essentialcontactscontacts"),
-			v1beta1.SchemeGroupVersion.WithKind("EssentialContactsContact"),
-			func() *v1beta1.EssentialContactsContact { return &v1beta1.EssentialContactsContact{} },
-			func() *v1beta1.EssentialContactsContactList { return &v1beta1.EssentialContactsContactList{} },
-			func(dst, src *v1beta1.EssentialContactsContactList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.EssentialContactsContactList) []*v1beta1.EssentialContactsContact {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.EssentialContactsContactList, items []*v1beta1.EssentialContactsContact) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var essentialcontactscontactsResource = v1beta1.SchemeGroupVersion.WithResource("essentialcontactscontacts")
+
+var essentialcontactscontactsKind = v1beta1.SchemeGroupVersion.WithKind("EssentialContactsContact")
+
+// Get takes name of the essentialContactsContact, and returns the corresponding essentialContactsContact object, and an error if there is any.
+func (c *FakeEssentialContactsContacts) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EssentialContactsContact, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(essentialcontactscontactsResource, c.ns, name), &v1beta1.EssentialContactsContact{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.EssentialContactsContact), err
+}
+
+// List takes label and field selectors, and returns the list of EssentialContactsContacts that match those selectors.
+func (c *FakeEssentialContactsContacts) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.EssentialContactsContactList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(essentialcontactscontactsResource, essentialcontactscontactsKind, c.ns, opts), &v1beta1.EssentialContactsContactList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.EssentialContactsContactList{ListMeta: obj.(*v1beta1.EssentialContactsContactList).ListMeta}
+	for _, item := range obj.(*v1beta1.EssentialContactsContactList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested essentialContactsContacts.
+func (c *FakeEssentialContactsContacts) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(essentialcontactscontactsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a essentialContactsContact and creates it.  Returns the server's representation of the essentialContactsContact, and an error, if there is any.
+func (c *FakeEssentialContactsContacts) Create(ctx context.Context, essentialContactsContact *v1beta1.EssentialContactsContact, opts v1.CreateOptions) (result *v1beta1.EssentialContactsContact, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(essentialcontactscontactsResource, c.ns, essentialContactsContact), &v1beta1.EssentialContactsContact{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EssentialContactsContact), err
+}
+
+// Update takes the representation of a essentialContactsContact and updates it. Returns the server's representation of the essentialContactsContact, and an error, if there is any.
+func (c *FakeEssentialContactsContacts) Update(ctx context.Context, essentialContactsContact *v1beta1.EssentialContactsContact, opts v1.UpdateOptions) (result *v1beta1.EssentialContactsContact, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(essentialcontactscontactsResource, c.ns, essentialContactsContact), &v1beta1.EssentialContactsContact{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EssentialContactsContact), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeEssentialContactsContacts) UpdateStatus(ctx context.Context, essentialContactsContact *v1beta1.EssentialContactsContact, opts v1.UpdateOptions) (*v1beta1.EssentialContactsContact, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(essentialcontactscontactsResource, "status", c.ns, essentialContactsContact), &v1beta1.EssentialContactsContact{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EssentialContactsContact), err
+}
+
+// Delete takes name of the essentialContactsContact and deletes it. Returns an error if one occurs.
+func (c *FakeEssentialContactsContacts) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(essentialcontactscontactsResource, c.ns, name, opts), &v1beta1.EssentialContactsContact{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeEssentialContactsContacts) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(essentialcontactscontactsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.EssentialContactsContactList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched essentialContactsContact.
+func (c *FakeEssentialContactsContacts) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EssentialContactsContact, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(essentialcontactscontactsResource, c.ns, name, pt, data, subresources...), &v1beta1.EssentialContactsContact{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.EssentialContactsContact), err
 }

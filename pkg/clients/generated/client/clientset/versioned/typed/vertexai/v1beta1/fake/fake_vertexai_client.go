@@ -32,19 +32,19 @@ type FakeVertexaiV1beta1 struct {
 }
 
 func (c *FakeVertexaiV1beta1) VertexAIDatasets(namespace string) v1beta1.VertexAIDatasetInterface {
-	return newFakeVertexAIDatasets(c, namespace)
+	return &FakeVertexAIDatasets{c, namespace}
 }
 
 func (c *FakeVertexaiV1beta1) VertexAIEndpoints(namespace string) v1beta1.VertexAIEndpointInterface {
-	return newFakeVertexAIEndpoints(c, namespace)
+	return &FakeVertexAIEndpoints{c, namespace}
 }
 
 func (c *FakeVertexaiV1beta1) VertexAIIndexes(namespace string) v1beta1.VertexAIIndexInterface {
-	return newFakeVertexAIIndexes(c, namespace)
+	return &FakeVertexAIIndexes{c, namespace}
 }
 
 func (c *FakeVertexaiV1beta1) VertexAIMetadataStores(namespace string) v1beta1.VertexAIMetadataStoreInterface {
-	return newFakeVertexAIMetadataStores(c, namespace)
+	return &FakeVertexAIMetadataStores{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

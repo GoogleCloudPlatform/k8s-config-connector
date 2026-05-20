@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/aiplatform/v1alpha1"
-	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeAIPlatformModels implements AIPlatformModelInterface
-type fakeAIPlatformModels struct {
-	*gentype.FakeClientWithList[*v1alpha1.AIPlatformModel, *v1alpha1.AIPlatformModelList]
+// FakeAIPlatformModels implements AIPlatformModelInterface
+type FakeAIPlatformModels struct {
 	Fake *FakeAiplatformV1alpha1
+	ns   string
 }
 
-func newFakeAIPlatformModels(fake *FakeAiplatformV1alpha1, namespace string) aiplatformv1alpha1.AIPlatformModelInterface {
-	return &fakeAIPlatformModels{
-		gentype.NewFakeClientWithList[*v1alpha1.AIPlatformModel, *v1alpha1.AIPlatformModelList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("aiplatformmodels"),
-			v1alpha1.SchemeGroupVersion.WithKind("AIPlatformModel"),
-			func() *v1alpha1.AIPlatformModel { return &v1alpha1.AIPlatformModel{} },
-			func() *v1alpha1.AIPlatformModelList { return &v1alpha1.AIPlatformModelList{} },
-			func(dst, src *v1alpha1.AIPlatformModelList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.AIPlatformModelList) []*v1alpha1.AIPlatformModel {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.AIPlatformModelList, items []*v1alpha1.AIPlatformModel) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var aiplatformmodelsResource = v1alpha1.SchemeGroupVersion.WithResource("aiplatformmodels")
+
+var aiplatformmodelsKind = v1alpha1.SchemeGroupVersion.WithKind("AIPlatformModel")
+
+// Get takes name of the aIPlatformModel, and returns the corresponding aIPlatformModel object, and an error if there is any.
+func (c *FakeAIPlatformModels) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AIPlatformModel, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(aiplatformmodelsResource, c.ns, name), &v1alpha1.AIPlatformModel{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.AIPlatformModel), err
+}
+
+// List takes label and field selectors, and returns the list of AIPlatformModels that match those selectors.
+func (c *FakeAIPlatformModels) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.AIPlatformModelList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(aiplatformmodelsResource, aiplatformmodelsKind, c.ns, opts), &v1alpha1.AIPlatformModelList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.AIPlatformModelList{ListMeta: obj.(*v1alpha1.AIPlatformModelList).ListMeta}
+	for _, item := range obj.(*v1alpha1.AIPlatformModelList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested aIPlatformModels.
+func (c *FakeAIPlatformModels) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(aiplatformmodelsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a aIPlatformModel and creates it.  Returns the server's representation of the aIPlatformModel, and an error, if there is any.
+func (c *FakeAIPlatformModels) Create(ctx context.Context, aIPlatformModel *v1alpha1.AIPlatformModel, opts v1.CreateOptions) (result *v1alpha1.AIPlatformModel, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(aiplatformmodelsResource, c.ns, aIPlatformModel), &v1alpha1.AIPlatformModel{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.AIPlatformModel), err
+}
+
+// Update takes the representation of a aIPlatformModel and updates it. Returns the server's representation of the aIPlatformModel, and an error, if there is any.
+func (c *FakeAIPlatformModels) Update(ctx context.Context, aIPlatformModel *v1alpha1.AIPlatformModel, opts v1.UpdateOptions) (result *v1alpha1.AIPlatformModel, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(aiplatformmodelsResource, c.ns, aIPlatformModel), &v1alpha1.AIPlatformModel{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.AIPlatformModel), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeAIPlatformModels) UpdateStatus(ctx context.Context, aIPlatformModel *v1alpha1.AIPlatformModel, opts v1.UpdateOptions) (*v1alpha1.AIPlatformModel, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(aiplatformmodelsResource, "status", c.ns, aIPlatformModel), &v1alpha1.AIPlatformModel{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.AIPlatformModel), err
+}
+
+// Delete takes name of the aIPlatformModel and deletes it. Returns an error if one occurs.
+func (c *FakeAIPlatformModels) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(aiplatformmodelsResource, c.ns, name, opts), &v1alpha1.AIPlatformModel{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeAIPlatformModels) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(aiplatformmodelsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.AIPlatformModelList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched aIPlatformModel.
+func (c *FakeAIPlatformModels) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AIPlatformModel, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(aiplatformmodelsResource, c.ns, name, pt, data, subresources...), &v1alpha1.AIPlatformModel{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.AIPlatformModel), err
 }

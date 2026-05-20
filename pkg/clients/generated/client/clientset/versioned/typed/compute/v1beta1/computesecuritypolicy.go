@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeSecurityPoliciesGetter has a method to return a ComputeSecurityPolicyInterface.
@@ -40,34 +41,158 @@ type ComputeSecurityPoliciesGetter interface {
 
 // ComputeSecurityPolicyInterface has methods to work with ComputeSecurityPolicy resources.
 type ComputeSecurityPolicyInterface interface {
-	Create(ctx context.Context, computeSecurityPolicy *computev1beta1.ComputeSecurityPolicy, opts v1.CreateOptions) (*computev1beta1.ComputeSecurityPolicy, error)
-	Update(ctx context.Context, computeSecurityPolicy *computev1beta1.ComputeSecurityPolicy, opts v1.UpdateOptions) (*computev1beta1.ComputeSecurityPolicy, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeSecurityPolicy *computev1beta1.ComputeSecurityPolicy, opts v1.UpdateOptions) (*computev1beta1.ComputeSecurityPolicy, error)
+	Create(ctx context.Context, computeSecurityPolicy *v1beta1.ComputeSecurityPolicy, opts v1.CreateOptions) (*v1beta1.ComputeSecurityPolicy, error)
+	Update(ctx context.Context, computeSecurityPolicy *v1beta1.ComputeSecurityPolicy, opts v1.UpdateOptions) (*v1beta1.ComputeSecurityPolicy, error)
+	UpdateStatus(ctx context.Context, computeSecurityPolicy *v1beta1.ComputeSecurityPolicy, opts v1.UpdateOptions) (*v1beta1.ComputeSecurityPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeSecurityPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeSecurityPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeSecurityPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeSecurityPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeSecurityPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeSecurityPolicy, err error)
 	ComputeSecurityPolicyExpansion
 }
 
 // computeSecurityPolicies implements ComputeSecurityPolicyInterface
 type computeSecurityPolicies struct {
-	*gentype.ClientWithList[*computev1beta1.ComputeSecurityPolicy, *computev1beta1.ComputeSecurityPolicyList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeSecurityPolicies returns a ComputeSecurityPolicies
 func newComputeSecurityPolicies(c *ComputeV1beta1Client, namespace string) *computeSecurityPolicies {
 	return &computeSecurityPolicies{
-		gentype.NewClientWithList[*computev1beta1.ComputeSecurityPolicy, *computev1beta1.ComputeSecurityPolicyList](
-			"computesecuritypolicies",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1beta1.ComputeSecurityPolicy { return &computev1beta1.ComputeSecurityPolicy{} },
-			func() *computev1beta1.ComputeSecurityPolicyList { return &computev1beta1.ComputeSecurityPolicyList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeSecurityPolicy, and returns the corresponding computeSecurityPolicy object, and an error if there is any.
+func (c *computeSecurityPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeSecurityPolicy, err error) {
+	result = &v1beta1.ComputeSecurityPolicy{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computesecuritypolicies").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeSecurityPolicies that match those selectors.
+func (c *computeSecurityPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeSecurityPolicyList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ComputeSecurityPolicyList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computesecuritypolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeSecurityPolicies.
+func (c *computeSecurityPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computesecuritypolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeSecurityPolicy and creates it.  Returns the server's representation of the computeSecurityPolicy, and an error, if there is any.
+func (c *computeSecurityPolicies) Create(ctx context.Context, computeSecurityPolicy *v1beta1.ComputeSecurityPolicy, opts v1.CreateOptions) (result *v1beta1.ComputeSecurityPolicy, err error) {
+	result = &v1beta1.ComputeSecurityPolicy{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computesecuritypolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeSecurityPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeSecurityPolicy and updates it. Returns the server's representation of the computeSecurityPolicy, and an error, if there is any.
+func (c *computeSecurityPolicies) Update(ctx context.Context, computeSecurityPolicy *v1beta1.ComputeSecurityPolicy, opts v1.UpdateOptions) (result *v1beta1.ComputeSecurityPolicy, err error) {
+	result = &v1beta1.ComputeSecurityPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computesecuritypolicies").
+		Name(computeSecurityPolicy.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeSecurityPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeSecurityPolicies) UpdateStatus(ctx context.Context, computeSecurityPolicy *v1beta1.ComputeSecurityPolicy, opts v1.UpdateOptions) (result *v1beta1.ComputeSecurityPolicy, err error) {
+	result = &v1beta1.ComputeSecurityPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computesecuritypolicies").
+		Name(computeSecurityPolicy.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeSecurityPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeSecurityPolicy and deletes it. Returns an error if one occurs.
+func (c *computeSecurityPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computesecuritypolicies").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeSecurityPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computesecuritypolicies").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeSecurityPolicy.
+func (c *computeSecurityPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeSecurityPolicy, err error) {
+	result = &v1beta1.ComputeSecurityPolicy{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computesecuritypolicies").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

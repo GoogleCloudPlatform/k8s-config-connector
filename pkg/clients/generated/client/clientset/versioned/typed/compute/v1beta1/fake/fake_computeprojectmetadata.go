@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeProjectMetadatas implements ComputeProjectMetadataInterface
-type fakeComputeProjectMetadatas struct {
-	*gentype.FakeClientWithList[*v1beta1.ComputeProjectMetadata, *v1beta1.ComputeProjectMetadataList]
+// FakeComputeProjectMetadatas implements ComputeProjectMetadataInterface
+type FakeComputeProjectMetadatas struct {
 	Fake *FakeComputeV1beta1
+	ns   string
 }
 
-func newFakeComputeProjectMetadatas(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeProjectMetadataInterface {
-	return &fakeComputeProjectMetadatas{
-		gentype.NewFakeClientWithList[*v1beta1.ComputeProjectMetadata, *v1beta1.ComputeProjectMetadataList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("computeprojectmetadatas"),
-			v1beta1.SchemeGroupVersion.WithKind("ComputeProjectMetadata"),
-			func() *v1beta1.ComputeProjectMetadata { return &v1beta1.ComputeProjectMetadata{} },
-			func() *v1beta1.ComputeProjectMetadataList { return &v1beta1.ComputeProjectMetadataList{} },
-			func(dst, src *v1beta1.ComputeProjectMetadataList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.ComputeProjectMetadataList) []*v1beta1.ComputeProjectMetadata {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.ComputeProjectMetadataList, items []*v1beta1.ComputeProjectMetadata) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computeprojectmetadatasResource = v1beta1.SchemeGroupVersion.WithResource("computeprojectmetadatas")
+
+var computeprojectmetadatasKind = v1beta1.SchemeGroupVersion.WithKind("ComputeProjectMetadata")
+
+// Get takes name of the computeProjectMetadata, and returns the corresponding computeProjectMetadata object, and an error if there is any.
+func (c *FakeComputeProjectMetadatas) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeProjectMetadata, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computeprojectmetadatasResource, c.ns, name), &v1beta1.ComputeProjectMetadata{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.ComputeProjectMetadata), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeProjectMetadatas that match those selectors.
+func (c *FakeComputeProjectMetadatas) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeProjectMetadataList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computeprojectmetadatasResource, computeprojectmetadatasKind, c.ns, opts), &v1beta1.ComputeProjectMetadataList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.ComputeProjectMetadataList{ListMeta: obj.(*v1beta1.ComputeProjectMetadataList).ListMeta}
+	for _, item := range obj.(*v1beta1.ComputeProjectMetadataList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeProjectMetadatas.
+func (c *FakeComputeProjectMetadatas) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computeprojectmetadatasResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeProjectMetadata and creates it.  Returns the server's representation of the computeProjectMetadata, and an error, if there is any.
+func (c *FakeComputeProjectMetadatas) Create(ctx context.Context, computeProjectMetadata *v1beta1.ComputeProjectMetadata, opts v1.CreateOptions) (result *v1beta1.ComputeProjectMetadata, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computeprojectmetadatasResource, c.ns, computeProjectMetadata), &v1beta1.ComputeProjectMetadata{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeProjectMetadata), err
+}
+
+// Update takes the representation of a computeProjectMetadata and updates it. Returns the server's representation of the computeProjectMetadata, and an error, if there is any.
+func (c *FakeComputeProjectMetadatas) Update(ctx context.Context, computeProjectMetadata *v1beta1.ComputeProjectMetadata, opts v1.UpdateOptions) (result *v1beta1.ComputeProjectMetadata, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computeprojectmetadatasResource, c.ns, computeProjectMetadata), &v1beta1.ComputeProjectMetadata{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeProjectMetadata), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeProjectMetadatas) UpdateStatus(ctx context.Context, computeProjectMetadata *v1beta1.ComputeProjectMetadata, opts v1.UpdateOptions) (*v1beta1.ComputeProjectMetadata, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computeprojectmetadatasResource, "status", c.ns, computeProjectMetadata), &v1beta1.ComputeProjectMetadata{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeProjectMetadata), err
+}
+
+// Delete takes name of the computeProjectMetadata and deletes it. Returns an error if one occurs.
+func (c *FakeComputeProjectMetadatas) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computeprojectmetadatasResource, c.ns, name, opts), &v1beta1.ComputeProjectMetadata{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeProjectMetadatas) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computeprojectmetadatasResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.ComputeProjectMetadataList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeProjectMetadata.
+func (c *FakeComputeProjectMetadatas) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeProjectMetadata, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computeprojectmetadatasResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeProjectMetadata{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.ComputeProjectMetadata), err
 }

@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // HealthcareFHIRStoresGetter has a method to return a HealthcareFHIRStoreInterface.
@@ -40,36 +41,158 @@ type HealthcareFHIRStoresGetter interface {
 
 // HealthcareFHIRStoreInterface has methods to work with HealthcareFHIRStore resources.
 type HealthcareFHIRStoreInterface interface {
-	Create(ctx context.Context, healthcareFHIRStore *healthcarev1alpha1.HealthcareFHIRStore, opts v1.CreateOptions) (*healthcarev1alpha1.HealthcareFHIRStore, error)
-	Update(ctx context.Context, healthcareFHIRStore *healthcarev1alpha1.HealthcareFHIRStore, opts v1.UpdateOptions) (*healthcarev1alpha1.HealthcareFHIRStore, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, healthcareFHIRStore *healthcarev1alpha1.HealthcareFHIRStore, opts v1.UpdateOptions) (*healthcarev1alpha1.HealthcareFHIRStore, error)
+	Create(ctx context.Context, healthcareFHIRStore *v1alpha1.HealthcareFHIRStore, opts v1.CreateOptions) (*v1alpha1.HealthcareFHIRStore, error)
+	Update(ctx context.Context, healthcareFHIRStore *v1alpha1.HealthcareFHIRStore, opts v1.UpdateOptions) (*v1alpha1.HealthcareFHIRStore, error)
+	UpdateStatus(ctx context.Context, healthcareFHIRStore *v1alpha1.HealthcareFHIRStore, opts v1.UpdateOptions) (*v1alpha1.HealthcareFHIRStore, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*healthcarev1alpha1.HealthcareFHIRStore, error)
-	List(ctx context.Context, opts v1.ListOptions) (*healthcarev1alpha1.HealthcareFHIRStoreList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.HealthcareFHIRStore, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.HealthcareFHIRStoreList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *healthcarev1alpha1.HealthcareFHIRStore, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.HealthcareFHIRStore, err error)
 	HealthcareFHIRStoreExpansion
 }
 
 // healthcareFHIRStores implements HealthcareFHIRStoreInterface
 type healthcareFHIRStores struct {
-	*gentype.ClientWithList[*healthcarev1alpha1.HealthcareFHIRStore, *healthcarev1alpha1.HealthcareFHIRStoreList]
+	client rest.Interface
+	ns     string
 }
 
 // newHealthcareFHIRStores returns a HealthcareFHIRStores
 func newHealthcareFHIRStores(c *HealthcareV1alpha1Client, namespace string) *healthcareFHIRStores {
 	return &healthcareFHIRStores{
-		gentype.NewClientWithList[*healthcarev1alpha1.HealthcareFHIRStore, *healthcarev1alpha1.HealthcareFHIRStoreList](
-			"healthcarefhirstores",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *healthcarev1alpha1.HealthcareFHIRStore { return &healthcarev1alpha1.HealthcareFHIRStore{} },
-			func() *healthcarev1alpha1.HealthcareFHIRStoreList {
-				return &healthcarev1alpha1.HealthcareFHIRStoreList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the healthcareFHIRStore, and returns the corresponding healthcareFHIRStore object, and an error if there is any.
+func (c *healthcareFHIRStores) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.HealthcareFHIRStore, err error) {
+	result = &v1alpha1.HealthcareFHIRStore{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("healthcarefhirstores").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of HealthcareFHIRStores that match those selectors.
+func (c *healthcareFHIRStores) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.HealthcareFHIRStoreList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.HealthcareFHIRStoreList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("healthcarefhirstores").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested healthcareFHIRStores.
+func (c *healthcareFHIRStores) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("healthcarefhirstores").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a healthcareFHIRStore and creates it.  Returns the server's representation of the healthcareFHIRStore, and an error, if there is any.
+func (c *healthcareFHIRStores) Create(ctx context.Context, healthcareFHIRStore *v1alpha1.HealthcareFHIRStore, opts v1.CreateOptions) (result *v1alpha1.HealthcareFHIRStore, err error) {
+	result = &v1alpha1.HealthcareFHIRStore{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("healthcarefhirstores").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(healthcareFHIRStore).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a healthcareFHIRStore and updates it. Returns the server's representation of the healthcareFHIRStore, and an error, if there is any.
+func (c *healthcareFHIRStores) Update(ctx context.Context, healthcareFHIRStore *v1alpha1.HealthcareFHIRStore, opts v1.UpdateOptions) (result *v1alpha1.HealthcareFHIRStore, err error) {
+	result = &v1alpha1.HealthcareFHIRStore{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("healthcarefhirstores").
+		Name(healthcareFHIRStore.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(healthcareFHIRStore).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *healthcareFHIRStores) UpdateStatus(ctx context.Context, healthcareFHIRStore *v1alpha1.HealthcareFHIRStore, opts v1.UpdateOptions) (result *v1alpha1.HealthcareFHIRStore, err error) {
+	result = &v1alpha1.HealthcareFHIRStore{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("healthcarefhirstores").
+		Name(healthcareFHIRStore.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(healthcareFHIRStore).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the healthcareFHIRStore and deletes it. Returns an error if one occurs.
+func (c *healthcareFHIRStores) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("healthcarefhirstores").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *healthcareFHIRStores) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("healthcarefhirstores").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched healthcareFHIRStore.
+func (c *healthcareFHIRStores) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.HealthcareFHIRStore, err error) {
+	result = &v1alpha1.HealthcareFHIRStore{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("healthcarefhirstores").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

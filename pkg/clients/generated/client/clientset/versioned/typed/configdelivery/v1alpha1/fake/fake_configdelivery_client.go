@@ -32,7 +32,7 @@ type FakeConfigdeliveryV1alpha1 struct {
 }
 
 func (c *FakeConfigdeliveryV1alpha1) ConfigDeliveryResourceBundles(namespace string) v1alpha1.ConfigDeliveryResourceBundleInterface {
-	return newFakeConfigDeliveryResourceBundles(c, namespace)
+	return &FakeConfigDeliveryResourceBundles{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

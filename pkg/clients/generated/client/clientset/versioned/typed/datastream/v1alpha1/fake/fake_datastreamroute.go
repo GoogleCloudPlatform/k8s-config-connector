@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastream/v1alpha1"
-	datastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDatastreamRoutes implements DatastreamRouteInterface
-type fakeDatastreamRoutes struct {
-	*gentype.FakeClientWithList[*v1alpha1.DatastreamRoute, *v1alpha1.DatastreamRouteList]
+// FakeDatastreamRoutes implements DatastreamRouteInterface
+type FakeDatastreamRoutes struct {
 	Fake *FakeDatastreamV1alpha1
+	ns   string
 }
 
-func newFakeDatastreamRoutes(fake *FakeDatastreamV1alpha1, namespace string) datastreamv1alpha1.DatastreamRouteInterface {
-	return &fakeDatastreamRoutes{
-		gentype.NewFakeClientWithList[*v1alpha1.DatastreamRoute, *v1alpha1.DatastreamRouteList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("datastreamroutes"),
-			v1alpha1.SchemeGroupVersion.WithKind("DatastreamRoute"),
-			func() *v1alpha1.DatastreamRoute { return &v1alpha1.DatastreamRoute{} },
-			func() *v1alpha1.DatastreamRouteList { return &v1alpha1.DatastreamRouteList{} },
-			func(dst, src *v1alpha1.DatastreamRouteList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DatastreamRouteList) []*v1alpha1.DatastreamRoute {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DatastreamRouteList, items []*v1alpha1.DatastreamRoute) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var datastreamroutesResource = v1alpha1.SchemeGroupVersion.WithResource("datastreamroutes")
+
+var datastreamroutesKind = v1alpha1.SchemeGroupVersion.WithKind("DatastreamRoute")
+
+// Get takes name of the datastreamRoute, and returns the corresponding datastreamRoute object, and an error if there is any.
+func (c *FakeDatastreamRoutes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DatastreamRoute, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(datastreamroutesResource, c.ns, name), &v1alpha1.DatastreamRoute{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DatastreamRoute), err
+}
+
+// List takes label and field selectors, and returns the list of DatastreamRoutes that match those selectors.
+func (c *FakeDatastreamRoutes) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DatastreamRouteList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(datastreamroutesResource, datastreamroutesKind, c.ns, opts), &v1alpha1.DatastreamRouteList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DatastreamRouteList{ListMeta: obj.(*v1alpha1.DatastreamRouteList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DatastreamRouteList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested datastreamRoutes.
+func (c *FakeDatastreamRoutes) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(datastreamroutesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a datastreamRoute and creates it.  Returns the server's representation of the datastreamRoute, and an error, if there is any.
+func (c *FakeDatastreamRoutes) Create(ctx context.Context, datastreamRoute *v1alpha1.DatastreamRoute, opts v1.CreateOptions) (result *v1alpha1.DatastreamRoute, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(datastreamroutesResource, c.ns, datastreamRoute), &v1alpha1.DatastreamRoute{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DatastreamRoute), err
+}
+
+// Update takes the representation of a datastreamRoute and updates it. Returns the server's representation of the datastreamRoute, and an error, if there is any.
+func (c *FakeDatastreamRoutes) Update(ctx context.Context, datastreamRoute *v1alpha1.DatastreamRoute, opts v1.UpdateOptions) (result *v1alpha1.DatastreamRoute, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(datastreamroutesResource, c.ns, datastreamRoute), &v1alpha1.DatastreamRoute{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DatastreamRoute), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDatastreamRoutes) UpdateStatus(ctx context.Context, datastreamRoute *v1alpha1.DatastreamRoute, opts v1.UpdateOptions) (*v1alpha1.DatastreamRoute, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(datastreamroutesResource, "status", c.ns, datastreamRoute), &v1alpha1.DatastreamRoute{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DatastreamRoute), err
+}
+
+// Delete takes name of the datastreamRoute and deletes it. Returns an error if one occurs.
+func (c *FakeDatastreamRoutes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(datastreamroutesResource, c.ns, name, opts), &v1alpha1.DatastreamRoute{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDatastreamRoutes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(datastreamroutesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DatastreamRouteList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched datastreamRoute.
+func (c *FakeDatastreamRoutes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DatastreamRoute, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(datastreamroutesResource, c.ns, name, pt, data, subresources...), &v1alpha1.DatastreamRoute{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DatastreamRoute), err
 }

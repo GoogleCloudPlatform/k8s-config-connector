@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
-	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeDialogflowCXPages implements DialogflowCXPageInterface
-type fakeDialogflowCXPages struct {
-	*gentype.FakeClientWithList[*v1alpha1.DialogflowCXPage, *v1alpha1.DialogflowCXPageList]
+// FakeDialogflowCXPages implements DialogflowCXPageInterface
+type FakeDialogflowCXPages struct {
 	Fake *FakeDialogflowcxV1alpha1
+	ns   string
 }
 
-func newFakeDialogflowCXPages(fake *FakeDialogflowcxV1alpha1, namespace string) dialogflowcxv1alpha1.DialogflowCXPageInterface {
-	return &fakeDialogflowCXPages{
-		gentype.NewFakeClientWithList[*v1alpha1.DialogflowCXPage, *v1alpha1.DialogflowCXPageList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("dialogflowcxpages"),
-			v1alpha1.SchemeGroupVersion.WithKind("DialogflowCXPage"),
-			func() *v1alpha1.DialogflowCXPage { return &v1alpha1.DialogflowCXPage{} },
-			func() *v1alpha1.DialogflowCXPageList { return &v1alpha1.DialogflowCXPageList{} },
-			func(dst, src *v1alpha1.DialogflowCXPageList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DialogflowCXPageList) []*v1alpha1.DialogflowCXPage {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.DialogflowCXPageList, items []*v1alpha1.DialogflowCXPage) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var dialogflowcxpagesResource = v1alpha1.SchemeGroupVersion.WithResource("dialogflowcxpages")
+
+var dialogflowcxpagesKind = v1alpha1.SchemeGroupVersion.WithKind("DialogflowCXPage")
+
+// Get takes name of the dialogflowCXPage, and returns the corresponding dialogflowCXPage object, and an error if there is any.
+func (c *FakeDialogflowCXPages) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowCXPage, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(dialogflowcxpagesResource, c.ns, name), &v1alpha1.DialogflowCXPage{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.DialogflowCXPage), err
+}
+
+// List takes label and field selectors, and returns the list of DialogflowCXPages that match those selectors.
+func (c *FakeDialogflowCXPages) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DialogflowCXPageList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(dialogflowcxpagesResource, dialogflowcxpagesKind, c.ns, opts), &v1alpha1.DialogflowCXPageList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.DialogflowCXPageList{ListMeta: obj.(*v1alpha1.DialogflowCXPageList).ListMeta}
+	for _, item := range obj.(*v1alpha1.DialogflowCXPageList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested dialogflowCXPages.
+func (c *FakeDialogflowCXPages) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(dialogflowcxpagesResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a dialogflowCXPage and creates it.  Returns the server's representation of the dialogflowCXPage, and an error, if there is any.
+func (c *FakeDialogflowCXPages) Create(ctx context.Context, dialogflowCXPage *v1alpha1.DialogflowCXPage, opts v1.CreateOptions) (result *v1alpha1.DialogflowCXPage, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(dialogflowcxpagesResource, c.ns, dialogflowCXPage), &v1alpha1.DialogflowCXPage{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DialogflowCXPage), err
+}
+
+// Update takes the representation of a dialogflowCXPage and updates it. Returns the server's representation of the dialogflowCXPage, and an error, if there is any.
+func (c *FakeDialogflowCXPages) Update(ctx context.Context, dialogflowCXPage *v1alpha1.DialogflowCXPage, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXPage, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(dialogflowcxpagesResource, c.ns, dialogflowCXPage), &v1alpha1.DialogflowCXPage{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DialogflowCXPage), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeDialogflowCXPages) UpdateStatus(ctx context.Context, dialogflowCXPage *v1alpha1.DialogflowCXPage, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXPage, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(dialogflowcxpagesResource, "status", c.ns, dialogflowCXPage), &v1alpha1.DialogflowCXPage{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DialogflowCXPage), err
+}
+
+// Delete takes name of the dialogflowCXPage and deletes it. Returns an error if one occurs.
+func (c *FakeDialogflowCXPages) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(dialogflowcxpagesResource, c.ns, name, opts), &v1alpha1.DialogflowCXPage{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeDialogflowCXPages) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(dialogflowcxpagesResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.DialogflowCXPageList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched dialogflowCXPage.
+func (c *FakeDialogflowCXPages) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXPage, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(dialogflowcxpagesResource, c.ns, name, pt, data, subresources...), &v1alpha1.DialogflowCXPage{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.DialogflowCXPage), err
 }
