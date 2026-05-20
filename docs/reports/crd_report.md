@@ -389,7 +389,7 @@
 | privateca.cnrm.cloud.google.com               | PrivateCACertificate                            | False        | True        | False  | DCL        | False       |
 | privateca.cnrm.cloud.google.com               | PrivateCACertificateTemplate                    | False        | True        | False  | DCL        | False       |
 | privilegedaccessmanager.cnrm.cloud.google.com | PrivilegedAccessManagerEntitlement              | True         | True        | False  | Direct     | True        |
-| resourcemanager.cnrm.cloud.google.com         | Project                                         | False        | True        | False  | Terraform  | False       |
+| resourcemanager.cnrm.cloud.google.com         | Project                                         | False        | True        | False  | Terraform  | True        |
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteReservation                           | False        | True        | False  | Terraform  | False       |
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteSubscription                          | True         | False       | False  | Terraform  | False       |
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteTopic                                 | True         | False       | False  | Terraform  | False       |
