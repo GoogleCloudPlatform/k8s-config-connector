@@ -25,7 +25,6 @@ package container
 
 import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
-	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -39,9 +38,12 @@ func AcceleratorConfig_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorCo
 	out := &krm.AcceleratorConfig{}
 	// MISSING: AcceleratorCount
 	// MISSING: AcceleratorType
-	out.GpuPartitionSize = direct.LazyPtr(in.GetGpuPartitionSize())
-	out.GpuSharingConfig = GpuSharingConfig_FromProto(mapCtx, in.GetGpuSharingConfig())
-	out.GpuDriverInstallationConfig = GpuDriverInstallationConfig_FromProto(mapCtx, in.GetGpuDriverInstallationConfig())
+	// MISSING: GpuPartitionSize
+	// (near miss): "GpuPartitionSize" vs "GPUPartitionSize"
+	// MISSING: GpuSharingConfig
+	// (near miss): "GpuSharingConfig" vs "GPUSharingConfig"
+	// MISSING: GpuDriverInstallationConfig
+	// (near miss): "GpuDriverInstallationConfig" vs "GPUDriverInstallationConfig"
 	return out
 }
 func AcceleratorConfig_ToProto(mapCtx *direct.MapContext, in *krm.AcceleratorConfig) *pb.AcceleratorConfig {
@@ -51,9 +53,12 @@ func AcceleratorConfig_ToProto(mapCtx *direct.MapContext, in *krm.AcceleratorCon
 	out := &pb.AcceleratorConfig{}
 	// MISSING: AcceleratorCount
 	// MISSING: AcceleratorType
-	out.GpuPartitionSize = direct.ValueOf(in.GpuPartitionSize)
-	out.GpuSharingConfig = GpuSharingConfig_ToProto(mapCtx, in.GpuSharingConfig)
-	out.GpuDriverInstallationConfig = GpuDriverInstallationConfig_ToProto(mapCtx, in.GpuDriverInstallationConfig)
+	// MISSING: GpuPartitionSize
+	// (near miss): "GpuPartitionSize" vs "GPUPartitionSize"
+	// MISSING: GpuSharingConfig
+	// (near miss): "GpuSharingConfig" vs "GPUSharingConfig"
+	// MISSING: GpuDriverInstallationConfig
+	// (near miss): "GpuDriverInstallationConfig" vs "GPUDriverInstallationConfig"
 	return out
 }
 func AdditionalIPRangesConfig_FromProto(mapCtx *direct.MapContext, in *pb.AdditionalIPRangesConfig) *krm.AdditionalIPRangesConfig {
@@ -119,22 +124,20 @@ func AddonsConfig_FromProto(mapCtx *direct.MapContext, in *pb.AddonsConfig) *krm
 		return nil
 	}
 	out := &krm.AddonsConfig{}
-	// MISSING: HTTPLoadBalancing
-	// (near miss): "HTTPLoadBalancing" vs "HttpLoadBalancing"
+	out.HTTPLoadBalancing = HTTPLoadBalancing_FromProto(mapCtx, in.GetHttpLoadBalancing())
 	out.HorizontalPodAutoscaling = HorizontalPodAutoscaling_FromProto(mapCtx, in.GetHorizontalPodAutoscaling())
 	// MISSING: KubernetesDashboard
 	out.NetworkPolicyConfig = NetworkPolicyConfig_FromProto(mapCtx, in.GetNetworkPolicyConfig())
 	out.CloudRunConfig = CloudRunConfig_FromProto(mapCtx, in.GetCloudRunConfig())
-	// MISSING: DNSCacheConfig
-	// (near miss): "DNSCacheConfig" vs "DnsCacheConfig"
+	out.DNSCacheConfig = DNSCacheConfig_FromProto(mapCtx, in.GetDnsCacheConfig())
 	out.ConfigConnectorConfig = ConfigConnectorConfig_FromProto(mapCtx, in.GetConfigConnectorConfig())
 	// MISSING: GCEPersistentDiskCsiDriverConfig
-	// (near miss): "GCEPersistentDiskCsiDriverConfig" vs "GcePersistentDiskCsiDriverConfig"
-	out.GcpFilestoreCsiDriverConfig = GcpFilestoreCsiDriverConfig_FromProto(mapCtx, in.GetGcpFilestoreCsiDriverConfig())
-	// MISSING: GKEBackupAgentConfig
-	// (near miss): "GKEBackupAgentConfig" vs "GkeBackupAgentConfig"
+	// (near miss): "GCEPersistentDiskCsiDriverConfig" vs "GCEPersistentDiskCSIDriverConfig"
+	// MISSING: GcpFilestoreCsiDriverConfig
+	// (near miss): "GcpFilestoreCsiDriverConfig" vs "GCPFilestoreCSIDriverConfig"
+	out.GKEBackupAgentConfig = GKEBackupAgentConfig_FromProto(mapCtx, in.GetGkeBackupAgentConfig())
 	// MISSING: GCSFuseCsiDriverConfig
-	// (near miss): "GCSFuseCsiDriverConfig" vs "GcsFuseCsiDriverConfig"
+	// (near miss): "GCSFuseCsiDriverConfig" vs "GCSFuseCSIDriverConfig"
 	// MISSING: StatefulHaConfig
 	// MISSING: ParallelstoreCsiDriverConfig
 	// MISSING: RayOperatorConfig
@@ -147,22 +150,20 @@ func AddonsConfig_ToProto(mapCtx *direct.MapContext, in *krm.AddonsConfig) *pb.A
 		return nil
 	}
 	out := &pb.AddonsConfig{}
-	// MISSING: HTTPLoadBalancing
-	// (near miss): "HTTPLoadBalancing" vs "HttpLoadBalancing"
+	out.HttpLoadBalancing = HTTPLoadBalancing_ToProto(mapCtx, in.HTTPLoadBalancing)
 	out.HorizontalPodAutoscaling = HorizontalPodAutoscaling_ToProto(mapCtx, in.HorizontalPodAutoscaling)
 	// MISSING: KubernetesDashboard
 	out.NetworkPolicyConfig = NetworkPolicyConfig_ToProto(mapCtx, in.NetworkPolicyConfig)
 	out.CloudRunConfig = CloudRunConfig_ToProto(mapCtx, in.CloudRunConfig)
-	// MISSING: DNSCacheConfig
-	// (near miss): "DNSCacheConfig" vs "DnsCacheConfig"
+	out.DnsCacheConfig = DNSCacheConfig_ToProto(mapCtx, in.DNSCacheConfig)
 	out.ConfigConnectorConfig = ConfigConnectorConfig_ToProto(mapCtx, in.ConfigConnectorConfig)
 	// MISSING: GCEPersistentDiskCsiDriverConfig
-	// (near miss): "GCEPersistentDiskCsiDriverConfig" vs "GcePersistentDiskCsiDriverConfig"
-	out.GcpFilestoreCsiDriverConfig = GcpFilestoreCsiDriverConfig_ToProto(mapCtx, in.GcpFilestoreCsiDriverConfig)
-	// MISSING: GKEBackupAgentConfig
-	// (near miss): "GKEBackupAgentConfig" vs "GkeBackupAgentConfig"
+	// (near miss): "GCEPersistentDiskCsiDriverConfig" vs "GCEPersistentDiskCSIDriverConfig"
+	// MISSING: GcpFilestoreCsiDriverConfig
+	// (near miss): "GcpFilestoreCsiDriverConfig" vs "GCPFilestoreCSIDriverConfig"
+	out.GkeBackupAgentConfig = GKEBackupAgentConfig_ToProto(mapCtx, in.GKEBackupAgentConfig)
 	// MISSING: GCSFuseCsiDriverConfig
-	// (near miss): "GCSFuseCsiDriverConfig" vs "GcsFuseCsiDriverConfig"
+	// (near miss): "GCSFuseCsiDriverConfig" vs "GCSFuseCSIDriverConfig"
 	// MISSING: StatefulHaConfig
 	// MISSING: ParallelstoreCsiDriverConfig
 	// MISSING: RayOperatorConfig
@@ -536,6 +537,8 @@ func ConfigConnectorConfig_ToProto(mapCtx *direct.MapContext, in *krm.ConfigConn
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+
+/* found existing non-generated mapping function "ContainerClusterSpec_FromProto", skipping
 func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.ContainerClusterSpec {
 	if in == nil {
 		return nil
@@ -543,7 +546,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	out := &krm.ContainerClusterSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.InitialNodeCount = direct.LazyPtr(int(in.GetInitialNodeCount()))
+	out.InitialNodeCount = direct.LazyPtr(in.GetInitialNodeCount())
 	out.NodeConfig = NodeConfig_FromProto(mapCtx, in.GetNodeConfig())
 	out.MasterAuth = MasterAuth_FromProto(mapCtx, in.GetMasterAuth())
 	out.LoggingService = direct.LazyPtr(in.GetLoggingService())
@@ -613,7 +616,8 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	// MISSING: Fleet
 	out.SecurityPostureConfig = SecurityPostureConfig_FromProto(mapCtx, in.GetSecurityPostureConfig())
 	out.ControlPlaneEndpointsConfig = ControlPlaneEndpointsConfig_FromProto(mapCtx, in.GetControlPlaneEndpointsConfig())
-	out.EnableK8sBetaApis = K8sBetaAPIConfig_FromProto(mapCtx, in.GetEnableK8SBetaApis())
+	// MISSING: EnableK8sBetaApis
+	// (near miss): "EnableK8sBetaApis" vs "EnableK8SBetaApis"
 	// MISSING: EnterpriseConfig
 	// MISSING: SecretManagerConfig
 	// MISSING: CompliancePostureConfig
@@ -625,95 +629,102 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	// MISSING: AnonymousAuthenticationConfig
 	return out
 }
-func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerClusterSpec) *pb.Cluster {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ContainerClusterSpec_ToProto", skipping
+
+	func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerClusterSpec) *pb.Cluster {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Cluster{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		out.InitialNodeCount = direct.ValueOf(in.InitialNodeCount)
+		out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
+		out.MasterAuth = MasterAuth_ToProto(mapCtx, in.MasterAuth)
+		out.LoggingService = direct.ValueOf(in.LoggingService)
+		out.MonitoringService = direct.ValueOf(in.MonitoringService)
+		if in.NetworkRef != nil {
+			out.Network = in.NetworkRef.External
+		}
+		out.ClusterIpv4Cidr = direct.ValueOf(in.ClusterIPV4CIDR)
+		out.AddonsConfig = AddonsConfig_ToProto(mapCtx, in.AddonsConfig)
+		if in.SubnetworkRef != nil {
+			out.Subnetwork = in.SubnetworkRef.External
+		}
+		// MISSING: NodePools
+		// MISSING: Locations
+		out.EnableKubernetesAlpha = direct.ValueOf(in.EnableKubernetesAlpha)
+		// MISSING: AlphaClusterFeatureGates
+		// MISSING: ResourceLabels
+		// MISSING: LabelFingerprint
+		// MISSING: LegacyAbac
+		out.NetworkPolicy = NetworkPolicy_ToProto(mapCtx, in.NetworkPolicy)
+		out.IpAllocationPolicy = IPAllocationPolicy_ToProto(mapCtx, in.IPAllocationPolicy)
+		out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_ToProto(mapCtx, in.MasterAuthorizedNetworksConfig)
+		out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
+		out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
+		// MISSING: Autoscaling
+		// MISSING: NetworkConfig
+		// MISSING: DefaultMaxPodsConstraint
+		out.ResourceUsageExportConfig = ResourceUsageExportConfig_ToProto(mapCtx, in.ResourceUsageExportConfig)
+		out.AuthenticatorGroupsConfig = AuthenticatorGroupsConfig_ToProto(mapCtx, in.AuthenticatorGroupsConfig)
+		out.PrivateClusterConfig = PrivateClusterConfig_ToProto(mapCtx, in.PrivateClusterConfig)
+		out.DatabaseEncryption = DatabaseEncryption_ToProto(mapCtx, in.DatabaseEncryption)
+		out.VerticalPodAutoscaling = VerticalPodAutoscaling_ToProto(mapCtx, in.VerticalPodAutoscaling)
+		// MISSING: ShieldedNodes
+		out.ReleaseChannel = ReleaseChannel_ToProto(mapCtx, in.ReleaseChannel)
+		out.WorkloadIdentityConfig = WorkloadIdentityConfig_ToProto(mapCtx, in.WorkloadIdentityConfig)
+		out.MeshCertificates = MeshCertificates_ToProto(mapCtx, in.MeshCertificates)
+		out.CostManagementConfig = CostManagementConfig_ToProto(mapCtx, in.CostManagementConfig)
+		out.NotificationConfig = NotificationConfig_ToProto(mapCtx, in.NotificationConfig)
+		out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
+		out.IdentityServiceConfig = IdentityServiceConfig_ToProto(mapCtx, in.IdentityServiceConfig)
+		// MISSING: SelfLink
+		// MISSING: Zone
+		// MISSING: Endpoint
+		// MISSING: InitialClusterVersion
+		// MISSING: CurrentMasterVersion
+		// MISSING: CurrentNodeVersion
+		// MISSING: CreateTime
+		// MISSING: Status
+		// MISSING: StatusMessage
+		// MISSING: NodeIPV4CIDRSize
+		// MISSING: ServicesIPV4CIDR
+		// MISSING: InstanceGroupUrls
+		// MISSING: CurrentNodeCount
+		// MISSING: ExpireTime
+		out.Location = direct.ValueOf(in.Location)
+		out.EnableTpu = direct.ValueOf(in.EnableTpu)
+		// MISSING: TpuIPV4CIDRBlock
+		// MISSING: Conditions
+		// MISSING: Autopilot
+		// MISSING: ID
+		out.NodePoolDefaults = NodePoolDefaults_ToProto(mapCtx, in.NodePoolDefaults)
+		out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+		out.MonitoringConfig = MonitoringConfig_ToProto(mapCtx, in.MonitoringConfig)
+		out.NodePoolAutoConfig = NodePoolAutoConfig_ToProto(mapCtx, in.NodePoolAutoConfig)
+		// MISSING: PodAutoscaling
+		// MISSING: Etag
+		// MISSING: Fleet
+		out.SecurityPostureConfig = SecurityPostureConfig_ToProto(mapCtx, in.SecurityPostureConfig)
+		out.ControlPlaneEndpointsConfig = ControlPlaneEndpointsConfig_ToProto(mapCtx, in.ControlPlaneEndpointsConfig)
+		// MISSING: EnableK8sBetaApis
+		// (near miss): "EnableK8sBetaApis" vs "EnableK8SBetaApis"
+		// MISSING: EnterpriseConfig
+		// MISSING: SecretManagerConfig
+		// MISSING: CompliancePostureConfig
+		// MISSING: SatisfiesPzs
+		// MISSING: SatisfiesPzi
+		// MISSING: UserManagedKeysConfig
+		// MISSING: RbacBindingConfig
+		// MISSING: GKEAutoUpgradeConfig
+		// MISSING: AnonymousAuthenticationConfig
+		return out
 	}
-	out := &pb.Cluster{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	out.InitialNodeCount = int32(direct.ValueOf(in.InitialNodeCount))
-	out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
-	out.MasterAuth = MasterAuth_ToProto(mapCtx, in.MasterAuth)
-	out.LoggingService = direct.ValueOf(in.LoggingService)
-	out.MonitoringService = direct.ValueOf(in.MonitoringService)
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	out.ClusterIpv4Cidr = direct.ValueOf(in.ClusterIPV4CIDR)
-	out.AddonsConfig = AddonsConfig_ToProto(mapCtx, in.AddonsConfig)
-	if in.SubnetworkRef != nil {
-		out.Subnetwork = in.SubnetworkRef.External
-	}
-	// MISSING: NodePools
-	// MISSING: Locations
-	out.EnableKubernetesAlpha = direct.ValueOf(in.EnableKubernetesAlpha)
-	// MISSING: AlphaClusterFeatureGates
-	// MISSING: ResourceLabels
-	// MISSING: LabelFingerprint
-	// MISSING: LegacyAbac
-	out.NetworkPolicy = NetworkPolicy_ToProto(mapCtx, in.NetworkPolicy)
-	out.IpAllocationPolicy = IPAllocationPolicy_ToProto(mapCtx, in.IPAllocationPolicy)
-	out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_ToProto(mapCtx, in.MasterAuthorizedNetworksConfig)
-	out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
-	out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
-	// MISSING: Autoscaling
-	// MISSING: NetworkConfig
-	// MISSING: DefaultMaxPodsConstraint
-	out.ResourceUsageExportConfig = ResourceUsageExportConfig_ToProto(mapCtx, in.ResourceUsageExportConfig)
-	out.AuthenticatorGroupsConfig = AuthenticatorGroupsConfig_ToProto(mapCtx, in.AuthenticatorGroupsConfig)
-	out.PrivateClusterConfig = PrivateClusterConfig_ToProto(mapCtx, in.PrivateClusterConfig)
-	out.DatabaseEncryption = DatabaseEncryption_ToProto(mapCtx, in.DatabaseEncryption)
-	out.VerticalPodAutoscaling = VerticalPodAutoscaling_ToProto(mapCtx, in.VerticalPodAutoscaling)
-	// MISSING: ShieldedNodes
-	out.ReleaseChannel = ReleaseChannel_ToProto(mapCtx, in.ReleaseChannel)
-	out.WorkloadIdentityConfig = WorkloadIdentityConfig_ToProto(mapCtx, in.WorkloadIdentityConfig)
-	out.MeshCertificates = MeshCertificates_ToProto(mapCtx, in.MeshCertificates)
-	out.CostManagementConfig = CostManagementConfig_ToProto(mapCtx, in.CostManagementConfig)
-	out.NotificationConfig = NotificationConfig_ToProto(mapCtx, in.NotificationConfig)
-	out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
-	out.IdentityServiceConfig = IdentityServiceConfig_ToProto(mapCtx, in.IdentityServiceConfig)
-	// MISSING: SelfLink
-	// MISSING: Zone
-	// MISSING: Endpoint
-	// MISSING: InitialClusterVersion
-	// MISSING: CurrentMasterVersion
-	// MISSING: CurrentNodeVersion
-	// MISSING: CreateTime
-	// MISSING: Status
-	// MISSING: StatusMessage
-	// MISSING: NodeIPV4CIDRSize
-	// MISSING: ServicesIPV4CIDR
-	// MISSING: InstanceGroupUrls
-	// MISSING: CurrentNodeCount
-	// MISSING: ExpireTime
-	out.Location = direct.ValueOf(in.Location)
-	out.EnableTpu = direct.ValueOf(in.EnableTpu)
-	// MISSING: TpuIPV4CIDRBlock
-	// MISSING: Conditions
-	// MISSING: Autopilot
-	// MISSING: ID
-	out.NodePoolDefaults = NodePoolDefaults_ToProto(mapCtx, in.NodePoolDefaults)
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	out.MonitoringConfig = MonitoringConfig_ToProto(mapCtx, in.MonitoringConfig)
-	out.NodePoolAutoConfig = NodePoolAutoConfig_ToProto(mapCtx, in.NodePoolAutoConfig)
-	// MISSING: PodAutoscaling
-	// MISSING: Etag
-	// MISSING: Fleet
-	out.SecurityPostureConfig = SecurityPostureConfig_ToProto(mapCtx, in.SecurityPostureConfig)
-	out.ControlPlaneEndpointsConfig = ControlPlaneEndpointsConfig_ToProto(mapCtx, in.ControlPlaneEndpointsConfig)
-	out.EnableK8SBetaApis = K8sBetaAPIConfig_ToProto(mapCtx, in.EnableK8sBetaApis)
-	// MISSING: EnterpriseConfig
-	// MISSING: SecretManagerConfig
-	// MISSING: CompliancePostureConfig
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: UserManagedKeysConfig
-	// MISSING: RbacBindingConfig
-	// MISSING: GKEAutoUpgradeConfig
-	// MISSING: AnonymousAuthenticationConfig
-	return out
-}
+*/
 func ControlPlaneEndpointsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ControlPlaneEndpointsConfig) *krm.ControlPlaneEndpointsConfig {
 	if in == nil {
 		return nil
@@ -737,8 +748,7 @@ func ControlPlaneEndpointsConfigStatus_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.ControlPlaneEndpointsConfigStatus{}
-	// MISSING: DNSEndpointConfig
-	// (near miss): "DNSEndpointConfig" vs "DnsEndpointConfig"
+	out.DNSEndpointConfig = DNSEndpointConfigStatus_FromProto(mapCtx, in.GetDnsEndpointConfig())
 	// MISSING: IPEndpointsConfig
 	return out
 }
@@ -747,8 +757,7 @@ func ControlPlaneEndpointsConfigStatus_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.ControlPlaneEndpointsConfig{}
-	// MISSING: DNSEndpointConfig
-	// (near miss): "DNSEndpointConfig" vs "DnsEndpointConfig"
+	out.DnsEndpointConfig = DNSEndpointConfigStatus_ToProto(mapCtx, in.DNSEndpointConfig)
 	// MISSING: IPEndpointsConfig
 	return out
 }
@@ -814,6 +823,30 @@ func CostManagementConfig_ToProto(mapCtx *direct.MapContext, in *krm.CostManagem
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+
+/* found existing non-generated mapping function "DNSCacheConfig_FromProto", skipping
+func DNSCacheConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsCacheConfig) *krm.DNSCacheConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSCacheConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "DNSCacheConfig_ToProto", skipping
+
+	func DNSCacheConfig_ToProto(mapCtx *direct.MapContext, in *krm.DNSCacheConfig) *pb.DnsCacheConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.DnsCacheConfig{}
+		out.Enabled = direct.ValueOf(in.Enabled)
+		return out
+	}
+*/
 func DNSConfig_FromProto(mapCtx *direct.MapContext, in *pb.DNSConfig) *krm.DNSConfig {
 	if in == nil {
 		return nil
@@ -834,6 +867,24 @@ func DNSConfig_ToProto(mapCtx *direct.MapContext, in *krm.DNSConfig) *pb.DNSConf
 	out.ClusterDnsScope = direct.Enum_ToProto[pb.DNSConfig_DNSScope](mapCtx, in.ClusterDNSScope)
 	out.ClusterDnsDomain = direct.ValueOf(in.ClusterDNSDomain)
 	// MISSING: AdditiveVPCScopeDNSDomain
+	return out
+}
+func DNSEndpointConfigStatus_FromProto(mapCtx *direct.MapContext, in *pb.ControlPlaneEndpointsConfig_DNSEndpointConfig) *krm.DNSEndpointConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSEndpointConfigStatus{}
+	out.Endpoint = direct.LazyPtr(in.GetEndpoint())
+	// MISSING: AllowExternalTraffic
+	return out
+}
+func DNSEndpointConfigStatus_ToProto(mapCtx *direct.MapContext, in *krm.DNSEndpointConfigStatus) *pb.ControlPlaneEndpointsConfig_DNSEndpointConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
+	out.Endpoint = direct.ValueOf(in.Endpoint)
+	// MISSING: AllowExternalTraffic
 	return out
 }
 func DailyMaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.DailyMaintenanceWindow) *krm.DailyMaintenanceWindow {
@@ -912,47 +963,13 @@ func DefaultSnatStatus_ToProto(mapCtx *direct.MapContext, in *krm.DefaultSnatSta
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
-func DnsCacheConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsCacheConfig) *krm.DnsCacheConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DnsCacheConfig{}
-	out.Enabled = direct.LazyPtr(in.GetEnabled())
-	return out
-}
-func DnsCacheConfig_ToProto(mapCtx *direct.MapContext, in *krm.DnsCacheConfig) *pb.DnsCacheConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DnsCacheConfig{}
-	out.Enabled = direct.ValueOf(in.Enabled)
-	return out
-}
-func DnsEndpointConfigStatus_FromProto(mapCtx *direct.MapContext, in *pb.ControlPlaneEndpointsConfig_DNSEndpointConfig) *krm.DnsEndpointConfigStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DnsEndpointConfigStatus{}
-	out.Endpoint = direct.LazyPtr(in.GetEndpoint())
-	// MISSING: AllowExternalTraffic
-	return out
-}
-func DnsEndpointConfigStatus_ToProto(mapCtx *direct.MapContext, in *krm.DnsEndpointConfigStatus) *pb.ControlPlaneEndpointsConfig_DNSEndpointConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
-	out.Endpoint = direct.ValueOf(in.Endpoint)
-	// MISSING: AllowExternalTraffic
-	return out
-}
 func EphemeralStorageLocalSsdConfig_FromProto(mapCtx *direct.MapContext, in *pb.EphemeralStorageLocalSsdConfig) *krm.EphemeralStorageLocalSsdConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.EphemeralStorageLocalSsdConfig{}
-	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
-	out.DataCacheCount = direct.LazyPtr(int(in.GetDataCacheCount()))
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
+	out.DataCacheCount = direct.LazyPtr(in.GetDataCacheCount())
 	return out
 }
 func EphemeralStorageLocalSsdConfig_ToProto(mapCtx *direct.MapContext, in *krm.EphemeralStorageLocalSsdConfig) *pb.EphemeralStorageLocalSsdConfig {
@@ -960,8 +977,8 @@ func EphemeralStorageLocalSsdConfig_ToProto(mapCtx *direct.MapContext, in *krm.E
 		return nil
 	}
 	out := &pb.EphemeralStorageLocalSsdConfig{}
-	out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
-	out.DataCacheCount = int32(direct.ValueOf(in.DataCacheCount))
+	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+	out.DataCacheCount = direct.ValueOf(in.DataCacheCount)
 	return out
 }
 func FastSocket_FromProto(mapCtx *direct.MapContext, in *pb.FastSocket) *krm.FastSocket {
@@ -980,6 +997,78 @@ func FastSocket_ToProto(mapCtx *direct.MapContext, in *krm.FastSocket) *pb.FastS
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+
+/* found existing non-generated mapping function "GKEBackupAgentConfig_FromProto", skipping
+func GKEBackupAgentConfig_FromProto(mapCtx *direct.MapContext, in *pb.GkeBackupAgentConfig) *krm.GKEBackupAgentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEBackupAgentConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "GKEBackupAgentConfig_ToProto", skipping
+
+	func GKEBackupAgentConfig_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupAgentConfig) *pb.GkeBackupAgentConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GkeBackupAgentConfig{}
+		out.Enabled = direct.ValueOf(in.Enabled)
+		return out
+	}
+*/
+func GPUDriverInstallationConfig_FromProto(mapCtx *direct.MapContext, in *pb.GPUDriverInstallationConfig) *krm.GPUDriverInstallationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GPUDriverInstallationConfig{}
+	// MISSING: GpuDriverVersion
+	// (near miss): "GpuDriverVersion" vs "GPUDriverVersion"
+	return out
+}
+func GPUDriverInstallationConfig_ToProto(mapCtx *direct.MapContext, in *krm.GPUDriverInstallationConfig) *pb.GPUDriverInstallationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GPUDriverInstallationConfig{}
+	// MISSING: GpuDriverVersion
+	// (near miss): "GpuDriverVersion" vs "GPUDriverVersion"
+	return out
+}
+
+/* found existing non-generated mapping function "GPUSharingConfig_FromProto", skipping
+func GPUSharingConfig_FromProto(mapCtx *direct.MapContext, in *pb.GPUSharingConfig) *krm.GPUSharingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GPUSharingConfig{}
+	// MISSING: MaxSharedClientsPerGpu
+	// (near miss): "MaxSharedClientsPerGpu" vs "MaxSharedClientsPerGPU"
+	// MISSING: GpuSharingStrategy
+	// (near miss): "GpuSharingStrategy" vs "GPUSharingStrategy"
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "GPUSharingConfig_ToProto", skipping
+
+	func GPUSharingConfig_ToProto(mapCtx *direct.MapContext, in *krm.GPUSharingConfig) *pb.GPUSharingConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GPUSharingConfig{}
+		// MISSING: MaxSharedClientsPerGpu
+		// (near miss): "MaxSharedClientsPerGpu" vs "MaxSharedClientsPerGPU"
+		// MISSING: GpuSharingStrategy
+		// (near miss): "GpuSharingStrategy" vs "GPUSharingStrategy"
+		return out
+	}
+*/
 func GatewayAPIConfig_FromProto(mapCtx *direct.MapContext, in *pb.GatewayAPIConfig) *krm.GatewayAPIConfig {
 	if in == nil {
 		return nil
@@ -1012,60 +1101,30 @@ func GcfsConfig_ToProto(mapCtx *direct.MapContext, in *krm.GcfsConfig) *pb.GcfsC
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
-func GkeBackupAgentConfig_FromProto(mapCtx *direct.MapContext, in *pb.GkeBackupAgentConfig) *krm.GkeBackupAgentConfig {
+
+/* found existing non-generated mapping function "HTTPLoadBalancing_FromProto", skipping
+func HTTPLoadBalancing_FromProto(mapCtx *direct.MapContext, in *pb.HttpLoadBalancing) *krm.HTTPLoadBalancing {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GkeBackupAgentConfig{}
-	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out := &krm.HTTPLoadBalancing{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	return out
 }
-func GkeBackupAgentConfig_ToProto(mapCtx *direct.MapContext, in *krm.GkeBackupAgentConfig) *pb.GkeBackupAgentConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "HTTPLoadBalancing_ToProto", skipping
+
+	func HTTPLoadBalancing_ToProto(mapCtx *direct.MapContext, in *krm.HTTPLoadBalancing) *pb.HttpLoadBalancing {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HttpLoadBalancing{}
+		out.Disabled = direct.ValueOf(in.Disabled)
+		return out
 	}
-	out := &pb.GkeBackupAgentConfig{}
-	out.Enabled = direct.ValueOf(in.Enabled)
-	return out
-}
-func GpuDriverInstallationConfig_FromProto(mapCtx *direct.MapContext, in *pb.GPUDriverInstallationConfig) *krm.GpuDriverInstallationConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GpuDriverInstallationConfig{}
-	out.GpuDriverVersion = direct.Enum_FromProto(mapCtx, in.GetGpuDriverVersion())
-	return out
-}
-func GpuDriverInstallationConfig_ToProto(mapCtx *direct.MapContext, in *krm.GpuDriverInstallationConfig) *pb.GPUDriverInstallationConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GPUDriverInstallationConfig{}
-	if oneof := GpuDriverInstallationConfig_GpuDriverVersion_ToProto(mapCtx, in.GpuDriverVersion); oneof != nil {
-		out.GpuDriverVersion = oneof
-	}
-	return out
-}
-func GpuSharingConfig_FromProto(mapCtx *direct.MapContext, in *pb.GPUSharingConfig) *krm.GpuSharingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GpuSharingConfig{}
-	out.MaxSharedClientsPerGpu = direct.LazyPtr(int(in.GetMaxSharedClientsPerGpu()))
-	out.GpuSharingStrategy = direct.Enum_FromProto(mapCtx, in.GetGpuSharingStrategy())
-	return out
-}
-func GpuSharingConfig_ToProto(mapCtx *direct.MapContext, in *krm.GpuSharingConfig) *pb.GPUSharingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GPUSharingConfig{}
-	out.MaxSharedClientsPerGpu = int64(direct.ValueOf(in.MaxSharedClientsPerGpu))
-	if oneof := GpuSharingConfig_GpuSharingStrategy_ToProto(mapCtx, in.GpuSharingStrategy); oneof != nil {
-		out.GpuSharingStrategy = oneof
-	}
-	return out
-}
+*/
 func HorizontalPodAutoscaling_FromProto(mapCtx *direct.MapContext, in *pb.HorizontalPodAutoscaling) *krm.HorizontalPodAutoscaling {
 	if in == nil {
 		return nil
@@ -1079,22 +1138,6 @@ func HorizontalPodAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.Horizon
 		return nil
 	}
 	out := &pb.HorizontalPodAutoscaling{}
-	out.Disabled = direct.ValueOf(in.Disabled)
-	return out
-}
-func HttpLoadBalancing_FromProto(mapCtx *direct.MapContext, in *pb.HttpLoadBalancing) *krm.HttpLoadBalancing {
-	if in == nil {
-		return nil
-	}
-	out := &krm.HttpLoadBalancing{}
-	out.Disabled = direct.LazyPtr(in.GetDisabled())
-	return out
-}
-func HttpLoadBalancing_ToProto(mapCtx *direct.MapContext, in *krm.HttpLoadBalancing) *pb.HttpLoadBalancing {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HttpLoadBalancing{}
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
@@ -1172,22 +1215,30 @@ func IdentityServiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.IdentitySe
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
-func K8sBetaAPIConfig_FromProto(mapCtx *direct.MapContext, in *pb.K8SBetaAPIConfig) *krm.K8sBetaAPIConfig {
+
+/* found existing non-generated mapping function "K8SBetaAPIConfig_FromProto", skipping
+func K8SBetaAPIConfig_FromProto(mapCtx *direct.MapContext, in *pb.K8sBetaAPIConfig) *krm.K8SBetaAPIConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.K8sBetaAPIConfig{}
+	out := &krm.K8SBetaAPIConfig{}
 	out.EnabledApis = in.EnabledApis
 	return out
 }
-func K8sBetaAPIConfig_ToProto(mapCtx *direct.MapContext, in *krm.K8sBetaAPIConfig) *pb.K8SBetaAPIConfig {
+*/
+
+/* found existing non-generated mapping function "K8SBetaAPIConfig_ToProto", skipping
+func K8SBetaAPIConfig_ToProto(mapCtx *direct.MapContext, in *krm.K8SBetaAPIConfig) *pb.K8sBetaAPIConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.K8SBetaAPIConfig{}
+	out := &pb.K8sBetaAPIConfig{}
 	out.EnabledApis = in.EnabledApis
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "KubeletConfig_FromProto", skipping
 func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig) *krm.KubeletConfig {
 	if in == nil {
 		return nil
@@ -1198,7 +1249,7 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	// MISSING: MemoryManager
 	out.CPUCfsQuota = direct.BoolValue_FromProto(mapCtx, in.GetCpuCfsQuota())
 	out.CPUCfsQuotaPeriod = direct.LazyPtr(in.GetCpuCfsQuotaPeriod())
-	out.PodPidsLimit = direct.LazyPtr(int(in.GetPodPidsLimit()))
+	out.PodPidsLimit = direct.LazyPtr(in.GetPodPidsLimit())
 	// MISSING: InsecureKubeletReadonlyPortEnabled
 	// MISSING: ImageGcLowThresholdPercent
 	// MISSING: ImageGcHighThresholdPercent
@@ -1215,33 +1266,39 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	// MISSING: SingleProcessOomKill
 	return out
 }
-func KubeletConfig_ToProto(mapCtx *direct.MapContext, in *krm.KubeletConfig) *pb.NodeKubeletConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "KubeletConfig_ToProto", skipping
+
+	func KubeletConfig_ToProto(mapCtx *direct.MapContext, in *krm.KubeletConfig) *pb.NodeKubeletConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NodeKubeletConfig{}
+		out.CpuManagerPolicy = direct.ValueOf(in.CPUManagerPolicy)
+		// MISSING: TopologyManager
+		// MISSING: MemoryManager
+		out.CpuCfsQuota = direct.BoolValue_ToProto(mapCtx, in.CPUCfsQuota)
+		out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
+		out.PodPidsLimit = direct.ValueOf(in.PodPidsLimit)
+		// MISSING: InsecureKubeletReadonlyPortEnabled
+		// MISSING: ImageGcLowThresholdPercent
+		// MISSING: ImageGcHighThresholdPercent
+		// MISSING: ImageMinimumGcAge
+		// MISSING: ImageMaximumGcAge
+		// MISSING: ContainerLogMaxSize
+		// MISSING: ContainerLogMaxFiles
+		// MISSING: AllowedUnsafeSysctls
+		// MISSING: EvictionSoft
+		// MISSING: EvictionSoftGracePeriod
+		// MISSING: EvictionMinimumReclaim
+		// MISSING: EvictionMaxPodGracePeriodSeconds
+		// MISSING: MaxParallelImagePulls
+		// MISSING: SingleProcessOomKill
+		return out
 	}
-	out := &pb.NodeKubeletConfig{}
-	out.CpuManagerPolicy = direct.ValueOf(in.CPUManagerPolicy)
-	// MISSING: TopologyManager
-	// MISSING: MemoryManager
-	out.CpuCfsQuota = direct.BoolValue_ToProto(mapCtx, in.CPUCfsQuota)
-	out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
-	out.PodPidsLimit = int64(direct.ValueOf(in.PodPidsLimit))
-	// MISSING: InsecureKubeletReadonlyPortEnabled
-	// MISSING: ImageGcLowThresholdPercent
-	// MISSING: ImageGcHighThresholdPercent
-	// MISSING: ImageMinimumGcAge
-	// MISSING: ImageMaximumGcAge
-	// MISSING: ContainerLogMaxSize
-	// MISSING: ContainerLogMaxFiles
-	// MISSING: AllowedUnsafeSysctls
-	// MISSING: EvictionSoft
-	// MISSING: EvictionSoftGracePeriod
-	// MISSING: EvictionMinimumReclaim
-	// MISSING: EvictionMaxPodGracePeriodSeconds
-	// MISSING: MaxParallelImagePulls
-	// MISSING: SingleProcessOomKill
-	return out
-}
+*/
 func LinuxNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig) *krm.LinuxNodeConfig {
 	if in == nil {
 		return nil
@@ -1266,6 +1323,36 @@ func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig)
 	// MISSING: TransparentHugepageDefrag
 	return out
 }
+
+/* found existing non-generated mapping function "LinuxNodeConfig_HugepagesConfig_FromProto", skipping
+func LinuxNodeConfig_HugepagesConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig_HugepagesConfig) *krm.LinuxNodeConfig_HugepagesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LinuxNodeConfig_HugepagesConfig{}
+	// MISSING: HugepageSize2m
+	// (near miss): "HugepageSize2m" vs "HugepageSize2M"
+	// MISSING: HugepageSize1g
+	// (near miss): "HugepageSize1g" vs "HugepageSize1G"
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "LinuxNodeConfig_HugepagesConfig_ToProto", skipping
+
+	func LinuxNodeConfig_HugepagesConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig_HugepagesConfig) *pb.LinuxNodeConfig_HugepagesConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.LinuxNodeConfig_HugepagesConfig{}
+		// MISSING: HugepageSize2m
+		// (near miss): "HugepageSize2m" vs "HugepageSize2M"
+		// MISSING: HugepageSize1g
+		// (near miss): "HugepageSize1g" vs "HugepageSize1G"
+		return out
+	}
+*/
 func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
 	if in == nil {
 		return nil
@@ -1379,32 +1466,40 @@ func ManagedPrometheus_ToProto(mapCtx *direct.MapContext, in *krm.ManagedPrometh
 	// MISSING: AutoMonitoringConfig
 	return out
 }
+
+/* found existing non-generated mapping function "MasterAuth_FromProto", skipping
 func MasterAuth_FromProto(mapCtx *direct.MapContext, in *pb.MasterAuth) *krm.MasterAuth {
 	if in == nil {
 		return nil
 	}
 	out := &krm.MasterAuth{}
 	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = MasterAuth_Password_FromProto(mapCtx, in.GetPassword())
+	out.Password = direct.LazyPtr(in.GetPassword())
 	// MISSING: ClientCertificateConfig
 	out.ClusterCACertificate = direct.LazyPtr(in.GetClusterCaCertificate())
 	out.ClientCertificate = direct.LazyPtr(in.GetClientCertificate())
 	out.ClientKey = direct.LazyPtr(in.GetClientKey())
 	return out
 }
-func MasterAuth_ToProto(mapCtx *direct.MapContext, in *krm.MasterAuth) *pb.MasterAuth {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "MasterAuth_ToProto", skipping
+
+	func MasterAuth_ToProto(mapCtx *direct.MapContext, in *krm.MasterAuth) *pb.MasterAuth {
+		if in == nil {
+			return nil
+		}
+		out := &pb.MasterAuth{}
+		out.Username = direct.ValueOf(in.Username)
+		out.Password = MasterAuth_Password_ToProto(mapCtx, in.Password)
+		// MISSING: ClientCertificateConfig
+		out.ClusterCaCertificate = direct.ValueOf(in.ClusterCACertificate)
+		out.ClientCertificate = direct.ValueOf(in.ClientCertificate)
+		out.ClientKey = direct.ValueOf(in.ClientKey)
+		return out
 	}
-	out := &pb.MasterAuth{}
-	out.Username = direct.ValueOf(in.Username)
-	out.Password = MasterAuth_Password_ToProto(mapCtx, in.Password)
-	// MISSING: ClientCertificateConfig
-	out.ClusterCaCertificate = direct.ValueOf(in.ClusterCACertificate)
-	out.ClientCertificate = direct.ValueOf(in.ClientCertificate)
-	out.ClientKey = direct.ValueOf(in.ClientKey)
-	return out
-}
+*/
 func MasterAuthStatus_FromProto(mapCtx *direct.MapContext, in *pb.MasterAuth) *krm.MasterAuthStatus {
 	if in == nil {
 		return nil
@@ -1413,8 +1508,7 @@ func MasterAuthStatus_FromProto(mapCtx *direct.MapContext, in *pb.MasterAuth) *k
 	// MISSING: Username
 	// MISSING: Password
 	// MISSING: ClientCertificateConfig
-	// MISSING: ClusterCACertificate
-	// (near miss): "ClusterCACertificate" vs "ClusterCaCertificate"
+	out.ClusterCACertificate = direct.LazyPtr(in.GetClusterCaCertificate())
 	out.ClientCertificate = direct.LazyPtr(in.GetClientCertificate())
 	// MISSING: ClientKey
 	return out
@@ -1427,8 +1521,7 @@ func MasterAuthStatus_ToProto(mapCtx *direct.MapContext, in *krm.MasterAuthStatu
 	// MISSING: Username
 	// MISSING: Password
 	// MISSING: ClientCertificateConfig
-	// MISSING: ClusterCACertificate
-	// (near miss): "ClusterCACertificate" vs "ClusterCaCertificate"
+	out.ClusterCaCertificate = direct.ValueOf(in.ClusterCACertificate)
 	out.ClientCertificate = direct.ValueOf(in.ClientCertificate)
 	// MISSING: ClientKey
 	return out
@@ -1562,7 +1655,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out.Metadata = in.Metadata
 	out.ImageType = direct.LazyPtr(in.GetImageType())
 	out.Labels = in.Labels
-	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
 	out.Tags = in.Tags
 	out.Preemptible = direct.LazyPtr(in.GetPreemptible())
 	// MISSING: Accelerators
@@ -1619,7 +1712,7 @@ func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeC
 	out.Metadata = in.Metadata
 	out.ImageType = direct.ValueOf(in.ImageType)
 	out.Labels = in.Labels
-	out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
+	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
 	out.Tags = in.Tags
 	out.Preemptible = direct.ValueOf(in.Preemptible)
 	// MISSING: Accelerators
@@ -1971,26 +2064,34 @@ func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationA
 	out.Values = in.Values
 	return out
 }
+
+/* found existing non-generated mapping function "ResourceLimits_FromProto", skipping
 func ResourceLimits_FromProto(mapCtx *direct.MapContext, in *pb.ResourceLimit) *krm.ResourceLimits {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ResourceLimits{}
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
-	out.Minimum = direct.LazyPtr(int(in.GetMinimum()))
-	out.Maximum = direct.LazyPtr(int(in.GetMaximum()))
+	out.Minimum = direct.LazyPtr(in.GetMinimum())
+	out.Maximum = direct.LazyPtr(in.GetMaximum())
 	return out
 }
-func ResourceLimits_ToProto(mapCtx *direct.MapContext, in *krm.ResourceLimits) *pb.ResourceLimit {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ResourceLimits_ToProto", skipping
+
+	func ResourceLimits_ToProto(mapCtx *direct.MapContext, in *krm.ResourceLimits) *pb.ResourceLimit {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ResourceLimit{}
+		out.ResourceType = direct.ValueOf(in.ResourceType)
+		out.Minimum = direct.ValueOf(in.Minimum)
+		out.Maximum = direct.ValueOf(in.Maximum)
+		return out
 	}
-	out := &pb.ResourceLimit{}
-	out.ResourceType = direct.ValueOf(in.ResourceType)
-	out.Minimum = int64(direct.ValueOf(in.Minimum))
-	out.Maximum = int64(direct.ValueOf(in.Maximum))
-	return out
-}
+*/
 func ResourceUsageExportConfig_FromProto(mapCtx *direct.MapContext, in *pb.ResourceUsageExportConfig) *krm.ResourceUsageExportConfig {
 	if in == nil {
 		return nil
