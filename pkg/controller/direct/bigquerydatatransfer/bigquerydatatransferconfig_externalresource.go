@@ -22,52 +22,39 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-type BigQueryDataTransferConfigIdentity struct {
-	projectID        string
-	location         string
-	transferConfigID string
-}
+type BigQueryDataTransferConfigIdentity = krm.BigQueryDataTransferConfigIdentity
 
 // Parent builds a BigQueryDataTransferConfig parent
-func (c *BigQueryDataTransferConfigIdentity) Parent() string {
-	return fmt.Sprintf("projects/%s/locations/%s", c.projectID, c.location)
+func Parent(c *BigQueryDataTransferConfigIdentity) string {
+	return fmt.Sprintf("projects/%s/locations/%s", c.Project, c.Location)
 }
 
 // FullyQualifiedName builds a BigQueryDataTransferConfig resource fully qualified name
-func (c *BigQueryDataTransferConfigIdentity) FullyQualifiedName() string {
-	return fmt.Sprintf("projects/%s/locations/%s/transferConfigs/%s", c.projectID, c.location, c.transferConfigID)
+func FullyQualifiedName(c *BigQueryDataTransferConfigIdentity) string {
+	return c.String()
 }
 
 // AsExternalRef builds a externalRef from a BigQueryDataTransferConfig
-func (c *BigQueryDataTransferConfigIdentity) AsExternalRef() *string {
-	e := serviceDomain + "/" + c.FullyQualifiedName()
+func AsExternalRef(c *BigQueryDataTransferConfigIdentity) *string {
+	e := serviceDomain + "/" + c.String()
 	return &e
 }
 
 // asID builds a BigQueryDataTransferConfigIdentity from a external reference
 func asID(externalRef string) (*BigQueryDataTransferConfigIdentity, error) {
-	if !strings.HasPrefix(externalRef, serviceDomain) {
-		return nil, fmt.Errorf("externalRef should have prefix %s, got %s", serviceDomain, externalRef)
+	id := &BigQueryDataTransferConfigIdentity{}
+	if err := id.FromExternal(externalRef); err != nil {
+		return nil, err
 	}
-	path := strings.TrimPrefix(externalRef, serviceDomain+"/")
-	tokens := strings.Split(path, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "transferConfigs" {
-		return nil, fmt.Errorf("externalRef should be %s/projects/<project>/locations/<location>/transferConfigs/<transferConfigID>, got %s",
-			serviceDomain, externalRef)
-	}
-	return &BigQueryDataTransferConfigIdentity{
-		projectID:        tokens[1],
-		location:         tokens[3],
-		transferConfigID: tokens[5],
-	}, nil
+	return id, nil
 }
 
 // BuildID builds a unique identifier BigQueryDataTransferConfigIdentity from resource components
 func BuildID(projectID, location, transferConfigID string) *BigQueryDataTransferConfigIdentity {
 	return &BigQueryDataTransferConfigIdentity{
-		projectID:        projectID,
-		location:         location,
-		transferConfigID: transferConfigID,
+		Project:        projectID,
+		Location:       location,
+		TransferConfig: transferConfigID,
 	}
 }
 
