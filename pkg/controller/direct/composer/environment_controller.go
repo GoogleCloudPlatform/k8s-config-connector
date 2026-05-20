@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -285,7 +286,7 @@ func populateDefaultsForEnvironment(desired, actual *composerpb.Environment) {
 
 	// Handle other fields.
 	if desired.StorageConfig == nil && actual.StorageConfig != nil {
-		desired.StorageConfig = actual.StorageConfig
+		desired.StorageConfig = proto.Clone(actual.StorageConfig).(*composerpb.StorageConfig)
 	}
 	if desired.Config == nil && actual.Config != nil {
 		desired.Config = &composerpb.EnvironmentConfig{}
@@ -315,16 +316,17 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 	// Handle other fields.
 	if actual.DataRetentionConfig != nil {
 		if desired.DataRetentionConfig == nil {
-			desired.DataRetentionConfig = actual.DataRetentionConfig
-		}
-		if actual.DataRetentionConfig.AirflowMetadataRetentionConfig != nil {
-			if desired.DataRetentionConfig.AirflowMetadataRetentionConfig == nil {
-				desired.DataRetentionConfig.AirflowMetadataRetentionConfig = actual.DataRetentionConfig.AirflowMetadataRetentionConfig
+			desired.DataRetentionConfig = proto.Clone(actual.DataRetentionConfig).(*composerpb.DataRetentionConfig)
+		} else {
+			if actual.DataRetentionConfig.AirflowMetadataRetentionConfig != nil {
+				if desired.DataRetentionConfig.AirflowMetadataRetentionConfig == nil {
+					desired.DataRetentionConfig.AirflowMetadataRetentionConfig = proto.Clone(actual.DataRetentionConfig.AirflowMetadataRetentionConfig).(*composerpb.AirflowMetadataRetentionPolicyConfig)
+				}
 			}
-		}
-		if actual.DataRetentionConfig.TaskLogsRetentionConfig != nil {
-			if desired.DataRetentionConfig.TaskLogsRetentionConfig == nil {
-				desired.DataRetentionConfig.TaskLogsRetentionConfig = actual.DataRetentionConfig.TaskLogsRetentionConfig
+			if actual.DataRetentionConfig.TaskLogsRetentionConfig != nil {
+				if desired.DataRetentionConfig.TaskLogsRetentionConfig == nil {
+					desired.DataRetentionConfig.TaskLogsRetentionConfig = proto.Clone(actual.DataRetentionConfig.TaskLogsRetentionConfig).(*composerpb.TaskLogsRetentionConfig)
+				}
 			}
 		}
 	}
@@ -348,12 +350,12 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 		desired.EnvironmentSize = actual.EnvironmentSize
 	}
 	if desired.MaintenanceWindow == nil {
-		desired.MaintenanceWindow = actual.MaintenanceWindow
+		desired.MaintenanceWindow = proto.Clone(actual.MaintenanceWindow).(*composerpb.MaintenanceWindow)
 	}
 
 	if actual.NodeConfig != nil {
 		if desired.NodeConfig == nil {
-			desired.NodeConfig = actual.NodeConfig
+			desired.NodeConfig = proto.Clone(actual.NodeConfig).(*composerpb.NodeConfig)
 		} else {
 			populateDefaultsForNodeConfig(desired.NodeConfig, actual.NodeConfig)
 		}
@@ -361,7 +363,7 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 
 	if actual.PrivateEnvironmentConfig != nil {
 		if desired.PrivateEnvironmentConfig == nil {
-			desired.PrivateEnvironmentConfig = actual.PrivateEnvironmentConfig
+			desired.PrivateEnvironmentConfig = proto.Clone(actual.PrivateEnvironmentConfig).(*composerpb.PrivateEnvironmentConfig)
 		} else {
 			populateDefaultsForPrivateEnvironmentConfig(desired.PrivateEnvironmentConfig, actual.PrivateEnvironmentConfig)
 		}
@@ -369,17 +371,17 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 
 	if actual.SoftwareConfig != nil {
 		if desired.SoftwareConfig == nil {
-			desired.SoftwareConfig = actual.SoftwareConfig
+			desired.SoftwareConfig = proto.Clone(actual.SoftwareConfig).(*composerpb.SoftwareConfig)
 		} else {
 			populateDefaultsForSoftwareConfig(desired.SoftwareConfig, actual.SoftwareConfig)
 		}
 	}
 
 	if desired.WebServerNetworkAccessControl == nil {
-		desired.WebServerNetworkAccessControl = actual.WebServerNetworkAccessControl
+		desired.WebServerNetworkAccessControl = proto.Clone(actual.WebServerNetworkAccessControl).(*composerpb.WebServerNetworkAccessControl)
 	}
 	if desired.WorkloadsConfig == nil {
-		desired.WorkloadsConfig = actual.WorkloadsConfig
+		desired.WorkloadsConfig = proto.Clone(actual.WorkloadsConfig).(*composerpb.WorkloadsConfig)
 	}
 }
 
@@ -412,7 +414,7 @@ func populateDefaultsForNodeConfig(desired, actual *composerpb.NodeConfig) {
 		desired.Tags = actual.Tags
 	}
 	if desired.IpAllocationPolicy == nil {
-		desired.IpAllocationPolicy = actual.IpAllocationPolicy
+		desired.IpAllocationPolicy = proto.Clone(actual.IpAllocationPolicy).(*composerpb.IPAllocationPolicy)
 	} else {
 		populateDefaultsForIPAllocationPolicy(desired.IpAllocationPolicy, actual.IpAllocationPolicy)
 	}
@@ -453,7 +455,7 @@ func populateDefaultsForPrivateEnvironmentConfig(desired, actual *composerpb.Pri
 		desired.EnablePrivateBuildsOnly = actual.EnablePrivateBuildsOnly
 	}
 	if desired.PrivateClusterConfig == nil {
-		desired.PrivateClusterConfig = actual.PrivateClusterConfig
+		desired.PrivateClusterConfig = proto.Clone(actual.PrivateClusterConfig).(*composerpb.PrivateClusterConfig)
 	} else if actual.PrivateClusterConfig != nil {
 		if !desired.PrivateClusterConfig.EnablePrivateEndpoint && actual.PrivateClusterConfig.EnablePrivateEndpoint {
 			desired.PrivateClusterConfig.EnablePrivateEndpoint = actual.PrivateClusterConfig.EnablePrivateEndpoint
@@ -487,7 +489,7 @@ func populateDefaultsForPrivateEnvironmentConfig(desired, actual *composerpb.Pri
 		desired.CloudComposerConnectionSubnetwork = actual.CloudComposerConnectionSubnetwork
 	}
 	if desired.NetworkingConfig == nil {
-		desired.NetworkingConfig = actual.NetworkingConfig
+		desired.NetworkingConfig = proto.Clone(actual.NetworkingConfig).(*composerpb.NetworkingConfig)
 	}
 }
 
@@ -514,6 +516,6 @@ func populateDefaultsForSoftwareConfig(desired, actual *composerpb.SoftwareConfi
 		desired.SchedulerCount = actual.SchedulerCount
 	}
 	if desired.CloudDataLineageIntegration == nil {
-		desired.CloudDataLineageIntegration = actual.CloudDataLineageIntegration
+		desired.CloudDataLineageIntegration = proto.Clone(actual.CloudDataLineageIntegration).(*composerpb.CloudDataLineageIntegration)
 	}
 }
