@@ -182,8 +182,8 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					}
 					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
 					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
-					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
-					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
+					autoConnection.ProjectId = network.Project.ID
+					autoConnection.PscConnectionStatus = pb.PscConnectionStatus_ACTIVE
 					autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
 					autoConnection.ConnectionType = attachmentDetails.ConnectionType
 					autoConnection.ServiceAttachment = attachmentDetails.ServiceAttachment
