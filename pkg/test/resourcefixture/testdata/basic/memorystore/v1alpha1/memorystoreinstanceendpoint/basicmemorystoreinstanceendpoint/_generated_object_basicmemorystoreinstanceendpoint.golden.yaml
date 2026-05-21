@@ -34,6 +34,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}
   observedGeneration: 2
   observedState:
     endpoints:
