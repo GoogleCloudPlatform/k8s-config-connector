@@ -451,6 +451,7 @@
 | vertexai.cnrm.cloud.google.com                | VertexAIDataset                                 | True         | True        | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                | VertexAIDeploymentResourcePool                  | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAIEndpoint                                | True         | True        | False  | Terraform  | False       |
+| vertexai.cnrm.cloud.google.com                | VertexAIExampleStore                            | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAIFeaturestoreEntityTypeFeature           | True         | False       | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                | VertexAIFeaturestoreEntityType                  | True         | False       | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                | VertexAIFeaturestore                            | True         | False       | False  | Direct     | True        |
