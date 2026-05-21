@@ -31,7 +31,7 @@ var _ refs.Ref = &ComputeResourcePolicyRef{}
 // holds the GCP identifier for the KRM object.
 type ComputeResourcePolicyRef struct {
 	// A reference to an externally managed ComputeResourcePolicy resource.
-	// Should be in the format "projects/{project}/regions/{region}/resourcePolicies/{resourcePolicy}".
+	// Should be in the format "projects/{{project}}/regions/{{region}}/resourcePolicies/{{resourcePolicy}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeResourcePolicy resource.

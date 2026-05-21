@@ -23,6 +23,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -33,7 +34,7 @@ var (
 
 var ComputeResourcePolicyIdentityFormat = gcpurls.Template[ComputeResourcePolicyIdentity](
 	"compute.googleapis.com",
-	"projects/{Project}/regions/{Region}/resourcePolicies/{ResourcePolicy}",
+	"projects/{project}/regions/{region}/resourcePolicies/{resourcePolicy}",
 )
 
 // +k8s:deepcopy-gen=false
@@ -72,7 +73,11 @@ func getIdentityFromComputeResourcePolicySpec(ctx context.Context, reader client
 
 	u, ok := obj.(*unstructured.Unstructured)
 	if !ok {
-		return nil, fmt.Errorf("expected *unstructured.Unstructured, got %T", obj)
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert to unstructured: %w", err)
+		}
+		u = &unstructured.Unstructured{Object: m}
 	}
 
 	region, _, err := unstructured.NestedString(u.Object, "spec", "region")
@@ -97,29 +102,9 @@ func getIdentityFromComputeResourcePolicySpec(ctx context.Context, reader client
 }
 
 func (obj *ComputeResourcePolicy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	specIdentity, err := getIdentityFromComputeResourcePolicySpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
-	}
-
-	region := common.ValueOf(obj.Spec.Region)
-	if region == "" {
-		return nil, fmt.Errorf("cannot resolve region")
-	}
-
-	specIdentity := &ComputeResourcePolicyIdentity{
-		Project:        projectID,
-		Region:         region,
-		ResourcePolicy: resourceID,
 	}
 
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
