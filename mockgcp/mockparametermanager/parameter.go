@@ -94,7 +94,7 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 	fqn := name.String()
 	existing := &pb.Parameter{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
-	        return nil, err
+		return nil, err
 	}
 
 	updated := proto.CloneOf(existing)
