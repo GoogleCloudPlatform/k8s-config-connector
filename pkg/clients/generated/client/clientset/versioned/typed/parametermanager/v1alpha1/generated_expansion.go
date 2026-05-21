@@ -22,3 +22,5 @@
 package v1alpha1
 
 type ParameterManagerParameterExpansion interface{}
+
+type ParameterManagerParameterVersionExpansion interface{}

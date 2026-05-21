@@ -42,9 +42,7 @@ type ResourcepolicyDailySchedule struct {
 	/* Immutable. Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle. Days in cycle for snapshot schedule policy must be 1. */
 	DaysInCycle int64 `json:"daysInCycle"`
 
-	/* Immutable. This must be in UTC format that resolves to one of
-	00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example,
-	both 13:00-5 and 08:00 are valid. */
+	/* Immutable. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid. */
 	StartTime string `json:"startTime"`
 }
 
@@ -52,8 +50,7 @@ type ResourcepolicyDayOfWeeks struct {
 	/* Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
 	Day string `json:"day"`
 
-	/* Immutable. Time within the window to start the operations.
-	It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT. */
+	/* Immutable. Time within the window to start the operations. It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT. */
 	StartTime string `json:"startTime"`
 }
 
@@ -63,15 +60,11 @@ type ResourcepolicyDiskConsistencyGroupPolicy struct {
 }
 
 type ResourcepolicyGroupPlacementPolicy struct {
-	/* Immutable. The number of availability domains instances will be spread across. If two instances are in different
-	availability domain, they will not be put in the same low latency network. */
+	/* Immutable. The number of availability domains instances will be spread across. If two instances are in different availability domain, they will not be put in the same low latency network. */
 	// +optional
 	AvailabilityDomainCount *int64 `json:"availabilityDomainCount,omitempty"`
 
-	/* Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network.
-	Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
-	with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
-	attached. Possible values: ["COLLOCATED"]. */
+	/* Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network. Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy attached. Possible values: ["COLLOCATED"]. */
 	// +optional
 	Collocation *string `json:"collocation,omitempty"`
 
@@ -79,9 +72,7 @@ type ResourcepolicyGroupPlacementPolicy struct {
 	// +optional
 	MaxDistance *int64 `json:"maxDistance,omitempty"`
 
-	/* Immutable. Number of VMs in this placement group. Google does not recommend that you use this field
-	unless you use a compact policy and you want your policy to work only if it contains this
-	exact number of VMs. */
+	/* Immutable. Number of VMs in this placement group. Google does not recommend that you use this field unless you use a compact policy and you want your policy to work only if it contains this exact number of VMs. */
 	// +optional
 	VmCount *int64 `json:"vmCount,omitempty"`
 }
@@ -90,10 +81,7 @@ type ResourcepolicyHourlySchedule struct {
 	/* Immutable. The number of hours between snapshots. */
 	HoursInCycle int64 `json:"hoursInCycle"`
 
-	/* Immutable. Time within the window to start the operations.
-	It must be in an hourly format "HH:MM",
-	where HH : [00-23] and MM : [00] GMT.
-	eg: 21:00. */
+	/* Immutable. Time within the window to start the operations. It must be in an hourly format "HH:MM", where HH : [00-23] and MM : [00] GMT. eg: 21:00. */
 	StartTime string `json:"startTime"`
 }
 
@@ -106,8 +94,7 @@ type ResourcepolicyInstanceSchedulePolicy struct {
 	// +optional
 	StartTime *string `json:"startTime,omitempty"`
 
-	/* Immutable. Specifies the time zone to be used in interpreting the schedule. The value of this field must be a time zone name
-	from the tz database: http://en.wikipedia.org/wiki/Tz_database. */
+	/* Immutable. Specifies the time zone to be used in interpreting the schedule. The value of this field must be a time zone name from the tz database: http://en.wikipedia.org/wiki/Tz_database. */
 	TimeZone string `json:"timeZone"`
 
 	/* Immutable. Specifies the schedule for starting instances. */
@@ -123,8 +110,7 @@ type ResourcepolicyRetentionPolicy struct {
 	/* Immutable. Maximum age of the snapshot that is allowed to be kept. */
 	MaxRetentionDays int64 `json:"maxRetentionDays"`
 
-	/* Immutable. Specifies the behavior to apply to scheduled snapshots when
-	the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"]. */
+	/* Immutable. Specifies the behavior to apply to scheduled snapshots when the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"]. */
 	// +optional
 	OnSourceDiskDelete *string `json:"onSourceDiskDelete,omitempty"`
 }
@@ -144,9 +130,7 @@ type ResourcepolicySchedule struct {
 }
 
 type ResourcepolicySnapshotProperties struct {
-	/* Immutable. Creates the new snapshot in the snapshot chain labeled with the
-	specified name. The chain name must be 1-63 characters long and comply
-	with RFC1035. */
+	/* Immutable. Chain name that the snapshot is created in. */
 	// +optional
 	ChainName *string `json:"chainName,omitempty"`
 
@@ -158,8 +142,7 @@ type ResourcepolicySnapshotProperties struct {
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
-	/* Immutable. Cloud Storage bucket location to store the auto snapshot
-	(regional or multi-regional). */
+	/* Immutable. Cloud Storage bucket location to store the auto snapshot (regional or multi-regional). */
 	// +optional
 	StorageLocations []string `json:"storageLocations,omitempty"`
 }
@@ -221,14 +204,37 @@ type ComputeResourcePolicySpec struct {
 	SnapshotSchedulePolicy *ResourcepolicySnapshotSchedulePolicy `json:"snapshotSchedulePolicy,omitempty"`
 }
 
+type ResourcepolicyObservedStateStatus struct {
+	/* [Output Only] Creation timestamp in RFC3339 text format. */
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	/* [Output Only] The unique identifier for the resource. This identifier is defined by the server. */
+	// +optional
+	Id *int64 `json:"id,omitempty"`
+
+	/* [Output Only] The status of resource policy creation. */
+	// +optional
+	Status *string `json:"status,omitempty"`
+}
+
 type ComputeResourcePolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeResourcePolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the ComputeResourcePolicy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ResourcepolicyObservedStateStatus `json:"observedState,omitempty"`
+
+	/* The server-defined URL of this resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 }

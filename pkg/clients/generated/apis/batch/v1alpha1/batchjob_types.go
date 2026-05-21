@@ -833,6 +833,7 @@ type BatchJobSpec struct {
 	// +optional
 	AllocationPolicy *JobAllocationPolicy `json:"allocationPolicy,omitempty"`
 
+	/* The location that this resource belongs to. */
 	Location string `json:"location"`
 
 	/* Log preservation policy for the Job. */

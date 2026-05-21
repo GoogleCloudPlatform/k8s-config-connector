@@ -107,6 +107,12 @@ type DatasetDefaultEncryptionConfiguration struct {
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
+type DatasetReplicas struct {
+	/* The geographic location where the dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+}
+
 type DatasetRoutine struct {
 	/* The ID of the dataset containing this routine. */
 	DatasetId string `json:"datasetId"`
@@ -193,6 +199,10 @@ type BigQueryDatasetSpec struct {
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
+	/* Optional. This block declaratively defines ALL desired replicas. One replica's location MUST match spec.location. If omitted, a standard, non-replicated dataset is created. */
+	// +optional
+	Replicas []DatasetReplicas `json:"replicas,omitempty"`
+
 	/* The BigQueryDataset name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -206,6 +216,50 @@ type DatasetObservedStateStatus struct {
 	/* Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here. */
 	// +optional
 	Location *string `json:"location,omitempty"`
+
+	/* A detailed, live view of all replicas from the GCP API. */
+	// +optional
+	Replicas []DatasetReplicasStatus `json:"replicas,omitempty"`
+}
+
+type DatasetReplicasStatus struct {
+	/* The time when this replica completed creation. */
+	// +optional
+	CompletionTime *string `json:"completionTime,omitempty"`
+
+	/* The time when this dataset was created. */
+	// +optional
+	CreationTime *string `json:"creationTime,omitempty"`
+
+	/* A unique identifier for the replica. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+
+	/* The geographic location where the dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* The time when this replica completed primary assignment. */
+	// +optional
+	PrimaryAssignmentCompletionTime *string `json:"primaryAssignmentCompletionTime,omitempty"`
+
+	/* The time when this replica was assigned as primary. */
+	// +optional
+	PrimaryAssignmentTime *string `json:"primaryAssignmentTime,omitempty"`
+
+	/* The state of the replica, e.g. PRIMARY or SECONDARY. */
+	// +optional
+	PrimaryState *string `json:"primaryState,omitempty"`
+
+	/* The sync status of the replica. */
+	// +optional
+	SyncStatus []DatasetSyncStatusStatus `json:"syncStatus,omitempty"`
+}
+
+type DatasetSyncStatusStatus struct {
+	/* The replication time for the sync status. */
+	// +optional
+	ReplicationTime *string `json:"replicationTime,omitempty"`
 }
 
 type BigQueryDatasetStatus struct {
@@ -235,6 +289,10 @@ type BigQueryDatasetStatus struct {
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
 	ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
+
+	/* The actual primary location as observed from the GCP API. */
+	// +optional
+	PrimaryLocation *string `json:"primaryLocation,omitempty"`
 
 	/* Output only. A URL that can be used to access the resource again. You can use this URL in Get or Update requests to the resource. */
 	// +optional
