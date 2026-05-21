@@ -129,6 +129,8 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 		return true
 	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubScope"}:
 		return true
+	case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageFolder"}:
+		return true
 	}
 	return false
 }

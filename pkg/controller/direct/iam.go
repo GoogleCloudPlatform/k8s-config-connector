@@ -187,3 +187,82 @@ func DeleteIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1be
 	log.Info("updated iam policy to remove member", "updatedPolicy", newPolicy, "member", removeMember)
 	return nil
 }
+
+func GetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy, err := iamAdapter.GetIAMPolicy(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec = v1beta1.IAMPolicySpec{
+		ResourceReference: want.Spec.ResourceReference,
+	}
+
+	for _, b := range policy.Bindings {
+		binding := v1beta1.IAMPolicyBinding{
+			Role: b.Role,
+		}
+		for _, m := range b.Members {
+			binding.Members = append(binding.Members, v1beta1.Member(m))
+		}
+		actual.Spec.Bindings = append(actual.Spec.Bindings, binding)
+	}
+
+	return actual, nil
+}
+
+func SetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy := &iampb.Policy{}
+	for _, b := range want.Spec.Bindings {
+		binding := &iampb.Binding{
+			Role: b.Role,
+		}
+		for _, m := range b.Members {
+			binding.Members = append(binding.Members, string(m))
+		}
+		policy.Bindings = append(policy.Bindings, binding)
+	}
+
+	newPolicy, err := iamAdapter.SetIAMPolicy(ctx, policy)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec = v1beta1.IAMPolicySpec{
+		ResourceReference: want.Spec.ResourceReference,
+	}
+
+	for _, b := range newPolicy.Bindings {
+		binding := v1beta1.IAMPolicyBinding{
+			Role: b.Role,
+		}
+		for _, m := range b.Members {
+			binding.Members = append(binding.Members, v1beta1.Member(m))
+		}
+		actual.Spec.Bindings = append(actual.Spec.Bindings, binding)
+	}
+
+	return actual, nil
+}

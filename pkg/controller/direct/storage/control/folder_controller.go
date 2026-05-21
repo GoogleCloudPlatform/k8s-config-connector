@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/storage/control/apiv2"
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 
@@ -98,6 +99,7 @@ type FolderAdapter struct {
 }
 
 var _ directbase.Adapter = &FolderAdapter{}
+var _ direct.IAMAdapter = &FolderAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
@@ -215,4 +217,31 @@ func (a *FolderAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	}
 	log.V(2).Info("successfully deleted Folder", "name", a.id)
 	return true, nil
+}
+
+func (a *FolderAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	requestName := fmt.Sprintf("projects/_/buckets/%s/folders/%s", a.id.Parent().BucketName, a.id.ID())
+	req := &iampb.GetIamPolicyRequest{
+		Resource: requestName,
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", requestName, err)
+	}
+
+	return policy, nil
+}
+
+func (a *FolderAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	requestName := fmt.Sprintf("projects/_/buckets/%s/folders/%s", a.id.Parent().BucketName, a.id.ID())
+	req := &iampb.SetIamPolicyRequest{
+		Resource: requestName,
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", requestName, err)
+	}
+
+	return newPolicy, nil
 }
