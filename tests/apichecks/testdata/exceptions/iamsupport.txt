@@ -54,3 +54,4 @@
 [iam_gap_direct] crd=spannerdatabases.spanner.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_gap_direct] crd=spannerinstances.spanner.cnrm.cloud.google.com: supports IAM in REST but not in KCC direct
 [iam_unexpected] crd=gkehubscopes.gkehub.cnrm.cloud.google.com: supports IAM in KCC but REST discovery didn't find it
+[iam_unexpected] crd=storagefolders.storage.cnrm.cloud.google.com: supports IAM in KCC but REST discovery didn't find it
