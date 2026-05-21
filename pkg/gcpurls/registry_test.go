@@ -78,6 +78,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":      true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                 true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":         true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                   true,
 	}
 
 	for _, tmpl := range templates {
