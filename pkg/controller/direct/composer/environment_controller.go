@@ -364,6 +364,27 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 		if desired.NodeConfig.ComposerNetworkAttachment == "" {
 			desired.NodeConfig.ComposerNetworkAttachment = actual.NodeConfig.ComposerNetworkAttachment
 		}
+		if desired.NodeConfig.ServiceAccount == "" {
+			desired.NodeConfig.ServiceAccount = actual.NodeConfig.ServiceAccount
+		}
+		if desired.NodeConfig.Network == "" {
+			desired.NodeConfig.Network = actual.NodeConfig.Network
+		}
+		if desired.NodeConfig.Subnetwork == "" {
+			desired.NodeConfig.Subnetwork = actual.NodeConfig.Subnetwork
+		}
+		if desired.NodeConfig.IpAllocationPolicy == nil {
+			desired.NodeConfig.IpAllocationPolicy = actual.NodeConfig.IpAllocationPolicy
+		}
+		if desired.NodeConfig.MachineType == "" {
+			desired.NodeConfig.MachineType = actual.NodeConfig.MachineType
+		}
+		if desired.NodeConfig.DiskSizeGb == 0 {
+			desired.NodeConfig.DiskSizeGb = actual.NodeConfig.DiskSizeGb
+		}
+		if desired.NodeConfig.Location == "" {
+			desired.NodeConfig.Location = actual.NodeConfig.Location
+		}
 	}
 
 	if actual.PrivateEnvironmentConfig != nil {
