@@ -25,6 +25,7 @@ import (
 )
 
 // Common controller dependencies.
+// Trivial change to trigger presubmits.
 type Deps struct {
 	TFProvider        *tfschema.Provider
 	TFLoader          *servicemappingloader.ServiceMappingLoader
