@@ -410,6 +410,17 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 		return nil, err
 	}
 
+	if name.NodePool == "default-pool" {
+		clusterFQN := name.ClusterName().String()
+		cluster := &pb.Cluster{}
+		if err := s.storage.Get(ctx, clusterFQN, cluster); err == nil {
+			cluster.NodeConfig = nil
+			if err := s.storage.Update(ctx, clusterFQN, cluster); err != nil {
+				klog.Errorf("failed to update cluster after deleting default-pool: %v", err)
+			}
+		}
+	}
+
 	if err := s.deleteMockIGM(ctx, oldObj.InstanceGroupUrls); err != nil {
 		klog.Errorf("failed to delete mock IGM: %v", err)
 	}
