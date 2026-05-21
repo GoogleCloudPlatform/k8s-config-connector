@@ -21,4 +21,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/buckets/bucket-${uniqueId}/folders/folder-${uniqueId}
   observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
