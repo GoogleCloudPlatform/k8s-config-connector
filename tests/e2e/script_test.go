@@ -82,13 +82,22 @@ func TestE2EScript(t *testing.T) {
 				uniqueID := testvariable.NewUniqueID()
 				folderID := ""
 
+				var harnessOptions []create.HarnessOption
+
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
 					dummy := loadScript(t, filepath.Join(scenarioDir, scenarioPath), uniqueID, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, dummy.Name, dummy.Objects)
+
+					// Record the CRDs we will use, for faster testing
+					keepCRDs := map[schema.GroupKind]bool{}
+					for _, obj := range dummy.Objects {
+						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					}
+					harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
 				}
 
-				h := create.NewHarness(ctx, t)
+				h := create.NewHarness(ctx, t, harnessOptions...)
 				project := h.Project
 				script := loadScript(t, filepath.Join(scenarioDir, scenarioPath), uniqueID, project)
 

@@ -312,7 +312,9 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	// IsSelfLinkEqual is a special handling to avoid reconciliation discrepancies caused by resources and
 	// their dependencies being managed by different controllers.
 	// This can be removed once all Compute resources are migrated to direct controller.
-	if !IsSelfLinkEqual(forwardingRule.Target, a.actual.Target) {
+	targetMatchSpec := IsSelfLinkEqual(forwardingRule.Target, a.actual.Target)
+	targetMatchStatus := IsSelfLinkEqual(forwardingRule.Target, a.desired.Status.Target)
+	if !targetMatchSpec || (a.desired.Status.Target != nil && !targetMatchStatus) {
 		report.AddField("target", a.actual.Target, forwardingRule.Target)
 		if a.id.ParentID.Location == "global" {
 			setTargetReq := &computepb.SetTargetGlobalForwardingRuleRequest{

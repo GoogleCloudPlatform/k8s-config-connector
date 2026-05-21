@@ -25,75 +25,68 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &BigQueryAnalyticsHubListingRef{}
+var _ refs.Ref = &WorkstationClusterRef{}
 
-// BigQueryAnalyticsHubListingRef defines the resource reference to BigQueryAnalyticsHubListing, which "External" field
+// WorkstationClusterRef defines the resource reference to WorkstationCluster, which "External" field
 // holds the GCP identifier for the KRM object.
-type BigQueryAnalyticsHubListingRef struct {
-	// A reference to an externally managed BigQueryAnalyticsHubListing resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/dataExchanges/{{dataExchangeID}}/listings/{{listingID}}".
+type WorkstationClusterRef struct {
+	// A reference to an externally managed WorkstationCluster resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a BigQueryAnalyticsHubListing resource.
+	// The name of a WorkstationCluster resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a BigQueryAnalyticsHubListing resource.
+	// The namespace of a WorkstationCluster resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&BigQueryAnalyticsHubListingRef{})
+	refs.Register(&WorkstationClusterRef{})
 }
 
-func (r *BigQueryAnalyticsHubListingRef) GetGVK() schema.GroupVersionKind {
-	return BigQueryAnalyticsHubListingGVK
+func (r *WorkstationClusterRef) GetGVK() schema.GroupVersionKind {
+	return WorkstationClusterGVK
 }
 
-func (r *BigQueryAnalyticsHubListingRef) GetNamespacedName() types.NamespacedName {
+func (r *WorkstationClusterRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *BigQueryAnalyticsHubListingRef) GetExternal() string {
+func (r *WorkstationClusterRef) GetExternal() string {
 	return r.External
 }
 
-func (r *BigQueryAnalyticsHubListingRef) SetExternal(ref string) {
+func (r *WorkstationClusterRef) SetExternal(ref string) {
 	r.External = ref
 }
 
-func (r *BigQueryAnalyticsHubListingRef) ValidateExternal(ref string) error {
-	id := &BigQueryAnalyticsHubListingIdentity{}
+func (r *WorkstationClusterRef) ValidateExternal(ref string) error {
+	id := &WorkstationClusterIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *BigQueryAnalyticsHubListingRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &BigQueryAnalyticsHubListingIdentity{}
+func (r *WorkstationClusterRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &WorkstationClusterIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *BigQueryAnalyticsHubListingRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *WorkstationClusterRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromBigQueryAnalyticsHubListingSpec(ctx, reader, u)
+		identity, err := getIdentityFromWorkstationClusterSpec(ctx, reader, u)
 		if err != nil {
 			return ""
 		}
 		return identity.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
-}
-
-func (r *BigQueryAnalyticsHubListingRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
-		return "", err
-	}
-	return r.External, nil
 }
