@@ -47,7 +47,7 @@ type ComputeNetworkSpec struct {
 	// Enable ULA internal ipv6 on this network. Enabling this feature will assign
 	// a /48 from google defined ULA prefix fd20::/20.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.enable_ula_internal_ipv6
-	EnableUlaInternalIPV6 *bool `json:"enableUlaInternalIPV6,omitempty"`
+	EnableUlaInternalIPV6 *bool `json:"enableUlaInternalIpv6,omitempty"`
 
 	// Immutable. When enabling ula internal ipv6, caller optionally can specify the /48 range
 	// they want from the google defined ULA prefix fd20::/20. The input must be a
@@ -55,7 +55,7 @@ type ComputeNetworkSpec struct {
 	// fail if the speficied /48 is already in used by another resource.
 	// If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.internal_ipv6_range
-	InternalIPV6Range *string `json:"internalIPV6Range,omitempty"`
+	InternalIPV6Range *string `json:"internalIpv6Range,omitempty"`
 
 	// Immutable. Maximum Transmission Unit in bytes. The default value is 1460 bytes.
 	// The minimum value for this field is 1300 and the maximum value is 8896 bytes (jumbo frames).
@@ -97,7 +97,7 @@ type ComputeNetworkStatus struct {
 
 	// The gateway address for default routing out of the network. This value
 	// is selected by GCP.
-	GatewayIPV4 *string `json:"gatewayIPV4,omitempty"`
+	GatewayIPV4 *string `json:"gatewayIpv4,omitempty"`
 
 	// The self link of the ComputeNetwork.
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -108,7 +108,7 @@ type ComputeNetworkStatus struct {
 type ComputeNetworkObservedState struct {
 	// [Output Only] The gateway address for default routing out of the network, selected by Google Cloud.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.gateway_i_pv4
-	GatewayIPV4 *string `json:"gatewayIPV4,omitempty"`
+	GatewayIPV4 *string `json:"gatewayIpv4,omitempty"`
 
 	// [Output Only] Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.self_link
