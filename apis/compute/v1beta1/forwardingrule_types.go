@@ -407,10 +407,13 @@ type ComputeForwardingRuleStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	/* The internal fully qualified service name for this Forwarding Rule.
-	This field is only used for INTERNAL load balancing. */
+	/* The internal fully qualified service name for this Forwarding Rule. This field is only used for INTERNAL load balancing. */
 	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.service_name
 	ServiceName *string `json:"serviceName,omitempty"`
+
+	/* The target resource to receive the matched traffic. */
+	// +kcc:proto:field=google.cloud.compute.v1.ForwardingRule.target
+	Target *string `json:"target,omitempty"`
 }
 
 // +genclient
