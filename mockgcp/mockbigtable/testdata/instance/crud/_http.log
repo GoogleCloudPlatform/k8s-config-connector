@@ -186,15 +186,17 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-${uniqueId}?alt=json&updateMask=display_name
+PUT https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Updated ${uniqueId}",
-  "name": "projects/${projectId}/instances/test-${uniqueId}"
+  "name": "projects/${projectId}/instances/test-${uniqueId}",
+  "type": "PRODUCTION"
 }
 
 200 OK
@@ -208,18 +210,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
-    "originalRequest": {
-      "instance": {
-        "displayName": "Updated ${uniqueId}",
-        "name": "projects/${projectId}/instances/test-${uniqueId}"
-      },
-      "updateMask": "displayName"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/test-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated ${uniqueId}",
+  "name": "projects/${projectId}/instances/test-${uniqueId}",
+  "state": "READY",
+  "type": "PRODUCTION"
 }
 
 ---
