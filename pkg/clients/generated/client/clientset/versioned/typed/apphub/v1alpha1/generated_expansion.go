@@ -24,3 +24,5 @@ package v1alpha1
 type AppHubDiscoveredServiceExpansion interface{}
 
 type AppHubDiscoveredWorkloadExpansion interface{}
+
+type AppHubServiceProjectAttachmentExpansion interface{}

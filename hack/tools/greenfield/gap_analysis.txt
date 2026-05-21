@@ -1,12 +1,13 @@
-Gap Analysis Snapshot - 2026-05-11 23:06:30
+Gap Analysis Snapshot - 2026-05-19 05:07:42
 GoogleAPIs SHA: 731d7f2ab6
-KCC SHA:        c609e8165b
+KCC SHA:        LOCAL
 -------------------------------------------------------
 Metric                         | Value     
 -------------------------------------------------------
-Total GCP Resources            | 1725      
+Total GCP Resources (Raw)      | 1725      
+Unified (Hierarchical)         | 0         
+Processed Resources (Unified)  | 1682      
 Skipped (Policy)               | 43        
-Processed Resources            | 1682      
 Implemented in KCC             | 237       
 Missing from KCC               | 1445      
 -------------------------------------------------------

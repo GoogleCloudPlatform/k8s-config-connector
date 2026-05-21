@@ -38,6 +38,7 @@
 | apphub.cnrm.cloud.google.com                  | AppHubApplication                               | True         | True        | False  | Direct     | True        |
 | apphub.cnrm.cloud.google.com                  | AppHubDiscoveredService                         | True         | False       | False  | Direct     | True        |
 | apphub.cnrm.cloud.google.com                  | AppHubDiscoveredWorkload                        | True         | False       | False  | Direct     | True        |
+| apphub.cnrm.cloud.google.com                  | AppHubServiceProjectAttachment                  | True         | False       | False  | Direct     | True        |
 | artifactregistry.cnrm.cloud.google.com        | ArtifactRegistryRepository                      | False        | True        | False  | Terraform  | True        |
 | asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | True        | False  | Direct     | True        |
 | asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | True        | False  | Direct     | True        |

@@ -39,6 +39,10 @@ func (c *FakeApphubV1alpha1) AppHubDiscoveredWorkloads(namespace string) v1alpha
 	return newFakeAppHubDiscoveredWorkloads(c, namespace)
 }
 
+func (c *FakeApphubV1alpha1) AppHubServiceProjectAttachments(namespace string) v1alpha1.AppHubServiceProjectAttachmentInterface {
+	return newFakeAppHubServiceProjectAttachments(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeApphubV1alpha1) RESTClient() rest.Interface {
