@@ -130,6 +130,11 @@ func (in *EkmconnectionObservedStateStatus) DeepCopyInto(out *EkmconnectionObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.Etag != nil {
+		in, out := &in.Etag, &out.Etag
+		*out = new(string)
+		**out = **in
+	}
 	if in.ServiceResolvers != nil {
 		in, out := &in.ServiceResolvers, &out.ServiceResolvers
 		*out = make([]EkmconnectionServiceResolversStatus, len(*in))

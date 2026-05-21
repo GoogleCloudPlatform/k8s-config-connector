@@ -228,6 +228,9 @@ spec:
                     description: Output only. The time at which the EkmConnection
                       was created.
                     type: string
+                  etag:
+                    description: Output only. Etag of the resource.
+                    type: string
                   serviceResolvers:
                     description: Output only. The parsed server certificates from
                       the service resolvers.

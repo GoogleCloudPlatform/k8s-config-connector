@@ -101,6 +101,10 @@ type KMSEKMConnectionObservedState struct {
 	// Output only. The parsed server certificates from the service resolvers.
 	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.service_resolvers
 	ServiceResolvers []KMSEKMConnectionObservedServiceResolver `json:"serviceResolvers,omitempty"`
+
+	// Output only. Etag of the resource.
+	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +kcc:proto=google.cloud.kms.v1.EkmConnection.ServiceResolver

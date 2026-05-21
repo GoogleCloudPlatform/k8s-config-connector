@@ -28,5 +28,7 @@ PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 go run . generate-types \
     --service google.cloud.kms.v1 \
     --api-version kms.cnrm.cloud.google.com/v1alpha1 \
+    --resource KMSAutokeyConfig:AutokeyConfig \
+    --resource KMSKeyHandle:KeyHandle \
     --resource KMSEKMConnection:EkmConnection \
     --proto-source-path ${PROTO_OUT}

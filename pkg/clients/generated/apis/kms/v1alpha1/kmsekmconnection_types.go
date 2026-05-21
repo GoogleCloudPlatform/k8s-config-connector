@@ -91,6 +91,10 @@ type EkmconnectionObservedStateStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
+	/* Output only. Etag of the resource. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
 	/* Output only. The parsed server certificates from the service resolvers. */
 	// +optional
 	ServiceResolvers []EkmconnectionServiceResolversStatus `json:"serviceResolvers,omitempty"`

@@ -17,6 +17,8 @@
 // krm.group: kms.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.kms.v1
+// resource: KMSAutokeyConfig:AutokeyConfig
+// resource: KMSKeyHandle:KeyHandle
 // resource: KMSEKMConnection:EkmConnection
 
 package v1alpha1
