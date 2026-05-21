@@ -72,4 +72,4 @@ This skill guides the implementation of the `Adapter` interface and the creation
     *Note: Automated agents should ONLY run against MockGCP if it exists to avoid requiring real GCP credentials.*
 
 ## Journaling
-Append any reconciliation hurdles, GCP SDK quirks, or MockGCP alignment issues to `.gemini/skills/kcc-direct-controller-logic-implementer/journal.md`.
+Append any reconciliation hurdles, GCP SDK quirks, or MockGCP alignment issues to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
