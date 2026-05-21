@@ -35,6 +35,10 @@ func (c *FakeEventarcV1alpha1) EventarcChannels(namespace string) v1alpha1.Event
 	return newFakeEventarcChannels(c, namespace)
 }
 
+func (c *FakeEventarcV1alpha1) EventarcEnrollments(namespace string) v1alpha1.EventarcEnrollmentInterface {
+	return newFakeEventarcEnrollments(c, namespace)
+}
+
 func (c *FakeEventarcV1alpha1) EventarcGoogleChannelConfigs(namespace string) v1alpha1.EventarcGoogleChannelConfigInterface {
 	return newFakeEventarcGoogleChannelConfigs(c, namespace)
 }
