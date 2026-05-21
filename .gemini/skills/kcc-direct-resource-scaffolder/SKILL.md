@@ -40,4 +40,4 @@ This skill guides the initial scaffolding of KCC "direct" resources, ensuring st
     - **Status**: Ensure `status.observedGeneration` is `*int64`.
 
 ## Journaling
-Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/skills/kcc-direct-resource-scaffolder/journal.md`.
+Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
