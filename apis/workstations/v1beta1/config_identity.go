@@ -59,22 +59,17 @@ func NewWorkstationConfigIdentity(ctx context.Context, reader client.Reader, obj
 	if clusterRef == nil {
 		return nil, fmt.Errorf("no parent cluster")
 	}
-	clusterExternal, err := clusterRef.NormalizedExternal(ctx, reader, obj.Namespace)
-	if err != nil {
+	if err := clusterRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 		return nil, fmt.Errorf("cannot resolve cluster: %w", err)
 	}
-	clusterParent, cluster, err := parseWorkstationClusterExternal(clusterExternal)
-	if err != nil {
+	clusterExternal := clusterRef.External
+	clusterIdentity := &WorkstationClusterIdentity{}
+	if err := clusterIdentity.FromExternal(clusterExternal); err != nil {
 		return nil, fmt.Errorf("cannot parse external cluster: %w", err)
 	}
-	projectID := clusterParent.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := clusterParent.Location
-	if location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
+	projectID := clusterIdentity.Project
+	location := clusterIdentity.Location
+	cluster := clusterIdentity.WorkstationCluster
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
