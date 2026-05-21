@@ -318,6 +318,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "172.31.251.0/24",
       "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment",
+      "ipAllocationPolicy": {},
       "network": "projects/${projectId}/global/networks/default",
       "serviceAccount": "composer-env-sa@${projectId}.iam.gserviceaccount.com",
       "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
