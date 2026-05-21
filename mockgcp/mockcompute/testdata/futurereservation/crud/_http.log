@@ -15,8 +15,8 @@ Content-Type: application/json
     "totalCount": "10"
   },
   "timeWindow": {
-    "endTime": "2027-06-20T07:00:00Z",
-    "startTime": "2027-05-20T07:00:00Z"
+    "endTime": "2026-11-11T00:00:00Z",
+    "startTime": "2026-11-10T00:00:00Z"
   }
 }
 
@@ -121,8 +121,8 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2027-06-20T07:00:00Z",
-    "startTime": "2027-05-20T07:00:00Z"
+    "endTime": "2026-11-11T00:00:00Z",
+    "startTime": "2026-11-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
@@ -244,8 +244,8 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2027-06-20T07:00:00Z",
-    "startTime": "2027-05-20T07:00:00Z"
+    "endTime": "2026-11-11T00:00:00Z",
+    "startTime": "2026-11-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
