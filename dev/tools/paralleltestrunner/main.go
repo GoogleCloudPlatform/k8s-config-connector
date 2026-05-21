@@ -70,7 +70,9 @@ func main() {
 				cmd.Env = os.Environ()
 				cmd.Env = append(cmd.Env, "RUN_TESTS="+exactRun)
 
+				startTime := time.Now()
 				output, err := cmd.CombinedOutput()
+				duration := time.Since(startTime)
 
 				artifactsDir := os.Getenv("ARTIFACTS")
 				if artifactsDir == "" {
@@ -99,7 +101,7 @@ func main() {
 					}
 					success = false
 				} else {
-					fmt.Printf("PASS: %s\n", t)
+					fmt.Printf("PASS: %s (%v)\n", t, duration.Round(time.Millisecond))
 				}
 			}(test)
 		}
@@ -113,7 +115,9 @@ func main() {
 	cmd.Env = append(cmd.Env, "RUN_TESTS="+*baseTest)
 	cmd.Env = append(cmd.Env, "SKIP_ALL=1")
 
+	catchAllStart := time.Now()
 	output, err := cmd.CombinedOutput()
+	catchAllDuration := time.Since(catchAllStart)
 	newTests := parseNewTests(output, *baseTest, tests)
 
 	if len(newTests) > 0 {
@@ -141,6 +145,8 @@ func main() {
 	} else if err != nil && len(newTests) == 0 {
 		fmt.Printf("Catch-all failed with no new tests found:\n%s\n", string(output))
 		success = false
+	} else {
+		fmt.Printf("Catch-all succeeded in %v\n", catchAllDuration.Round(time.Millisecond))
 	}
 
 	if !success {
