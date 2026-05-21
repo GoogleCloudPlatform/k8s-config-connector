@@ -23,4 +23,6 @@ package v1alpha1
 
 type EventarcChannelExpansion interface{}
 
+type EventarcEnrollmentExpansion interface{}
+
 type EventarcGoogleChannelConfigExpansion interface{}
