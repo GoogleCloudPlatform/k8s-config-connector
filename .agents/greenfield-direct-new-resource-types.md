@@ -30,7 +30,7 @@ Your goal is to identify GCP resources that are missing from KCC but defined in 
       ```bash
       # GoogleAPIs SHA: 731d7f2ab6
       # KCC SHA: dc1dd45d0b
-      python3 hack/tools/calculate_coverage.py 731d7f2ab6 dc1dd45d0b 5
+      python3 hack/tools/greenfield/calculate_coverage.py 731d7f2ab6 dc1dd45d0b 5
       ```
 
 2.  **Identify Candidate**:
