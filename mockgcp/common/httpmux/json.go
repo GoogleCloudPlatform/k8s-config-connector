@@ -25,8 +25,10 @@ import (
 )
 
 func MarshalAsJSON(obj proto.Message) ([]byte, error) {
-	return protojson.MarshalOptions{Resolver: &protoResolver{}}.Marshal(obj)
+	return protojson.MarshalOptions{Resolver: DefaultResolver}.Marshal(obj)
 }
+
+var DefaultResolver = &protoResolver{}
 
 type protoResolver struct {
 }
