@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/netapp/apiv1"
 	netapppb "cloud.google.com/go/netapp/apiv1/netapppb"
 	"google.golang.org/api/option"
@@ -55,11 +56,11 @@ type modelBackupPolicy struct {
 
 func (m *modelBackupPolicy) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building BackupPolicy client: %w", err)
 	}
@@ -265,6 +266,41 @@ func (a *BackupPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 		return false, fmt.Errorf("waiting delete BackupPolicy %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *BackupPolicyAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	iamClient := iampb.NewIAMPolicyClient(a.gcpClient.Connection())
+	policy, err := iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *BackupPolicyAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	iamClient := iampb.NewIAMPolicyClient(a.gcpClient.Connection())
+	newPolicy, err := iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
 
 func computeDiffBackupPolicy(mapCtx *direct.MapContext, actual, desired *netapppb.BackupPolicy) ([]string, error) {
