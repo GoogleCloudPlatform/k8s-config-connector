@@ -101,8 +101,10 @@ func BigQueryDatasetStatus_FromProto(mapCtx *direct.MapContext, in *pb.DatasetMe
 		out.SelfLink = direct.LazyPtr(fmt.Sprintf("https://bigquery.googleapis.com/bigquery/v2/projects/%s/datasets/%s", tokens[0], tokens[1]))
 	}
 	out.ObservedState = &krm.BigQueryDatasetObservedState{Location: direct.LazyPtr(in.Location)}
+	out.PrimaryLocation = direct.LazyPtr(in.Location)
 	return out
 }
+
 func BigQueryDatasetStatus_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDatasetStatus) *pb.DatasetMetadata {
 	if in == nil {
 		return nil

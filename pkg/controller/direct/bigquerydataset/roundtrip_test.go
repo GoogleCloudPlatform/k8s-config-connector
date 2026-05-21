@@ -53,8 +53,8 @@ func FuzzBigQueryDataSetSpec(f *testing.F) {
 			for j := 0; j < count; j++ {
 				accessRand := rand.Intn(8)
 				element := reflect.New(field.Type().Elem()).Elem()
-				f := element.Type().Field(accessRand).Name
-				fillAccess(t, accessFieldNames[accessRand], reflect.ValueOf(&f))
+				fieldToSet := element.Field(accessRand)
+				fillAccess(t, accessFieldNames[accessRand], fieldToSet)
 				slice.Index(j).Set(element)
 			}
 			field.Set(slice)
@@ -97,6 +97,7 @@ func FuzzBigQueryDataSetSpec(f *testing.F) {
 			cmpopts.IgnoreFields(krm.BigQueryDatasetSpec{}, "ResourceID"),
 			cmpopts.IgnoreFields(krm.BigQueryDatasetSpec{}, "ProjectRef"),
 			cmpopts.IgnoreFields(krm.BigQueryDatasetSpec{}, "IsCaseInsensitive"),
+			cmpopts.IgnoreFields(krm.BigQueryDatasetSpec{}, "Replicas"),
 		}
 		// compare
 		if diff := cmp.Diff(k1, k2, opts...); diff != "" {
@@ -121,6 +122,11 @@ func fillAccess(t *testing.T, fieldName string, field reflect.Value) {
 	case reflect.String:
 		field.SetString(RandomString(10))
 
+	case reflect.Ptr:
+		if field.IsNil() {
+			field.Set(reflect.New(field.Type().Elem()))
+		}
+		fillAccess(t, fieldName, field.Elem())
 	case reflect.Struct:
 		for i := 0; i < field.NumField(); i++ {
 			structFieldName := field.Type().Field(i).Name

@@ -337,6 +337,19 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              replicas:
+                description: Optional. This block declaratively defines ALL desired
+                  replicas. One replica's location MUST match spec.location. If omitted,
+                  a standard, non-replicated dataset is created.
+                items:
+                  properties:
+                    location:
+                      description: The geographic location where the dataset should
+                        reside. See https://cloud.google.com/bigquery/docs/locations
+                        for supported locations.
+                      type: string
+                  type: object
+                type: array
               resourceID:
                 description: The BigQueryDataset name. If not given, the metadata.name
                   will be used.
@@ -409,7 +422,52 @@ spec:
                       spec, the GCP server defaults to a location and will be captured
                       here.
                     type: string
+                  replicas:
+                    description: A detailed, live view of all replicas from the GCP
+                      API.
+                    items:
+                      properties:
+                        completionTime:
+                          description: The time when this replica completed creation.
+                          type: string
+                        creationTime:
+                          description: The time when this dataset was created.
+                          type: string
+                        id:
+                          description: A unique identifier for the replica.
+                          type: string
+                        location:
+                          description: The geographic location where the dataset should
+                            reside. See https://cloud.google.com/bigquery/docs/locations
+                            for supported locations.
+                          type: string
+                        primaryAssignmentCompletionTime:
+                          description: The time when this replica completed primary
+                            assignment.
+                          type: string
+                        primaryAssignmentTime:
+                          description: The time when this replica was assigned as
+                            primary.
+                          type: string
+                        primaryState:
+                          description: The state of the replica, e.g. PRIMARY or SECONDARY.
+                          type: string
+                        syncStatus:
+                          description: The sync status of the replica.
+                          items:
+                            properties:
+                              replicationTime:
+                                description: The replication time for the sync status.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                 type: object
+              primaryLocation:
+                description: The actual primary location as observed from the GCP
+                  API.
+                type: string
               selfLink:
                 description: Output only. A URL that can be used to access the resource
                   again. You can use this URL in Get or Update requests to the resource.

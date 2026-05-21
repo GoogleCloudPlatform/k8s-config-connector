@@ -106,6 +106,18 @@ type BigQueryDatasetSpec struct {
 
 	// Optional. Updates storage_billing_model for the dataset.
 	StorageBillingModel *string `json:"storageBillingModel,omitempty"`
+
+	// Optional. This block declaratively defines ALL desired replicas.
+	// One replica's location MUST match spec.location.
+	// If omitted, a standard, non-replicated dataset is created.
+	Replicas []DatasetReplica `json:"replicas,omitempty"`
+}
+
+type DatasetReplica struct {
+	// The geographic location where the dataset should reside. See
+	// https://cloud.google.com/bigquery/docs/locations for supported
+	// locations.
+	Location *string `json:"location,omitempty"`
 }
 
 // BigQueryDatasetStatus defines the config connector machine state of BigQueryDataset
@@ -138,6 +150,42 @@ type BigQueryDatasetStatus struct {
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *BigQueryDatasetObservedState `json:"observedState,omitempty"`
+
+	// The actual primary location as observed from the GCP API.
+	PrimaryLocation *string `json:"primaryLocation,omitempty"`
+}
+
+type DatasetObservedReplica struct {
+	// A unique identifier for the replica.
+	ID *string `json:"id,omitempty"`
+
+	// The geographic location where the dataset should reside. See
+	// https://cloud.google.com/bigquery/docs/locations for supported
+	// locations.
+	Location *string `json:"location,omitempty"`
+
+	// The state of the replica, e.g. PRIMARY or SECONDARY.
+	PrimaryState *string `json:"primaryState,omitempty"`
+
+	// The time when this dataset was created.
+	CreationTime *string `json:"creationTime,omitempty"`
+
+	// The time when this replica completed creation.
+	CompletionTime *string `json:"completionTime,omitempty"`
+
+	// The time when this replica was assigned as primary.
+	PrimaryAssignmentTime *string `json:"primaryAssignmentTime,omitempty"`
+
+	// The time when this replica completed primary assignment.
+	PrimaryAssignmentCompletionTime *string `json:"primaryAssignmentCompletionTime,omitempty"`
+
+	// The sync status of the replica.
+	SyncStatus []DatasetSyncStatus `json:"syncStatus,omitempty"`
+}
+
+type DatasetSyncStatus struct {
+	// The replication time for the sync status.
+	ReplicationTime *string `json:"replicationTime,omitempty"`
 }
 
 // BigQueryDatasetObservedState defines the desired state of BigQueryDataset
@@ -146,6 +194,9 @@ type BigQueryDatasetObservedState struct {
 
 	// Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here.
 	Location *string `json:"location,omitempty"`
+
+	// A detailed, live view of all replicas from the GCP API.
+	Replicas []DatasetObservedReplica `json:"replicas,omitempty"`
 }
 
 // +genclient
