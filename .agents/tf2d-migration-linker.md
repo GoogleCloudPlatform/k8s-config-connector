@@ -32,14 +32,16 @@ Perform a scan of migration issues and add cross-reference comments where they a
    - `gh issue list --state all --label "area/direct,overseer" --limit 500 --json number,title,labels,state`
 
 2. **Group by Resource**:
-   - Group the fetched issues by their resource **Group** and **Kind**.
-   - Extract Group and Kind from titles using these patterns:
-     - **Step 1 (Types)**: `Create generate.sh and types.go files for <Group> <Kind>` (Label: `step/gen-types`)
-     - **Step 2 (Identity)**: `Create Identity and Reference files for <Group> <Kind>` (Label: `step/identity-reference`)
+   - Group the fetched issues by their resource **Kind** and **Group** (case-insensitive).
+   - Be **highly flexible** when extracting the resource details from titles. Do not rely on rigid templates.
+   - Titles may vary (e.g., `"Create generate.sh...", "ai:chore: Implement direct types...", "Move <Kind> to...", "Migrate <Kind> from..."`).
+   - Use your semantic understanding of KCC and GCP resources to extract the core **Kind** and **Group** (e.g., Kind: `ComputeNetwork` Group: `compute`, Kind: `CloudBuildTrigger` Group: `cloudbuild`).
+   - Align minor naming variations **only if they belong to the same GCP service** (e.g., match Step 1 `DataCatalog PolicyTag` with Step 2 `DataCatalogPolicyTag` because both belong to the DataCatalog service).
 
 3. **Identify Missing Links**:
-   - For each resource where both Step 1 and Step 2 issues exist:
-     - Check the **Step 2** issue (newer step). 
+   - For each matched resource pair where both Step 1 and Step 2 issues exist:
+     - **Only process OPEN Step 2 issues** (skip closed ones to avoid notification noise).
+     - Check the **Step 2** issue.
      - Verify if it already contains a reference to the **Step 1** issue number (e.g., `#123`) in its description or comments.
      - If the reference is missing, proceed to post a linking comment.
 
