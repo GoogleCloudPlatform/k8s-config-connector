@@ -85,7 +85,7 @@ type ReservationShareSettings struct {
 	// +optional
 	ProjectMap []ReservationProjectMap `json:"projectMap,omitempty"`
 
-	/* Type of sharing for this shared-reservation Check the ShareType enum for the list of possible values. */
+	/* Immutable. Type of sharing for this shared-reservation Check the ShareType enum for the list of possible values. */
 	// +optional
 	ShareType *string `json:"shareType,omitempty"`
 }
@@ -117,7 +117,7 @@ type ComputeReservationSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The share setting for reservations and sole tenancy node groups. */
+	/* The share setting for reservations and sole tenancy node groups. */
 	// +optional
 	ShareSettings *ReservationShareSettings `json:"shareSettings,omitempty"`
 
