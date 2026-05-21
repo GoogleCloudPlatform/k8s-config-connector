@@ -71,6 +71,9 @@ func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) a
 			return admission.Errored(http.StatusInternalServerError, err)
 		}
 		refResourceGVK := policy.Spec.ResourceReference.GroupVersionKind()
+		if registry.IsIAMDirect(refResourceGVK.GroupKind()) {
+			return allowedResponse
+		}
 		isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
 		return a.validateIAMPolicy(policy, isDCLResource)
 
@@ -80,6 +83,9 @@ func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) a
 			return admission.Errored(http.StatusInternalServerError, err)
 		}
 		refResourceGVK := partialPolicy.Spec.ResourceReference.GroupVersionKind()
+		if registry.IsIAMDirect(refResourceGVK.GroupKind()) {
+			return allowedResponse
+		}
 		isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
 		return a.validateIAMPartialPolicy(partialPolicy, isDCLResource)
 
@@ -89,6 +95,9 @@ func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) a
 			return admission.Errored(http.StatusInternalServerError, err)
 		}
 		refResourceGVK := policyMember.Spec.ResourceReference.GroupVersionKind()
+		if registry.IsIAMDirect(refResourceGVK.GroupKind()) {
+			return allowedResponse
+		}
 		isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
 		return a.validateIAMPolicyMember(policyMember, isDCLResource)
 	case isIAMAuditConfig(obj):

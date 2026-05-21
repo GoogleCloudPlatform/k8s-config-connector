@@ -27,6 +27,7 @@ import (
 
 	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -133,6 +134,7 @@ type runtimeTemplateAdapter struct {
 }
 
 var _ directbase.Adapter = &runtimeTemplateAdapter{}
+var _ direct.IAMAdapter = &runtimeTemplateAdapter{}
 
 func (a *runtimeTemplateAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -351,4 +353,27 @@ func (a *runtimeTemplateAdapter) Delete(ctx context.Context, deleteOp *directbas
 		}
 	}
 	return true, nil
+}
+
+func (a *runtimeTemplateAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+	return policy, nil
+}
+
+func (a *runtimeTemplateAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+	return newPolicy, nil
 }
