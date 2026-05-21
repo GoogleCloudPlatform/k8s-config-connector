@@ -146,6 +146,7 @@ require (
 	cloud.google.com/go/modelarmor v1.0.0 // indirect
 	cloud.google.com/go/osconfig v1.16.0 // indirect
 	cloud.google.com/go/pubsublite v1.8.2 // indirect
+	cloud.google.com/go/serviceusage v1.14.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0 // indirect

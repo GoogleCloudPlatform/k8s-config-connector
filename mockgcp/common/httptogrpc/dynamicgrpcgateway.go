@@ -157,7 +157,22 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	http.Error(w, "not found", http.StatusNotFound)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte(`{
+  "error": {
+    "code": 404,
+    "message": "Not Found",
+    "status": "NOT_FOUND",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not Found",
+        "reason": "notFound"
+      }
+    ]
+  }
+}`))
 }
 
 // serveHTTPMethod serves a single HTTP method mapped to a gRPC method.
@@ -167,7 +182,7 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 
 	// Set the query string in the metadata, so it can be used for field filtering
 	md := metadata.Pairs(common.MetadataKeyHttpRequestQuery, r.URL.RawQuery)
-	ctx = metadata.NewIncomingContext(ctx, md)
+	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	call := &httpMethodCall{
 		parent:     m,
@@ -260,16 +275,19 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 
 			q := r.URL.Query()
 			for k, values := range q {
-				if k == "alt" || k == "$alt" {
-					responseOptions.Alt = values
-					continue
-				}
-				if k == "prettyPrint" || k == "pretty_print" {
-					// Pretty-print not implemented; ignore, for now
-					// responseOptions.PrettyPrint = values
-					continue
-				}
-
+			        if k == "alt" || k == "$alt" {
+			                responseOptions.Alt = values
+			                continue
+			        }
+			        if k == "prettyPrint" || k == "pretty_print" {
+			                // Pretty-print not implemented; ignore, for now
+			                // responseOptions.PrettyPrint = values
+			                continue
+			        }
+			        if k == "fields" || k == "$fields" {
+			                // Handled manually by some methods
+			                continue
+			        }
 				// Convert camelCase to snake_case
 				var protoKey []rune
 				for _, c := range k {
