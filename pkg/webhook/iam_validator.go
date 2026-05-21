@@ -97,6 +97,10 @@ func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) a
 			return admission.Errored(http.StatusInternalServerError, err)
 		}
 		refResourceGVK := auditConfig.Spec.ResourceReference.GroupVersionKind()
+		if registry.IsIAMDirect(refResourceGVK.GroupKind()) {
+			return admission.Errored(http.StatusForbidden,
+				fmt.Errorf("object of GroupVersionKind %v does not have IAM Audit Config support", obj.GroupVersionKind()))
+		}
 		isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
 		if isDCLResource {
 			return admission.Errored(http.StatusForbidden,
@@ -182,6 +186,9 @@ func getResourceConfigs(smLoader *servicemappingloader.ServiceMappingLoader, gvk
 
 func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCLResource bool) admission.Response {
 	resourceRef := policy.Spec.ResourceReference
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return a.directValidateIAMPolicy(policy)
+	}
 	if isDCLResource {
 		return a.dclValidateIAMPolicy(policy)
 	}
@@ -196,6 +203,9 @@ func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCL
 
 func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IAMPartialPolicy, isDCLResource bool) admission.Response {
 	resourceRef := partialPolicy.Spec.ResourceReference
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return a.directValidateIAMPartialPolicy(partialPolicy)
+	}
 	if isDCLResource {
 		return a.dclValidateIAMPartialPolicy(partialPolicy)
 	}
@@ -209,6 +219,9 @@ func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IA
 
 func (a *iamValidatorHandler) validateIAMPolicyMember(policyMember *v1beta1.IAMPolicyMember, isDCLResource bool) admission.Response {
 	resourceRef := policyMember.Spec.ResourceReference
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return a.directValidateIAMPolicyMember(policyMember)
+	}
 	if isDCLResource {
 		return a.dclValidateIAMPolicyMember(policyMember)
 	}
@@ -357,4 +370,20 @@ func doesTFResourceSupportConditions(rcs []*v1alpha1.ResourceConfig) bool {
 func doesTFResourceSupportAuditConfigs(rcs []*v1alpha1.ResourceConfig) bool {
 	// All ResourceConfigs for a given kind support or don't support IAM audit configs.
 	return rcs[0].IAMConfig.AuditConfigName != ""
+}
+
+func (a *iamValidatorHandler) directValidateIAMPolicy(policy *v1beta1.IAMPolicy) admission.Response {
+	resourceRef := policy.Spec.ResourceReference
+	if len(policy.Spec.AuditConfigs) > 0 {
+		return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Audit Configs", resourceRef.GroupVersionKind()))
+	}
+	return allowedResponse
+}
+
+func (a *iamValidatorHandler) directValidateIAMPartialPolicy(partialPolicy *v1beta1.IAMPartialPolicy) admission.Response {
+	return allowedResponse
+}
+
+func (a *iamValidatorHandler) directValidateIAMPolicyMember(policyMember *v1beta1.IAMPolicyMember) admission.Response {
+	return allowedResponse
 }
