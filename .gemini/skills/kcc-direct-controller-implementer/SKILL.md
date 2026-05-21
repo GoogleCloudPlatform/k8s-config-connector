@@ -39,4 +39,4 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
       - If `TestCRDFieldPresenceInTestsForAlpha` fails, you may need to regenerate the exceptions file by running it with `WRITE_GOLDEN_OUTPUT=1`.
 
 ## Journaling
-Append any controller/reconciliation quirks or API check hurdles to `.gemini/skills/kcc-direct-controller-implementer/journal.md`.
+Append any controller/reconciliation quirks or API check hurdles to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
