@@ -310,11 +310,11 @@ func (a *Adapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
 	}
 
 	req := &iampb.GetIamPolicyRequest{
-		Resource: a.id.FullyQualifiedName(),
+		Resource: a.id.String(),
 	}
 	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
 	if err != nil {
-		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.FullyQualifiedName(), err)
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
 	}
 
 	return policy, nil
@@ -326,12 +326,12 @@ func (a *Adapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iamp
 	}
 
 	req := &iampb.SetIamPolicyRequest{
-		Resource: a.id.FullyQualifiedName(),
+		Resource: a.id.String(),
 		Policy:   policy,
 	}
 	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
 	if err != nil {
-		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.FullyQualifiedName(), err)
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
 	}
 
 	return newPolicy, nil
