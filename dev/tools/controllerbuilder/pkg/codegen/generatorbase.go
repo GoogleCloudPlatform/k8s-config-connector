@@ -87,8 +87,10 @@ func (f *generatedFile) addImport(alias string, pkgName string) {
 }
 
 func (f *generatedFile) addBuildTag(tag string) {
+	tag = strings.TrimPrefix(tag, "//")
+	tag = strings.TrimSpace(tag)
 	for _, t := range f.buildTags {
-		if t == tag {
+		if strings.TrimSpace(strings.TrimPrefix(t, "//")) == tag {
 			return
 		}
 	}
@@ -111,7 +113,11 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
 
 	if len(f.buildTags) > 0 {
 		for _, tag := range f.buildTags {
-			fmt.Fprintf(&w, "//%s\n", tag)
+			if strings.HasPrefix(tag, "go:build") {
+				fmt.Fprintf(&w, "//%s\n", tag)
+			} else {
+				fmt.Fprintf(&w, "// %s\n", tag)
+			}
 		}
 		fmt.Fprintf(&w, "\n")
 	}
