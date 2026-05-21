@@ -113,7 +113,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_4_7.R20251004.01_24",
+  "maintenanceVersion": "MYSQL_8_4_7.R20260320.00_00",
   "name": "mysql-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -246,7 +246,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_4_7.R20251004.01_24",
+  "maintenanceVersion": "MYSQL_8_4_7.R20260320.00_00",
   "name": "mysql-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
