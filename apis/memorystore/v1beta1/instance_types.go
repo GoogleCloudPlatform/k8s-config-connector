@@ -369,8 +369,6 @@ type PscAutoConnectionObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
-
 // MemorystoreInstance is the Schema for the MemorystoreInstance API
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
@@ -394,6 +392,8 @@ type MemorystoreInstanceList struct {
 func init() {
 	SchemeBuilder.Register(&MemorystoreInstance{}, &MemorystoreInstanceList{})
 }
+
+var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 
 type CrossInstanceReplicationConfig struct {
 	// Required. The role of the instance in cross instance replication.
