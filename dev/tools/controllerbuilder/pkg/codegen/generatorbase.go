@@ -61,8 +61,6 @@ type generatedFile struct {
 	fileAnnotation *annotations.FileAnnotation
 
 	imports map[string]string
-
-	buildTags []string
 }
 
 type generatedFileKey struct {
@@ -86,17 +84,6 @@ func (f *generatedFile) addImport(alias string, pkgName string) {
 	f.imports[pkgName] = alias
 }
 
-func (f *generatedFile) addBuildTag(tag string) {
-	tag = strings.TrimPrefix(tag, "//")
-	tag = strings.TrimSpace(tag)
-	for _, t := range f.buildTags {
-		if strings.TrimSpace(strings.TrimPrefix(t, "//")) == tag {
-			return
-		}
-	}
-	f.buildTags = append(f.buildTags, tag)
-}
-
 func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
 	if f.body.Len() == 0 && !writeEmptyFiles {
 		return nil
@@ -110,17 +97,6 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
 	}
 
 	var w bytes.Buffer
-
-	if len(f.buildTags) > 0 {
-		for _, tag := range f.buildTags {
-			if strings.HasPrefix(tag, "go:build") {
-				fmt.Fprintf(&w, "//%s\n", tag)
-			} else {
-				fmt.Fprintf(&w, "// %s\n", tag)
-			}
-		}
-		fmt.Fprintf(&w, "\n")
-	}
 
 	if addCopyright {
 		year := time.Now().Year()
