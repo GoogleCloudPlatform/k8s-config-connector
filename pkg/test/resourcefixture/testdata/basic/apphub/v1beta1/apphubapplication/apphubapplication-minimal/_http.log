@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "application \"projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "application \"projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }

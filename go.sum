@@ -924,6 +924,8 @@ cloud.google.com/go/metastore v1.13.3/go.mod h1:K+wdjXdtkdk7AQg4+sXS8bRrQa9gcOr+
 cloud.google.com/go/metastore v1.13.4/go.mod h1:FMv9bvPInEfX9Ac1cVcRXp8EBBQnBcqH6gz3KvJ9BAE=
 cloud.google.com/go/metastore v1.14.8 h1:nfyUDD9AeKIs6btY5buQ1No0OVco20WpX9wIruL8UOA=
 cloud.google.com/go/metastore v1.14.8/go.mod h1:h1XI2LpD4ohJhQYn9TwXqKb5sVt6KSo47ft96SiFF1s=
+cloud.google.com/go/modelarmor v1.0.0 h1:vGRxxlBHRDKH9D66vfFeC2nTG4eRMNJ1DMPxa6NG3bE=
+cloud.google.com/go/modelarmor v1.0.0/go.mod h1:nrgM9UlxJvFE5NcE6NN/OJ8vI1LuJih27Hg8wq38mGQ=
 cloud.google.com/go/monitoring v1.7.0/go.mod h1:HpYse6kkGo//7p6sT0wsIC6IBDET0RhIsnmlA53dvEk=
 cloud.google.com/go/monitoring v1.8.0/go.mod h1:E7PtoMJ1kQXWxPjB6mv2fhC5/15jInuulFdYYtlcvT4=
 cloud.google.com/go/monitoring v1.12.0/go.mod h1:yx8Jj2fZNEkL/GYZyTLS4ZtZEZN8WtDEiEqG4kLK50w=

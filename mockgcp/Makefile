@@ -110,11 +110,9 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/value.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/vertex_rag_data.proto \
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/apphub/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
+		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/certificatemanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
 		./third_party/googleapis/mockgcp/cloud/compute/v1/*.proto \
@@ -137,16 +135,12 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/sql/v1beta4/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tpu/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vpcaccess/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/workstations/v1/*.proto \
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
 		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
 		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto	 \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/v1/resource_policy_member.proto \
-		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
-		./third_party/googleapis/mockgcp/monitoring/metricsscope/v1/*.proto \
-		./third_party/googleapis/mockgcp/monitoring/v3/*.proto \
 		./third_party/googleapis/mockgcp/pubsub/v1/*.proto \
 		./third_party/googleapis/mockgcp/spanner/admin/database/v1/*.proto \
 		./third_party/googleapis/mockgcp/spanner/admin/instance/v1/*.proto \
@@ -160,7 +154,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/modelarmor/v1/service.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto

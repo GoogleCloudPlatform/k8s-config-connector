@@ -316,6 +316,9 @@ oneOf:
 			// hack for IAMPolicy.spec.resourceRef for backwards compat
 			if fieldPath == ".spec.resourceRef" {
 				ruleYAML = resourceRefRuleWithOnlyKind
+				// hack for Compute spec.shareSettings.projectMap[].keyRef, support multi-kind reference and default kind is "Project"
+			} else if strings.HasSuffix(fieldPath, ".projectMap[].keyRef") {
+				ruleYAML = refRuleWithOptionalKind
 			} else {
 				ruleYAML = refRuleWithKind
 			}
