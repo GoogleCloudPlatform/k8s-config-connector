@@ -22,7 +22,6 @@ import (
 
 var NetworkSecurityTLSInspectionPolicyGVK = GroupVersion.WithKind("NetworkSecurityTLSInspectionPolicy")
 
-// +kcc:proto=google.cloud.privateca.v1.CaPool
 type CaPoolRef struct {
 	// +optional
 	Name string `json:"name,omitempty"`
@@ -32,7 +31,6 @@ type CaPoolRef struct {
 	External string `json:"external,omitempty"`
 }
 
-// +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig
 type TrustConfigRef struct {
 	// +optional
 	Name string `json:"name,omitempty"`
