@@ -208,8 +208,8 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	instanceType := a.desired.Spec.InstanceTypeRef.External
 	if instanceType == "SECONDARY" {
 		req := &alloydbpb.CreateSecondaryInstanceRequest{
-			Parent:     a.id.ParentString(),
-			InstanceId: a.id.ID(),
+			Parent:     fmt.Sprintf("projects/%s/locations/%s/clusters/%s", a.id.Project, a.id.Location, a.id.Cluster),
+			InstanceId: a.id.Instance,
 			Instance:   resource,
 		}
 		op, err := a.gcpClient.CreateSecondaryInstance(ctx, req)
@@ -225,8 +225,8 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		log.V(2).Info("successfully created secondary instance", "name", a.id)
 	} else {
 		req := &alloydbpb.CreateInstanceRequest{
-			Parent:     a.id.ParentString(),
-			InstanceId: a.id.ID(),
+			Parent:     fmt.Sprintf("projects/%s/locations/%s/clusters/%s", a.id.Project, a.id.Location, a.id.Cluster),
+			InstanceId: a.id.Instance,
 			Instance:   resource,
 		}
 		op, err := a.gcpClient.CreateInstance(ctx, req)

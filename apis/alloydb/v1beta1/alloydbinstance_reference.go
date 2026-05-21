@@ -20,7 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -32,7 +31,7 @@ var _ refs.Ref = &AlloyDBInstanceRef{}
 // holds the GCP identifier for the KRM object.
 type AlloyDBInstanceRef struct {
 	// A reference to an externally managed AlloyDBInstance resource.
-	// Should be in the format "projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/instances/{{instance}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}/instances/{{instanceID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a AlloyDBInstance resource.
@@ -82,29 +81,12 @@ func (r *AlloyDBInstanceRef) ParseExternalToIdentity() (identity.Identity, error
 }
 
 func (r *AlloyDBInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-
 	fallback := func(u *unstructured.Unstructured) string {
-
-		obj := &AlloyDBInstance{}
-
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
-
-			return ""
-
-		}
-
-		identity, err := getIdentityFromAlloyDBInstanceSpec(ctx, reader, obj)
-
+		identity, err := getIdentityFromAlloyDBInstanceSpec(ctx, reader, u)
 		if err != nil {
-
 			return ""
-
 		}
-
 		return identity.String()
-
 	}
-
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
-
 }

@@ -22,6 +22,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -61,16 +63,13 @@ func (i *AlloyDBInstanceIdentity) Host() string {
 	return AlloyDBInstanceIdentityFormat.Host()
 }
 
-func (i *AlloyDBInstanceIdentity) ID() string {
-	return i.Instance
-}
+func getIdentityFromAlloyDBInstanceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*AlloyDBInstanceIdentity, error) {
+	alloydbInstance, err := TypedCopy[AlloyDBInstance](obj)
+	if err != nil {
+		return nil, err
+	}
 
-func (i *AlloyDBInstanceIdentity) ParentString() string {
-	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", i.Project, i.Location, i.Cluster)
-}
-
-func getIdentityFromAlloyDBInstanceSpec(ctx context.Context, reader client.Reader, obj *AlloyDBInstance) (*AlloyDBInstanceIdentity, error) {
-	clusterRef, err := refs.ResolveAlloyDBCluster(ctx, reader, obj, obj.Spec.ClusterRef)
+	clusterRef, err := refs.ResolveAlloyDBCluster(ctx, reader, alloydbInstance, alloydbInstance.Spec.ClusterRef)
 	if err != nil {
 		return nil, err
 	}
@@ -109,4 +108,21 @@ func (obj *AlloyDBInstance) GetIdentity(ctx context.Context, reader client.Reade
 	}
 
 	return specIdentity, nil
+}
+
+func TypedCopy[T any](obj client.Object) (*T, error) {
+	if val, ok := any(obj).(*T); ok {
+		if ro, ok := any(val).(runtime.Object); ok {
+			return any(ro.DeepCopyObject()).(*T), nil
+		}
+	}
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		return nil, fmt.Errorf("expected %T or *unstructured.Unstructured, got %T", *new(T), obj)
+	}
+	res := new(T)
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, res); err != nil {
+		return nil, fmt.Errorf("error converting unstructured to %T: %w", res, err)
+	}
+	return res, nil
 }
