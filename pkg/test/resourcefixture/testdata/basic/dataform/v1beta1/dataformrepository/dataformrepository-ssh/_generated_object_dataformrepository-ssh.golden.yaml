@@ -30,5 +30,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: //dataform.googleapis.com/projects/${projectId}/locations/us-west2/repositories/df-ssh-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-west2/repositories/df-ssh-${uniqueId}
   observedGeneration: 2
