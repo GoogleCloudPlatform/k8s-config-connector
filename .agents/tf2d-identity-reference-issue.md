@@ -26,9 +26,8 @@ You have access to the GitHub CLI (`gh`) and bash tools.
 
 # Filter Criteria
 Find resources that meet the following criteria:
-1. **Codebase State**: The resource must have its Go types implemented in `apis/<resource_group>/v1beta1/` (i.e., a `_types.go` file exists) but must be MISSING its identity or reference implementation (i.e., `_identity.go` or `_reference.go` does not exist).
-2. **Prioritization**: Priority is given to resources with no dependencies or those that are dependencies for many other unmigrated resources (Topological Order).
-3. **Absence of Task**: No GitHub issue (open or closed) should already exist for creating the identity/reference for this specific Group and Kind.
+1. **Prioritization**: Priority is given to resources with no dependencies or those that are dependencies for many other unmigrated resources (Topological Order).
+2. **Absence of Task**: No GitHub issue (open or closed) should already exist for creating the identity/reference for this specific Group and Kind.
 
 # Task
 
@@ -66,7 +65,7 @@ Add the following labels to the created issue:
 - `step/identity-reference`
 
 ### Issue Body
-Use the following exact template for the issue body, replacing `<ResourceKind>` with the actual Kind of the resource:
+Use the following exact template for the issue body, replacing `<ResourceKind>` with the actual Kind of the resource, and apply the same labels to the PR as are on this issue:
 
 ------------ BEGIN ISSUE BODY TEMPLATE ------------
 Please follow the skill .gemini/skills/kcc-identity-reference/SKILL.md for <ResourceKind>
