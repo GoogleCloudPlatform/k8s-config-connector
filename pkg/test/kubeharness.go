@@ -165,6 +165,7 @@ func NewKubeHarness(ctx context.Context, t *testing.T) *KubeHarness {
 						errsMutex.Lock()
 						defer errsMutex.Unlock()
 						errs = append(errs, fmt.Errorf("error creating crd %v: %w", crd.GroupVersionKind(), err))
+						return
 					}
 					h.waitForCRDReady(crd)
 				}()
@@ -175,6 +176,7 @@ func NewKubeHarness(ctx context.Context, t *testing.T) *KubeHarness {
 			}
 
 			duration := time.Since(start)
+			h.Logf("Installed %d CRDs in %v", len(crds), duration.Round(time.Millisecond))
 			log.Info("Installed CRDs", "count", len(crds), "duration", duration)
 		}
 	}
@@ -222,6 +224,15 @@ func (h *KubeHarness) waitForCRDReady(obj client.Object) {
 		logger.V(2).Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
 		return false, nil
 	}); err != nil {
+		u := &unstructured.Unstructured{}
+		u.SetAPIVersion(apiVersion)
+		u.SetKind(kind)
+		if getErr := h.GetClient().Get(h.Ctx, id, u); getErr == nil {
+			logger.Info("CRD status on timeout", "kind", kind, "id", id, "status", u.Object["status"])
+		} else {
+			logger.Info("Error retrieving CRD status on timeout", "kind", kind, "id", id, "error", getErr)
+		}
+
 		if lastStatus != nil {
 			h.Fatalf("error while polling for ready on %v %v: %v (last status conditions: %v)", kind, id, err, lastStatus.Conditions)
 		} else {
