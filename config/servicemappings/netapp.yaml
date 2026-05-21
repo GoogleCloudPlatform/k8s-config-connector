@@ -24,6 +24,7 @@ spec:
   resources:
   - name: google_netapp_backup_policy
     kind: NetAppBackupPolicy
+    direct: true
     iamConfig:
       policyName: google_netapp_backup_policy_iam_policy
       policyMemberName: google_netapp_backup_policy_iam_member
