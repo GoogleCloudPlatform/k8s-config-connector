@@ -29,7 +29,7 @@ var _ refs.Ref = &BinaryAuthorizationPlatformPolicyRef{}
 
 type BinaryAuthorizationPlatformPolicyRef struct {
 	// A reference to an externally managed BinaryAuthorizationPlatformPolicy resource.
-	// Should be in the format "projects/{{projectID}}/platforms/{{platform}}/policies/{{policy}}"
+	// Should be in the format "projects/{{projectID}}/platforms/{{platform}}/policies/{{policy}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BinaryAuthorizationPlatformPolicy resource.

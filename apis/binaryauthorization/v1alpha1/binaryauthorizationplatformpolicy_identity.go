@@ -22,6 +22,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -61,24 +63,36 @@ func (i *BinaryAuthorizationPlatformPolicyIdentity) Host() string {
 }
 
 func getIdentityFromBinaryAuthorizationPlatformPolicySpec(ctx context.Context, reader client.Reader, obj client.Object) (*BinaryAuthorizationPlatformPolicyIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err != nil {
+			return nil, fmt.Errorf("expected an Unstructured object but got %T; additionally, failed to convert to unstructured: %w", obj, err)
+		}
+		u = &unstructured.Unstructured{Object: m}
+	}
+
+	resourceID, err := refs.GetResourceID(u)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	platform := obj.(*BinaryAuthorizationPlatformPolicy).Spec.Platform
-	if platform == nil {
+	platform, _, err := unstructured.NestedString(u.Object, "spec", "platform")
+	if err != nil {
+		return nil, fmt.Errorf("reading spec.platform from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+	}
+	if platform == "" {
 		return nil, fmt.Errorf("platform is required in the spec")
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	projectID, err := refs.ResolveProjectID(ctx, reader, u)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
 	identity := &BinaryAuthorizationPlatformPolicyIdentity{
 		Project:  projectID,
-		Platform: *platform,
+		Platform: platform,
 		Policy:   resourceID,
 	}
 	return identity, nil
