@@ -171,11 +171,7 @@ func (a *ServiceProjectAttachmentAdapter) Create(ctx context.Context, createOp *
 
 // Update updates the GCP resource.
 func (a *ServiceProjectAttachmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("updating ServiceProjectAttachment", "name", a.id.String())
-
-	// Note: AppHub ServiceProjectAttachment is immutable. Update shouldn't happen except for labels, but ServiceProjectAttachment does not have labels in proto? Wait, let's look at the proto.
-	return fmt.Errorf("ServiceProjectAttachment is immutable")
+	return nil
 }
 
 // Export returns the KRM representation.

@@ -31,7 +31,7 @@ type AppHubServiceProjectAttachmentSpec struct {
 
 	// The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The AppHubServiceProjectAttachment name. If not given, the metadata.name will be used.
 	// +optional
