@@ -153,6 +153,11 @@ func (in *DataflowFlexTemplateJobSpec) DeepCopyInto(out *DataflowFlexTemplateJob
 		*out = new(string)
 		**out = **in
 	}
+	if in.ResourceID != nil {
+		in, out := &in.ResourceID, &out.ResourceID
+		*out = new(string)
+		**out = **in
+	}
 	if in.SdkContainerImage != nil {
 		in, out := &in.SdkContainerImage, &out.SdkContainerImage
 		*out = new(string)
@@ -203,6 +208,11 @@ func (in *DataflowFlexTemplateJobStatus) DeepCopyInto(out *DataflowFlexTemplateJ
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
 	}
 	if in.JobId != nil {
 		in, out := &in.JobId, &out.JobId

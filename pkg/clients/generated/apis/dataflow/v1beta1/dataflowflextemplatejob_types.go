@@ -96,6 +96,10 @@ type DataflowFlexTemplateJobSpec struct {
 	// +optional
 	Region *string `json:"region,omitempty"`
 
+	/* The DataflowFlexTemplateJob name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	/* Docker registry location of container image to use for the 'worker harness. Default is the container for the version of the SDK. Note this field is only valid for portable pipelines. */
 	// +optional
 	SdkContainerImage *string `json:"sdkContainerImage,omitempty"`
@@ -125,6 +129,10 @@ type DataflowFlexTemplateJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataflowFlexTemplateJob's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the DataflowFlexTemplateJob resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	// +optional
 	JobId *string `json:"jobId,omitempty"`
 
