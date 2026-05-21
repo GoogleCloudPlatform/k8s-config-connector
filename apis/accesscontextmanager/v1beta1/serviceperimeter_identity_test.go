@@ -20,11 +20,11 @@ import (
 
 func TestServicePerimeterIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name      string
-		external  string
-		want      *ServicePerimeterIdentity
-		wantStr   string
-		wantErr   bool
+		name     string
+		external string
+		want     *ServicePerimeterIdentity
+		wantStr  string
+		wantErr  bool
 	}{
 		{
 			name:     "canonical",
