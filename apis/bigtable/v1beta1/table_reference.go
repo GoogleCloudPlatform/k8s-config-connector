@@ -34,10 +34,10 @@ type TableRef struct {
 	// A reference to an externally managed BigtableTable resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a BigtableTable resource.
+	// The name of a BigtableInstance resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a BigtableTable resource.
+	// The namespace of a BigtableInstance resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
