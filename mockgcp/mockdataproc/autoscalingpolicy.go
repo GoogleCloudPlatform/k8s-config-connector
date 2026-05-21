@@ -93,7 +93,7 @@ func (s *autoscalingPolicyServiceServer) DeleteAutoscalingPolicy(ctx context.Con
 }
 
 func (s *autoscalingPolicyServiceServer) UpdateAutoscalingPolicy(ctx context.Context, req *pb.UpdateAutoscalingPolicyRequest) (*pb.AutoscalingPolicy, error) {
-	name, err := s.parseAutoscalingPolicyName(req.Policy.Id)
+	name, err := s.parseAutoscalingPolicyName(req.Policy.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func (n *autoscalingPolicyName) String() string {
 func (s *MockService) parseAutoscalingPolicyName(name string) (*autoscalingPolicyName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "autoscalingPolicies" {
+	if len(tokens) == 6 && tokens[0] == "projects" && (tokens[2] == "regions" || tokens[2] == "locations") && tokens[4] == "autoscalingPolicies" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
