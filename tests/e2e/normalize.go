@@ -973,6 +973,7 @@ func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEn
 // findLinksInKRMObject looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
 func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructured.Unstructured) {
 	linkPaths := sets.New(
+		".status.externalRef",
 		".status.observedState.pscConnections[].forwardingRule",
 		".status.observedState.pscConnections[].network",
 	)

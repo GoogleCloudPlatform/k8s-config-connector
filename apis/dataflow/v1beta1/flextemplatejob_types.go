@@ -28,11 +28,9 @@ var DataflowFlexTemplateJobGVK = GroupVersion.WithKind("DataflowFlexTemplateJob"
 // +kcc:spec:proto=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment
 type DataflowFlexTemplateJobSpec struct {
 
-	/* NOTYET
 	// The DataflowFlexTemplateJob name. If not given, the metadata.name will be used.
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-	*/
 
 	// Immutable. The region in which the created job should run.
 	// +optional
@@ -184,11 +182,9 @@ type DataflowFlexTemplateJobStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* NOTYET - keeping compatibility with terraform
 	// A unique specifier for the DataflowFlexTemplateJob resource in GCP.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
-	*/
 
 	/* NOTYET - keeping compatibility with terraform
 	// ObservedState is the state of the resource as most recently observed in GCP.

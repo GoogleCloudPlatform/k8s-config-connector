@@ -168,6 +168,10 @@ spec:
                 description: Immutable. The region in which the created job should
                   run.
                 type: string
+              resourceID:
+                description: The DataflowFlexTemplateJob name. If not given, the metadata.name
+                  will be used.
+                type: string
               sdkContainerImage:
                 description: Docker registry location of container image to use for
                   the 'worker harness. Default is the container for the version of
@@ -280,6 +284,10 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the DataflowFlexTemplateJob resource
+                  in GCP.
+                type: string
               jobId:
                 type: string
               observedGeneration:

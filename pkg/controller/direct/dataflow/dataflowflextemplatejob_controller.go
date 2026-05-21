@@ -92,33 +92,41 @@ func (m *dataFlowFlexTemplateJobModel) AdapterForObject(ctx context.Context, op 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// TODO: Why don't we support resourceID?
-	resourceID := "" // direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, err
 	}
 
-	location := direct.ValueOf(obj.Spec.Region)
+	identity, err := obj.GetIdentity(ctx, kube)
+	if err != nil {
+		return nil, err
+	}
+
+	var projectID, location, jobID string
+	if identity != nil {
+		id := identity.(*krm.DataflowFlexTemplateJobIdentity)
+		projectID = id.Project
+		location = id.Location
+		jobID = id.Job
+	} else {
+		// Fallback for before it's created
+		projectRef, err := refs.ResolveProjectFromAnnotation(ctx, kube, obj)
+		if err != nil {
+			return nil, err
+		}
+		if projectRef == nil || projectRef.ProjectID == "" {
+			return nil, fmt.Errorf("cannot resolve project")
+		}
+		projectID = projectRef.ProjectID
+		location = direct.ValueOf(obj.Spec.Region)
+	}
+
 	if location == "" {
 		return nil, fmt.Errorf("cannot resolve region")
 	}
 
-	projectRef, err := refs.ResolveProjectFromAnnotation(ctx, kube, obj)
-	if err != nil {
-		return nil, err
-	}
-	if projectRef == nil || projectRef.ProjectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	projectID := projectRef.ProjectID
-
-	jobID := obj.Status.JobID
-
 	// TODO: Move from monitoring package into shared package (and make refs implement an interface)
-	if err := common.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
+	if err := common.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: refs.ProjectIdentity{ProjectID: projectID}, kube: kube}); err != nil {
 		return nil, err
 	}
 
@@ -199,20 +207,40 @@ func toLaunchParameter(ctx context.Context, resourceID string, obj *krm.Dataflow
 }
 
 func (m *dataFlowFlexTemplateJobModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.DataflowFlexTemplateJobIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, err
+	}
+
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
+	flexTemplatesClient, err := gcpClient.newFlexTemplatesClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	jobsClient, err := gcpClient.newJobsClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dataflowFlexTemplateJobAdapter{
+		projectID:           id.Project,
+		location:            id.Location,
+		jobID:               id.Job,
+		flexTemplatesClient: flexTemplatesClient,
+		jobsClient:          jobsClient,
+	}, nil
 }
 
 // Find implements the Adapter interface.
 func (a *dataflowFlexTemplateJobAdapter) Find(ctx context.Context) (bool, error) {
-	if a.resourceID == "" {
+	if a.projectID == "" || a.location == "" || a.jobID == "" {
 		return false, nil
 	}
 
 	jobID := a.jobID
-
-	if jobID == "" {
-		return false, nil
-	}
 
 	jobFQN := fmt.Sprintf("projects/%s/locations/%s/jobs/%s", a.projectID, a.location, jobID)
 
@@ -372,7 +400,13 @@ func (a *dataflowFlexTemplateJobAdapter) Create(ctx context.Context, createOp *d
 }
 
 func (a *dataflowFlexTemplateJobAdapter) updateStatus(ctx context.Context, op directbase.Operation, job *pb.Job) error {
+	id := &krm.DataflowFlexTemplateJobIdentity{
+		Project:  a.projectID,
+		Location: a.location,
+		Job:      job.GetId(),
+	}
 	status := &krm.DataflowFlexTemplateJobStatus{
+		ExternalRef:  direct.PtrTo(id.String()),
 		JobID:        job.GetId(),
 		CurrentState: direct.PtrTo(job.CurrentState.String()),
 		Type:         direct.PtrTo(job.Type.String()),
