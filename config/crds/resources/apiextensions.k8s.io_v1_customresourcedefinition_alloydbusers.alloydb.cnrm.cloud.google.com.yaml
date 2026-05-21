@@ -81,14 +81,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed AlloyDBCluster
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                    description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
                     type: string
                   name:
-                    description: The name of a AlloyDBCluster resource.
+                    description: The `metadata.name` field of a `AlloyDBCluster` resource.
                     type: string
                   namespace:
-                    description: The namespace of a AlloyDBCluster resource.
+                    description: The `metadata.namespace` field of a `AlloyDBCluster`
+                      resource.
                     type: string
                 type: object
               databaseRoles:
