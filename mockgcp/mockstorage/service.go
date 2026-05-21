@@ -22,6 +22,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
 	grpcpb "cloud.google.com/go/storage/control/apiv2/controlpb"
 
@@ -65,7 +66,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterFoldersServerServer(grpcServer, &folder{MockService: s})
 	pb.RegisterNotificationsServerServer(grpcServer, &notifications{MockService: s})
 	pb.RegisterManagedFoldersServerServer(grpcServer, &managedFolders{MockService: s})
-	grpcpb.RegisterStorageControlServer(grpcServer, &StorageControlService{MockService: s})
+	storageControlServer := &StorageControlService{MockService: s}
+	grpcpb.RegisterStorageControlServer(grpcServer, storageControlServer)
+	iampb.RegisterIAMPolicyServer(grpcServer, storageControlServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
