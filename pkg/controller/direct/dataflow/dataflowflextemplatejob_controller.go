@@ -18,6 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	api "cloud.google.com/go/dataflow/apiv1beta3"
@@ -207,9 +208,13 @@ func toLaunchParameter(ctx context.Context, resourceID string, obj *krm.Dataflow
 }
 
 func (m *dataFlowFlexTemplateJobModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	if !strings.HasPrefix(url, "//dataflow.googleapis.com/") {
+		return nil, nil
+	}
+
 	id := &krm.DataflowFlexTemplateJobIdentity{}
 	if err := id.FromExternal(url); err != nil {
-		return nil, err
+		return nil, nil
 	}
 
 	gcpClient, err := newGCPClient(ctx, m.config)
