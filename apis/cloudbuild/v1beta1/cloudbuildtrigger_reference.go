@@ -16,7 +16,6 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -82,23 +81,10 @@ func (r *CloudBuildTriggerRef) ParseExternalToIdentity() (identity.Identity, err
 
 func (r *CloudBuildTriggerRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		// Trigger ID is server-generated, so we need it from status.
-		triggerID, _, _ := unstructured.NestedString(u.Object, "status", "triggerId")
-		if triggerID == "" {
-			return ""
+		if id, err := getIdentityFromCloudBuildTriggerSpec(ctx, reader, u); err == nil && id != nil {
+			return id.String()
 		}
-
-		location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
-		if location == "" {
-			return ""
-		}
-
-		projectID, err := refs.ResolveProjectID(ctx, reader, u)
-		if err != nil {
-			return ""
-		}
-
-		return fmt.Sprintf("projects/%s/locations/%s/triggers/%s", projectID, location, triggerID)
+		return ""
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
