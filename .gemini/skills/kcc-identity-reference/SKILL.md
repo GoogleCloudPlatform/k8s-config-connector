@@ -44,7 +44,9 @@ Create or update the file to match the canonical example. Key requirements:
   - **Note:** If an existing deepcopy method was previously generated for this identity struct, run `dev/tasks/generate-types-and-mappers` to regenerate the types and remove the obsolete code.
 - Implement `String()`, `FromExternal(ref string)`, and `Host()` by delegating to the format var.
 - Implement `getIdentityFrom<Kind>Spec(...)` to extract fields from the spec/obj (often using `refs.ResolveProjectID`, `refs.GetLocation`, etc.).
+  - **Important:** This function MUST handle both typed and `*unstructured.Unstructured` objects, as it is used by `Normalize`. If you need to access fields that are not covered by `refs` helpers (like a custom `platform` or `instance` field), ensure you convert the object to `*unstructured.Unstructured` (if it isn't already) and use `unstructured.NestedString(u.Object, "spec", "...")`.
 - Implement `GetIdentity(ctx, reader)` on the Resource struct, including cross-checking `externalRef` or `status.Name`. (Look at `artifactregistryrepository_identity.go`'s `GetIdentity` implementation for exactly how to do this cross-check).
+
   - **Note:** If you are updating an existing resource's Identity struct to the IdentityV2 pattern, be sure to check for existing usages of the struct and its old methods (e.g. `.Parent()`, `.ID()`) in dependent identity files and direct controllers, and update them to use the new fields (e.g. `.Project`, `.Location`, etc.).  The compiler is your friend: remove the functions, then run `go vet ./...` or `go build ./...` to look for references to functions that no longer exist.
 
 ### Step 4: Implement the Reference (`<kind>_reference.go`)
