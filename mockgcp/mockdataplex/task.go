@@ -262,7 +262,13 @@ func (s *DataplexService) SetIamPolicy(ctx context.Context, req *iampb.SetIamPol
 	fqn := name.String()
 
 	if err := s.storage.Update(ctx, fqn+"/iam", req.Policy); err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, fqn+"/iam", req.Policy); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
 	}
 
 	return req.Policy, nil
