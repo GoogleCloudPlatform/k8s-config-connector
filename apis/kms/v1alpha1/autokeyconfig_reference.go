@@ -16,18 +16,16 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &KMSAutokeyConfigRef{}
+var _ refs.Ref = &KMSAutokeyConfigRef{}
 
 // KMSAutokeyConfigRef defines the resource reference to KMSAutokeyConfig, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -41,121 +39,56 @@ type KMSAutokeyConfigRef struct {
 
 	// The namespace of a KMSAutokeyConfig resource.
 	Namespace string `json:"namespace,omitempty"`
-
-	parent *KMSAutokeyConfigParent
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on KMSAutokeyConfig.
-// If the "External" is given in the other resource's spec.KMSAutokeyConfigRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual KMSAutokeyConfig object from the cluster.
-func (r *KMSAutokeyConfigRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", KMSAutokeyConfigGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, err := ParseKMSAutokeyConfigExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(KMSAutokeyConfigGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", KMSAutokeyConfigGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+func init() {
+	refs.Register(&KMSAutokeyConfigRef{})
 }
 
-// New builds a KMSAutokeyConfigRef from the Config Connector KMSAutokeyConfig object.
-func NewKMSAutokeyConfigRef(ctx context.Context, reader client.Reader, obj *KMSAutokeyConfig) (*KMSAutokeyConfigRef, error) {
-	id := &KMSAutokeyConfigRef{}
+func (r *KMSAutokeyConfigRef) GetGVK() schema.GroupVersionKind {
+	return KMSAutokeyConfigGVK
+}
 
-	// Get Parent
-	folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
-	if err != nil {
+func (r *KMSAutokeyConfigRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *KMSAutokeyConfigRef) GetExternal() string {
+	return r.External
+}
+
+func (r *KMSAutokeyConfigRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *KMSAutokeyConfigRef) ValidateExternal(ref string) error {
+	id := &KMSAutokeyConfigIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *KMSAutokeyConfigRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &KMSAutokeyConfigIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
-	folderID := folderRef.FolderID
-	if folderID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	id.parent = &KMSAutokeyConfigParent{FolderID: folderID}
-
-	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id.External = AsKMSAutokeyConfigExternal(id.parent)
-		return id, nil
-	}
-
-	// Validate desired with actual
-	actualParent, err := ParseKMSAutokeyConfigExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.FolderID != folderID {
-		return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, folderID)
-	}
-	id.External = externalRef
-	id.parent = &KMSAutokeyConfigParent{FolderID: folderID}
 	return id, nil
 }
 
-func (r *KMSAutokeyConfigRef) Parent() (*KMSAutokeyConfigParent, error) {
-	if r.parent != nil {
-		return r.parent, nil
-	}
-	if r.External != "" {
-		parent, err := ParseKMSAutokeyConfigExternal(r.External)
+func (r *KMSAutokeyConfigRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromKMSAutokeyConfigSpec(ctx, reader, u)
 		if err != nil {
-			return nil, err
+			return ""
 		}
-		return parent, nil
+		return identity.String()
 	}
-	return nil, fmt.Errorf("KMSAutokeyConfigRef not initialized from `NewKMSAutokeyConfigRef` or `NormalizedExternal`")
-}
-
-type KMSAutokeyConfigParent struct {
-	FolderID string
-}
-
-func (p *KMSAutokeyConfigParent) String() string {
-	return "folders/" + p.FolderID
-}
-
-func AsKMSAutokeyConfigExternal(parent *KMSAutokeyConfigParent) (external string) {
-	return parent.String() + "/autokeyConfig"
-}
-
-func ParseKMSAutokeyConfigExternal(external string) (parent *KMSAutokeyConfigParent, err error) {
-	external = strings.TrimPrefix(external, "/")
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 3 || tokens[0] != "folders" || tokens[2] != "autokeyConfig" {
-		return nil, fmt.Errorf("format of KMSAutokeyConfig external=%q was not known (use folders/{{folderID}}/autokeyConfig)", external)
-	}
-	parent = &KMSAutokeyConfigParent{
-		FolderID: tokens[1],
-	}
-	return parent, nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 func valueOf[T any](t *T) T {
