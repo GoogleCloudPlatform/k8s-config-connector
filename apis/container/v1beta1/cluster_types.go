@@ -1607,9 +1607,6 @@ type PrivateClusterConfigStatus struct {
 }
 
 type ContainerClusterStatus struct {
-	/* A server-defined unique identifier for the resource. */
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	/* Conditions represent the latest available observations of the
 	   ContainerCluster's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
