@@ -1,0 +1,2 @@
+dataform.cnrm.cloud.google.com/v1beta1, Kind=DataformRepositoryReleaseConfig
+dataform.cnrm.cloud.google.com/v1beta1, Kind=DataformRepositoryWorkflowConfig

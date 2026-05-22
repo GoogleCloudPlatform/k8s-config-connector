@@ -37,4 +37,16 @@ var (
 		Version: GroupVersion.Version,
 		Kind:    "DataformRepository",
 	}
+
+	DataformRepositoryReleaseConfigGVK = schema.GroupVersionKind{
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
+		Kind:    "DataformRepositoryReleaseConfig",
+	}
+
+	DataformRepositoryWorkflowConfigGVK = schema.GroupVersionKind{
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
+		Kind:    "DataformRepositoryWorkflowConfig",
+	}
 )
