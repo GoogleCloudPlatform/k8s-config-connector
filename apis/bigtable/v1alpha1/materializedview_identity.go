@@ -21,14 +21,13 @@ import (
 
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // MaterializedViewIdentity defines the resource reference to BigtableMaterializedView, which "External" field
 // holds the GCP identifier for the KRM object.
 type MaterializedViewIdentity struct {
-	parent *v1beta1.InstanceIdentity
+	parent *v1beta1.BigtableInstanceIdentity
 	id     string
 }
 
@@ -40,7 +39,7 @@ func (i *MaterializedViewIdentity) ID() string {
 	return i.id
 }
 
-func (i *MaterializedViewIdentity) Parent() *v1beta1.InstanceIdentity {
+func (i *MaterializedViewIdentity) Parent() *v1beta1.BigtableInstanceIdentity {
 	return i.parent
 }
 
@@ -49,19 +48,19 @@ func (i *MaterializedViewIdentity) ParentString() string {
 }
 
 func (i *MaterializedViewIdentity) ParentInstanceIdString() string {
-	return i.parent.Id
+	return i.parent.Instance
 }
 
 // New builds a MaterializedViewIdentity from the Config Connector MaterializedView object.
 func NewMaterializedViewIdentity(ctx context.Context, reader client.Reader, obj *BigtableMaterializedView) (*MaterializedViewIdentity, error) {
 
 	// Get Parent
-	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
+	if err := obj.Spec.BigtableInstanceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
-	instanceParent, instanceID, err := v1beta1.ParseInstanceExternal(instanceRef)
-	if err != nil {
+	instanceRef := obj.Spec.BigtableInstanceRef.External
+	instanceID := &v1beta1.BigtableInstanceIdentity{}
+	if err := instanceID.FromExternal(instanceRef); err != nil {
 		return nil, err
 	}
 
@@ -82,11 +81,11 @@ func NewMaterializedViewIdentity(ctx context.Context, reader client.Reader, obj 
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.Parent.ProjectID != instanceParent.ProjectID {
-			return nil, fmt.Errorf("ProjectID changed, expect %s, got %s", actualParent.Parent.ProjectID, instanceParent.ProjectID)
+		if actualParent.Project != instanceID.Project {
+			return nil, fmt.Errorf("ProjectID changed, expect %s, got %s", actualParent.Project, instanceID.Project)
 		}
-		if actualParent.Id != instanceID {
-			return nil, fmt.Errorf("InstanceID changed, expect %s, got %s", actualParent.Id, instanceID)
+		if actualParent.Instance != instanceID.Instance {
+			return nil, fmt.Errorf("InstanceID changed, expect %s, got %s", actualParent.Instance, instanceID.Instance)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -94,18 +93,18 @@ func NewMaterializedViewIdentity(ctx context.Context, reader client.Reader, obj 
 		}
 	}
 	return &MaterializedViewIdentity{
-		parent: &v1beta1.InstanceIdentity{
-			Parent: instanceParent,
-			Id:     instanceID,
+		parent: &v1beta1.BigtableInstanceIdentity{
+			Project:  instanceID.Project,
+			Instance: instanceID.Instance,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseMaterializedViewExternal(external string) (*v1beta1.InstanceIdentity, string, error) {
+func ParseMaterializedViewExternal(external string) (*v1beta1.BigtableInstanceIdentity, string, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "materializedViews" {
 		return nil, "", fmt.Errorf("format of BigtableMaterializedView external=%q was not known (use projects/{{projectID}}/instances/{{instance}}/materializedViews/{{materializedViewID}})", external)
 	}
-	return &v1beta1.InstanceIdentity{Parent: &parent.ProjectParent{ProjectID: tokens[1]}, Id: tokens[3]}, tokens[5], nil
+	return &v1beta1.BigtableInstanceIdentity{Project: tokens[1], Instance: tokens[3]}, tokens[5], nil
 }

@@ -26,7 +26,7 @@ var BigtableTableGVK = GroupVersion.WithKind("BigtableTable")
 type BigtableTableSpec struct {
 	// Immutable. The instance to create the table in.
 	// +required
-	InstanceRef InstanceRef `json:"instanceRef"`
+	BigtableInstanceRef BigtableInstanceRef `json:"instanceRef"`
 
 	// The BigtableTable name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

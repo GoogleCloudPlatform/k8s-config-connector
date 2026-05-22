@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -56,10 +54,10 @@ func (i *AppProfileIdentity) ID() string {
 	return i.AppProfile
 }
 
-func (i *AppProfileIdentity) Parent() *InstanceIdentity {
-	return &InstanceIdentity{
-		Parent: &parent.ProjectParent{ProjectID: i.Project},
-		Id:     i.Instance,
+func (i *AppProfileIdentity) Parent() *BigtableInstanceIdentity {
+	return &BigtableInstanceIdentity{
+		Project:  i.Project,
+		Instance: i.Instance,
 	}
 }
 
@@ -74,12 +72,12 @@ func (i *AppProfileIdentity) ParentInstanceIdString() string {
 // NewAppProfileIdentity builds a AppProfileIdentity from the Config Connector AppProfile object.
 func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *BigtableAppProfile) (*AppProfileIdentity, error) {
 	// Get Parent
-	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
+	if err := obj.Spec.BigtableInstanceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
-	instanceParent, instanceID, err := ParseInstanceExternal(instanceRef)
-	if err != nil {
+	instanceRef := obj.Spec.BigtableInstanceRef.External
+	instanceID := &BigtableInstanceIdentity{}
+	if err := instanceID.FromExternal(instanceRef); err != nil {
 		return nil, err
 	}
 
@@ -100,11 +98,11 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualIdentity.Project != instanceParent.ProjectID {
-			return nil, fmt.Errorf("ProjectID in spec.instanceRef changed, expect %s, got %s", actualIdentity.Project, instanceParent.ProjectID)
+		if actualIdentity.Project != instanceID.Project {
+			return nil, fmt.Errorf("ProjectID in spec.instanceRef changed, expect %s, got %s", actualIdentity.Project, instanceID.Project)
 		}
-		if actualIdentity.Instance != instanceID {
-			return nil, fmt.Errorf("instanceID in spec.instanceRef changed, expect %s, got %s", actualIdentity.Instance, instanceID)
+		if actualIdentity.Instance != instanceID.Instance {
+			return nil, fmt.Errorf("instanceID in spec.instanceRef changed, expect %s, got %s", actualIdentity.Instance, instanceID.Instance)
 		}
 		if actualIdentity.AppProfile != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -112,8 +110,8 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		}
 	}
 	return &AppProfileIdentity{
-		Project:    instanceParent.ProjectID,
-		Instance:   instanceID,
+		Project:    instanceID.Project,
+		Instance:   instanceID.Instance,
 		AppProfile: resourceID,
 	}, nil
 }

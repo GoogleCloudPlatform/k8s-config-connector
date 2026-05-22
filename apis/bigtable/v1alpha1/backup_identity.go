@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -75,11 +74,11 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.parent.Parent.ProjectID != clusterParent.Parent.ProjectID {
-			return nil, fmt.Errorf("spec.clusterRef ProjectID changed, expect %s, got %s", actualParent.parent.Parent.ProjectID, clusterParent.Parent.ProjectID)
+		if actualParent.parent.Project != clusterParent.Project {
+			return nil, fmt.Errorf("spec.clusterRef ProjectID changed, expect %s, got %s", actualParent.parent.Project, clusterParent.Project)
 		}
-		if actualParent.parent.Id != clusterParent.Id {
-			return nil, fmt.Errorf("spec.clusterRef instanceID changed, expect %s, got %s", actualParent.parent.Id, clusterParent.Id)
+		if actualParent.parent.Instance != clusterParent.Instance {
+			return nil, fmt.Errorf("spec.clusterRef instanceID changed, expect %s, got %s", actualParent.parent.Instance, clusterParent.Instance)
 		}
 		if actualParent.id != clusterID {
 			return nil, fmt.Errorf("spec.clusterRef clusterID changed, expect %s, got %s", actualParent.id, clusterID)
@@ -91,9 +90,9 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 	}
 	return &BackupIdentity{
 		parent: &ClusterIdentity{
-			parent: &bigtablev1beta1.InstanceIdentity{
-				Parent: &parent.ProjectParent{ProjectID: clusterParent.Parent.ProjectID},
-				Id:     clusterParent.Id,
+			parent: &bigtablev1beta1.BigtableInstanceIdentity{
+				Project:  clusterParent.Project,
+				Instance: clusterParent.Instance,
 			},
 			id: clusterID,
 		},
@@ -107,9 +106,9 @@ func ParseBackupExternal(external string) (*ClusterIdentity, string, error) {
 		return nil, "", fmt.Errorf("format of BigtableBackup external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/clusters/{{clusterID}}/backups/{{backupID}})", external)
 	}
 	p := &ClusterIdentity{
-		parent: &bigtablev1beta1.InstanceIdentity{
-			Parent: &parent.ProjectParent{ProjectID: tokens[1]},
-			Id:     tokens[3],
+		parent: &bigtablev1beta1.BigtableInstanceIdentity{
+			Project:  tokens[1],
+			Instance: tokens[3],
 		},
 		id: tokens[5],
 	}

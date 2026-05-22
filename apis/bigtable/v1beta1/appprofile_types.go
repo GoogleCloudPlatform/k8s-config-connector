@@ -23,7 +23,7 @@ var BigtableAppProfileGVK = GroupVersion.WithKind("BigtableAppProfile")
 
 type BigtableAppProfileParent struct {
 	// +required
-	InstanceRef *InstanceRef `json:"instanceRef,omitempty"`
+	BigtableInstanceRef *BigtableInstanceRef `json:"instanceRef,omitempty"`
 }
 
 // BigtableAppProfileSpec defines the desired state of BigtableAppProfile

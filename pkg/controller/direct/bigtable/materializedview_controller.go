@@ -75,7 +75,7 @@ func (m *modelMaterializedView) AdapterForObject(ctx context.Context, op *direct
 
 	// Get bigtable instance admin GCP client. Accepts the non-fully qualified project ID.
 	// E.G. "myproject" instead of "projects/myproject"
-	parentProjectID := id.Parent().Parent.ProjectID
+	parentProjectID := id.Parent().Project
 	instanceAdminClient, err := m.client(ctx, parentProjectID)
 	if err != nil {
 		return nil, fmt.Errorf("error creating instance admin client: %w", err)
@@ -212,7 +212,7 @@ func (a *MaterializedViewAdapter) Export(ctx context.Context) (*unstructured.Uns
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.InstanceRef = &krmv1beta1.InstanceRef{External: a.id.ParentInstanceIdString()}
+	obj.Spec.BigtableInstanceRef = &krmv1beta1.BigtableInstanceRef{External: a.id.ParentInstanceIdString()}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

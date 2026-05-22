@@ -85,7 +85,7 @@ func (m *modelBigtableAppProfile) AdapterForObject(ctx context.Context, op *dire
 
 	// Get bigtable instance admin GCP client. Accepts the non-fully qualified project ID.
 	// E.G. "myproject" instead of "projects/myproject"
-	parentProjectId, err := m.getProjectId(id.Parent().ParentString())
+	parentProjectId, err := m.getProjectId(id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -303,7 +303,7 @@ func (a *BigtableAppProfileAdapter) Export(ctx context.Context) (*unstructured.U
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.InstanceRef = &krm.InstanceRef{External: a.id.ParentInstanceIdString()}
+	obj.Spec.BigtableInstanceRef = &krm.BigtableInstanceRef{External: a.id.ParentInstanceIdString()}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

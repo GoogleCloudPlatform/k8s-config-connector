@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
@@ -30,7 +28,7 @@ import (
 // ClusterIdentity defines the resource reference to BigtableCluster, which "External" field
 // holds the GCP identifier for the KRM object.
 type ClusterIdentity struct {
-	parent *bigtablev1beta1.InstanceIdentity
+	parent *bigtablev1beta1.BigtableInstanceIdentity
 	id     string
 }
 
@@ -49,12 +47,12 @@ func (i *ClusterIdentity) ParentString() string {
 // New builds a ClusterIdentity from the Config Connector Cluster object.
 func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *BigtableCluster) (*ClusterIdentity, error) {
 	// Resolve parent
-	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
+	if err := obj.Spec.BigtableInstanceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
-	instanceParent, instanceID, err := bigtablev1beta1.ParseInstanceExternal(instanceRef)
-	if err != nil {
+	instanceRef := obj.Spec.BigtableInstanceRef.External
+	instanceID := &bigtablev1beta1.BigtableInstanceIdentity{}
+	if err := instanceID.FromExternal(instanceRef); err != nil {
 		return nil, err
 	}
 
@@ -75,11 +73,11 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.Parent.ProjectID != instanceParent.ProjectID {
-			return nil, fmt.Errorf("spec.instanceRef ProjectID changed, expect %s, got %s", actualParent.Parent.ProjectID, instanceParent.ProjectID)
+		if actualParent.Project != instanceID.Project {
+			return nil, fmt.Errorf("spec.instanceRef ProjectID changed, expect %s, got %s", actualParent.Project, instanceID.Project)
 		}
-		if actualParent.Id != instanceID {
-			return nil, fmt.Errorf("spec.instanceRef ID changed, expect %s, got %s", actualParent.Id, instanceID)
+		if actualParent.Instance != instanceID.Instance {
+			return nil, fmt.Errorf("spec.instanceRef ID changed, expect %s, got %s", actualParent.Instance, instanceID.Instance)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -87,23 +85,22 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 		}
 	}
 	return &ClusterIdentity{
-		parent: &bigtablev1beta1.InstanceIdentity{
-			Parent: &parent.ProjectParent{
-				ProjectID: instanceParent.ProjectID},
-			Id: instanceID,
+		parent: &bigtablev1beta1.BigtableInstanceIdentity{
+			Project:  instanceID.Project,
+			Instance: instanceID.Instance,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseClusterExternal(external string) (*bigtablev1beta1.InstanceIdentity, string, error) {
+func ParseClusterExternal(external string) (*bigtablev1beta1.BigtableInstanceIdentity, string, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "clusters" {
 		return nil, "", fmt.Errorf("format of BigtableCluster external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/clusters/{{clusterID}})", external)
 	}
-	p := &bigtablev1beta1.InstanceIdentity{
-		Parent: &parent.ProjectParent{ProjectID: tokens[1]},
-		Id:     tokens[3],
+	p := &bigtablev1beta1.BigtableInstanceIdentity{
+		Project:  tokens[1],
+		Instance: tokens[3],
 	}
 	resourceID := tokens[5]
 	return p, resourceID, nil

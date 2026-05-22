@@ -90,7 +90,7 @@ func (m *modelLogicalView) AdapterForObject(ctx context.Context, op *directbase.
 
 	// Get bigtable instance admin GCP client. Accepts the non-fully qualified project ID.
 	// E.G. "myproject" instead of "projects/myproject"
-	parentProjectId, err := m.getProjectId(id.Parent().ParentString())
+	parentProjectId, err := m.getProjectId(id.Parent().Project)
 	if err != nil {
 		return nil, err
 	}
@@ -278,7 +278,7 @@ func (a *LogicalViewAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.InstanceRef = &krmv1beta1.InstanceRef{External: a.id.ParentInstanceIdString()}
+	obj.Spec.BigtableInstanceRef = &krmv1beta1.BigtableInstanceRef{External: a.id.ParentInstanceIdString()}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

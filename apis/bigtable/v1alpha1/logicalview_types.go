@@ -24,7 +24,7 @@ var BigtableLogicalViewGVK = GroupVersion.WithKind("BigtableLogicalView")
 
 type BigtableLogicalViewParent struct {
 	// +required
-	InstanceRef *v1beta1.InstanceRef `json:"instanceRef,omitempty"`
+	BigtableInstanceRef *v1beta1.BigtableInstanceRef `json:"instanceRef,omitempty"`
 }
 
 // BigtableLogicalViewSpec defines a state of BigtableLogicalView
