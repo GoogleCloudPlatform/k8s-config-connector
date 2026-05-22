@@ -15,6 +15,7 @@
 package httptogrpc
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -154,7 +155,25 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	http.Error(w, "not found", http.StatusNotFound)
+	w.Header().Set("Content-Type", "application/json")
+	m.addGCPHeaders(ctx, w, nil)
+	w.WriteHeader(http.StatusNotFound)
+	errResponse := &httpErrorResponse{
+		Error: &httpError{
+			Code:    http.StatusNotFound,
+			Message: "Not Found",
+			Status:  "NOT_FOUND",
+			Errors: []*gcpError{
+				{
+					Domain:  "global",
+					Message: "Not Found",
+					Reason:  "notFound",
+				},
+			},
+		},
+	}
+	body, _ := json.Marshal(errResponse)
+	w.Write(body)
 }
 
 // serveHTTPMethod serves a single HTTP method mapped to a gRPC method.
