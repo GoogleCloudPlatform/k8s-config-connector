@@ -32,7 +32,7 @@ Your goal is to identify greenfield resources that have their KRM types and Iden
 ## 1. Identify Target Resources
 Identify resources that have an `_identity.go` file in their `apis/<group>/<version>/` directory but do not yet have an E2E fixture directory in `pkg/test/resourcefixture/testdata/basic/<group>/<version>/<kind_lowercase>/`. This ensures we catch resources that might have a controller stubbed out but lack the required test coverage.
 
-Alternatively, you can consult the dashboard at `hack/tools/greenfield/RESOURCE_STATUS.md` and look for resources where the `Current Phase` is `1` and the `State` is `MERGED`.
+Consult the dashboard at `hack/tools/greenfield/RESOURCE_STATUS.md` and look for resources where the `Current Phase` is `1` and the `State` is `MERGED`. Prioritize resources that are ready for Phase 2 from this dashboard.
 
 ## 2. Check Issue Limits
 Check how many issues related to direct controllers have been opened today. To avoid overwhelming the team, **do not open more than 5 issues per day**. If the limit is reached, stop creating new issues.
