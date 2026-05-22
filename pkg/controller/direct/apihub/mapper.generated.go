@@ -29,11 +29,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ApiHubDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.ApiHubDeploymentObservedState {
+func APIHubDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.APIHubDeploymentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiHubDeploymentObservedState{}
+	out := &krm.APIHubDeploymentObservedState{}
 	// MISSING: Name
 	out.APIVersions = in.ApiVersions
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -41,7 +41,7 @@ func ApiHubDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: Attributes
 	return out
 }
-func ApiHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiHubDeploymentObservedState) *pb.Deployment {
+func APIHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubDeploymentObservedState) *pb.Deployment {
 	if in == nil {
 		return nil
 	}
@@ -50,40 +50,6 @@ func ApiHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Ap
 	out.ApiVersions = in.APIVersions
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Attributes
-	return out
-}
-func ApiHubDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.ApiHubDeploymentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiHubDeploymentSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
-	out.DeploymentType = AttributeValues_FromProto(mapCtx, in.GetDeploymentType())
-	out.ResourceURI = direct.LazyPtr(in.GetResourceUri())
-	out.Endpoints = in.Endpoints
-	out.Slo = AttributeValues_FromProto(mapCtx, in.GetSlo())
-	out.Environment = AttributeValues_FromProto(mapCtx, in.GetEnvironment())
-	// MISSING: Attributes
-	return out
-}
-func ApiHubDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiHubDeploymentSpec) *pb.Deployment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Deployment{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
-	out.DeploymentType = AttributeValues_ToProto(mapCtx, in.DeploymentType)
-	out.ResourceUri = direct.ValueOf(in.ResourceURI)
-	out.Endpoints = in.Endpoints
-	out.Slo = AttributeValues_ToProto(mapCtx, in.Slo)
-	out.Environment = AttributeValues_ToProto(mapCtx, in.Environment)
 	// MISSING: Attributes
 	return out
 }
@@ -113,6 +79,28 @@ func AttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues)
 		out.Value = &pb.AttributeValues_JsonValues{JsonValues: oneof}
 	}
 	// MISSING: Attribute
+	return out
+}
+func AttributeValuesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValuesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValuesObservedState{}
+	// MISSING: EnumValues
+	// MISSING: StringValues
+	// MISSING: JsonValues
+	out.Attribute = direct.LazyPtr(in.GetAttribute())
+	return out
+}
+func AttributeValuesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValuesObservedState) *pb.AttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues{}
+	// MISSING: EnumValues
+	// MISSING: StringValues
+	// MISSING: JsonValues
+	out.Attribute = direct.ValueOf(in.Attribute)
 	return out
 }
 func AttributeValues_EnumAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_EnumAttributeValues) *krm.AttributeValues_EnumAttributeValues {

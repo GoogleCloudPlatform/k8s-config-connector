@@ -31,8 +31,8 @@ type FakeApihubV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeApihubV1alpha1) ApiHubDeployments(namespace string) v1alpha1.ApiHubDeploymentInterface {
-	return newFakeApiHubDeployments(c, namespace)
+func (c *FakeApihubV1alpha1) APIHubDeployments(namespace string) v1alpha1.APIHubDeploymentInterface {
+	return newFakeAPIHubDeployments(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

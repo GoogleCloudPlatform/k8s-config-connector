@@ -21,4 +21,4 @@
 
 package v1alpha1
 
-type ApiHubDeploymentExpansion interface{}
+type APIHubDeploymentExpansion interface{}

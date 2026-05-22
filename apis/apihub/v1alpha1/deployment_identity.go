@@ -26,41 +26,41 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &ApiHubDeploymentIdentity{}
-	_ identity.Resource   = &ApiHubDeployment{}
+	_ identity.IdentityV2 = &APIHubDeploymentIdentity{}
+	_ identity.Resource   = &APIHubDeployment{}
 )
 
-var ApiHubDeploymentIdentityFormat = gcpurls.Template[ApiHubDeploymentIdentity]("apihub.googleapis.com", "projects/{project}/locations/{location}/deployments/{deployment}")
+var APIHubDeploymentIdentityFormat = gcpurls.Template[APIHubDeploymentIdentity]("apihub.googleapis.com", "projects/{project}/locations/{location}/deployments/{deployment}")
 
 // +k8s:deepcopy-gen=false
-type ApiHubDeploymentIdentity struct {
+type APIHubDeploymentIdentity struct {
 	Project    string
 	Location   string
 	Deployment string
 }
 
-func (i *ApiHubDeploymentIdentity) String() string {
-	return ApiHubDeploymentIdentityFormat.ToString(*i)
+func (i *APIHubDeploymentIdentity) String() string {
+	return APIHubDeploymentIdentityFormat.ToString(*i)
 }
 
-func (i *ApiHubDeploymentIdentity) FromExternal(ref string) error {
-	parsed, match, err := ApiHubDeploymentIdentityFormat.Parse(ref)
+func (i *APIHubDeploymentIdentity) FromExternal(ref string) error {
+	parsed, match, err := APIHubDeploymentIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of ApiHubDeployment external=%q was not known (use %s): %w", ref, ApiHubDeploymentIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of APIHubDeployment external=%q was not known (use %s): %w", ref, APIHubDeploymentIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of ApiHubDeployment external=%q was not known (use %s)", ref, ApiHubDeploymentIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of APIHubDeployment external=%q was not known (use %s)", ref, APIHubDeploymentIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *ApiHubDeploymentIdentity) Host() string {
-	return ApiHubDeploymentIdentityFormat.Host()
+func (i *APIHubDeploymentIdentity) Host() string {
+	return APIHubDeploymentIdentityFormat.Host()
 }
 
-func getIdentityFromApiHubDeploymentSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ApiHubDeploymentIdentity, error) {
+func getIdentityFromAPIHubDeploymentSpec(ctx context.Context, reader client.Reader, obj client.Object) (*APIHubDeploymentIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -76,7 +76,7 @@ func getIdentityFromApiHubDeploymentSpec(ctx context.Context, reader client.Read
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &ApiHubDeploymentIdentity{
+	identity := &APIHubDeploymentIdentity{
 		Project:    projectID,
 		Location:   location,
 		Deployment: resourceID,
@@ -84,8 +84,8 @@ func getIdentityFromApiHubDeploymentSpec(ctx context.Context, reader client.Read
 	return identity, nil
 }
 
-func (obj *ApiHubDeployment) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromApiHubDeploymentSpec(ctx, reader, obj)
+func (obj *APIHubDeployment) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAPIHubDeploymentSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -94,13 +94,13 @@ func (obj *ApiHubDeployment) GetIdentity(ctx context.Context, reader client.Read
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &ApiHubDeploymentIdentity{}
+		statusIdentity := &APIHubDeploymentIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change ApiHubDeployment identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change APIHubDeployment identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 

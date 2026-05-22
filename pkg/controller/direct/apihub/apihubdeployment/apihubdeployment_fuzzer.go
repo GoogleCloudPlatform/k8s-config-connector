@@ -26,8 +26,8 @@ func init() {
 
 func apihubDeploymentFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Deployment{},
-		apihub.ApiHubDeploymentSpec_FromProto, apihub.ApiHubDeploymentSpec_ToProto,
-		apihub.ApiHubDeploymentObservedState_FromProto, apihub.ApiHubDeploymentObservedState_ToProto,
+		apihub.APIHubDeploymentSpec_FromProto, apihub.APIHubDeploymentSpec_ToProto,
+		apihub.APIHubDeploymentObservedState_FromProto, apihub.APIHubDeploymentObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")
