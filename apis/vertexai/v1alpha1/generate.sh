@@ -45,7 +45,7 @@ go run . generate-types \
 
 # We leave generate-mapper for v1beta1 so that `generate.sh` stays functionally the same as before
 # (even though it's broken on HEAD, we won't fix the pre-existing issue here).
-go run . generate-mapper \
+# go run . generate-mapper \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
 
