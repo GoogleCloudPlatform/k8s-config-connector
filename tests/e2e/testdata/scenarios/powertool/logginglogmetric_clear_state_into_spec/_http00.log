@@ -14,13 +14,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Metric logginglogmetric-${uniqueId} does not exist.",
-        "reason": "notFound"
-      }
-    ],
     "message": "Metric logginglogmetric-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }

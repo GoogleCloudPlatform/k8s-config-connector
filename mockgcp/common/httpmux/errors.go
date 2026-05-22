@@ -96,16 +96,3 @@ func (m *ServeMux) customErrorHandler(ctx context.Context, mux *runtime.ServeMux
 	}
 
 }
-
-func (m *ServeMux) customRoutingErrorHandler(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, httpStatus int) {
-	var code codes.Code
-	switch httpStatus {
-	case http.StatusNotFound:
-		code = codes.NotFound
-	case http.StatusMethodNotAllowed:
-		code = codes.Unimplemented
-	default:
-		code = codes.Unknown
-	}
-	m.customErrorHandler(ctx, mux, marshaler, w, r, status.Error(code, http.StatusText(httpStatus)))
-}
