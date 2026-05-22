@@ -499,3 +499,93 @@ func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerCl
 
 	return out
 }
+
+func EphemeralStorageLocalSsdConfig_FromProto(mapCtx *direct.MapContext, in *pb.EphemeralStorageLocalSsdConfig) *krm.EphemeralStorageLocalSsdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EphemeralStorageLocalSsdConfig{}
+	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
+	out.DataCacheCount = direct.LazyPtr(int(in.GetDataCacheCount()))
+	return out
+}
+
+func EphemeralStorageLocalSsdConfig_ToProto(mapCtx *direct.MapContext, in *krm.EphemeralStorageLocalSsdConfig) *pb.EphemeralStorageLocalSsdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EphemeralStorageLocalSsdConfig{}
+	out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
+	out.DataCacheCount = int32(direct.ValueOf(in.DataCacheCount))
+	return out
+}
+
+func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeConfig{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.OauthScopes = in.OauthScopes
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.Metadata = in.Metadata
+	out.ImageType = direct.LazyPtr(in.GetImageType())
+	out.Labels = in.Labels
+	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
+	out.Tags = in.Tags
+	out.Preemptible = direct.LazyPtr(in.GetPreemptible())
+	out.DiskType = direct.LazyPtr(in.GetDiskType())
+	out.MinCPUPlatform = direct.LazyPtr(in.GetMinCpuPlatform())
+	out.SandboxConfig = SandboxConfig_FromProto(mapCtx, in.GetSandboxConfig())
+	if in.GetNodeGroup() != "" {
+		out.NodeGroupRef = &computev1beta1.ComputeNodeGroupRef{External: in.GetNodeGroup()}
+	}
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
+	out.ShieldedInstanceConfig = ShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
+	out.LinuxNodeConfig = LinuxNodeConfig_FromProto(mapCtx, in.GetLinuxNodeConfig())
+	out.KubeletConfig = KubeletConfig_FromProto(mapCtx, in.GetKubeletConfig())
+	out.GcfsConfig = GcfsConfig_FromProto(mapCtx, in.GetGcfsConfig())
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	out.ConfidentialNodes = ConfidentialNodes_FromProto(mapCtx, in.GetConfidentialNodes())
+	out.FastSocket = FastSocket_FromProto(mapCtx, in.GetFastSocket())
+	out.ResourceLabels = in.ResourceLabels
+	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_FromProto(mapCtx, in.GetEphemeralStorageLocalSsdConfig())
+	return out
+}
+
+func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeConfig{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.OauthScopes = in.OauthScopes
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.Metadata = in.Metadata
+	out.ImageType = direct.ValueOf(in.ImageType)
+	out.Labels = in.Labels
+	out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
+	out.Tags = in.Tags
+	out.Preemptible = direct.ValueOf(in.Preemptible)
+	out.DiskType = direct.ValueOf(in.DiskType)
+	out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
+	out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
+	if in.NodeGroupRef != nil {
+		out.NodeGroup = in.NodeGroupRef.External
+	}
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+	out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
+	out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
+	out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
+	out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
+	out.Spot = direct.ValueOf(in.Spot)
+	out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
+	out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
+	out.ResourceLabels = in.ResourceLabels
+	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
+	return out
+}

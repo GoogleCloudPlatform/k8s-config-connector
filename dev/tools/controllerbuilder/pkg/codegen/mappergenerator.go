@@ -347,11 +347,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					if protoField.Kind() == protoreflect.BytesKind {
 						fmt.Fprintf(out, "\t\tout.%s = in.%s[0]\n", krmFieldName, protoAccessor)
 					} else {
-						valExpr := fmt.Sprintf("in.%s[0]", protoAccessor)
-						if krmField.Type == "*int" {
-							valExpr = "int(" + valExpr + ")"
-						}
-						fmt.Fprintf(out, "\t\tout.%s = direct.LazyPtr(%s)\n", krmFieldName, valExpr)
+						fmt.Fprintf(out, "\t\tout.%s = direct.LazyPtr(in.%s[0])\n", krmFieldName, protoAccessor)
 					}
 				}
 				fmt.Fprintf(out, "\t}\n")
@@ -395,11 +391,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						fmt.Fprintf(out, "\t\tout.%s = []%s.%s{v}\n", krmFieldName, krmImportName, krmSliceElemType)
 						fmt.Fprintf(out, "\t}\n")
 					} else {
-						valExpr := fmt.Sprintf("in.%s", protoAccessor)
-						if strings.HasSuffix(krmSliceElemType, "int") {
-							valExpr = "int(" + valExpr + ")"
-						}
-						fmt.Fprintf(out, "\tout.%s = []%s.%s{direct.LazyPtr(%s)}\n", krmFieldName, krmImportName, krmSliceElemType, valExpr)
+						fmt.Fprintf(out, "\tout.%s = []%s.%s{direct.LazyPtr(in.%s)}\n", krmFieldName, krmImportName, krmSliceElemType, protoAccessor)
 					}
 
 				default:
@@ -533,13 +525,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						protoFieldName,
 					)
 				} else {
-					valExpr := fmt.Sprintf("in.%s", protoAccessor)
-					if krmField.Type == "*int" {
-						valExpr = "int(" + valExpr + ")"
-					}
-					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(%s)\n",
+					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
 						krmFieldName,
-						valExpr,
+						protoAccessor,
 					)
 				}
 
@@ -654,20 +642,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					if protoIsPointerInGo(protoField) {
 						fmt.Fprintf(out, "\t\tout.%s = in.%s[0]\n", protoFieldName, krmFieldName)
 					} else {
-						valExpr := fmt.Sprintf("direct.ValueOf(in.%s[0])", krmFieldName)
-						if strings.HasSuffix(krmField.Type, "int") {
-							switch protoField.Kind() {
-							case protoreflect.Int32Kind:
-								valExpr = "int32(" + valExpr + ")"
-							case protoreflect.Int64Kind:
-								valExpr = "int64(" + valExpr + ")"
-							case protoreflect.Uint32Kind:
-								valExpr = "uint32(" + valExpr + ")"
-							case protoreflect.Uint64Kind:
-								valExpr = "uint64(" + valExpr + ")"
-							}
-						}
-						fmt.Fprintf(out, "\t\tout.%s = %s\n", protoFieldName, valExpr)
+						fmt.Fprintf(out, "\t\tout.%s = direct.ValueOf(in.%s[0])\n", protoFieldName, krmFieldName)
 					}
 
 				default:
@@ -712,20 +687,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					if protoField.Kind() == protoreflect.BytesKind {
 						fmt.Fprintf(out, "\t\tout.%s = [][]byte{in.%s}\n", protoFieldName, krmFieldName)
 					} else {
-						valExpr := fmt.Sprintf("direct.ValueOf(in.%s)", krmFieldName)
-						if krmField.Type == "*int" {
-							switch protoField.Kind() {
-							case protoreflect.Int32Kind:
-								valExpr = "int32(" + valExpr + ")"
-							case protoreflect.Int64Kind:
-								valExpr = "int64(" + valExpr + ")"
-							case protoreflect.Uint32Kind:
-								valExpr = "uint32(" + valExpr + ")"
-							case protoreflect.Uint64Kind:
-								valExpr = "uint64(" + valExpr + ")"
-							}
-						}
-						fmt.Fprintf(out, "\t\tout.%s = []%s{%s}\n", protoFieldName, protoSliceElemType, valExpr)
+						fmt.Fprintf(out, "\t\tout.%s = []%s{direct.ValueOf(in.%s)}\n", protoFieldName, protoSliceElemType, krmFieldName)
 					}
 				}
 				fmt.Fprintf(out, "\t}\n")
@@ -928,22 +890,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						krmFieldName,
 					)
 				} else {
-					valExpr := fmt.Sprintf("direct.ValueOf(in.%s)", krmFieldName)
-					if krmField.Type == "*int" {
-						switch protoField.Kind() {
-						case protoreflect.Int32Kind:
-							valExpr = "int32(" + valExpr + ")"
-						case protoreflect.Int64Kind:
-							valExpr = "int64(" + valExpr + ")"
-						case protoreflect.Uint32Kind:
-							valExpr = "uint32(" + valExpr + ")"
-						case protoreflect.Uint64Kind:
-							valExpr = "uint64(" + valExpr + ")"
-						}
-					}
-					fmt.Fprintf(out, "\tout.%s = %s\n",
+					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
 						protoFieldName,
-						valExpr,
+						krmFieldName,
 					)
 				}
 
