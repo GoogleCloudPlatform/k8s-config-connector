@@ -396,18 +396,13 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ComputeHealthCheckObservedState is the state of the ComputeHealthCheck
-                  resource as most recently observed in GCP.
-                properties:
-                  selfLink:
-                    description: Server-defined URL for the resource.
-                    type: string
-                  type:
-                    description: The type of the health check. One of HTTP, HTTPS,
-                      TCP, or SSL.
-                    type: string
-                type: object
+              selfLink:
+                description: Server-defined URL for the resource.
+                type: string
+              type:
+                description: The type of the health check. One of HTTP, HTTPS, TCP,
+                  or SSL.
+                type: string
             type: object
         required:
         - spec
