@@ -80,6 +80,9 @@ type AutokeyConfig struct {
 
 	// Output only. The state for the AutokeyConfig.
 	State *string `json:"state,omitempty"`
+
+	// Optional. KeyProjectResolutionMode for the AutokeyConfig.
+	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.kms.v1.KeyHandle

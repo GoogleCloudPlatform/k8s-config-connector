@@ -38,6 +38,9 @@ type KMSAutokeyConfigSpec struct {
 
 	// +optional
 	KeyProjectRef *refs.ProjectRef `json:"keyProject,omitempty"`
+
+	// +optional
+	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
 }
 
 // KMSAutokeyConfigStatus defines the config connector machine state of KMSAutokeyConfig
