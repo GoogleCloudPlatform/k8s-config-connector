@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -33,6 +34,8 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"k8s.io/utils/ptr"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 const (
@@ -79,6 +82,17 @@ func (m *ekmConnectionModel) AdapterForObject(ctx context.Context, op *directbas
 		return nil, err
 	}
 	typedID := id.(*krm.KMSEKMConnectionIdentity)
+
+	for i := range obj.Spec.ServiceResolvers {
+		resolver := &obj.Spec.ServiceResolvers[i]
+		if resolver.ServiceDirectoryServiceRef != nil {
+			normalized, err := resolver.ServiceDirectoryServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+			if err != nil {
+				return nil, err
+			}
+			resolver.ServiceDirectoryServiceRef.External = normalized
+		}
+	}
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -215,7 +229,19 @@ func (a *EKMConnectionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	// TODO: set ProjectRef, Location etc.
+
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = &a.id.Location
+	// EkmConnection doesn't have a user-specified name/id other than the final segment of the URI.
+	// But kcc conventions say resourceID should be the short name if not standard.
+	// Let's set the resourceID to the ID we got from parsing.
+	// Actually we should set resourceID to a.name if it matches.
+	// The resource ID is the last segment of the name.
+	tokens := strings.Split(a.actual.Name, "/")
+	if len(tokens) > 0 {
+		obj.Spec.ResourceID = ptr.To(tokens[len(tokens)-1])
+	}
+	
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
