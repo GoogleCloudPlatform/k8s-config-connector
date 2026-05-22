@@ -38,6 +38,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
+
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -137,6 +140,31 @@ func (a *entryTypeAdapter) Find(ctx context.Context) (bool, error) {
 
 	a.actual = actual
 	return true, nil
+}
+
+func (a *entryTypeAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *entryTypeAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
 
 func (a *entryTypeAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
