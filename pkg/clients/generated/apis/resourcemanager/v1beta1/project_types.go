@@ -39,22 +39,18 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ProjectSpec struct {
+	/* The billing account of the project. */
 	// +optional
 	BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
 
-	/* The folder that this resource belongs to. Changing this forces the
-	resource to be migrated to the newly specified folder. Only one of
-	folderRef or organizationRef may be specified. */
+	/* The folder that this resource belongs to. Changing this forces the resource to be migrated to the newly specified folder. Only one of folderRef or organizationRef may be specified. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* The display name of the project. */
 	Name string `json:"name"`
 
-	/* The organization that this resource belongs to. Changing this
-	forces the resource to be migrated to the newly specified
-	organization. Only one of folderRef or organizationRef may be
-	specified. */
+	/* The organization that this resource belongs to. Changing this forces the resource to be migrated to the newly specified organization. Only one of folderRef or organizationRef may be specified. */
 	// +optional
 	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
