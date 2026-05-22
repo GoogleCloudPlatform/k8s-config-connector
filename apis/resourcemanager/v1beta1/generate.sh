@@ -1,0 +1,37 @@
+#!/bin/bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Go to the root of the repo
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+REPO_ROOT="${SCRIPT_DIR}/../../.."
+
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
+go run . generate-types \
+  --service google.cloud.resourcemanager.v3 \
+  --api-version resourcemanager.cnrm.cloud.google.com/v1beta1 \
+  --resource Project:Project \
+  --include-skipped-output
+
+go run . generate-mapper \
+  --service google.cloud.resourcemanager.v3 \
+  --api-version resourcemanager.cnrm.cloud.google.com/v1beta1 \
+  --api-dir ${REPO_ROOT}/apis/resourcemanager/v1beta1 \
+  --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1 \
+  --include-skipped-output

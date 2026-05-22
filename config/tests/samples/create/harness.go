@@ -504,43 +504,47 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 		testgcp.TestKCCAlloyDBProject.Set("mock-project")
 		testgcp.TestKCCAlloyDBProjectNumber.Set("518915279")
-		testgcp.TestSharedReservationsProject.Set("mock-project")
-
-		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
-		req := &cloudresourcemanagerv1.Project{
-			ProjectId: "mock-project",
-		}
-		op, err := crm.Projects.Create(req).Context(ctx).Do()
-		if err != nil {
-			t.Fatalf("error creating project: %v", err)
-		}
-
-		// Wait for the project to be created, up to 10 seconds.
-		for i := 0; i < 100; i++ {
-			if op.Done {
-				break
-			}
-			time.Sleep(100 * time.Millisecond)
-			latest, err := crm.Operations.Get(op.Name).Context(ctx).Do()
-			if err != nil {
-				t.Fatalf("error getting operation %q: %v", op.Name, err)
-			}
-			op = latest
-		}
-		if !op.Done {
-			t.Fatalf("FAIL: expected mock create project operation to be done (timed out after 5 seconds); operation state was %+v", op)
-		}
-		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
-		if err != nil {
-			t.Fatalf("FAIL: error reading created project: %v", err)
-		}
-		project := testgcp.GCPProject{
-			ProjectID:     found.ProjectId,
-			ProjectNumber: found.ProjectNumber,
-		}
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		testgcp.TestKCCAttachedClusterPlatformVersion.Set("1.30.0-gke.1")
-		h.Project = project
+		testgcp.TestSharedReservationsProject.Set("shared-reservations-project")
+
+		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
+		createProject := func(projectID string) *cloudresourcemanagerv1.Project {
+			req := &cloudresourcemanagerv1.Project{
+				ProjectId: projectID,
+			}
+			op, err := crm.Projects.Create(req).Context(ctx).Do()
+			if err != nil {
+				t.Fatalf("error creating project %q: %v", projectID, err)
+			}
+
+			// Wait for the project to be created, up to 10 seconds.
+			for i := 0; i < 100; i++ {
+				if op.Done {
+					break
+				}
+				time.Sleep(100 * time.Millisecond)
+				latest, err := crm.Operations.Get(op.Name).Context(ctx).Do()
+				if err != nil {
+					t.Fatalf("error getting operation %q: %v", op.Name, err)
+				}
+				op = latest
+			}
+			if !op.Done {
+				t.Fatalf("FAIL: expected mock create project operation %q to be done (timed out after 10 seconds); operation state was %+v", projectID, op)
+			}
+			found, err := crm.Projects.Get(projectID).Context(ctx).Do()
+			if err != nil {
+				t.Fatalf("FAIL: error reading created project %q: %v", projectID, err)
+			}
+			return found
+		}
+		createProject("shared-reservations-project")
+		mockProject := createProject("mock-project")
+		h.Project = testgcp.GCPProject{
+			ProjectID:     mockProject.ProjectId,
+			ProjectNumber: mockProject.ProjectNumber,
+		}
 	} else if h.GCPTarget == GCPTargetModeVCR && os.Getenv("VCR_MODE") == "replay" {
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken

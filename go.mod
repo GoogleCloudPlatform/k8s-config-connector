@@ -12,6 +12,7 @@ require (
 	cloud.google.com/go/alloydb v1.20.0
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
+	cloud.google.com/go/apihub v1.0.0
 	cloud.google.com/go/apikeys v1.2.7
 	cloud.google.com/go/apphub v0.4.0
 	cloud.google.com/go/artifactregistry v1.20.0
@@ -28,6 +29,7 @@ require (
 	cloud.google.com/go/cloudtasks v1.13.7
 	cloud.google.com/go/compute v1.54.0
 	cloud.google.com/go/configdelivery v0.1.1
+	cloud.google.com/go/container v1.52.0
 	cloud.google.com/go/datacatalog v1.26.1
 	cloud.google.com/go/dataflow v0.11.1
 	cloud.google.com/go/dataform v0.13.0
@@ -143,6 +145,7 @@ require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
 	cloud.google.com/go/memcache v1.11.7 // indirect
+	cloud.google.com/go/modelarmor v1.0.0 // indirect
 	cloud.google.com/go/osconfig v1.16.0 // indirect
 	cloud.google.com/go/pubsublite v1.8.2 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect

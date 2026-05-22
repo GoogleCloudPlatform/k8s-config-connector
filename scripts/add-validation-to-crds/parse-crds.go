@@ -316,6 +316,9 @@ oneOf:
 			// hack for IAMPolicy.spec.resourceRef for backwards compat
 			if fieldPath == ".spec.resourceRef" {
 				ruleYAML = resourceRefRuleWithOnlyKind
+				// hack for Compute spec.shareSettings.projectMap[].keyRef, support multi-kind reference and default kind is "Project"
+			} else if strings.HasSuffix(fieldPath, ".projectMap[].keyRef") {
+				ruleYAML = refRuleWithOptionalKind
 			} else {
 				ruleYAML = refRuleWithKind
 			}
@@ -324,6 +327,18 @@ oneOf:
 oneOf:
   - required: [serviceAccountRef]
   - required: [user]
+`
+		} else if signature == "billingAccountRef,folderRef,name,organizationRef,resourceID" && kind == "Project" {
+			// Project allows either folderRef or organizationRef (or neither).
+			// This oneOf is necessary for backwards compatibility with the existing CRD.
+			ruleYAML = `
+oneOf:
+- required: [folderRef]
+- required: [organizationRef]
+- not:
+    anyOf:
+    - required: [folderRef]
+    - required: [organizationRef]
 `
 		} else if signature == "external,kind,name,namespace" {
 			ruleYAML = refRuleWithKind
@@ -336,7 +351,7 @@ oneOf:
 			}
 		} else if signature == "external,name,namespace" {
 			ruleYAML = refRuleWithoutKind
-		} else if signature == "value,valueFrom" && kind == "AlloyDBUser" {
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ContainerCluster") {
 			ruleYAML = legacyRefRule
 		} else {
 			if strings.HasPrefix(signature, "external,") {

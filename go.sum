@@ -138,6 +138,8 @@ cloud.google.com/go/apigeeregistry v0.7.2/go.mod h1:9CA2B2+TGsPKtfi3F7/1ncCCsL62
 cloud.google.com/go/apigeeregistry v0.8.1/go.mod h1:MW4ig1N4JZQsXmBSwH4rwpgDonocz7FPBSw6XPGHmYw=
 cloud.google.com/go/apigeeregistry v0.8.2/go.mod h1:h4v11TDGdeXJDJvImtgK2AFVvMIgGWjSb0HRnBSjcX8=
 cloud.google.com/go/apigeeregistry v0.8.3/go.mod h1:aInOWnqF4yMQx8kTjDqHNXjZGh/mxeNlAf52YqtASUs=
+cloud.google.com/go/apihub v1.0.0 h1:h1OKaMeHyrosjfRBCKJqNUSQzPRFYwBbstRGCGcWNyA=
+cloud.google.com/go/apihub v1.0.0/go.mod h1:N/TqF2Hzd5prWOdS2W/3/6u3RfQZudfwFgJbao+viws=
 cloud.google.com/go/apikeys v0.4.0/go.mod h1:XATS/yqZbaBK0HOssf+ALHp8jAlNHUgyfprvNcBIszU=
 cloud.google.com/go/apikeys v0.5.0/go.mod h1:5aQfwY4D+ewMMWScd3hm2en3hCj+BROlyrt3ytS7KLI=
 cloud.google.com/go/apikeys v0.6.0/go.mod h1:kbpXu5upyiAlGkKrJgQl8A0rKNNJ7dQ377pdroRSSi8=
@@ -439,6 +441,8 @@ cloud.google.com/go/container v1.28.0/go.mod h1:b1A1gJeTBXVLQ6GGw9/9M4FG94BEGsqJ
 cloud.google.com/go/container v1.29.0/go.mod h1:b1A1gJeTBXVLQ6GGw9/9M4FG94BEGsqJ5+t4d/3N7O4=
 cloud.google.com/go/container v1.30.1/go.mod h1:vkbfX0EnAKL/vgVECs5BZn24e1cJROzgszJirRKQ4Bg=
 cloud.google.com/go/container v1.31.0/go.mod h1:7yABn5s3Iv3lmw7oMmyGbeV6tQj86njcTijkkGuvdZA=
+cloud.google.com/go/container v1.52.0 h1:oAkZciqdQ+xpP29pa5UJfsBBvcWrNNgKsWvraoz9Ajk=
+cloud.google.com/go/container v1.52.0/go.mod h1:EvqoT2eXfxLweXXUlhAMGR0sOAB00XPzEjoL01esSDs=
 cloud.google.com/go/containeranalysis v0.5.1/go.mod h1:1D92jd8gRR/c0fGMlymRgxWD3Qw9C1ff6/T7mLgVL8I=
 cloud.google.com/go/containeranalysis v0.6.0/go.mod h1:HEJoiEIu+lEXM+k7+qLCci0h33lX3ZqoYFdmPcoO7s4=
 cloud.google.com/go/containeranalysis v0.7.0/go.mod h1:9aUL+/vZ55P2CXfuZjS4UjQ9AgXoSw8Ts6lemfmxBxI=
@@ -922,6 +926,8 @@ cloud.google.com/go/metastore v1.13.3/go.mod h1:K+wdjXdtkdk7AQg4+sXS8bRrQa9gcOr+
 cloud.google.com/go/metastore v1.13.4/go.mod h1:FMv9bvPInEfX9Ac1cVcRXp8EBBQnBcqH6gz3KvJ9BAE=
 cloud.google.com/go/metastore v1.14.8 h1:nfyUDD9AeKIs6btY5buQ1No0OVco20WpX9wIruL8UOA=
 cloud.google.com/go/metastore v1.14.8/go.mod h1:h1XI2LpD4ohJhQYn9TwXqKb5sVt6KSo47ft96SiFF1s=
+cloud.google.com/go/modelarmor v1.0.0 h1:vGRxxlBHRDKH9D66vfFeC2nTG4eRMNJ1DMPxa6NG3bE=
+cloud.google.com/go/modelarmor v1.0.0/go.mod h1:nrgM9UlxJvFE5NcE6NN/OJ8vI1LuJih27Hg8wq38mGQ=
 cloud.google.com/go/monitoring v1.7.0/go.mod h1:HpYse6kkGo//7p6sT0wsIC6IBDET0RhIsnmlA53dvEk=
 cloud.google.com/go/monitoring v1.8.0/go.mod h1:E7PtoMJ1kQXWxPjB6mv2fhC5/15jInuulFdYYtlcvT4=
 cloud.google.com/go/monitoring v1.12.0/go.mod h1:yx8Jj2fZNEkL/GYZyTLS4ZtZEZN8WtDEiEqG4kLK50w=

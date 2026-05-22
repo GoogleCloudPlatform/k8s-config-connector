@@ -7,3 +7,5 @@
   3. Call `grpc.Dial(ctx, opts...)`. The connection handles auth and mockgcp routing natively.
   4. Use this connection to instantiate the generated proto client (e.g. `pb.NewAIStreamsClient(conn)`) and the long-running operations client (`lro.NewOperationsClient(conn)`).
 - **Impact**: Enables KCC direct controllers to support purely gRPC-based proto APIs or new partner APIs that have not yet published standard client libraries.
+
+ApiHubDeployment: Dropped 'Annotations' from spec since proto uses map of string to AttributeValues (wrapper message). Used IdentityV2 standard.

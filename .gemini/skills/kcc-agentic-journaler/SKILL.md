@@ -16,16 +16,14 @@ When you have a new learning, follow this hierarchy to choose the destination:
 **Scenario**: You found a better way to do something that applies to *all* KCC resources (e.g., "A more efficient way to resolve Project IDs").
 **Destination**: Update the relevant Skill's `SKILL.md` file directly.
 
-### Tier 2: Domain Best Practices
-**Scenario**: You found a trick for a specific implementation area (e.g., "How to handle OneOf fields in mappers").
-**Destination**: Append to the relevant Skill's `journal.md` file (e.g., `.gemini/skills/kcc-mapper-implementer/journal.md`).
+### Tier 2: Domain and Service Tribal Knowledge
+**Scenario**: You found a trick for a specific implementation area, or a quirk unique to a specific GCP service.
+**Destination**: **ALWAYS** create or append to `.gemini/journals/<service_name>.md`. 
 
-### Tier 3: Service Tribal Knowledge
-**Scenario**: You found a quirk unique to a specific GCP service (e.g., "NetworkSecurity APIs require an explicit location in the body even if it is in the URL").
-**Destination**: Create or append to `.gemini/journals/<service_name>.md`. 
+**CRITICAL**: Do NOT append to any `journal.md` inside a `.gemini/skills/` directory. Multiple agents working in parallel on different services will cause merge conflicts if they all write to a centralized skill journal. By keeping journals scoped to the `<service_name>`, we eliminate cross-service merge conflicts.
 
 ## Journal Entry Template
-Use this format for Tier 2 and Tier 3 entries:
+Use this format for your entries in `.gemini/journals/<service_name>.md`:
 
 ```markdown
 ### [YYYY-MM-DD] <Brief Title>
