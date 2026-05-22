@@ -762,7 +762,7 @@ func (in *ComputeHealthCheckSpec) DeepCopyInto(out *ComputeHealthCheckSpec) {
 	}
 	if in.CheckIntervalSec != nil {
 		in, out := &in.CheckIntervalSec, &out.CheckIntervalSec
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -777,7 +777,7 @@ func (in *ComputeHealthCheckSpec) DeepCopyInto(out *ComputeHealthCheckSpec) {
 	}
 	if in.HealthyThreshold != nil {
 		in, out := &in.HealthyThreshold, &out.HealthyThreshold
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.HTTP2HealthCheck != nil {
@@ -812,12 +812,12 @@ func (in *ComputeHealthCheckSpec) DeepCopyInto(out *ComputeHealthCheckSpec) {
 	}
 	if in.TimeoutSec != nil {
 		in, out := &in.TimeoutSec, &out.TimeoutSec
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.UnhealthyThreshold != nil {
 		in, out := &in.UnhealthyThreshold, &out.UnhealthyThreshold
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 }
@@ -2591,7 +2591,7 @@ func (in *HealthCheckGRPCHealthCheck) DeepCopyInto(out *HealthCheckGRPCHealthChe
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.PortName != nil {
@@ -2626,7 +2626,7 @@ func (in *HealthCheckHTTP2HealthCheck) DeepCopyInto(out *HealthCheckHTTP2HealthC
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.PortName != nil {
@@ -2676,7 +2676,7 @@ func (in *HealthCheckHTTPHealthCheck) DeepCopyInto(out *HealthCheckHTTPHealthChe
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.PortName != nil {
@@ -2726,7 +2726,7 @@ func (in *HealthCheckHTTPSHealthCheck) DeepCopyInto(out *HealthCheckHTTPSHealthC
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.PortName != nil {
@@ -2791,7 +2791,7 @@ func (in *HealthCheckSSLHealthCheck) DeepCopyInto(out *HealthCheckSSLHealthCheck
 	*out = *in
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.PortName != nil {
@@ -2836,7 +2836,7 @@ func (in *HealthCheckTCPHealthCheck) DeepCopyInto(out *HealthCheckTCPHealthCheck
 	*out = *in
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.PortName != nil {
