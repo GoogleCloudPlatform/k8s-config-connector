@@ -38,102 +38,15 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type DeploymentDeploymentType struct {
-	/* The attribute values associated with a resource in case attribute data type is enum. */
-	// +optional
-	EnumValues *DeploymentEnumValues `json:"enumValues,omitempty"`
-
-	/* The attribute values associated with a resource in case attribute data type is JSON. */
-	// +optional
-	JsonValues *DeploymentJsonValues `json:"jsonValues,omitempty"`
-
-	/* The attribute values associated with a resource in case attribute data type is string. */
-	// +optional
-	StringValues *DeploymentStringValues `json:"stringValues,omitempty"`
-}
-
 type DeploymentDocumentation struct {
 	/* Optional. The uri of the externally hosted documentation. */
 	// +optional
 	ExternalURI *string `json:"externalURI,omitempty"`
 }
 
-type DeploymentEnumValues struct {
-	/* Required. The attribute values in case attribute data type is enum. */
-	// +optional
-	Values []DeploymentValues `json:"values,omitempty"`
-}
-
-type DeploymentEnvironment struct {
-	/* The attribute values associated with a resource in case attribute data type is enum. */
-	// +optional
-	EnumValues *DeploymentEnumValues `json:"enumValues,omitempty"`
-
-	/* The attribute values associated with a resource in case attribute data type is JSON. */
-	// +optional
-	JsonValues *DeploymentJsonValues `json:"jsonValues,omitempty"`
-
-	/* The attribute values associated with a resource in case attribute data type is string. */
-	// +optional
-	StringValues *DeploymentStringValues `json:"stringValues,omitempty"`
-}
-
-type DeploymentJsonValues struct {
-	/* Required. The attribute values in case attribute data type is string or JSON. */
-	// +optional
-	Values []DeploymentValues `json:"values,omitempty"`
-}
-
-type DeploymentSlo struct {
-	/* The attribute values associated with a resource in case attribute data type is enum. */
-	// +optional
-	EnumValues *DeploymentEnumValues `json:"enumValues,omitempty"`
-
-	/* The attribute values associated with a resource in case attribute data type is JSON. */
-	// +optional
-	JsonValues *DeploymentJsonValues `json:"jsonValues,omitempty"`
-
-	/* The attribute values associated with a resource in case attribute data type is string. */
-	// +optional
-	StringValues *DeploymentStringValues `json:"stringValues,omitempty"`
-}
-
-type DeploymentStringValues struct {
-	/* Required. The attribute values in case attribute data type is string or JSON. */
-	// +optional
-	Values []DeploymentValues `json:"values,omitempty"`
-}
-
-type DeploymentValues struct {
-	/* Optional. The detailed description of the allowed value. */
-	// +optional
-	Description *string `json:"description,omitempty"`
-
-	/* Required. The display name of the allowed value. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
-
-	/* Required. The ID of the allowed value.
-	* If provided, the same will be used. The service will throw an error if
-	the specified id is already used by another allowed value in the same
-	attribute resource.
-	* If not provided, a system generated id derived from the display name
-	will be used. In this case, the service will handle conflict resolution
-	by adding a system generated suffix in case of duplicates.
-
-	This value should be 4-63 characters, and valid characters
-	are /[a-z][0-9]-/. */
-	// +optional
-	Id *string `json:"id,omitempty"`
-
-	/* Optional. When set to true, the allowed value cannot be updated or deleted by the user. It can only be true for System defined attributes. */
-	// +optional
-	Immutable *bool `json:"immutable,omitempty"`
-}
-
 type APIHubDeploymentSpec struct {
 	/* Required. The type of deployment. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-deployment-type` attribute. The number of values for this attribute will be based on the cardinality of the attribute. The same can be retrieved via GetAttribute API. All values should be from the list of allowed values defined for the attribute. */
-	DeploymentType DeploymentDeploymentType `json:"deploymentType"`
+	DeploymentTypeRef v1alpha1.ResourceRef `json:"deploymentTypeRef"`
 
 	/* Optional. The description of the deployment. */
 	// +optional
@@ -151,7 +64,7 @@ type APIHubDeploymentSpec struct {
 
 	/* Optional. The environment mapping to this deployment. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-environment` attribute. The number of values for this attribute will be based on the cardinality of the attribute. The same can be retrieved via GetAttribute API. All values should be from the list of allowed values defined for the attribute. */
 	// +optional
-	Environment *DeploymentEnvironment `json:"environment,omitempty"`
+	EnvironmentRef *v1alpha1.ResourceRef `json:"environmentRef,omitempty"`
 
 	/* The location of this resource. */
 	Location string `json:"location"`
@@ -168,7 +81,7 @@ type APIHubDeploymentSpec struct {
 
 	/* Optional. The SLO for this deployment. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-slo` attribute. The number of values for this attribute will be based on the cardinality of the attribute. The same can be retrieved via GetAttribute API. All values should be from the list of allowed values defined for the attribute. */
 	// +optional
-	Slo *DeploymentSlo `json:"slo,omitempty"`
+	SloRef *v1alpha1.ResourceRef `json:"sloRef,omitempty"`
 }
 
 type DeploymentObservedStateStatus struct {
