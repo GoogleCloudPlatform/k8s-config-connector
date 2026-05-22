@@ -502,7 +502,7 @@ func ComputeHealthCheckObservedState_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: Kind
 	// MISSING: Name
 	// MISSING: Region
-	// MISSING: SelfLink
+	out.SelfLink = in.SelfLink
 	// MISSING: SourceRegions
 	out.Type = in.Type
 	return out
@@ -519,7 +519,7 @@ func ComputeHealthCheckObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Kind
 	// MISSING: Name
 	// MISSING: Region
-	// MISSING: SelfLink
+	out.SelfLink = in.SelfLink
 	// MISSING: SourceRegions
 	out.Type = in.Type
 	return out
@@ -546,7 +546,6 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.LogConfig = HealthCheckLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
 	// MISSING: Name
 	// MISSING: Region
-	// MISSING: SelfLink
 	// MISSING: SourceRegions
 	out.SSLHealthCheck = HealthCheckSSLHealthCheck_v1beta1_FromProto(mapCtx, in.GetSslHealthCheck())
 	out.TCPHealthCheck = HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx, in.GetTcpHealthCheck())
@@ -577,7 +576,6 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
 	// MISSING: Name
 	// MISSING: Region
-	// MISSING: SelfLink
 	// MISSING: SourceRegions
 	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
 	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
