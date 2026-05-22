@@ -1,7 +1,7 @@
 ---
 name: Mock Drift Correction
 description: Detects mockgcp services that are still using the obsolete grpc-gateway (httpmux) approach and creates issues to migrate them to httptogrpc.
-schedule: "@daily"
+schedule: "never"
 skipPR: true
 ---
 
