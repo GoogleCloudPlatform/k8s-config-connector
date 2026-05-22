@@ -11,18 +11,18 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.ComputeHealthCheckSpec{}
-	out.CheckIntervalSec = direct.PtrInt32ToPtrInt64(in.CheckIntervalSec)
+	out.CheckIntervalSec = ConvertInt32ToInt(in.CheckIntervalSec)
 	out.Description = in.Description
 	out.GRPCHealthCheck = HealthCheckGRPCHealthCheck_v1beta1_FromProto(mapCtx, in.GrpcHealthCheck)
-	out.HealthyThreshold = direct.PtrInt32ToPtrInt64(in.HealthyThreshold)
+	out.HealthyThreshold = ConvertInt32ToInt(in.HealthyThreshold)
 	out.HTTP2HealthCheck = HealthCheckHTTP2HealthCheck_v1beta1_FromProto(mapCtx, in.Http2HealthCheck)
 	out.HTTPHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_FromProto(mapCtx, in.HttpHealthCheck)
 	out.HTTPSHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_FromProto(mapCtx, in.HttpsHealthCheck)
 	out.LogConfig = HealthCheckLogConfig_v1beta1_FromProto(mapCtx, in.LogConfig)
 	out.SSLHealthCheck = HealthCheckSSLHealthCheck_v1beta1_FromProto(mapCtx, in.SslHealthCheck)
 	out.TCPHealthCheck = HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx, in.TcpHealthCheck)
-	out.TimeoutSec = direct.PtrInt32ToPtrInt64(in.TimeoutSec)
-	out.UnhealthyThreshold = direct.PtrInt32ToPtrInt64(in.UnhealthyThreshold)
+	out.TimeoutSec = ConvertInt32ToInt(in.TimeoutSec)
+	out.UnhealthyThreshold = ConvertInt32ToInt(in.UnhealthyThreshold)
 	return out
 }
 
@@ -31,18 +31,18 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 		return nil
 	}
 	out := &pb.HealthCheck{}
-	out.CheckIntervalSec = direct.PtrInt64ToPtrInt32(in.CheckIntervalSec)
+	out.CheckIntervalSec = ConvertIntToInt32(in.CheckIntervalSec)
 	out.Description = in.Description
 	out.GrpcHealthCheck = HealthCheckGRPCHealthCheck_v1beta1_ToProto(mapCtx, in.GRPCHealthCheck)
-	out.HealthyThreshold = direct.PtrInt64ToPtrInt32(in.HealthyThreshold)
+	out.HealthyThreshold = ConvertIntToInt32(in.HealthyThreshold)
 	out.Http2HealthCheck = HealthCheckHTTP2HealthCheck_v1beta1_ToProto(mapCtx, in.HTTP2HealthCheck)
 	out.HttpHealthCheck = HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPHealthCheck)
 	out.HttpsHealthCheck = HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx, in.HTTPSHealthCheck)
 	out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
 	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
 	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
-	out.TimeoutSec = direct.PtrInt64ToPtrInt32(in.TimeoutSec)
-	out.UnhealthyThreshold = direct.PtrInt64ToPtrInt32(in.UnhealthyThreshold)
+	out.TimeoutSec = ConvertIntToInt32(in.TimeoutSec)
+	out.UnhealthyThreshold = ConvertIntToInt32(in.UnhealthyThreshold)
 	return out
 }
 
@@ -52,7 +52,7 @@ func HealthCheckGRPCHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.HealthCheckGRPCHealthCheck{}
 	out.GRPCServiceName = in.GrpcServiceName
-	out.Port = direct.PtrInt32ToPtrInt64(in.Port)
+	out.Port = ConvertInt32ToInt(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	return out
@@ -64,7 +64,7 @@ func HealthCheckGRPCHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.GRPCHealthCheck{}
 	out.GrpcServiceName = in.GRPCServiceName
-	out.Port = direct.PtrInt64ToPtrInt32(in.Port)
+	out.Port = ConvertIntToInt32(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	return out
@@ -76,7 +76,7 @@ func HealthCheckHTTP2HealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krm.HealthCheckHTTP2HealthCheck{}
 	out.Host = in.Host
-	out.Port = direct.PtrInt32ToPtrInt64(in.Port)
+	out.Port = ConvertInt32ToInt(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
@@ -91,7 +91,7 @@ func HealthCheckHTTP2HealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.HTTP2HealthCheck{}
 	out.Host = in.Host
-	out.Port = direct.PtrInt64ToPtrInt32(in.Port)
+	out.Port = ConvertIntToInt32(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
@@ -106,7 +106,7 @@ func HealthCheckHTTPHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.HealthCheckHTTPHealthCheck{}
 	out.Host = in.Host
-	out.Port = direct.PtrInt32ToPtrInt64(in.Port)
+	out.Port = ConvertInt32ToInt(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
@@ -121,7 +121,7 @@ func HealthCheckHTTPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.HTTPHealthCheck{}
 	out.Host = in.Host
-	out.Port = direct.PtrInt64ToPtrInt32(in.Port)
+	out.Port = ConvertIntToInt32(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
@@ -136,7 +136,7 @@ func HealthCheckHTTPSHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krm.HealthCheckHTTPSHealthCheck{}
 	out.Host = in.Host
-	out.Port = direct.PtrInt32ToPtrInt64(in.Port)
+	out.Port = ConvertInt32ToInt(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
@@ -151,7 +151,7 @@ func HealthCheckHTTPSHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.HTTPSHealthCheck{}
 	out.Host = in.Host
-	out.Port = direct.PtrInt64ToPtrInt32(in.Port)
+	out.Port = ConvertIntToInt32(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
@@ -165,7 +165,7 @@ func HealthCheckSSLHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.HealthCheckSSLHealthCheck{}
-	out.Port = direct.PtrInt32ToPtrInt64(in.Port)
+	out.Port = ConvertInt32ToInt(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
@@ -179,7 +179,7 @@ func HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.SSLHealthCheck{}
-	out.Port = direct.PtrInt64ToPtrInt32(in.Port)
+	out.Port = ConvertIntToInt32(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
@@ -193,7 +193,7 @@ func HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.HealthCheckTCPHealthCheck{}
-	out.Port = direct.PtrInt32ToPtrInt64(in.Port)
+	out.Port = ConvertInt32ToInt(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
@@ -207,7 +207,7 @@ func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.TCPHealthCheck{}
-	out.Port = direct.PtrInt64ToPtrInt32(in.Port)
+	out.Port = ConvertIntToInt32(in.Port)
 	out.PortName = in.PortName
 	out.PortSpecification = in.PortSpecification
 	out.ProxyHeader = in.ProxyHeader
