@@ -1385,10 +1385,6 @@ type ContainerClusterStatus struct {
 	// +optional
 	Endpoint *string `json:"endpoint,omitempty"`
 
-	/* A server-defined unique identifier for the resource. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	/* The fingerprint of the set of labels for this cluster. */
 	// +optional
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`

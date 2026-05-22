@@ -1903,9 +1903,6 @@ spec:
               endpoint:
                 description: The IP address of this cluster's Kubernetes master.
                 type: string
-              externalRef:
-                description: A server-defined unique identifier for the resource.
-                type: string
               labelFingerprint:
                 description: The fingerprint of the set of labels for this cluster.
                 type: string
