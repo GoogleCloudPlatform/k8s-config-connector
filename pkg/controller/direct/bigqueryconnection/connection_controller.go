@@ -226,13 +226,20 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created Connection", "name", created.Name)
 
+	id := &krm.BigQueryConnectionConnectionIdentity{}
+	if err := id.FromExternal(created.Name); err != nil {
+		return fmt.Errorf("parsing created connection name %q: %w", created.Name, err)
+	}
+	a.id.Connection = id.Connection
+
 	status := &krm.BigQueryConnectionConnectionStatus{}
 	status.ObservedState = BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	status.ExternalRef = &created.Name
+	externalRef := a.id.String()
+	status.ExternalRef = &externalRef
 	return setStatus(u, status)
 }
 
