@@ -22,11 +22,7 @@
 
 package v1alpha1
 
-import (
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-)
+import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
 // +kcc:proto=google.cloud.aiplatform.v1.ActiveLearningConfig
 type ActiveLearningConfig struct {
