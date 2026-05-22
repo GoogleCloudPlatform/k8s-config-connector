@@ -25,6 +25,7 @@ package container
 
 import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -546,7 +547,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	out := &krm.ContainerClusterSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.InitialNodeCount = direct.LazyPtr(in.GetInitialNodeCount())
+	out.InitialNodeCount = direct.LazyPtr(int(in.GetInitialNodeCount()))
 	out.NodeConfig = NodeConfig_FromProto(mapCtx, in.GetNodeConfig())
 	out.MasterAuth = MasterAuth_FromProto(mapCtx, in.GetMasterAuth())
 	out.LoggingService = direct.LazyPtr(in.GetLoggingService())
@@ -641,7 +642,7 @@ found existing non-generated mapping function "ContainerClusterSpec_ToProto", sk
 		out := &pb.Cluster{}
 		// MISSING: Name
 		out.Description = direct.ValueOf(in.Description)
-		out.InitialNodeCount = direct.ValueOf(in.InitialNodeCount)
+		out.InitialNodeCount = int32(direct.ValueOf(in.InitialNodeCount))
 		out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
 		out.MasterAuth = MasterAuth_ToProto(mapCtx, in.MasterAuth)
 		out.LoggingService = direct.ValueOf(in.LoggingService)
@@ -968,8 +969,8 @@ func EphemeralStorageLocalSsdConfig_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.EphemeralStorageLocalSsdConfig{}
-	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
-	out.DataCacheCount = direct.LazyPtr(in.GetDataCacheCount())
+	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
+	out.DataCacheCount = direct.LazyPtr(int(in.GetDataCacheCount()))
 	return out
 }
 func EphemeralStorageLocalSsdConfig_ToProto(mapCtx *direct.MapContext, in *krm.EphemeralStorageLocalSsdConfig) *pb.EphemeralStorageLocalSsdConfig {
@@ -977,8 +978,8 @@ func EphemeralStorageLocalSsdConfig_ToProto(mapCtx *direct.MapContext, in *krm.E
 		return nil
 	}
 	out := &pb.EphemeralStorageLocalSsdConfig{}
-	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
-	out.DataCacheCount = direct.ValueOf(in.DataCacheCount)
+	out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
+	out.DataCacheCount = int32(direct.ValueOf(in.DataCacheCount))
 	return out
 }
 func FastSocket_FromProto(mapCtx *direct.MapContext, in *pb.FastSocket) *krm.FastSocket {
@@ -1249,7 +1250,7 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	// MISSING: MemoryManager
 	out.CPUCfsQuota = direct.BoolValue_FromProto(mapCtx, in.GetCpuCfsQuota())
 	out.CPUCfsQuotaPeriod = direct.LazyPtr(in.GetCpuCfsQuotaPeriod())
-	out.PodPidsLimit = direct.LazyPtr(in.GetPodPidsLimit())
+	out.PodPidsLimit = direct.LazyPtr(int(in.GetPodPidsLimit()))
 	// MISSING: InsecureKubeletReadonlyPortEnabled
 	// MISSING: ImageGcLowThresholdPercent
 	// MISSING: ImageGcHighThresholdPercent
@@ -1281,7 +1282,7 @@ found existing non-generated mapping function "KubeletConfig_ToProto", skipping
 		// MISSING: MemoryManager
 		out.CpuCfsQuota = direct.BoolValue_ToProto(mapCtx, in.CPUCfsQuota)
 		out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
-		out.PodPidsLimit = direct.ValueOf(in.PodPidsLimit)
+		out.PodPidsLimit = int64(direct.ValueOf(in.PodPidsLimit))
 		// MISSING: InsecureKubeletReadonlyPortEnabled
 		// MISSING: ImageGcLowThresholdPercent
 		// MISSING: ImageGcHighThresholdPercent
@@ -1625,7 +1626,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out.Metadata = in.Metadata
 	out.ImageType = direct.LazyPtr(in.GetImageType())
 	out.Labels = in.Labels
-	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
+	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
 	out.Tags = in.Tags
 	out.Preemptible = direct.LazyPtr(in.GetPreemptible())
 	// MISSING: Accelerators
@@ -1635,7 +1636,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	// MISSING: Taints
 	out.SandboxConfig = SandboxConfig_FromProto(mapCtx, in.GetSandboxConfig())
 	if in.GetNodeGroup() != "" {
-		out.NodeGroupRef = &krm.ComputeNodeGroupRef{External: in.GetNodeGroup()}
+		out.NodeGroupRef = &krmcomputev1beta1.ComputeNodeGroupRef{External: in.GetNodeGroup()}
 	}
 	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
 	out.ShieldedInstanceConfig = ShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
@@ -1682,7 +1683,7 @@ func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeC
 	out.Metadata = in.Metadata
 	out.ImageType = direct.ValueOf(in.ImageType)
 	out.Labels = in.Labels
-	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+	out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
 	out.Tags = in.Tags
 	out.Preemptible = direct.ValueOf(in.Preemptible)
 	// MISSING: Accelerators
@@ -2042,8 +2043,8 @@ func ResourceLimits_FromProto(mapCtx *direct.MapContext, in *pb.ResourceLimit) *
 	}
 	out := &krm.ResourceLimits{}
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
-	out.Minimum = direct.LazyPtr(in.GetMinimum())
-	out.Maximum = direct.LazyPtr(in.GetMaximum())
+	out.Minimum = direct.LazyPtr(int(in.GetMinimum()))
+	out.Maximum = direct.LazyPtr(int(in.GetMaximum()))
 	return out
 }
 */
@@ -2057,8 +2058,8 @@ found existing non-generated mapping function "ResourceLimits_ToProto", skipping
 		}
 		out := &pb.ResourceLimit{}
 		out.ResourceType = direct.ValueOf(in.ResourceType)
-		out.Minimum = direct.ValueOf(in.Minimum)
-		out.Maximum = direct.ValueOf(in.Maximum)
+		out.Minimum = int64(direct.ValueOf(in.Minimum))
+		out.Maximum = int64(direct.ValueOf(in.Maximum))
 		return out
 	}
 */
