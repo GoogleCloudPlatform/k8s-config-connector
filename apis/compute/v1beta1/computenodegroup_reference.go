@@ -85,20 +85,9 @@ func (r *ComputeNodeGroupRef) ParseExternalToIdentity() (identity.Identity, erro
 
 func (r *ComputeNodeGroupRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		id, err := getIdentityFromComputeNodeGroupSpec(ctx, reader, u)
 		if err != nil {
 			return ""
-		}
-		zone, _, _ := unstructured.NestedString(u.Object, "spec", "zone")
-		if zone == "" {
-			return ""
-		}
-		resourceID, _ := refsv1beta1.GetResourceID(u)
-
-		id := &ComputeNodeGroupIdentity{
-			Project:   projectID,
-			Zone:      zone,
-			NodeGroup: resourceID,
 		}
 		return id.String()
 	}
