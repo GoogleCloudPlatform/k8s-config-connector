@@ -35,7 +35,7 @@ type ComputeHealthCheckSpec struct {
 
 	// How often (in seconds) to send a health check. The default value is 5 seconds.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.check_interval_sec
-	CheckIntervalSec *int64 `json:"checkIntervalSec,omitempty"`
+	CheckIntervalSec *int `json:"checkIntervalSec,omitempty"`
 
 	// An optional description of this resource. Provide this property when you create the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.description
@@ -46,7 +46,7 @@ type ComputeHealthCheckSpec struct {
 
 	// A so-far unhealthy instance will be marked healthy after this many consecutive successes. The default value is 2.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.healthy_threshold
-	HealthyThreshold *int64 `json:"healthyThreshold,omitempty"`
+	HealthyThreshold *int `json:"healthyThreshold,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.http2_health_check
 	HTTP2HealthCheck *HealthCheckHTTP2HealthCheck `json:"http2HealthCheck,omitempty"`
@@ -69,11 +69,11 @@ type ComputeHealthCheckSpec struct {
 
 	// How long (in seconds) to wait before claiming failure. The default value is 5 seconds. It is invalid for timeoutSec to have greater value than checkIntervalSec.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.timeout_sec
-	TimeoutSec *int64 `json:"timeoutSec,omitempty"`
+	TimeoutSec *int `json:"timeoutSec,omitempty"`
 
 	// A so-far healthy instance will be marked unhealthy after this many consecutive failures. The default value is 2.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.unhealthy_threshold
-	UnhealthyThreshold *int64 `json:"unhealthyThreshold,omitempty"`
+	UnhealthyThreshold *int `json:"unhealthyThreshold,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.GRPCHealthCheck
@@ -90,7 +90,7 @@ type HealthCheckGRPCHealthCheck struct {
 	// Must be specified if portName and portSpecification are not set
 	// or if port_specification is USE_FIXED_PORT. Valid values are 1 through 65535.
 	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port
-	Port *int64 `json:"port,omitempty"`
+	Port *int `json:"port,omitempty"`
 
 	// Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	// port_name are defined, port takes precedence.
@@ -122,7 +122,7 @@ type HealthCheckHTTP2HealthCheck struct {
 	// The TCP port number for the HTTP2 health check request.
 	// The default value is 443.
 	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port
-	Port *int64 `json:"port,omitempty"`
+	Port *int `json:"port,omitempty"`
 
 	// Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	// port_name are defined, port takes precedence.
@@ -170,7 +170,7 @@ type HealthCheckHTTPHealthCheck struct {
 	// The TCP port number for the HTTP health check request.
 	// The default value is 80.
 	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port
-	Port *int64 `json:"port,omitempty"`
+	Port *int `json:"port,omitempty"`
 
 	// Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	// port_name are defined, port takes precedence.
@@ -218,7 +218,7 @@ type HealthCheckHTTPSHealthCheck struct {
 	// The TCP port number for the HTTPS health check request.
 	// The default value is 443.
 	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port
-	Port *int64 `json:"port,omitempty"`
+	Port *int `json:"port,omitempty"`
 
 	// Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	// port_name are defined, port takes precedence.
@@ -268,7 +268,7 @@ type HealthCheckSSLHealthCheck struct {
 	// The TCP port number for the SSL health check request.
 	// The default value is 443.
 	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.port
-	Port *int64 `json:"port,omitempty"`
+	Port *int `json:"port,omitempty"`
 
 	// Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	// port_name are defined, port takes precedence.
@@ -312,7 +312,7 @@ type HealthCheckTCPHealthCheck struct {
 	// The TCP port number for the TCP health check request.
 	// The default value is 443.
 	// +kcc:proto:field=google.cloud.compute.v1.TCPHealthCheck.port
-	Port *int64 `json:"port,omitempty"`
+	Port *int `json:"port,omitempty"`
 
 	// Port name as defined in InstanceGroup#NamedPort#name. If both port and
 	// port_name are defined, port takes precedence.
