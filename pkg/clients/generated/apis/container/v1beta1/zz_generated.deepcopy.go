@@ -767,7 +767,7 @@ func (in *ClusterEphemeralStorageLocalSsdConfig) DeepCopyInto(out *ClusterEpheme
 	*out = *in
 	if in.DataCacheCount != nil {
 		in, out := &in.DataCacheCount, &out.DataCacheCount
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1733,7 +1733,7 @@ func (in *ClusterNodeConfig) DeepCopyInto(out *ClusterNodeConfig) {
 	}
 	if in.LocalSsdCount != nil {
 		in, out := &in.LocalSsdCount, &out.LocalSsdCount
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.LoggingVariant != nil {
@@ -2369,7 +2369,7 @@ func (in *ClusterStandardRolloutPolicy) DeepCopyInto(out *ClusterStandardRollout
 	*out = *in
 	if in.BatchNodeCount != nil {
 		in, out := &in.BatchNodeCount, &out.BatchNodeCount
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.BatchPercentage != nil {
@@ -2447,12 +2447,12 @@ func (in *ClusterUpgradeSettings) DeepCopyInto(out *ClusterUpgradeSettings) {
 	}
 	if in.MaxSurge != nil {
 		in, out := &in.MaxSurge, &out.MaxSurge
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MaxUnavailable != nil {
 		in, out := &in.MaxUnavailable, &out.MaxUnavailable
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Strategy != nil {
@@ -2794,7 +2794,7 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 	}
 	if in.InitialNodeCount != nil {
 		in, out := &in.InitialNodeCount, &out.InitialNodeCount
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.IpAllocationPolicy != nil {
@@ -2975,6 +2975,11 @@ func (in *ContainerClusterStatus) DeepCopyInto(out *ContainerClusterStatus) {
 	}
 	if in.Endpoint != nil {
 		in, out := &in.Endpoint, &out.Endpoint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
 		*out = new(string)
 		**out = **in
 	}
