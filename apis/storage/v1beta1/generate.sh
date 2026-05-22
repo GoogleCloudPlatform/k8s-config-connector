@@ -25,7 +25,6 @@ go run . generate-types \
   --service google.storage.v1 \
   --api-version storage.cnrm.cloud.google.com/v1beta1 \
   --resource StorageBucket:Bucket \
-  --skip-scaffold-files \
   --include-skipped-output
 
 go run . generate-mapper \
