@@ -1,7 +1,7 @@
 ---
 name: Direct IAM Implementation
 description: Identifies direct controllers missing IAMAdapter implementation or fixture tests and creates tasks as GitHub Issues.
-schedule: "@never"
+schedule: "never"
 skipPR: true
 ---
 
