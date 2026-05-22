@@ -434,7 +434,7 @@ func ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out.ServiceName = in.ServiceName
 	// MISSING: SourceIPRanges
 	// MISSING: Subnetwork
-	// MISSING: Target
+	out.Target = in.Target
 	return out
 }
 */
@@ -484,7 +484,7 @@ func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out.ServiceName = in.ServiceName
 	// MISSING: SourceIPRanges
 	// MISSING: Subnetwork
-	// MISSING: Target
+	out.Target = in.Target
 	return out
 }
 */
