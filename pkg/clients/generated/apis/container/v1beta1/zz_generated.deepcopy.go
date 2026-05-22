@@ -2978,11 +2978,6 @@ func (in *ContainerClusterStatus) DeepCopyInto(out *ContainerClusterStatus) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ExternalRef != nil {
-		in, out := &in.ExternalRef, &out.ExternalRef
-		*out = new(string)
-		**out = **in
-	}
 	if in.LabelFingerprint != nil {
 		in, out := &in.LabelFingerprint, &out.LabelFingerprint
 		*out = new(string)
