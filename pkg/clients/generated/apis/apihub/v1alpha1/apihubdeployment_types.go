@@ -131,7 +131,7 @@ type DeploymentValues struct {
 	Immutable *bool `json:"immutable,omitempty"`
 }
 
-type ApiHubDeploymentSpec struct {
+type APIHubDeploymentSpec struct {
 	/* Required. The type of deployment. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-deployment-type` attribute. The number of values for this attribute will be based on the cardinality of the attribute. The same can be retrieved via GetAttribute API. All values should be from the list of allowed values defined for the attribute. */
 	DeploymentType DeploymentDeploymentType `json:"deploymentType"`
 
@@ -159,7 +159,7 @@ type ApiHubDeploymentSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The ApiHubDeployment name. If not given, the metadata.name will be used. */
+	/* The APIHubDeployment name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -185,11 +185,11 @@ type DeploymentObservedStateStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type ApiHubDeploymentStatus struct {
+type APIHubDeploymentStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ApiHubDeployment's current state. */
+	   APIHubDeployment's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the ApiHubDeployment resource in GCP. */
+	/* A unique specifier for the APIHubDeployment resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -213,25 +213,25 @@ type ApiHubDeploymentStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// ApiHubDeployment is the Schema for the apihub API
+// APIHubDeployment is the Schema for the apihub API
 // +k8s:openapi-gen=true
-type ApiHubDeployment struct {
+type APIHubDeployment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ApiHubDeploymentSpec   `json:"spec,omitempty"`
-	Status ApiHubDeploymentStatus `json:"status,omitempty"`
+	Spec   APIHubDeploymentSpec   `json:"spec,omitempty"`
+	Status APIHubDeploymentStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// ApiHubDeploymentList contains a list of ApiHubDeployment
-type ApiHubDeploymentList struct {
+// APIHubDeploymentList contains a list of APIHubDeployment
+type APIHubDeploymentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ApiHubDeployment `json:"items"`
+	Items           []APIHubDeployment `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&ApiHubDeployment{}, &ApiHubDeploymentList{})
+	SchemeBuilder.Register(&APIHubDeployment{}, &APIHubDeploymentList{})
 }

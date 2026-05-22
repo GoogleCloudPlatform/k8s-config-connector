@@ -42,7 +42,7 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.ApiHubDeploymentGVK, NewModel)
+	registry.RegisterModel(krm.APIHubDeploymentGVK, NewModel)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -63,7 +63,7 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	}
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building ApiHubDeployment client: %w", err)
+		return nil, fmt.Errorf("building APIHubDeployment client: %w", err)
 	}
 	return gcpClient, err
 }
@@ -71,7 +71,7 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
-	obj := &krm.ApiHubDeployment{}
+	obj := &krm.APIHubDeployment{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -80,7 +80,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err != nil {
 		return nil, err
 	}
-	id := idBase.(*krm.ApiHubDeploymentIdentity)
+	id := idBase.(*krm.APIHubDeploymentIdentity)
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -98,9 +98,9 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *krm.ApiHubDeploymentIdentity
+	id        *krm.APIHubDeploymentIdentity
 	gcpClient *gcp.Client
-	desired   *krm.ApiHubDeployment
+	desired   *krm.APIHubDeployment
 	actual    *pb.Deployment
 }
 
@@ -108,7 +108,7 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting ApiHubDeployment", "name", a.id.String())
+	log.V(2).Info("getting APIHubDeployment", "name", a.id.String())
 
 	req := &pb.GetDeploymentRequest{Name: a.id.String()}
 	pbObj, err := a.gcpClient.GetDeployment(ctx, req)
@@ -116,7 +116,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting ApiHubDeployment %q: %w", a.id.String(), err)
+		return false, fmt.Errorf("getting APIHubDeployment %q: %w", a.id.String(), err)
 	}
 
 	a.actual = pbObj
@@ -125,11 +125,11 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating ApiHubDeployment")
+	log.V(2).Info("creating APIHubDeployment")
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := apihub.ApiHubDeploymentSpec_ToProto(mapCtx, &desired.Spec)
+	resource := apihub.APIHubDeploymentSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -145,12 +145,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	created, err := a.gcpClient.CreateDeployment(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating ApiHubDeployment %s: %w", a.id.String(), err)
+		return fmt.Errorf("creating APIHubDeployment %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created ApiHubDeployment", "name", a.id.String())
+	log.V(2).Info("successfully created APIHubDeployment", "name", a.id.String())
 
-	status := &krm.ApiHubDeploymentStatus{}
-	status.ObservedState = apihub.ApiHubDeploymentObservedState_FromProto(mapCtx, created)
+	status := &krm.APIHubDeploymentStatus{}
+	status.ObservedState = apihub.APIHubDeploymentObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -161,10 +161,10 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating ApiHubDeployment", "name", a.id.String())
+	log.V(2).Info("updating APIHubDeployment", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	resource := apihub.ApiHubDeploymentSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	resource := apihub.APIHubDeploymentSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -191,11 +191,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	updated, err := a.gcpClient.UpdateDeployment(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating ApiHubDeployment %s: %w", a.id.String(), err)
+		return fmt.Errorf("updating APIHubDeployment %s: %w", a.id.String(), err)
 	}
 
-	status := &krm.ApiHubDeploymentStatus{}
-	status.ObservedState = apihub.ApiHubDeploymentObservedState_FromProto(mapCtx, updated)
+	status := &krm.APIHubDeploymentStatus{}
+	status.ObservedState = apihub.APIHubDeploymentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -210,14 +210,14 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.ApiHubDeployment{}
+	obj := &krm.APIHubDeployment{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(apihub.ApiHubDeploymentSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(apihub.APIHubDeploymentSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.Location = a.id.Location
+	obj.Spec.Location = &a.id.Location
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: fmt.Sprintf("projects/%s", a.id.Project)}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
@@ -230,7 +230,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting ApiHubDeployment", "name", a.id.String())
+	log.V(2).Info("deleting APIHubDeployment", "name", a.id.String())
 
 	req := &pb.DeleteDeploymentRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteDeployment(ctx, req)
@@ -238,7 +238,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 		if direct.IsNotFound(err) {
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting ApiHubDeployment %s: %w", a.id.String(), err)
+		return false, fmt.Errorf("deleting APIHubDeployment %s: %w", a.id.String(), err)
 	}
 	return true, nil
 }
