@@ -27,7 +27,7 @@
 | apigee.cnrm.cloud.google.com                  | ApigeeNATAddress                                | True         | False       | False  | Terraform  | False       |
 | apigee.cnrm.cloud.google.com                  | ApigeeOrganization                              | False        | True        | False  | DCL        | True        |
 | apigee.cnrm.cloud.google.com                  | ApigeeSyncAuthorization                         | True         | False       | False  | Terraform  | False       |
-| apihub.cnrm.cloud.google.com                  | ApiHubDeployment                                | True         | False       | False  | Direct     | True        |
+| apihub.cnrm.cloud.google.com                  | APIHubDeployment                                | True         | False       | False  | Direct     | True        |
 | apikeys.cnrm.cloud.google.com                 | APIKeysKey                                      | True         | False       | False  | Terraform  | True        |
 | cloudquota.cnrm.cloud.google.com              | APIQuotaAdjusterSettings                        | True         | True        | False  | Direct     | True        |
 | cloudquota.cnrm.cloud.google.com              | APIQuotaPreference                              | False        | True        | False  | Direct     | True        |
