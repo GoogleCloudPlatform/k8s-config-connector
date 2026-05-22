@@ -29,6 +29,7 @@ require (
 	cloud.google.com/go/cloudtasks v1.13.7
 	cloud.google.com/go/compute v1.54.0
 	cloud.google.com/go/configdelivery v0.1.1
+	cloud.google.com/go/container v1.52.0
 	cloud.google.com/go/datacatalog v1.26.1
 	cloud.google.com/go/dataflow v0.11.1
 	cloud.google.com/go/dataform v0.13.0
