@@ -62,17 +62,6 @@ spec:
             type: object
           spec:
             description: ProjectSpec defines the desired state of Project
-            oneOf:
-            - required:
-              - folderRef
-            - required:
-              - organizationRef
-            - not:
-                anyOf:
-                - required:
-                  - folderRef
-                - required:
-                  - organizationRef
             properties:
               billingAccountRef:
                 description: The billing account of the project.
