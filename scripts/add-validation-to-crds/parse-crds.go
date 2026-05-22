@@ -328,6 +328,18 @@ oneOf:
   - required: [serviceAccountRef]
   - required: [user]
 `
+		} else if signature == "billingAccountRef,folderRef,name,organizationRef,resourceID" && kind == "Project" {
+			// Project allows either folderRef or organizationRef (or neither).
+			// This oneOf is necessary for backwards compatibility with the existing CRD.
+			ruleYAML = `
+oneOf:
+- required: [folderRef]
+- required: [organizationRef]
+- not:
+    anyOf:
+    - required: [folderRef]
+    - required: [organizationRef]
+`
 		} else if signature == "external,kind,name,namespace" {
 			ruleYAML = refRuleWithKind
 			// kind is optional for projectRef (and maybe in future other well-known ref types)

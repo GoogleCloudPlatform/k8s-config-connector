@@ -24,6 +24,7 @@ apigee.cnrm.cloud.google.com,ApigeeInstance,True,True,False,Direct,True
 apigee.cnrm.cloud.google.com,ApigeeNATAddress,True,False,False,Terraform,False
 apigee.cnrm.cloud.google.com,ApigeeOrganization,False,True,False,DCL,True
 apigee.cnrm.cloud.google.com,ApigeeSyncAuthorization,True,False,False,Terraform,False
+apihub.cnrm.cloud.google.com,ApiHubDeployment,True,False,False,Direct,True
 apikeys.cnrm.cloud.google.com,APIKeysKey,True,False,False,Terraform,True
 cloudquota.cnrm.cloud.google.com,APIQuotaAdjusterSettings,True,True,False,Direct,True
 cloudquota.cnrm.cloud.google.com,APIQuotaPreference,False,True,False,Direct,True
@@ -35,6 +36,7 @@ appengine.cnrm.cloud.google.com,AppEngineStandardAppVersion,True,False,False,Ter
 apphub.cnrm.cloud.google.com,AppHubApplication,True,True,False,Direct,True
 apphub.cnrm.cloud.google.com,AppHubDiscoveredService,True,False,False,Direct,True
 apphub.cnrm.cloud.google.com,AppHubDiscoveredWorkload,True,False,False,Direct,True
+apphub.cnrm.cloud.google.com,AppHubServiceProjectAttachment,True,False,False,Direct,True
 artifactregistry.cnrm.cloud.google.com,ArtifactRegistryRepository,False,True,False,Terraform,True
 asset.cnrm.cloud.google.com,AssetFeed,True,True,False,Direct,True
 asset.cnrm.cloud.google.com,AssetSavedQuery,True,True,False,Direct,True
@@ -384,7 +386,7 @@ privateca.cnrm.cloud.google.com,PrivateCACertificateAuthority,False,True,False,D
 privateca.cnrm.cloud.google.com,PrivateCACertificate,False,True,False,DCL,False
 privateca.cnrm.cloud.google.com,PrivateCACertificateTemplate,False,True,False,DCL,False
 privilegedaccessmanager.cnrm.cloud.google.com,PrivilegedAccessManagerEntitlement,True,True,False,Direct,True
-resourcemanager.cnrm.cloud.google.com,Project,False,True,False,Terraform,False
+resourcemanager.cnrm.cloud.google.com,Project,False,True,False,Terraform,True
 pubsublite.cnrm.cloud.google.com,PubSubLiteReservation,False,True,False,Terraform,False
 pubsublite.cnrm.cloud.google.com,PubSubLiteSubscription,True,False,False,Terraform,False
 pubsublite.cnrm.cloud.google.com,PubSubLiteTopic,True,False,False,Terraform,False
@@ -428,7 +430,7 @@ sql.cnrm.cloud.google.com,SQLSSLCert,False,True,False,Terraform,False
 sql.cnrm.cloud.google.com,SQLUser,False,True,False,Terraform,False
 storage.cnrm.cloud.google.com,StorageAnywhereCache,True,True,False,Direct,True
 storage.cnrm.cloud.google.com,StorageBucketAccessControl,False,True,False,Terraform,False
-storage.cnrm.cloud.google.com,StorageBucket,False,True,False,Terraform,False
+storage.cnrm.cloud.google.com,StorageBucket,False,True,False,Terraform,True
 storage.cnrm.cloud.google.com,StorageDefaultObjectAccessControl,False,True,False,Terraform,False
 storage.cnrm.cloud.google.com,StorageFolder,True,False,False,Direct,True
 storage.cnrm.cloud.google.com,StorageHMACKey,True,False,False,Terraform,False
@@ -447,6 +449,7 @@ vertexai.cnrm.cloud.google.com,VertexAIDataLabelingJob,True,False,False,Direct,T
 vertexai.cnrm.cloud.google.com,VertexAIDataset,True,True,False,Terraform,False
 vertexai.cnrm.cloud.google.com,VertexAIDeploymentResourcePool,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIEndpoint,True,True,False,Terraform,False
+vertexai.cnrm.cloud.google.com,VertexAIExampleStore,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIFeaturestoreEntityTypeFeature,True,False,False,Terraform,False
 vertexai.cnrm.cloud.google.com,VertexAIFeaturestoreEntityType,True,False,False,Terraform,False
 vertexai.cnrm.cloud.google.com,VertexAIFeaturestore,True,False,False,Direct,True

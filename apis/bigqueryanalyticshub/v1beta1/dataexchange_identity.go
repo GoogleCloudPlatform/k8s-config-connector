@@ -60,18 +60,6 @@ func (i *BigQueryAnalyticsHubDataExchangeIdentity) Host() string {
 	return BigQueryAnalyticsHubDataExchangeIdentityFormat.Host()
 }
 
-func ParseDataExchangeIdentity(external string) (*BigQueryAnalyticsHubDataExchangeIdentity, error) {
-	id := &BigQueryAnalyticsHubDataExchangeIdentity{}
-	if err := id.FromExternal(external); err != nil {
-		return nil, err
-	}
-	return id, nil
-}
-
-func (i *BigQueryAnalyticsHubDataExchangeIdentity) ID() string {
-	return i.DataExchange
-}
-
 func getIdentityFromBigQueryAnalyticsHubDataExchangeSpec(ctx context.Context, reader client.Reader, obj client.Object) (*BigQueryAnalyticsHubDataExchangeIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

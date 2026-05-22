@@ -2280,6 +2280,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - apihub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - apikeys.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3955,6 +3967,14 @@ rules:
   - watch
 - apiGroups:
   - apigee.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apihub.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
