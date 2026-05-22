@@ -14,7 +14,7 @@ Content-Type: application/json
   "roundTrip": false,
   "source": {
     "ipAddress": "10.0.0.1",
-    "networkType": "NETWORK_TYPE_UNSPECIFIED"
+    "networkType": "GCP_NETWORK"
   }
 }
 
@@ -144,7 +144,8 @@ X-Xss-Protection: 0
       "verifyTime": "2025-01-01T12:34:56.123456Z"
     },
     "source": {
-      "ipAddress": "10.0.0.1"
+      "ipAddress": "10.0.0.1",
+      "networkType": "GCP_NETWORK"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -243,7 +244,8 @@ X-Xss-Protection: 0
     "verifyTime": "2025-01-01T12:34:56.123456Z"
   },
   "source": {
-    "ipAddress": "10.0.0.1"
+    "ipAddress": "10.0.0.1",
+    "networkType": "GCP_NETWORK"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -335,7 +337,7 @@ Content-Type: application/json
   "roundTrip": false,
   "source": {
     "ipAddress": "10.0.0.1",
-    "networkType": "NETWORK_TYPE_UNSPECIFIED"
+    "networkType": "GCP_NETWORK"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -466,7 +468,8 @@ X-Xss-Protection: 0
       "verifyTime": "2025-01-01T12:34:56.123456Z"
     },
     "source": {
-      "ipAddress": "10.0.0.1"
+      "ipAddress": "10.0.0.1",
+      "networkType": "GCP_NETWORK"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -565,7 +568,8 @@ X-Xss-Protection: 0
     "verifyTime": "2025-01-01T12:34:56.123456Z"
   },
   "source": {
-    "ipAddress": "10.0.0.1"
+    "ipAddress": "10.0.0.1",
+    "networkType": "GCP_NETWORK"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
