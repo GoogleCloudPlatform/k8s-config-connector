@@ -27,7 +27,6 @@ var ProjectGVK = GroupVersion.WithKind("Project")
 
 // ProjectSpec defines the desired state of Project
 // +kcc:spec:proto=google.cloud.resourcemanager.v3.Project
-// +kubebuilder:validation:XValidation:rule="!(has(self.folderRef) && has(self.organizationRef))",message="Cannot specify both folderRef and organizationRef"
 type ProjectSpec struct {
 	/* The billing account of the project. */
 	BillingAccountRef *billingv1alpha1.BillingAccountRef `json:"billingAccountRef,omitempty"`
