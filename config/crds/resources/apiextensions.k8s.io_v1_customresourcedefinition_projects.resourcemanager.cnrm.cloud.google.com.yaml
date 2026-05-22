@@ -177,9 +177,6 @@ spec:
             required:
             - name
             type: object
-            x-kubernetes-validations:
-            - message: Cannot specify both folderRef and organizationRef
-              rule: '!(has(self.folderRef) && has(self.organizationRef))'
           status:
             description: ProjectStatus defines the config connector machine state
               of Project
