@@ -1,6 +1,6 @@
 ---
 name: Issue for Identity and Reference
-description: Identify resources that do not implement the identity and reference pattern and create minimal issues for them.
+description: Identify resources missing the identity and reference pattern and create minimal issues for them.
 schedule: "@daily"
 skipPR: true
 ---
@@ -24,52 +24,27 @@ limitations under the License.
 You are a software development assistant for the Kubernetes Config Connector project.
 You have access to the GitHub CLI (`gh`) and bash tools.
 
-# Filter Criteria
-Find resources that meet the following criteria:
-1. **Prioritization**: Priority is given to resources with no dependencies or those that are dependencies for many other unmigrated resources (Topological Order).
-2. **Absence of Task**: No GitHub issue (open or closed) should already exist for creating the identity/reference for this specific Group and Kind.
-
 # Task
+Identify resources that need to be migrated to the identity and reference pattern and create minimal tracking issues.
 
-Your goal is to identify resources that need to be migrated to the identity and reference pattern, and to create minimal issues to track this work.
+## 1. Identify Target Resources
+- Run `./hack/directmigration/find-missing-identity-reference.py --output candidates.txt`.
+- Run `./hack/directmigration/topological-sort.py candidates.txt` to get the implementation order.
+- Iterate through the sorted list, focusing only on the resources that were identified in `candidates.txt`.
 
-## 1. Throttle Check
-   - Count open issues labeled with `overseer` and `step/identity-reference`. If the count is 20 or more, STOP and log: "Throttle limit reached (20). Skipping issue generation."
-   - Check how many issues related to identity and reference have been opened today. To avoid overwhelming the team, **do not open more than 20 issues per day**. If the limit is reached, stop creating new issues.
+## 2. Constraints
+- **Limit:** Max 20 issues per day. Count open issues labeled with `overseer` and `step/identity-reference`. If the count is 20 or more, STOP.
+- **Avoid Duplicates:** Search `gh search issues` for the resource Kind in the title (open or closed) before creating.
 
-## 2. Identify Candidate
-   - Run `./hack/directmigration/find-missing-identity-reference.py --output candidates.txt`.
-   - Run `./hack/directmigration/topological-sort.py candidates.txt` to get the implementation order.
-   - Iterate through the sorted list, focusing only on the resources that were identified in `candidates.txt`.
+## 3. Create Issues
+For each identified resource, create a new issue:
 
-## 3. Verify and De-duplicate
-- For each prioritized candidate:
-    - Search existing open and closed issues using `gh search issues` to ensure an issue for this resource hasn't already been created. Search for the exact resource name in the title. The issue title could be one of "Create Identity and Reference files for <group> <Kind>" and "Move <Kind> to identity and refs pattern".
-        - If an **Open** issue exists: Skip to the next candidate.
-        - If a **Closed** issue exists: Check its close reason. If closed as `not planned`, skip to the next candidate. If closed as `completed` (and the file is missing), proceed to recreate the issue.
-    - Pick the first candidate that passes both checks.
-
-## 4. Create Minimal Issues
-For each identified resource, create a new issue using `gh`.
-
-### Issue Title
-`Move <ResourceKind> to identity and refs pattern`
-
-*(Replace `<ResourceKind>` with the actual Kind of the resource, e.g., `VertexAIDeploymentResourcePool`)*
-
-### Issue Labels
-Add the following labels to the created issue:
-- `overseer`
-- `area/direct`
-- `direct-migration`
-- `priority/medium`
-- `step/identity-reference`
-
-### Issue Body
-Use the following exact template for the issue body, replacing `<ResourceKind>` with the actual Kind of the resource, and apply the same labels to the PR as are on this issue:
+- **Title:** `Move <Kind> to identity and refs pattern`
+- **Labels:** `overseer`, `area/direct`, `direct-migration`, `priority/medium`, `step/identity-reference`
+- **Body:** Use the following template, replacing `<Kind>` with the resource Kind:
 
 ------------ BEGIN ISSUE BODY TEMPLATE ------------
-Please follow the skill .gemini/skills/kcc-identity-reference/SKILL.md for <ResourceKind>
+Please follow the skill .gemini/skills/kcc-identity-reference/SKILL.md for <Kind>
 
 If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-identity-reference/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 ------------ END ISSUE BODY TEMPLATE ------------
