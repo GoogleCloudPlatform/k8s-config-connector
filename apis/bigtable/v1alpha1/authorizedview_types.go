@@ -24,7 +24,7 @@ var BigtableAuthorizedViewGVK = GroupVersion.WithKind("BigtableAuthorizedView")
 
 type BigtableAuthorizedViewParent struct {
 	// +required
-	TableRef bigtablev1beta1.TableRef `json:"tableRef"`
+	TableRef bigtablev1beta1.BigtableTableRef `json:"tableRef"`
 }
 
 // BigtableAuthorizedViewSpec defines the desired state of BigtableAuthorizedView

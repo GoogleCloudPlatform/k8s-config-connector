@@ -85,7 +85,7 @@ spec:
                     type: array
                 type: object
               tableRef:
-                description: TableRef defines the resource reference to BigtableTable,
+                description: BigtableTableRef defines the resource reference to BigtableTable,
                   which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
@@ -104,13 +104,13 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed BigtableTable
-                      resource.
+                      resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/tables/{{tableID}}".
                     type: string
                   name:
-                    description: The name of a BigtableInstance resource.
+                    description: The name of a BigtableTable resource.
                     type: string
                   namespace:
-                    description: The namespace of a BigtableInstance resource.
+                    description: The namespace of a BigtableTable resource.
                     type: string
                 type: object
             required:

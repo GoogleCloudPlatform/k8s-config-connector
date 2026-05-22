@@ -39,7 +39,7 @@ type BigtableBackupSpec struct {
 	//  This needs to be in the same instance as the backup. Values are of the form
 	//  `projects/{project}/instances/{instance}/tables/{source_table}`.
 	// +kcc:proto:field=google.bigtable.admin.v2.Backup.source_table
-	SourceTableRef *bigtablev1beta1.TableRef `json:"sourceTableRef,omitempty"`
+	SourceTableRef *bigtablev1beta1.BigtableTableRef `json:"sourceTableRef,omitempty"`
 
 	// Required. The expiration time of the backup.
 	//  When creating a backup or updating its `expire_time`, the value must be

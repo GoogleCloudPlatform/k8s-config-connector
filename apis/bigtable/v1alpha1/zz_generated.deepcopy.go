@@ -55,8 +55,8 @@ func (in *AuthorizedViewIdentity) DeepCopyInto(out *AuthorizedViewIdentity) {
 	*out = *in
 	if in.parent != nil {
 		in, out := &in.parent, &out.parent
-		*out = new(v1beta1.TableIdentity)
-		(*in).DeepCopyInto(*out)
+		*out = new(v1beta1.BigtableTableIdentity)
+		**out = **in
 	}
 }
 
@@ -520,7 +520,7 @@ func (in *BigtableBackupSpec) DeepCopyInto(out *BigtableBackupSpec) {
 	}
 	if in.SourceTableRef != nil {
 		in, out := &in.SourceTableRef, &out.SourceTableRef
-		*out = new(v1beta1.TableRef)
+		*out = new(v1beta1.BigtableTableRef)
 		**out = **in
 	}
 	if in.ExpireTime != nil {
