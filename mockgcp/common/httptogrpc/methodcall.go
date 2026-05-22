@@ -55,6 +55,13 @@ func (c *httpMethodCall) SendErrorResponse(err error) {
 		case codes.NotFound:
 			httpErrorResponse.Error.Code = http.StatusNotFound
 			httpErrorResponse.Error.Status = "NOT_FOUND"
+			httpErrorResponse.Error.Errors = []*gcpError{
+				{
+					Domain:  "global",
+					Message: response.Message,
+					Reason:  "notFound",
+				},
+			}
 		}
 
 		body, err := json.Marshal(httpErrorResponse)
