@@ -439,91 +439,55 @@ func ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
-
-	func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
-		if in == nil {
-			return nil
-		}
-		out := &pb.ForwardingRule{}
-		// MISSING: IPAddress
-		// MISSING: IPProtocol
-		// MISSING: AllPorts
-		// MISSING: AllowGlobalAccess
-		// MISSING: AllowPSCGlobalAccess
-		// MISSING: BackendService
-		out.BaseForwardingRule = in.BaseForwardingRule
-		out.CreationTimestamp = in.CreationTimestamp
-		// MISSING: Description
-		// MISSING: ExternalManagedBackendBucketMigrationState
-		// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
-		// MISSING: Fingerprint
-		// MISSING: ID
-		// MISSING: IPCollection
-		// MISSING: IPVersion
-		// MISSING: IsMirroringCollector
-		// MISSING: Kind
-		out.LabelFingerprint = in.LabelFingerprint
-		// MISSING: Labels
-		// MISSING: LoadBalancingScheme
-		// MISSING: MetadataFilters
-		// MISSING: Name
-		// MISSING: Network
-		// MISSING: NetworkTier
-		// MISSING: NoAutomateDNSZone
-		// MISSING: PortRange
-		// MISSING: Ports
-		// MISSING: PSCConnectionID
-		// (near miss): "PSCConnectionID" vs "PscConnectionId"
-		// MISSING: PSCConnectionStatus
-		// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
-		// MISSING: Region
-		out.SelfLink = in.SelfLink
-		// MISSING: SelfLinkWithID
-		// MISSING: ServiceDirectoryRegistrations
-		// MISSING: ServiceLabel
-		out.ServiceName = in.ServiceName
-		// MISSING: SourceIPRanges
-		// MISSING: Subnetwork
-		out.Target = in.Target
-		return out
+/* found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
+func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
+	if in == nil {
+		return nil
 	}
+	out := &pb.ForwardingRule{}
+	// MISSING: IPAddress
+	// MISSING: IPProtocol
+	// MISSING: AllPorts
+	// MISSING: AllowGlobalAccess
+	// MISSING: AllowPSCGlobalAccess
+	// MISSING: BackendService
+	out.BaseForwardingRule = in.BaseForwardingRule
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ExternalManagedBackendBucketMigrationState
+	// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCollection
+	// MISSING: IPVersion
+	// MISSING: IsMirroringCollector
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LoadBalancingScheme
+	// MISSING: MetadataFilters
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkTier
+	// MISSING: NoAutomateDNSZone
+	// MISSING: PortRange
+	// MISSING: Ports
+	// MISSING: PSCConnectionID
+	// (near miss): "PSCConnectionID" vs "PscConnectionId"
+	// MISSING: PSCConnectionStatus
+	// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: ServiceDirectoryRegistrations
+	// MISSING: ServiceLabel
+	out.ServiceName = in.ServiceName
+	// MISSING: SourceIPRanges
+	// MISSING: Subnetwork
+	out.Target = in.Target
+	return out
+}
 */
-func ComputeHealthCheckObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHealthCheckObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeHealthCheckObservedState{}
-	// MISSING: CreationTimestamp
-	// MISSING: GrpcHealthCheck
-	// MISSING: Http2HealthCheck
-	// MISSING: ID
-	// MISSING: Kind
-	// MISSING: Name
-	// MISSING: Region
-	out.SelfLink = in.SelfLink
-	// MISSING: SourceRegions
-	out.Type = in.Type
-	return out
-}
-func ComputeHealthCheckObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHealthCheckObservedState) *pb.HealthCheck {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HealthCheck{}
-	// MISSING: CreationTimestamp
-	// MISSING: GrpcHealthCheck
-	// MISSING: Http2HealthCheck
-	// MISSING: ID
-	// MISSING: Kind
-	// MISSING: Name
-	// MISSING: Region
-	out.SelfLink = in.SelfLink
-	// MISSING: SourceRegions
-	out.Type = in.Type
-	return out
-}
 
 /* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHealthCheckSpec {
@@ -546,10 +510,12 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.LogConfig = HealthCheckLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
 	// MISSING: Name
 	// MISSING: Region
+	// MISSING: SelfLink
 	// MISSING: SourceRegions
 	out.SSLHealthCheck = HealthCheckSSLHealthCheck_v1beta1_FromProto(mapCtx, in.GetSslHealthCheck())
 	out.TCPHealthCheck = HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx, in.GetTcpHealthCheck())
 	out.TimeoutSec = in.TimeoutSec
+	// MISSING: Type
 	out.UnhealthyThreshold = in.UnhealthyThreshold
 	return out
 }
@@ -576,10 +542,12 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.LogConfig = HealthCheckLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
 	// MISSING: Name
 	// MISSING: Region
+	// MISSING: SelfLink
 	// MISSING: SourceRegions
 	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
 	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
 	out.TimeoutSec = in.TimeoutSec
+	// MISSING: Type
 	out.UnhealthyThreshold = in.UnhealthyThreshold
 	return out
 }
