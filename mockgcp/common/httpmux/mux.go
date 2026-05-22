@@ -103,7 +103,6 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 	mux := runtime.NewServeMux(
 		runtime.WithUnescapingMode(opt.UnescapingMode),
 		runtime.WithErrorHandler(m.customErrorHandler),
-		runtime.WithRoutingErrorHandler(m.customRoutingErrorHandler),
 		runtime.WithMarshalerOption("application/json;enum-encoding=int", marshalerWithEnumNumbers),
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler),
 		runtime.WithOutgoingHeaderMatcher(outgoingHeaderMatcher),

@@ -45,15 +45,8 @@ type httpErrorResponse struct {
 	Error *httpError `json:"error,omitempty"`
 }
 
-type gcpError struct {
-	Domain  string `json:"domain,omitempty"`
-	Message string `json:"message,omitempty"`
-	Reason  string `json:"reason,omitempty"`
-}
-
 type httpError struct {
-	Code    int         `json:"code,omitempty"`
-	Message string      `json:"message,omitempty"`
-	Status  string      `json:"status,omitempty"`
-	Errors  []*gcpError `json:"errors,omitempty"`
+	Code    int    `json:"code,omitempty"`
+	Message string `json:"message,omitempty"`
+	Status  string `json:"status,omitempty"`
 }
