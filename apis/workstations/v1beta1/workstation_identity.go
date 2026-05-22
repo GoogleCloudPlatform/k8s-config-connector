@@ -59,25 +59,29 @@ func NewWorkstationIdentity(ctx context.Context, reader client.Reader, obj *Work
 	if configRef == nil {
 		return nil, fmt.Errorf("no parent config")
 	}
-	configExternal, err := configRef.NormalizedExternal(ctx, reader, obj.Namespace)
-	if err != nil {
+	if err := configRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 		return nil, fmt.Errorf("cannot resolve config: %w", err)
 	}
-	configParent, config, err := ParseWorkstationConfigExternal(configExternal)
-	if err != nil {
+	configExternal := configRef.External
+	configIdentity := &WorkstationConfigIdentity{}
+	if err := configIdentity.FromExternal(configExternal); err != nil {
 		return nil, fmt.Errorf("cannot parse external config: %w", err)
 	}
-	projectID := configParent.ProjectID
+	projectID := configIdentity.Project
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := configParent.Location
+	location := configIdentity.Location
 	if location == "" {
 		return nil, fmt.Errorf("cannot resolve location")
 	}
-	cluster := configParent.Cluster
+	cluster := configIdentity.WorkstationCluster
 	if cluster == "" {
 		return nil, fmt.Errorf("cannot resolve cluster")
+	}
+	config := configIdentity.WorkstationConfig
+	if config == "" {
+		return nil, fmt.Errorf("cannot resolve config")
 	}
 
 	// Get desired ID
