@@ -256,6 +256,10 @@ type ComputeHealthCheckSpec struct {
 }
 
 type HealthcheckObservedStateStatus struct {
+	/* Server-defined URL for the resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */
 	// +optional
 	Type *string `json:"type,omitempty"`
