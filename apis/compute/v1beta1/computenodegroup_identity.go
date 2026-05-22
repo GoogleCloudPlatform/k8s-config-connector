@@ -18,44 +18,18 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
 	_ identity.IdentityV2 = &ComputeNodeGroupIdentity{}
-	_ identity.Resource   = &ComputeNodeGroup{}
 )
 
 var ComputeNodeGroupIdentityFormat = gcpurls.Template[ComputeNodeGroupIdentity]("compute.googleapis.com", "projects/{project}/zones/{zone}/nodeGroups/{nodeGroup}")
-
-// +genclient
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-type ComputeNodeGroup struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec   ComputeNodeGroupSpec   `json:"spec,omitempty"`
-	Status ComputeNodeGroupStatus `json:"status,omitempty"`
-}
-
-type ComputeNodeGroupSpec struct {
-	Zone string `json:"zone"`
-
-	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type ComputeNodeGroupStatus struct {
-	ObservedGeneration *int64               `json:"observedGeneration,omitempty"`
-	ExternalRef        *string              `json:"externalRef,omitempty"`
-	Conditions         []v1alpha1.Condition `json:"conditions,omitempty"`
-}
 
 // +k8s:deepcopy-gen=false
 type ComputeNodeGroupIdentity struct {
@@ -115,45 +89,4 @@ func getIdentityFromComputeNodeGroupSpec(ctx context.Context, reader client.Read
 		NodeGroup: resourceID,
 	}
 	return identity, nil
-}
-
-func (obj *ComputeNodeGroup) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, err
-	}
-
-	zone := obj.Spec.Zone
-	if zone == "" {
-		return nil, fmt.Errorf("cannot resolve zone")
-	}
-
-	specIdentity := &ComputeNodeGroupIdentity{
-		Project:   projectID,
-		Zone:      zone,
-		NodeGroup: resourceID,
-	}
-
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		statusIdentity := &ComputeNodeGroupIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change ComputeNodeGroup identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
-	}
-
-	return specIdentity, nil
 }
