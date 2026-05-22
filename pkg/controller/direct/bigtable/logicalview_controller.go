@@ -64,7 +64,6 @@ func (m *modelLogicalView) client(ctx context.Context, parentProject string) (*g
 	return gcpClient, err
 }
 
-
 func (m *modelLogicalView) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader

@@ -59,7 +59,6 @@ func (m *modelBigtableAppProfile) client(ctx context.Context, parentProject stri
 	return gcpClient, err
 }
 
-
 func (m *modelBigtableAppProfile) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
