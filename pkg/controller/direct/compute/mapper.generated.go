@@ -2663,6 +2663,30 @@ func ShareSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1a
 }
 */
 
+/* found existing non-generated mapping function "ShareSettings_v1beta1_FromProto", skipping
+func ShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krm.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShareSettings{}
+	// TODO: map type string message for field ProjectMap
+	out.ShareType = in.ShareType
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ShareSettings_v1beta1_ToProto", skipping
+func ShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSettings) *pb.ShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettings{}
+	// TODO: map type string message for field ProjectMap
+	out.ShareType = in.ShareType
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ShareSettingsObservedState_v1alpha1_FromProto", skipping
 func ShareSettingsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krmcomputev1alpha1.ShareSettingsObservedState {
 	if in == nil {
@@ -2700,10 +2724,36 @@ func ShareSettingsProjectConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/*
-found existing non-generated mapping function "ShareSettingsProjectConfig_v1alpha1_ToProto", skipping
+/* found existing non-generated mapping function "ShareSettingsProjectConfig_v1alpha1_ToProto", skipping
+func ShareSettingsProjectConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettingsProjectConfig) *pb.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShareSettingsProjectConfig{}
+	if in.ProjectIDRef != nil {
+		out.ProjectId = &in.ProjectIDRef.External
+	}
+	return out
+}
+*/
 
-	func ShareSettingsProjectConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ShareSettingsProjectConfig) *pb.ShareSettingsProjectConfig {
+/* found existing non-generated mapping function "ShareSettingsProjectConfig_v1beta1_FromProto", skipping
+func ShareSettingsProjectConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettingsProjectConfig) *krm.ShareSettingsProjectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShareSettingsProjectConfig{}
+	if in.GetProjectId() != "" {
+		out.ProjectIDRef = &refsv1beta1.ProjectRef{External: in.GetProjectId()}
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ShareSettingsProjectConfig_v1beta1_ToProto", skipping
+
+	func ShareSettingsProjectConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ShareSettingsProjectConfig) *pb.ShareSettingsProjectConfig {
 		if in == nil {
 			return nil
 		}

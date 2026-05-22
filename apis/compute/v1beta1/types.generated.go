@@ -1988,11 +1988,13 @@ type ServerBinding struct {
 }
 */
 
-/* unreachable type ShareSettings
+/* found existing non-generated go type "ShareSettings", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ShareSettings
 type ShareSettings struct {
 
 	// TODO: unsupported map type with key string and value message
+
 
 	// Type of sharing for this shared-reservation
 	//  Check the ShareType enum for the list of possible values.
@@ -2001,7 +2003,8 @@ type ShareSettings struct {
 }
 */
 
-/* unreachable type ShareSettingsProjectConfig
+/* found existing non-generated go type "ShareSettingsProjectConfig", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ShareSettingsProjectConfig
 type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
