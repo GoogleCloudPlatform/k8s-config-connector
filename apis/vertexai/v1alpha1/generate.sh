@@ -46,6 +46,10 @@ sed -i 's/\*Value/apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/t
 sed -i 's/\[\]Value/\[\]apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
 sed -i 's/\*ListValue/apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
 
+# Add XPreserveUnknownFields for apiextensionsv1.JSON fields
+sed -i 's/\([A-Za-z0-9_]* apiextensionsv1\.JSON\)/\/\/ +kubebuilder:validation:XPreserveUnknownFields\n\t\1/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
+sed -i 's/\([A-Za-z0-9_]* \[\]apiextensionsv1\.JSON\)/\/\/ +kubebuilder:validation:XPreserveUnknownFields\n\t\1/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
+
 # We leave generate-mapper for v1beta1 so that `generate.sh` stays functionally the same as before
 # (even though it's broken on HEAD, we won't fix the pre-existing issue here).
 # go run . generate-mapper \\

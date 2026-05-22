@@ -217,6 +217,7 @@ type FunctionCall struct {
 	// Optional. Required. The function parameters and values in JSON object
 	//  format. See [FunctionDeclaration.parameters] for parameter details.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionCall.args
+	// +kubebuilder:validation:XPreserveUnknownFields
 	Args apiextensionsv1.JSON `json:"args,omitempty"`
 }
 
@@ -262,6 +263,7 @@ type FunctionDeclaration struct {
 	//  required:
 	//   - param1
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.parameters
+	// +kubebuilder:validation:XPreserveUnknownFields
 	Parameters apiextensionsv1.JSON `json:"parameters,omitempty"`
 
 	// Optional. Describes the parameters to the function in JSON Schema format.
@@ -283,12 +285,14 @@ type FunctionDeclaration struct {
 	//
 	//  This field is mutually exclusive with `parameters`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.parameters_json_schema
+	// +kubebuilder:validation:XPreserveUnknownFields
 	ParametersJsonSchema apiextensionsv1.JSON `json:"parametersJsonSchema,omitempty"`
 
 	// Optional. Describes the output from this function in JSON Schema format.
 	//  Reflects the Open API 3.03 Response Object. The Schema defines the type
 	//  used for the response value of the function.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.response
+	// +kubebuilder:validation:XPreserveUnknownFields
 	Response apiextensionsv1.JSON `json:"response,omitempty"`
 
 	// Optional. Describes the output from this function in JSON Schema format.
@@ -296,6 +300,7 @@ type FunctionDeclaration struct {
 	//
 	//  This field is mutually exclusive with `response`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.response_json_schema
+	// +kubebuilder:validation:XPreserveUnknownFields
 	ResponseJsonSchema apiextensionsv1.JSON `json:"responseJsonSchema,omitempty"`
 }
 
@@ -311,6 +316,7 @@ type FunctionResponse struct {
 	//  error details (if any). If "output" and "error" keys are not specified,
 	//  then whole "response" is treated as function output.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionResponse.response
+	// +kubebuilder:validation:XPreserveUnknownFields
 	Response apiextensionsv1.JSON `json:"response,omitempty"`
 }
 
@@ -506,11 +512,13 @@ type Schema struct {
 
 	// Optional. Default value of the data.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.default
+	// +kubebuilder:validation:XPreserveUnknownFields
 	Default apiextensionsv1.JSON `json:"default,omitempty"`
 
 	// Optional. SCHEMA FIELDS FOR TYPE ARRAY
 	//  Schema of the elements of Type.ARRAY.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.items
+	// +kubebuilder:validation:XPreserveUnknownFields
 	Items apiextensionsv1.JSON `json:"items,omitempty"`
 
 	// Optional. Minimum number of the elements for Type.ARRAY.
@@ -576,6 +584,7 @@ type Schema struct {
 	// Optional. Example of the object. Will only populated when the object is the
 	//  root.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.example
+	// +kubebuilder:validation:XPreserveUnknownFields
 	Example apiextensionsv1.JSON `json:"example,omitempty"`
 
 	// Optional. The value should be validated against any (one or more) of the
@@ -586,6 +595,7 @@ type Schema struct {
 	// Optional. Can either be a boolean or an object; controls the presence of
 	//  additional properties.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.additional_properties
+	// +kubebuilder:validation:XPreserveUnknownFields
 	AdditionalProperties apiextensionsv1.JSON `json:"additionalProperties,omitempty"`
 
 	// Optional. Allows indirect references between schema nodes. The value should
@@ -852,6 +862,7 @@ type Any struct {
 type ListValue struct {
 	// Repeated field of dynamically typed values.
 	// +kcc:proto:field=google.protobuf.ListValue.values
+	// +kubebuilder:validation:XPreserveUnknownFields
 	Values []apiextensionsv1.JSON `json:"values,omitempty"`
 }
 
@@ -875,10 +886,12 @@ type Value struct {
 
 	// Represents a structured value.
 	// +kcc:proto:field=google.protobuf.Value.struct_value
+	// +kubebuilder:validation:XPreserveUnknownFields
 	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
 
 	// Represents a repeated `Value`.
 	// +kcc:proto:field=google.protobuf.Value.list_value
+	// +kubebuilder:validation:XPreserveUnknownFields
 	ListValue apiextensionsv1.JSON `json:"listValue,omitempty"`
 }
 

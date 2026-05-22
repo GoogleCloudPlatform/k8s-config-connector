@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type VertexAICachedContentExpansion interface{}
+
 type VertexAIDataLabelingJobExpansion interface{}
 
 type VertexAIDeploymentResourcePoolExpansion interface{}
