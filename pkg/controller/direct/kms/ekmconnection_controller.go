@@ -31,11 +31,11 @@ import (
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"k8s.io/utils/ptr"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 const (
@@ -241,7 +241,7 @@ func (a *EKMConnectionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	if len(tokens) > 0 {
 		obj.Spec.ResourceID = ptr.To(tokens[len(tokens)-1])
 	}
-	
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
