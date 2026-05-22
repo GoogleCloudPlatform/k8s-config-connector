@@ -40,10 +40,10 @@ type APIHubDeploymentsGetter interface {
 
 // APIHubDeploymentInterface has methods to work with APIHubDeployment resources.
 type APIHubDeploymentInterface interface {
-	Create(ctx context.Context, apiHubDeployment *apihubv1alpha1.APIHubDeployment, opts v1.CreateOptions) (*apihubv1alpha1.APIHubDeployment, error)
-	Update(ctx context.Context, apiHubDeployment *apihubv1alpha1.APIHubDeployment, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubDeployment, error)
+	Create(ctx context.Context, aPIHubDeployment *apihubv1alpha1.APIHubDeployment, opts v1.CreateOptions) (*apihubv1alpha1.APIHubDeployment, error)
+	Update(ctx context.Context, aPIHubDeployment *apihubv1alpha1.APIHubDeployment, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubDeployment, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, apiHubDeployment *apihubv1alpha1.APIHubDeployment, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubDeployment, error)
+	UpdateStatus(ctx context.Context, aPIHubDeployment *apihubv1alpha1.APIHubDeployment, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubDeployment, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
 	Get(ctx context.Context, name string, opts v1.GetOptions) (*apihubv1alpha1.APIHubDeployment, error)
@@ -53,14 +53,14 @@ type APIHubDeploymentInterface interface {
 	APIHubDeploymentExpansion
 }
 
-// apiHubDeployments implements APIHubDeploymentInterface
-type apiHubDeployments struct {
+// aPIHubDeployments implements APIHubDeploymentInterface
+type aPIHubDeployments struct {
 	*gentype.ClientWithList[*apihubv1alpha1.APIHubDeployment, *apihubv1alpha1.APIHubDeploymentList]
 }
 
 // newAPIHubDeployments returns a APIHubDeployments
-func newAPIHubDeployments(c *ApihubV1alpha1Client, namespace string) *apiHubDeployments {
-	return &apiHubDeployments{
+func newAPIHubDeployments(c *ApihubV1alpha1Client, namespace string) *aPIHubDeployments {
+	return &aPIHubDeployments{
 		gentype.NewClientWithList[*apihubv1alpha1.APIHubDeployment, *apihubv1alpha1.APIHubDeploymentList](
 			"apihubdeployments",
 			c.RESTClient(),
