@@ -44,26 +44,26 @@ type ClienttlspolicyCertificateProviderInstance struct {
 }
 
 type ClienttlspolicyClientCertificate struct {
-	/* The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information. */
+	/* Optional. The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information. */
 	// +optional
 	CertificateProviderInstance *ClienttlspolicyCertificateProviderInstance `json:"certificateProviderInstance,omitempty"`
 
-	/* gRPC specific configuration to access the gRPC server to obtain the cert and private key. */
+	/* Optional. gRPC specific configuration to access the gRPC server to obtain the cert and private key. */
 	// +optional
 	GrpcEndpoint *ClienttlspolicyGrpcEndpoint `json:"grpcEndpoint,omitempty"`
 }
 
 type ClienttlspolicyGrpcEndpoint struct {
-	/* Required. The target URI of the gRPC endpoint. Only UDS path is supported, and should start with “unix:”. */
+	/* Required. The target URI of the gRPC endpoint. Only UDS path is supported, and should start with "unix:". */
 	TargetUri string `json:"targetUri"`
 }
 
 type ClienttlspolicyServerValidationCa struct {
-	/* The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information. */
+	/* Optional. The certificate provider instance specification that will be passed to the data plane, which will be used to load necessary credential information. */
 	// +optional
 	CertificateProviderInstance *ClienttlspolicyCertificateProviderInstance `json:"certificateProviderInstance,omitempty"`
 
-	/* gRPC specific configuration to access the gRPC server to obtain the CA certificate. */
+	/* Optional. gRPC specific configuration to access the gRPC server to obtain the CA certificate. */
 	// +optional
 	GrpcEndpoint *ClienttlspolicyGrpcEndpoint `json:"grpcEndpoint,omitempty"`
 }
@@ -77,18 +77,17 @@ type NetworkSecurityClientTLSPolicySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. The location for the resource */
+	/* The location of this resource. */
 	Location string `json:"location"`
 
-	/* Immutable. The Project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The NetworkSecurityClientTLSPolicy name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. Defines the mechanism to obtain the Certificate Authority certificate to validate the server certificate. */
+	/* Optional. Defines the mechanism to obtain the Certificate Authority certificate to validate the server certificate. If empty, client does not validate the server certificate. */
 	// +optional
 	ServerValidationCa []ClienttlspolicyServerValidationCa `json:"serverValidationCa,omitempty"`
 
