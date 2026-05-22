@@ -81,7 +81,8 @@ type NetworkSecurityClientTLSPolicySpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The NetworkSecurityClientTLSPolicy name. If not given, the metadata.name will be used. */
 	// +optional

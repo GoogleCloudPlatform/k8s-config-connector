@@ -431,7 +431,11 @@ func (in *NetworkSecurityClientTLSPolicySpec) DeepCopyInto(out *NetworkSecurityC
 		*out = new(string)
 		**out = **in
 	}
-	out.ProjectRef = in.ProjectRef
+	if in.ProjectRef != nil {
+		in, out := &in.ProjectRef, &out.ProjectRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
