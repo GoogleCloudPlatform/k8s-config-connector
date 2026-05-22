@@ -107,6 +107,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tpu"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/datalabelingjob"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/examplestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmwareengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflowexecutions"

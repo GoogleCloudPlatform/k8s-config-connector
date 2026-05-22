@@ -1,0 +1,52 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIDataLabelingJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: vertexaidatalabelingjob-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  activeLearningConfig:
+    maxDataItemCount: 100
+    maxDataItemPercentage: 50
+    sampleConfig:
+      followingBatchSamplePercentage: 5
+      initialBatchSamplePercentage: 10
+      sampleStrategy: UNCERTAINTY
+    trainingConfig:
+      timeoutTrainingMilliHours: 1000
+  annotationLabels:
+    foo: bar
+  datasetRefs:
+  - name: vertexaidataset-${uniqueId}
+  displayName: maximal-datalabelingjob-${uniqueId}
+  inputs:
+    annotationSpecColorMap:
+      color: '#ff0000'
+      displayName: red
+  inputsSchemaURI: gs://google-cloud-aiplatform/schema/datalabelingjob/inputs/image_classification_1.0.0.yaml
+  instructionURI: gs://my-bucket/instructions.pdf
+  labelerCount: 1
+  labels:
+    baz: qux
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    name: projects/${projectNumber}/locations/us-central1/dataLabelingJobs/${dataLabelingJobID}
+    state: JOB_STATE_SUCCEEDED
+    updateTime: "1970-01-01T00:00:00Z"

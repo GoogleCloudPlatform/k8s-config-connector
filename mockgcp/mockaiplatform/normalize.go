@@ -15,7 +15,10 @@
 package mockaiplatform
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"github.com/google/uuid"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
@@ -24,4 +27,17 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	visitor := func(path string, value string) {
+		if strings.Contains(value, "/dataLabelingJobs/") {
+			tokens := strings.Split(value, "/")
+			if len(tokens) == 6 && tokens[4] == "dataLabelingJobs" {
+				// Only replace actual server-generated UUIDs, not user-specified GVK names
+				if _, err := uuid.Parse(tokens[5]); err == nil {
+					replacements.ReplaceStringValue(tokens[5], "${dataLabelingJobID}")
+				}
+			}
+		}
+	}
+	event.VisitRequestStringValues(visitor)
+	event.VisitResponseStringValues(visitor)
 }

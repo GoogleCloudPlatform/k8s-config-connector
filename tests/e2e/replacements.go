@@ -106,6 +106,8 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${tensorboardID}"
 	case "datasets":
 		return "${datasetID}"
+	case "dataLabelingJobs":
+		return "${dataLabelingJobID}"
 	case "networks":
 		return "${networkID}"
 	case "subnetworks":
