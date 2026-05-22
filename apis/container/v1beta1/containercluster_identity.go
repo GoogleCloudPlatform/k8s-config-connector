@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -44,6 +45,9 @@ func (i *ContainerClusterIdentity) String() string {
 }
 
 func (i *ContainerClusterIdentity) FromExternal(ref string) error {
+	if idx := strings.Index(ref, "projects/"); idx != -1 {
+		ref = ref[idx:]
+	}
 	if parsed, match, _ := RegionalContainerClusterIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
@@ -87,6 +91,21 @@ func (obj *ContainerCluster) GetIdentity(ctx context.Context, reader client.Read
 	specIdentity, err := getIdentityFromContainerClusterSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	// NOTE: ContainerCluster does not yet support status.externalRef, but we parse `selfLink` instead
+	if obj.Status.SelfLink != nil && *obj.Status.SelfLink != "" {
+		selfLink := *obj.Status.SelfLink
+		// Validate desired with actual
+		statusIdentity := &ContainerClusterIdentity{}
+		if err := statusIdentity.FromExternal(selfLink); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ContainerCluster identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
 
 	return specIdentity, nil
