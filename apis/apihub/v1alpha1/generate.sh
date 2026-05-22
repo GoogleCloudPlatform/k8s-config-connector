@@ -25,7 +25,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.apihub.v1 \
   --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
-  --resource ApiHubDeployment:Deployment
+  --resource APIHubDeployment:Deployment \
+  --prune-unused-types=false
 
 go run . generate-mapper --service google.cloud.apihub.v1 --api-version apihub.cnrm.cloud.google.com/v1alpha1
 

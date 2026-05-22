@@ -17,7 +17,7 @@
 // krm.group: apihub.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.apihub.v1
-// resource: ApiHubDeployment:Deployment
+// resource: APIHubDeployment:Deployment
 
 package v1alpha1
 
@@ -90,7 +90,6 @@ type Documentation struct {
 	ExternalURI *string `json:"externalURI,omitempty"`
 }
 
-/* unreachable type AttributeValuesObservedState
 // +kcc:observedstate:proto=google.cloud.apihub.v1.AttributeValues
 type AttributeValuesObservedState struct {
 	// Output only. The name of the attribute.
@@ -98,4 +97,3 @@ type AttributeValuesObservedState struct {
 	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.attribute
 	Attribute *string `json:"attribute,omitempty"`
 }
-*/
