@@ -32,42 +32,42 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// ApiHubDeploymentsGetter has a method to return a ApiHubDeploymentInterface.
+// APIHubDeploymentsGetter has a method to return a APIHubDeploymentInterface.
 // A group's client should implement this interface.
-type ApiHubDeploymentsGetter interface {
-	ApiHubDeployments(namespace string) ApiHubDeploymentInterface
+type APIHubDeploymentsGetter interface {
+	APIHubDeployments(namespace string) APIHubDeploymentInterface
 }
 
-// ApiHubDeploymentInterface has methods to work with ApiHubDeployment resources.
-type ApiHubDeploymentInterface interface {
-	Create(ctx context.Context, apiHubDeployment *apihubv1alpha1.ApiHubDeployment, opts v1.CreateOptions) (*apihubv1alpha1.ApiHubDeployment, error)
-	Update(ctx context.Context, apiHubDeployment *apihubv1alpha1.ApiHubDeployment, opts v1.UpdateOptions) (*apihubv1alpha1.ApiHubDeployment, error)
+// APIHubDeploymentInterface has methods to work with APIHubDeployment resources.
+type APIHubDeploymentInterface interface {
+	Create(ctx context.Context, apiHubDeployment *apihubv1alpha1.APIHubDeployment, opts v1.CreateOptions) (*apihubv1alpha1.APIHubDeployment, error)
+	Update(ctx context.Context, apiHubDeployment *apihubv1alpha1.APIHubDeployment, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubDeployment, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, apiHubDeployment *apihubv1alpha1.ApiHubDeployment, opts v1.UpdateOptions) (*apihubv1alpha1.ApiHubDeployment, error)
+	UpdateStatus(ctx context.Context, apiHubDeployment *apihubv1alpha1.APIHubDeployment, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubDeployment, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*apihubv1alpha1.ApiHubDeployment, error)
-	List(ctx context.Context, opts v1.ListOptions) (*apihubv1alpha1.ApiHubDeploymentList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*apihubv1alpha1.APIHubDeployment, error)
+	List(ctx context.Context, opts v1.ListOptions) (*apihubv1alpha1.APIHubDeploymentList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apihubv1alpha1.ApiHubDeployment, err error)
-	ApiHubDeploymentExpansion
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apihubv1alpha1.APIHubDeployment, err error)
+	APIHubDeploymentExpansion
 }
 
-// apiHubDeployments implements ApiHubDeploymentInterface
+// apiHubDeployments implements APIHubDeploymentInterface
 type apiHubDeployments struct {
-	*gentype.ClientWithList[*apihubv1alpha1.ApiHubDeployment, *apihubv1alpha1.ApiHubDeploymentList]
+	*gentype.ClientWithList[*apihubv1alpha1.APIHubDeployment, *apihubv1alpha1.APIHubDeploymentList]
 }
 
-// newApiHubDeployments returns a ApiHubDeployments
-func newApiHubDeployments(c *ApihubV1alpha1Client, namespace string) *apiHubDeployments {
+// newAPIHubDeployments returns a APIHubDeployments
+func newAPIHubDeployments(c *ApihubV1alpha1Client, namespace string) *apiHubDeployments {
 	return &apiHubDeployments{
-		gentype.NewClientWithList[*apihubv1alpha1.ApiHubDeployment, *apihubv1alpha1.ApiHubDeploymentList](
+		gentype.NewClientWithList[*apihubv1alpha1.APIHubDeployment, *apihubv1alpha1.APIHubDeploymentList](
 			"apihubdeployments",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *apihubv1alpha1.ApiHubDeployment { return &apihubv1alpha1.ApiHubDeployment{} },
-			func() *apihubv1alpha1.ApiHubDeploymentList { return &apihubv1alpha1.ApiHubDeploymentList{} },
+			func() *apihubv1alpha1.APIHubDeployment { return &apihubv1alpha1.APIHubDeployment{} },
+			func() *apihubv1alpha1.APIHubDeploymentList { return &apihubv1alpha1.APIHubDeploymentList{} },
 		),
 	}
 }

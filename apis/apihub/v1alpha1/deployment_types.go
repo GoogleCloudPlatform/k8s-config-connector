@@ -20,18 +20,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var ApiHubDeploymentGVK = GroupVersion.WithKind("ApiHubDeployment")
+var APIHubDeploymentGVK = GroupVersion.WithKind("APIHubDeployment")
 
-// ApiHubDeploymentSpec defines the desired state of ApiHubDeployment
+// APIHubDeploymentSpec defines the desired state of APIHubDeployment
 // +kcc:spec:proto=google.cloud.apihub.v1.Deployment
-type ApiHubDeploymentSpec struct {
+type APIHubDeploymentSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
-	// The ApiHubDeployment name. If not given, the metadata.name will be used.
+	// The APIHubDeployment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The display name of the deployment.
@@ -55,7 +55,7 @@ type ApiHubDeploymentSpec struct {
 	//  API. All values should be from the list of allowed values defined for the
 	//  attribute.
 	// +kubebuilder:validation:Required
-	DeploymentType *AttributeValues `json:"deploymentType,omitempty"`
+	DeploymentTypeRef *APIHubAttributeValueRef `json:"deploymentTypeRef,omitempty"`
 
 	// Required. A URI to the runtime resource. This URI can be used to manage the
 	//  resource. For example, if the runtime resource is of type APIGEE_PROXY,
@@ -78,7 +78,7 @@ type ApiHubDeploymentSpec struct {
 	//  API. All values should be from the list of allowed values defined for the
 	//  attribute.
 	// +kubebuilder:validation:Optional
-	Slo *AttributeValues `json:"slo,omitempty"`
+	SloRef *APIHubAttributeValueRef `json:"sloRef,omitempty"`
 
 	// Optional. The environment mapping to this deployment.
 	//  This maps to the following system defined attribute:
@@ -89,11 +89,20 @@ type ApiHubDeploymentSpec struct {
 	//  API. All values should be from the list of allowed values defined for the
 	//  attribute.
 	// +kubebuilder:validation:Optional
-	Environment *AttributeValues `json:"environment,omitempty"`
+	EnvironmentRef *APIHubAttributeValueRef `json:"environmentRef,omitempty"`
 }
 
-// ApiHubDeploymentStatus defines the config connector machine state of ApiHubDeployment
-type ApiHubDeploymentStatus struct {
+type APIHubAttributeValueRef struct {
+	/* The `id` of an allowed value of an attribute, when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `APIHubAttribute` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `APIHubAttribute` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+// APIHubDeploymentStatus defines the config connector machine state of APIHubDeployment
+type APIHubDeploymentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -101,16 +110,16 @@ type ApiHubDeploymentStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ApiHubDeployment resource in GCP.
+	// A unique specifier for the APIHubDeployment resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ApiHubDeploymentObservedState `json:"observedState,omitempty"`
+	ObservedState *APIHubDeploymentObservedState `json:"observedState,omitempty"`
 }
 
-// ApiHubDeploymentObservedState is the state of the ApiHubDeployment resource as most recently observed in GCP.
+// APIHubDeploymentObservedState is the state of the APIHubDeployment resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.apihub.v1.Deployment
-type ApiHubDeploymentObservedState struct {
+type APIHubDeploymentObservedState struct {
 	// Output only. The API versions linked to this deployment.
 	//  Note: A particular deployment could be linked to multiple different API
 	//  versions (of same or different APIs).
@@ -134,25 +143,25 @@ type ApiHubDeploymentObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// ApiHubDeployment is the Schema for the ApiHubDeployment API
+// APIHubDeployment is the Schema for the APIHubDeployment API
 // +k8s:openapi-gen=true
-type ApiHubDeployment struct {
+type APIHubDeployment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   ApiHubDeploymentSpec   `json:"spec,omitempty"`
-	Status ApiHubDeploymentStatus `json:"status,omitempty"`
+	Spec   APIHubDeploymentSpec   `json:"spec,omitempty"`
+	Status APIHubDeploymentStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// ApiHubDeploymentList contains a list of ApiHubDeployment
-type ApiHubDeploymentList struct {
+// APIHubDeploymentList contains a list of APIHubDeployment
+type APIHubDeploymentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ApiHubDeployment `json:"items"`
+	Items           []APIHubDeployment `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&ApiHubDeployment{}, &ApiHubDeploymentList{})
+	SchemeBuilder.Register(&APIHubDeployment{}, &APIHubDeploymentList{})
 }

@@ -27,26 +27,26 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeApiHubDeployments implements ApiHubDeploymentInterface
-type fakeApiHubDeployments struct {
-	*gentype.FakeClientWithList[*v1alpha1.ApiHubDeployment, *v1alpha1.ApiHubDeploymentList]
+// fakeAPIHubDeployments implements APIHubDeploymentInterface
+type fakeAPIHubDeployments struct {
+	*gentype.FakeClientWithList[*v1alpha1.APIHubDeployment, *v1alpha1.APIHubDeploymentList]
 	Fake *FakeApihubV1alpha1
 }
 
-func newFakeApiHubDeployments(fake *FakeApihubV1alpha1, namespace string) apihubv1alpha1.ApiHubDeploymentInterface {
-	return &fakeApiHubDeployments{
-		gentype.NewFakeClientWithList[*v1alpha1.ApiHubDeployment, *v1alpha1.ApiHubDeploymentList](
+func newFakeAPIHubDeployments(fake *FakeApihubV1alpha1, namespace string) apihubv1alpha1.APIHubDeploymentInterface {
+	return &fakeAPIHubDeployments{
+		gentype.NewFakeClientWithList[*v1alpha1.APIHubDeployment, *v1alpha1.APIHubDeploymentList](
 			fake.Fake,
 			namespace,
 			v1alpha1.SchemeGroupVersion.WithResource("apihubdeployments"),
-			v1alpha1.SchemeGroupVersion.WithKind("ApiHubDeployment"),
-			func() *v1alpha1.ApiHubDeployment { return &v1alpha1.ApiHubDeployment{} },
-			func() *v1alpha1.ApiHubDeploymentList { return &v1alpha1.ApiHubDeploymentList{} },
-			func(dst, src *v1alpha1.ApiHubDeploymentList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ApiHubDeploymentList) []*v1alpha1.ApiHubDeployment {
+			v1alpha1.SchemeGroupVersion.WithKind("APIHubDeployment"),
+			func() *v1alpha1.APIHubDeployment { return &v1alpha1.APIHubDeployment{} },
+			func() *v1alpha1.APIHubDeploymentList { return &v1alpha1.APIHubDeploymentList{} },
+			func(dst, src *v1alpha1.APIHubDeploymentList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.APIHubDeploymentList) []*v1alpha1.APIHubDeployment {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.ApiHubDeploymentList, items []*v1alpha1.ApiHubDeployment) {
+			func(list *v1alpha1.APIHubDeploymentList, items []*v1alpha1.APIHubDeployment) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),
