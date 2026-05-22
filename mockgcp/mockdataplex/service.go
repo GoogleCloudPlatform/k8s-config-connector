@@ -27,11 +27,18 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
-	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	"cloud.google.com/go/iam/apiv1/iampb"
+
+	// Note: we use the \"real\" proto (not mockgcp), because the client uses GRPC.
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked dataplex service.
 type MockService struct {
@@ -43,6 +50,7 @@ type MockService struct {
 	// Store the underlying GRPC servers
 	dataplexService *DataplexService
 	catalogService  *CatalogService
+	iamPolicy       *IAMPolicyServer
 }
 
 type DataplexService struct {
@@ -51,7 +59,7 @@ type DataplexService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -59,6 +67,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	}
 	s.dataplexService = &DataplexService{MockService: s}
 	s.catalogService = &CatalogService{MockService: s}
+	s.iamPolicy = &IAMPolicyServer{MockService: s}
 	return s
 }
 
@@ -69,6 +78,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
 	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
+	iampb.RegisterIAMPolicyServer(grpcServer, s.iamPolicy)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
