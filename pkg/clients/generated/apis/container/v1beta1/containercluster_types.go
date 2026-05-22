@@ -431,16 +431,6 @@ type ClusterHttpLoadBalancing struct {
 	Disabled bool `json:"disabled"`
 }
 
-type ClusterHugepagesConfig struct {
-	/* Amount of 1G hugepages. */
-	// +optional
-	HugepageSize1G *int32 `json:"hugepageSize1G,omitempty"`
-
-	/* Amount of 2M hugepages. */
-	// +optional
-	HugepageSize2M *int32 `json:"hugepageSize2M,omitempty"`
-}
-
 type ClusterIdentityServiceConfig struct {
 	/* Whether to enable the Identity Service component. */
 	// +optional
@@ -521,10 +511,6 @@ type ClusterLinuxNodeConfig struct {
 	/* cgroupMode specifies the cgroup mode to be used on the node. */
 	// +optional
 	CgroupMode *string `json:"cgroupMode,omitempty"`
-
-	/* HugepagesConfig specifies hugepages configuration for the node. */
-	// +optional
-	HugepagesConfig *ClusterHugepagesConfig `json:"hugepagesConfig,omitempty"`
 
 	/* The Linux kernel parameters to be applied to the nodes and all pods running on the nodes. */
 	// +optional
@@ -1296,10 +1282,6 @@ type ContainerClusterSpec struct {
 	/* The notification config for sending cluster upgrade notifications. */
 	// +optional
 	NotificationConfig *ClusterNotificationConfig `json:"notificationConfig,omitempty"`
-
-	/* The pods' PIDs limit. */
-	// +optional
-	PodPidsLimit *int64 `json:"podPidsLimit,omitempty"`
 
 	/* Configuration for the PodSecurityPolicy feature. */
 	// +optional

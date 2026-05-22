@@ -644,10 +644,6 @@ type LinuxNodeConfig struct {
 	/* The Linux kernel parameters to be applied to the nodes and all pods running on the nodes. */
 	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.sysctls
 	Sysctls map[string]string `json:"sysctls,omitempty"`
-
-	/* HugepagesConfig specifies hugepages configuration for the node. */
-	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.hugepages_config
-	HugepagesConfig *LinuxNodeConfig_HugepagesConfig `json:"hugepagesConfig,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.NodeConfig.LocalNvmeSsdBlockConfig
@@ -1435,10 +1431,6 @@ type ContainerClusterSpec struct {
 	// +kcc:proto:field=google.container.v1.Cluster.initial_node_count
 	InitialNodeCount *int32 `json:"initialNodeCount,omitempty"`
 
-	/* The pods' PIDs limit. */
-	// +kcc:proto:field=google.container.v1.Cluster.network_config.pod_pids_limit
-	PodPidsLimit *int `json:"podPidsLimit,omitempty"`
-
 	/* Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based. */
 	// +kcc:proto:field=google.container.v1.Cluster.ip_allocation_policy
 	IPAllocationPolicy *IPAllocationPolicy `json:"ipAllocationPolicy,omitempty"`
@@ -1721,15 +1713,4 @@ type MaintenancePolicyObservedState struct {
 	// Specifies the maintenance window in which maintenance may be performed.
 	// +kcc:proto:field=google.container.v1.MaintenancePolicy.window
 	Window *MaintenanceWindowObservedState `json:"window,omitempty"`
-}
-
-// +kcc:proto=google.container.v1.LinuxNodeConfig.HugepagesConfig
-type LinuxNodeConfig_HugepagesConfig struct {
-	/* Amount of 2M hugepages. */
-	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size2m
-	HugepageSize2M *int32 `json:"hugepageSize2M,omitempty"`
-
-	/* Amount of 1G hugepages. */
-	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size1g
-	HugepageSize1G *int32 `json:"hugepageSize1G,omitempty"`
 }
