@@ -25,7 +25,6 @@ package container
 
 import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
-	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -547,7 +546,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	out := &krm.ContainerClusterSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.InitialNodeCount = direct.LazyPtr(int(in.GetInitialNodeCount()))
+	out.InitialNodeCount = direct.LazyPtr(in.GetInitialNodeCount())
 	out.NodeConfig = NodeConfig_FromProto(mapCtx, in.GetNodeConfig())
 	out.MasterAuth = MasterAuth_FromProto(mapCtx, in.GetMasterAuth())
 	out.LoggingService = direct.LazyPtr(in.GetLoggingService())
@@ -642,7 +641,7 @@ found existing non-generated mapping function "ContainerClusterSpec_ToProto", sk
 		out := &pb.Cluster{}
 		// MISSING: Name
 		out.Description = direct.ValueOf(in.Description)
-		out.InitialNodeCount = int32(direct.ValueOf(in.InitialNodeCount))
+		out.InitialNodeCount = direct.ValueOf(in.InitialNodeCount)
 		out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
 		out.MasterAuth = MasterAuth_ToProto(mapCtx, in.MasterAuth)
 		out.LoggingService = direct.ValueOf(in.LoggingService)
@@ -964,24 +963,32 @@ func DefaultSnatStatus_ToProto(mapCtx *direct.MapContext, in *krm.DefaultSnatSta
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
+
+/* found existing non-generated mapping function "EphemeralStorageLocalSsdConfig_FromProto", skipping
 func EphemeralStorageLocalSsdConfig_FromProto(mapCtx *direct.MapContext, in *pb.EphemeralStorageLocalSsdConfig) *krm.EphemeralStorageLocalSsdConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.EphemeralStorageLocalSsdConfig{}
-	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
-	out.DataCacheCount = direct.LazyPtr(int(in.GetDataCacheCount()))
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
+	out.DataCacheCount = direct.LazyPtr(in.GetDataCacheCount())
 	return out
 }
-func EphemeralStorageLocalSsdConfig_ToProto(mapCtx *direct.MapContext, in *krm.EphemeralStorageLocalSsdConfig) *pb.EphemeralStorageLocalSsdConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "EphemeralStorageLocalSsdConfig_ToProto", skipping
+
+	func EphemeralStorageLocalSsdConfig_ToProto(mapCtx *direct.MapContext, in *krm.EphemeralStorageLocalSsdConfig) *pb.EphemeralStorageLocalSsdConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.EphemeralStorageLocalSsdConfig{}
+		out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+		out.DataCacheCount = direct.ValueOf(in.DataCacheCount)
+		return out
 	}
-	out := &pb.EphemeralStorageLocalSsdConfig{}
-	out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
-	out.DataCacheCount = int32(direct.ValueOf(in.DataCacheCount))
-	return out
-}
+*/
 func FastSocket_FromProto(mapCtx *direct.MapContext, in *pb.FastSocket) *krm.FastSocket {
 	if in == nil {
 		return nil
@@ -1250,7 +1257,7 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	// MISSING: MemoryManager
 	out.CPUCfsQuota = direct.BoolValue_FromProto(mapCtx, in.GetCpuCfsQuota())
 	out.CPUCfsQuotaPeriod = direct.LazyPtr(in.GetCpuCfsQuotaPeriod())
-	out.PodPidsLimit = direct.LazyPtr(int(in.GetPodPidsLimit()))
+	out.PodPidsLimit = direct.LazyPtr(in.GetPodPidsLimit())
 	// MISSING: InsecureKubeletReadonlyPortEnabled
 	// MISSING: ImageGcLowThresholdPercent
 	// MISSING: ImageGcHighThresholdPercent
@@ -1282,7 +1289,7 @@ found existing non-generated mapping function "KubeletConfig_ToProto", skipping
 		// MISSING: MemoryManager
 		out.CpuCfsQuota = direct.BoolValue_ToProto(mapCtx, in.CPUCfsQuota)
 		out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
-		out.PodPidsLimit = int64(direct.ValueOf(in.PodPidsLimit))
+		out.PodPidsLimit = direct.ValueOf(in.PodPidsLimit)
 		// MISSING: InsecureKubeletReadonlyPortEnabled
 		// MISSING: ImageGcLowThresholdPercent
 		// MISSING: ImageGcHighThresholdPercent
@@ -1611,6 +1618,8 @@ func NetworkTags_ToProto(mapCtx *direct.MapContext, in *krm.NetworkTags) *pb.Net
 	out.Tags = in.Tags
 	return out
 }
+
+/* found existing non-generated mapping function "NodeConfig_FromProto", skipping
 func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodeConfig {
 	if in == nil {
 		return nil
@@ -1626,7 +1635,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out.Metadata = in.Metadata
 	out.ImageType = direct.LazyPtr(in.GetImageType())
 	out.Labels = in.Labels
-	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
 	out.Tags = in.Tags
 	out.Preemptible = direct.LazyPtr(in.GetPreemptible())
 	// MISSING: Accelerators
@@ -1668,63 +1677,69 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	// MISSING: BootDisk
 	return out
 }
-func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NodeConfig_ToProto", skipping
+
+	func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NodeConfig{}
+		out.MachineType = direct.ValueOf(in.MachineType)
+		// MISSING: DiskSizeGB
+		// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+		out.OauthScopes = in.OauthScopes
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		out.Metadata = in.Metadata
+		out.ImageType = direct.ValueOf(in.ImageType)
+		out.Labels = in.Labels
+		out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+		out.Tags = in.Tags
+		out.Preemptible = direct.ValueOf(in.Preemptible)
+		// MISSING: Accelerators
+		out.DiskType = direct.ValueOf(in.DiskType)
+		out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
+		// MISSING: WorkloadMetadataConfig
+		// MISSING: Taints
+		out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
+		if in.NodeGroupRef != nil {
+			out.NodeGroup = in.NodeGroupRef.External
+		}
+		out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+		out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
+		out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
+		out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
+		// MISSING: BootDiskKMSKey
+		out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
+		// MISSING: AdvancedMachineFeatures
+		// MISSING: Gvnic
+		out.Spot = direct.ValueOf(in.Spot)
+		out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
+		out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
+		out.ResourceLabels = in.ResourceLabels
+		// MISSING: LoggingConfig
+		// MISSING: WindowsNodeConfig
+		// MISSING: LocalNvmeSsdBlockConfig
+		out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
+		// MISSING: SoleTenantConfig
+		// MISSING: ContainerdConfig
+		// MISSING: ResourceManagerTags
+		// MISSING: EnableConfidentialStorage
+		// MISSING: SecondaryBootDisks
+		// MISSING: StoragePools
+		// MISSING: SecondaryBootDiskUpdateStrategy
+		// MISSING: MaxRunDuration
+		// MISSING: LocalSsdEncryptionMode
+		// MISSING: EffectiveCgroupMode
+		// MISSING: FlexStart
+		// MISSING: BootDisk
+		return out
 	}
-	out := &pb.NodeConfig{}
-	out.MachineType = direct.ValueOf(in.MachineType)
-	// MISSING: DiskSizeGB
-	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
-	out.OauthScopes = in.OauthScopes
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	out.Metadata = in.Metadata
-	out.ImageType = direct.ValueOf(in.ImageType)
-	out.Labels = in.Labels
-	out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
-	out.Tags = in.Tags
-	out.Preemptible = direct.ValueOf(in.Preemptible)
-	// MISSING: Accelerators
-	out.DiskType = direct.ValueOf(in.DiskType)
-	out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
-	// MISSING: WorkloadMetadataConfig
-	// MISSING: Taints
-	out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
-	if in.NodeGroupRef != nil {
-		out.NodeGroup = in.NodeGroupRef.External
-	}
-	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
-	out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
-	out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
-	out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
-	// MISSING: BootDiskKMSKey
-	out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
-	// MISSING: AdvancedMachineFeatures
-	// MISSING: Gvnic
-	out.Spot = direct.ValueOf(in.Spot)
-	out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
-	out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
-	out.ResourceLabels = in.ResourceLabels
-	// MISSING: LoggingConfig
-	// MISSING: WindowsNodeConfig
-	// MISSING: LocalNvmeSsdBlockConfig
-	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
-	// MISSING: SoleTenantConfig
-	// MISSING: ContainerdConfig
-	// MISSING: ResourceManagerTags
-	// MISSING: EnableConfidentialStorage
-	// MISSING: SecondaryBootDisks
-	// MISSING: StoragePools
-	// MISSING: SecondaryBootDiskUpdateStrategy
-	// MISSING: MaxRunDuration
-	// MISSING: LocalSsdEncryptionMode
-	// MISSING: EffectiveCgroupMode
-	// MISSING: FlexStart
-	// MISSING: BootDisk
-	return out
-}
+*/
 func NodeConfigDefaults_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfigDefaults) *krm.NodeConfigDefaults {
 	if in == nil {
 		return nil
@@ -2043,8 +2058,8 @@ func ResourceLimits_FromProto(mapCtx *direct.MapContext, in *pb.ResourceLimit) *
 	}
 	out := &krm.ResourceLimits{}
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
-	out.Minimum = direct.LazyPtr(int(in.GetMinimum()))
-	out.Maximum = direct.LazyPtr(int(in.GetMaximum()))
+	out.Minimum = direct.LazyPtr(in.GetMinimum())
+	out.Maximum = direct.LazyPtr(in.GetMaximum())
 	return out
 }
 */
@@ -2058,8 +2073,8 @@ found existing non-generated mapping function "ResourceLimits_ToProto", skipping
 		}
 		out := &pb.ResourceLimit{}
 		out.ResourceType = direct.ValueOf(in.ResourceType)
-		out.Minimum = int64(direct.ValueOf(in.Minimum))
-		out.Maximum = int64(direct.ValueOf(in.Maximum))
+		out.Minimum = direct.ValueOf(in.Minimum)
+		out.Maximum = direct.ValueOf(in.Maximum)
 		return out
 	}
 */
