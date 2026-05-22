@@ -289,6 +289,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					forceDirect = true
 				case "TagsLocationTagBinding":
 					forceDirect = false
+				case "FirestoreIndex":
+					forceDirect = true
 				default:
 					forceDirect = false
 				}

@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/modelarmor/v1"
+	pb "cloud.google.com/go/modelarmor/apiv1/modelarmorpb"
 )
 
 type ModelArmorV1 struct {
@@ -65,7 +65,7 @@ func (s *ModelArmorV1) CreateTemplate(ctx context.Context, req *pb.CreateTemplat
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Template).(*pb.Template)
+	obj := proto.CloneOf(req.Template)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

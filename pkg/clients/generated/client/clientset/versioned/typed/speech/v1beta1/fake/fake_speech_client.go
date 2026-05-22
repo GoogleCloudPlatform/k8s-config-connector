@@ -32,15 +32,15 @@ type FakeSpeechV1beta1 struct {
 }
 
 func (c *FakeSpeechV1beta1) SpeechCustomClasses(namespace string) v1beta1.SpeechCustomClassInterface {
-	return &FakeSpeechCustomClasses{c, namespace}
+	return newFakeSpeechCustomClasses(c, namespace)
 }
 
 func (c *FakeSpeechV1beta1) SpeechPhraseSets(namespace string) v1beta1.SpeechPhraseSetInterface {
-	return &FakeSpeechPhraseSets{c, namespace}
+	return newFakeSpeechPhraseSets(c, namespace)
 }
 
 func (c *FakeSpeechV1beta1) SpeechRecognizers(namespace string) v1beta1.SpeechRecognizerInterface {
-	return &FakeSpeechRecognizers{c, namespace}
+	return newFakeSpeechRecognizers(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -26,7 +26,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/certificatemanager/v1"
+	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 )
 
 func (s *CertificateManagerV1) GetCertificateMap(ctx context.Context, req *pb.GetCertificateMapRequest) (*pb.CertificateMap, error) {
@@ -54,7 +54,7 @@ func (s *CertificateManagerV1) CreateCertificateMap(ctx context.Context, req *pb
 
 	fqn := name.String()
 	now := timestamppb.Now()
-	obj := proto.Clone(req.CertificateMap).(*pb.CertificateMap)
+	obj := proto.CloneOf(req.CertificateMap)
 	obj.Name = fqn
 	obj.CreateTime = now
 	obj.UpdateTime = now
@@ -72,7 +72,7 @@ func (s *CertificateManagerV1) CreateCertificateMap(ctx context.Context, req *pb
 		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, req.Parent, opMetadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.CertificateMap)
+		result := proto.CloneOf(obj)
 		result.Labels = nil
 		return result, nil
 	})
@@ -126,7 +126,7 @@ func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/global", name.Project.ID)
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.CertificateMap)
+		result := proto.CloneOf(obj)
 		result.Labels = nil
 		return result, nil
 	})

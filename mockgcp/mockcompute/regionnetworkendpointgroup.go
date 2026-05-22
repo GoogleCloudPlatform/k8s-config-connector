@@ -59,7 +59,7 @@ func (s *RegionNetworkEndpointGroupV1) Insert(ctx context.Context, req *pb.Inser
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetNetworkEndpointGroupResource()).(*pb.NetworkEndpointGroup)
+	obj := proto.CloneOf(req.GetNetworkEndpointGroupResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

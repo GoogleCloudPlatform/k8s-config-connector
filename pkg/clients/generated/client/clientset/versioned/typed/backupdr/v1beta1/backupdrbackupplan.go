@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1beta1"
+	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // BackupDRBackupPlansGetter has a method to return a BackupDRBackupPlanInterface.
@@ -41,158 +40,34 @@ type BackupDRBackupPlansGetter interface {
 
 // BackupDRBackupPlanInterface has methods to work with BackupDRBackupPlan resources.
 type BackupDRBackupPlanInterface interface {
-	Create(ctx context.Context, backupDRBackupPlan *v1beta1.BackupDRBackupPlan, opts v1.CreateOptions) (*v1beta1.BackupDRBackupPlan, error)
-	Update(ctx context.Context, backupDRBackupPlan *v1beta1.BackupDRBackupPlan, opts v1.UpdateOptions) (*v1beta1.BackupDRBackupPlan, error)
-	UpdateStatus(ctx context.Context, backupDRBackupPlan *v1beta1.BackupDRBackupPlan, opts v1.UpdateOptions) (*v1beta1.BackupDRBackupPlan, error)
+	Create(ctx context.Context, backupDRBackupPlan *backupdrv1beta1.BackupDRBackupPlan, opts v1.CreateOptions) (*backupdrv1beta1.BackupDRBackupPlan, error)
+	Update(ctx context.Context, backupDRBackupPlan *backupdrv1beta1.BackupDRBackupPlan, opts v1.UpdateOptions) (*backupdrv1beta1.BackupDRBackupPlan, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, backupDRBackupPlan *backupdrv1beta1.BackupDRBackupPlan, opts v1.UpdateOptions) (*backupdrv1beta1.BackupDRBackupPlan, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.BackupDRBackupPlan, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.BackupDRBackupPlanList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*backupdrv1beta1.BackupDRBackupPlan, error)
+	List(ctx context.Context, opts v1.ListOptions) (*backupdrv1beta1.BackupDRBackupPlanList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BackupDRBackupPlan, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *backupdrv1beta1.BackupDRBackupPlan, err error)
 	BackupDRBackupPlanExpansion
 }
 
 // backupDRBackupPlans implements BackupDRBackupPlanInterface
 type backupDRBackupPlans struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*backupdrv1beta1.BackupDRBackupPlan, *backupdrv1beta1.BackupDRBackupPlanList]
 }
 
 // newBackupDRBackupPlans returns a BackupDRBackupPlans
 func newBackupDRBackupPlans(c *BackupdrV1beta1Client, namespace string) *backupDRBackupPlans {
 	return &backupDRBackupPlans{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*backupdrv1beta1.BackupDRBackupPlan, *backupdrv1beta1.BackupDRBackupPlanList](
+			"backupdrbackupplans",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *backupdrv1beta1.BackupDRBackupPlan { return &backupdrv1beta1.BackupDRBackupPlan{} },
+			func() *backupdrv1beta1.BackupDRBackupPlanList { return &backupdrv1beta1.BackupDRBackupPlanList{} },
+		),
 	}
-}
-
-// Get takes name of the backupDRBackupPlan, and returns the corresponding backupDRBackupPlan object, and an error if there is any.
-func (c *backupDRBackupPlans) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BackupDRBackupPlan, err error) {
-	result = &v1beta1.BackupDRBackupPlan{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("backupdrbackupplans").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of BackupDRBackupPlans that match those selectors.
-func (c *backupDRBackupPlans) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BackupDRBackupPlanList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.BackupDRBackupPlanList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("backupdrbackupplans").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested backupDRBackupPlans.
-func (c *backupDRBackupPlans) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("backupdrbackupplans").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a backupDRBackupPlan and creates it.  Returns the server's representation of the backupDRBackupPlan, and an error, if there is any.
-func (c *backupDRBackupPlans) Create(ctx context.Context, backupDRBackupPlan *v1beta1.BackupDRBackupPlan, opts v1.CreateOptions) (result *v1beta1.BackupDRBackupPlan, err error) {
-	result = &v1beta1.BackupDRBackupPlan{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("backupdrbackupplans").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(backupDRBackupPlan).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a backupDRBackupPlan and updates it. Returns the server's representation of the backupDRBackupPlan, and an error, if there is any.
-func (c *backupDRBackupPlans) Update(ctx context.Context, backupDRBackupPlan *v1beta1.BackupDRBackupPlan, opts v1.UpdateOptions) (result *v1beta1.BackupDRBackupPlan, err error) {
-	result = &v1beta1.BackupDRBackupPlan{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("backupdrbackupplans").
-		Name(backupDRBackupPlan.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(backupDRBackupPlan).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *backupDRBackupPlans) UpdateStatus(ctx context.Context, backupDRBackupPlan *v1beta1.BackupDRBackupPlan, opts v1.UpdateOptions) (result *v1beta1.BackupDRBackupPlan, err error) {
-	result = &v1beta1.BackupDRBackupPlan{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("backupdrbackupplans").
-		Name(backupDRBackupPlan.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(backupDRBackupPlan).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the backupDRBackupPlan and deletes it. Returns an error if one occurs.
-func (c *backupDRBackupPlans) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("backupdrbackupplans").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *backupDRBackupPlans) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("backupdrbackupplans").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched backupDRBackupPlan.
-func (c *backupDRBackupPlans) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BackupDRBackupPlan, err error) {
-	result = &v1beta1.BackupDRBackupPlan{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("backupdrbackupplans").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

@@ -1,0 +1,65 @@
+- exec: |
+    cat <<EOF > target.yaml
+    apiVersion: deploy.cloud.google.com/v1
+    kind: Target
+    metadata:
+      name: target-${uniqueId}
+    description: test target
+    run:
+      location: projects/${projectId}/locations/us-central1
+    EOF
+- exec: gcloud deploy apply --file=target.yaml --region=us-central1 --project=${projectId}
+- exec: |
+    cat <<EOF > pipeline.yaml
+    apiVersion: deploy.cloud.google.com/v1
+    kind: DeliveryPipeline
+    metadata:
+      name: pipeline-${uniqueId}
+    description: test pipeline
+    serialPipeline:
+      stages:
+      - targetId: target-${uniqueId}
+    EOF
+- exec: gcloud deploy apply --file=pipeline.yaml --region=us-central1 --project=${projectId}
+- exec: |
+    cat <<EOF > automation.yaml
+    apiVersion: deploy.cloud.google.com/v1
+    kind: Automation
+    metadata:
+      name: pipeline-${uniqueId}/automation-${uniqueId}
+    description: test automation
+    suspended: false
+    serviceAccount: ${projectNumber}-compute@developer.gserviceaccount.com
+    selector:
+      targets:
+      - id: target-${uniqueId}
+    rules:
+    - promoteReleaseRule:
+        id: "promote-release"
+        wait: "1m"
+    EOF
+- exec: gcloud deploy apply --file=automation.yaml --region=us-central1 --project=${projectId}
+- exec: gcloud deploy automations describe automation-${uniqueId} --delivery-pipeline=pipeline-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: |
+    cat <<EOF > automation.yaml
+    apiVersion: deploy.cloud.google.com/v1
+    kind: Automation
+    metadata:
+      name: pipeline-${uniqueId}/automation-${uniqueId}
+    description: updated automation
+    suspended: true
+    serviceAccount: ${projectNumber}-compute@developer.gserviceaccount.com
+    selector:
+      targets:
+      - id: target-${uniqueId}
+    rules:
+    - promoteReleaseRule:
+        id: "promote-release"
+        wait: "2m"
+    EOF
+- exec: gcloud deploy apply --file=automation.yaml --region=us-central1 --project=${projectId}
+- exec: gcloud deploy automations list --delivery-pipeline=pipeline-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud deploy automations delete automation-${uniqueId} --delivery-pipeline=pipeline-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud deploy delivery-pipelines delete pipeline-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud deploy targets delete target-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: rm target.yaml pipeline.yaml automation.yaml

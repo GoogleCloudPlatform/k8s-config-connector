@@ -47,6 +47,7 @@ spec:
   labels:
     key1: val1
     key2: val2
+  maintenanceVersion: "MEMORYSTORE_20260313_01_02"
   automatedBackupConfig:
     automatedBackupMode: ENABLED
     fixedFrequencySchedule:

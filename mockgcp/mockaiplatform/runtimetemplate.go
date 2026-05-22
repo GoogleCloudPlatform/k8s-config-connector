@@ -71,7 +71,7 @@ func (s *notebookService) CreateNotebookRuntimeTemplate(ctx context.Context, req
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.NotebookRuntimeTemplate).(*pb.NotebookRuntimeTemplate)
+	obj := proto.CloneOf(req.NotebookRuntimeTemplate)
 
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)

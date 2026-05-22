@@ -99,7 +99,7 @@ func (s *dataTransferService) CreateTransferConfig(ctx context.Context, req *pb.
 
 	fqn := name.String()
 	now := time.Now()
-	obj := proto.Clone(req.TransferConfig).(*pb.TransferConfig)
+	obj := proto.CloneOf(req.TransferConfig)
 	obj.DatasetRegion = name.Location
 	obj.Name = name.String()
 	// Event driven schedule does not output next run time
@@ -131,7 +131,7 @@ func (s *dataTransferService) CreateTransferConfig(ctx context.Context, req *pb.
 		obj.Params.Fields["destination_table_kms_key"] = structpb.NewStringValue(obj.EncryptionConfiguration.KmsKeyName.Value)
 	}
 
-	objToStore := proto.Clone(obj).(*pb.TransferConfig)
+	objToStore := proto.CloneOf(obj)
 	if objToStore.EmailPreferences == nil { // match the behavior of GCP
 		objToStore.EmailPreferences = &pb.EmailPreferences{}
 	}
@@ -213,7 +213,7 @@ func (s *dataTransferService) UpdateTransferConfig(ctx context.Context, req *pb.
 		}
 	}
 
-	objToStore := proto.Clone(obj).(*pb.TransferConfig)
+	objToStore := proto.CloneOf(obj)
 	if objToStore.DataSourceId == "scheduled_query" { // match the behavior of GCP
 		if objToStore.ScheduleOptions == nil {
 			objToStore.ScheduleOptions = &pb.ScheduleOptions{}

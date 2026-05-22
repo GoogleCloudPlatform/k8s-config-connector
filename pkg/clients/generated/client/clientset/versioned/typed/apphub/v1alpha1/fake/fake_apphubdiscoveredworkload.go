@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeAppHubDiscoveredWorkloads implements AppHubDiscoveredWorkloadInterface
-type FakeAppHubDiscoveredWorkloads struct {
+// fakeAppHubDiscoveredWorkloads implements AppHubDiscoveredWorkloadInterface
+type fakeAppHubDiscoveredWorkloads struct {
+	*gentype.FakeClientWithList[*v1alpha1.AppHubDiscoveredWorkload, *v1alpha1.AppHubDiscoveredWorkloadList]
 	Fake *FakeApphubV1alpha1
-	ns   string
 }
 
-var apphubdiscoveredworkloadsResource = v1alpha1.SchemeGroupVersion.WithResource("apphubdiscoveredworkloads")
-
-var apphubdiscoveredworkloadsKind = v1alpha1.SchemeGroupVersion.WithKind("AppHubDiscoveredWorkload")
-
-// Get takes name of the appHubDiscoveredWorkload, and returns the corresponding appHubDiscoveredWorkload object, and an error if there is any.
-func (c *FakeAppHubDiscoveredWorkloads) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AppHubDiscoveredWorkload, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(apphubdiscoveredworkloadsResource, c.ns, name), &v1alpha1.AppHubDiscoveredWorkload{})
-
-	if obj == nil {
-		return nil, err
+func newFakeAppHubDiscoveredWorkloads(fake *FakeApphubV1alpha1, namespace string) apphubv1alpha1.AppHubDiscoveredWorkloadInterface {
+	return &fakeAppHubDiscoveredWorkloads{
+		gentype.NewFakeClientWithList[*v1alpha1.AppHubDiscoveredWorkload, *v1alpha1.AppHubDiscoveredWorkloadList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("apphubdiscoveredworkloads"),
+			v1alpha1.SchemeGroupVersion.WithKind("AppHubDiscoveredWorkload"),
+			func() *v1alpha1.AppHubDiscoveredWorkload { return &v1alpha1.AppHubDiscoveredWorkload{} },
+			func() *v1alpha1.AppHubDiscoveredWorkloadList { return &v1alpha1.AppHubDiscoveredWorkloadList{} },
+			func(dst, src *v1alpha1.AppHubDiscoveredWorkloadList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.AppHubDiscoveredWorkloadList) []*v1alpha1.AppHubDiscoveredWorkload {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.AppHubDiscoveredWorkloadList, items []*v1alpha1.AppHubDiscoveredWorkload) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.AppHubDiscoveredWorkload), err
-}
-
-// List takes label and field selectors, and returns the list of AppHubDiscoveredWorkloads that match those selectors.
-func (c *FakeAppHubDiscoveredWorkloads) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.AppHubDiscoveredWorkloadList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(apphubdiscoveredworkloadsResource, apphubdiscoveredworkloadsKind, c.ns, opts), &v1alpha1.AppHubDiscoveredWorkloadList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.AppHubDiscoveredWorkloadList{ListMeta: obj.(*v1alpha1.AppHubDiscoveredWorkloadList).ListMeta}
-	for _, item := range obj.(*v1alpha1.AppHubDiscoveredWorkloadList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested appHubDiscoveredWorkloads.
-func (c *FakeAppHubDiscoveredWorkloads) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(apphubdiscoveredworkloadsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a appHubDiscoveredWorkload and creates it.  Returns the server's representation of the appHubDiscoveredWorkload, and an error, if there is any.
-func (c *FakeAppHubDiscoveredWorkloads) Create(ctx context.Context, appHubDiscoveredWorkload *v1alpha1.AppHubDiscoveredWorkload, opts v1.CreateOptions) (result *v1alpha1.AppHubDiscoveredWorkload, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(apphubdiscoveredworkloadsResource, c.ns, appHubDiscoveredWorkload), &v1alpha1.AppHubDiscoveredWorkload{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppHubDiscoveredWorkload), err
-}
-
-// Update takes the representation of a appHubDiscoveredWorkload and updates it. Returns the server's representation of the appHubDiscoveredWorkload, and an error, if there is any.
-func (c *FakeAppHubDiscoveredWorkloads) Update(ctx context.Context, appHubDiscoveredWorkload *v1alpha1.AppHubDiscoveredWorkload, opts v1.UpdateOptions) (result *v1alpha1.AppHubDiscoveredWorkload, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(apphubdiscoveredworkloadsResource, c.ns, appHubDiscoveredWorkload), &v1alpha1.AppHubDiscoveredWorkload{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppHubDiscoveredWorkload), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeAppHubDiscoveredWorkloads) UpdateStatus(ctx context.Context, appHubDiscoveredWorkload *v1alpha1.AppHubDiscoveredWorkload, opts v1.UpdateOptions) (*v1alpha1.AppHubDiscoveredWorkload, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(apphubdiscoveredworkloadsResource, "status", c.ns, appHubDiscoveredWorkload), &v1alpha1.AppHubDiscoveredWorkload{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppHubDiscoveredWorkload), err
-}
-
-// Delete takes name of the appHubDiscoveredWorkload and deletes it. Returns an error if one occurs.
-func (c *FakeAppHubDiscoveredWorkloads) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(apphubdiscoveredworkloadsResource, c.ns, name, opts), &v1alpha1.AppHubDiscoveredWorkload{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeAppHubDiscoveredWorkloads) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(apphubdiscoveredworkloadsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.AppHubDiscoveredWorkloadList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched appHubDiscoveredWorkload.
-func (c *FakeAppHubDiscoveredWorkloads) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.AppHubDiscoveredWorkload, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(apphubdiscoveredworkloadsResource, c.ns, name, pt, data, subresources...), &v1alpha1.AppHubDiscoveredWorkload{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.AppHubDiscoveredWorkload), err
 }

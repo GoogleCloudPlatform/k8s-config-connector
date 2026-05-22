@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/alloydb/v1beta"
+	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 )
 
 type AlloyDBAdminV1 struct {
@@ -176,7 +176,7 @@ func (s *AlloyDBAdminV1) CreateCluster(ctx context.Context, req *pb.CreateCluste
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj := proto.CloneOf(req.Cluster)
 	obj.Name = fqn
 	setClusterFields(name, obj)
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -187,7 +187,7 @@ func (s *AlloyDBAdminV1) CreateCluster(ctx context.Context, req *pb.CreateCluste
 	return s.operations.StartLRO(ctx, req.Parent, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		result := proto.Clone(obj).(*pb.Cluster)
+		result := proto.CloneOf(obj)
 		updateNetworkInResponse(result)
 		return result, nil
 	})
@@ -202,7 +202,7 @@ func (s *AlloyDBAdminV1) CreateSecondaryCluster(ctx context.Context, req *pb.Cre
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj := proto.CloneOf(req.Cluster)
 	obj.Name = fqn
 	setClusterFields(name, obj)
 
@@ -234,7 +234,7 @@ func (s *AlloyDBAdminV1) CreateSecondaryCluster(ctx context.Context, req *pb.Cre
 	return s.operations.StartLRO(ctx, req.Parent, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		result := proto.Clone(obj).(*pb.Cluster)
+		result := proto.CloneOf(obj)
 		updateNetworkInResponse(result)
 		updateSecondaryConfigInResponse(result)
 		return result, nil
@@ -250,7 +250,7 @@ func (s *AlloyDBAdminV1) RestoreCluster(ctx context.Context, req *pb.RestoreClus
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj := proto.CloneOf(req.Cluster)
 	obj.Name = fqn
 	obj.ClusterType = pb.Cluster_PRIMARY
 	setClusterFields(name, obj)
@@ -271,7 +271,7 @@ func (s *AlloyDBAdminV1) RestoreCluster(ctx context.Context, req *pb.RestoreClus
 	return s.operations.StartLRO(ctx, req.Parent, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		result := proto.Clone(obj).(*pb.Cluster)
+		result := proto.CloneOf(obj)
 		updateNetworkInResponse(result)
 		return result, nil
 	})
@@ -328,7 +328,7 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 	return s.operations.StartLRO(ctx, name.ProjectAndLocation(), metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		result := proto.Clone(obj).(*pb.Cluster)
+		result := proto.CloneOf(obj)
 		updateNetworkInResponse(result)
 		updateSecondaryConfigInResponse(result)
 		return result, nil

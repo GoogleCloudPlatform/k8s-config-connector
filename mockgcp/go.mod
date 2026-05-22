@@ -11,6 +11,7 @@ replace github.com/hashicorp/terraform-provider-google-beta => ../third_party/gi
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.7
 	cloud.google.com/go/aiplatform v1.123.0
+	cloud.google.com/go/alloydb v1.20.0
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/batch v1.14.0
@@ -21,24 +22,38 @@ require (
 	cloud.google.com/go/compute v1.54.0
 	cloud.google.com/go/dataplex v1.28.0
 	cloud.google.com/go/dataproc/v2 v2.19.0
+	cloud.google.com/go/datastream v1.15.1
+	cloud.google.com/go/deploy v1.27.3
 	cloud.google.com/go/discoveryengine v1.22.0
 	cloud.google.com/go/edgecontainer v1.4.4
-	cloud.google.com/go/firestore v1.21.0
+	cloud.google.com/go/essentialcontacts v1.7.7
+	cloud.google.com/go/eventarc v1.18.0
+	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/iam v1.7.0
 	cloud.google.com/go/iap v1.12.0
 	cloud.google.com/go/kms v1.26.0
 	cloud.google.com/go/logging v1.13.2
 	cloud.google.com/go/longrunning v0.9.0
 	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/memcache v1.11.7
+	cloud.google.com/go/memorystore v0.9.0
+	cloud.google.com/go/modelarmor v1.0.0
 	cloud.google.com/go/netapp v1.12.0
+	cloud.google.com/go/networkmanagement v1.23.0
 	cloud.google.com/go/networksecurity v0.15.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.12.7
 	cloud.google.com/go/orgpolicy v1.15.1
 	cloud.google.com/go/osconfig v1.16.0
+	cloud.google.com/go/pubsublite v1.8.2
 	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
+	cloud.google.com/go/redis v1.18.3
+	cloud.google.com/go/secretmanager v1.16.0
+	cloud.google.com/go/securesourcemanager v1.4.1
+	cloud.google.com/go/speech v1.30.0
 	cloud.google.com/go/storage v1.59.2
 	cloud.google.com/go/workflows v1.14.3
+	cloud.google.com/go/workstations v1.1.6
 	github.com/GoogleCloudPlatform/k8s-config-connector v1.129.2
 	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0

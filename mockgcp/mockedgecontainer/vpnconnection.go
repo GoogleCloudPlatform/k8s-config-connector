@@ -62,7 +62,7 @@ func (s *EdgeContainerV1) CreateVpnConnection(ctx context.Context, req *pb.Creat
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetVpnConnection()).(*pb.VpnConnection)
+	obj := proto.CloneOf(req.GetVpnConnection())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

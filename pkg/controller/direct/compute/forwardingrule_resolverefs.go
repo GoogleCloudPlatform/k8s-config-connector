@@ -19,9 +19,13 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	krm_memorystore "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -428,6 +432,66 @@ func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, s
 		External: selfLink}, nil
 }
 
+func ResolveMemorystoreInstanceServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *krm.MemorystoreInstanceServiceAttachment) (*refs.ComputeServiceAttachmentRef, error) {
+	if ref.MemorystoreInstanceRef == nil || ref.MemorystoreInstanceRef.Name == "" {
+		return nil, fmt.Errorf("must provide memorystoreInstanceRef.Name")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.MemorystoreInstanceRef.Namespace,
+		Name:      ref.MemorystoreInstanceRef.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(krm_memorystore.MemorystoreInstanceGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("error reading referenced %v %v: %w", u.GroupVersionKind().Kind, key, err)
+	}
+
+	instance := &krm_memorystore.MemorystoreInstance{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, instance); err != nil {
+		return nil, fmt.Errorf("error converting %v %v to MemorystoreInstance: %w", u.GroupVersionKind().Kind, key, err)
+	}
+
+	// Read status.observedState.pscAttachmentDetails[MemorystoreInstanceServiceAttachmentIndex]
+	// to retrieve the service attachment external.
+
+	desiredConnectionType := ""
+	if ref.ConnectionType != nil {
+		desiredConnectionType = *ref.ConnectionType
+	}
+
+	observedState := instance.Status.ObservedState
+	if observedState != nil {
+		for _, item := range observedState.PscAttachmentDetails {
+			connectionType := valueOf(item.ConnectionType)
+			serviceAttachment := valueOf(item.ServiceAttachment)
+
+			if connectionType == desiredConnectionType {
+				if serviceAttachment != "" {
+					return &refs.ComputeServiceAttachmentRef{External: serviceAttachment}, nil
+				}
+			}
+		}
+	}
+
+	return nil, fmt.Errorf("no pscAttachmentDetails found for %s %v with connection type %q", instance.GroupVersionKind(), key, desiredConnectionType)
+}
+
+func valueOf[T any](v *T) T {
+	if v == nil {
+		var zero T
+		return zero
+	}
+	return *v
+}
+
 func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeForwardingRule) error {
 	// Get network
 	if obj.Spec.NetworkRef != nil {
@@ -471,11 +535,13 @@ func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *k
 	if obj.Spec.Target != nil {
 		// Get target MemorystoreInstanceServiceAttachmentRef
 		if memorystoreInstanceServiceAttachment := obj.Spec.Target.MemorystoreInstanceServiceAttachment; memorystoreInstanceServiceAttachment != nil {
-			if memorystoreInstanceRef := memorystoreInstanceServiceAttachment.MemorystoreInstanceRef; memorystoreInstanceRef != nil {
-				if err := memorystoreInstanceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-					return err
-				}
+			serviceAttachmentRef, err := ResolveMemorystoreInstanceServiceAttachment(ctx, reader, obj, obj.Spec.Target.MemorystoreInstanceServiceAttachment)
+			if err != nil {
+				return err
+
 			}
+			obj.Spec.Target.MemorystoreInstanceServiceAttachment = nil
+			obj.Spec.Target.ServiceAttachmentRef = serviceAttachmentRef
 		}
 
 		// Get target ServiceAttachment

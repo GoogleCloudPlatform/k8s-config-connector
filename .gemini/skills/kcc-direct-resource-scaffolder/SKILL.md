@@ -1,0 +1,43 @@
+---
+name: kcc-direct-resource-scaffolder
+description: Automate the initial scaffolding of a KCC "direct" resource, including CRD types and generation scripts. Use this when starting a new "direct" implementation for a GCP resource.
+---
+
+# KCC Direct Resource Scaffolder
+
+This skill guides the initial scaffolding of KCC "direct" resources, ensuring standardized CRD generation and adherence to project-wide validation patterns.
+
+## Inputs
+- `service`: The Google API service name (e.g., `google.cloud.aiplatform.v1`).
+- `resource`: The mapping of KCC Kind to GCP Resource (e.g., `VertexAIExampleStore:ExampleStore`).
+- `api_version`: The KCC API version (default: `v1alpha1`).
+
+## Workflow
+
+1.  **Add to generate.sh**:
+    Locate `apis/<service_short>/<api_version>/generate.sh`. If it doesn't exist, create it following the standard KCC template:
+    ```bash
+    #!/bin/bash
+    set -e
+    go run ../../../tooling/main.go generate-types \
+      --service <service> \
+      --api-version <group>.cnrm.cloud.google.com/<api_version> \
+      --resource <resource>
+    ```
+
+2.  **Generate Types**:
+    Run the `generate.sh` script.
+
+3.  **Validate and Enhance Output**:
+    - **Copyright**: Ensure `Copyright 2026 Google LLC` is present.
+    - **CRD Labels**: Verify metadata labels for managed-by-kcc, system, and stability-level.
+    - **Field Validation**: Manually add or verify kubebuilder tags:
+      - Use `// +kubebuilder:validation:Required` for fields that are mandatory in the GCP API.
+      - Use `// +kubebuilder:validation:Optional` for all other fields.
+    - **Enums**: 
+      - Use `*string` for the Go type of proto enum fields (do NOT use custom wrapped string types).
+      - Use `// +kubebuilder:validation:Enum=VALUE1;VALUE2` to provide validation in the CRD while keeping the Go type simple.
+    - **Status**: Ensure `status.observedGeneration` is `*int64`.
+
+## Journaling
+Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.

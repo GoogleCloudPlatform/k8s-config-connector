@@ -64,7 +64,7 @@ func (s *externalVPNGateways) Insert(ctx context.Context, req *pb.InsertExternal
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetExternalVpnGatewayResource()).(*pb.ExternalVpnGateway)
+	obj := proto.CloneOf(req.GetExternalVpnGatewayResource())
 	obj.Id = proto.Uint64(s.generateID())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.Kind = PtrTo("compute#externalVpnGateway")

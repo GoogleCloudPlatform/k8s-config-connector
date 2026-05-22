@@ -29,7 +29,7 @@ func init() {
 
 func managedKafkaTopicFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Topic{},
-		ManagedKafkaTopicSpec_FromProto, ManagedKafkaTopicSpec_ToProto,
+		ManagedKafkaTopicSpec_v1beta1_FromProto, ManagedKafkaTopicSpec_v1beta1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")

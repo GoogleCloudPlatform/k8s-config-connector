@@ -67,7 +67,7 @@ func (s *VMwareEngineV1) CreateVmwareEngineNetwork(ctx context.Context, req *pb.
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetVmwareEngineNetwork()).(*pb.VmwareEngineNetwork)
+	obj := proto.CloneOf(req.GetVmwareEngineNetwork())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.VmwareEngineNetwork_ACTIVE

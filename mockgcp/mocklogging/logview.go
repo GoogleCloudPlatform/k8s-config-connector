@@ -59,7 +59,7 @@ func (s *configServiceV2) CreateView(ctx context.Context, req *pb.CreateViewRequ
 
 	fqn := name.String()
 	now := time.Now()
-	obj := proto.Clone(req.GetView()).(*pb.LogView)
+	obj := proto.CloneOf(req.GetView())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -81,7 +81,7 @@ func (s *configServiceV2) UpdateView(ctx context.Context, req *pb.UpdateViewRequ
 		return nil, err
 	}
 	now := time.Now()
-	updated := proto.Clone(existing).(*pb.LogView)
+	updated := proto.CloneOf(existing)
 
 	// Required. The update mask applies to the resource.
 	paths := req.GetUpdateMask().GetPaths()

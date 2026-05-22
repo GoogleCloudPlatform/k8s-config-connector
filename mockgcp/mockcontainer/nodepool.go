@@ -62,7 +62,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.NodePool).(*pb.NodePool)
+	obj := proto.CloneOf(req.NodePool)
 
 	obj.SelfLink = buildSelfLink(ctx, fqn)
 
@@ -81,7 +81,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_CREATE_NODE_POOL,
-		TargetLink:    obj.SelfLink,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -343,7 +343,7 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	klog.Infof("UpdateNodePool %v", prototext.Format(req))
 
-	update := proto.Clone(req).(*pb.UpdateNodePoolRequest)
+	update := proto.CloneOf(req)
 	update.Name = ""
 
 	if update.Taints != nil {
@@ -363,7 +363,7 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	op := &pb.Operation{
 		Zone:       name.Location,
-		TargetLink: obj.SelfLink,
+		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -390,7 +390,7 @@ func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodeP
 
 	op := &pb.Operation{
 		Zone:       name.Location,
-		TargetLink: obj.SelfLink,
+		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -417,7 +417,7 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_DELETE_NODE_POOL,
-		TargetLink:    oldObj.SelfLink,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return oldObj, nil
@@ -433,6 +433,10 @@ type nodePoolName struct {
 
 func (n *nodePoolName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.Cluster + "/nodePools/" + n.NodePool
+}
+
+func (n *nodePoolName) LinkWithNumber() string {
+	return fmt.Sprintf("projects/%d/locations/%s/clusters/%s/nodePools/%s", n.Project.Number, n.Location, n.Cluster, n.NodePool)
 }
 
 func (n *nodePoolName) ClusterName() *clusterName {

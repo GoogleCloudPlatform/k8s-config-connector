@@ -47,7 +47,7 @@ func (s *schemaService) CreateSchema(ctx context.Context, req *pb.CreateSchemaRe
 	}
 	fqn := name.String()
 	now := time.Now()
-	obj := proto.Clone(req.GetSchema()).(*pb.Schema)
+	obj := proto.CloneOf(req.GetSchema())
 	obj.Name = name.String()
 	obj.RevisionId = fmt.Sprintf("r%d", now.Unix())
 	obj.RevisionCreateTime = timestamppb.New(now)

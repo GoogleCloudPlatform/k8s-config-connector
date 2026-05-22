@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeStorageHMACKeys implements StorageHMACKeyInterface
-type FakeStorageHMACKeys struct {
+// fakeStorageHMACKeys implements StorageHMACKeyInterface
+type fakeStorageHMACKeys struct {
+	*gentype.FakeClientWithList[*v1alpha1.StorageHMACKey, *v1alpha1.StorageHMACKeyList]
 	Fake *FakeStorageV1alpha1
-	ns   string
 }
 
-var storagehmackeysResource = v1alpha1.SchemeGroupVersion.WithResource("storagehmackeys")
-
-var storagehmackeysKind = v1alpha1.SchemeGroupVersion.WithKind("StorageHMACKey")
-
-// Get takes name of the storageHMACKey, and returns the corresponding storageHMACKey object, and an error if there is any.
-func (c *FakeStorageHMACKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.StorageHMACKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(storagehmackeysResource, c.ns, name), &v1alpha1.StorageHMACKey{})
-
-	if obj == nil {
-		return nil, err
+func newFakeStorageHMACKeys(fake *FakeStorageV1alpha1, namespace string) storagev1alpha1.StorageHMACKeyInterface {
+	return &fakeStorageHMACKeys{
+		gentype.NewFakeClientWithList[*v1alpha1.StorageHMACKey, *v1alpha1.StorageHMACKeyList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("storagehmackeys"),
+			v1alpha1.SchemeGroupVersion.WithKind("StorageHMACKey"),
+			func() *v1alpha1.StorageHMACKey { return &v1alpha1.StorageHMACKey{} },
+			func() *v1alpha1.StorageHMACKeyList { return &v1alpha1.StorageHMACKeyList{} },
+			func(dst, src *v1alpha1.StorageHMACKeyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.StorageHMACKeyList) []*v1alpha1.StorageHMACKey {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.StorageHMACKeyList, items []*v1alpha1.StorageHMACKey) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.StorageHMACKey), err
-}
-
-// List takes label and field selectors, and returns the list of StorageHMACKeys that match those selectors.
-func (c *FakeStorageHMACKeys) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.StorageHMACKeyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(storagehmackeysResource, storagehmackeysKind, c.ns, opts), &v1alpha1.StorageHMACKeyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.StorageHMACKeyList{ListMeta: obj.(*v1alpha1.StorageHMACKeyList).ListMeta}
-	for _, item := range obj.(*v1alpha1.StorageHMACKeyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested storageHMACKeys.
-func (c *FakeStorageHMACKeys) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(storagehmackeysResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a storageHMACKey and creates it.  Returns the server's representation of the storageHMACKey, and an error, if there is any.
-func (c *FakeStorageHMACKeys) Create(ctx context.Context, storageHMACKey *v1alpha1.StorageHMACKey, opts v1.CreateOptions) (result *v1alpha1.StorageHMACKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(storagehmackeysResource, c.ns, storageHMACKey), &v1alpha1.StorageHMACKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageHMACKey), err
-}
-
-// Update takes the representation of a storageHMACKey and updates it. Returns the server's representation of the storageHMACKey, and an error, if there is any.
-func (c *FakeStorageHMACKeys) Update(ctx context.Context, storageHMACKey *v1alpha1.StorageHMACKey, opts v1.UpdateOptions) (result *v1alpha1.StorageHMACKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(storagehmackeysResource, c.ns, storageHMACKey), &v1alpha1.StorageHMACKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageHMACKey), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeStorageHMACKeys) UpdateStatus(ctx context.Context, storageHMACKey *v1alpha1.StorageHMACKey, opts v1.UpdateOptions) (*v1alpha1.StorageHMACKey, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(storagehmackeysResource, "status", c.ns, storageHMACKey), &v1alpha1.StorageHMACKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageHMACKey), err
-}
-
-// Delete takes name of the storageHMACKey and deletes it. Returns an error if one occurs.
-func (c *FakeStorageHMACKeys) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(storagehmackeysResource, c.ns, name, opts), &v1alpha1.StorageHMACKey{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeStorageHMACKeys) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(storagehmackeysResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.StorageHMACKeyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched storageHMACKey.
-func (c *FakeStorageHMACKeys) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.StorageHMACKey, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(storagehmackeysResource, c.ns, name, pt, data, subresources...), &v1alpha1.StorageHMACKey{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.StorageHMACKey), err
 }

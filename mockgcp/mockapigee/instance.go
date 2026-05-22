@@ -86,7 +86,7 @@ func (s *instancesServer) CreateOrganizationsInstance(ctx context.Context, req *
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.OrganizationsInstance).(*pb.GoogleCloudApigeeV1Instance)
+	obj := proto.CloneOf(req.OrganizationsInstance)
 	obj.Name = req.OrganizationsInstance.Name
 	populateDefaultsForOrganizationsInstance(obj)
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -104,7 +104,7 @@ func (s *instancesServer) CreateOrganizationsInstance(ctx context.Context, req *
 			PercentDone: 100,
 		}
 		metadata.State = "FINISHED"
-		result := proto.Clone(obj).(*pb.GoogleCloudApigeeV1Instance)
+		result := proto.CloneOf(obj)
 		populateOutputsForOrganizationsInstance(result)
 		s.storage.Update(ctx, fqn, result)
 		return result, nil
@@ -161,7 +161,7 @@ func (s *instancesServer) PatchOrganizationsInstance(ctx context.Context, req *p
 	}
 	op, err := s.operations.StartLRO(ctx, name.Parent(), metadata, func() (proto.Message, error) {
 		metadata.State = "FINISHED"
-		result := proto.Clone(obj).(*pb.GoogleCloudApigeeV1Instance)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 	return op, err

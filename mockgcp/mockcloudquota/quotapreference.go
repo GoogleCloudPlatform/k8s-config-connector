@@ -62,7 +62,7 @@ func (s *CloudQuotasV1) CreateQuotaPreference(ctx context.Context, req *pb.Creat
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetQuotaPreference()).(*pb.QuotaPreference)
+	obj := proto.CloneOf(req.GetQuotaPreference())
 	obj.Name = fqn
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)

@@ -72,6 +72,10 @@ type MemorystoreInstanceSpec struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.engine_version
 	EngineVersion *string `json:"engineVersion,omitempty"`
 
+	// Optional. The maintenance version of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_version
+	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
+
 	// Optional. User-provided engine configurations for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.engine_configs
 	EngineConfigs map[string]string `json:"engineConfigs,omitempty"`
@@ -191,6 +195,14 @@ type MemorystoreInstanceObservedState struct {
 	// Optional. The cross instance replication config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
 	CrossInstanceReplicationConfig *CrossInstanceReplicationConfigObservedState `json:"crossInstanceReplicationConfig,omitempty"`
+
+	// Output only. The current version of the maintenance schedule.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.effective_maintenance_version
+	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
+
+	// Output only. The list of available maintenance versions for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.available_maintenance_versions
+	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail

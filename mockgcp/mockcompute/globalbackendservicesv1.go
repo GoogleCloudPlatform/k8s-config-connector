@@ -59,7 +59,7 @@ func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBack
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetBackendServiceResource()).(*pb.BackendService)
+	obj := proto.CloneOf(req.GetBackendServiceResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

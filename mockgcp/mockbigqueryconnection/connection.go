@@ -22,15 +22,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/connection/v1"
 )
 
 type ConnectionV1 struct {
@@ -76,7 +75,7 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.Connection).(*pb.Connection)
+	obj := proto.CloneOf(req.Connection)
 
 	obj.Name = name.String()
 	obj.CreationTime = now.Unix()
@@ -213,7 +212,7 @@ func (s *ConnectionV1) UpdateConnection(ctx context.Context, req *pb.UpdateConne
 	return obj, nil
 }
 
-func (s *ConnectionV1) DeleteConnection(ctx context.Context, req *pb.DeleteConnectionRequest) (*empty.Empty, error) {
+func (s *ConnectionV1) DeleteConnection(ctx context.Context, req *pb.DeleteConnectionRequest) (*emptypb.Empty, error) {
 	name, err := s.parseConnectionName(req.Name)
 	if err != nil {
 		return nil, err

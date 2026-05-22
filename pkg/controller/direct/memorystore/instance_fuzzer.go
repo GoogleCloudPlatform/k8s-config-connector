@@ -48,7 +48,7 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".gcs_source")
 
 	f.UnimplementedFields.Insert(".backup_collection")
-	f.UnimplementedFields.Insert(".psc_attachment_details")
+
 	f.UnimplementedFields.Insert(".maintenance_policy")
 	f.UnimplementedFields.Insert(".managed_backup_source")
 	f.UnimplementedFields.Insert(".async_instance_endpoints_deletion_enabled")
@@ -74,7 +74,9 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".endpoints")
 	f.SpecFields.Insert(".mode")
+	f.SpecFields.Insert(".maintenance_version")
 
+	// Status Fields
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".state")
@@ -82,14 +84,16 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".node_config") // NodeConfig is an output-only field in the proto, but KRM needs it for status.
 	f.StatusFields.Insert(".endpoints")
+	f.StatusFields.Insert(".effective_maintenance_version")
+	f.StatusFields.Insert(".available_maintenance_versions")
+	f.StatusField(".psc_attachment_details")
 
-	f.Unimplemented_NotYetTriaged(".available_maintenance_versions")
-	f.Unimplemented_NotYetTriaged(".effective_maintenance_version")
-	f.Unimplemented_NotYetTriaged(".maintenance_version")
 	f.Unimplemented_NotYetTriaged(".allow_fewer_zones_deployment")
 	f.Unimplemented_NotYetTriaged(".encryption_info")
 	f.Unimplemented_NotYetTriaged(".simulate_maintenance_event")
 	f.Unimplemented_NotYetTriaged(".kms_key")
-
+	f.Unimplemented_NotYetTriaged(".server_ca_pool")
+	f.Unimplemented_NotYetTriaged(".rotate_server_certificate")
+	f.Unimplemented_NotYetTriaged(".server_ca_mode")
 	return f
 }

@@ -15,9 +15,11 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeReservation
 metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computereservation-${uniqueId}
 spec:
-  description: Reservation for 2 basic machines which will become generally available for VM instances to consume.
+  description: Basic compute reservation
   zone: us-central1-a
   specificReservation:
     count: 2

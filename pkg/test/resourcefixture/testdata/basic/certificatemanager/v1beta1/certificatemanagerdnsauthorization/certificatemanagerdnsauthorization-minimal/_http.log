@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization-${uniqueId}' was not found",
+    "message": "dnsAuthorization \"projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }

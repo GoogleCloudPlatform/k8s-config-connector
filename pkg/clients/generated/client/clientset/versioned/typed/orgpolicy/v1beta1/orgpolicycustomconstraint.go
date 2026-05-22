@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/orgpolicy/v1beta1"
+	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/orgpolicy/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // OrgPolicyCustomConstraintsGetter has a method to return a OrgPolicyCustomConstraintInterface.
@@ -41,158 +40,38 @@ type OrgPolicyCustomConstraintsGetter interface {
 
 // OrgPolicyCustomConstraintInterface has methods to work with OrgPolicyCustomConstraint resources.
 type OrgPolicyCustomConstraintInterface interface {
-	Create(ctx context.Context, orgPolicyCustomConstraint *v1beta1.OrgPolicyCustomConstraint, opts v1.CreateOptions) (*v1beta1.OrgPolicyCustomConstraint, error)
-	Update(ctx context.Context, orgPolicyCustomConstraint *v1beta1.OrgPolicyCustomConstraint, opts v1.UpdateOptions) (*v1beta1.OrgPolicyCustomConstraint, error)
-	UpdateStatus(ctx context.Context, orgPolicyCustomConstraint *v1beta1.OrgPolicyCustomConstraint, opts v1.UpdateOptions) (*v1beta1.OrgPolicyCustomConstraint, error)
+	Create(ctx context.Context, orgPolicyCustomConstraint *orgpolicyv1beta1.OrgPolicyCustomConstraint, opts v1.CreateOptions) (*orgpolicyv1beta1.OrgPolicyCustomConstraint, error)
+	Update(ctx context.Context, orgPolicyCustomConstraint *orgpolicyv1beta1.OrgPolicyCustomConstraint, opts v1.UpdateOptions) (*orgpolicyv1beta1.OrgPolicyCustomConstraint, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, orgPolicyCustomConstraint *orgpolicyv1beta1.OrgPolicyCustomConstraint, opts v1.UpdateOptions) (*orgpolicyv1beta1.OrgPolicyCustomConstraint, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.OrgPolicyCustomConstraint, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.OrgPolicyCustomConstraintList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*orgpolicyv1beta1.OrgPolicyCustomConstraint, error)
+	List(ctx context.Context, opts v1.ListOptions) (*orgpolicyv1beta1.OrgPolicyCustomConstraintList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.OrgPolicyCustomConstraint, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *orgpolicyv1beta1.OrgPolicyCustomConstraint, err error)
 	OrgPolicyCustomConstraintExpansion
 }
 
 // orgPolicyCustomConstraints implements OrgPolicyCustomConstraintInterface
 type orgPolicyCustomConstraints struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*orgpolicyv1beta1.OrgPolicyCustomConstraint, *orgpolicyv1beta1.OrgPolicyCustomConstraintList]
 }
 
 // newOrgPolicyCustomConstraints returns a OrgPolicyCustomConstraints
 func newOrgPolicyCustomConstraints(c *OrgpolicyV1beta1Client, namespace string) *orgPolicyCustomConstraints {
 	return &orgPolicyCustomConstraints{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*orgpolicyv1beta1.OrgPolicyCustomConstraint, *orgpolicyv1beta1.OrgPolicyCustomConstraintList](
+			"orgpolicycustomconstraints",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *orgpolicyv1beta1.OrgPolicyCustomConstraint {
+				return &orgpolicyv1beta1.OrgPolicyCustomConstraint{}
+			},
+			func() *orgpolicyv1beta1.OrgPolicyCustomConstraintList {
+				return &orgpolicyv1beta1.OrgPolicyCustomConstraintList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the orgPolicyCustomConstraint, and returns the corresponding orgPolicyCustomConstraint object, and an error if there is any.
-func (c *orgPolicyCustomConstraints) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.OrgPolicyCustomConstraint, err error) {
-	result = &v1beta1.OrgPolicyCustomConstraint{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("orgpolicycustomconstraints").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of OrgPolicyCustomConstraints that match those selectors.
-func (c *orgPolicyCustomConstraints) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.OrgPolicyCustomConstraintList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.OrgPolicyCustomConstraintList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("orgpolicycustomconstraints").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested orgPolicyCustomConstraints.
-func (c *orgPolicyCustomConstraints) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("orgpolicycustomconstraints").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a orgPolicyCustomConstraint and creates it.  Returns the server's representation of the orgPolicyCustomConstraint, and an error, if there is any.
-func (c *orgPolicyCustomConstraints) Create(ctx context.Context, orgPolicyCustomConstraint *v1beta1.OrgPolicyCustomConstraint, opts v1.CreateOptions) (result *v1beta1.OrgPolicyCustomConstraint, err error) {
-	result = &v1beta1.OrgPolicyCustomConstraint{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("orgpolicycustomconstraints").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(orgPolicyCustomConstraint).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a orgPolicyCustomConstraint and updates it. Returns the server's representation of the orgPolicyCustomConstraint, and an error, if there is any.
-func (c *orgPolicyCustomConstraints) Update(ctx context.Context, orgPolicyCustomConstraint *v1beta1.OrgPolicyCustomConstraint, opts v1.UpdateOptions) (result *v1beta1.OrgPolicyCustomConstraint, err error) {
-	result = &v1beta1.OrgPolicyCustomConstraint{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("orgpolicycustomconstraints").
-		Name(orgPolicyCustomConstraint.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(orgPolicyCustomConstraint).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *orgPolicyCustomConstraints) UpdateStatus(ctx context.Context, orgPolicyCustomConstraint *v1beta1.OrgPolicyCustomConstraint, opts v1.UpdateOptions) (result *v1beta1.OrgPolicyCustomConstraint, err error) {
-	result = &v1beta1.OrgPolicyCustomConstraint{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("orgpolicycustomconstraints").
-		Name(orgPolicyCustomConstraint.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(orgPolicyCustomConstraint).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the orgPolicyCustomConstraint and deletes it. Returns an error if one occurs.
-func (c *orgPolicyCustomConstraints) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("orgpolicycustomconstraints").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *orgPolicyCustomConstraints) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("orgpolicycustomconstraints").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched orgPolicyCustomConstraint.
-func (c *orgPolicyCustomConstraints) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.OrgPolicyCustomConstraint, err error) {
-	result = &v1beta1.OrgPolicyCustomConstraint{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("orgpolicycustomconstraints").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

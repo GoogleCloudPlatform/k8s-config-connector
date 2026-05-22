@@ -55,7 +55,7 @@ func (r *instanceServer) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 		return nil, err
 	}
 
-	retObj := proto.Clone(obj).(*pb.Instance)
+	retObj := proto.CloneOf(obj)
 	return retObj, nil
 }
 
@@ -70,7 +70,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstance())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -94,7 +94,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		retObj := proto.Clone(obj).(*pb.Instance)
+		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
 		r.storage.Update(ctx, fqn, retObj)
 		return retObj, nil
@@ -112,6 +112,10 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 
 	if obj.EffectiveMaintenanceVersion == nil {
 		obj.EffectiveMaintenanceVersion = new("MEMORYSTORE_20260313_01_02")
+	}
+
+	if obj.AvailableMaintenanceVersions == nil {
+		obj.AvailableMaintenanceVersions = []string{"MEMORYSTORE_20260313_01_02", "MEMORYSTORE_20260313_01_03"}
 	}
 
 	if obj.EncryptionInfo == nil {
@@ -160,7 +164,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 				if autoConnection != nil {
 					obj.Endpoints[0].Connections = append(obj.Endpoints[0].Connections, &pb.Instance_ConnectionDetail{
 						Connection: &pb.Instance_ConnectionDetail_PscAutoConnection{
-							PscAutoConnection: proto.Clone(autoConnection).(*pb.PscAutoConnection),
+							PscAutoConnection: proto.CloneOf(autoConnection),
 						},
 					})
 				}
@@ -406,6 +410,8 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.TransitEncryptionMode = req.Instance.TransitEncryptionMode
 		case "zoneDistributionConfig":
 			obj.ZoneDistributionConfig = req.Instance.ZoneDistributionConfig
+		case "maintenanceVersion":
+			obj.MaintenanceVersion = req.Instance.MaintenanceVersion
 		default:
 			// Note: actual error is:
 			// googleapi: Error 400: unsupported path in fieldMask: mode. Allowed values are engine_version, automated_backup_config, shard_count, persistence_config.rdb_config.rdb_snapshot_period, acl_policy, auth_mode, persistence_config.aof_config.append_fsync, simulate_maintenance_event, deletion_protection_enabled, node_type, cross_instance_replication_config.primary_instance.instance, replica_count, persistence_config.rdb_config.rdb_snapshot_start_time, endpoints, cross_instance_replication_config, cross_instance_replication_config.instance_role, rotate_server_certificate, engine_configs, labels, persistence_config, maintenance_window, maintenance_policy, automated_backup_config.fixed_frequency_schedule.start_time.hours, maintenance_version, maintenance_policy.weekly_maintenance_window, automated_backup_config.fixed_frequency_schedule.start_time, cross_instance_replication_config.secondary_instances, automated_backup_config.automated_backup_mode, automated_backup_config.fixed_frequency_schedule, automated_backup_config.retention, persistence_config.mode
@@ -434,7 +440,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		retObj := proto.Clone(obj).(*pb.Instance)
+		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
 		retObj.UpdateTime = timestamppb.New(time.Now())
 		r.storage.Update(ctx, fqn, retObj)
@@ -515,7 +521,7 @@ func (r *instanceServer) GetBackup(ctx context.Context, req *pb.GetBackupRequest
 		return nil, err
 	}
 
-	retObj := proto.Clone(obj).(*pb.Backup)
+	retObj := proto.CloneOf(obj)
 	return retObj, nil
 }
 
@@ -608,7 +614,7 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 		metadata.EndTime = timestamppb.Now()
 		obj.State = pb.Backup_ACTIVE
 		r.storage.Update(ctx, fqn, obj)
-		return proto.Clone(instanceObj).(*pb.Instance), nil
+		return proto.CloneOf(instanceObj), nil
 	})
 }
 

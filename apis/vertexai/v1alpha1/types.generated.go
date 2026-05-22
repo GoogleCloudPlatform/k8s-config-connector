@@ -19,8 +19,116 @@
 // proto.service: google.cloud.aiplatform.v1beta1
 // resource: VertexAIFeaturestore:Featurestore
 // resource: VertexAIMetadataStore:MetadataStore
+// resource: VertexAIDataLabelingJob:DataLabelingJob
+// resource: VertexAIDeploymentResourcePool:DeploymentResourcePool
+// resource: VertexAIExampleStore:ExampleStore
 
 package v1alpha1
+
+import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec
+type AutoscalingMetricSpec struct {
+	// Required. The resource metric name.
+	//  Supported metrics:
+	//
+	//  * For Online Prediction:
+	//  * `aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle`
+	//  * `aiplatform.googleapis.com/prediction/online/cpu/utilization`
+	//  * `aiplatform.googleapis.com/prediction/online/request_count`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.metric_name
+	MetricName *string `json:"metricName,omitempty"`
+
+	// The target resource utilization in percentage (1% - 100%) for the given
+	//  metric; once the real usage deviates from the target by a certain
+	//  percentage, the machine replicas change. The default value is 60
+	//  (representing 60%) if not provided.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.target
+	Target *int32 `json:"target,omitempty"`
+
+	// Optional. The Cloud Monitoring monitored resource labels as key value pairs
+	//  used for metrics filtering. See Cloud Monitoring Labels
+	//  https://cloud.google.com/monitoring/api/v3/metric-model#generic-label-info
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.monitored_resource_labels
+	MonitoredResourceLabels map[string]string `json:"monitoredResourceLabels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.DedicatedResources
+type DedicatedResources struct {
+	// Required. Immutable. The specification of a single machine being used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.machine_spec
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// Required. Immutable. The minimum number of machine replicas that will be
+	//  always deployed on. This value must be greater than or equal to 1.
+	//
+	//  If traffic increases, it may dynamically be deployed onto more replicas,
+	//  and as traffic decreases, some of these extra replicas may be freed.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count
+	MinReplicaCount *int32 `json:"minReplicaCount,omitempty"`
+
+	// Immutable. The maximum number of replicas that may be deployed on when the
+	//  traffic against it increases. If the requested value is too large, the
+	//  deployment will error, but if deployment succeeds then the ability to scale
+	//  to that many replicas is guaranteed (barring service outages). If traffic
+	//  increases beyond what its replicas at maximum may handle, a portion of the
+	//  traffic will be dropped. If this value is not provided, will use
+	//  [min_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count]
+	//  as the default value.
+	//
+	//  The value of this field impacts the charge against Vertex CPU and GPU
+	//  quotas. Specifically, you will be charged for (max_replica_count *
+	//  number of cores in the selected machine type) and (max_replica_count *
+	//  number of GPUs per replica in the selected machine type).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.max_replica_count
+	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
+
+	// Optional. Number of required available replicas for the deployment to
+	//  succeed. This field is only needed when partial deployment/mutation is
+	//  desired. If set, the deploy/mutate operation will succeed once
+	//  available_replica_count reaches required_replica_count, and the rest of
+	//  the replicas will be retried. If not set, the default
+	//  required_replica_count will be min_replica_count.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.required_replica_count
+	RequiredReplicaCount *int32 `json:"requiredReplicaCount,omitempty"`
+
+	// Immutable. The metric specifications that overrides a resource
+	//  utilization metric (CPU utilization, accelerator's duty cycle, and so on)
+	//  target value (default to 60 if not set). At most one entry is allowed per
+	//  metric.
+	//
+	//  If
+	//  [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
+	//  is above 0, the autoscaling will be based on both CPU utilization and
+	//  accelerator's duty cycle metrics and scale up when either metrics exceeds
+	//  its target value while scale down if both metrics are under their target
+	//  value. The default target value is 60 for both metrics.
+	//
+	//  If
+	//  [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
+	//  is 0, the autoscaling will be based on CPU utilization metric only with
+	//  default target value 60 if not explicitly set.
+	//
+	//  For example, in the case of Online Prediction, if you want to override
+	//  target CPU utilization to 80, you should set
+	//  [autoscaling_metric_specs.metric_name][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.metric_name]
+	//  to `aiplatform.googleapis.com/prediction/online/cpu/utilization` and
+	//  [autoscaling_metric_specs.target][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.target]
+	//  to `80`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.autoscaling_metric_specs
+	AutoscalingMetricSpecs []AutoscalingMetricSpec `json:"autoscalingMetricSpecs,omitempty"`
+
+	// Optional. If true, schedule the deployment workload on [spot
+	//  VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.spot
+	Spot *bool `json:"spot,omitempty"`
+
+	// Optional. Immutable. If set, use DWS resource to schedule the deployment
+	//  workload. reference:
+	//  (https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler)
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DedicatedResources.flex_start
+	FlexStart *FlexStart `json:"flexStart,omitempty"`
+}
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig
 type Featurestore_OnlineServingConfig struct {
@@ -61,6 +169,76 @@ type Featurestore_OnlineServingConfig_Scaling struct {
 	CPUUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
+type FlexStart struct {
+	// The max duration of the deployment is max_runtime_duration. The
+	//  deployment will be terminated after the duration. The
+	//  max_runtime_duration can be set up to 7 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FlexStart.max_runtime_duration
+	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
+type MachineSpec struct {
+	// Immutable. The type of the machine.
+	//
+	//  See the [list of machine types supported for
+	//  prediction](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute#machine-types)
+	//
+	//  See the [list of machine types supported for custom
+	//  training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
+	//
+	//  For [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] this
+	//  field is optional, and the default value is `n1-standard-2`. For
+	//  [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or
+	//  as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
+	//  this field is required.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Immutable. The type of accelerator(s) that may be attached to the machine
+	//  as per
+	//  [accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	// The number of accelerators to attach to the machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Optional. Immutable. The Nvidia GPU partition size.
+	//
+	//  When specified, the requested accelerators will be partitioned into
+	//  smaller GPU partitions. For example, if the request is for 8 units of
+	//  NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+	//  create 8 * 7 = 56 partitioned MIG instances.
+	//
+	//  The partition size must be a value supported by the requested accelerator.
+	//  Refer to
+	//  [Nvidia GPU
+	//  Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
+	//  for the available partition sizes.
+	//
+	//  If set, the accelerator_count should be set to 1.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.gpu_partition_size
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
+	// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
+	//  available from GKE. (Example: tpu_topology: "2x2x1").
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.tpu_topology
+	TpuTopology *string `json:"tpuTopology,omitempty"`
+
+	// Optional. Immutable. The number of nodes per replica for multihost GPU
+	//  deployments.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.multihost_gpu_node_count
+	MultihostGpuNodeCount *int32 `json:"multihostGpuNodeCount,omitempty"`
+
+	// Optional. Immutable. Configuration controlling how this resource pool
+	//  consumes reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MachineSpec.reservation_affinity
+	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore.DataplexConfig
 type MetadataStore_DataplexConfig struct {
 	// Optional. Whether or not Data Lineage synchronization is enabled for
@@ -74,4 +252,227 @@ type MetadataStore_MetadataStoreState struct {
 	// The disk utilization of the MetadataStore in bytes.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.MetadataStoreState.disk_utilization_bytes
 	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
+type ReservationAffinity struct {
+	// Required. Specifies the reservation affinity type.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ReservationAffinity.reservation_affinity_type
+	ReservationAffinityType *string `json:"reservationAffinityType,omitempty"`
+
+	// Optional. Corresponds to the label key of a reservation resource. To target
+	//  a SPECIFIC_RESERVATION by name, use
+	//  `compute.googleapis.com/reservation-name` as the key and specify the name
+	//  of your reservation as its value.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ReservationAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// Optional. Corresponds to the label values of a reservation resource. This
+	//  must be the full resource name of the reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ReservationAffinity.values
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ActiveLearningConfig
+type ActiveLearningConfig struct {
+	// Max number of human labeled DataItems.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_count
+	MaxDataItemCount *int64 `json:"maxDataItemCount,omitempty"`
+
+	// Max percent of total DataItems for human labeling.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_percentage
+	MaxDataItemPercentage *int32 `json:"maxDataItemPercentage,omitempty"`
+
+	// Active learning data sampling config. For every active learning labeling
+	//  iteration, it will select a batch of data based on the sampling strategy.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.sample_config
+	SampleConfig *SampleConfig `json:"sampleConfig,omitempty"`
+
+	// CMLE training config. For every active learning labeling iteration, system
+	//  will train a machine learning model on CMLE. The trained model will be used
+	//  by data sampling algorithm to select DataItems.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.training_config
+	TrainingConfig *TrainingConfig `json:"trainingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.SampleConfig
+type SampleConfig struct {
+	// The percentage of data needed to be labeled in the first batch.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SampleConfig.initial_batch_sample_percentage
+	InitialBatchSamplePercentage *int32 `json:"initialBatchSamplePercentage,omitempty"`
+
+	// The percentage of data needed to be labeled in each following batch
+	//  (except the first batch).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SampleConfig.following_batch_sample_percentage
+	FollowingBatchSamplePercentage *int32 `json:"followingBatchSamplePercentage,omitempty"`
+
+	// Field to choose sampling strategy. Sampling strategy will decide which data
+	//  should be selected for human labeling in every batch.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SampleConfig.sample_strategy
+	SampleStrategy *string `json:"sampleStrategy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.TrainingConfig
+type TrainingConfig struct {
+	// The timeout hours for the CMLE training job, expressed in milli hours
+	//  i.e. 1,000 value in this field means 1 hour.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.TrainingConfig.timeout_training_milli_hours
+	TimeoutTrainingMilliHours *int64 `json:"timeoutTrainingMilliHours,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.ListValue
+type ListValue struct {
+	// Repeated field of dynamically typed values.
+	// +kcc:proto:field=google.protobuf.ListValue.values
+	Values []Value `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Value
+type Value struct {
+	// Represents a null value.
+	// +kcc:proto:field=google.protobuf.Value.null_value
+	NullValue *string `json:"nullValue,omitempty"`
+
+	// Represents a double value.
+	// +kcc:proto:field=google.protobuf.Value.number_value
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	// Represents a string value.
+	// +kcc:proto:field=google.protobuf.Value.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Represents a boolean value.
+	// +kcc:proto:field=google.protobuf.Value.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// Represents a structured value.
+	// +kcc:proto:field=google.protobuf.Value.struct_value
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+
+	// Represents a repeated `Value`.
+	// +kcc:proto:field=google.protobuf.Value.list_value
+	ListValue *ListValue `json:"listValue,omitempty"`
+}
+
+// +kcc:proto=google.rpc.Status
+type Status struct {
+	// The status code, which should be an enum value of
+	//  [google.rpc.Code][google.rpc.Code].
+	// +kcc:proto:field=google.rpc.Status.code
+	Code *int32 `json:"code,omitempty"`
+
+	// A developer-facing error message, which should be in English. Any
+	//  user-facing error message should be localized and sent in the
+	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+	//  by the client.
+	// +kcc:proto:field=google.rpc.Status.message
+	Message *string `json:"message,omitempty"`
+
+	// A list of messages that carry the error details.  There is a common set of
+	//  message types for APIs to use.
+	// +kcc:proto:field=google.rpc.Status.details
+	Details []Any `json:"details,omitempty"`
+}
+
+// +kcc:proto=google.type.Money
+type Money struct {
+	// The three-letter currency code defined in ISO 4217.
+	// +kcc:proto:field=google.type.Money.currency_code
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+
+	// The whole units of the amount.
+	//  For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
+	// +kcc:proto:field=google.type.Money.units
+	Units *int64 `json:"units,omitempty"`
+
+	// Number of nano (10^-9) units of the amount.
+	//  The value must be between -999,999,999 and +999,999,999 inclusive.
+	//  If `units` is positive, `nanos` must be positive or zero.
+	//  If `units` is zero, `nanos` can be positive, zero, or negative.
+	//  If `units` is negative, `nanos` must be negative or zero.
+	//  For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	// +kcc:proto:field=google.type.Money.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStore
+type ExampleStore struct {
+	// Identifier. The resource name of the ExampleStore. This is a unique
+	//  identifier. Format:
+	//  projects/{project}/locations/{location}/exampleStores/{example_store}
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Display name of the ExampleStore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Description of the ExampleStore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Example Store config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.example_store_config
+	ExampleStoreConfig *ExampleStoreConfig `json:"exampleStoreConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
+type ExampleStoreConfig struct {
+	// Required. The embedding model to be used for vector embedding.
+	//  Immutable.
+	//  Supported models:
+	//  * "textembedding-gecko@003"
+	//  * "text-embedding-004"
+	//  * "text-embedding-005"
+	//  * "text-multilingual-embedding-002"
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
+	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ExampleStore
+type ExampleStoreObservedState struct {
+	// Output only. Timestamp when this ExampleStore was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when this ExampleStore was most recently updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }

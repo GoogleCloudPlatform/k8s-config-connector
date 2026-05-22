@@ -74,8 +74,8 @@ cloud.google.com/go/essentialcontacts v1.7.7 h1:v9sO4IHFuwplaOuDnEXZFtfOrjw2bi11
 cloud.google.com/go/essentialcontacts v1.7.7/go.mod h1:ytycWAEn/aKUMRKQPMVgMrAtphEMgjbzL8vFwM3tqXs=
 cloud.google.com/go/eventarc v1.18.0 h1:8WWG1/ogInYur1NQjML6EMHQ0ZBzAdMDGlUVpLD56cI=
 cloud.google.com/go/eventarc v1.18.0/go.mod h1:/6SDoqh5+9QNUqCX4/oQcJVK16fG/snHBSXu7lrJtO8=
-cloud.google.com/go/firestore v1.21.0 h1:BhopUsx7kh6NFx77ccRsHhrtkbJUmDAxNY3uapWdjcM=
-cloud.google.com/go/firestore v1.21.0/go.mod h1:1xH6HNcnkf/gGyR8udd6pFO4Z7GWJSwLKQMx/u6UrP4=
+cloud.google.com/go/firestore v1.22.0 h1:avooeboIq37vKXobrbPUFhFBxS/c3FqmWoX0xs8dO6E=
+cloud.google.com/go/firestore v1.22.0/go.mod h1:PaM4i7i7ruALSKmlpHXXZaPObcZw0W7ie5UOPr72iTU=
 cloud.google.com/go/gkebackup v1.8.1 h1:gUgI3lZJYALZsHXE7YJOKI8bMpoAX/tF6jnNugvzT1g=
 cloud.google.com/go/gkebackup v1.8.1/go.mod h1:GAaAl+O5D9uISH5MnClUop2esQW4pDa2qe/95A4l7YQ=
 cloud.google.com/go/iam v1.7.0 h1:JD3zh0C6LHl16aCn5Akff0+GELdp1+4hmh6ndoFLl8U=
@@ -90,10 +90,14 @@ cloud.google.com/go/longrunning v0.9.0 h1:0EzbDEGsAvOZNbqXopgniY0w0a1phvu5IdUFq8
 cloud.google.com/go/longrunning v0.9.0/go.mod h1:pkTz846W7bF4o2SzdWJ40Hu0Re+UoNT6Q5t+igIcb8E=
 cloud.google.com/go/managedkafka v0.8.1 h1:Bd5KPCg/TkknTyHYh/tYqGhmSJmINDBK0QGL/CoBZfg=
 cloud.google.com/go/managedkafka v0.8.1/go.mod h1:avX/DyZA0vPVlhJjt0wQ4q36kh6Ex/zEpScKyWBJdhg=
-cloud.google.com/go/memorystore v0.4.0 h1:5xzg54mT4PrgXF0uQH8mig0AJNQIR8urzYAchI2zZOQ=
-cloud.google.com/go/memorystore v0.4.0/go.mod h1:RxF/Jn7cJa4Ltsms+39EnuRder4569537lUlLW3utuA=
+cloud.google.com/go/memcache v1.11.7 h1:ZDIfIMZsKKPzwdbvTMOL1il0shX24J7B9DC+sEt4Yj4=
+cloud.google.com/go/memcache v1.11.7/go.mod h1:AU1jYlUqCihxapcJ1GGMtlMWDVhzjbfUWBXqsXa4rBg=
+cloud.google.com/go/memorystore v0.9.0 h1:CPIW9v7XGjcpwJtLaJUjDohep47tI5c2zP0R3v8rldw=
+cloud.google.com/go/memorystore v0.9.0/go.mod h1:fgbTd26uERz7dvH5KklyXU9/pcNdMtjNKfEZZ6slRLA=
 cloud.google.com/go/metastore v1.14.8 h1:nfyUDD9AeKIs6btY5buQ1No0OVco20WpX9wIruL8UOA=
 cloud.google.com/go/metastore v1.14.8/go.mod h1:h1XI2LpD4ohJhQYn9TwXqKb5sVt6KSo47ft96SiFF1s=
+cloud.google.com/go/modelarmor v1.0.0 h1:vGRxxlBHRDKH9D66vfFeC2nTG4eRMNJ1DMPxa6NG3bE=
+cloud.google.com/go/modelarmor v1.0.0/go.mod h1:nrgM9UlxJvFE5NcE6NN/OJ8vI1LuJih27Hg8wq38mGQ=
 cloud.google.com/go/monitoring v1.24.3 h1:dde+gMNc0UhPZD1Azu6at2e79bfdztVDS5lvhOdsgaE=
 cloud.google.com/go/monitoring v1.24.3/go.mod h1:nYP6W0tm3N9H/bOw8am7t62YTzZY+zUeQ+Bi6+2eonI=
 cloud.google.com/go/netapp v1.12.0 h1:xzzDJuCZvP2FKXIzsM70ghTT+VcCg+nN/PgfRQKvT9M=
@@ -119,6 +123,8 @@ cloud.google.com/go/privilegedaccessmanager v0.3.1/go.mod h1:liYHa55U6nlwfca5OvJ
 cloud.google.com/go/pubsub v1.50.1 h1:fzbXpPyJnSGvWXF1jabhQeXyxdbCIkXTpjXHy7xviBM=
 cloud.google.com/go/pubsub/v2 v2.3.0 h1:DgAN907x+sP0nScYfBzneRiIhWoXcpCD8ZAut8WX9vs=
 cloud.google.com/go/pubsub/v2 v2.3.0/go.mod h1:O5f0KHG9zDheZAd3z5rlCRhxt2JQtB+t/IYLKK3Bpvw=
+cloud.google.com/go/pubsublite v1.8.2 h1:jLQozsEVr+c6tOU13vDugtnaBSUy/PD5zK6mhm+uF1Y=
+cloud.google.com/go/pubsublite v1.8.2/go.mod h1:4r8GSa9NznExjuLPEJlF1VjOPOpgf3IT6k8x/YgaOPI=
 cloud.google.com/go/recaptchaenterprise/v2 v2.21.0 h1:zHaPdgmV3LmzaUfn9Xiiqp5zE1Y16f0O8XCwERrAs2E=
 cloud.google.com/go/recaptchaenterprise/v2 v2.21.0/go.mod h1:HxQYqZC2/zl2CvKN7jJEv71vEdDi1GMGNUiZxnpiuVI=
 cloud.google.com/go/redis v1.18.3 h1:6LI8zSt+vmE3WQ7hE5GsJ13CbJBLV1qUw6B7CY31Wcw=

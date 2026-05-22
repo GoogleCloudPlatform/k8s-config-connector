@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/speech/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	speechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/speech/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeSpeechRecognizers implements SpeechRecognizerInterface
-type FakeSpeechRecognizers struct {
+// fakeSpeechRecognizers implements SpeechRecognizerInterface
+type fakeSpeechRecognizers struct {
+	*gentype.FakeClientWithList[*v1beta1.SpeechRecognizer, *v1beta1.SpeechRecognizerList]
 	Fake *FakeSpeechV1beta1
-	ns   string
 }
 
-var speechrecognizersResource = v1beta1.SchemeGroupVersion.WithResource("speechrecognizers")
-
-var speechrecognizersKind = v1beta1.SchemeGroupVersion.WithKind("SpeechRecognizer")
-
-// Get takes name of the speechRecognizer, and returns the corresponding speechRecognizer object, and an error if there is any.
-func (c *FakeSpeechRecognizers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SpeechRecognizer, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(speechrecognizersResource, c.ns, name), &v1beta1.SpeechRecognizer{})
-
-	if obj == nil {
-		return nil, err
+func newFakeSpeechRecognizers(fake *FakeSpeechV1beta1, namespace string) speechv1beta1.SpeechRecognizerInterface {
+	return &fakeSpeechRecognizers{
+		gentype.NewFakeClientWithList[*v1beta1.SpeechRecognizer, *v1beta1.SpeechRecognizerList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("speechrecognizers"),
+			v1beta1.SchemeGroupVersion.WithKind("SpeechRecognizer"),
+			func() *v1beta1.SpeechRecognizer { return &v1beta1.SpeechRecognizer{} },
+			func() *v1beta1.SpeechRecognizerList { return &v1beta1.SpeechRecognizerList{} },
+			func(dst, src *v1beta1.SpeechRecognizerList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.SpeechRecognizerList) []*v1beta1.SpeechRecognizer {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.SpeechRecognizerList, items []*v1beta1.SpeechRecognizer) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.SpeechRecognizer), err
-}
-
-// List takes label and field selectors, and returns the list of SpeechRecognizers that match those selectors.
-func (c *FakeSpeechRecognizers) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SpeechRecognizerList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(speechrecognizersResource, speechrecognizersKind, c.ns, opts), &v1beta1.SpeechRecognizerList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.SpeechRecognizerList{ListMeta: obj.(*v1beta1.SpeechRecognizerList).ListMeta}
-	for _, item := range obj.(*v1beta1.SpeechRecognizerList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested speechRecognizers.
-func (c *FakeSpeechRecognizers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(speechrecognizersResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a speechRecognizer and creates it.  Returns the server's representation of the speechRecognizer, and an error, if there is any.
-func (c *FakeSpeechRecognizers) Create(ctx context.Context, speechRecognizer *v1beta1.SpeechRecognizer, opts v1.CreateOptions) (result *v1beta1.SpeechRecognizer, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(speechrecognizersResource, c.ns, speechRecognizer), &v1beta1.SpeechRecognizer{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SpeechRecognizer), err
-}
-
-// Update takes the representation of a speechRecognizer and updates it. Returns the server's representation of the speechRecognizer, and an error, if there is any.
-func (c *FakeSpeechRecognizers) Update(ctx context.Context, speechRecognizer *v1beta1.SpeechRecognizer, opts v1.UpdateOptions) (result *v1beta1.SpeechRecognizer, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(speechrecognizersResource, c.ns, speechRecognizer), &v1beta1.SpeechRecognizer{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SpeechRecognizer), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeSpeechRecognizers) UpdateStatus(ctx context.Context, speechRecognizer *v1beta1.SpeechRecognizer, opts v1.UpdateOptions) (*v1beta1.SpeechRecognizer, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(speechrecognizersResource, "status", c.ns, speechRecognizer), &v1beta1.SpeechRecognizer{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SpeechRecognizer), err
-}
-
-// Delete takes name of the speechRecognizer and deletes it. Returns an error if one occurs.
-func (c *FakeSpeechRecognizers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(speechrecognizersResource, c.ns, name, opts), &v1beta1.SpeechRecognizer{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeSpeechRecognizers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(speechrecognizersResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.SpeechRecognizerList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched speechRecognizer.
-func (c *FakeSpeechRecognizers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SpeechRecognizer, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(speechrecognizersResource, c.ns, name, pt, data, subresources...), &v1beta1.SpeechRecognizer{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.SpeechRecognizer), err
 }

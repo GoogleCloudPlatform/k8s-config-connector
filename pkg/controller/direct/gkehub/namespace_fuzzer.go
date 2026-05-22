@@ -47,14 +47,14 @@ func fuzzGKEHubNamespace() fuzztesting.KRMFuzzer_NoProto {
 	f.StatusField(".Uid")
 	f.StatusField(".State")
 
-	f.Unimplemented_NotYetTriaged(".Name")
+	f.IdentityField(".Name")
 	f.Unimplemented_NotYetTriaged(".Scope")
-	f.Unimplemented_NotYetTriaged(".ForceSendFields")
-	f.Unimplemented_NotYetTriaged(".NullFields")
-	f.Unimplemented_NotYetTriaged(".ServerResponse")
+	f.Ignore_JSONBookkeeping(".ForceSendFields")
+	f.Ignore_JSONBookkeeping(".NullFields")
+	f.Ignore_JSONBookkeeping(".ServerResponse")
 
-	f.Unimplemented_NotYetTriaged(".State.ForceSendFields")
-	f.Unimplemented_NotYetTriaged(".State.NullFields")
+	f.Ignore_JSONBookkeeping(".State.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".State.NullFields")
 
 	return f
 }

@@ -53,7 +53,7 @@ func (s *NodeTemplatesV1) Insert(ctx context.Context, req *pb.InsertNodeTemplate
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetNodeTemplateResource()).(*pb.NodeTemplate)
+	obj := proto.CloneOf(req.GetNodeTemplateResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1alpha1"
+	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // DataprocNodeGroupsGetter has a method to return a DataprocNodeGroupInterface.
@@ -41,158 +40,34 @@ type DataprocNodeGroupsGetter interface {
 
 // DataprocNodeGroupInterface has methods to work with DataprocNodeGroup resources.
 type DataprocNodeGroupInterface interface {
-	Create(ctx context.Context, dataprocNodeGroup *v1alpha1.DataprocNodeGroup, opts v1.CreateOptions) (*v1alpha1.DataprocNodeGroup, error)
-	Update(ctx context.Context, dataprocNodeGroup *v1alpha1.DataprocNodeGroup, opts v1.UpdateOptions) (*v1alpha1.DataprocNodeGroup, error)
-	UpdateStatus(ctx context.Context, dataprocNodeGroup *v1alpha1.DataprocNodeGroup, opts v1.UpdateOptions) (*v1alpha1.DataprocNodeGroup, error)
+	Create(ctx context.Context, dataprocNodeGroup *dataprocv1alpha1.DataprocNodeGroup, opts v1.CreateOptions) (*dataprocv1alpha1.DataprocNodeGroup, error)
+	Update(ctx context.Context, dataprocNodeGroup *dataprocv1alpha1.DataprocNodeGroup, opts v1.UpdateOptions) (*dataprocv1alpha1.DataprocNodeGroup, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, dataprocNodeGroup *dataprocv1alpha1.DataprocNodeGroup, opts v1.UpdateOptions) (*dataprocv1alpha1.DataprocNodeGroup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.DataprocNodeGroup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.DataprocNodeGroupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*dataprocv1alpha1.DataprocNodeGroup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*dataprocv1alpha1.DataprocNodeGroupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataprocNodeGroup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *dataprocv1alpha1.DataprocNodeGroup, err error)
 	DataprocNodeGroupExpansion
 }
 
 // dataprocNodeGroups implements DataprocNodeGroupInterface
 type dataprocNodeGroups struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*dataprocv1alpha1.DataprocNodeGroup, *dataprocv1alpha1.DataprocNodeGroupList]
 }
 
 // newDataprocNodeGroups returns a DataprocNodeGroups
 func newDataprocNodeGroups(c *DataprocV1alpha1Client, namespace string) *dataprocNodeGroups {
 	return &dataprocNodeGroups{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*dataprocv1alpha1.DataprocNodeGroup, *dataprocv1alpha1.DataprocNodeGroupList](
+			"dataprocnodegroups",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *dataprocv1alpha1.DataprocNodeGroup { return &dataprocv1alpha1.DataprocNodeGroup{} },
+			func() *dataprocv1alpha1.DataprocNodeGroupList { return &dataprocv1alpha1.DataprocNodeGroupList{} },
+		),
 	}
-}
-
-// Get takes name of the dataprocNodeGroup, and returns the corresponding dataprocNodeGroup object, and an error if there is any.
-func (c *dataprocNodeGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataprocNodeGroup, err error) {
-	result = &v1alpha1.DataprocNodeGroup{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("dataprocnodegroups").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of DataprocNodeGroups that match those selectors.
-func (c *dataprocNodeGroups) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DataprocNodeGroupList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.DataprocNodeGroupList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("dataprocnodegroups").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested dataprocNodeGroups.
-func (c *dataprocNodeGroups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("dataprocnodegroups").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a dataprocNodeGroup and creates it.  Returns the server's representation of the dataprocNodeGroup, and an error, if there is any.
-func (c *dataprocNodeGroups) Create(ctx context.Context, dataprocNodeGroup *v1alpha1.DataprocNodeGroup, opts v1.CreateOptions) (result *v1alpha1.DataprocNodeGroup, err error) {
-	result = &v1alpha1.DataprocNodeGroup{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("dataprocnodegroups").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(dataprocNodeGroup).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a dataprocNodeGroup and updates it. Returns the server's representation of the dataprocNodeGroup, and an error, if there is any.
-func (c *dataprocNodeGroups) Update(ctx context.Context, dataprocNodeGroup *v1alpha1.DataprocNodeGroup, opts v1.UpdateOptions) (result *v1alpha1.DataprocNodeGroup, err error) {
-	result = &v1alpha1.DataprocNodeGroup{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("dataprocnodegroups").
-		Name(dataprocNodeGroup.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(dataprocNodeGroup).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *dataprocNodeGroups) UpdateStatus(ctx context.Context, dataprocNodeGroup *v1alpha1.DataprocNodeGroup, opts v1.UpdateOptions) (result *v1alpha1.DataprocNodeGroup, err error) {
-	result = &v1alpha1.DataprocNodeGroup{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("dataprocnodegroups").
-		Name(dataprocNodeGroup.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(dataprocNodeGroup).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the dataprocNodeGroup and deletes it. Returns an error if one occurs.
-func (c *dataprocNodeGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("dataprocnodegroups").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *dataprocNodeGroups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("dataprocnodegroups").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched dataprocNodeGroup.
-func (c *dataprocNodeGroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataprocNodeGroup, err error) {
-	result = &v1alpha1.DataprocNodeGroup{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("dataprocnodegroups").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

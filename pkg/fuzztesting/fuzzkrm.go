@@ -101,6 +101,11 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Etag() {
 	f.UnimplementedFields.Insert(".etag")
 }
 
+// Ignore_JSONBookkeeping marks the specified fieldPath as fields we expect to be missing, such as ServerResponse or ForceSendFields.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Ignore_JSONBookkeeping(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
 // Unimplemented_NotYetTriaged marks the specified fieldPath as not round-tripped,
 // and should be used for fields that are added by the service and where we haven't decided whether or not to implement them.
 // This should be the "starting point" for new fields added by services.
@@ -197,7 +202,7 @@ func NewFuzzTest[ProtoT proto.Message, KRMType any](protoType ProtoT, fromProto 
 func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	randStream := rand.New(rand.NewSource(seed))
 
-	p1 := proto.Clone(f.ProtoType).(ProtoT)
+	p1 := proto.CloneOf(f.ProtoType)
 	fuzz.FillWithRandom(t, randStream, p1)
 
 	ignoreFields := sets.New[string]()

@@ -32,15 +32,15 @@ type FakeStorageV1alpha1 struct {
 }
 
 func (c *FakeStorageV1alpha1) StorageFolders(namespace string) v1alpha1.StorageFolderInterface {
-	return &FakeStorageFolders{c, namespace}
+	return newFakeStorageFolders(c, namespace)
 }
 
 func (c *FakeStorageV1alpha1) StorageHMACKeys(namespace string) v1alpha1.StorageHMACKeyInterface {
-	return &FakeStorageHMACKeys{c, namespace}
+	return newFakeStorageHMACKeys(c, namespace)
 }
 
 func (c *FakeStorageV1alpha1) StorageManagedFolders(namespace string) v1alpha1.StorageManagedFolderInterface {
-	return &FakeStorageManagedFolders{c, namespace}
+	return newFakeStorageManagedFolders(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

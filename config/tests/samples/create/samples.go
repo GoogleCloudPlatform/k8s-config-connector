@@ -648,3 +648,42 @@ func sortByDescendingLen(strs []string) []string {
 	})
 	return strsCopy
 }
+
+func WaitForObservedGeneration(h *Harness, timeout time.Duration, unstructs ...*unstructured.Unstructured) {
+	var wg sync.WaitGroup
+	for _, u := range unstructs {
+		u := u
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			waitForObservedGenerationSingleResource(h, u, timeout)
+		}()
+	}
+	wg.Wait()
+}
+
+func waitForObservedGenerationSingleResource(t *Harness, u *unstructured.Unstructured, timeout time.Duration) {
+	name := k8s.GetNamespacedName(u)
+	err := wait.PollImmediate(1*time.Second, timeout, func() (done bool, err error) {
+		done = true
+		err = t.GetClient().Get(t.Ctx, name, u)
+		if err != nil {
+			if t.Ctx.Err() != nil {
+				return false, t.Ctx.Err()
+			}
+			return false, nil
+		}
+
+		objectStatus := teststatus.GetObjectStatus(t.T, u)
+		if objectStatus.ObservedGeneration == nil {
+			return false, nil
+		}
+		if *objectStatus.ObservedGeneration < objectStatus.Generation {
+			return false, nil
+		}
+		return true, nil
+	})
+	if err != nil && !wait.Interrupted(err) {
+		t.Error(fmt.Errorf("error while polling for observedGeneration on %v with name '%v': %w", u.GetKind(), u.GetName(), err))
+	}
+}

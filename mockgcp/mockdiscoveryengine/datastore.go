@@ -44,7 +44,7 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 	now := time.Now()
 
 	fqn := name.String()
-	obj := proto.Clone(req.GetDataStore()).(*pb.DataStore)
+	obj := proto.CloneOf(req.GetDataStore())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.DefaultSchemaId = "default_schema"
@@ -55,7 +55,7 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 
 	prefix := fmt.Sprintf("projects/%d/locations/%s/collections/%s", name.Project.Number, name.Location, name.Collection)
 	// Returns with no createTime
-	lroRet := proto.Clone(obj).(*pb.DataStore)
+	lroRet := proto.CloneOf(obj)
 	lroRet.CreateTime = nil
 	return s.operations.DoneLRO(ctx, prefix, nil, lroRet)
 }

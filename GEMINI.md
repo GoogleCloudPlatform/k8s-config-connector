@@ -23,6 +23,11 @@ New files should be marked "Copyright 2026 Google LLC" with the Apache 2 License
 Do not change the copyright header on existing files.
 Generated files do not need a copyright header (and it's easier not to include one because of the year problem).
 
+# Formatting
+
+Before sending a PR, you MUST run `make fmt` to ensure all code is properly formatted and passes the presubmit validations.
+You MUST also run `go vet ./...` to catch any simple compilation issues (like unused imports or missing variables).
+
 # GCP Projects and Namespaces
 
 KCC can manage resources in multiple GCP projects.  Typically a platform team will run KCC in a central "platfrom" cluster,
@@ -156,6 +161,10 @@ We have custom linters in `dev/linters`.
 # Github Issues
 
 When asked to work with github issues, use the `gh issue` tool to read/update issues.
+
+# Github Pull Requests
+
+When asked to send or update a pull request, please use the `send-pr` skill. It provides a script that handles formatting and git pushing safely.
 
 # Import Alias Convention
 

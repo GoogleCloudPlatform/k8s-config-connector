@@ -9,13 +9,13 @@ This skill outlines the steps to transition a mockgcp service from using `grpc-g
 
 ## Step 1: Stop generating protos
 
-In `mockgcp/Makefile`, remove the service from the `gen-proto-no-fixup` target. Find the line that looks like `./third_party/googleapis/mockgcp/cloud/<service_name>/v1/*.proto \` and delete it.
+In `mockgcp/Makefile`, remove the service from the `gen-proto-no-fixup` target. Find the line that looks like `./third_party/googleapis/google/cloud/<service_name>/v1/*.proto \` (or `./third_party/googleapis/mockgcp/cloud/...`) and delete it.
 
 ## Step 2: Delete generated files
 
 Delete the generated code for the service located in:
-`mockgcp/generated/mockgcp/cloud/<service_name>/`
-Run `rm -rf mockgcp/generated/mockgcp/cloud/<service_name>` to remove the `.pb.go`, `.pb.gw.go`, and `_grpc.pb.go` files for all versions.
+`mockgcp/generated/google/cloud/<service_name>/` (or `mockgcp/generated/mockgcp/cloud/<service_name>/`)
+Run `rm -rf` on the directory to remove the `.pb.go`, `.pb.gw.go`, and `_grpc.pb.go` files for all versions.
 
 ## Step 3: Update imports
 
@@ -30,20 +30,27 @@ In `mockgcp/mock<service_name>/service.go`, update the `NewHTTPMux` method.
 
 - Replace `"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"` with `"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"`
 - Remove the `httpmux.NewServeMux` call and replace it with `httptogrpc.NewGRPCMux(conn)`.
+- If the old code used `mux.RewriteError`, you should safely delete it. `httptogrpc` does not support it (and handles errors differently).
+- If the old code used `mux.RewriteHeaders`, use `mux.OverrideHeaders(func(response http.ResponseWriter) { ... })`.
 
 Example:
 
 ```go
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	grpcMux, err := httptogrpc.NewGRPCMux(conn)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	grpcMux.AddService(pb.NewMemorystoreClient(conn)) // Replace MemorystoreClient with the correct client
-	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+	mux.AddService(pb.NewMemorystoreClient(conn)) // Replace MemorystoreClient with the correct client
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
-	return grpcMux, nil
+	// Custom header handling
+	mux.OverrideHeaders(func(response http.ResponseWriter) {
+		response.Header().Del("Cache-Control")
+	})
+
+	return mux, nil
 }
 ```
 
@@ -54,3 +61,7 @@ The official client library proto types might differ slightly from the old grpc-
 - You may need to replace pointer field assignments with `new(bool)` or specific constant types.
 - Check and fix compilation errors by running `go build` or `go test` in the service directory.
 - Update `uuid` generation or default field behaviors to match the strict types in the official client.
+
+## Journaling
+
+If you discover any new patterns, edge cases, or workarounds during migration, document them in the `mockgcp/.gemini/skills/move-away-from-grpc-gateway/journal/` directory. Create a new file with a descriptive, topic-based name (e.g., `netapp_leftover_generated_files.md` or `datastream_rewriteerror_not_needed.md`) to capture the learning for future reference.

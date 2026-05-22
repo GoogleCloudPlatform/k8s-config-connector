@@ -32,11 +32,11 @@ type FakeOsconfigV1beta1 struct {
 }
 
 func (c *FakeOsconfigV1beta1) OSConfigGuestPolicies(namespace string) v1beta1.OSConfigGuestPolicyInterface {
-	return &FakeOSConfigGuestPolicies{c, namespace}
+	return newFakeOSConfigGuestPolicies(c, namespace)
 }
 
 func (c *FakeOsconfigV1beta1) OSConfigOSPolicyAssignments(namespace string) v1beta1.OSConfigOSPolicyAssignmentInterface {
-	return &FakeOSConfigOSPolicyAssignments{c, namespace}
+	return newFakeOSConfigOSPolicyAssignments(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -60,7 +60,7 @@ func (s *PrivateCAV1) CreateCertificateAuthority(ctx context.Context, req *pb.Cr
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.CertificateAuthority).(*pb.CertificateAuthority)
+	obj := proto.CloneOf(req.CertificateAuthority)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
@@ -117,10 +117,10 @@ func (s *PrivateCAV1) CreateCertificateAuthority(ctx context.Context, req *pb.Cr
 			NotBeforeTime:   obj.CreateTime,
 		}
 		if obj.Config.SubjectConfig.Subject != nil {
-			subjectDescription.Subject = proto.Clone(obj.Config.SubjectConfig.Subject).(*pb.Subject)
+			subjectDescription.Subject = proto.CloneOf(obj.Config.SubjectConfig.Subject)
 		}
 		if obj.Config.SubjectConfig.SubjectAltName != nil {
-			subjectDescription.SubjectAltName = proto.Clone(obj.Config.SubjectConfig.SubjectAltName).(*pb.SubjectAltNames)
+			subjectDescription.SubjectAltName = proto.CloneOf(obj.Config.SubjectConfig.SubjectAltName)
 		}
 		if obj.Lifetime != nil {
 			subjectDescription.Lifetime = obj.Lifetime
@@ -129,7 +129,7 @@ func (s *PrivateCAV1) CreateCertificateAuthority(ctx context.Context, req *pb.Cr
 		caDesc.SubjectDescription = subjectDescription
 	}
 	if obj.Config != nil {
-		caDesc.X509Description = proto.Clone(obj.Config.X509Config).(*pb.X509Parameters)
+		caDesc.X509Description = proto.CloneOf(obj.Config.X509Config)
 		decodedKey, _ := base64.StdEncoding.DecodeString("LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=")
 		caDesc.PublicKey = &pb.PublicKey{
 			Key: decodedKey,
