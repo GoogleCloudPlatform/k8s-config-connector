@@ -23,8 +23,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-SCRIPT_HASH=$(sha256sum "$0" | cut -d' ' -f1)
-
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
@@ -54,8 +52,7 @@ if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
     GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
 fi
 
-# We include a hash of this script in the output path, so that if we change the list of protos, we force a regeneration.
-VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}-${SCRIPT_HASH:0:8}.pb"
+VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 
 cd googleapis
 
