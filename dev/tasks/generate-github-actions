@@ -48,17 +48,26 @@ on:
     paths:
       - '**'
       - '!experiments/**'
+      - '!.agents/**'
+      - '!.gemini/**'
+      - '!hack/tools/greenfield/**'
   push:
     branches: ["master", "release-*"]
     paths:
       - '**'
       - '!experiments/**'
+      - '!.agents/**'
+      - '!.gemini/**'
+      - '!hack/tools/greenfield/**'
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
     paths:
       - '**'
       - '!experiments/**'
+      - '!.agents/**'
+      - '!.gemini/**'
+      - '!hack/tools/greenfield/**'
 
 
 jobs:
