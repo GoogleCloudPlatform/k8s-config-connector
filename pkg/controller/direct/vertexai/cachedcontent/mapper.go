@@ -15,11 +15,14 @@
 package cachedcontent
 
 import (
+	"encoding/json"
+
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	latlng "google.golang.org/genproto/googleapis/type/latlng"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 func Blob_FromProto(mapCtx *direct.MapContext, in *pb.Blob) *krm.Blob {
@@ -434,7 +437,7 @@ func RetrievalConfig_ToProto(mapCtx *direct.MapContext, in *krm.RetrievalConfig)
 	out.LanguageCode = in.LanguageCode
 	return out
 }
-func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
+func SchemaValue_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
 	if in == nil {
 		return nil
 	}
@@ -460,13 +463,13 @@ func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
 	out.MaxLength = direct.LazyPtr(in.GetMaxLength())
 	out.Pattern = direct.LazyPtr(in.GetPattern())
 	out.Example = Value_FromProto(mapCtx, in.GetExample())
-	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, Schema_FromProto)
+	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, SchemaValue_FromProto)
 	out.AdditionalProperties = Value_FromProto(mapCtx, in.GetAdditionalProperties())
 	out.Ref = direct.LazyPtr(in.GetRef())
 	// MISSING: Defs
 	return out
 }
-func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
+func SchemaValue_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
 	if in == nil {
 		return nil
 	}
@@ -492,7 +495,7 @@ func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
 	out.MaxLength = direct.ValueOf(in.MaxLength)
 	out.Pattern = direct.ValueOf(in.Pattern)
 	out.Example = Value_ToProto(mapCtx, in.Example)
-	out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, Schema_ToProto)
+	out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, SchemaValue_ToProto)
 	out.AdditionalProperties = Value_ToProto(mapCtx, in.AdditionalProperties)
 	out.Ref = direct.ValueOf(in.Ref)
 	// MISSING: Defs
@@ -868,4 +871,29 @@ func CachedContent_UsageMetadata_ToProto(mapCtx *direct.MapContext, in *krm.Cach
 	out.TextCount = direct.ValueOf(in.TextCount)
 	out.ImageCount = direct.ValueOf(in.ImageCount)
 	return out
+}
+
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) apiextensionsv1.JSON {
+	if in == nil {
+		return apiextensionsv1.JSON{}
+	}
+	krmObj := SchemaValue_FromProto(mapCtx, in)
+	b, err := json.Marshal(krmObj)
+	if err != nil {
+		mapCtx.Errorf("marshaling Schema to JSON: %v", err)
+		return apiextensionsv1.JSON{}
+	}
+	return apiextensionsv1.JSON{Raw: b}
+}
+
+func Schema_ToProto(mapCtx *direct.MapContext, in apiextensionsv1.JSON) *pb.Schema {
+	if len(in.Raw) == 0 || string(in.Raw) == "null" {
+		return nil
+	}
+	krmObj := &krm.Schema{}
+	if err := json.Unmarshal(in.Raw, krmObj); err != nil {
+		mapCtx.Errorf("unmarshaling JSON to Schema: %v", err)
+		return nil
+	}
+	return SchemaValue_ToProto(mapCtx, krmObj)
 }

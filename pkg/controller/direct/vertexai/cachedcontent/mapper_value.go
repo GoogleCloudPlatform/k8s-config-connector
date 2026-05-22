@@ -15,13 +15,15 @@
 package cachedcontent
 
 import (
+	"encoding/json"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
-func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
+func ValueValue_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
 	if in == nil {
 		return nil
 	}
@@ -52,7 +54,7 @@ func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
 	return out
 }
 
-func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
+func ValueValue_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 	if in == nil {
 		return nil
 	}
@@ -74,4 +76,29 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 		}
 	}
 	return out
+}
+
+func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) apiextensionsv1.JSON {
+	if in == nil {
+		return apiextensionsv1.JSON{}
+	}
+	krmObj := ValueValue_FromProto(mapCtx, in)
+	b, err := json.Marshal(krmObj)
+	if err != nil {
+		mapCtx.Errorf("marshaling Value to JSON: %v", err)
+		return apiextensionsv1.JSON{}
+	}
+	return apiextensionsv1.JSON{Raw: b}
+}
+
+func Value_ToProto(mapCtx *direct.MapContext, in apiextensionsv1.JSON) *structpb.Value {
+	if len(in.Raw) == 0 || string(in.Raw) == "null" {
+		return nil
+	}
+	krmObj := &krm.Value{}
+	if err := json.Unmarshal(in.Raw, krmObj); err != nil {
+		mapCtx.Errorf("unmarshaling JSON to Value: %v", err)
+		return nil
+	}
+	return ValueValue_ToProto(mapCtx, krmObj)
 }
