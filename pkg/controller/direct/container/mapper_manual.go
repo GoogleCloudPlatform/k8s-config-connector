@@ -268,26 +268,6 @@ func MasterAuth_ToProto(mapCtx *direct.MapContext, in *krm.MasterAuth) *pb.Maste
 	return out
 }
 
-func LinuxNodeConfig_HugepagesConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig_HugepagesConfig) *krm.LinuxNodeConfig_HugepagesConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LinuxNodeConfig_HugepagesConfig{}
-	out.HugepageSize2M = in.HugepageSize2M
-	out.HugepageSize1G = in.HugepageSize1G
-	return out
-}
-
-func LinuxNodeConfig_HugepagesConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig_HugepagesConfig) *pb.LinuxNodeConfig_HugepagesConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LinuxNodeConfig_HugepagesConfig{}
-	out.HugepageSize2M = in.HugepageSize2M
-	out.HugepageSize1G = in.HugepageSize1G
-	return out
-}
-
 func GPUSharingConfig_FromProto(mapCtx *direct.MapContext, in *pb.GPUSharingConfig) *krm.GPUSharingConfig {
 	if in == nil {
 		return nil
@@ -443,9 +423,6 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 		out.EnableMultiNetworking = direct.LazyPtr(nc.GetEnableMultiNetworking())
 		out.DatapathProvider = direct.Enum_FromProto[pb.DatapathProvider](mapCtx, nc.GetDatapathProvider())
 	}
-	if in.GetNodeConfig() != nil && in.GetNodeConfig().GetKubeletConfig() != nil {
-		out.PodPidsLimit = direct.LazyPtr(int(in.GetNodeConfig().GetKubeletConfig().GetPodPidsLimit()))
-	}
 
 	return out
 }
@@ -510,7 +487,7 @@ func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerCl
 	if in.DefaultMaxPodsPerNode != nil {
 		out.DefaultMaxPodsConstraint = &pb.MaxPodsConstraint{MaxPodsPerNode: int64(direct.ValueOf(in.DefaultMaxPodsPerNode))}
 	}
-	if in.EnableL4ILBSubsetting != nil || in.EnableIntranodeVisibility != nil || in.EnableCiliumClusterwideNetworkPolicy != nil || in.EnableFQDNNetworkPolicy != nil || in.PodPidsLimit != nil || in.EnableMultiNetworking != nil || in.DatapathProvider != nil {
+	if in.EnableL4ILBSubsetting != nil || in.EnableIntranodeVisibility != nil || in.EnableCiliumClusterwideNetworkPolicy != nil || in.EnableFQDNNetworkPolicy != nil || in.EnableMultiNetworking != nil || in.DatapathProvider != nil {
 		out.NetworkConfig = &pb.NetworkConfig{}
 		out.NetworkConfig.EnableL4IlbSubsetting = direct.ValueOf(in.EnableL4ILBSubsetting)
 		out.NetworkConfig.EnableIntraNodeVisibility = direct.ValueOf(in.EnableIntranodeVisibility)
@@ -518,15 +495,6 @@ func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerCl
 		out.NetworkConfig.EnableFqdnNetworkPolicy = in.EnableFQDNNetworkPolicy
 		out.NetworkConfig.EnableMultiNetworking = direct.ValueOf(in.EnableMultiNetworking)
 		out.NetworkConfig.DatapathProvider = direct.Enum_ToProto[pb.DatapathProvider](mapCtx, in.DatapathProvider)
-	}
-	if in.PodPidsLimit != nil {
-		if out.NodeConfig == nil {
-			out.NodeConfig = &pb.NodeConfig{}
-		}
-		if out.NodeConfig.KubeletConfig == nil {
-			out.NodeConfig.KubeletConfig = &pb.NodeKubeletConfig{}
-		}
-		out.NodeConfig.KubeletConfig.PodPidsLimit = int64(direct.ValueOf(in.PodPidsLimit))
 	}
 
 	return out

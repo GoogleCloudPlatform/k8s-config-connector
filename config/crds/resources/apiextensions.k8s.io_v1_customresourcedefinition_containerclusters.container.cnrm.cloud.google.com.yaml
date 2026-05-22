@@ -1299,19 +1299,6 @@ spec:
                         description: cgroupMode specifies the cgroup mode to be used
                           on the node.
                         type: string
-                      hugepagesConfig:
-                        description: HugepagesConfig specifies hugepages configuration
-                          for the node.
-                        properties:
-                          hugepageSize1G:
-                            description: Amount of 1G hugepages.
-                            format: int32
-                            type: integer
-                          hugepageSize2M:
-                            description: Amount of 2M hugepages.
-                            format: int32
-                            type: integer
-                        type: object
                       sysctls:
                         additionalProperties:
                           type: string
@@ -1650,9 +1637,6 @@ spec:
                 required:
                 - pubsub
                 type: object
-              podPidsLimit:
-                description: The pods' PIDs limit.
-                type: integer
               podSecurityPolicyConfig:
                 description: Configuration for the PodSecurityPolicy feature.
                 properties:

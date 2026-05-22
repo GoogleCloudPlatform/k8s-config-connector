@@ -1323,36 +1323,6 @@ func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig)
 	// MISSING: TransparentHugepageDefrag
 	return out
 }
-
-/* found existing non-generated mapping function "LinuxNodeConfig_HugepagesConfig_FromProto", skipping
-func LinuxNodeConfig_HugepagesConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig_HugepagesConfig) *krm.LinuxNodeConfig_HugepagesConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LinuxNodeConfig_HugepagesConfig{}
-	// MISSING: HugepageSize2m
-	// (near miss): "HugepageSize2m" vs "HugepageSize2M"
-	// MISSING: HugepageSize1g
-	// (near miss): "HugepageSize1g" vs "HugepageSize1G"
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "LinuxNodeConfig_HugepagesConfig_ToProto", skipping
-
-	func LinuxNodeConfig_HugepagesConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig_HugepagesConfig) *pb.LinuxNodeConfig_HugepagesConfig {
-		if in == nil {
-			return nil
-		}
-		out := &pb.LinuxNodeConfig_HugepagesConfig{}
-		// MISSING: HugepageSize2m
-		// (near miss): "HugepageSize2m" vs "HugepageSize2M"
-		// MISSING: HugepageSize1g
-		// (near miss): "HugepageSize1g" vs "HugepageSize1G"
-		return out
-	}
-*/
 func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
 	if in == nil {
 		return nil

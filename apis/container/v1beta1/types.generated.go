@@ -523,6 +523,19 @@ type LegacyAbac struct {
 }
 */
 
+/* unreachable type LinuxNodeConfig_HugepagesConfig
+// +kcc:proto=google.container.v1.LinuxNodeConfig.HugepagesConfig
+type LinuxNodeConfig_HugepagesConfig struct {
+	// Optional. Amount of 2M hugepages
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size2m
+	HugepageSize2m *int32 `json:"hugepageSize2m,omitempty"`
+
+	// Optional. Amount of 1G hugepages
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size1g
+	HugepageSize1g *int32 `json:"hugepageSize1g,omitempty"`
+}
+*/
+
 /* unreachable type LocalNvmeSsdBlockConfig
 // +kcc:proto=google.container.v1.LocalNvmeSsdBlockConfig
 type LocalNvmeSsdBlockConfig struct {
