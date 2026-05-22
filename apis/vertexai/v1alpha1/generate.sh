@@ -38,16 +38,19 @@ go run . generate-types \
     --service google.cloud.aiplatform.v1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
-    --resource VertexAICachedContent:CachedContent \
-    --prune-unused-types=false
-    
+    --resource VertexAICachedContent:CachedContent
 
+# Patch recursive types that break Kubernetes CRD validation
+sed -i 's/\*Schema/apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
+sed -i 's/\*Value/apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
+sed -i 's/\[\]Value/\[\]apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
+sed -i 's/\*ListValue/apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
 
 # We leave generate-mapper for v1beta1 so that `generate.sh` stays functionally the same as before
 # (even though it's broken on HEAD, we won't fix the pre-existing issue here).
-# go run . generate-mapper \
-    --service google.cloud.aiplatform.v1beta1 \
-    --api-version vertexai.cnrm.cloud.google.com/v1alpha1
+# go run . generate-mapper \\
+#     --service google.cloud.aiplatform.v1beta1 \\
+#     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
 
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds

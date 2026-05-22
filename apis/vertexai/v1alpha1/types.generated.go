@@ -57,6 +57,7 @@ type Blob struct {
 	Data []byte `json:"data,omitempty"`
 }
 
+/* unreachable type CachedContent
 // +kcc:proto=google.cloud.aiplatform.v1.CachedContent
 type CachedContent struct {
 	// Timestamp of when this resource is considered expired.
@@ -112,6 +113,7 @@ type CachedContent struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.encryption_spec
 	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.CachedContent.UsageMetadata
 type CachedContent_UsageMetadata struct {
@@ -260,7 +262,7 @@ type FunctionDeclaration struct {
 	//  required:
 	//   - param1
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.parameters
-	Parameters *Schema `json:"parameters,omitempty"`
+	Parameters apiextensionsv1.JSON `json:"parameters,omitempty"`
 
 	// Optional. Describes the parameters to the function in JSON Schema format.
 	//  The schema must describe an object where the properties are the parameters
@@ -281,20 +283,20 @@ type FunctionDeclaration struct {
 	//
 	//  This field is mutually exclusive with `parameters`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.parameters_json_schema
-	ParametersJsonSchema *Value `json:"parametersJsonSchema,omitempty"`
+	ParametersJsonSchema apiextensionsv1.JSON `json:"parametersJsonSchema,omitempty"`
 
 	// Optional. Describes the output from this function in JSON Schema format.
 	//  Reflects the Open API 3.03 Response Object. The Schema defines the type
 	//  used for the response value of the function.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.response
-	Response *Schema `json:"response,omitempty"`
+	Response apiextensionsv1.JSON `json:"response,omitempty"`
 
 	// Optional. Describes the output from this function in JSON Schema format.
 	//  The value specified by the schema is the response value of the function.
 	//
 	//  This field is mutually exclusive with `response`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.response_json_schema
-	ResponseJsonSchema *Value `json:"responseJsonSchema,omitempty"`
+	ResponseJsonSchema apiextensionsv1.JSON `json:"responseJsonSchema,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.FunctionResponse
@@ -504,12 +506,12 @@ type Schema struct {
 
 	// Optional. Default value of the data.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.default
-	Default *Value `json:"default,omitempty"`
+	Default apiextensionsv1.JSON `json:"default,omitempty"`
 
 	// Optional. SCHEMA FIELDS FOR TYPE ARRAY
 	//  Schema of the elements of Type.ARRAY.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.items
-	Items *Schema `json:"items,omitempty"`
+	Items apiextensionsv1.JSON `json:"items,omitempty"`
 
 	// Optional. Minimum number of the elements for Type.ARRAY.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.min_items
@@ -574,7 +576,7 @@ type Schema struct {
 	// Optional. Example of the object. Will only populated when the object is the
 	//  root.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.example
-	Example *Value `json:"example,omitempty"`
+	Example apiextensionsv1.JSON `json:"example,omitempty"`
 
 	// Optional. The value should be validated against any (one or more) of the
 	//  subschemas in the list.
@@ -584,7 +586,7 @@ type Schema struct {
 	// Optional. Can either be a boolean or an object; controls the presence of
 	//  additional properties.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.additional_properties
-	AdditionalProperties *Value `json:"additionalProperties,omitempty"`
+	AdditionalProperties apiextensionsv1.JSON `json:"additionalProperties,omitempty"`
 
 	// Optional. Allows indirect references between schema nodes. The value should
 	//  be a valid reference to a child of the root `defs`.
@@ -850,7 +852,7 @@ type Any struct {
 type ListValue struct {
 	// Repeated field of dynamically typed values.
 	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
+	Values []apiextensionsv1.JSON `json:"values,omitempty"`
 }
 
 // +kcc:proto=google.protobuf.Value
@@ -877,7 +879,7 @@ type Value struct {
 
 	// Represents a repeated `Value`.
 	// +kcc:proto:field=google.protobuf.Value.list_value
-	ListValue *ListValue `json:"listValue,omitempty"`
+	ListValue apiextensionsv1.JSON `json:"listValue,omitempty"`
 }
 
 // +kcc:proto=google.rpc.Status
@@ -932,6 +934,7 @@ type Money struct {
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
+/* unreachable type CachedContentObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.CachedContent
 type CachedContentObservedState struct {
 	// Output only. Creation time of the cache entry.
@@ -946,3 +949,4 @@ type CachedContentObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.usage_metadata
 	UsageMetadata *CachedContent_UsageMetadata `json:"usageMetadata,omitempty"`
 }
+*/
