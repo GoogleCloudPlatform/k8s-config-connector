@@ -1,5 +1,5 @@
 ---
-name: Direct New Resource Types
+name: Greenfield New Resource Types
 description: Identifies missing GCP resources from protos and creates tasks to implement their initial types, CRDs, and IdentityV2.
 schedule: "@daily"
 ---
