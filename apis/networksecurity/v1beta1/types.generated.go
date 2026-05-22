@@ -18,6 +18,7 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.networksecurity.v1beta1
 // resource: NetworkSecurityAuthorizationPolicy:AuthorizationPolicy
+// resource: NetworkSecurityClientTLSPolicy:ClientTlsPolicy
 
 package v1beta1
 
