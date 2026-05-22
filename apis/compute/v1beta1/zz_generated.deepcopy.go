@@ -850,11 +850,6 @@ func (in *ComputeHealthCheckStatus) DeepCopyInto(out *ComputeHealthCheckStatus) 
 		*out = new(int64)
 		**out = **in
 	}
-	if in.ExternalRef != nil {
-		in, out := &in.ExternalRef, &out.ExternalRef
-		*out = new(string)
-		**out = **in
-	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)
