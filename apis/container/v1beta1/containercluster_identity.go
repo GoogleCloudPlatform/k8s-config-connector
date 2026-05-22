@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -29,7 +30,8 @@ var (
 	_ identity.Resource   = &ContainerCluster{}
 )
 
-var ContainerClusterIdentityFormat = gcpurls.Template[ContainerClusterIdentity]("container.googleapis.com", "projects/{project}/locations/{location}/clusters/{cluster}")
+var RegionalContainerClusterIdentityFormat = gcpurls.Template[ContainerClusterIdentity]("container.googleapis.com", "projects/{project}/locations/{location}/clusters/{cluster}")
+var ZonalContainerClusterIdentityFormat = gcpurls.Template[ContainerClusterIdentity]("container.googleapis.com", "projects/{project}/zones/{location}/clusters/{cluster}")
 
 // +k8s:deepcopy-gen=false
 type ContainerClusterIdentity struct {
@@ -39,56 +41,68 @@ type ContainerClusterIdentity struct {
 }
 
 func (i *ContainerClusterIdentity) String() string {
-	return ContainerClusterIdentityFormat.ToString(*i)
+	return RegionalContainerClusterIdentityFormat.ToString(*i)
 }
 
 func (i *ContainerClusterIdentity) FromExternal(ref string) error {
-	if parsed, match, _ := ContainerClusterIdentityFormat.Parse(ref); match {
+	if parsed, match, _ := RegionalContainerClusterIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
 	}
-	// Try zonal format
-	zonalFormat := gcpurls.Template[ContainerClusterIdentity]("container.googleapis.com", "projects/{project}/zones/{location}/clusters/{cluster}")
-	if parsed, match, _ := zonalFormat.Parse(ref); match {
+	if parsed, match, _ := ZonalContainerClusterIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
 	}
-	return fmt.Errorf("format of ContainerCluster external=%q was not known (use %s)", ref, ContainerClusterIdentityFormat.CanonicalForm())
+	return fmt.Errorf("format of ContainerCluster external=%q was not known (use %s or %s)", ref, RegionalContainerClusterIdentityFormat.CanonicalForm(), ZonalContainerClusterIdentityFormat.CanonicalForm())
 }
 
 func (i *ContainerClusterIdentity) Host() string {
-	return ContainerClusterIdentityFormat.Host()
+	return RegionalContainerClusterIdentityFormat.Host()
 }
 
 func getIdentityFromContainerClusterSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ContainerClusterIdentity, error) {
-	cluster, ok := obj.(*ContainerCluster)
-	if !ok {
-		return nil, fmt.Errorf("object is not a ContainerCluster")
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, err
 	}
 
-	resourceID := cluster.Spec.ResourceID
-	if resourceID == nil || *resourceID == "" {
-		resourceID = &cluster.Name
-	}
-
-	location := cluster.Spec.Location
-	if location == nil || *location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, err
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
+		return nil, err
 	}
 
 	identity := &ContainerClusterIdentity{
 		Project:  projectID,
-		Location: *location,
-		Cluster:  *resourceID,
+		Location: location,
+		Cluster:  resourceID,
 	}
 	return identity, nil
 }
 
 func (obj *ContainerCluster) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	return getIdentityFromContainerClusterSpec(ctx, reader, obj)
+	specIdentity, err := getIdentityFromContainerClusterSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusIdentity := &ContainerClusterIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ContainerCluster identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }

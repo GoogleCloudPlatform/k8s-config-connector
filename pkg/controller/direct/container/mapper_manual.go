@@ -360,7 +360,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	}
 	out := &krm.ContainerClusterSpec{}
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.InitialNodeCount = direct.LazyPtr(in.GetInitialNodeCount())
+	out.InitialNodeCount = direct.LazyPtr(int(in.GetInitialNodeCount()))
 	out.NodeConfig = NodeConfig_FromProto(mapCtx, in.GetNodeConfig())
 	out.MasterAuth = MasterAuth_FromProto(mapCtx, in.GetMasterAuth())
 	out.LoggingService = direct.LazyPtr(in.GetLoggingService())
@@ -433,7 +433,7 @@ func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerCl
 	}
 	out := &pb.Cluster{}
 	out.Description = direct.ValueOf(in.Description)
-	out.InitialNodeCount = direct.ValueOf(in.InitialNodeCount)
+	out.InitialNodeCount = int32(direct.ValueOf(in.InitialNodeCount))
 	out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
 	out.MasterAuth = MasterAuth_ToProto(mapCtx, in.MasterAuth)
 	out.LoggingService = direct.ValueOf(in.LoggingService)

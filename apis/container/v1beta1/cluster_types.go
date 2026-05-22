@@ -372,19 +372,19 @@ type EphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	// +required
 	// +kcc:proto:field=google.container.v1.NodeConfig.EphemeralStorageConfig.local_ssd_count
-	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int `json:"localSsdCount,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.EphemeralStorageLocalSsdConfig
 type EphemeralStorageLocalSsdConfig struct {
 	/* Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces. */
 	// +kcc:proto:field=google.container.v1.EphemeralStorageLocalSsdConfig.data_cache_count
-	DataCacheCount *int32 `json:"dataCacheCount,omitempty"`
+	DataCacheCount *int `json:"dataCacheCount,omitempty"`
 
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	// +required
 	// +kcc:proto:field=google.container.v1.EphemeralStorageLocalSsdConfig.local_ssd_count
-	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int `json:"localSsdCount,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.MaintenanceExclusionOptions
@@ -651,7 +651,7 @@ type NodeConfig_LocalNvmeSsdBlockConfig struct {
 	/* Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size. */
 	// +required
 	// +kcc:proto:field=google.container.v1.NodeConfig.LocalNvmeSsdBlockConfig.local_ssd_count
-	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int `json:"localSsdCount,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.LoggingConfig
@@ -902,7 +902,7 @@ type NodeConfig struct {
 
 	/* Immutable. The number of local SSD disks to be attached to the node. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.local_ssd_count
-	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int `json:"localSsdCount,omitempty"`
 
 	/* Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.logging_config
@@ -924,7 +924,7 @@ type NodeConfig struct {
 	of this pool to run on the specified node group. This is useful
 	for running workloads on sole tenant nodes. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.node_group
-	NodeGroupRef *ComputeNodeGroupRef `json:"nodeGroupRef,omitempty"`
+	NodeGroupRef *computev1beta1.ComputeNodeGroupRef `json:"nodeGroupRef,omitempty"`
 
 	/* Immutable. The set of Google API scopes to be made available on all of the node VMs. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.oauth_scopes
@@ -1206,7 +1206,7 @@ type NodeConfig_SoleTenantConfig struct {
 type StandardRolloutPolicy struct {
 	/* Number of blue nodes to drain in a batch. */
 	// +kcc:proto:field=google.container.v1.NodePool.UpdateConfig.NodePool_UpdateConfig_BlueGreenSettings.StandardRolloutPolicy.batch_node_count
-	BatchNodeCount *int32 `json:"batchNodeCount,omitempty"`
+	BatchNodeCount *int `json:"batchNodeCount,omitempty"`
 
 	/* Percentage of the bool pool nodes to drain in a batch. The range of this field should be (0.0, 1.0]. */
 	// +kcc:proto:field=google.container.v1.NodePool.UpdateConfig.NodePool_UpdateConfig_BlueGreenSettings.StandardRolloutPolicy.batch_percentage
@@ -1255,11 +1255,11 @@ type NodePool_UpgradeSettings struct {
 
 	/* The maximum number of nodes that can be created beyond the current size of the node pool during the upgrade process. */
 	// +kcc:proto:field=google.container.v1.NodePool.NodePool_UpgradeSettings.max_surge
-	MaxSurge *int32 `json:"maxSurge,omitempty"`
+	MaxSurge *int `json:"maxSurge,omitempty"`
 
 	/* The maximum number of nodes that can be simultaneously unavailable during the upgrade process. */
 	// +kcc:proto:field=google.container.v1.NodePool.NodePool_UpgradeSettings.max_unavailable
-	MaxUnavailable *int32 `json:"maxUnavailable,omitempty"`
+	MaxUnavailable *int `json:"maxUnavailable,omitempty"`
 
 	/* Update strategy of the node pool. */
 	// +kcc:proto:field=google.container.v1.NodePool.NodePool_UpgradeSettings.strategy
@@ -1429,7 +1429,7 @@ type ContainerClusterSpec struct {
 
 	/* Immutable. The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true. */
 	// +kcc:proto:field=google.container.v1.Cluster.initial_node_count
-	InitialNodeCount *int32 `json:"initialNodeCount,omitempty"`
+	InitialNodeCount *int `json:"initialNodeCount,omitempty"`
 
 	/* Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based. */
 	// +kcc:proto:field=google.container.v1.Cluster.ip_allocation_policy
@@ -1607,6 +1607,9 @@ type PrivateClusterConfigStatus struct {
 }
 
 type ContainerClusterStatus struct {
+	/* A server-defined unique identifier for the resource. */
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* Conditions represent the latest available observations of the
 	   ContainerCluster's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
