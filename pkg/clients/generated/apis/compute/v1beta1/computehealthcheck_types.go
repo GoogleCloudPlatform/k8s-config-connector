@@ -255,16 +255,6 @@ type ComputeHealthCheckSpec struct {
 	UnhealthyThreshold *int64 `json:"unhealthyThreshold,omitempty"`
 }
 
-type HealthcheckObservedStateStatus struct {
-	/* Server-defined URL for the resource. */
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
-
-	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */
-	// +optional
-	Type *string `json:"type,omitempty"`
-}
-
 type ComputeHealthCheckStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeHealthCheck's current state. */
@@ -280,9 +270,13 @@ type ComputeHealthCheckStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ComputeHealthCheckObservedState is the state of the ComputeHealthCheck resource as most recently observed in GCP. */
+	/* Server-defined URL for the resource. */
 	// +optional
-	ObservedState *HealthcheckObservedStateStatus `json:"observedState,omitempty"`
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 // +genclient
