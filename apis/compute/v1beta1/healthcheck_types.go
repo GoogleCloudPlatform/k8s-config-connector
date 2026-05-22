@@ -379,6 +379,10 @@ type ComputeHealthCheckObservedState struct {
 	/* The type of the health check. One of HTTP, HTTPS, TCP, or SSL. */
 	// +optional
 	Type *string `json:"type,omitempty"`
+
+	/* Server-defined URL for the resource. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 
 // +genclient
