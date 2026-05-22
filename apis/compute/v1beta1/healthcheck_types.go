@@ -365,9 +365,6 @@ type ComputeHealthCheckStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	/* Server-defined URL for the resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
