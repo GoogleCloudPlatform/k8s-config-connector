@@ -26,9 +26,11 @@ var NetworkSecurityClientTLSPolicyGVK = GroupVersion.WithKind("NetworkSecurityCl
 // +kcc:spec:proto=google.cloud.networksecurity.v1beta1.ClientTlsPolicy
 type NetworkSecurityClientTLSPolicySpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
+	// +required
 	Location string `json:"location"`
 
 	// The NetworkSecurityClientTLSPolicy name. If not given, the metadata.name will be used.
