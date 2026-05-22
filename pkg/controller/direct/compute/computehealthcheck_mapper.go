@@ -222,7 +222,6 @@ func ComputeHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	out := &krm.ComputeHealthCheckStatus{}
 	out.CreationTimestamp = in.CreationTimestamp
-	out.ExternalRef = in.SelfLink
 	out.SelfLink = in.SelfLink
 	out.Type = in.Type
 	return out
@@ -234,7 +233,7 @@ func ComputeHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.HealthCheck{}
 	out.CreationTimestamp = in.CreationTimestamp
-	out.SelfLink = in.ExternalRef
+	out.SelfLink = in.SelfLink
 	// Type is output-only/read-only on GCP, but if ToProto needs it, we can set it.
 	out.Type = in.Type
 	return out
