@@ -327,16 +327,16 @@ type ClusterEnableK8sBetaApis struct {
 
 type ClusterEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
-	LocalSsdCount int32 `json:"localSsdCount"`
+	LocalSsdCount int64 `json:"localSsdCount"`
 }
 
 type ClusterEphemeralStorageLocalSsdConfig struct {
 	/* Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces. */
 	// +optional
-	DataCacheCount *int32 `json:"dataCacheCount,omitempty"`
+	DataCacheCount *int64 `json:"dataCacheCount,omitempty"`
 
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
-	LocalSsdCount int32 `json:"localSsdCount"`
+	LocalSsdCount int64 `json:"localSsdCount"`
 }
 
 type ClusterExclusionOptions struct {
@@ -519,7 +519,7 @@ type ClusterLinuxNodeConfig struct {
 
 type ClusterLocalNvmeSsdBlockConfig struct {
 	/* Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size. */
-	LocalSsdCount int32 `json:"localSsdCount"`
+	LocalSsdCount int64 `json:"localSsdCount"`
 }
 
 type ClusterLoggingConfig struct {
@@ -732,7 +732,7 @@ type ClusterNodeConfig struct {
 
 	/* Immutable. The number of local SSD disks to be attached to the node. */
 	// +optional
-	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int64 `json:"localSsdCount,omitempty"`
 
 	/* Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. */
 	// +optional
@@ -995,7 +995,7 @@ type ClusterSoleTenantConfig struct {
 type ClusterStandardRolloutPolicy struct {
 	/* Number of blue nodes to drain in a batch. */
 	// +optional
-	BatchNodeCount *int32 `json:"batchNodeCount,omitempty"`
+	BatchNodeCount *int64 `json:"batchNodeCount,omitempty"`
 
 	/* Percentage of the bool pool nodes to drain in a batch. The range of this field should be (0.0, 1.0]. */
 	// +optional
@@ -1034,11 +1034,11 @@ type ClusterUpgradeSettings struct {
 
 	/* The maximum number of nodes that can be created beyond the current size of the node pool during the upgrade process. */
 	// +optional
-	MaxSurge *int32 `json:"maxSurge,omitempty"`
+	MaxSurge *int64 `json:"maxSurge,omitempty"`
 
 	/* The maximum number of nodes that can be simultaneously unavailable during the upgrade process. */
 	// +optional
-	MaxUnavailable *int32 `json:"maxUnavailable,omitempty"`
+	MaxUnavailable *int64 `json:"maxUnavailable,omitempty"`
 
 	/* Update strategy of the node pool. */
 	// +optional
@@ -1204,7 +1204,7 @@ type ContainerClusterSpec struct {
 
 	/* Immutable. The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true. */
 	// +optional
-	InitialNodeCount *int32 `json:"initialNodeCount,omitempty"`
+	InitialNodeCount *int64 `json:"initialNodeCount,omitempty"`
 
 	/* Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based. */
 	// +optional
@@ -1384,6 +1384,10 @@ type ContainerClusterStatus struct {
 	/* The IP address of this cluster's Kubernetes master. */
 	// +optional
 	Endpoint *string `json:"endpoint,omitempty"`
+
+	/* A server-defined unique identifier for the resource. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* The fingerprint of the set of labels for this cluster. */
 	// +optional
