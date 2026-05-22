@@ -21,7 +21,6 @@
 [acronyms] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.addonsConfig.advancedApiOpsConfig" should be ".spec.addonsConfig.advancedAPIOpsConfig"
 [acronyms] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.addonsConfig.advancedApiOpsConfig.enabled" should be ".spec.addonsConfig.advancedAPIOpsConfig.enabled"
 [acronyms] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".status.projectId" should be ".status.projectID"
-[acronyms] crd=apihubdeployments.apihub.cnrm.cloud.google.com: kind "ApiHubDeployment" should be "APIHubDeployment"
 [acronyms] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.iosKeyRestrictions.allowedBundleIds" should be ".spec.restrictions.iosKeyRestrictions.allowedBundleIDs"
 [acronyms] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.serverKeyRestrictions.allowedIps" should be ".spec.restrictions.serverKeyRestrictions.allowedIPs"
 [acronyms] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslSettings.certificateId" should be ".spec.sslSettings.certificateID"
