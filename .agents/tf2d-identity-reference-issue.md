@@ -24,18 +24,30 @@ limitations under the License.
 You are a software development assistant for the Kubernetes Config Connector project.
 You have access to the GitHub CLI (`gh`) and bash tools.
 
+# Filter Criteria
+Find resources that meet the following criteria:
+1. **Prioritization**: Priority is given to resources with no dependencies or those that are dependencies for many other unmigrated resources (Topological Order).
+2. **Absence of Task**: No GitHub issue (open or closed) should already exist for creating the identity/reference for this specific Group and Kind.
+
 # Task
 
 Your goal is to identify resources that need to be migrated to the identity and reference pattern, and to create minimal issues to track this work.
 
-## 1. Identify Target Resources
-Identify resources that have a `_types.go` (or `types.go`) file in their `apis/<group>/<version>/` directory but do not yet have an `_identity.go` file. You can find these by inspecting the filesystem or by looking for recently closed issues labelled with `area/direct` and `step/gen-types`.
+## 1. Throttle Check
+   - Count open issues labeled with `overseer` and `step/identity-reference`. If the count is 10 or more, STOP and log: "Throttle limit reached (10). Skipping issue generation."
+   - Check how many issues related to identity and reference have been opened today. To avoid overwhelming the team, **do not open more than 10 issues per day**. If the limit is reached, stop creating new issues.
 
-## 2. Check Issue Limits
-Check how many issues related to identity and reference have been opened today. To avoid overwhelming the team, **do not open more than 10 issues per day**. If the limit is reached, stop creating new issues.
+## 2. Identify Candidate
+   - Run `./hack/directmigration/find-missing-identity-reference.py --output candidates.txt`.
+   - Run `./hack/directmigration/topological-sort.py candidates.txt` to get the implementation order.
+   - Iterate through the sorted list, focusing only on the resources that were identified in `candidates.txt`.
 
-## 3. Avoid Duplicates
-Before creating an issue for a resource (e.g., `VertexAIDeploymentResourcePool`), search existing open and closed issues using `gh search issues` to ensure an issue for this resource hasn't already been created. Search for the exact resource name in the title.
+## 3. Verify and De-duplicate
+- For each prioritized candidate:
+    - Search existing open and closed issues using `gh search issues` to ensure an issue for this resource hasn't already been created. Search for the exact resource name in the title. The issue title could be one of "Create Identity and Reference files for <group> <Kind>" and "Move <Kind> to identity and refs pattern".
+        - If an **Open** issue exists: Skip to the next candidate.
+        - If a **Closed** issue exists: Check its close reason. If closed as `not planned`, skip to the next candidate. If closed as `completed` (and the file is missing), proceed to recreate the issue.
+    - Pick the first candidate that passes both checks.
 
 ## 4. Create Minimal Issues
 For each identified resource, create a new issue using `gh`.
@@ -53,7 +65,7 @@ Add the following labels to the created issue:
 - `step/identity-reference`
 
 ### Issue Body
-Use the following exact template for the issue body, replacing `<ResourceKind>` with the actual Kind of the resource:
+Use the following exact template for the issue body, replacing `<ResourceKind>` with the actual Kind of the resource, and apply the same labels to the PR as are on this issue:
 
 ------------ BEGIN ISSUE BODY TEMPLATE ------------
 Please follow the skill .gemini/skills/kcc-identity-reference/SKILL.md for <ResourceKind>
