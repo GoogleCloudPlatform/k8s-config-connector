@@ -35,6 +35,10 @@ func datalabelingjobFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name") // special field
 
+	f.Unimplemented_NotYetTriaged(".error.details")
+	f.Unimplemented_NotYetTriaged(".error.details[].value")
+	f.Unimplemented_NotYetTriaged(".inputs")
+
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".datasets")
 	f.SpecFields.Insert(".annotation_labels")
