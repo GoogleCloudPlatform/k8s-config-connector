@@ -95,24 +95,25 @@ func (m *grpcMethod) Name() string {
 }
 
 func tokenizeURLPath(u *url.URL) []string {
-        p := u.EscapedPath()
-        suffix := ""
-        if idx := strings.Index(p, ":"); idx != -1 {
-                suffix = p[idx:]
-                p = p[:idx]
-        }
-        tokens := strings.Split(strings.TrimPrefix(p, "/"), "/")
-        for i, token := range tokens {
-                unescaped, err := url.PathUnescape(token)
-                if err == nil {
-                        tokens[i] = unescaped
-                }
-        }
-        if suffix != "" {
-                tokens = append(tokens, suffix)
-        }
-        return tokens
+	p := u.EscapedPath()
+	suffix := ""
+	if idx := strings.Index(p, ":"); idx != -1 {
+		suffix = p[idx:]
+		p = p[:idx]
+	}
+	tokens := strings.Split(strings.TrimPrefix(p, "/"), "/")
+	for i, token := range tokens {
+		unescaped, err := url.PathUnescape(token)
+		if err == nil {
+			tokens[i] = unescaped
+		}
+	}
+	if suffix != "" {
+		tokens = append(tokens, suffix)
+	}
+	return tokens
 }
+
 // ServeHTTP implements http.Handler.
 // This is the primary entrypoint for HTTP requests,
 // they are decoded and mapped to GRPC method calls.
