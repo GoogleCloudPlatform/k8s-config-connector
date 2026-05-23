@@ -36,14 +36,13 @@ func fuzzBinaryAuthorizationPlatformPolicy() fuzztesting.KRMFuzzer_NoProto {
 	f.Ignore_JSONBookkeeping(".NullFields")
 	f.Ignore_JSONBookkeeping(".ServerResponse")
 
-	f.Ignore_JSONBookkeeping(".etag")
+	f.Ignore_JSONBookkeeping(".Etag")
 
-	f.SpecField(".description")
-	f.SpecField(".gke_policy")
+	f.SpecField(".Description")
+	f.SpecField(".GkePolicy")
 
-	f.StatusField(".name")
-	f.StatusField(".update_time")
-
+	f.StatusField(".Name")
+	f.StatusField(".UpdateTime")
 	// Custom filter to ignore Status/bookkeeping fields within Spec fuzzing
 	f.FilterSpec = func(in *api.PlatformPolicy) {
 		if in == nil {

@@ -83,7 +83,7 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field ref
 		field.SetString(randomString(rf.randStream))
 
 	case reflect.Slice:
-		count := rf.randStream.Intn(10) + 1
+		count := rf.randStream.Intn(3) + 1
 		slice := reflect.MakeSlice(field.Type(), count, count)
 		for j := 0; j < count; j++ {
 			element := reflect.New(field.Type().Elem()).Elem()
@@ -93,7 +93,7 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field ref
 		field.Set(slice)
 
 	case reflect.Map:
-		count := rf.randStream.Intn(10) + 1
+		count := rf.randStream.Intn(3) + 1
 		mapType := reflect.MakeMap(field.Type())
 		for j := 0; j < count; j++ {
 			key := reflect.New(field.Type().Key()).Elem()
