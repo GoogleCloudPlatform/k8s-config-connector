@@ -51,7 +51,7 @@ func (r *DiscoveryEngineEngineRef) NormalizedExternal(ctx context.Context, reade
 	}
 	// From given External
 	if r.External != "" {
-		id, err := parseDiscoveryEngineEngineExternal(r.External)
+		id, err := ParseDiscoveryEngineEngineExternal(r.External)
 		if err != nil {
 			return "", err
 		}
@@ -130,7 +130,7 @@ func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj 
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusID, err := ParseDiscoveryEngineDataStoreExternal(externalRef)
+		statusID, err := ParseDiscoveryEngineEngineExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -142,35 +142,17 @@ func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj 
 	return id, nil
 }
 
-// func (r *DiscoveryEngineEngineRef) Parent() (*DiscoveryEngineEngineParent, error) {
-// 	if r.parent != nil {
-// 		return r.parent, nil
-// 	}
-// 	if r.External != "" {
-// 		parent, _, err := parseDiscoveryEngineEngineExternal(r.External)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		return parent, nil
-// 	}
-// 	return nil, fmt.Errorf("DiscoveryEngineEngineRef not initialized from `NewDiscoveryEngineEngineRef` or `NormalizedExternal`")
-// }
-
 // DiscoveryEngineEngineID is the resolved identifier for a DiscoveryEngineEngine
 type DiscoveryEngineEngineID struct {
 	*CollectionLink
 	DataStore string
 }
 
-// func (p *DiscoveryEngineEngineParent) String() string {
-// 	return "projects/" + p.ProjectID + "/locations/" + p.Location
-// }
+func (p *DiscoveryEngineEngineID) String() string {
+	return p.CollectionLink.String() + "/engines/" + p.DataStore
+}
 
-// func asDiscoveryEngineEngineExternal(parent *DiscoveryEngineEngineParent, resourceID string) (external string) {
-// 	return parent.String() + "/engines/" + resourceID
-// }
-
-func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
+func ParseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
 	s := strings.TrimPrefix(external, "//discoveryengine.googleapis.com/")
 	s = strings.TrimPrefix(s, "/")
 	tokens := strings.Split(s, "/")
