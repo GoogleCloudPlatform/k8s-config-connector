@@ -27,7 +27,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/security/privateca/v1"
+	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
 )
 
 func (s *PrivateCAV1) GetCertificateAuthority(ctx context.Context, req *pb.GetCertificateAuthorityRequest) (*pb.CertificateAuthority, error) {
