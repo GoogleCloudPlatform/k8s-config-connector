@@ -24,10 +24,10 @@ import (
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/bigquery/biglake/apiv1/biglakepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "cloud.google.com/go/bigquery/biglake/apiv1/biglakepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -54,7 +54,6 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterMetastoreServiceServer(grpcServer, &bigLakeService{MockService: s})
-	s.operations.RegisterGRPCServices(grpcServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
