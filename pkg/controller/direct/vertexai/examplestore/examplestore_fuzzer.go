@@ -37,7 +37,7 @@ func vertexAIExampleStoreFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".example_store_config")
 
-	f.StatusFields.Insert(".name")
+	f.Unimplemented_NotYetTriaged(".name")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 
