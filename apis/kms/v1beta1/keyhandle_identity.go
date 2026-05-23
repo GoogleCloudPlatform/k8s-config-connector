@@ -116,10 +116,13 @@ func (obj *KMSKeyHandle) GetIdentity(ctx context.Context, reader client.Reader) 
 			return nil, err
 		}
 
+		if specIdentity.KeyHandle == "" && statusIdentity.Project == specIdentity.Project && statusIdentity.Location == specIdentity.Location {
+			specIdentity.KeyHandle = statusIdentity.KeyHandle
+		}
+
 		if statusIdentity.String() != specIdentity.String() {
 			return nil, fmt.Errorf("cannot change KMSKeyHandle identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-
 	return specIdentity, nil
 }
