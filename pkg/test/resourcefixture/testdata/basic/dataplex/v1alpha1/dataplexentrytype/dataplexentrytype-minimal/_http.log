@@ -14,7 +14,11 @@ GRPC /google.cloud.dataplex.v1.CatalogService/CreateEntryType
 
 {
   "entryType": {
-    "description": "Initial description"
+    "description": "Initial description",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
   },
   "entryTypeId": "dataplexentrytype-minimal-${uniqueId}",
   "parent": "projects/${projectId}/locations/us-central1"
@@ -58,6 +62,10 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Initial description",
     "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -79,6 +87,10 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Initial description",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -91,6 +103,10 @@ GRPC /google.cloud.dataplex.v1.CatalogService/UpdateEntryType
 {
   "entryType": {
     "description": "Updated description",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}"
   },
   "updateMask": "description"
@@ -134,6 +150,10 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description",
     "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -155,6 +175,10 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -175,6 +199,10 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
