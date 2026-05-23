@@ -31,7 +31,7 @@ type KMSKeyRef_OneOf struct {
 	*kmsCryptoKeyRef `json:",inline"`
 
 	// A reference to the Autokey `KMSKeyHandle`, which auto generates a crypto key.
-	KMSKeyHandleRef *kmsKeyHandleRef `json:"keyHandleRef,omitempty"`
+	KMSKeyHandleRef *KMSKeyHandleRef `json:"keyHandleRef,omitempty"`
 
 	// A reference to an externally managed KMSCryptoKey or KMSKeyHandle(AutoKey).
 	// Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}/cryptoKeys/{{keyId}}`.
@@ -63,11 +63,10 @@ func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.
 		r.External = cryptoKey
 	} else {
 		// Use KMSAutoKey
-		autoKey, err := r.KMSKeyHandleRef.normalizedExternal(ctx, reader, otherNamespace)
-		if err != nil {
+		if err := r.KMSKeyHandleRef.Normalize(ctx, reader, otherNamespace); err != nil {
 			return "", err
 		}
-		r.External = autoKey
+		r.External = r.KMSKeyHandleRef.External
 	}
 	return r.External, nil
 }
