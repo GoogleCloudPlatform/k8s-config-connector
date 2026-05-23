@@ -60,6 +60,10 @@ func (i *VertexAIDeploymentResourcePoolIdentity) Host() string {
 	return VertexAIDeploymentResourcePoolIdentityFormat.Host()
 }
 
+func NewVertexAIDeploymentResourcePoolIdentity(ctx context.Context, reader client.Reader, obj *VertexAIDeploymentResourcePool) (*VertexAIDeploymentResourcePoolIdentity, error) {
+	return getIdentityFromVertexAIDeploymentResourcePoolSpec(ctx, reader, obj)
+}
+
 func getIdentityFromVertexAIDeploymentResourcePoolSpec(ctx context.Context, reader client.Reader, obj client.Object) (*VertexAIDeploymentResourcePoolIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
