@@ -1,0 +1,3 @@
+When implementing KMSKeyHandle, I found:
+1. KMSKeyHandle has a custom reference normalization in `KMSKeyHandleRef.Normalize` which returns `status.observedState.kmsKey` (the actual generated CryptoKey URL) instead of `status.externalRef` (the KeyHandle URL). It is vital to preserve this logic so that other resources referencing `KMSKeyHandle` resolve to the generated `CryptoKey`.
+2. KMSKeyHandle has an optional `spec.resourceID` which is generated as a UUID by GCP if omitted. To support this, we read `spec.resourceID` directly inside `getIdentityFromKMSKeyHandleSpec` instead of falling back to `u.GetName()` via `refs.GetResourceID(obj)`, as using the K8s object name would result in GCP attempting to create it with that name instead of generating a UUID.
