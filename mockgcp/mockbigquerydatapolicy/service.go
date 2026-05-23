@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,34 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-service
-// http.host: datacatalog.googleapis.com
-// proto.service: google.cloud.datacatalog.v1.DataCatalog
-
-package mockdatacatalog
+package mockbigquerydatapolicy
 
 import (
 	"context"
 	"net/http"
 
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 
+	pb "cloud.google.com/go/bigquery/datapolicies/apiv1beta1/datapoliciespb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datacatalog/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-// MockService represents a mocked datacatalog service.
+// MockService represents a mocked bigquerydatapolicy service.
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
 
 	operations *operations.Operations
-
-	v1 *DataCatalogV1
 }
 
 // New creates a MockService.
@@ -49,31 +42,23 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &DataCatalogV1{MockService: s}
 	return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"datacatalog.googleapis.com"}
+	return []string{"bigquerydatapolicy.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDataCatalogServer(grpcServer, s.v1)
-	pb.RegisterPolicyTagManagerServer(grpcServer, s.v1)
+	pb.RegisterDataPolicyServiceServer(grpcServer, &DataPolicyV1Beta1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterDataCatalogHandler,
-		pb.RegisterPolicyTagManagerHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-		response.Header().Del("Cache-Control")
-	}
 
+	mux.AddService(pb.NewDataPolicyServiceClient(conn))
 	return mux, nil
 }

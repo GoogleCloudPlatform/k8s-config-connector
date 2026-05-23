@@ -1,0 +1,11 @@
+apiVersion: bigquerydatapolicy.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryDataPolicy
+metadata:
+  name: bigquerydatapolicy-min-${uniqueId}
+spec:
+  dataPolicyType: COLUMN_LEVEL_SECURITY_POLICY
+  location: us-central1
+  policyTagRef:
+    name: datacatalogpolicytag-${uniqueId}
+  projectRef:
+    external: ${projectId}

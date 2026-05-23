@@ -1,0 +1,14 @@
+apiVersion: bigquerydatapolicy.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryDataPolicy
+metadata:
+  name: bigquerydatapolicy-max-${uniqueId}
+spec:
+  resourceID: bqdp-max-${uniqueId}
+  dataPolicyType: DATA_MASKING_POLICY
+  dataMaskingPolicy:
+    predefinedExpression: ALWAYS_NULL
+  location: us-central1
+  policyTagRef:
+    name: datacatalogpolicytag-${uniqueId}
+  projectRef:
+    external: ${projectId}

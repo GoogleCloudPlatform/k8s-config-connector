@@ -32,6 +32,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake/biglakedatabase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryconnection"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydatapolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydataset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydatatransfer"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryreservation"

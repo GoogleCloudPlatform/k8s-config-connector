@@ -104,7 +104,7 @@ func NewDataPolicyIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 
 func ParseDataPolicyExternal(external string) (parent *DataPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "datapolicies" {
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || strings.ToLower(tokens[4]) != "datapolicies" {
 		return nil, "", fmt.Errorf("format of BigQueryDataPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/datapolicies/{{datapolicyID}})", external)
 	}
 	parent = &DataPolicyParent{

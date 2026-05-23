@@ -1,0 +1,357 @@
+POST https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/taxonomies?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "A collection of policy tags",
+  "displayName": "taxonomy"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "A collection of policy tags",
+  "displayName": "taxonomy",
+  "name": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "A collection of policy tags",
+  "displayName": "taxonomy",
+  "name": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id"
+}
+
+---
+
+POST https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "A policy tag normally associated with low security items",
+  "displayName": "Low security"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A policy tag normally associated with low security items",
+  "displayName": "Low security",
+  "name": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A policy tag normally associated with low security items",
+  "displayName": "Low security",
+  "name": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+---
+
+GET https://bigquerydatapolicy.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datapolicies/bqdp-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdatapolicies%2Fbqdp-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: DataPolicy projects/${projectId}/locations/us-central1/dataPolicies/bqdp-max-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquerydatapolicy.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/dataPolicies
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "dataMaskingPolicy": {
+    "predefinedExpression": 5
+  },
+  "dataPolicyId": "bqdp-max-${uniqueId}",
+  "dataPolicyType": 2,
+  "policyTag": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataMaskingPolicy": {
+    "predefinedExpression": "ALWAYS_NULL"
+  },
+  "dataPolicyId": "bqdp-max-${uniqueId}",
+  "dataPolicyType": "DATA_MASKING_POLICY",
+  "name": "projects/${projectId}/locations/us-central1/dataPolicies/bqdp-max-${uniqueId}",
+  "policyTag": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+---
+
+GET https://bigquerydatapolicy.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datapolicies/bqdp-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdatapolicies%2Fbqdp-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataMaskingPolicy": {
+    "predefinedExpression": "ALWAYS_NULL"
+  },
+  "dataPolicyId": "bqdp-max-${uniqueId}",
+  "dataPolicyType": "DATA_MASKING_POLICY",
+  "name": "projects/${projectId}/locations/us-central1/dataPolicies/bqdp-max-${uniqueId}",
+  "policyTag": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+---
+
+PATCH https://bigquerydatapolicy.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/dataPolicies/bqdp-max-${uniqueId}?updateMask=dataPolicyType%2CdataMaskingPolicy%2CpolicyTag
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: data_policy.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataPolicies%2Fbqdp-max-${uniqueId}
+
+{
+  "dataMaskingPolicy": {
+    "predefinedExpression": 3
+  },
+  "dataPolicyType": 2,
+  "name": "projects/${projectId}/locations/us-central1/dataPolicies/bqdp-max-${uniqueId}",
+  "policyTag": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataMaskingPolicy": {
+    "predefinedExpression": "SHA256"
+  },
+  "dataPolicyId": "bqdp-max-${uniqueId}",
+  "dataPolicyType": "DATA_MASKING_POLICY",
+  "name": "projects/${projectId}/locations/us-central1/dataPolicies/bqdp-max-${uniqueId}",
+  "policyTag": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+---
+
+GET https://bigquerydatapolicy.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datapolicies/bqdp-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdatapolicies%2Fbqdp-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataMaskingPolicy": {
+    "predefinedExpression": "SHA256"
+  },
+  "dataPolicyId": "bqdp-max-${uniqueId}",
+  "dataPolicyType": "DATA_MASKING_POLICY",
+  "name": "projects/${projectId}/locations/us-central1/dataPolicies/bqdp-max-${uniqueId}",
+  "policyTag": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+---
+
+DELETE https://bigquerydatapolicy.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datapolicies/bqdp-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdatapolicies%2Fbqdp-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A policy tag normally associated with low security items",
+  "displayName": "Low security",
+  "name": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id"
+}
+
+---
+
+DELETE https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id/policyTags/mock-policytag-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "A collection of policy tags",
+  "displayName": "taxonomy",
+  "name": "projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id"
+}
+
+---
+
+DELETE https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/taxonomies/mock-taxonomy-id?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
