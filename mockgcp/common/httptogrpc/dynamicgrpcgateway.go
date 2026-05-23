@@ -154,7 +154,9 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	http.Error(w, "not found", http.StatusNotFound)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte(`{"error": {"code": 404, "message": "not found", "status": "NOT_FOUND"}}`))
 }
 
 // serveHTTPMethod serves a single HTTP method mapped to a gRPC method.
