@@ -1,0 +1,50 @@
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1alpha1
+kind: BinaryAuthorizationPlatformPolicy
+metadata:
+  name: binaryauthorizationplatformpolicy-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  platform: GKE
+  description: Maximal platform policy created by KCC E2E tests
+  gkePolicy:
+    imageAllowlist:
+      allowPattern:
+        - "gcr.io/my-system/*"
+        - "us-docker.pkg.dev/my-project/*"
+    checkSets:
+      - displayName: "Core security checks"
+        scope:
+          kubernetesNamespace: "production"
+          kubernetesServiceAccountRef:
+            namespace: "production"
+            name: "default"
+        imageAllowlist:
+          allowPattern:
+            - "gcr.io/trusted-project/*"
+        checks:
+          - displayName: "Always Deny Check"
+            alwaysDeny: true
+          - displayName: "Image Freshness Check"
+            imageFreshnessCheck:
+              maxUploadAgeDays: 30
+          - displayName: "Trusted Directory Check"
+            trustedDirectoryCheck:
+              trustedDirPatterns:
+                - "gcr.io/trusted-dir/*"
+          - displayName: "Vulnerability Check"
+            vulnerabilityCheck:
+              maximumFixableSeverity: "MEDIUM"
+              maximumUnfixableSeverity: "HIGH"
+          - displayName: "Simple Signing Attestation Check"
+            simpleSigningAttestationCheck:
+              attestationAuthenticators:
+                - displayName: "Primary Signer"
+                  pkixPublicKeySet:
+                    pkixPublicKeys:
+                      - publicKeyPem: |
+                          -----BEGIN PUBLIC KEY-----
+                          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE4N9F3p8Z67g9vP7t+T6vSgW9R4zD
+                          X+oVbS1yD+K+q7jG9w7O7H5/P+0g==
+                          -----END PUBLIC KEY-----
+                        signatureAlgorithm: "ECDSA_P256_SHA256"

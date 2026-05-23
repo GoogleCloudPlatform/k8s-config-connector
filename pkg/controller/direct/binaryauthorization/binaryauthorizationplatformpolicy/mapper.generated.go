@@ -18,12 +18,15 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.binaryauthorization.v1
 
-package binaryauthorization
+package binaryauthorizationplatformpolicy
 
 import (
+	"strings"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/binaryauthorization/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/binaryauthorization/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 func AttestationAuthenticator_FromProto(mapCtx *direct.MapContext, in *api.AttestationAuthenticator) *krm.AttestationAuthenticator {
@@ -49,10 +52,8 @@ func BinaryAuthorizationPlatformPolicyObservedState_FromProto(mapCtx *direct.Map
 		return nil
 	}
 	out := &krm.BinaryAuthorizationPlatformPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: GKEPolicy
+	out.Name = direct.LazyPtr(in.Name)
+	out.UpdateTime = direct.LazyPtr(in.UpdateTime)
 	return out
 }
 func BinaryAuthorizationPlatformPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthorizationPlatformPolicyObservedState) *api.PlatformPolicy {
@@ -60,10 +61,8 @@ func BinaryAuthorizationPlatformPolicyObservedState_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &api.PlatformPolicy{}
-	// MISSING: Name
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: GKEPolicy
+	out.Name = direct.ValueOf(in.Name)
+	out.UpdateTime = direct.ValueOf(in.UpdateTime)
 	return out
 }
 func BinaryAuthorizationPlatformPolicySpec_FromProto(mapCtx *direct.MapContext, in *api.PlatformPolicy) *krm.BinaryAuthorizationPlatformPolicySpec {
@@ -71,12 +70,8 @@ func BinaryAuthorizationPlatformPolicySpec_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krm.BinaryAuthorizationPlatformPolicySpec{}
-	// MISSING: Name
 	out.Description = direct.LazyPtr(in.Description)
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: GKEPolicy
-	// (near miss): "GKEPolicy" vs "GkePolicy"
+	out.GKEPolicy = GKEPolicy_FromProto(mapCtx, in.GkePolicy)
 	return out
 }
 func BinaryAuthorizationPlatformPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthorizationPlatformPolicySpec) *api.PlatformPolicy {
@@ -84,12 +79,8 @@ func BinaryAuthorizationPlatformPolicySpec_ToProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &api.PlatformPolicy{}
-	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: GKEPolicy
-	// (near miss): "GKEPolicy" vs "GkePolicy"
+	out.GkePolicy = GKEPolicy_ToProto(mapCtx, in.GKEPolicy)
 	return out
 }
 func Check_FromProto(mapCtx *direct.MapContext, in *api.Check) *krm.Check {
@@ -289,7 +280,14 @@ func Scope_FromProto(mapCtx *direct.MapContext, in *api.Scope) *krm.Scope {
 	}
 	out := &krm.Scope{}
 	if in.KubernetesServiceAccount != "" {
-		// TODO: parse namespace:name
+		parts := strings.Split(in.KubernetesServiceAccount, ":")
+		out.KubernetesServiceAccountRef = &corev1.ObjectReference{}
+		if len(parts) == 2 {
+			out.KubernetesServiceAccountRef.Namespace = parts[0]
+			out.KubernetesServiceAccountRef.Name = parts[1]
+		} else {
+			out.KubernetesServiceAccountRef.Name = in.KubernetesServiceAccount
+		}
 	}
 	out.KubernetesNamespace = direct.LazyPtr(in.KubernetesNamespace)
 	return out

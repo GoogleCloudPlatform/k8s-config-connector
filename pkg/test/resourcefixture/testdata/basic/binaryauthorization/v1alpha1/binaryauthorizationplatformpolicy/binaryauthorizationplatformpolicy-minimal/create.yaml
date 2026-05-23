@@ -1,0 +1,9 @@
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1alpha1
+kind: BinaryAuthorizationPlatformPolicy
+metadata:
+  name: binaryauthorizationplatformpolicy-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  platform: GKE
+  description: Minimal platform policy created by KCC E2E tests
