@@ -28,7 +28,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
+	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 )
 
 type deploymentResourcePoolService struct {
