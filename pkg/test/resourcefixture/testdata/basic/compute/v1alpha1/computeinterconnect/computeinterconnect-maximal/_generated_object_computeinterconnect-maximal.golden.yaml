@@ -1,0 +1,40 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeInterconnect
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ${interconnectID}
+  namespace: ${uniqueId}
+spec:
+  adminEnabled: false
+  customerName: KCC Test Customer Updated
+  description: Test Compute Interconnect Updated
+  interconnectType: DEDICATED
+  labels:
+    env: staging
+    owner: kcc
+  linkType: LINK_TYPE_ETHERNET_10G_LR
+  location: iad-zone1-1
+  projectRef:
+    external: ${projectId}
+  requestedLinkCount: 1
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/global/interconnects/${interconnectID}
+  observedGeneration: 2
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    id: 1111111111111111
+    kind: compute#interconnect
+    operationalStatus: OS_ACTIVE
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnects/${interconnectID}
+    state: ACTIVE
