@@ -65,9 +65,14 @@ func TestConfigConnectorE2E(t *testing.T) {
 	}
 
 	// TODO: Replace with a poll for status/observedGeneration
-	time.Sleep(15 * time.Second)
-
 	newCC := &corev1beta1.ConfigConnector{}
+	for i := 0; i < 30; i++ {
+		if err := c.Get(ctx, nn, newCC); err == nil && newCC.GetCommonStatus().Healthy {
+			break
+		}
+		time.Sleep(2 * time.Second)
+	}
+
 	if err := c.Get(ctx, nn, newCC); err != nil {
 		t.Errorf("failed to get ConfigConnector: %v", err)
 	}
