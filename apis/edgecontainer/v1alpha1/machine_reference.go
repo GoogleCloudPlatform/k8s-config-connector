@@ -16,17 +16,16 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &MachineRef{}
+var _ refs.Ref = &MachineRef{}
 
 // MachineRef is a reference to an EdgeContainerMachine.
 type MachineRef struct {
@@ -41,42 +40,52 @@ type MachineRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on EdgeContainerMachine.
-// If the "External" is given in the other resource's spec.EdgeContainerMachineRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual EdgeContainerMachine object from the cluster.
-func (r *MachineRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", EdgeContainerMachineGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseMachineExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func init() {
+	refs.Register(&MachineRef{})
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *MachineRef) GetGVK() schema.GroupVersionKind {
+	return EdgeContainerMachineGVK
+}
+
+func (r *MachineRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(EdgeContainerMachineGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+}
+
+func (r *MachineRef) GetExternal() string {
+	return r.External
+}
+
+func (r *MachineRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *MachineRef) ValidateExternal(ref string) error {
+	id := &EdgeContainerMachineIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *MachineRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &EdgeContainerMachineIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *MachineRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromEdgeContainerMachineSpec(ctx, reader, u)
+		if err != nil {
+			return ""
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", EdgeContainerMachineGVK, key, err)
+		return identity.String()
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

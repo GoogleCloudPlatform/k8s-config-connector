@@ -17,100 +17,141 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// MachineIdentity is the identity of an EdgeContainerMachine.
-type MachineIdentity struct {
-	parent *MachineParent
-	id     string
+var (
+	_ identity.IdentityV2 = &EdgeContainerMachineIdentity{}
+	_ identity.Resource   = &EdgeContainerMachine{}
+)
+
+var EdgeContainerMachineIdentityFormat = gcpurls.Template[EdgeContainerMachineIdentity]("edgecontainer.googleapis.com", "projects/{project}/locations/{location}/machines/{machine}")
+
+// +k8s:deepcopy-gen=false
+type EdgeContainerMachineIdentity struct {
+	Project  string
+	Location string
+	Machine  string
 }
 
-func (i *MachineIdentity) String() string {
-	return i.parent.String() + "/machines/" + i.id
+func (i *EdgeContainerMachineIdentity) String() string {
+	return EdgeContainerMachineIdentityFormat.ToString(*i)
 }
 
-func (i *MachineIdentity) ID() string {
-	return i.id
-}
-
-func (i *MachineIdentity) Parent() *MachineParent {
-	return i.parent
-}
-
-type MachineParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *MachineParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a MachineIdentity from the Config Connector Machine object.
-func NewMachineIdentity(ctx context.Context, reader client.Reader, obj *EdgeContainerMachine) (*MachineIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
+func (i *EdgeContainerMachineIdentity) FromExternal(ref string) error {
+	parsed, match, err := EdgeContainerMachineIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of EdgeContainerMachine external=%q was not known (use %s): %w", ref, EdgeContainerMachineIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Parent.Location
-
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+	if !match {
+		return fmt.Errorf("format of EdgeContainerMachine external=%q was not known (use %s)", ref, EdgeContainerMachineIdentityFormat.CanonicalForm())
 	}
 
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseMachineExternal(externalRef)
+	*i = *parsed
+	return nil
+}
+
+func (i *EdgeContainerMachineIdentity) Host() string {
+	return EdgeContainerMachineIdentityFormat.Host()
+}
+
+func getIdentityFromEdgeContainerMachineSpec(ctx context.Context, reader client.Reader, obj client.Object) (*EdgeContainerMachineIdentity, error) {
+	u, ok := obj.(*EdgeContainerMachine)
+	var resourceID string
+	var location string
+	var projectRef *refs.ProjectRef
+	var err error
+
+	if ok {
+		resourceID = common.ValueOf(u.Spec.ResourceID)
+		if resourceID == "" {
+			resourceID = u.GetName()
+		}
+		location = u.Spec.Parent.Location
+		projectRef = u.Spec.Parent.ProjectRef
+	} else {
+		// handle unstructured
+		unstruct, ok := obj.(*unstructured.Unstructured)
+		if !ok {
+			return nil, fmt.Errorf("object is not a EdgeContainerMachine or Unstructured")
+		}
+		resourceID, _, err = unstructured.NestedString(unstruct.Object, "spec", "resourceID")
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if resourceID == "" {
+			resourceID = unstruct.GetName()
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		location, _, err = unstructured.NestedString(unstruct.Object, "spec", "location")
+		if err != nil {
+			return nil, err
 		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		// Try resolving projectRef
+		projRefMap, found, err := unstructured.NestedMap(unstruct.Object, "spec", "projectRef")
+		if err != nil {
+			return nil, err
+		}
+		if found {
+			projectRef = &refs.ProjectRef{}
+			if name, ok := projRefMap["name"].(string); ok {
+				projectRef.Name = name
+			}
+			if namespace, ok := projRefMap["namespace"].(string); ok {
+				projectRef.Namespace = namespace
+			}
+			if external, ok := projRefMap["external"].(string); ok {
+				projectRef.External = external
+			}
 		}
 	}
-	return &MachineIdentity{
-		parent: &MachineParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
+
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectRefResolved, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), projectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRefResolved.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &EdgeContainerMachineIdentity{
+		Project:  projectID,
+		Location: location,
+		Machine:  resourceID,
+	}
+	return identity, nil
 }
 
-func ParseMachineExternal(external string) (parent *MachineParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "machines" {
-		return nil, "", fmt.Errorf("format of EdgeContainerMachine external=%q was not known (use projects/{{projectID}}/locations/{{location}}/machines/{{machineID}})", external)
+func (obj *EdgeContainerMachine) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromEdgeContainerMachineSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
 	}
-	parent = &MachineParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &EdgeContainerMachineIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change EdgeContainerMachine identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }
