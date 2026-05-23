@@ -318,8 +318,6 @@ cloud.google.com/go/binaryauthorization v1.7.2/go.mod h1:kFK5fQtxEp97m92ziy+hbu+
 cloud.google.com/go/binaryauthorization v1.7.3/go.mod h1:VQ/nUGRKhrStlGr+8GMS8f6/vznYLkdK5vaKfdCIpvU=
 cloud.google.com/go/binaryauthorization v1.8.0/go.mod h1:VQ/nUGRKhrStlGr+8GMS8f6/vznYLkdK5vaKfdCIpvU=
 cloud.google.com/go/binaryauthorization v1.8.1/go.mod h1:1HVRyBerREA/nhI7yLang4Zn7vfNVA3okoAR9qYQJAQ=
-cloud.google.com/go/binaryauthorization v1.10.0 h1:YYK0BwiZv9uA6z+Ict908AykX4OBfDECMTE476OnS3A=
-cloud.google.com/go/binaryauthorization v1.10.0/go.mod h1:WOuiaQkI4PU/okwrcREjSAr2AUtjQgVe+PlrXKOmKKw=
 cloud.google.com/go/certificatemanager v1.3.0/go.mod h1:n6twGDvcUBFu9uBgt4eYvvf3sQ6My8jADcOVwHmzadg=
 cloud.google.com/go/certificatemanager v1.4.0/go.mod h1:vowpercVFyqs8ABSmrdV+GiFf2H/ch3KyudYQEMM590=
 cloud.google.com/go/certificatemanager v1.6.0/go.mod h1:3Hh64rCKjRAX8dXgRAyOcY5vQ/fE1sh8o+Mdd6KPgY8=

@@ -56,36 +56,41 @@ func fuzzBinaryAuthorizationPlatformPolicy() fuzztesting.KRMFuzzer_NoProto {
 		in.NullFields = nil
 		in.ServerResponse = googleapi.ServerResponse{}
 		if in.GkePolicy != nil {
-			in.GkePolicy.ForceSendFields = nil
-			in.GkePolicy.NullFields = nil
-			if in.GkePolicy.ImageAllowlist != nil {
-				in.GkePolicy.ImageAllowlist.ForceSendFields = nil
-				in.GkePolicy.ImageAllowlist.NullFields = nil
-			}
-			for _, cs := range in.GkePolicy.CheckSets {
-				if cs != nil {
-					cs.ForceSendFields = nil
-					cs.NullFields = nil
-					if cs.ImageAllowlist != nil {
-						cs.ImageAllowlist.ForceSendFields = nil
-						cs.ImageAllowlist.NullFields = nil
-					}
-					if cs.Scope != nil {
-						cs.Scope.ForceSendFields = nil
-						cs.Scope.NullFields = nil
-						if cs.Scope.KubernetesServiceAccount != "" {
-							parts := strings.Split(cs.Scope.KubernetesServiceAccount, ":")
-							if len(parts) == 2 {
-								if parts[0] == "" || parts[1] == "" {
-									cs.Scope.KubernetesServiceAccount = "ns:sa"
-								}
-							} else {
-								cs.Scope.KubernetesServiceAccount = "ns:" + cs.Scope.KubernetesServiceAccount
-							}
-						}
-					}
-					for _, check := range cs.Checks {
-						if check != nil {
+		        in.GkePolicy.ForceSendFields = nil
+		        in.GkePolicy.NullFields = nil
+		        if in.GkePolicy.ImageAllowlist != nil {
+		                in.GkePolicy.ImageAllowlist.ForceSendFields = nil
+		                in.GkePolicy.ImageAllowlist.NullFields = nil
+		        }
+		        if len(in.GkePolicy.CheckSets) > 1 {
+		                in.GkePolicy.CheckSets = in.GkePolicy.CheckSets[:1]
+		        }
+		        for _, cs := range in.GkePolicy.CheckSets {
+		                if cs != nil {
+		                        cs.ForceSendFields = nil
+		                        cs.NullFields = nil
+		                        if cs.ImageAllowlist != nil {
+		                                cs.ImageAllowlist.ForceSendFields = nil
+		                                cs.ImageAllowlist.NullFields = nil
+		                        }
+		                        if cs.Scope != nil {
+		                                cs.Scope.ForceSendFields = nil
+		                                cs.Scope.NullFields = nil
+		                                if cs.Scope.KubernetesServiceAccount != "" {
+		                                        parts := strings.Split(cs.Scope.KubernetesServiceAccount, ":")
+		                                        if len(parts) == 2 {
+		                                                if parts[0] == "" || parts[1] == "" {
+		                                                        cs.Scope.KubernetesServiceAccount = "ns:sa"
+		                                                }
+		                                        } else {
+		                                                cs.Scope.KubernetesServiceAccount = "ns:" + cs.Scope.KubernetesServiceAccount
+		                                        }
+		                                }
+		                        }
+		                        if len(cs.Checks) > 1 {
+		                                cs.Checks = cs.Checks[:1]
+		                        }
+		                        for _, check := range cs.Checks {						if check != nil {
 							check.ForceSendFields = nil
 							check.NullFields = nil
 							if check.ImageAllowlist != nil {
@@ -99,68 +104,82 @@ func fuzzBinaryAuthorizationPlatformPolicy() fuzztesting.KRMFuzzer_NoProto {
 								check.ImageFreshnessCheck.MaxUploadAgeDays = int64(int32(check.ImageFreshnessCheck.MaxUploadAgeDays))
 							}
 							if check.SigstoreSignatureCheck != nil {
-								check.SigstoreSignatureCheck.ForceSendFields = nil
-								check.SigstoreSignatureCheck.NullFields = nil
-								for _, sa := range check.SigstoreSignatureCheck.SigstoreAuthorities {
-									if sa != nil {
-										sa.ForceSendFields = nil
-										sa.NullFields = nil
-										if sa.PublicKeySet != nil {
-											sa.PublicKeySet.ForceSendFields = nil
-											sa.PublicKeySet.NullFields = nil
-											for _, pk := range sa.PublicKeySet.PublicKeys {
-												if pk != nil {
-													pk.ForceSendFields = nil
-													pk.NullFields = nil
-												}
-											}
-										}
-									}
-								}
+							        check.SigstoreSignatureCheck.ForceSendFields = nil
+							        check.SigstoreSignatureCheck.NullFields = nil
+							        if len(check.SigstoreSignatureCheck.SigstoreAuthorities) > 1 {
+							                check.SigstoreSignatureCheck.SigstoreAuthorities = check.SigstoreSignatureCheck.SigstoreAuthorities[:1]
+							        }
+							        for _, sa := range check.SigstoreSignatureCheck.SigstoreAuthorities {
+							                if sa != nil {
+							                       sa.ForceSendFields = nil
+							                       sa.NullFields = nil
+							                       if sa.PublicKeySet != nil {
+							                       sa.PublicKeySet.ForceSendFields = nil
+							                       sa.PublicKeySet.NullFields = nil
+							                       if len(sa.PublicKeySet.PublicKeys) > 1 {
+							                               sa.PublicKeySet.PublicKeys = sa.PublicKeySet.PublicKeys[:1]
+							                       }
+							                       for _, pk := range sa.PublicKeySet.PublicKeys {
+							                       if pk != nil {
+							                       pk.ForceSendFields = nil
+							                       pk.NullFields = nil
+							                       }
+							                       }
+							                       }
+							                }
+							        }
 							}
 							if check.SlsaCheck != nil {
-								check.SlsaCheck.ForceSendFields = nil
-								check.SlsaCheck.NullFields = nil
-								for _, rule := range check.SlsaCheck.Rules {
-									if rule != nil {
-										rule.ForceSendFields = nil
-										rule.NullFields = nil
-										if rule.AttestationSource != nil {
-											rule.AttestationSource.ForceSendFields = nil
-											rule.AttestationSource.NullFields = nil
-										}
-									}
-								}
+							        check.SlsaCheck.ForceSendFields = nil
+							        check.SlsaCheck.NullFields = nil
+							        if len(check.SlsaCheck.Rules) > 1 {
+							                check.SlsaCheck.Rules = check.SlsaCheck.Rules[:1]
+							        }
+							        for _, rule := range check.SlsaCheck.Rules {
+							                if rule != nil {
+							                       rule.ForceSendFields = nil
+							                       rule.NullFields = nil
+							                       rule.AttestationSource = nil
+							                       rule.ConfigBasedBuildRequired = false
+							                       rule.CustomConstraints = ""
+							                }
+							        }
 							}
 							if check.TrustedDirectoryCheck != nil {
-								check.TrustedDirectoryCheck.ForceSendFields = nil
-								check.TrustedDirectoryCheck.NullFields = nil
+							        check.TrustedDirectoryCheck.ForceSendFields = nil
+							        check.TrustedDirectoryCheck.NullFields = nil
 							}
 							if check.VulnerabilityCheck != nil {
-								check.VulnerabilityCheck.ForceSendFields = nil
-								check.VulnerabilityCheck.NullFields = nil
+							        check.VulnerabilityCheck.ForceSendFields = nil
+							        check.VulnerabilityCheck.NullFields = nil
 							}
 							if check.SimpleSigningAttestationCheck != nil {
-								check.SimpleSigningAttestationCheck.ForceSendFields = nil
-								check.SimpleSigningAttestationCheck.NullFields = nil
-								for _, auth := range check.SimpleSigningAttestationCheck.AttestationAuthenticators {
-									if auth != nil {
-										auth.ForceSendFields = nil
-										auth.NullFields = nil
-										if auth.PkixPublicKeySet != nil {
-											auth.PkixPublicKeySet.ForceSendFields = nil
-											auth.PkixPublicKeySet.NullFields = nil
-											for _, pk := range auth.PkixPublicKeySet.PkixPublicKeys {
-												if pk != nil {
-													pk.ForceSendFields = nil
-													pk.NullFields = nil
-												}
-											}
-										}
-									}
-								}
-							}
-						}
+							        check.SimpleSigningAttestationCheck.ForceSendFields = nil
+							        check.SimpleSigningAttestationCheck.NullFields = nil
+							        if len(check.SimpleSigningAttestationCheck.AttestationAuthenticators) > 1 {
+							                check.SimpleSigningAttestationCheck.AttestationAuthenticators = check.SimpleSigningAttestationCheck.AttestationAuthenticators[:1]
+							        }
+							        for _, auth := range check.SimpleSigningAttestationCheck.AttestationAuthenticators {
+							                if auth != nil {
+							                       auth.ForceSendFields = nil
+							                       auth.NullFields = nil
+							                       if auth.PkixPublicKeySet != nil {
+							                       auth.PkixPublicKeySet.ForceSendFields = nil
+							                       auth.PkixPublicKeySet.NullFields = nil
+							                       if len(auth.PkixPublicKeySet.PkixPublicKeys) > 1 {
+							                               auth.PkixPublicKeySet.PkixPublicKeys = auth.PkixPublicKeySet.PkixPublicKeys[:1]
+							                       }
+							                       for _, pk := range auth.PkixPublicKeySet.PkixPublicKeys {
+							                       if pk != nil {
+							                       pk.ForceSendFields = nil
+							                       pk.NullFields = nil
+							                       pk.KeyId = ""
+							                       }
+							                       }
+							                       }
+							                }
+							        }
+							}						}
 					}
 				}
 			}
