@@ -108,7 +108,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		// set http status code
 		if code, found := httptogrpc.GetStatusCode(ctx); found {
 			delete(response.Header(), "Grpc-Metadata-X-Http-Code")
-			response.WriteHeader(code)
+			// response.WriteHeader(code) // Handled by methodcall.go
 			if code == 204 {
 				// GCS sends different headers on a 204
 				response.Header().Set("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
@@ -120,16 +120,17 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	grpcMux.RewriteError = func(ctx context.Context, error *httptogrpc.HTTPError) {
 		if error.Code == http.StatusNotFound {
+			// Add default error details for NotFound
+			error.Errors = append(error.Errors, httptogrpc.HTTPErrorDetails{
+				Domain:  "global",
+				Message: error.Message,
+				Reason:  "notFound",
+			})
+
 			if strings.HasPrefix(error.Message, "bucket") {
 				error.Status = ""
 				error.Message = "The specified bucket does not exist."
-				error.Errors = []httptogrpc.HTTPErrorDetails{
-					{
-						Domain:  "global",
-						Reason:  "notFound",
-						Message: "The specified bucket does not exist.",
-					},
-				}
+				error.Errors[0].Message = "The specified bucket does not exist."
 			}
 			return
 		}

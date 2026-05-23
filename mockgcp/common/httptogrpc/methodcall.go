@@ -66,11 +66,6 @@ func (c *httpMethodCall) SendErrorResponse(err error) {
 		case codes.NotFound:
 			HTTPErrorResponse.Error.Code = http.StatusNotFound
 			HTTPErrorResponse.Error.Status = "NOT_FOUND"
-			HTTPErrorResponse.Error.Errors = append(HTTPErrorResponse.Error.Errors, HTTPErrorDetails{
-				Domain:  "global",
-				Message: HTTPErrorResponse.Error.Message,
-				Reason:  "notFound",
-			})
 		case codes.AlreadyExists:
 			HTTPErrorResponse.Error.Code = http.StatusConflict
 			HTTPErrorResponse.Error.Status = "ALREADY_EXISTS"
@@ -142,6 +137,9 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 	}
 
 	httpCode := http.StatusOK
+	if code, found := GetStatusCode(ctx); found {
+		httpCode = code
+	}
 
 	c.w.Header().Set("Content-Type", "application/json")
 
@@ -154,6 +152,11 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 		if c.grpcMethod.parentService.options.EmitUnpopulated {
 			marshalOptions.EmitUnpopulated = true
 		}
+	}
+
+	if httpCode == http.StatusNoContent {
+		c.w.WriteHeader(httpCode)
+		return
 	}
 
 	body, err := marshalOptions.Marshal(response)

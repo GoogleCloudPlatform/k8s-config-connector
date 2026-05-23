@@ -165,6 +165,29 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "not found", http.StatusNotFound)
 }
 
+type mockServerTransportStream struct {
+	headerMD  metadata.MD
+	trailerMD metadata.MD
+}
+
+func (m *mockServerTransportStream) Method() string {
+	return "mock"
+}
+
+func (m *mockServerTransportStream) SetHeader(md metadata.MD) error {
+	m.headerMD = metadata.Join(m.headerMD, md)
+	return nil
+}
+
+func (m *mockServerTransportStream) SendHeader(md metadata.MD) error {
+	return nil
+}
+
+func (m *mockServerTransportStream) SetTrailer(md metadata.MD) error {
+	m.trailerMD = metadata.Join(m.trailerMD, md)
+	return nil
+}
+
 // serveHTTPMethod serves a single HTTP method mapped to a gRPC method.
 func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method *grpcMethod, pathValues map[string]string) {
 	ctx := r.Context()
@@ -193,6 +216,9 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 
 	var headerMD metadata.MD
 	var trailerMD metadata.MD
+
+	stream := &mockServerTransportStream{}
+	ctx = grpc.NewContextWithServerTransportStream(ctx, stream)
 
 	// Build the input arguments for the gRPC method call
 	var inArgs []reflect.Value
@@ -306,8 +332,8 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 		klog.Fatalf("output format not handled, expected two output parameters")
 	}
 
-	call.headerMD = headerMD
-	call.trailerMD = trailerMD
+	call.headerMD = metadata.Join(headerMD, stream.headerMD)
+	call.trailerMD = metadata.Join(trailerMD, stream.trailerMD)
 
 	// Check if the gRPC method returned an error
 	if !out[1].IsNil() {
