@@ -26,41 +26,41 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &ApiHubApiIdentity{}
-	_ identity.Resource   = &ApiHubApi{}
+	_ identity.IdentityV2 = &APIHubApiIdentity{}
+	_ identity.Resource   = &APIHubApi{}
 )
 
-var ApiHubApiIdentityFormat = gcpurls.Template[ApiHubApiIdentity]("apihub.googleapis.com", "projects/{project}/locations/{location}/apis/{api}")
+var APIHubApiIdentityFormat = gcpurls.Template[APIHubApiIdentity]("apihub.googleapis.com", "projects/{project}/locations/{location}/apis/{api}")
 
 // +k8s:deepcopy-gen=false
-type ApiHubApiIdentity struct {
+type APIHubApiIdentity struct {
 	Project  string
 	Location string
 	Api      string
 }
 
-func (i *ApiHubApiIdentity) String() string {
-	return ApiHubApiIdentityFormat.ToString(*i)
+func (i *APIHubApiIdentity) String() string {
+	return APIHubApiIdentityFormat.ToString(*i)
 }
 
-func (i *ApiHubApiIdentity) FromExternal(ref string) error {
-	parsed, match, err := ApiHubApiIdentityFormat.Parse(ref)
+func (i *APIHubApiIdentity) FromExternal(ref string) error {
+	parsed, match, err := APIHubApiIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of ApiHubApi external=%q was not known (use %s): %w", ref, ApiHubApiIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of APIHubApi external=%q was not known (use %s): %w", ref, APIHubApiIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of ApiHubApi external=%q was not known (use %s)", ref, ApiHubApiIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of APIHubApi external=%q was not known (use %s)", ref, APIHubApiIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *ApiHubApiIdentity) Host() string {
-	return ApiHubApiIdentityFormat.Host()
+func (i *APIHubApiIdentity) Host() string {
+	return APIHubApiIdentityFormat.Host()
 }
 
-func getIdentityFromApiHubApiSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ApiHubApiIdentity, error) {
+func getIdentityFromAPIHubApiSpec(ctx context.Context, reader client.Reader, obj client.Object) (*APIHubApiIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -76,7 +76,7 @@ func getIdentityFromApiHubApiSpec(ctx context.Context, reader client.Reader, obj
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &ApiHubApiIdentity{
+	identity := &APIHubApiIdentity{
 		Project:  projectID,
 		Location: location,
 		Api:      resourceID,
@@ -84,8 +84,8 @@ func getIdentityFromApiHubApiSpec(ctx context.Context, reader client.Reader, obj
 	return identity, nil
 }
 
-func (obj *ApiHubApi) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromApiHubApiSpec(ctx, reader, obj)
+func (obj *APIHubApi) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAPIHubApiSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -94,13 +94,13 @@ func (obj *ApiHubApi) GetIdentity(ctx context.Context, reader client.Reader) (id
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &ApiHubApiIdentity{}
+		statusIdentity := &APIHubApiIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change ApiHubApi identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change APIHubApi identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 

@@ -20,18 +20,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var ApiHubApiGVK = GroupVersion.WithKind("ApiHubApi")
+var APIHubApiGVK = GroupVersion.WithKind("APIHubApi")
 
-// ApiHubApiSpec defines the desired state of ApiHubApi
+// APIHubApiSpec defines the desired state of APIHubApi
 // +kcc:spec:proto=google.cloud.apihub.v1.Api
-type ApiHubApiSpec struct {
+type APIHubApiSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
 	Location *string `json:"location"`
 
-	// The ApiHubApi name. If not given, the metadata.name will be used.
+	// The APIHubApi name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The display name of the API resource.
@@ -86,10 +86,37 @@ type ApiHubApiSpec struct {
 	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}`
 	// +kubebuilder:validation:Optional
 	SelectedVersion *string `json:"selectedVersion,omitempty"`
+
+	// Optional. The list of user defined attributes associated with the API
+	//  resource. The key is the attribute name. It will be of the format:
+	//  `projects/{project}/locations/{location}/attributes/{attribute}`.
+	// +kcc:proto:field=google.cloud.apihub.v1.Api.attributes
+	// +kubebuilder:validation:Optional
+	Attributes map[string]AttributeValues `json:"attributes,omitempty"`
+
+	// Optional. The API requirements of the API.
+	// +kcc:proto:field=google.cloud.apihub.v1.Api.api_requirements
+	// +kubebuilder:validation:Optional
+	APIRequirements *AttributeValues `json:"apiRequirements,omitempty"`
+
+	// Optional. The API functional requirements of the API.
+	// +kcc:proto:field=google.cloud.apihub.v1.Api.api_functional_requirements
+	// +kubebuilder:validation:Optional
+	APIFunctionalRequirements *AttributeValues `json:"apiFunctionalRequirements,omitempty"`
+
+	// Optional. The API technical requirements of the API.
+	// +kcc:proto:field=google.cloud.apihub.v1.Api.api_technical_requirements
+	// +kubebuilder:validation:Optional
+	APITechnicalRequirements *AttributeValues `json:"apiTechnicalRequirements,omitempty"`
+
+	// Optional. The base64-encoded fingerprint of the API resource.
+	// +kcc:proto:field=google.cloud.apihub.v1.Api.fingerprint
+	// +kubebuilder:validation:Optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
 }
 
-// ApiHubApiStatus defines the config connector machine state of ApiHubApi
-type ApiHubApiStatus struct {
+// APIHubApiStatus defines the config connector machine state of APIHubApi
+type APIHubApiStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -97,16 +124,16 @@ type ApiHubApiStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ApiHubApi resource in GCP.
+	// A unique specifier for the APIHubApi resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ApiHubApiObservedState `json:"observedState,omitempty"`
+	ObservedState *APIHubApiObservedState `json:"observedState,omitempty"`
 }
 
-// ApiHubApiObservedState is the state of the ApiHubApi resource as most recently observed in GCP.
+// APIHubApiObservedState is the state of the APIHubApi resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.apihub.v1.Api
-type ApiHubApiObservedState struct {
+type APIHubApiObservedState struct {
 	// Output only. The list of versions present in an API resource.
 	//  Note: An API resource can be associated with more than 1 version.
 	//  Format is
@@ -121,6 +148,29 @@ type ApiHubApiObservedState struct {
 	// Output only. The time at which the API resource was last updated.
 	// +kubebuilder:validation:Optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The metadata describing the source of the API resource.
+	// +kcc:proto:field=google.cloud.apihub.v1.Api.source_metadata
+	// +kubebuilder:validation:Optional
+	SourceMetadata []SourceMetadataObservedState `json:"sourceMetadata,omitempty"`
+}
+
+type SourceMetadataObservedState struct {
+	// Output only. The type of the source.
+	// +kubebuilder:validation:Optional
+	SourceType *string `json:"sourceType,omitempty"`
+
+	// Output only. The unique identifier of the resource at the source.
+	// +kubebuilder:validation:Optional
+	OriginalResourceID *string `json:"originalResourceID,omitempty"`
+
+	// Output only. The time at which the resource was created at the source.
+	// +kubebuilder:validation:Optional
+	OriginalResourceCreateTime *string `json:"originalResourceCreateTime,omitempty"`
+
+	// Output only. The time at which the resource was last updated at the source.
+	// +kubebuilder:validation:Optional
+	OriginalResourceUpdateTime *string `json:"originalResourceUpdateTime,omitempty"`
 }
 
 // +genclient
@@ -135,25 +185,25 @@ type ApiHubApiObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// ApiHubApi is the Schema for the ApiHubApi API
+// APIHubApi is the Schema for the APIHubApi API
 // +k8s:openapi-gen=true
-type ApiHubApi struct {
+type APIHubApi struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   ApiHubApiSpec   `json:"spec,omitempty"`
-	Status ApiHubApiStatus `json:"status,omitempty"`
+	Spec   APIHubApiSpec   `json:"spec,omitempty"`
+	Status APIHubApiStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// ApiHubApiList contains a list of ApiHubApi
-type ApiHubApiList struct {
+// APIHubApiList contains a list of APIHubApi
+type APIHubApiList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ApiHubApi `json:"items"`
+	Items           []APIHubApi `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&ApiHubApi{}, &ApiHubApiList{})
+	SchemeBuilder.Register(&APIHubApi{}, &APIHubApiList{})
 }

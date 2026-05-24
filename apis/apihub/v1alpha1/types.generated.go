@@ -18,7 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.apihub.v1
 // resource: APIHubDeployment:Deployment
-// resource: ApiHubApi:Api
+// resource: APIHubApi:Api
 
 package v1alpha1
 

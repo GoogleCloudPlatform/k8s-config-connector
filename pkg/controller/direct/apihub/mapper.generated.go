@@ -53,30 +53,6 @@ func APIHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AP
 	// MISSING: Attributes
 	return out
 }
-func ApiHubApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApiHubApiObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiHubApiObservedState{}
-	// MISSING: Name
-	out.Versions = in.Versions
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Attributes
-	return out
-}
-func ApiHubApiObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiHubApiObservedState) *pb.Api {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Api{}
-	// MISSING: Name
-	out.Versions = in.Versions
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Attributes
-	return out
-}
 func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
 	if in == nil {
 		return nil
