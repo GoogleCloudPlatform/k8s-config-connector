@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ var _ refsv1beta1.ExternalNormalizer = &DiscoveredServiceRef{}
 // DiscoveredServiceRef is a reference to an AppHubDiscoveredService.
 type DiscoveredServiceRef struct {
 	// A reference to an externally managed AppHubDiscoveredService resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/discoveredservices/{{discoveredserviceID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/discoveredServices/{{discoveredserviceID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of an AppHubDiscoveredService resource.
@@ -50,7 +50,7 @@ func (r *DiscoveredServiceRef) NormalizedExternal(ctx context.Context, reader cl
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseDiscoveredServiceExternal(r.External); err != nil {
+		if _, err := ParseAppHubDiscoveredServiceIdentity(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

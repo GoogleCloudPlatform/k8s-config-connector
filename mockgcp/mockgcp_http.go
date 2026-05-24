@@ -288,6 +288,10 @@ func (m *mockRoundTripper) roundTripIAMPolicy(req *http.Request) (*http.Response
 }
 
 func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	if strings.Contains(req.URL.Path, "/discoveredservices/") {
+		req.URL.Path = strings.ReplaceAll(req.URL.Path, "/discoveredservices/", "/discoveredServices/")
+	}
+
 	klog.Infof("mockgcp request: %v %v", req.Method, req.URL)
 
 	requestPath := req.URL.Path

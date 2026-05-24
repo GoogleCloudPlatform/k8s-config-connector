@@ -1,0 +1,8 @@
+apiVersion: apphub.cnrm.cloud.google.com/v1alpha1
+kind: AppHubDiscoveredService
+metadata:
+  name: ahds-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-east1

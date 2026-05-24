@@ -61,6 +61,24 @@ func (s *AppHubV1Service) GetDiscoveredService(ctx context.Context, req *pb.GetD
 
 	obj := &pb.DiscoveredService{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// On-demand "auto-discover" the service
+			obj = &pb.DiscoveredService{
+				Name: fqn,
+				ServiceReference: &pb.ServiceReference{
+					Uri: "//compute.googleapis.com/projects/" + name.Project.ID + "/regions/" + name.Location + "/forwardingRules/mock-forwarding-rule",
+				},
+				ServiceProperties: &pb.ServiceProperties{
+					GcpProject: name.Project.ID,
+					Location:   name.Location,
+					Zone:       name.Location + "-a",
+				},
+			}
+			if err := s.storage.Create(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
+			return obj, nil
+		}
 		return nil, err
 	}
 
@@ -82,7 +100,7 @@ func (n *discoveredServiceName) String() string {
 func (s *AppHubV1Service) parseDiscoveredServiceName(name string) (*discoveredServiceName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "discoveredServices" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && (tokens[4] == "discoveredServices" || tokens[4] == "discoveredservices") {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err

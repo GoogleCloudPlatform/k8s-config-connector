@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,99 +20,113 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DiscoveredServiceIdentity is the identity of an AppHubDiscoveredService.
-type DiscoveredServiceIdentity struct {
-	parent *DiscoveredServiceParent
-	id     string
+var (
+	_ identity.IdentityV2 = &AppHubDiscoveredServiceIdentity{}
+	_ identity.Resource   = &AppHubDiscoveredService{}
+)
+
+var AppHubDiscoveredServiceIdentityFormat = gcpurls.Template[AppHubDiscoveredServiceIdentity]("apphub.googleapis.com", "projects/{project}/locations/{location}/discoveredServices/{discoveredService}")
+
+// +k8s:deepcopy-gen=false
+type AppHubDiscoveredServiceIdentity struct {
+	Project           string
+	Location          string
+	DiscoveredService string
 }
 
-func (i *DiscoveredServiceIdentity) String() string {
-	return i.parent.String() + "/discoveredservices/" + i.id
+func (i *AppHubDiscoveredServiceIdentity) String() string {
+	return AppHubDiscoveredServiceIdentityFormat.ToString(*i)
 }
 
-func (i *DiscoveredServiceIdentity) ID() string {
-	return i.id
-}
-
-func (i *DiscoveredServiceIdentity) Parent() *DiscoveredServiceParent {
-	return i.parent
-}
-
-// No changes were needed to the DiscoveredServiceParent struct, String() method, or ParseDiscoveredServiceExternal function.
-// No changes were needed to the DiscoveredServiceParent struct, String() method, or ParseDiscoveredServiceExternal function.
-type DiscoveredServiceParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *DiscoveredServiceParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a DiscoveredServiceIdentity from the Config Connector DiscoveredService object.
-func NewDiscoveredServiceIdentity(ctx context.Context, reader client.Reader, obj *AppHubDiscoveredService) (*DiscoveredServiceIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *AppHubDiscoveredServiceIdentity) FromExternal(ref string) error {
+	normalizedRef := ref
+	if strings.Contains(normalizedRef, "/discoveredservices/") {
+		normalizedRef = strings.ReplaceAll(normalizedRef, "/discoveredservices/", "/discoveredServices/")
+	}
+	parsed, match, err := AppHubDiscoveredServiceIdentityFormat.Parse(normalizedRef)
 	if err != nil {
+		return fmt.Errorf("format of AppHubDiscoveredService external=%q was not known (use %s): %w", ref, AppHubDiscoveredServiceIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of AppHubDiscoveredService external=%q was not known (use %s)", ref, AppHubDiscoveredServiceIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *AppHubDiscoveredServiceIdentity) Host() string {
+	return AppHubDiscoveredServiceIdentityFormat.Host()
+}
+
+func ParseAppHubDiscoveredServiceIdentity(external string) (*AppHubDiscoveredServiceIdentity, error) {
+	id := &AppHubDiscoveredServiceIdentity{}
+	if err := id.FromExternal(external); err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
+	return id, nil
+}
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+func (i *AppHubDiscoveredServiceIdentity) ID() string {
+	return i.DiscoveredService
+}
+
+func getIdentityFromAppHubDiscoveredServiceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*AppHubDiscoveredServiceIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &AppHubDiscoveredServiceIdentity{
+		Project:           projectID,
+		Location:          location,
+		DiscoveredService: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *AppHubDiscoveredService) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAppHubDiscoveredServiceSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseDiscoveredServiceExternal(externalRef)
-		if err != nil {
+		statusIdentity := &AppHubDiscoveredServiceIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change AppHubDiscoveredService identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-	return &DiscoveredServiceIdentity{
-		parent: &DiscoveredServiceParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
+
+	return specIdentity, nil
 }
 
-func ParseDiscoveredServiceExternal(external string) (parent *DiscoveredServiceParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "discoveredservices" {
-		return nil, "", fmt.Errorf("format of AppHubDiscoveredService external=%q was not known (use projects/{{projectID}}/locations/{{location}}/discoveredservices/{{discoveredserviceID}})", external)
+func (obj *AppHubDiscoveredService) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
 	}
-	parent = &DiscoveredServiceParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return nil
 }
