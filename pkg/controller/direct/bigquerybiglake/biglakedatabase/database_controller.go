@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake"
@@ -39,7 +39,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krmv1alpha1.BigLakeDatabaseGVK, NewDatabaseModel)
+	registry.RegisterModel(krm.BigLakeDatabaseGVK, NewDatabaseModel)
 }
 
 func NewDatabaseModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -68,7 +68,7 @@ func (m *modelDatabase) client(ctx context.Context) (*gcp.MetastoreClient, error
 func (m *modelDatabase) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
-	obj := &krmv1alpha1.BigLakeDatabase{}
+	obj := &krm.BigLakeDatabase{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -92,7 +92,7 @@ func (m *modelDatabase) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 	return &DatabaseAdapter{
-		id:        id.(*krmv1alpha1.DatabaseIdentity),
+		id:        id.(*krm.DatabaseIdentity),
 		gcpClient: gcpClient,
 		desired:   desired,
 	}, nil
@@ -104,7 +104,7 @@ func (m *modelDatabase) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type DatabaseAdapter struct {
-	id        *krmv1alpha1.DatabaseIdentity
+	id        *krm.DatabaseIdentity
 	gcpClient *gcp.MetastoreClient
 	desired   *bigquerybiglakepb.Database
 	actual    *bigquerybiglakepb.Database
@@ -150,7 +150,7 @@ func (a *DatabaseAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log.V(2).Info("successfully created Database", "name", a.id)
 
 	mapCtx := &direct.MapContext{}
-	status := &krmv1alpha1.BigLakeDatabaseStatus{}
+	status := &krm.BigLakeDatabaseStatus{}
 	status.ObservedState = bigquerybiglake.BigLakeDatabaseObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -200,7 +200,7 @@ func (a *DatabaseAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	mapCtx := &direct.MapContext{}
 
-	status := &krmv1alpha1.BigLakeDatabaseStatus{}
+	status := &krm.BigLakeDatabaseStatus{}
 	status.ObservedState = bigquerybiglake.BigLakeDatabaseObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -215,18 +215,18 @@ func (a *DatabaseAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krmv1alpha1.BigLakeDatabase{}
+	obj := &krm.BigLakeDatabase{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(bigquerybiglake.BigLakeDatabaseSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
 	externalRef := a.actual.GetName()
-	var id krmv1alpha1.DatabaseIdentity
+	var id krm.DatabaseIdentity
 	if err := id.FromExternal(externalRef); err != nil {
 		return nil, fmt.Errorf("parsing external ref %q: %w", externalRef, err)
 	}
-	obj.Spec.ParentRef = &krmv1alpha1.BigQueryBigLakeCatalogRef{
+	obj.Spec.ParentRef = &krm.BigQueryBigLakeCatalogRef{
 		External: id.Parent().String(),
 	}
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
@@ -236,7 +236,7 @@ func (a *DatabaseAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	}
 
 	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krmv1alpha1.BigLakeDatabaseGVK)
+	u.SetGroupVersionKind(krm.BigLakeDatabaseGVK)
 
 	u.Object = uObj
 	return u, nil
