@@ -1347,7 +1347,7 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out := &krm.ComputeTargetHTTPSProxySpec{}
 	// MISSING: AuthorizationPolicy
 	if in.GetCertificateMap() != "" {
-		out.CertificateMapRef = &krm.CertificateManagerCertificateMapRef{External: in.GetCertificateMap()}
+		out.CertificateMapRef = &krmcertificatemanagerv1beta1.CertificateManagerCertificateMapRef{External: in.GetCertificateMap()}
 	}
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
