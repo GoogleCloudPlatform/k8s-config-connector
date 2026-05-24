@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.apihub.v1
 // resource: APIHubDeployment:Deployment
+// resource: ApiHubApi:Api
 
 package v1alpha1
 
@@ -88,6 +89,17 @@ type Documentation struct {
 	// Optional. The uri of the externally hosted documentation.
 	// +kcc:proto:field=google.cloud.apihub.v1.Documentation.external_uri
 	ExternalURI *string `json:"externalURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.Owner
+type Owner struct {
+	// Optional. The name of the owner.
+	// +kcc:proto:field=google.cloud.apihub.v1.Owner.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The email of the owner.
+	// +kcc:proto:field=google.cloud.apihub.v1.Owner.email
+	Email *string `json:"email,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.apihub.v1.AttributeValues

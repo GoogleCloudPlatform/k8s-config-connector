@@ -32,6 +32,7 @@ import (
 type ApihubV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	APIHubDeploymentsGetter
+	ApiHubApisGetter
 }
 
 // ApihubV1alpha1Client is used to interact with features provided by the apihub.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type ApihubV1alpha1Client struct {
 
 func (c *ApihubV1alpha1Client) APIHubDeployments(namespace string) APIHubDeploymentInterface {
 	return newAPIHubDeployments(c, namespace)
+}
+
+func (c *ApihubV1alpha1Client) ApiHubApis(namespace string) ApiHubApiInterface {
+	return newApiHubApis(c, namespace)
 }
 
 // NewForConfig creates a new ApihubV1alpha1Client for the given config.
