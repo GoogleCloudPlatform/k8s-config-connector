@@ -107,3 +107,41 @@ func APIHubDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubDeplo
 	out.Environment = APIHubAttributeValueRef_ToProto(mapCtx, in.EnvironmentRef)
 	return out
 }
+
+func ApiHubApiSpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApiHubApiSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApiHubApiSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
+	out.Owner = Owner_FromProto(mapCtx, in.GetOwner())
+
+	out.TargetUserRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetTargetUser())
+	out.TeamRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetTeam())
+	out.BusinessUnitRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetBusinessUnit())
+	out.MaturityLevelRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetMaturityLevel())
+	out.APIStyleRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetApiStyle())
+	out.SelectedVersion = direct.LazyPtr(in.GetSelectedVersion())
+	return out
+}
+
+func ApiHubApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiHubApiSpec) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
+	out.Owner = Owner_ToProto(mapCtx, in.Owner)
+
+	out.TargetUser = APIHubAttributeValueRef_ToProto(mapCtx, in.TargetUserRef)
+	out.Team = APIHubAttributeValueRef_ToProto(mapCtx, in.TeamRef)
+	out.BusinessUnit = APIHubAttributeValueRef_ToProto(mapCtx, in.BusinessUnitRef)
+	out.MaturityLevel = APIHubAttributeValueRef_ToProto(mapCtx, in.MaturityLevelRef)
+	out.ApiStyle = APIHubAttributeValueRef_ToProto(mapCtx, in.APIStyleRef)
+	out.SelectedVersion = direct.ValueOf(in.SelectedVersion)
+	return out
+}
