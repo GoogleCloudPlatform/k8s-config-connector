@@ -40,7 +40,6 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigtable/bigtablebackup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/billing"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/billingbudgets"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/binaryauthorization"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/binaryauthorization/binaryauthorizationplatformpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/certificatemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudbuild"
