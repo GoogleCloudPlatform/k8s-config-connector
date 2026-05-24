@@ -53,6 +53,88 @@ func APIHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AP
 	// MISSING: Attributes
 	return out
 }
+func ApiHubApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApiHubApiObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApiHubApiObservedState{}
+	// MISSING: Name
+	out.Versions = in.Versions
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Attributes
+	return out
+}
+func ApiHubApiObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiHubApiObservedState) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	// MISSING: Name
+	out.Versions = in.Versions
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Attributes
+	return out
+}
+func ApiHubApiSpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApiHubApiSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApiHubApiSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
+	out.Owner = Owner_FromProto(mapCtx, in.GetOwner())
+	if in.GetTargetUser() != "" {
+		out.TargetUserRef = &krm.APIHubAttributeValueRef{External: in.GetTargetUser()}
+	}
+	if in.GetTeam() != "" {
+		out.TeamRef = &krm.APIHubAttributeValueRef{External: in.GetTeam()}
+	}
+	if in.GetBusinessUnit() != "" {
+		out.BusinessUnitRef = &krm.APIHubAttributeValueRef{External: in.GetBusinessUnit()}
+	}
+	if in.GetMaturityLevel() != "" {
+		out.MaturityLevelRef = &krm.APIHubAttributeValueRef{External: in.GetMaturityLevel()}
+	}
+	// MISSING: Attributes
+	if in.GetApiStyle() != "" {
+		out.APIStyleRef = &krm.APIHubAttributeValueRef{External: in.GetApiStyle()}
+	}
+	out.SelectedVersion = direct.LazyPtr(in.GetSelectedVersion())
+	return out
+}
+func ApiHubApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiHubApiSpec) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
+	out.Owner = Owner_ToProto(mapCtx, in.Owner)
+	if in.TargetUserRef != nil {
+		out.TargetUser = in.TargetUserRef.External
+	}
+	if in.TeamRef != nil {
+		out.Team = in.TeamRef.External
+	}
+	if in.BusinessUnitRef != nil {
+		out.BusinessUnit = in.BusinessUnitRef.External
+	}
+	if in.MaturityLevelRef != nil {
+		out.MaturityLevel = in.MaturityLevelRef.External
+	}
+	// MISSING: Attributes
+	if in.APIStyleRef != nil {
+		out.ApiStyle = in.APIStyleRef.External
+	}
+	out.SelectedVersion = direct.ValueOf(in.SelectedVersion)
+	return out
+}
 func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
 	if in == nil {
 		return nil
@@ -149,5 +231,23 @@ func Documentation_ToProto(mapCtx *direct.MapContext, in *krm.Documentation) *pb
 	}
 	out := &pb.Documentation{}
 	out.ExternalUri = direct.ValueOf(in.ExternalURI)
+	return out
+}
+func Owner_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Owner{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Email = direct.LazyPtr(in.GetEmail())
+	return out
+}
+func Owner_ToProto(mapCtx *direct.MapContext, in *krm.Owner) *pb.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Owner{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Email = direct.ValueOf(in.Email)
 	return out
 }
