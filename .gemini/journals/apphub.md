@@ -1,0 +1,5 @@
+### [2026-05-24] AppHubDiscoveredWorkload Routing Case Mismatch
+- **Context**: Implementing the direct controller and MockGCP support for `AppHubDiscoveredWorkload`.
+- **Problem**: KCC's internal identity format standardized the URL path token as lowercase (`discoveredworkloads`), while the official GCP proto path definition and our MockGCP gRPC-Gateway router expected CamelCase (`discoveredWorkloads`). Because of this case mismatch, `grpc-gateway` rejected KCC's HTTP GET requests with a `404 Not Found` before reaching the mock gRPC methods.
+- **Solution**: Implemented a lightweight HTTP middleware wrapper in MockGCP's AppHub `NewHTTPMux` handler to dynamically rewrite `/discoveredworkloads/` segments to `/discoveredWorkloads/` in request URL paths before forwarding them to the routing multiplexer.
+- **Impact**: This transparently resolves KCC lowercase URL routing issues in MockGCP without requiring changes to the KCC identity structure or introducing custom hacks within the reconciler itself.
