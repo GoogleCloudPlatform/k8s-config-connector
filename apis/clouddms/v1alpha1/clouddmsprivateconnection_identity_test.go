@@ -41,7 +41,7 @@ func TestCloudDMSPrivateConnectionIdentity_FromExternal(t *testing.T) {
 		},
 		{
 			name: "full url",
-			ref:  "https://clouddms.googleapis.com/projects/my-project/locations/us-central1/privateConnections/my-private-connection",
+			ref:  "https://datamigration.googleapis.com/projects/my-project/locations/us-central1/privateConnections/my-private-connection",
 			want: &CloudDMSPrivateConnectionIdentity{
 				Project:           "my-project",
 				Location:          "us-central1",
