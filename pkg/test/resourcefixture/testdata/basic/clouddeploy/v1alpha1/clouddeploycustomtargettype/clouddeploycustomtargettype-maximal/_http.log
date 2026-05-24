@@ -1,0 +1,372 @@
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcustomTargetTypes%2Fclouddeploycustomtargettype-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/customTargetTypes?%24alt=json%3Benum-encoding%3Dint&customTargetTypeId=clouddeploycustomtargettype-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "customActions": {
+    "deployAction": "custom-deploy",
+    "includeSkaffoldModules": [
+      {
+        "configs": [
+          "module1"
+        ],
+        "googleCloudStorage": {
+          "path": "skaffold.yaml",
+          "source": "gs://my-bucket/dir/configs/*"
+        }
+      }
+    ],
+    "renderAction": "custom-render"
+  },
+  "description": "Maximal Custom Target Type"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.CustomTargetType",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "customActions": {
+      "deployAction": "custom-deploy",
+      "includeSkaffoldModules": [
+        {
+          "configs": [
+            "module1"
+          ],
+          "googleCloudStorage": {
+            "path": "skaffold.yaml",
+            "source": "gs://my-bucket/dir/configs/*"
+          }
+        }
+      ],
+      "renderAction": "custom-render"
+    },
+    "customTargetTypeId": "clouddeploycustomtargettype-${uniqueId}",
+    "description": "Maximal Custom Target Type",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcustomTargetTypes%2Fclouddeploycustomtargettype-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "customActions": {
+    "deployAction": "custom-deploy",
+    "includeSkaffoldModules": [
+      {
+        "configs": [
+          "module1"
+        ],
+        "googleCloudStorage": {
+          "path": "skaffold.yaml",
+          "source": "gs://my-bucket/dir/configs/*"
+        }
+      }
+    ],
+    "renderAction": "custom-render"
+  },
+  "customTargetTypeId": "clouddeploycustomtargettype-${uniqueId}",
+  "description": "Maximal Custom Target Type",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=customActions.deployAction%2CcustomActions.includeSkaffoldModules%2CcustomActions.renderAction%2Cdescription%2Cetag%2Cname
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: custom_target_type.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcustomTargetTypes%2Fclouddeploycustomtargettype-${uniqueId}
+
+{
+  "customActions": {
+    "deployAction": "custom-deploy-updated",
+    "includeSkaffoldModules": [
+      {
+        "configs": [
+          "module1-updated"
+        ],
+        "googleCloudStorage": {
+          "path": "skaffold-updated.yaml",
+          "source": "gs://my-bucket/dir/configs/*"
+        }
+      }
+    ],
+    "renderAction": "custom-render-updated"
+  },
+  "description": "Maximal Custom Target Type Updated",
+  "name": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.CustomTargetType",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "customActions": {
+      "deployAction": "custom-deploy-updated",
+      "includeSkaffoldModules": [
+        {
+          "configs": [
+            "module1-updated"
+          ],
+          "googleCloudStorage": {
+            "path": "skaffold-updated.yaml",
+            "source": "gs://my-bucket/dir/configs/*"
+          }
+        }
+      ],
+      "renderAction": "custom-render-updated"
+    },
+    "customTargetTypeId": "clouddeploycustomtargettype-${uniqueId}",
+    "description": "Maximal Custom Target Type Updated",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcustomTargetTypes%2Fclouddeploycustomtargettype-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "customActions": {
+    "deployAction": "custom-deploy-updated",
+    "includeSkaffoldModules": [
+      {
+        "configs": [
+          "module1-updated"
+        ],
+        "googleCloudStorage": {
+          "path": "skaffold-updated.yaml",
+          "source": "gs://my-bucket/dir/configs/*"
+        }
+      }
+    ],
+    "renderAction": "custom-render-updated"
+  },
+  "customTargetTypeId": "clouddeploycustomtargettype-${uniqueId}",
+  "description": "Maximal Custom Target Type Updated",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcustomTargetTypes%2Fclouddeploycustomtargettype-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
