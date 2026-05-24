@@ -1,0 +1,204 @@
+GET https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglakedatabase-dep-${uniqueId}%2Fdatabases%2Fbiglakedatabase-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "database \"projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "database \"projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases?%24alt=json%3Benum-encoding%3Dint&databaseId=biglakedatabase-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglakedatabase-dep-${uniqueId}
+
+{
+  "hiveOptions": {
+    "locationUri": "gs://my-bucket/hive-db",
+    "parameters": {
+      "key1": "value1"
+    }
+  },
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "hiveOptions": {
+    "locationUri": "gs://my-bucket/hive-db",
+    "parameters": {
+      "key1": "value1"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglakedatabase-dep-${uniqueId}%2Fdatabases%2Fbiglakedatabase-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "hiveOptions": {
+    "locationUri": "gs://my-bucket/hive-db",
+    "parameters": {
+      "key1": "value1"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=hiveOptions.parameters
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: database.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglakedatabase-dep-${uniqueId}%2Fdatabases%2Fbiglakedatabase-${uniqueId}
+
+{
+  "hiveOptions": {
+    "locationUri": "gs://my-bucket/hive-db",
+    "parameters": {
+      "key1": "value1-updated",
+      "key2": "value2"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}",
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "hiveOptions": {
+    "locationUri": "gs://my-bucket/hive-db",
+    "parameters": {
+      "key1": "value1-updated",
+      "key2": "value2"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglakedatabase-dep-${uniqueId}%2Fdatabases%2Fbiglakedatabase-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "hiveOptions": {
+    "locationUri": "gs://my-bucket/hive-db",
+    "parameters": {
+      "key1": "value1-updated",
+      "key2": "value2"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglakedatabase-dep-${uniqueId}%2Fdatabases%2Fbiglakedatabase-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "hiveOptions": {
+    "locationUri": "gs://my-bucket/hive-db",
+    "parameters": {
+      "key1": "value1-updated",
+      "key2": "value2"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/catalogs/biglakedatabase-dep-${uniqueId}/databases/biglakedatabase-${uniqueId}",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
