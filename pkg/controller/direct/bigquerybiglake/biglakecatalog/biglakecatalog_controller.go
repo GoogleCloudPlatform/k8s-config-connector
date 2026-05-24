@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -38,7 +38,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krmv1alpha1.BigLakeCatalogGVK, NewCatalogModel)
+	registry.RegisterModel(krm.BigLakeCatalogGVK, NewCatalogModel)
 }
 
 func NewCatalogModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -67,7 +67,7 @@ func (m *modelCatalog) client(ctx context.Context) (*gcp.MetastoreClient, error)
 func (m *modelCatalog) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
-	obj := &krmv1alpha1.BigLakeCatalog{}
+	obj := &krm.BigLakeCatalog{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -91,7 +91,7 @@ func (m *modelCatalog) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, err
 	}
 	return &CatalogAdapter{
-		id:        id.(*krmv1alpha1.CatalogIdentity),
+		id:        id.(*krm.CatalogIdentity),
 		gcpClient: gcpClient,
 		desired:   desired,
 	}, nil
@@ -103,7 +103,7 @@ func (m *modelCatalog) AdapterForURL(ctx context.Context, url string) (directbas
 }
 
 type CatalogAdapter struct {
-	id        *krmv1alpha1.CatalogIdentity
+	id        *krm.CatalogIdentity
 	gcpClient *gcp.MetastoreClient
 	desired   *bigquerybiglakepb.Catalog
 	actual    *bigquerybiglakepb.Catalog
@@ -143,7 +143,7 @@ func (a *CatalogAdapter) Create(ctx context.Context, createOp *directbase.Create
 	log.V(2).Info("successfully created Catalog", "name", a.id)
 
 	mapCtx := &direct.MapContext{}
-	status := &krmv1alpha1.BigLakeCatalogStatus{}
+	status := &krm.BigLakeCatalogStatus{}
 	status.ObservedState = bigquerybiglake.BigLakeCatalogObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -175,14 +175,14 @@ func (a *CatalogAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krmv1alpha1.BigLakeCatalog{}
+	obj := &krm.BigLakeCatalog{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(bigquerybiglake.BigLakeCatalogSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
 	externalRef := a.actual.GetName()
-	id := &krmv1alpha1.CatalogIdentity{}
+	id := &krm.CatalogIdentity{}
 	if err := id.FromExternal(externalRef); err != nil {
 		return nil, fmt.Errorf("parsing external ref %q: %w", externalRef, err)
 	}
@@ -199,7 +199,7 @@ func (a *CatalogAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	}
 
 	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krmv1alpha1.BigLakeCatalogGVK)
+	u.SetGroupVersionKind(krm.BigLakeCatalogGVK)
 
 	u.Object = uObj
 	return u, nil
