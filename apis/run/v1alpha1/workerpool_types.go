@@ -16,11 +16,12 @@ package v1alpha1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -71,13 +72,17 @@ type RunWorkerPoolSpec struct {
 
 	// Optional. Specifies worker-pool-level scaling settings
 	Scaling *WorkerPoolScaling `json:"scaling,omitempty"`
+
+	// Optional. One or more custom audiences that you want this worker pool to support.
+	//  Specify each custom audience as the full URL in a string.
+	CustomAudiences []string `json:"customAudiences,omitempty"`
 }
 
 // RunWorkerPoolStatus defines the config connector machine state of RunWorkerPool
 type RunWorkerPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -130,12 +135,12 @@ type RunWorkerPoolObservedState struct {
 	// Output only. The Condition of this WorkerPool, containing its readiness
 	//  status, and detailed error information in case it did not reach a serving
 	//  state.
-	TerminalCondition *Condition `json:"terminalCondition,omitempty"`
+	TerminalCondition *RunCondition `json:"terminalCondition,omitempty"`
 
 	// Output only. The Conditions of all other associated sub-resources. They
 	//  contain additional diagnostics information in case the WorkerPool does not
 	//  reach its Serving state.
-	Conditions []Condition `json:"conditions,omitempty"`
+	ObservedConditions []RunCondition `json:"observedConditions,omitempty"`
 
 	// Output only. Name of the latest revision that is serving traffic.
 	LatestReadyRevision *string `json:"latestReadyRevision,omitempty"`
@@ -145,6 +150,9 @@ type RunWorkerPoolObservedState struct {
 
 	// Output only. Detailed status information for corresponding instance splits.
 	InstanceSplitStatuses []InstanceSplitStatus `json:"instanceSplitStatuses,omitempty"`
+
+	// Output only. One or more custom audiences that you want this worker pool to support.
+	CustomAudiences []string `json:"customAudiences,omitempty"`
 
 	// Output only. Reserved for future use.
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
@@ -403,6 +411,9 @@ type CloudSQLInstance struct {
 
 // +kcc:observedstate:proto=google.cloud.run.v2.WorkerPoolRevisionTemplate
 type WorkerPoolRevisionTemplateObservedState struct {
+	// Output only. The unique name for the revision.
+	Revision *string `json:"revision,omitempty"`
+
 	// Holds list of the containers that defines the unit of execution for this
 	//  Revision.
 	Containers []ContainerObservedState `json:"containers,omitempty"`
@@ -441,4 +452,43 @@ type BinaryAuthorization struct {
 	//  For more information on breakglass, see
 	//  https://cloud.google.com/binary-authorization/docs/using-breakglass
 	BreakglassJustification *string `json:"breakglassJustification,omitempty"`
+}
+
+// +kcc:proto=google.cloud.run.v2.ServiceMesh
+// +k8s:deepcopy-gen=true
+type ServiceMesh struct {
+	// The Mesh resource name.
+	MeshRef *networkservicesv1alpha1.NetworkServicesMeshRef `json:"meshRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.run.v2.Condition
+// +k8s:deepcopy-gen=true
+type RunCondition struct {
+	// type is used to communicate the status of the reconciliation process.
+	//  See also:
+	//  https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
+	//  Types common to all resources include:
+	//  * "Ready": True when the Resource is ready.
+	Type *string `json:"type,omitempty"`
+
+	// State of the condition.
+	State *string `json:"state,omitempty"`
+
+	// Human readable message indicating details about the current status.
+	Message *string `json:"message,omitempty"`
+
+	// Last time the condition transitioned from one status to another.
+	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
+
+	// How to interpret failures of this condition, one of Error, Warning, Info
+	Severity *string `json:"severity,omitempty"`
+
+	// A common (service-level) reason for this condition.
+	Reason *string `json:"reason,omitempty"`
+
+	// A reason for the revision condition.
+	RevisionReason *string `json:"revisionReason,omitempty"`
+
+	// A reason for the execution condition.
+	ExecutionReason *string `json:"executionReason,omitempty"`
 }

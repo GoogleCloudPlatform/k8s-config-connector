@@ -154,36 +154,6 @@ func CloudSQLInstance_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQ
 
 	return out
 }
-func Condition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krmrunv1alpha1.Condition {
-	if in == nil {
-		return nil
-	}
-	out := &krmrunv1alpha1.Condition{}
-	out.Type = direct.LazyPtr(in.GetType())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Message = direct.LazyPtr(in.GetMessage())
-	out.LastTransitionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastTransitionTime())
-	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
-	// MISSING: Reason
-	// MISSING: RevisionReason
-	// MISSING: ExecutionReason
-	return out
-}
-func Condition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.Condition) *pb.Condition {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Condition{}
-	out.Type = direct.ValueOf(in.Type)
-	out.State = direct.Enum_ToProto[pb.Condition_State](mapCtx, in.State)
-	out.Message = direct.ValueOf(in.Message)
-	out.LastTransitionTime = direct.StringTimestamp_ToProto(mapCtx, in.LastTransitionTime)
-	out.Severity = direct.Enum_ToProto[pb.Condition_Severity](mapCtx, in.Severity)
-	// MISSING: Reason
-	// MISSING: RevisionReason
-	// MISSING: ExecutionReason
-	return out
-}
 func Condition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.Condition {
 	if in == nil {
 		return nil
@@ -233,60 +203,6 @@ func Condition_RevisionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb
 	return &pb.Condition_RevisionReason_{RevisionReason: direct.Enum_ToProto[pb.Condition_RevisionReason](mapCtx, in)}
 }
 func Condition_ExecutionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_ExecutionReason_ {
-	if in == nil {
-		return nil
-	}
-	return &pb.Condition_ExecutionReason_{ExecutionReason: direct.Enum_ToProto[pb.Condition_ExecutionReason](mapCtx, in)}
-}
-func ConditionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krmrunv1alpha1.ConditionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmrunv1alpha1.ConditionObservedState{}
-	// MISSING: Type
-	// MISSING: State
-	// MISSING: Message
-	// MISSING: LastTransitionTime
-	// MISSING: Severity
-	out.Reason = direct.Enum_FromProto(mapCtx, in.GetReason())
-	out.RevisionReason = direct.Enum_FromProto(mapCtx, in.GetRevisionReason())
-	out.ExecutionReason = direct.Enum_FromProto(mapCtx, in.GetExecutionReason())
-	return out
-}
-func ConditionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.ConditionObservedState) *pb.Condition {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Condition{}
-	// MISSING: Type
-	// MISSING: State
-	// MISSING: Message
-	// MISSING: LastTransitionTime
-	// MISSING: Severity
-	if oneof := ConditionObservedState_Reason_ToProto(mapCtx, in.Reason); oneof != nil {
-		out.Reasons = oneof
-	}
-	if oneof := ConditionObservedState_RevisionReason_ToProto(mapCtx, in.RevisionReason); oneof != nil {
-		out.Reasons = oneof
-	}
-	if oneof := ConditionObservedState_ExecutionReason_ToProto(mapCtx, in.ExecutionReason); oneof != nil {
-		out.Reasons = oneof
-	}
-	return out
-}
-func ConditionObservedState_Reason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_Reason {
-	if in == nil {
-		return nil
-	}
-	return &pb.Condition_Reason{Reason: direct.Enum_ToProto[pb.Condition_CommonReason](mapCtx, in)}
-}
-func ConditionObservedState_RevisionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_RevisionReason_ {
-	if in == nil {
-		return nil
-	}
-	return &pb.Condition_RevisionReason_{RevisionReason: direct.Enum_ToProto[pb.Condition_RevisionReason](mapCtx, in)}
-}
-func ConditionObservedState_ExecutionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_ExecutionReason_ {
 	if in == nil {
 		return nil
 	}
@@ -964,6 +880,24 @@ func ResourceRequirements_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Res
 	// MISSING: StartupCPUBoost
 	return out
 }
+func RunCondition_Reason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_Reason {
+	if in == nil {
+		return nil
+	}
+	return &pb.Condition_Reason{Reason: direct.Enum_ToProto[pb.Condition_CommonReason](mapCtx, in)}
+}
+func RunCondition_RevisionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_RevisionReason_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.Condition_RevisionReason_{RevisionReason: direct.Enum_ToProto[pb.Condition_RevisionReason](mapCtx, in)}
+}
+func RunCondition_ExecutionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_ExecutionReason_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.Condition_ExecutionReason_{ExecutionReason: direct.Enum_ToProto[pb.Condition_ExecutionReason](mapCtx, in)}
+}
 func RunJobObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.RunJobObservedState {
 	if in == nil {
 		return nil
@@ -1068,34 +1002,6 @@ func RunJobSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RunJobSpec) *
 	// MISSING: RunExecutionToken
 	return out
 }
-func RunWorkerPoolObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krmrunv1alpha1.RunWorkerPoolObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmrunv1alpha1.RunWorkerPoolObservedState{}
-	// MISSING: Name
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.Generation = direct.LazyPtr(in.GetGeneration())
-	// MISSING: Labels
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	out.Creator = direct.LazyPtr(in.GetCreator())
-	out.LastModifier = direct.LazyPtr(in.GetLastModifier())
-	out.Template = WorkerPoolRevisionTemplateObservedState_v1alpha1_FromProto(mapCtx, in.GetTemplate())
-	out.ObservedGeneration = direct.LazyPtr(in.GetObservedGeneration())
-	out.TerminalCondition = Condition_v1alpha1_FromProto(mapCtx, in.GetTerminalCondition())
-	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, Condition_v1alpha1_FromProto)
-	out.LatestReadyRevision = direct.LazyPtr(in.GetLatestReadyRevision())
-	out.LatestCreatedRevision = direct.LazyPtr(in.GetLatestCreatedRevision())
-	out.InstanceSplitStatuses = direct.Slice_FromProto(mapCtx, in.InstanceSplitStatuses, InstanceSplitStatus_v1alpha1_FromProto)
-	// MISSING: CustomAudiences
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	return out
-}
 func RunWorkerPoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.RunWorkerPoolObservedState) *pb.WorkerPool {
 	if in == nil {
 		return nil
@@ -1113,12 +1019,12 @@ func RunWorkerPoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.LastModifier = direct.ValueOf(in.LastModifier)
 	out.Template = WorkerPoolRevisionTemplateObservedState_v1alpha1_ToProto(mapCtx, in.Template)
 	out.ObservedGeneration = direct.ValueOf(in.ObservedGeneration)
-	out.TerminalCondition = Condition_v1alpha1_ToProto(mapCtx, in.TerminalCondition)
-	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, Condition_v1alpha1_ToProto)
+	out.TerminalCondition = RunCondition_v1alpha1_ToProto(mapCtx, in.TerminalCondition)
+	// MISSING: Conditions
 	out.LatestReadyRevision = direct.ValueOf(in.LatestReadyRevision)
 	out.LatestCreatedRevision = direct.ValueOf(in.LatestCreatedRevision)
 	out.InstanceSplitStatuses = direct.Slice_ToProto(mapCtx, in.InstanceSplitStatuses, InstanceSplitStatus_v1alpha1_ToProto)
-	// MISSING: CustomAudiences
+	out.CustomAudiences = in.CustomAudiences
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.Reconciling = direct.ValueOf(in.Reconciling)
 	out.Etag = direct.ValueOf(in.Etag)
@@ -1140,7 +1046,8 @@ func RunWorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Work
 	out.Template = WorkerPoolRevisionTemplate_v1alpha1_FromProto(mapCtx, in.GetTemplate())
 	out.InstanceSplits = direct.Slice_FromProto(mapCtx, in.InstanceSplits, InstanceSplit_v1alpha1_FromProto)
 	out.Scaling = WorkerPoolScaling_v1alpha1_FromProto(mapCtx, in.GetScaling())
-	// MISSING: CustomAudiences
+	// MISSING: Conditions
+	out.CustomAudiences = in.CustomAudiences
 	return out
 }
 func SecretKeySelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecretKeySelector) *krmrunv1alpha1.SecretKeySelector {
@@ -1241,22 +1148,6 @@ func SecretVolumeSource_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Secre
 	}
 	out.Items = direct.Slice_ToProto(mapCtx, in.Items, VersionToPath_v1beta1_ToProto)
 	out.DefaultMode = direct.ValueOf(in.DefaultMode)
-	return out
-}
-func ServiceMesh_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceMesh) *krmrunv1alpha1.ServiceMesh {
-	if in == nil {
-		return nil
-	}
-	out := &krmrunv1alpha1.ServiceMesh{}
-	out.Mesh = direct.LazyPtr(in.GetMesh())
-	return out
-}
-func ServiceMesh_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.ServiceMesh) *pb.ServiceMesh {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceMesh{}
-	out.Mesh = direct.ValueOf(in.Mesh)
 	return out
 }
 func TCPSocketAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TCPSocketAction) *krmrunv1alpha1.TCPSocketAction {
@@ -1652,7 +1543,7 @@ func WorkerPoolRevisionTemplateObservedState_v1alpha1_FromProto(mapCtx *direct.M
 		return nil
 	}
 	out := &krmrunv1alpha1.WorkerPoolRevisionTemplateObservedState{}
-	// MISSING: Revision
+	out.Revision = direct.LazyPtr(in.GetRevision())
 	// MISSING: Labels
 	// MISSING: Annotations
 	// MISSING: VPCAccess
@@ -1671,7 +1562,7 @@ func WorkerPoolRevisionTemplateObservedState_v1alpha1_ToProto(mapCtx *direct.Map
 		return nil
 	}
 	out := &pb.WorkerPoolRevisionTemplate{}
-	// MISSING: Revision
+	out.Revision = direct.ValueOf(in.Revision)
 	// MISSING: Labels
 	// MISSING: Annotations
 	// MISSING: VPCAccess

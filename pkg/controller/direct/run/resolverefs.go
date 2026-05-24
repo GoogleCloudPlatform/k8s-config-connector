@@ -37,6 +37,12 @@ func ResolveRunWorkerPoolRefs(ctx context.Context, kube client.Reader, desired *
 		return err
 	}
 
+	if template.ServiceMesh != nil && template.ServiceMesh.MeshRef != nil {
+		if err := template.ServiceMesh.MeshRef.Normalize(ctx, kube, desired.GetNamespace()); err != nil {
+			return err
+		}
+	}
+
 	for i := range template.Containers {
 		c := &template.Containers[i]
 		for j := range c.Env {

@@ -21,33 +21,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.run.v2.Condition
-type Condition struct {
-	// type is used to communicate the status of the reconciliation process.
-	//  See also:
-	//  https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
-	//  Types common to all resources include:
-	//  * "Ready": True when the Resource is ready.
-	// +kcc:proto:field=google.cloud.run.v2.Condition.type
-	Type *string `json:"type,omitempty"`
-
-	// State of the condition.
-	// +kcc:proto:field=google.cloud.run.v2.Condition.state
-	State *string `json:"state,omitempty"`
-
-	// Human readable message indicating details about the current status.
-	// +kcc:proto:field=google.cloud.run.v2.Condition.message
-	Message *string `json:"message,omitempty"`
-
-	// Last time the condition transitioned from one status to another.
-	// +kcc:proto:field=google.cloud.run.v2.Condition.last_transition_time
-	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
-
-	// How to interpret failures of this condition, one of Error, Warning, Info
-	// +kcc:proto:field=google.cloud.run.v2.Condition.severity
-	Severity *string `json:"severity,omitempty"`
-}
-
 // +kcc:proto=google.cloud.run.v2.ContainerPort
 type ContainerPort struct {
 	// If specified, used to specify which protocol to use.
@@ -249,15 +222,6 @@ type ResourceRequirements struct {
 	StartupCPUBoost *bool `json:"startupCPUBoost,omitempty"`
 }
 
-// +kcc:proto=google.cloud.run.v2.ServiceMesh
-type ServiceMesh struct {
-	// The Mesh resource name. Format:
-	//  `projects/{project}/locations/global/meshes/{mesh}`, where `{project}` can
-	//  be project id or number.
-	// +kcc:proto:field=google.cloud.run.v2.ServiceMesh.mesh
-	Mesh *string `json:"mesh,omitempty"`
-}
-
 // +kcc:proto=google.cloud.run.v2.TCPSocketAction
 type TCPSocketAction struct {
 	// Optional. Port number to access on the container. Must be in the range 1 to
@@ -287,19 +251,4 @@ type WorkerPoolScaling struct {
 	// Optional. The total number of instances in manual scaling mode.
 	// +kcc:proto:field=google.cloud.run.v2.WorkerPoolScaling.manual_instance_count
 	ManualInstanceCount *int32 `json:"manualInstanceCount,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.run.v2.Condition
-type ConditionObservedState struct {
-	// Output only. A common (service-level) reason for this condition.
-	// +kcc:proto:field=google.cloud.run.v2.Condition.reason
-	Reason *string `json:"reason,omitempty"`
-
-	// Output only. A reason for the revision condition.
-	// +kcc:proto:field=google.cloud.run.v2.Condition.revision_reason
-	RevisionReason *string `json:"revisionReason,omitempty"`
-
-	// Output only. A reason for the execution condition.
-	// +kcc:proto:field=google.cloud.run.v2.Condition.execution_reason
-	ExecutionReason *string `json:"executionReason,omitempty"`
 }

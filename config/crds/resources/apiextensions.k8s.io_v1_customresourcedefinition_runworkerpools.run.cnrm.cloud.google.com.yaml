@@ -88,6 +88,13 @@ spec:
               clientVersion:
                 description: Arbitrary version identifier for the API client.
                 type: string
+              customAudiences:
+                description: Optional. One or more custom audiences that you want
+                  this worker pool to support. Specify each custom audience as the
+                  full URL in a string.
+                items:
+                  type: string
+                type: array
               description:
                 description: User-provided description of the WorkerPool. This field
                   currently has a 512-character limit.
@@ -637,10 +644,34 @@ spec:
                   serviceMesh:
                     description: Optional. Enables service mesh connectivity.
                     properties:
-                      mesh:
-                        description: 'The Mesh resource name. Format: `projects/{project}/locations/global/meshes/{mesh}`,
-                          where `{project}` can be project id or number.'
-                        type: string
+                      meshRef:
+                        description: The Mesh resource name.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed NetworkServicesMesh
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/meshes/{{meshID}}".
+                            type: string
+                          name:
+                            description: The name of a NetworkServicesMesh resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a NetworkServicesMesh resource.
+                            type: string
+                        type: object
                     type: object
                   volumes:
                     description: Optional. A list of Volumes to make available to
@@ -1022,41 +1053,18 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  conditions:
-                    description: Output only. The Conditions of all other associated
-                      sub-resources. They contain additional diagnostics information
-                      in case the WorkerPool does not reach its Serving state.
-                    items:
-                      properties:
-                        lastTransitionTime:
-                          description: Last time the condition transitioned from one
-                            status to another.
-                          type: string
-                        message:
-                          description: Human readable message indicating details about
-                            the current status.
-                          type: string
-                        severity:
-                          description: How to interpret failures of this condition,
-                            one of Error, Warning, Info
-                          type: string
-                        state:
-                          description: State of the condition.
-                          type: string
-                        type:
-                          description: 'type is used to communicate the status of
-                            the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
-                            Types common to all resources include: * "Ready": True
-                            when the Resource is ready.'
-                          type: string
-                      type: object
-                    type: array
                   createTime:
                     description: Output only. The creation time.
                     type: string
                   creator:
                     description: Output only. Email address of the authenticated creator.
                     type: string
+                  customAudiences:
+                    description: Output only. One or more custom audiences that you
+                      want this worker pool to support.
+                    items:
+                      type: string
+                    type: array
                   deleteTime:
                     description: Output only. The deletion time. It is only populated
                       as a response to a Delete request.
@@ -1104,6 +1112,44 @@ spec:
                     description: Output only. Name of the latest revision that is
                       serving traffic.
                     type: string
+                  observedConditions:
+                    description: Output only. The Conditions of all other associated
+                      sub-resources. They contain additional diagnostics information
+                      in case the WorkerPool does not reach its Serving state.
+                    items:
+                      properties:
+                        executionReason:
+                          description: A reason for the execution condition.
+                          type: string
+                        lastTransitionTime:
+                          description: Last time the condition transitioned from one
+                            status to another.
+                          type: string
+                        message:
+                          description: Human readable message indicating details about
+                            the current status.
+                          type: string
+                        reason:
+                          description: A common (service-level) reason for this condition.
+                          type: string
+                        revisionReason:
+                          description: A reason for the revision condition.
+                          type: string
+                        severity:
+                          description: How to interpret failures of this condition,
+                            one of Error, Warning, Info
+                          type: string
+                        state:
+                          description: State of the condition.
+                          type: string
+                        type:
+                          description: 'type is used to communicate the status of
+                            the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
+                            Types common to all resources include: * "Ready": True
+                            when the Resource is ready.'
+                          type: string
+                      type: object
+                    type: array
                   observedGeneration:
                     description: Output only. The generation of this WorkerPool currently
                       serving traffic.
@@ -1141,12 +1187,18 @@ spec:
                               type: object
                           type: object
                         type: array
+                      revision:
+                        description: Output only. The unique name for the revision.
+                        type: string
                     type: object
                   terminalCondition:
                     description: Output only. The Condition of this WorkerPool, containing
                       its readiness status, and detailed error information in case
                       it did not reach a serving state.
                     properties:
+                      executionReason:
+                        description: A reason for the execution condition.
+                        type: string
                       lastTransitionTime:
                         description: Last time the condition transitioned from one
                           status to another.
@@ -1154,6 +1206,12 @@ spec:
                       message:
                         description: Human readable message indicating details about
                           the current status.
+                        type: string
+                      reason:
+                        description: A common (service-level) reason for this condition.
+                        type: string
+                      revisionReason:
+                        description: A reason for the revision condition.
                         type: string
                       severity:
                         description: How to interpret failures of this condition,

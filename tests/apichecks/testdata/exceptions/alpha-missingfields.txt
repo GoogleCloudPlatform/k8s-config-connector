@@ -2215,7 +2215,7 @@
 [missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.nodeSelector.accelerator" is not set in unstructured objects
 [missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.revision" is not set in unstructured objects
 [missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.serviceMesh.mesh" is not set in unstructured objects
+[missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.serviceMesh.meshRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].cloudSQLInstance.instanceRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].emptyDir.medium" is not set in unstructured objects
 [missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.volumes[].emptyDir.sizeLimit" is not set in unstructured objects
