@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeApigeeAPIProducts implements ApigeeAPIProductInterface
-type FakeApigeeAPIProducts struct {
+// fakeApigeeAPIProducts implements ApigeeAPIProductInterface
+type fakeApigeeAPIProducts struct {
+	*gentype.FakeClientWithList[*v1alpha1.ApigeeAPIProduct, *v1alpha1.ApigeeAPIProductList]
 	Fake *FakeApigeeV1alpha1
-	ns   string
 }
 
-var apigeeapiproductsResource = v1alpha1.SchemeGroupVersion.WithResource("apigeeapiproducts")
-
-var apigeeapiproductsKind = v1alpha1.SchemeGroupVersion.WithKind("ApigeeAPIProduct")
-
-// Get takes name of the apigeeAPIProduct, and returns the corresponding apigeeAPIProduct object, and an error if there is any.
-func (c *FakeApigeeAPIProducts) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ApigeeAPIProduct, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(apigeeapiproductsResource, c.ns, name), &v1alpha1.ApigeeAPIProduct{})
-
-	if obj == nil {
-		return nil, err
+func newFakeApigeeAPIProducts(fake *FakeApigeeV1alpha1, namespace string) apigeev1alpha1.ApigeeAPIProductInterface {
+	return &fakeApigeeAPIProducts{
+		gentype.NewFakeClientWithList[*v1alpha1.ApigeeAPIProduct, *v1alpha1.ApigeeAPIProductList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("apigeeapiproducts"),
+			v1alpha1.SchemeGroupVersion.WithKind("ApigeeAPIProduct"),
+			func() *v1alpha1.ApigeeAPIProduct { return &v1alpha1.ApigeeAPIProduct{} },
+			func() *v1alpha1.ApigeeAPIProductList { return &v1alpha1.ApigeeAPIProductList{} },
+			func(dst, src *v1alpha1.ApigeeAPIProductList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.ApigeeAPIProductList) []*v1alpha1.ApigeeAPIProduct {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.ApigeeAPIProductList, items []*v1alpha1.ApigeeAPIProduct) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.ApigeeAPIProduct), err
-}
-
-// List takes label and field selectors, and returns the list of ApigeeAPIProducts that match those selectors.
-func (c *FakeApigeeAPIProducts) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ApigeeAPIProductList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(apigeeapiproductsResource, apigeeapiproductsKind, c.ns, opts), &v1alpha1.ApigeeAPIProductList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.ApigeeAPIProductList{ListMeta: obj.(*v1alpha1.ApigeeAPIProductList).ListMeta}
-	for _, item := range obj.(*v1alpha1.ApigeeAPIProductList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested apigeeAPIProducts.
-func (c *FakeApigeeAPIProducts) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(apigeeapiproductsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a apigeeAPIProduct and creates it.  Returns the server's representation of the apigeeAPIProduct, and an error, if there is any.
-func (c *FakeApigeeAPIProducts) Create(ctx context.Context, apigeeAPIProduct *v1alpha1.ApigeeAPIProduct, opts v1.CreateOptions) (result *v1alpha1.ApigeeAPIProduct, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(apigeeapiproductsResource, c.ns, apigeeAPIProduct), &v1alpha1.ApigeeAPIProduct{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeAPIProduct), err
-}
-
-// Update takes the representation of a apigeeAPIProduct and updates it. Returns the server's representation of the apigeeAPIProduct, and an error, if there is any.
-func (c *FakeApigeeAPIProducts) Update(ctx context.Context, apigeeAPIProduct *v1alpha1.ApigeeAPIProduct, opts v1.UpdateOptions) (result *v1alpha1.ApigeeAPIProduct, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(apigeeapiproductsResource, c.ns, apigeeAPIProduct), &v1alpha1.ApigeeAPIProduct{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeAPIProduct), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeApigeeAPIProducts) UpdateStatus(ctx context.Context, apigeeAPIProduct *v1alpha1.ApigeeAPIProduct, opts v1.UpdateOptions) (*v1alpha1.ApigeeAPIProduct, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(apigeeapiproductsResource, "status", c.ns, apigeeAPIProduct), &v1alpha1.ApigeeAPIProduct{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeAPIProduct), err
-}
-
-// Delete takes name of the apigeeAPIProduct and deletes it. Returns an error if one occurs.
-func (c *FakeApigeeAPIProducts) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(apigeeapiproductsResource, c.ns, name, opts), &v1alpha1.ApigeeAPIProduct{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeApigeeAPIProducts) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(apigeeapiproductsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.ApigeeAPIProductList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched apigeeAPIProduct.
-func (c *FakeApigeeAPIProducts) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ApigeeAPIProduct, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(apigeeapiproductsResource, c.ns, name, pt, data, subresources...), &v1alpha1.ApigeeAPIProduct{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.ApigeeAPIProduct), err
 }
