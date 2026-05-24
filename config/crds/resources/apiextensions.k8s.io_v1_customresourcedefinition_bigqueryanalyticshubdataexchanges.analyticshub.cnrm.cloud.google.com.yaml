@@ -143,6 +143,29 @@ spec:
                 description: The BigQueryAnalyticsHubDataExchange name. If not given,
                   the metadata.name will be used.
                 type: string
+              sharingEnvironmentConfig:
+                description: Optional. Configurable data sharing environment option
+                  for a data exchange.
+                properties:
+                  dcrExchangeConfig:
+                    description: Data Clean Room (DCR), used for privacy-safe and
+                      secured data sharing.
+                    properties:
+                      singleLinkedDatasetPerCleanroom:
+                        description: Optional. If True, this DCR restricts the linked
+                          dataset people to sharing only a single resource.
+                        type: boolean
+                      singleSelectedResourceSharingRestriction:
+                        description: Optional. If True, this DCR restricts the contributors
+                          to sharing only a single resource in a Submission. AND it
+                          prevents the data clean room from becoming a clean room
+                          without a clean room.
+                        type: boolean
+                    type: object
+                  defaultExchangeConfig:
+                    description: Default data sharing environment.
+                    type: object
+                type: object
             required:
             - displayName
             - location
@@ -199,6 +222,20 @@ spec:
                       data exchange.
                     format: int32
                     type: integer
+                  sharingEnvironmentConfig:
+                    description: Optional. Configurable data sharing environment option
+                      for a data exchange.
+                    properties:
+                      dcrExchangeConfig:
+                        properties:
+                          singleLinkedDatasetPerCleanroom:
+                            type: boolean
+                          singleSelectedResourceSharingRestriction:
+                            type: boolean
+                        type: object
+                      defaultExchangeConfig:
+                        type: object
+                    type: object
                 type: object
             type: object
         required:

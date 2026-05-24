@@ -26,7 +26,7 @@ func BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx *direct.MapC
 	}
 	out := &krm.BigQueryAnalyticsHubDataExchangeObservedState{}
 	out.ListingCount = direct.LazyPtr(in.GetListingCount())
-	// MISSING: SharingEnvironmentConfig // not yet
+	out.SharingEnvironmentConfig = SharingEnvironmentConfigObservedState_FromProto(mapCtx, in.GetSharingEnvironmentConfig())
 	return out
 }
 
@@ -39,12 +39,13 @@ func BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx *direct.MapContext, i
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
 	out.Documentation = direct.LazyPtr(in.GetDocumentation())
-	// s := string(in.GetIcon())
-	// out.Icon = &s // not yet
-	// MISSING: SharingEnvironmentConfig // not yet
+	out.Icon = in.GetIcon()
+	out.SharingEnvironmentConfig = SharingEnvironmentConfig_FromProto(mapCtx, in.GetSharingEnvironmentConfig())
 	out.DiscoveryType = direct.Enum_FromProto(mapCtx, in.GetDiscoveryType())
+	out.LogLinkedDatasetQueryUserEmail = in.LogLinkedDatasetQueryUserEmail
 	return out
 }
+
 func BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryAnalyticsHubDataExchangeSpec) *pb.DataExchange {
 	if in == nil {
 		return nil
@@ -55,10 +56,11 @@ func BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx *direct.MapContext, in 
 	out.Description = direct.ValueOf(in.Description)
 	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
 	out.Documentation = direct.ValueOf(in.Documentation)
-	// out.Icon = []byte(direct.ValueOf(in.Icon)) // not yet
-	// MISSING: SharingEnvironmentConfig // not yet
+	out.Icon = in.Icon
+	out.SharingEnvironmentConfig = SharingEnvironmentConfig_ToProto(mapCtx, in.SharingEnvironmentConfig)
 	dtype := direct.Enum_ToProto[pb.DiscoveryType](mapCtx, in.DiscoveryType)
 	out.DiscoveryType = &dtype
+	out.LogLinkedDatasetQueryUserEmail = in.LogLinkedDatasetQueryUserEmail
 
 	return out
 }
@@ -70,6 +72,64 @@ func BigQueryAnalyticsHubDataExchangeObservedState_ToProto(mapCtx *direct.MapCon
 	out := &pb.DataExchange{}
 	if in.ListingCount != nil {
 		out.ListingCount = *in.ListingCount
+	}
+	return out
+}
+
+func SharingEnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SharingEnvironmentConfig) *krm.SharingEnvironmentConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SharingEnvironmentConfigObservedState{}
+	switch env := in.Environment.(type) {
+	case *pb.SharingEnvironmentConfig_DefaultExchangeConfig_:
+		out.DefaultExchangeConfig = &krm.SharingEnvironmentConfig_DefaultExchangeConfigObservedState{}
+	case *pb.SharingEnvironmentConfig_DcrExchangeConfig_:
+		if env.DcrExchangeConfig != nil {
+			out.DcrExchangeConfig = &krm.SharingEnvironmentConfig_DcrExchangeConfigObservedState{
+				SingleSelectedResourceSharingRestriction: env.DcrExchangeConfig.SingleSelectedResourceSharingRestriction,
+				SingleLinkedDatasetPerCleanroom:          env.DcrExchangeConfig.SingleLinkedDatasetPerCleanroom,
+			}
+		}
+	}
+	return out
+}
+
+func SharingEnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.SharingEnvironmentConfig) *krm.SharingEnvironmentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SharingEnvironmentConfig{}
+	switch env := in.Environment.(type) {
+	case *pb.SharingEnvironmentConfig_DefaultExchangeConfig_:
+		out.DefaultExchangeConfig = &krm.SharingEnvironmentConfig_DefaultExchangeConfig{}
+	case *pb.SharingEnvironmentConfig_DcrExchangeConfig_:
+		if env.DcrExchangeConfig != nil {
+			out.DcrExchangeConfig = &krm.SharingEnvironmentConfig_DcrExchangeConfig{
+				SingleSelectedResourceSharingRestriction: env.DcrExchangeConfig.SingleSelectedResourceSharingRestriction,
+				SingleLinkedDatasetPerCleanroom:          env.DcrExchangeConfig.SingleLinkedDatasetPerCleanroom,
+			}
+		}
+	}
+	return out
+}
+
+func SharingEnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.SharingEnvironmentConfig) *pb.SharingEnvironmentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SharingEnvironmentConfig{}
+	if in.DefaultExchangeConfig != nil {
+		out.Environment = &pb.SharingEnvironmentConfig_DefaultExchangeConfig_{
+			DefaultExchangeConfig: &pb.SharingEnvironmentConfig_DefaultExchangeConfig{},
+		}
+	} else if in.DcrExchangeConfig != nil {
+		out.Environment = &pb.SharingEnvironmentConfig_DcrExchangeConfig_{
+			DcrExchangeConfig: &pb.SharingEnvironmentConfig_DcrExchangeConfig{
+				SingleSelectedResourceSharingRestriction: in.DcrExchangeConfig.SingleSelectedResourceSharingRestriction,
+				SingleLinkedDatasetPerCleanroom:          in.DcrExchangeConfig.SingleLinkedDatasetPerCleanroom,
+			},
+		}
 	}
 	return out
 }

@@ -31,7 +31,7 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 
 	// The location of this resource.
 	// +kubebuilder:validation:Required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The BigQueryAnalyticsHubDataExchange name. If not given, the metadata.name will be used.
 	// +kubebuilder:validation:Optional
@@ -71,7 +71,7 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 
 	// Optional. Configurable data sharing environment option for a data exchange.
 	// +kubebuilder:validation:Optional
-	// SharingEnvironmentConfig *SharingEnvironmentConfig `json:"sharingEnvironmentConfig,omitempty"`
+	SharingEnvironmentConfig *SharingEnvironmentConfig `json:"sharingEnvironmentConfig,omitempty"`
 
 	// Optional. Type of discovery on the discovery page for all the listings
 	//  under this exchange. Updating this field also updates (overwrites) the
@@ -83,6 +83,37 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 	//  If true, the DataExchange has an email sharing mandate enabled.
 	// +kubebuilder:validation:Optional
 	LogLinkedDatasetQueryUserEmail *bool `json:"logLinkedDatasetQueryUserEmail,omitempty"`
+}
+
+// Optional. Configurable data sharing environment option for a data exchange.
+type SharingEnvironmentConfig struct {
+	// Default data sharing environment.
+	// +kubebuilder:validation:Optional
+	DefaultExchangeConfig *SharingEnvironmentConfig_DefaultExchangeConfig `json:"defaultExchangeConfig,omitempty"`
+	// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
+	// +kubebuilder:validation:Optional
+	DcrExchangeConfig *SharingEnvironmentConfig_DcrExchangeConfig `json:"dcrExchangeConfig,omitempty"`
+}
+
+type SharingEnvironmentConfig_DefaultExchangeConfig struct{}
+
+type SharingEnvironmentConfig_DcrExchangeConfig struct {
+	// Optional. If True, this DCR restricts the contributors to sharing only a single resource in a Submission. AND it prevents the data clean room from becoming a clean room without a clean room.
+	SingleSelectedResourceSharingRestriction *bool `json:"singleSelectedResourceSharingRestriction,omitempty"`
+	// Optional. If True, this DCR restricts the linked dataset people to sharing only a single resource.
+	SingleLinkedDatasetPerCleanroom *bool `json:"singleLinkedDatasetPerCleanroom,omitempty"`
+}
+
+type SharingEnvironmentConfigObservedState struct {
+	DefaultExchangeConfig *SharingEnvironmentConfig_DefaultExchangeConfigObservedState `json:"defaultExchangeConfig,omitempty"`
+	DcrExchangeConfig     *SharingEnvironmentConfig_DcrExchangeConfigObservedState     `json:"dcrExchangeConfig,omitempty"`
+}
+
+type SharingEnvironmentConfig_DefaultExchangeConfigObservedState struct{}
+
+type SharingEnvironmentConfig_DcrExchangeConfigObservedState struct {
+	SingleSelectedResourceSharingRestriction *bool `json:"singleSelectedResourceSharingRestriction,omitempty"`
+	SingleLinkedDatasetPerCleanroom          *bool `json:"singleLinkedDatasetPerCleanroom,omitempty"`
 }
 
 // BigQueryAnalyticsHubDataExchangeStatus defines the config connector machine state of BigQueryAnalyticsHubDataExchange
@@ -108,7 +139,7 @@ type BigQueryAnalyticsHubDataExchangeObservedState struct {
 	ListingCount *int32 `json:"listingCount,omitempty"`
 
 	// Optional. Configurable data sharing environment option for a data exchange.
-	// SharingEnvironmentConfig *SharingEnvironmentConfigObservedState `json:"sharingEnvironmentConfig,omitempty"`
+	SharingEnvironmentConfig *SharingEnvironmentConfigObservedState `json:"sharingEnvironmentConfig,omitempty"`
 }
 
 // +genclient
