@@ -15,6 +15,7 @@
 package register
 
 import (
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aistreams"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
