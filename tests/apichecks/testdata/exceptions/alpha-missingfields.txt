@@ -583,41 +583,17 @@
 [missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.actions[]" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.id" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.invokers[]" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].endDate.day" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].endDate.month" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].endDate.year" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].endTime.hours" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].endTime.minutes" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].endTime.nanos" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].endTime.seconds" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].startDate.day" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].startDate.month" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].startDate.year" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].startTime.hours" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].startTime.minutes" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].startTime.nanos" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.oneTimeWindows[].startTime.seconds" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.timeZone" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.weeklyWindows[].daysOfWeek[]" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.weeklyWindows[].endTime.hours" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.weeklyWindows[].endTime.minutes" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.weeklyWindows[].endTime.nanos" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.weeklyWindows[].endTime.seconds" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.weeklyWindows[].startTime.hours" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.weeklyWindows[].startTime.minutes" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.weeklyWindows[].startTime.nanos" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].rolloutRestriction.timeWindows.weeklyWindows[].startTime.seconds" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.selectors[].deliveryPipeline.id" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.selectors[].deliveryPipeline.labels" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.selectors[].target.labels" is not set in unstructured objects
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.selectors[].target.targetRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.suspended" is not set in unstructured objects
 [missing_field] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.anthosCluster.membershipRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.associatedEntities" is not set in unstructured objects
