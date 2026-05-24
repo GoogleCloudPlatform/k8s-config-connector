@@ -20,7 +20,7 @@ import (
 
 	aiplatform "cloud.google.com/go/aiplatform/apiv1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform"
