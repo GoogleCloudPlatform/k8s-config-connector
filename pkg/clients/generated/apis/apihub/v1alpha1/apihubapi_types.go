@@ -38,10 +38,78 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type ApiApiFunctionalRequirements struct {
+	/* The attribute values associated with a resource in case attribute data type is enum. */
+	// +optional
+	EnumValues *ApiEnumValues `json:"enumValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is JSON. */
+	// +optional
+	JsonValues *ApiJsonValues `json:"jsonValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is string. */
+	// +optional
+	StringValues *ApiStringValues `json:"stringValues,omitempty"`
+}
+
+type ApiApiRequirements struct {
+	/* The attribute values associated with a resource in case attribute data type is enum. */
+	// +optional
+	EnumValues *ApiEnumValues `json:"enumValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is JSON. */
+	// +optional
+	JsonValues *ApiJsonValues `json:"jsonValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is string. */
+	// +optional
+	StringValues *ApiStringValues `json:"stringValues,omitempty"`
+}
+
+type ApiApiTechnicalRequirements struct {
+	/* The attribute values associated with a resource in case attribute data type is enum. */
+	// +optional
+	EnumValues *ApiEnumValues `json:"enumValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is JSON. */
+	// +optional
+	JsonValues *ApiJsonValues `json:"jsonValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is string. */
+	// +optional
+	StringValues *ApiStringValues `json:"stringValues,omitempty"`
+}
+
+type ApiAttributes struct {
+	/* The attribute values associated with a resource in case attribute data type is enum. */
+	// +optional
+	EnumValues *ApiEnumValues `json:"enumValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is JSON. */
+	// +optional
+	JsonValues *ApiJsonValues `json:"jsonValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is string. */
+	// +optional
+	StringValues *ApiStringValues `json:"stringValues,omitempty"`
+}
+
 type ApiDocumentation struct {
 	/* Optional. The uri of the externally hosted documentation. */
 	// +optional
 	ExternalURI *string `json:"externalURI,omitempty"`
+}
+
+type ApiEnumValues struct {
+	/* Required. The attribute values in case attribute data type is enum. */
+	// +optional
+	Values []ApiValues `json:"values,omitempty"`
+}
+
+type ApiJsonValues struct {
+	/* Required. The attribute values in case attribute data type is string or JSON. */
+	// +optional
+	Values []ApiValues `json:"values,omitempty"`
 }
 
 type ApiOwner struct {
@@ -54,10 +122,59 @@ type ApiOwner struct {
 	Email *string `json:"email,omitempty"`
 }
 
-type ApiHubApiSpec struct {
+type ApiStringValues struct {
+	/* Required. The attribute values in case attribute data type is string or JSON. */
+	// +optional
+	Values []ApiValues `json:"values,omitempty"`
+}
+
+type ApiValues struct {
+	/* Optional. The detailed description of the allowed value. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Required. The display name of the allowed value. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Required. The ID of the allowed value.
+	* If provided, the same will be used. The service will throw an error if
+	the specified id is already used by another allowed value in the same
+	attribute resource.
+	* If not provided, a system generated id derived from the display name
+	will be used. In this case, the service will handle conflict resolution
+	by adding a system generated suffix in case of duplicates.
+
+	This value should be 4-63 characters, and valid characters
+	are /[a-z][0-9]-/. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+
+	/* Optional. When set to true, the allowed value cannot be updated or deleted by the user. It can only be true for System defined attributes. */
+	// +optional
+	Immutable *bool `json:"immutable,omitempty"`
+}
+
+type APIHubApiSpec struct {
+	/* Optional. The API functional requirements of the API. */
+	// +optional
+	ApiFunctionalRequirements *ApiApiFunctionalRequirements `json:"apiFunctionalRequirements,omitempty"`
+
+	/* Optional. The API requirements of the API. */
+	// +optional
+	ApiRequirements *ApiApiRequirements `json:"apiRequirements,omitempty"`
+
 	/* Optional. The style of the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-api-style` */
 	// +optional
 	ApiStyleRef *v1alpha1.ResourceRef `json:"apiStyleRef,omitempty"`
+
+	/* Optional. The API technical requirements of the API. */
+	// +optional
+	ApiTechnicalRequirements *ApiApiTechnicalRequirements `json:"apiTechnicalRequirements,omitempty"`
+
+	/* Optional. The list of user defined attributes associated with the API resource. The key is the attribute name. It will be of the format: `projects/{project}/locations/{location}/attributes/{attribute}`. */
+	// +optional
+	Attributes map[string]ApiAttributes `json:"attributes,omitempty"`
 
 	/* Optional. The business unit owning the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-business-unit` */
 	// +optional
@@ -74,6 +191,10 @@ type ApiHubApiSpec struct {
 	// +optional
 	Documentation *ApiDocumentation `json:"documentation,omitempty"`
 
+	/* Optional. The base64-encoded fingerprint of the API resource. */
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
 	/* The location of this resource. */
 	Location string `json:"location"`
 
@@ -88,7 +209,7 @@ type ApiHubApiSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The ApiHubApi name. If not given, the metadata.name will be used. */
+	/* The APIHubApi name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -110,6 +231,10 @@ type ApiObservedStateStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
+	/* Output only. The metadata describing the source of the API resource. */
+	// +optional
+	SourceMetadata []ApiSourceMetadataStatus `json:"sourceMetadata,omitempty"`
+
 	/* Output only. The time at which the API resource was last updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
@@ -119,11 +244,29 @@ type ApiObservedStateStatus struct {
 	Versions []string `json:"versions,omitempty"`
 }
 
-type ApiHubApiStatus struct {
+type ApiSourceMetadataStatus struct {
+	/* Output only. The time at which the resource was created at the source. */
+	// +optional
+	OriginalResourceCreateTime *string `json:"originalResourceCreateTime,omitempty"`
+
+	/* Output only. The unique identifier of the resource at the source. */
+	// +optional
+	OriginalResourceID *string `json:"originalResourceID,omitempty"`
+
+	/* Output only. The time at which the resource was last updated at the source. */
+	// +optional
+	OriginalResourceUpdateTime *string `json:"originalResourceUpdateTime,omitempty"`
+
+	/* Output only. The type of the source. */
+	// +optional
+	SourceType *string `json:"sourceType,omitempty"`
+}
+
+type APIHubApiStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ApiHubApi's current state. */
+	   APIHubApi's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the ApiHubApi resource in GCP. */
+	/* A unique specifier for the APIHubApi resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -148,25 +291,25 @@ type ApiHubApiStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// ApiHubApi is the Schema for the apihub API
+// APIHubApi is the Schema for the apihub API
 // +k8s:openapi-gen=true
-type ApiHubApi struct {
+type APIHubApi struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ApiHubApiSpec   `json:"spec,omitempty"`
-	Status ApiHubApiStatus `json:"status,omitempty"`
+	Spec   APIHubApiSpec   `json:"spec,omitempty"`
+	Status APIHubApiStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// ApiHubApiList contains a list of ApiHubApi
-type ApiHubApiList struct {
+// APIHubApiList contains a list of APIHubApi
+type APIHubApiList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ApiHubApi `json:"items"`
+	Items           []APIHubApi `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&ApiHubApi{}, &ApiHubApiList{})
+	SchemeBuilder.Register(&APIHubApi{}, &APIHubApiList{})
 }

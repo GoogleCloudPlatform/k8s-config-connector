@@ -53,16 +53,16 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
+	APIHubApiGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(APIHubApi{}).Name(),
+	}
+
 	APIHubDeploymentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(APIHubDeployment{}).Name(),
-	}
-
-	ApiHubApiGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApiHubApi{}).Name(),
 	}
 
 	apihubAPIVersion = SchemeGroupVersion.String()

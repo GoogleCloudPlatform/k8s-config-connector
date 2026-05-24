@@ -32,42 +32,42 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// ApiHubApisGetter has a method to return a ApiHubApiInterface.
+// APIHubApisGetter has a method to return a APIHubApiInterface.
 // A group's client should implement this interface.
-type ApiHubApisGetter interface {
-	ApiHubApis(namespace string) ApiHubApiInterface
+type APIHubApisGetter interface {
+	APIHubApis(namespace string) APIHubApiInterface
 }
 
-// ApiHubApiInterface has methods to work with ApiHubApi resources.
-type ApiHubApiInterface interface {
-	Create(ctx context.Context, apiHubApi *apihubv1alpha1.ApiHubApi, opts v1.CreateOptions) (*apihubv1alpha1.ApiHubApi, error)
-	Update(ctx context.Context, apiHubApi *apihubv1alpha1.ApiHubApi, opts v1.UpdateOptions) (*apihubv1alpha1.ApiHubApi, error)
+// APIHubApiInterface has methods to work with APIHubApi resources.
+type APIHubApiInterface interface {
+	Create(ctx context.Context, aPIHubApi *apihubv1alpha1.APIHubApi, opts v1.CreateOptions) (*apihubv1alpha1.APIHubApi, error)
+	Update(ctx context.Context, aPIHubApi *apihubv1alpha1.APIHubApi, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubApi, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, apiHubApi *apihubv1alpha1.ApiHubApi, opts v1.UpdateOptions) (*apihubv1alpha1.ApiHubApi, error)
+	UpdateStatus(ctx context.Context, aPIHubApi *apihubv1alpha1.APIHubApi, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubApi, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*apihubv1alpha1.ApiHubApi, error)
-	List(ctx context.Context, opts v1.ListOptions) (*apihubv1alpha1.ApiHubApiList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*apihubv1alpha1.APIHubApi, error)
+	List(ctx context.Context, opts v1.ListOptions) (*apihubv1alpha1.APIHubApiList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apihubv1alpha1.ApiHubApi, err error)
-	ApiHubApiExpansion
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apihubv1alpha1.APIHubApi, err error)
+	APIHubApiExpansion
 }
 
-// apiHubApis implements ApiHubApiInterface
-type apiHubApis struct {
-	*gentype.ClientWithList[*apihubv1alpha1.ApiHubApi, *apihubv1alpha1.ApiHubApiList]
+// aPIHubApis implements APIHubApiInterface
+type aPIHubApis struct {
+	*gentype.ClientWithList[*apihubv1alpha1.APIHubApi, *apihubv1alpha1.APIHubApiList]
 }
 
-// newApiHubApis returns a ApiHubApis
-func newApiHubApis(c *ApihubV1alpha1Client, namespace string) *apiHubApis {
-	return &apiHubApis{
-		gentype.NewClientWithList[*apihubv1alpha1.ApiHubApi, *apihubv1alpha1.ApiHubApiList](
+// newAPIHubApis returns a APIHubApis
+func newAPIHubApis(c *ApihubV1alpha1Client, namespace string) *aPIHubApis {
+	return &aPIHubApis{
+		gentype.NewClientWithList[*apihubv1alpha1.APIHubApi, *apihubv1alpha1.APIHubApiList](
 			"apihubapis",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *apihubv1alpha1.ApiHubApi { return &apihubv1alpha1.ApiHubApi{} },
-			func() *apihubv1alpha1.ApiHubApiList { return &apihubv1alpha1.ApiHubApiList{} },
+			func() *apihubv1alpha1.APIHubApi { return &apihubv1alpha1.APIHubApi{} },
+			func() *apihubv1alpha1.APIHubApiList { return &apihubv1alpha1.APIHubApiList{} },
 		),
 	}
 }
