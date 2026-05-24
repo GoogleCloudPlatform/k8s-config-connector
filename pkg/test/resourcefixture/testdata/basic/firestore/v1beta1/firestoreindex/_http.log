@@ -218,23 +218,23 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.firestore.admin.v1.Index",
-    "density": 1,
+    "density": "SPARSE_ALL",
     "fields": [
       {
         "fieldPath": "field1",
-        "order": 1
+        "order": "ASCENDING"
       },
       {
         "fieldPath": "field2",
-        "order": 2
+        "order": "DESCENDING"
       },
       {
         "fieldPath": "__name__",
-        "order": 2
+        "order": "DESCENDING"
       }
     ],
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-    "queryScope": 1,
+    "queryScope": "COLLECTION",
     "state": "CREATING"
   }
 }
