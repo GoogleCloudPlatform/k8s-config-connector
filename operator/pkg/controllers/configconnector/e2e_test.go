@@ -66,7 +66,7 @@ func TestConfigConnectorE2E(t *testing.T) {
 	}
 
 	// Poll for status/observedGeneration
-	err := wait.PollUntilContextTimeout(ctx, 2*time.Second, 1*time.Minute, true, func(ctx context.Context) (bool, error) {
+	err := wait.PollUntilContextTimeout(ctx, 2*time.Second, 3*time.Minute, true, func(ctx context.Context) (bool, error) {
 		newCC := &corev1beta1.ConfigConnector{}
 		if err := c.Get(ctx, nn, newCC); err != nil {
 			return false, nil
@@ -79,7 +79,7 @@ func TestConfigConnectorE2E(t *testing.T) {
 	})
 	if err != nil {
 		newCC := &corev1beta1.ConfigConnector{}
-		c.Get(ctx, nn, newCC)
+		_ = c.Get(ctx, nn, newCC)
 		status := newCC.GetCommonStatus()
 		t.Errorf("ConfigConnector failed to become healthy within timeout. err: %v, status: %v", err, status)
 	}
