@@ -1,0 +1,12 @@
+apiVersion: clouddms.cnrm.cloud.google.com/v1alpha1
+kind: CloudDMSPrivateConnection
+metadata:
+  name: pc-minimal-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  vpcPeeringConfig:
+    vpcNameRef:
+      name: computenetwork-minimal-${uniqueId}
+    subnet: 10.0.0.0/29
