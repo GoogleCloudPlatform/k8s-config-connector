@@ -20,11 +20,18 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DeployPolicyIdentity is the identity of a DeployDeployPolicy.
+var (
+	_ identity.IdentityV2 = &DeployPolicyIdentity{}
+	_ identity.Resource   = &CloudDeployDeployPolicy{}
+)
+
+// DeployPolicyIdentity defines the resource reference to DeployDeployPolicy, which "External" field
+// holds the GCP identifier for the KRM object.
 type DeployPolicyIdentity struct {
 	parent *DeployPolicyParent
 	id     string
@@ -40,6 +47,26 @@ func (i *DeployPolicyIdentity) ID() string {
 
 func (i *DeployPolicyIdentity) Parent() *DeployPolicyParent {
 	return i.parent
+}
+
+func (i *DeployPolicyIdentity) FromExternal(external string) error {
+	parent, resourceID, err := ParseDeployPolicyExternal(external)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.id = resourceID
+	return nil
+}
+
+func (i *DeployPolicyIdentity) Host() string {
+	return "clouddeploy.googleapis.com"
+}
+
+var _ identity.Resource = &CloudDeployDeployPolicy{}
+
+func (obj *CloudDeployDeployPolicy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return NewDeployPolicyIdentity(ctx, reader, obj)
 }
 
 type DeployPolicyParent struct {

@@ -1,0 +1,625 @@
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "deployPolicy \"projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies?%24alt=json%3Benum-encoding%3Dint&deployPolicyId=clouddeploydeploypolicy-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Maximal deploy policy",
+  "rules": [
+    {
+      "rolloutRestriction": {
+        "actions": [
+          1
+        ],
+        "id": "max-rollout-rule",
+        "invokers": [
+          1
+        ],
+        "timeWindows": {
+          "oneTimeWindows": [
+            {
+              "endDate": {
+                "day": 26,
+                "month": 12,
+                "year": 2026
+              },
+              "endTime": {},
+              "startDate": {
+                "day": 25,
+                "month": 12,
+                "year": 2026
+              },
+              "startTime": {}
+            }
+          ],
+          "timeZone": "America/New_York",
+          "weeklyWindows": [
+            {
+              "daysOfWeek": [
+                6,
+                7
+              ],
+              "endTime": {
+                "hours": 23,
+                "minutes": 59
+              },
+              "startTime": {}
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "selectors": [
+    {
+      "deliveryPipeline": {
+        "id": "pipeline-*"
+      },
+      "target": {
+        "id": "prod-*",
+        "labels": {
+          "env": "prod"
+        }
+      }
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.DeployPolicy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal deploy policy",
+    "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+    "rules": [
+      {
+        "rolloutRestriction": {
+          "actions": [
+            "ADVANCE"
+          ],
+          "id": "max-rollout-rule",
+          "invokers": [
+            "USER"
+          ],
+          "timeWindows": {
+            "oneTimeWindows": [
+              {
+                "endDate": {
+                  "day": 26,
+                  "month": 12,
+                  "year": 2026
+                },
+                "endTime": {},
+                "startDate": {
+                  "day": 25,
+                  "month": 12,
+                  "year": 2026
+                },
+                "startTime": {}
+              }
+            ],
+            "timeZone": "America/New_York",
+            "weeklyWindows": [
+              {
+                "daysOfWeek": [
+                  "SATURDAY",
+                  "SUNDAY"
+                ],
+                "endTime": {
+                  "hours": 23,
+                  "minutes": 59
+                },
+                "startTime": {}
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "selectors": [
+      {
+        "deliveryPipeline": {
+          "id": "pipeline-*"
+        },
+        "target": {
+          "id": "prod-*",
+          "labels": {
+            "env": "prod"
+          }
+        }
+      }
+    ],
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal deploy policy",
+  "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+  "rules": [
+    {
+      "rolloutRestriction": {
+        "actions": [
+          1
+        ],
+        "id": "max-rollout-rule",
+        "invokers": [
+          1
+        ],
+        "timeWindows": {
+          "oneTimeWindows": [
+            {
+              "endDate": {
+                "day": 26,
+                "month": 12,
+                "year": 2026
+              },
+              "endTime": {},
+              "startDate": {
+                "day": 25,
+                "month": 12,
+                "year": 2026
+              },
+              "startTime": {}
+            }
+          ],
+          "timeZone": "America/New_York",
+          "weeklyWindows": [
+            {
+              "daysOfWeek": [
+                6,
+                7
+              ],
+              "endTime": {
+                "hours": 23,
+                "minutes": 59
+              },
+              "startTime": {}
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "selectors": [
+    {
+      "deliveryPipeline": {
+        "id": "pipeline-*"
+      },
+      "target": {
+        "id": "prod-*",
+        "labels": {
+          "env": "prod"
+        }
+      }
+    }
+  ],
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=suspended
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: deploy_policy.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
+
+{
+  "description": "Maximal deploy policy",
+  "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+  "rules": [
+    {
+      "rolloutRestriction": {
+        "actions": [
+          1
+        ],
+        "id": "max-rollout-rule",
+        "invokers": [
+          1
+        ],
+        "timeWindows": {
+          "oneTimeWindows": [
+            {
+              "endDate": {
+                "day": 26,
+                "month": 12,
+                "year": 2026
+              },
+              "endTime": {},
+              "startDate": {
+                "day": 25,
+                "month": 12,
+                "year": 2026
+              },
+              "startTime": {}
+            }
+          ],
+          "timeZone": "America/New_York",
+          "weeklyWindows": [
+            {
+              "daysOfWeek": [
+                6,
+                7
+              ],
+              "endTime": {
+                "hours": 23,
+                "minutes": 59
+              },
+              "startTime": {}
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "selectors": [
+    {
+      "deliveryPipeline": {
+        "id": "pipeline-*"
+      },
+      "target": {
+        "id": "prod-*",
+        "labels": {
+          "env": "prod"
+        }
+      }
+    }
+  ],
+  "suspended": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.DeployPolicy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal deploy policy",
+    "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+    "rules": [
+      {
+        "rolloutRestriction": {
+          "actions": [
+            "ADVANCE"
+          ],
+          "id": "max-rollout-rule",
+          "invokers": [
+            "USER"
+          ],
+          "timeWindows": {
+            "oneTimeWindows": [
+              {
+                "endDate": {
+                  "day": 26,
+                  "month": 12,
+                  "year": 2026
+                },
+                "endTime": {},
+                "startDate": {
+                  "day": 25,
+                  "month": 12,
+                  "year": 2026
+                },
+                "startTime": {}
+              }
+            ],
+            "timeZone": "America/New_York",
+            "weeklyWindows": [
+              {
+                "daysOfWeek": [
+                  "SATURDAY",
+                  "SUNDAY"
+                ],
+                "endTime": {
+                  "hours": 23,
+                  "minutes": 59
+                },
+                "startTime": {}
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "selectors": [
+      {
+        "deliveryPipeline": {
+          "id": "pipeline-*"
+        },
+        "target": {
+          "id": "prod-*",
+          "labels": {
+            "env": "prod"
+          }
+        }
+      }
+    ],
+    "suspended": true,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal deploy policy",
+  "name": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+  "rules": [
+    {
+      "rolloutRestriction": {
+        "actions": [
+          1
+        ],
+        "id": "max-rollout-rule",
+        "invokers": [
+          1
+        ],
+        "timeWindows": {
+          "oneTimeWindows": [
+            {
+              "endDate": {
+                "day": 26,
+                "month": 12,
+                "year": 2026
+              },
+              "endTime": {},
+              "startDate": {
+                "day": 25,
+                "month": 12,
+                "year": 2026
+              },
+              "startTime": {}
+            }
+          ],
+          "timeZone": "America/New_York",
+          "weeklyWindows": [
+            {
+              "daysOfWeek": [
+                6,
+                7
+              ],
+              "endTime": {
+                "hours": 23,
+                "minutes": 59
+              },
+              "startTime": {}
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "selectors": [
+    {
+      "deliveryPipeline": {
+        "id": "pipeline-*"
+      },
+      "target": {
+        "id": "prod-*",
+        "labels": {
+          "env": "prod"
+        }
+      }
+    }
+  ],
+  "suspended": true,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeployPolicies%2Fclouddeploydeploypolicy-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deployPolicies/clouddeploydeploypolicy-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

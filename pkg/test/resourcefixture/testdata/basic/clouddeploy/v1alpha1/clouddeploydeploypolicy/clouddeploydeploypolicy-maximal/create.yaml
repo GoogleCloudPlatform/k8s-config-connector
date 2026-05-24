@@ -1,0 +1,50 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+kind: CloudDeployDeployPolicy
+metadata:
+  name: clouddeploydeploypolicy-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "Maximal deploy policy"
+  suspended: false
+  selectors:
+  - target:
+      targetRef:
+        external: "prod-*"
+      labels:
+        env: prod
+    deliveryPipeline:
+      id: "pipeline-*"
+  rules:
+  - rolloutRestriction:
+      id: "max-rollout-rule"
+      invokers:
+      - "USER"
+      actions:
+      - "ADVANCE"
+      timeWindows:
+        timeZone: "America/New_York"
+        weeklyWindows:
+        - daysOfWeek:
+          - "SATURDAY"
+          - "SUNDAY"
+          startTime:
+            hours: 0
+            minutes: 0
+          endTime:
+            hours: 23
+            minutes: 59
+        oneTimeWindows:
+        - startDate:
+            year: 2026
+            month: 12
+            day: 25
+          startTime:
+            hours: 0
+          endDate:
+            year: 2026
+            month: 12
+            day: 26
+          endTime:
+            hours: 0
