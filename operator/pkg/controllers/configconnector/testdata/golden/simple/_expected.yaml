@@ -2200,6 +2200,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - aistreams.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - alloydb.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3903,6 +3915,14 @@ rules:
   - watch
 - apiGroups:
   - aiplatform.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - aistreams.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
