@@ -23,6 +23,8 @@ cd "${REPO_ROOT}/dev/tools/controllerbuilder"
 
 ./generate-proto.sh
 
+rm -f "${REPO_ROOT}/apis/vertexai/v1alpha1/types_v1beta1.go"
+
 go run . generate-types \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
@@ -49,6 +51,9 @@ sed -i 's/\*ListValue/apiextensionsv1.JSON/g' "${REPO_ROOT}/apis/vertexai/v1alph
 # Add XPreserveUnknownFields for apiextensionsv1.JSON fields
 sed -i 's/\([A-Za-z0-9_]* apiextensionsv1\.JSON\)/\/\/ +kubebuilder:validation:XPreserveUnknownFields\n\t\1/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
 sed -i 's/\([A-Za-z0-9_]* \[\]apiextensionsv1\.JSON\)/\/\/ +kubebuilder:validation:XPreserveUnknownFields\n\t\1/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
+
+# Add XPreserveUnknownFields for empty structs
+perl -0777 -pi -e 's/type ([A-Za-z0-9_]+) struct \{\n\}/\/\/ \+kubebuilder:validation:XPreserveUnknownFields\ntype \1 struct \{\n\}/g' "${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go"
 
 # We leave generate-mapper for v1beta1 so that `generate.sh` stays functionally the same as before
 # (even though it's broken on HEAD, we won't fix the pre-existing issue here).
