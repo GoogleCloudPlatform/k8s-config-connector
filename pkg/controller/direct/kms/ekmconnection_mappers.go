@@ -94,6 +94,7 @@ func KMSEKMConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.E
 	}
 	out := &krm.KMSEKMConnectionObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.ServiceResolvers = make([]krm.KMSEKMConnectionObservedServiceResolver, len(in.ServiceResolvers))
 	for i, sr := range in.ServiceResolvers {
 		out.ServiceResolvers[i] = KMSEKMConnectionObservedServiceResolver_FromProto(mapCtx, sr)
@@ -106,6 +107,7 @@ func KMSEKMConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KM
 	}
 	out := &pb.EkmConnection{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.ServiceResolvers = make([]*pb.EkmConnection_ServiceResolver, len(in.ServiceResolvers))
 	for i, sr := range in.ServiceResolvers {
 		out.ServiceResolvers[i] = KMSEKMConnectionObservedServiceResolver_ToProto(mapCtx, &sr)

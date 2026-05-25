@@ -178,9 +178,9 @@ func (a *EKMConnectionAdapter) Update(ctx context.Context, updateOp *directbase.
 		return mapCtx.Err()
 	}
 	resource.Name = a.id.String()
+	resource.Etag = a.actual.Etag
 
 	updateMask := &fieldmaskpb.FieldMask{}
-
 	// EkmConnection fields that can be updated:
 	if !reflect.DeepEqual(resource.ServiceResolvers, a.actual.ServiceResolvers) {
 		updateMask.Paths = append(updateMask.Paths, "service_resolvers")
