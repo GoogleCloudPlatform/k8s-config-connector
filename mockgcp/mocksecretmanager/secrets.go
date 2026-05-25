@@ -27,9 +27,9 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-        iampb "cloud.google.com/go/iam/apiv1/iampb"
-        pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
-        "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
+	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
 type SecretsV1 struct {
