@@ -23,7 +23,7 @@ import (
 var NetworkSecurityUrlListGVK = GroupVersion.WithKind("NetworkSecurityUrlList")
 
 // NetworkSecurityUrlListSpec defines the desired state of NetworkSecurityUrlList
-// +kcc:spec:proto=google.cloud.networksecurity.v1alpha1.UrlList
+// +kcc:spec:proto=google.cloud.networksecurity.v1.UrlList
 type NetworkSecurityUrlListSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -59,7 +59,7 @@ type NetworkSecurityUrlListStatus struct {
 }
 
 // NetworkSecurityUrlListObservedState is the state of the NetworkSecurityUrlList resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.UrlList
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.UrlList
 type NetworkSecurityUrlListObservedState struct {
 	// Output only. Time when the security policy was created.
 	// +optional

@@ -20,33 +20,3 @@
 // resource: NetworkSecurityUrlList:UrlList
 
 package v1alpha1
-
-// +kcc:proto=google.cloud.networksecurity.v1.UrlList
-type URLList struct {
-	// Required. Name of the resource provided by the user.
-	//  Name is of the form
-	//  projects/{project}/locations/{location}/urlLists/{url_list}
-	//  url_list should match the
-	//  pattern:(^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$).
-	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlList.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. Free-text description of the resource.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlList.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. FQDNs and URLs.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlList.values
-	Values []string `json:"values,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.UrlList
-type URLListObservedState struct {
-	// Output only. Time when the security policy was created.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlList.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Time when the security policy was updated.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlList.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
