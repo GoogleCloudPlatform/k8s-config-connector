@@ -3,12 +3,21 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "network \"projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/edgenetworknetwork-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "network \"projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/edgenetworknetwork-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -28,12 +37,17 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -44,11 +58,16 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
   "description": "Basic Network",
   "labels": {
     "cnrm-test": "true",
@@ -56,8 +75,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "managed-by-cnrm": "true"
   },
   "mtu": 9000,
-  "name": "projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/edgenetworknetwork-${uniqueId}",
-  "updateTime": null
+  "name": "projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/edgenetworknetwork-${uniqueId}"
 }
 
 ---
@@ -67,11 +85,16 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
