@@ -127,7 +127,9 @@
 [schema_violation] file=iam/iampartialpolicy/resources/computeinstance-conditions gvk=compute.cnrm.cloud.google.com/v1beta1, Kind=ComputeInstance: [].spec.networkInterface: Required value
 [schema_violation] file=iam/iampartialpolicy/resources/computeinstance-conditions gvk=compute.cnrm.cloud.google.com/v1beta1, Kind=ComputeInstance: []: Invalid value: "": "spec" must validate at least one schema (anyOf)
 [schema_violation] file=iam/iampartialpolicy/resources/dataproccluster gvk=dataproc.cnrm.cloud.google.com/v1beta1, Kind=DataprocCluster: [].spec.location: Required value
+[schema_violation] file=iam/iampartialpolicy/resources/dataproccluster gvk=dataproc.cnrm.cloud.google.com/v1beta1, Kind=DataprocCluster: [].spec.projectRef: Required value
 [schema_violation] file=iam/iampartialpolicy/resources/dataproccluster-conditions gvk=dataproc.cnrm.cloud.google.com/v1beta1, Kind=DataprocCluster: [].spec.location: Required value
+[schema_violation] file=iam/iampartialpolicy/resources/dataproccluster-conditions gvk=dataproc.cnrm.cloud.google.com/v1beta1, Kind=DataprocCluster: [].spec.projectRef: Required value
 [schema_violation] file=iam/iampartialpolicy/resources/folder gvk=resourcemanager.cnrm.cloud.google.com/v1beta1, Kind=Folder: [].spec: Invalid value: "parentRef": spec.parentRef in body is a forbidden property
 [schema_violation] file=iam/iampartialpolicy/resources/folder-conditions gvk=resourcemanager.cnrm.cloud.google.com/v1beta1, Kind=Folder: [].spec: Invalid value: "parentRef": spec.parentRef in body is a forbidden property
 [schema_violation] file=iam/iampartialpolicy/resources/iamworkforcepool gvk=iam.cnrm.cloud.google.com/v1beta1, Kind=IAMWorkforcePool: [].spec.location: Required value

@@ -136,13 +136,15 @@ type ClusterDiskConfig struct {
 	// +optional
 	LocalSsdInterface *string `json:"localSsdInterface,omitempty"`
 
-	/* Immutable. Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
+	/* Immutable. Optional. Number of attached SSDs, from 0 to 8 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. Note: Local SSD options may vary by machine type and number of vCPUs selected. */
 	// +optional
 	NumLocalSsds *int64 `json:"numLocalSsds,omitempty"`
 }
 
 type ClusterEncryptionConfig struct {
-	/* Immutable. */
+	/* Immutable. Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
+
+	Allowed value: The `selfLink` field of a `KMSCryptoKey` resource. */
 	// +optional
 	GcePdKmsKeyRef *v1alpha1.ResourceRef `json:"gcePdKmsKeyRef,omitempty"`
 }
@@ -164,15 +166,17 @@ type ClusterGceClusterConfig struct {
 	// +optional
 	ConfidentialInstanceConfig *ClusterConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
 
-	/* Immutable. Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This `internal_ip_only` restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses. */
+	/* Immutable. Optional. This setting applies to subnetwork-enabled networks. It is set to `true` by default in clusters created with image versions 2.2.x. When set to `true`: * All cluster VMs have internal IP addresses. * [Google Private Access] (https://cloud.google.com/vpc/docs/private-google-access) must be enabled to access Dataproc and other Google Cloud APIs. * Off-cluster dependencies must be configured to be accessible without external IP addresses. When set to `false`: * Cluster VMs are not restricted to internal IP addresses. * Ephemeral external IP addresses are assigned to each cluster VM. */
 	// +optional
 	InternalIPOnly *bool `json:"internalIPOnly,omitempty"`
 
-	/* Immutable. The Compute Engine metadata entries to add to all instances (see [Project and instance metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)). */
+	/* Immutable. Optional. The Compute Engine metadata entries to add to all instances (see [Project and instance metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)). */
 	// +optional
 	Metadata map[string]string `json:"metadata,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Optional. The Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the "default" network of the project is used, if it exists. Cannot be a "Custom Subnet Network" (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for more information). A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/networks/default` * `projects/[project_id]/global/networks/default` * `default`.
+
+	Allowed value: The `selfLink` field of a `ComputeNetwork` resource. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -180,7 +184,7 @@ type ClusterGceClusterConfig struct {
 	// +optional
 	NodeGroupAffinity *ClusterNodeGroupAffinity `json:"nodeGroupAffinity,omitempty"`
 
-	/* Immutable. Optional. The type of IPv6 access for a cluster. Possible values: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED, INHERIT_FROM_SUBNETWORK, OUTBOUND, BIDIRECTIONAL */
+	/* Immutable. Optional. The type of IPv6 access for a cluster. Possible values: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED, INHERIT_FROM_SUBNET, OUTBOUND_ONLY, BIDIRECTIONAL */
 	// +optional
 	PrivateIPv6GoogleAccess *string `json:"privateIPv6GoogleAccess,omitempty"`
 
@@ -188,7 +192,9 @@ type ClusterGceClusterConfig struct {
 	// +optional
 	ReservationAffinity *ClusterReservationAffinity `json:"reservationAffinity,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Optional. The [Dataproc service account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc) (also see [VM Data Plane identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity)) used by Dataproc cluster VM instances to access Google Cloud Platform services. If not specified, the [Compute Engine default service account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account) is used.
+
+	Allowed value: The `email` field of an `IAMServiceAccount` resource. */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
@@ -200,25 +206,29 @@ type ClusterGceClusterConfig struct {
 	// +optional
 	ShieldedInstanceConfig *ClusterShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Optional. The Compute Engine subnetwork to be used for machine communications. Cannot be specified with network_uri. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/[region]/subnetworks/sub0` * `projects/[project_id]/regions/[region]/subnetworks/sub0` * `sub0`.
+
+	Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
-	/* Immutable. The Compute Engine tags to add to all instances (see [Tagging instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)). */
+	/* Immutable. The Compute Engine network tags to add to all instances (see [Tagging instances](https://cloud.google.com/vpc/docs/add-remove-network-tags)). */
 	// +optional
 	Tags []string `json:"tags,omitempty"`
 
-	/* Immutable. Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `us-central1-f` */
+	/* Immutable. Optional. The Compute Engine zone where the Dataproc cluster will be located. If omitted, the service will pick a zone in the cluster's Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `[zone]` */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
 }
 
 type ClusterGkeClusterConfig struct {
-	/* Immutable. */
+	/* Immutable. Optional. A target GKE cluster to deploy to. It must be in the same project and region as the Dataproc cluster (the GKE cluster can be zonal or regional). Format: 'projects/{project}/locations/{location}/clusters/{cluster_id}'
+
+	Allowed value: The `selfLink` field of a `ContainerCluster` resource. */
 	// +optional
 	GkeClusterTargetRef *v1alpha1.ResourceRef `json:"gkeClusterTargetRef,omitempty"`
 
-	/* Immutable. Optional. GKE node pools where workloads will be scheduled. At least one node pool must be assigned the `DEFAULT` GkeNodePoolTarget.Role. If a `GkeNodePoolTarget` is not specified, Dataproc constructs a `DEFAULT` `GkeNodePoolTarget`. Each role can be given to only one `GkeNodePoolTarget`. All node pools must have the same location settings. */
+	/* Immutable. Optional. GKE node pools where workloads will be scheduled. At least one node pool must be assigned the `DEFAULT` [GkeNodePoolTarget.Role][google.cloud.dataproc.v1.GkeNodePoolTarget.Role]. If a `GkeNodePoolTarget` is not specified, Dataproc constructs a `DEFAULT` `GkeNodePoolTarget`. Each role can be given to only one `GkeNodePoolTarget`. All node pools must have the same location settings. */
 	// +optional
 	NodePoolTarget []ClusterNodePoolTarget `json:"nodePoolTarget,omitempty"`
 }
@@ -274,7 +284,9 @@ type ClusterKerberosConfig struct {
 	// +optional
 	KeystorePassword *string `json:"keystorePassword,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Optional. The URI of the KMS key used to encrypt sensitive files.
+
+	Allowed value: The `selfLink` field of a `KMSCryptoKey` resource. */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
@@ -345,11 +357,13 @@ type ClusterMasterConfig struct {
 	// +optional
 	DiskConfig *ClusterDiskConfig `json:"diskConfig,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
+
+	Allowed value: The `selfLink` field of a `ComputeImage` resource. */
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2` * `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
@@ -372,7 +386,7 @@ type ClusterMetastoreConfig struct {
 }
 
 type ClusterMetrics struct {
-	/* Immutable. Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric course (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` andd `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected. */
+	/* Immutable. Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric source (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` and `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected. */
 	// +optional
 	MetricOverrides []string `json:"metricOverrides,omitempty"`
 
@@ -434,11 +448,13 @@ type ClusterSecondaryWorkerConfig struct {
 	// +optional
 	DiskConfig *ClusterDiskConfig `json:"diskConfig,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
+
+	Allowed value: The `selfLink` field of a `ComputeImage` resource. */
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2` * `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
@@ -480,7 +496,7 @@ type ClusterShieldedInstanceConfig struct {
 }
 
 type ClusterSoftwareConfig struct {
-	/* Immutable. Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version. */
+	/* Immutable. Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported-dataproc-image-versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version. */
 	// +optional
 	ImageVersion *string `json:"imageVersion,omitempty"`
 
@@ -494,7 +510,9 @@ type ClusterSoftwareConfig struct {
 }
 
 type ClusterSparkHistoryServerConfig struct {
-	/* Immutable. */
+	/* Immutable. Optional. Resource name of an existing Dataproc Cluster to act as a Spark History Server for the workload. Example: * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+
+	Allowed value: The `selfLink` field of a `DataprocCluster` resource. */
 	// +optional
 	DataprocClusterRef *v1alpha1.ResourceRef `json:"dataprocClusterRef,omitempty"`
 }
@@ -507,7 +525,7 @@ type ClusterVirtualClusterConfig struct {
 	/* Immutable. Required. The configuration for running the Dataproc cluster on Kubernetes. */
 	KubernetesClusterConfig ClusterKubernetesClusterConfig `json:"kubernetesClusterConfig"`
 
-	/* Immutable. */
+	/* Immutable. Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.** */
 	// +optional
 	StagingBucketRef *v1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
 }
@@ -521,11 +539,13 @@ type ClusterWorkerConfig struct {
 	// +optional
 	DiskConfig *ClusterDiskConfig `json:"diskConfig,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
+
+	Allowed value: The `selfLink` field of a `ComputeImage` resource. */
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
+	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2` * `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
@@ -551,31 +571,35 @@ type DataprocClusterSpec struct {
 	Location string `json:"location"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Optional. The virtual cluster config is used when creating a Dataproc cluster that does not directly control the underlying compute resources, for example, when creating a [Dataproc-on-GKE cluster](https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke). Dataproc may set default values, and values may change when clusters are updated. Exactly one of config or virtual_cluster_config must be specified. */
+	/* Immutable. The virtual cluster config is used when creating a Dataproc cluster that does not directly control the underlying compute resources. */
 	// +optional
 	VirtualClusterConfig *ClusterVirtualClusterConfig `json:"virtualClusterConfig,omitempty"`
 }
 
 type ClusterConfigStatus struct {
+	/* Output only. Port/endpoint configuration for this cluster */
 	// +optional
 	EndpointConfig *ClusterEndpointConfigStatus `json:"endpointConfig,omitempty"`
 
+	/* Output only. Lifecycle setting for the cluster. */
 	// +optional
 	LifecycleConfig *ClusterLifecycleConfigStatus `json:"lifecycleConfig,omitempty"`
 
+	/* Output only. The Compute Engine config settings for the cluster's master instance. */
 	// +optional
 	MasterConfig *ClusterMasterConfigStatus `json:"masterConfig,omitempty"`
 
+	/* Output only. The Compute Engine config settings for a cluster's secondary worker instances. */
 	// +optional
 	SecondaryWorkerConfig *ClusterSecondaryWorkerConfigStatus `json:"secondaryWorkerConfig,omitempty"`
 
+	/* Output only. The Compute Engine config settings for the cluster's worker instances. */
 	// +optional
 	WorkerConfig *ClusterWorkerConfigStatus `json:"workerConfig,omitempty"`
 }
@@ -728,6 +752,7 @@ type DataprocClusterStatus struct {
 	// +optional
 	ClusterUuid *string `json:"clusterUuid,omitempty"`
 
+	/* Output only. The cluster config for a cluster of Compute Engine Instances. */
 	// +optional
 	Config *ClusterConfigStatus `json:"config,omitempty"`
 
