@@ -22,7 +22,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1779511230161694661
+  externalRef: projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1234567890
   observedGeneration: 2
   observedState:
     generatedURIPattern: https://example.com/maximal-updated/*

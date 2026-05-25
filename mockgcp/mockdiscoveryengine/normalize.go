@@ -15,13 +15,35 @@
 package mockdiscoveryengine
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "discoveryengine.googleapis.com/") {
+		return
+	}
+
+	// TargetSite IDs are generated as fixed value in mock.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "discoveryengine.googleapis.com/") {
+		return
+	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.Contains(value, "/siteSearchEngine/targetSites/") {
+			tokens := strings.Split(value, "/")
+			if len(tokens) == 11 && tokens[9] == "targetSites" {
+				id := tokens[10]
+				if strings.HasPrefix(id, "targetsite-") {
+					replacements.ReplaceStringValue(id, "targetsite-1234567890")
+				}
+			}
+		}
+	})
 }

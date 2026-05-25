@@ -87,7 +87,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.TargetSite",
     "generatedUriPattern": "https://example.com/minimal/*",
-    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1779511245581753677",
+    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1234567890",
     "providedUriPattern": "https://example.com/minimal/*",
     "type": 1,
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -96,10 +96,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1779511245581753677?%24alt=json%3Benum-encoding%3Dint
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1234567890?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FsiteSearchEngine%2FtargetSites%2Ftargetsite-1779511245581753677
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FsiteSearchEngine%2FtargetSites%2Ftargetsite-1234567890
 X-Goog-User-Project: ${projectId}
 
 404 Not Found
@@ -115,7 +115,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "TargetSite projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1779511245581753677 not found.",
+    "message": "TargetSite projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1234567890",
     "status": "NOT_FOUND"
   }
 }
@@ -149,7 +149,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.TargetSite",
     "generatedUriPattern": "https://example.com/minimal/*",
-    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1779511246316933955",
+    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1234567890",
     "providedUriPattern": "https://example.com/minimal/*",
     "type": 2,
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -158,10 +158,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1779511246316933955?%24alt=json%3Benum-encoding%3Dint
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1234567890?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FsiteSearchEngine%2FtargetSites%2Ftargetsite-1779511246316933955
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FsiteSearchEngine%2FtargetSites%2Ftargetsite-1234567890
 X-Goog-User-Project: ${projectId}
 
 404 Not Found
@@ -177,59 +177,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "TargetSite projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1779511246316933955 not found.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultSchemaId": "default_schema",
-  "displayName": "DataStore for TargetSite Test",
-  "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
-}
-
----
-
-GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1779511246316933955?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FsiteSearchEngine%2FtargetSites%2Ftargetsite-1779511246316933955
-X-Goog-User-Project: ${projectId}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "TargetSite projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1779511246316933955 not found.",
+    "message": "TargetSite projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/targetsite-1234567890",
     "status": "NOT_FOUND"
   }
 }
