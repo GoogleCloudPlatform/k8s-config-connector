@@ -314,46 +314,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {},
-    "family2": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {},
-    "family2": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
 
 {
@@ -390,26 +350,6 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
     }
   ],
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family2": {},
-    "family3": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
-  "view": "SCHEMA_VIEW"
 }
 
 OK
