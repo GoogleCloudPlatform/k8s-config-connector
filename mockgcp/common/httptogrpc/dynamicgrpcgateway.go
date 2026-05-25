@@ -275,19 +275,19 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 
 			q := r.URL.Query()
 			for k, values := range q {
-			        if k == "alt" || k == "$alt" {
-			                responseOptions.Alt = values
-			                continue
-			        }
-			        if k == "prettyPrint" || k == "pretty_print" {
-			                // Pretty-print not implemented; ignore, for now
-			                // responseOptions.PrettyPrint = values
-			                continue
-			        }
-			        if k == "fields" || k == "$fields" {
-			                // Handled manually by some methods
-			                continue
-			        }
+				if k == "alt" || k == "$alt" {
+					responseOptions.Alt = values
+					continue
+				}
+				if k == "prettyPrint" || k == "pretty_print" {
+					// Pretty-print not implemented; ignore, for now
+					// responseOptions.PrettyPrint = values
+					continue
+				}
+				if k == "fields" || k == "$fields" {
+					// Handled manually by some methods
+					continue
+				}
 				// Convert camelCase to snake_case
 				var protoKey []rune
 				for _, c := range k {
