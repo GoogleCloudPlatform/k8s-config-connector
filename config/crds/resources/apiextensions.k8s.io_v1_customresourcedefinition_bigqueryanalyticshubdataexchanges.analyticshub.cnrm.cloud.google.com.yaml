@@ -165,6 +165,7 @@ spec:
                   defaultExchangeConfig:
                     description: Default data sharing environment.
                     type: object
+                    x-kubernetes-preserve-unknown-fields: true
                 type: object
             required:
             - displayName
@@ -235,6 +236,7 @@ spec:
                         type: object
                       defaultExchangeConfig:
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                     type: object
                 type: object
             type: object

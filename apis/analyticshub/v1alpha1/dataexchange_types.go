@@ -95,6 +95,7 @@ type SharingEnvironmentConfig struct {
 	DcrExchangeConfig *SharingEnvironmentConfig_DcrExchangeConfig `json:"dcrExchangeConfig,omitempty"`
 }
 
+// +kubebuilder:validation:XPreserveUnknownFields
 type SharingEnvironmentConfig_DefaultExchangeConfig struct{}
 
 type SharingEnvironmentConfig_DcrExchangeConfig struct {
@@ -109,6 +110,7 @@ type SharingEnvironmentConfigObservedState struct {
 	DcrExchangeConfig     *SharingEnvironmentConfig_DcrExchangeConfigObservedState     `json:"dcrExchangeConfig,omitempty"`
 }
 
+// +kubebuilder:validation:XPreserveUnknownFields
 type SharingEnvironmentConfig_DefaultExchangeConfigObservedState struct{}
 
 type SharingEnvironmentConfig_DcrExchangeConfigObservedState struct {

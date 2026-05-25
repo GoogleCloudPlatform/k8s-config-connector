@@ -39,6 +39,13 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type BigqueryanalyticshubdataexchangeDcrExchangeConfig struct {
+	/* Optional. If True, this DCR restricts the linked dataset people to sharing only a single resource. */
+	// +optional
+	SingleLinkedDatasetPerCleanroom *bool `json:"singleLinkedDatasetPerCleanroom,omitempty"`
+
+	/* Optional. If True, this DCR restricts the contributors to sharing only a single resource in a Submission. AND it prevents the data clean room from becoming a clean room without a clean room. */
+	// +optional
+	SingleSelectedResourceSharingRestriction *bool `json:"singleSelectedResourceSharingRestriction,omitempty"`
 }
 
 type BigqueryanalyticshubdataexchangeDefaultExchangeConfig struct {
@@ -49,7 +56,7 @@ type BigqueryanalyticshubdataexchangeSharingEnvironmentConfig struct {
 	// +optional
 	DcrExchangeConfig *BigqueryanalyticshubdataexchangeDcrExchangeConfig `json:"dcrExchangeConfig,omitempty"`
 
-	/* Default Analytics Hub data exchange, used for secured data sharing. */
+	/* Default data sharing environment. */
 	// +optional
 	DefaultExchangeConfig *BigqueryanalyticshubdataexchangeDefaultExchangeConfig `json:"defaultExchangeConfig,omitempty"`
 }
@@ -98,13 +105,14 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 }
 
 type BigqueryanalyticshubdataexchangeDcrExchangeConfigStatus struct {
-	/* Output only. If True, when subscribing to this DCR, it will create only one linked dataset containing all resources shared within the cleanroom. If False, when subscribing to this DCR, it will create 1 linked dataset per listing. This is not configurable, and by default, all new DCRs will have the restriction set to True. */
 	// +optional
 	SingleLinkedDatasetPerCleanroom *bool `json:"singleLinkedDatasetPerCleanroom,omitempty"`
 
-	/* Output only. If True, this DCR restricts the contributors to sharing only a single resource in a Listing. And no two resources should have the same IDs. So if a contributor adds a view with a conflicting name, the CreateListing API will reject the request. if False, the data contributor can publish an entire dataset (as before). This is not configurable, and by default, all new DCRs will have the restriction set to True. */
 	// +optional
 	SingleSelectedResourceSharingRestriction *bool `json:"singleSelectedResourceSharingRestriction,omitempty"`
+}
+
+type BigqueryanalyticshubdataexchangeDefaultExchangeConfigStatus struct {
 }
 
 type BigqueryanalyticshubdataexchangeObservedStateStatus struct {
@@ -118,9 +126,11 @@ type BigqueryanalyticshubdataexchangeObservedStateStatus struct {
 }
 
 type BigqueryanalyticshubdataexchangeSharingEnvironmentConfigStatus struct {
-	/* Data Clean Room (DCR), used for privacy-safe and secured data sharing. */
 	// +optional
 	DcrExchangeConfig *BigqueryanalyticshubdataexchangeDcrExchangeConfigStatus `json:"dcrExchangeConfig,omitempty"`
+
+	// +optional
+	DefaultExchangeConfig *BigqueryanalyticshubdataexchangeDefaultExchangeConfigStatus `json:"defaultExchangeConfig,omitempty"`
 }
 
 type BigQueryAnalyticsHubDataExchangeStatus struct {

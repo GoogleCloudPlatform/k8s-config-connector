@@ -370,6 +370,9 @@
 [missing_field] crd=biglakedatabases.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=bigqueryanalyticshubdataexchanges.analyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.icon" is not set in unstructured objects
 [missing_field] crd=bigqueryanalyticshubdataexchanges.analyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.logLinkedDatasetQueryUserEmail" is not set in unstructured objects
+[missing_field] crd=bigqueryanalyticshubdataexchanges.analyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.sharingEnvironmentConfig.dcrExchangeConfig.singleLinkedDatasetPerCleanroom" is not set in unstructured objects
+[missing_field] crd=bigqueryanalyticshubdataexchanges.analyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.sharingEnvironmentConfig.dcrExchangeConfig.singleSelectedResourceSharingRestriction" is not set in unstructured objects
+[missing_field] crd=bigqueryanalyticshubdataexchanges.analyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.sharingEnvironmentConfig.defaultExchangeConfig" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataMaskingPolicy.predefinedExpression" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPolicyID" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPolicyType" is not set in unstructured objects
