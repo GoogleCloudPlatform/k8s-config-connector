@@ -31,6 +31,10 @@ type FakeVertexaiV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeVertexaiV1alpha1) VertexAICustomJobs(namespace string) v1alpha1.VertexAICustomJobInterface {
+	return newFakeVertexAICustomJobs(c, namespace)
+}
+
 func (c *FakeVertexaiV1alpha1) VertexAIDataLabelingJobs(namespace string) v1alpha1.VertexAIDataLabelingJobInterface {
 	return newFakeVertexAIDataLabelingJobs(c, namespace)
 }

@@ -155,7 +155,7 @@ func VertexAIDeploymentResourcePoolSpec_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.VertexAIDeploymentResourcePoolSpec{}
 	out.DedicatedResources = DedicatedResources_FromProto(mapCtx, in.GetDedicatedResources())
-	out.EncryptionSpec = vertexai.EncryptionSpecV1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = vertexai.EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	if in.GetServiceAccount() != "" {
 		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
 	}
@@ -168,7 +168,7 @@ func VertexAIDeploymentResourcePoolSpec_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.DeploymentResourcePool{}
 	out.DedicatedResources = DedicatedResources_ToProto(mapCtx, in.DedicatedResources)
-	out.EncryptionSpec = vertexai.EncryptionSpecV1alpha1_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = vertexai.EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	if in.ServiceAccountRef != nil {
 		out.ServiceAccount = in.ServiceAccountRef.External
 	}
