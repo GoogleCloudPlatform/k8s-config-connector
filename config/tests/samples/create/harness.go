@@ -289,7 +289,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.restConfig.QPS = 1000.0
 		h.restConfig.Burst = 2000.0
 
-		webhookOptions := webhook.Options{			Port:    env.WebhookInstallOptions.LocalServingPort,
+		webhookOptions := webhook.Options{Port: env.WebhookInstallOptions.LocalServingPort,
 			Host:    env.WebhookInstallOptions.LocalServingHost,
 			CertDir: env.WebhookInstallOptions.LocalServingCertDir,
 		}
