@@ -1123,12 +1123,12 @@ func (in *OspolicyassignmentDisruptionBudget) DeepCopyInto(out *Ospolicyassignme
 	*out = *in
 	if in.Fixed != nil {
 		in, out := &in.Fixed, &out.Fixed
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Percent != nil {
 		in, out := &in.Percent, &out.Percent
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return

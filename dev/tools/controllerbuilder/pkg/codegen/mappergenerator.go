@@ -996,23 +996,53 @@ func protoNameForEnum(msg protoreflect.EnumDescriptor) string {
 	return fullName
 }
 
+func checkCollision(msg protoreflect.MessageDescriptor, file protoreflect.FileDescriptor, name string) bool {
+	msgs := file.Messages()
+	for i := 0; i < msgs.Len(); i++ {
+		m := msgs.Get(i)
+		if protoNameForType(m) == name {
+			return true
+		}
+		if checkCollisionNested(m, name) {
+			return true
+		}
+	}
+	enums := file.Enums()
+	for i := 0; i < enums.Len(); i++ {
+		if protoNameForEnum(enums.Get(i)) == name {
+			return true
+		}
+	}
+	return false
+}
+
+func checkCollisionNested(msg protoreflect.MessageDescriptor, name string) bool {
+	msgs := msg.Messages()
+	for i := 0; i < msgs.Len(); i++ {
+		m := msgs.Get(i)
+		if protoNameForType(m) == name {
+			return true
+		}
+		if checkCollisionNested(m, name) {
+			return true
+		}
+	}
+	enums := msg.Enums()
+	for i := 0; i < enums.Len(); i++ {
+		if protoNameForEnum(enums.Get(i)) == name {
+			return true
+		}
+	}
+	return false
+}
+
 func protoNameForOneOf(field protoreflect.FieldDescriptor) string {
 	msg := field.Parent().(protoreflect.MessageDescriptor)
 	oneofKey := ToGoFieldName(field.Name())
 	name := protoNameForType(msg) + "_" + oneofKey
 
-	// Special case: check for a collision
-	if field.Message() != nil {
-		elemTypeName := protoNameForType(field.Message())
-		if name == elemTypeName {
-			name += "_"
-		}
-	}
-	if field.Enum() != nil {
-		elemTypeName := protoNameForEnum(field.Enum())
-		if name == elemTypeName {
-			name += "_"
-		}
+	if checkCollision(msg, msg.ParentFile(), name) {
+		name += "_"
 	}
 	return name
 }
