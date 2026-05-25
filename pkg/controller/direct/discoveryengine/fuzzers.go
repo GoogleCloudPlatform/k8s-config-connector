@@ -53,6 +53,6 @@ func fuzzDataStore() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".acl_enabled")
 	f.Unimplemented_NotYetTriaged(".kms_key_name")
 
-	        f.Unimplemented_NotYetTriaged(".natural_language_query_understanding_config")
-        return f
+	f.Unimplemented_NotYetTriaged(".natural_language_query_understanding_config")
+	return f
 }

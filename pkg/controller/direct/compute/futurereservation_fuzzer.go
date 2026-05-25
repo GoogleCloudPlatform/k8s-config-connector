@@ -67,5 +67,6 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".confidential_compute_type")
 
-	        f.Unimplemented_NotYetTriaged(".params")
-        return f}
+	f.Unimplemented_NotYetTriaged(".params")
+	return f
+}

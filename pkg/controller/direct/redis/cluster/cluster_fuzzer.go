@@ -88,8 +88,8 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state_info")
 	f.StatusFields.Insert(".precise_size_gb")
 
-	        f.Unimplemented_NotYetTriaged(".rotate_server_certificate")
-        f.Unimplemented_NotYetTriaged(".server_ca_mode")
-        f.Unimplemented_NotYetTriaged(".server_ca_pool")
-        return f
+	f.Unimplemented_NotYetTriaged(".rotate_server_certificate")
+	f.Unimplemented_NotYetTriaged(".server_ca_mode")
+	f.Unimplemented_NotYetTriaged(".server_ca_pool")
+	return f
 }
