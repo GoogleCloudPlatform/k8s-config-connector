@@ -55,6 +55,7 @@ require (
 	cloud.google.com/go/metastore v1.14.8
 	cloud.google.com/go/monitoring v1.24.3
 	cloud.google.com/go/netapp v1.12.0
+	cloud.google.com/go/networkconnectivity v1.21.0
 	cloud.google.com/go/networkmanagement v1.23.0
 	cloud.google.com/go/networksecurity v0.15.0
 	cloud.google.com/go/networkservices v0.6.0
