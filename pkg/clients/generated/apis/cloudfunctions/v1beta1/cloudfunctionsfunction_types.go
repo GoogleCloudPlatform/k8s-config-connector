@@ -103,12 +103,7 @@ type CloudFunctionsFunctionSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. The name of the function (as defined in source code) that will be
-	executed. Defaults to the resource name suffix, if not specified. For
-	backward compatibility, if function with given name is not found, then the
-	system will try to use function named "function".
-	For Node.js this is name of a function exported by the module specified
-	in `source_location`. */
+	/* Immutable. The name of the function (as defined in source code) that will be executed. Defaults to the resource name suffix, if not specified. For backward compatibility, if function with given name is not found, then the system will try to use function named "function". For Node.js this is name of a function exported by the module specified in `source_location`. */
 	// +optional
 	EntryPoint *string `json:"entryPoint,omitempty"`
 
@@ -124,13 +119,11 @@ type CloudFunctionsFunctionSpec struct {
 	// +optional
 	HttpsTrigger *FunctionHttpsTrigger `json:"httpsTrigger,omitempty"`
 
-	/* The ingress settings for the function, controlling what traffic can reach
-	it. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB */
+	/* The ingress settings for the function, controlling what traffic can reach it. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB */
 	// +optional
 	IngressSettings *string `json:"ingressSettings,omitempty"`
 
-	/* The limit on the maximum number of function instances that may coexist at a
-	given time. */
+	/* The limit on the maximum number of function instances that may coexist at a given time. */
 	// +optional
 	MaxInstances *int64 `json:"maxInstances,omitempty"`
 
@@ -144,11 +137,7 @@ type CloudFunctionsFunctionSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The runtime in which to run the function. Required when deploying a new
-	function, optional when updating an existing function. For a complete
-	list of possible choices, see the
-	[`gcloud` command
-	reference](/sdk/gcloud/reference/functions/deploy#--runtime). */
+	/* The runtime in which to run the function. Required when deploying a new function, optional when updating an existing function. For a complete list of possible choices, see the [`gcloud` command reference](/sdk/gcloud/reference/functions/deploy#--runtime). */
 	Runtime string `json:"runtime"`
 
 	/* Immutable. */
@@ -163,14 +152,11 @@ type CloudFunctionsFunctionSpec struct {
 	// +optional
 	SourceRepository *FunctionSourceRepository `json:"sourceRepository,omitempty"`
 
-	/* The function execution timeout. Execution is considered failed and
-	can be terminated if the function is not completed at the end of the
-	timeout period. Defaults to 60 seconds. */
+	/* The function execution timeout. Execution is considered failed and can be terminated if the function is not completed at the end of the timeout period. Defaults to 60 seconds. */
 	// +optional
 	Timeout *string `json:"timeout,omitempty"`
 
-	/* The egress settings for the connector, controlling what traffic is diverted
-	through it. Possible values: VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED, PRIVATE_RANGES_ONLY, ALL_TRAFFIC */
+	/* The egress settings for the connector, controlling what traffic is diverted through it. Possible values: VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED, PRIVATE_RANGES_ONLY, ALL_TRAFFIC */
 	// +optional
 	VpcConnectorEgressSettings *string `json:"vpcConnectorEgressSettings,omitempty"`
 
@@ -185,9 +171,7 @@ type FunctionHttpsTriggerStatus struct {
 }
 
 type FunctionSourceRepositoryStatus struct {
-	/* Output only. The URL pointing to the hosted repository where the function
-	were defined at the time of deployment. It always points to a specific
-	commit in the format described above. */
+	/* Output only. The URL pointing to the hosted repository where the function were defined at the time of deployment. It always points to a specific commit in the format described above. */
 	// +optional
 	DeployedUrl *string `json:"deployedUrl,omitempty"`
 }
@@ -214,8 +198,7 @@ type CloudFunctionsFunctionStatus struct {
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	/* Output only. The version identifier of the Cloud Function. Each deployment attempt
-	results in a new version of a function being created. */
+	/* Output only. The version identifier of the Cloud Function. Each deployment attempt results in a new version of a function being created. */
 	// +optional
 	VersionId *int64 `json:"versionId,omitempty"`
 }

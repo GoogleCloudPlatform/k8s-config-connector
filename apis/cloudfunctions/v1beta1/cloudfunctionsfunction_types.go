@@ -230,6 +230,11 @@ type CloudFunctionsFunction struct {
 	Status CloudFunctionsFunctionStatus `json:"status,omitempty"`
 }
 
+// CloudFunctionsFunctionObservedState is the state of the CloudFunctionsFunction resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.functions.v1.CloudFunction
+type CloudFunctionsFunctionObservedState struct {
+}
+
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // CloudFunctionsFunctionList contains a list of CloudFunctionsFunction
