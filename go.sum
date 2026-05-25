@@ -228,6 +228,8 @@ cloud.google.com/go/automl v1.13.2/go.mod h1:gNY/fUmDEN40sP8amAX3MaXkxcqPIn7F1UI
 cloud.google.com/go/automl v1.13.3/go.mod h1:Y8KwvyAZFOsMAPqUCfNu1AyclbC6ivCUF/MTwORymyY=
 cloud.google.com/go/automl v1.13.4/go.mod h1:ULqwX/OLZ4hBVfKQaMtxMSTlPx0GqGbWN8uA/1EqCP8=
 cloud.google.com/go/automl v1.13.5/go.mod h1:MDw3vLem3yh+SvmSgeYUmUKqyls6NzSumDm9OJ3xJ1Y=
+cloud.google.com/go/automl v1.15.0 h1:YRwLbsBv4yApX64pkrdyy4emhWE6lHEnljX4b1aTQC4=
+cloud.google.com/go/automl v1.15.0/go.mod h1:U9zOtQb8zVrFNGTuW3BfxeqmLyeleLgT9B12EaXfODg=
 cloud.google.com/go/backupdr v1.6.0 h1:Li555lIgwiURa9RjqZi1ry1pPOGzpE5pmI98szXyGAc=
 cloud.google.com/go/backupdr v1.6.0/go.mod h1:uX5Du+agaVKsrcm7qSWn1S/dN5sogKXlEH/JS5j4868=
 cloud.google.com/go/baremetalsolution v0.3.0/go.mod h1:XOrocE+pvK1xFfleEnShBlNAXf+j5blPPxrhjKgnIFc=

@@ -18,6 +18,7 @@ require (
 	cloud.google.com/go/artifactregistry v1.20.0
 	cloud.google.com/go/asset v1.22.1
 	cloud.google.com/go/assuredworkloads v1.13.0
+	cloud.google.com/go/automl v1.15.0
 	cloud.google.com/go/backupdr v1.6.0
 	cloud.google.com/go/batch v1.14.0
 	cloud.google.com/go/beyondcorp v1.2.0

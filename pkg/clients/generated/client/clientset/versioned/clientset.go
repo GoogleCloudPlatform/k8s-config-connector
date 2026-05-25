@@ -43,6 +43,7 @@ import (
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/asset/v1beta1"
 	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/assuredworkloads/v1alpha1"
+	automlv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/automl/v1alpha1"
 	backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1alpha1"
 	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1beta1"
 	batchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1"
@@ -223,6 +224,7 @@ type Interface interface {
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	AssetV1beta1() assetv1beta1.AssetV1beta1Interface
 	AssuredworkloadsV1alpha1() assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Interface
+	AutomlV1alpha1() automlv1alpha1.AutomlV1alpha1Interface
 	BackupdrV1alpha1() backupdrv1alpha1.BackupdrV1alpha1Interface
 	BackupdrV1beta1() backupdrv1beta1.BackupdrV1beta1Interface
 	BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface
@@ -401,6 +403,7 @@ type Clientset struct {
 	artifactregistryV1beta1         *artifactregistryv1beta1.ArtifactregistryV1beta1Client
 	assetV1beta1                    *assetv1beta1.AssetV1beta1Client
 	assuredworkloadsV1alpha1        *assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Client
+	automlV1alpha1                  *automlv1alpha1.AutomlV1alpha1Client
 	backupdrV1alpha1                *backupdrv1alpha1.BackupdrV1alpha1Client
 	backupdrV1beta1                 *backupdrv1beta1.BackupdrV1beta1Client
 	batchV1alpha1                   *batchv1alpha1.BatchV1alpha1Client
@@ -646,6 +649,11 @@ func (c *Clientset) AssetV1beta1() assetv1beta1.AssetV1beta1Interface {
 // AssuredworkloadsV1alpha1 retrieves the AssuredworkloadsV1alpha1Client
 func (c *Clientset) AssuredworkloadsV1alpha1() assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Interface {
 	return c.assuredworkloadsV1alpha1
+}
+
+// AutomlV1alpha1 retrieves the AutomlV1alpha1Client
+func (c *Clientset) AutomlV1alpha1() automlv1alpha1.AutomlV1alpha1Interface {
+	return c.automlV1alpha1
 }
 
 // BackupdrV1alpha1 retrieves the BackupdrV1alpha1Client
@@ -1539,6 +1547,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.automlV1alpha1, err = automlv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.backupdrV1alpha1, err = backupdrv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2198,6 +2210,7 @@ func New(c rest.Interface) *Clientset {
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.assetV1beta1 = assetv1beta1.New(c)
 	cs.assuredworkloadsV1alpha1 = assuredworkloadsv1alpha1.New(c)
+	cs.automlV1alpha1 = automlv1alpha1.New(c)
 	cs.backupdrV1alpha1 = backupdrv1alpha1.New(c)
 	cs.backupdrV1beta1 = backupdrv1beta1.New(c)
 	cs.batchV1alpha1 = batchv1alpha1.New(c)
