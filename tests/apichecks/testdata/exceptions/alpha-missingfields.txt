@@ -157,6 +157,11 @@
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.selectedVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetUserRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.teamRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubattributes.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowedValues[].description" is not set in unstructured objects
+[missing_field] crd=apihubattributes.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowedValues[].displayName" is not set in unstructured objects
+[missing_field] crd=apihubattributes.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowedValues[].id" is not set in unstructured objects
+[missing_field] crd=apihubattributes.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowedValues[].immutable" is not set in unstructured objects
+[missing_field] crd=apihubattributes.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.cardinality" is not set in unstructured objects
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentTypeRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
