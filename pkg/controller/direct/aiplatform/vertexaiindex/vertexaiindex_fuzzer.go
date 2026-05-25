@@ -33,7 +33,6 @@ func vertexAIIndexFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".description")
 	f.SpecField(".metadata_schema_uri")
 	f.SpecField(".metadata")
-	f.SpecField(".etag")
 	f.SpecField(".index_update_method")
 	f.SpecField(".encryption_spec")
 

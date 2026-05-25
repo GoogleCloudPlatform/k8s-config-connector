@@ -55,10 +55,6 @@ type VertexAIIndexSpec struct {
 	// +optional
 	EncryptionSpec *VertexaiindexEncryptionSpec `json:"encryptionSpec,omitempty"`
 
-	/* Used to perform consistent read-modify-write updates. If not set, a blind "overwrite" update happens. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
-
 	/* Immutable. The update method to use with this Index. If not set, BATCH_UPDATE will be used by default. */
 	// +optional
 	IndexUpdateMethod *string `json:"indexUpdateMethod,omitempty"`
@@ -161,7 +157,7 @@ type VertexAIIndexStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaiindex;gcpvertexaiindexs
+// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaiindex;gcpvertexaiindexes
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"

@@ -68,7 +68,6 @@ func VertexAIIndexSpec_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.V
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
 	out.Metadata = JSON_FromProto(mapCtx, in.GetMetadata())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Labels = in.Labels
 	out.IndexUpdateMethod = direct.Enum_FromProto(mapCtx, in.GetIndexUpdateMethod())
 	out.EncryptionSpec = VertexAIEncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
@@ -84,7 +83,6 @@ func VertexAIIndexSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIIndexS
 	out.Description = direct.ValueOf(in.Description)
 	out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
 	out.Metadata = JSON_ToProto(mapCtx, in.Metadata)
-	out.Etag = direct.ValueOf(in.Etag)
 	out.Labels = in.Labels
 	out.IndexUpdateMethod = direct.Enum_ToProto[pb.Index_IndexUpdateMethod](mapCtx, in.IndexUpdateMethod)
 	out.EncryptionSpec = VertexAIEncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)

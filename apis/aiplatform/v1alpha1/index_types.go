@@ -73,7 +73,7 @@ type VertexAIIndexSpec struct {
 	//  "overwrite" update happens.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Index.etag
 	// +kubebuilder:validation:Optional
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// The labels with user-defined metadata to organize your Indexes.
 	//
@@ -221,7 +221,7 @@ type VertexAIIndexStatsObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaiindex;gcpvertexaiindexs
+// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaiindex;gcpvertexaiindexes
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
