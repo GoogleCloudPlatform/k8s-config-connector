@@ -73,6 +73,8 @@ func startTestEnvironment(testType test.Type, crds []*apiextensions.CustomResour
 	if err != nil {
 		return nil, fmt.Errorf("error starting test environment: %w", err)
 	}
+	env.Config.QPS = 1000.0
+	env.Config.Burst = 2000.0
 	return env, nil
 }
 

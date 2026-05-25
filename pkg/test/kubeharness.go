@@ -87,6 +87,8 @@ func NewKubeHarness(ctx context.Context, t *testing.T) *KubeHarness {
 		})
 
 		h.restConfig = restConfig
+		h.restConfig.QPS = 1000.0
+		h.restConfig.Burst = 2000.0
 	} else if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "mock" {
 		k8s, err := mockkubeapiserver.NewMockKubeAPIServer(":0")
 		if err != nil {

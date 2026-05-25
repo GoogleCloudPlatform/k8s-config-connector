@@ -66,6 +66,8 @@ func TestSyncerIntegration_OnStartedLeading_CacheSafety(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error starting envtest: %v", err)
 	}
+	cfg.QPS = 1000.0
+	cfg.Burst = 2000.0
 	defer func() {
 		if err := testEnv.Stop(); err != nil {
 			t.Errorf("error stopping envtest: %v", err)
@@ -213,6 +215,8 @@ func TestSyncerIntegration_NamespacedMode(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error starting envtest: %v", err)
 	}
+	cfg.QPS = 1000.0
+	cfg.Burst = 2000.0
 	defer func() {
 		if err := testEnv.Stop(); err != nil {
 			t.Errorf("error stopping envtest: %v", err)

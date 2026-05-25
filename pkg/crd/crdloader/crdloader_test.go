@@ -74,6 +74,8 @@ func TestCrdLoader_GetCRD(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error starting test environment: %v", err)
 	}
+	cfg.QPS = 1000.0
+	cfg.Burst = 2000.0
 	if err := apiextensions.SchemeBuilder.AddToScheme(scheme.Scheme); err != nil {
 		t.Fatalf("error adding to scheme: %v", err)
 	}
