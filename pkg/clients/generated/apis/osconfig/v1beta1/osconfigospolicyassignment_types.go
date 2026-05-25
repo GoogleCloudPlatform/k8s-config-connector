@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type OspolicyassignmentApt struct {
-	/* Required. Type of archive files in this repository. Possible values: ARCHIVE_TYPE_UNSPECIFIED, DEB, DEB_SRC */
+	/* Required. Type of archive files in this repository. */
 	ArchiveType string `json:"archiveType"`
 
 	/* Required. List of components for this repository. Must contain at least one item. */
@@ -68,11 +68,11 @@ type OspolicyassignmentDeb struct {
 type OspolicyassignmentDisruptionBudget struct {
 	/* Specifies a fixed value. */
 	// +optional
-	Fixed *int64 `json:"fixed,omitempty"`
+	Fixed *int32 `json:"fixed,omitempty"`
 
 	/* Specifies the relative value defined as a percentage, which will be multiplied by a reference value. */
 	// +optional
-	Percent *int64 `json:"percent,omitempty"`
+	Percent *int32 `json:"percent,omitempty"`
 }
 
 type OspolicyassignmentEnforce struct {
@@ -84,7 +84,7 @@ type OspolicyassignmentEnforce struct {
 	// +optional
 	File *OspolicyassignmentFile `json:"file,omitempty"`
 
-	/* Required. The script interpreter to use. Possible values: INTERPRETER_UNSPECIFIED, NONE, SHELL, POWERSHELL */
+	/* Required. The script interpreter to use. */
 	Interpreter string `json:"interpreter"`
 
 	/* Only recorded for enforce Exec. Path to an output file (that is created by this Exec) whose content will be recorded in OSPolicyResourceCompliance after a successful run. Absence or failure to read this file will result in this ExecResource being non-compliant. Output file size is limited to 100K bytes. */
@@ -112,7 +112,11 @@ type OspolicyassignmentExec struct {
 }
 
 type OspolicyassignmentFile struct {
-	/* Defaults to false. When false, files are subject to validations based on the file type: Remote: A checksum must be specified. Cloud Storage: An object generation number must be specified. */
+	/* Defaults to false. When false, files are subject to validations
+	based on the file type:
+
+	Remote: A checksum must be specified.
+	Cloud Storage: An object generation number must be specified. */
 	// +optional
 	AllowInsecure *bool `json:"allowInsecure,omitempty"`
 
@@ -165,15 +169,24 @@ type OspolicyassignmentInstanceFilter struct {
 	// +optional
 	All *bool `json:"all,omitempty"`
 
-	/* List of label sets used for VM exclusion. If the list has more than one label set, the VM is excluded if any of the label sets are applicable for the VM. */
+	/* List of label sets used for VM exclusion.
+
+	If the list has more than one label set, the VM is excluded if any
+	of the label sets are applicable for the VM. */
 	// +optional
 	ExclusionLabels []OspolicyassignmentExclusionLabels `json:"exclusionLabels,omitempty"`
 
-	/* List of label sets used for VM inclusion. If the list has more than one `LabelSet`, the VM is included if any of the label sets are applicable for the VM. */
+	/* List of label sets used for VM inclusion.
+
+	If the list has more than one `LabelSet`, the VM is included if any
+	of the label sets are applicable for the VM. */
 	// +optional
 	InclusionLabels []OspolicyassignmentInclusionLabels `json:"inclusionLabels,omitempty"`
 
-	/* List of inventories to select VMs. A VM is selected if its inventory data matches at least one of the following inventories. */
+	/* List of inventories to select VMs.
+
+	A VM is selected if its inventory data matches at least one of the
+	following inventories. */
 	// +optional
 	Inventories []OspolicyassignmentInventories `json:"inventories,omitempty"`
 }
@@ -182,7 +195,13 @@ type OspolicyassignmentInventories struct {
 	/* Required. The OS short name */
 	OsShortName string `json:"osShortName"`
 
-	/* The OS version Prefix matches are supported if asterisk(*) is provided as the last character. For example, to match all versions with a major version of `7`, specify the following value for this field `7.*` An empty string matches all OS versions. */
+	/* The OS version
+
+	Prefix matches are supported if asterisk(*) is provided as the
+	last character. For example, to match all versions with a major
+	version of `7`, specify the following value for this field `7.*`
+
+	An empty string matches all OS versions. */
 	// +optional
 	OsVersion *string `json:"osVersion,omitempty"`
 }
@@ -191,7 +210,13 @@ type OspolicyassignmentInventoryFilters struct {
 	/* Required. The OS short name */
 	OsShortName string `json:"osShortName"`
 
-	/* The OS version Prefix matches are supported if asterisk(*) is provided as the last character. For example, to match all versions with a major version of `7`, specify the following value for this field `7.*` An empty string matches all OS versions. */
+	/* The OS version
+
+	Prefix matches are supported if asterisk(*) is provided as the
+	last character. For example, to match all versions with a major
+	version of `7`, specify the following value for this field `7.*`
+
+	An empty string matches all OS versions. */
 	// +optional
 	OsVersion *string `json:"osVersion,omitempty"`
 }
@@ -214,13 +239,26 @@ type OspolicyassignmentOsPolicies struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Required. The id of the OS policy with the following restrictions: * Must contain only lowercase letters, numbers, and hyphens. * Must start with a letter. * Must be between 1-63 characters. * Must end with a number or a letter. * Must be unique within the assignment. */
+	/* Required. The id of the OS policy with the following restrictions:
+
+	* Must contain only lowercase letters, numbers, and hyphens.
+	* Must start with a letter.
+	* Must be between 1-63 characters.
+	* Must end with a number or a letter.
+	* Must be unique within the assignment. */
 	Id string `json:"id"`
 
-	/* Required. Policy mode Possible values: MODE_UNSPECIFIED, VALIDATION, ENFORCEMENT */
+	/* Required. Policy mode */
 	Mode string `json:"mode"`
 
-	/* Required. List of resource groups for the policy. For a particular VM, resource groups are evaluated in the order specified and the first resource group that is applicable is selected and the rest are ignored. If none of the resource groups are applicable for a VM, the VM is considered to be non-compliant w.r.t this policy. This behavior can be toggled by the flag `allow_no_resource_group_match` */
+	/* Required. List of resource groups for the policy.
+	For a particular VM, resource groups are evaluated in the order specified
+	and the first resource group that is applicable is selected and the rest
+	are ignored.
+
+	If none of the resource groups are applicable for a VM, the VM is
+	considered to be non-compliant w.r.t this policy. This behavior can be
+	toggled by the flag `allow_no_resource_group_match` */
 	ResourceGroups []OspolicyassignmentResourceGroups `json:"resourceGroups"`
 }
 
@@ -233,7 +271,7 @@ type OspolicyassignmentPkg struct {
 	// +optional
 	Deb *OspolicyassignmentDeb `json:"deb,omitempty"`
 
-	/* Required. The desired state the agent should maintain for this package. Possible values: DESIRED_STATE_UNSPECIFIED, INSTALLED, REMOVED */
+	/* Required. The desired state the agent should maintain for this package. */
 	DesiredState string `json:"desiredState"`
 
 	/* A package managed by GooGet. */
@@ -285,7 +323,19 @@ type OspolicyassignmentRepository struct {
 }
 
 type OspolicyassignmentResourceGroups struct {
-	/* List of inventory filters for the resource group. The resources in this resource group are applied to the target VM if it satisfies at least one of the following inventory filters. For example, to apply this resource group to VMs running either `RHEL` or `CentOS` operating systems, specify 2 items for the list with following values: inventory_filters[0].os_short_name='rhel' and inventory_filters[1].os_short_name='centos' If the list is empty, this resource group will be applied to the target VM unconditionally. */
+	/* List of inventory filters for the resource group.
+
+	The resources in this resource group are applied to the target VM if it
+	satisfies at least one of the following inventory filters.
+
+	For example, to apply this resource group to VMs running either `RHEL` or
+	`CentOS` operating systems, specify 2 items for the list with following
+	values:
+	inventory_filters[0].os_short_name='rhel' and
+	inventory_filters[1].os_short_name='centos'
+
+	If the list is empty, this resource group will be applied to the target
+	VM unconditionally. */
 	// +optional
 	InventoryFilters []OspolicyassignmentInventoryFilters `json:"inventoryFilters,omitempty"`
 
@@ -302,7 +352,13 @@ type OspolicyassignmentResources struct {
 	// +optional
 	File *OspolicyassignmentFile `json:"file,omitempty"`
 
-	/* Required. The id of the resource with the following restrictions: * Must contain only lowercase letters, numbers, and hyphens. * Must start with a letter. * Must be between 1-63 characters. * Must end with a number or a letter. * Must be unique within the OS policy. */
+	/* Required. The id of the resource with the following restrictions:
+
+	* Must contain only lowercase letters, numbers, and hyphens.
+	* Must start with a letter.
+	* Must be between 1-63 characters.
+	* Must end with a number or a letter.
+	* Must be unique within the OS policy. */
 	Id string `json:"id"`
 
 	/* Package resource */
@@ -332,7 +388,11 @@ type OspolicyassignmentRpm struct {
 }
 
 type OspolicyassignmentSource struct {
-	/* Defaults to false. When false, files are subject to validations based on the file type: Remote: A checksum must be specified. Cloud Storage: An object generation number must be specified. */
+	/* Defaults to false. When false, files are subject to validations
+	based on the file type:
+
+	Remote: A checksum must be specified.
+	Cloud Storage: An object generation number must be specified. */
 	// +optional
 	AllowInsecure *bool `json:"allowInsecure,omitempty"`
 
@@ -358,7 +418,7 @@ type OspolicyassignmentValidate struct {
 	// +optional
 	File *OspolicyassignmentFile `json:"file,omitempty"`
 
-	/* Required. The script interpreter to use. Possible values: INTERPRETER_UNSPECIFIED, NONE, SHELL, POWERSHELL */
+	/* Required. The script interpreter to use. */
 	Interpreter string `json:"interpreter"`
 
 	/* Only recorded for enforce Exec. Path to an output file (that is created by this Exec) whose content will be recorded in OSPolicyResourceCompliance after a successful run. Absence or failure to read this file will result in this ExecResource being non-compliant. Output file size is limited to 100K bytes. */
@@ -382,7 +442,7 @@ type OspolicyassignmentYum struct {
 	// +optional
 	GpgKeys []string `json:"gpgKeys,omitempty"`
 
-	/* Required. A one word, unique name for this repository. This is the `repo id` in the yum config file and also the `display_name` if `display_name` is omitted. This id is also used as the unique identifier when checking for resource conflicts. */
+	/* Required. A one word, unique name for this repository. This is  the `repo id` in the yum config file and also the `display_name` if `display_name` is omitted. This id is also used as the unique identifier when checking for resource conflicts. */
 	Id string `json:"id"`
 }
 
@@ -410,16 +470,16 @@ type OSConfigOSPolicyAssignmentSpec struct {
 	/* Required. Filter to select VMs. */
 	InstanceFilter OspolicyassignmentInstanceFilter `json:"instanceFilter"`
 
-	/* Immutable. The location for the resource */
+	/* The location of this resource. */
 	Location string `json:"location"`
 
 	/* Required. List of OS policies to be applied to the VMs. */
 	OsPolicies []OspolicyassignmentOsPolicies `json:"osPolicies"`
 
-	/* Immutable. The Project that this resource belongs to. */
+	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The OSConfigOSPolicyAssignment name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -463,7 +523,7 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	// +optional
 	RevisionId *string `json:"revisionId,omitempty"`
 
-	/* Output only. OS policy assignment rollout state Possible values: ROLLOUT_STATE_UNSPECIFIED, IN_PROGRESS, CANCELLING, CANCELLED, SUCCEEDED */
+	/* Output only. OS policy assignment rollout state */
 	// +optional
 	RolloutState *string `json:"rolloutState,omitempty"`
 
