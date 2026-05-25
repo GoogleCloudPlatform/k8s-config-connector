@@ -21,11 +21,12 @@
 
 package v1beta1
 
-/* unreachable type CloudFunction
+/* found existing non-generated go type with proto tag "google.cloud.functions.v1.CloudFunction", skipping
+
 // +kcc:proto=google.cloud.functions.v1.CloudFunction
 type CloudFunction struct {
 	// A user-defined name of the function. Function names must be unique
-	//  globally and match pattern `projects/-*-/locations/-*-/functions/-*`
+	//  globally and match pattern `projects/* /locations/* /functions/*`
 	// +kcc:proto:field=google.cloud.functions.v1.CloudFunction.name
 	Name *string `json:"name,omitempty"`
 
@@ -130,7 +131,7 @@ type CloudFunction struct {
 	// The VPC Network Connector that this cloud function can connect to. It can
 	//  be either the fully-qualified URI, or the short name of the network
 	//  connector resource. The format of this field is
-	//  `projects/-*-/locations/-*-/connectors/-*`
+	//  `projects/* /locations/* /connectors/*`
 	//
 	//  This field is mutually exclusive with `network` field and will eventually
 	//  replace it.
@@ -443,7 +444,8 @@ type SourceRepository struct {
 }
 */
 
-/* unreachable type CloudFunctionObservedState
+/* found existing non-generated go type with proto tag "google.cloud.functions.v1.CloudFunction", skipping
+
 // +kcc:observedstate:proto=google.cloud.functions.v1.CloudFunction
 type CloudFunctionObservedState struct {
 	// **Beta Feature**
