@@ -59,5 +59,6 @@ func dataflowFlexTemplateJobFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".streaming_mode")
 	f.UnimplementedFields.Insert(".enable_launcher_vm_serial_port_logging")
 
-	return f
+	        f.Unimplemented_NotYetTriaged(".additional_pipeline_options")
+        return f
 }

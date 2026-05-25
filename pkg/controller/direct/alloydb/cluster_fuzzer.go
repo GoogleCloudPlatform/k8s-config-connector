@@ -81,5 +81,7 @@ func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".service_account_email")
 	f.Unimplemented_NotYetTriaged(".maintenance_update_policy.deny_maintenance_periods")
 
-	return f
+	        f.Unimplemented_NotYetTriaged(".dataplex_config")
+        f.Unimplemented_NotYetTriaged(".dataplex_config.enabled")
+        return f
 }

@@ -65,5 +65,7 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	// Name is not mapped to Spec or Status as it is the ResourceID
 	f.UnimplementedFields.Insert(".name")
 
-	return f
-}
+	f.Unimplemented_NotYetTriaged(".confidential_compute_type")
+
+	        f.Unimplemented_NotYetTriaged(".params")
+        return f}
