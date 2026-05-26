@@ -61,7 +61,7 @@ type PrivateCACAPoolStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *PrivateCACAPoolObservedState `json:"observedState,omitempty"`
+	// ObservedState *PrivateCACAPoolObservedState `json:"observedState,omitempty"`
 }
 
 // PrivateCACAPoolObservedState is the state of the PrivateCACAPool resource as most recently observed in GCP.

@@ -314,9 +314,6 @@ type PrivateCACAPoolSpec struct {
 	Tier *string `json:"tier,omitempty"`
 }
 
-type CapoolObservedStateStatus struct {
-}
-
 type PrivateCACAPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PrivateCACAPool's current state. */
@@ -328,10 +325,6 @@ type PrivateCACAPoolStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *CapoolObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
