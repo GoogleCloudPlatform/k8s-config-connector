@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -137,7 +137,6 @@ func (a *PolicyAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 		return mapCtx.Err()
 	}
 
-	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &orgpolicypb.CreatePolicyRequest{
 		Parent: a.id.Parent().String(),
 		Policy: resource,
@@ -187,8 +186,12 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	}
 
 	// Let the backend handle validation
+	paths := []string{"policy.spec"}
+	if a.desired.Spec.DryRunSpec != nil {
+		paths = append(paths, "policy.dry_run_spec")
+	}
 	req.UpdateMask = &fieldmaskpb.FieldMask{
-		Paths: []string{"policy.spec", "policy.dry_run_spec"},
+		Paths: paths,
 	}
 
 	updated, err := a.gcpClient.UpdatePolicy(ctx, req)

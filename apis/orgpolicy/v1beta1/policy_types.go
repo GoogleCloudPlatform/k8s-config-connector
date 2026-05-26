@@ -1,4 +1,5 @@
-// Copyright 2025 Google LLC
+// Promoted from apis/orgpolicy/v1alpha1/policy_types.go (OrgPolicyPolicy v1alpha1 → v1beta1).
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -84,15 +85,18 @@ type OrgPolicyPolicyStatus struct {
 }
 
 // OrgPolicyPolicyObservedState is the state of the OrgPolicyPolicy resource as most recently observed in GCP.
+// Nested fields are all optional; the controller may omit spec or dryRunSpec until GCP returns them.
 // +kcc:proto=google.cloud.orgpolicy.v2.Policy
 type OrgPolicyPolicyObservedState struct {
 	// Basic information about the Organization Policy.
+	// +optional
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.spec
 	Spec *PolicySpecObservedState `json:"spec,omitempty"`
 
 	// Dry-run policy.
 	//  Audit-only policy, can be used to monitor how the policy would have
 	//  impacted the existing and future resources if it's enforced.
+	// +optional
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.dry_run_spec
 	DryRunSpec *PolicySpecObservedState `json:"dryRunSpec,omitempty"`
 }
@@ -111,6 +115,7 @@ type OrgPolicyPolicyObservedState struct {
 
 // OrgPolicyPolicy is the Schema for the OrgPolicyPolicy API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type OrgPolicyPolicy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
