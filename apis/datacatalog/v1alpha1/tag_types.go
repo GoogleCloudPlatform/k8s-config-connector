@@ -55,7 +55,7 @@ type DataCatalogTagSpec struct {
 	Column *string `json:"column,omitempty"`
 
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.fields
-	Fields map[string]TagField `json:"fields,omitempty"`
+	Fields map[string]*TagField `json:"fields,omitempty"`
 }
 
 // DataCatalogTagStatus defines the config connector machine state of DataCatalogTag

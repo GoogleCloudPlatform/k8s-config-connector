@@ -1057,9 +1057,18 @@ func (in *DataCatalogTagSpec) DeepCopyInto(out *DataCatalogTagSpec) {
 	}
 	if in.Fields != nil {
 		in, out := &in.Fields, &out.Fields
-		*out = make(map[string]TagField, len(*in))
+		*out = make(map[string]*TagField, len(*in))
 		for key, val := range *in {
-			(*out)[key] = *val.DeepCopy()
+			var outVal *TagField
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(TagField)
+				(*in).DeepCopyInto(*out)
+			}
+			(*out)[key] = outVal
 		}
 	}
 }
@@ -1209,9 +1218,18 @@ func (in *DataCatalogTagTemplateSpec) DeepCopyInto(out *DataCatalogTagTemplateSp
 	}
 	if in.Fields != nil {
 		in, out := &in.Fields, &out.Fields
-		*out = make(map[string]TagTemplateField, len(*in))
+		*out = make(map[string]*TagTemplateField, len(*in))
 		for key, val := range *in {
-			(*out)[key] = *val.DeepCopy()
+			var outVal *TagTemplateField
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(TagTemplateField)
+				(*in).DeepCopyInto(*out)
+			}
+			(*out)[key] = outVal
 		}
 	}
 }

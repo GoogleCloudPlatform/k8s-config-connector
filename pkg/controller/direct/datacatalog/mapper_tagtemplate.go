@@ -42,9 +42,9 @@ func DataCatalogTagTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagT
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.IsPubliclyReadable = direct.LazyPtr(in.GetIsPubliclyReadable())
-	out.Fields = make(map[string]krmv1alpha1.TagTemplateField)
+	out.Fields = make(map[string]*krmv1alpha1.TagTemplateField)
 	for k, v := range in.GetFields() {
-		out.Fields[k] = *TagTemplateField_v1alpha1_FromProto(mapCtx, v)
+		out.Fields[k] = TagTemplateField_v1alpha1_FromProto(mapCtx, v)
 	}
 	return out
 }
@@ -58,7 +58,7 @@ func DataCatalogTagTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alph
 	out.IsPubliclyReadable = direct.ValueOf(in.IsPubliclyReadable)
 	out.Fields = make(map[string]*pb.TagTemplateField)
 	for k, v := range in.Fields {
-		out.Fields[k] = TagTemplateField_v1alpha1_ToProto(mapCtx, &v)
+		out.Fields[k] = TagTemplateField_v1alpha1_ToProto(mapCtx, v)
 	}
 	return out
 }
