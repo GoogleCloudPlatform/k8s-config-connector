@@ -19,8 +19,11 @@
 package orgpolicy
 
 import (
+	"encoding/json"
+
 	pb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
 	"google.golang.org/genproto/googleapis/type/expr"
+	"google.golang.org/protobuf/types/known/structpb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -98,7 +101,7 @@ func PolicySpec_PolicyRule_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpe
 		}
 	}
 	out.Condition = Expr_FromProto(mapCtx, in.GetCondition())
-	out.Parameters = direct.Struct_FromProto(mapCtx, in.GetParameters())
+	out.Parameters = PolicySpec_PolicyRule_Parameters_FromProto(mapCtx, in.GetParameters())
 	return out
 }
 
@@ -119,6 +122,55 @@ func PolicySpec_PolicyRule_ToProto(mapCtx *direct.MapContext, in *krm.PolicySpec
 		out.Kind = nil
 	}
 	out.Condition = Expr_ToProto(mapCtx, in.Condition)
-	out.Parameters = direct.Struct_ToProto(mapCtx, in.Parameters)
+	out.Parameters = PolicySpec_PolicyRule_Parameters_ToProto(mapCtx, in.Parameters)
 	return out
+}
+
+// PolicySpec_PolicyRule_Parameters_FromProto converts the dynamic
+// google.protobuf.Struct returned by the Org Policy API into the typed
+// KRM struct. We round-trip via JSON: structpb.Struct -> map[string]any
+// -> json bytes -> typed struct. Unknown keys are dropped (rejected at
+// the CRD layer on user input, but if the server returns a key we don't
+// model yet we want the controller to keep working).
+func PolicySpec_PolicyRule_Parameters_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) *krm.PolicySpec_PolicyRule_Parameters {
+	if in == nil {
+		return nil
+	}
+	b, err := json.Marshal(in.AsMap())
+	if err != nil {
+		mapCtx.Errorf("marshalling structpb.Struct to json: %v", err)
+		return nil
+	}
+	out := &krm.PolicySpec_PolicyRule_Parameters{}
+	if err := json.Unmarshal(b, out); err != nil {
+		mapCtx.Errorf("unmarshalling parameters: %v", err)
+		return nil
+	}
+	return out
+}
+
+// PolicySpec_PolicyRule_Parameters_ToProto converts the typed KRM struct
+// into a google.protobuf.Struct. We round-trip via JSON to flatten the
+// struct into a map with omitempty fields skipped, then build the
+// structpb.Struct from that map.
+func PolicySpec_PolicyRule_Parameters_ToProto(mapCtx *direct.MapContext, in *krm.PolicySpec_PolicyRule_Parameters) *structpb.Struct {
+	if in == nil {
+		return nil
+	}
+	b, err := json.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("marshalling parameters to json: %v", err)
+		return nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(b, &m); err != nil {
+		mapCtx.Errorf("unmarshalling json to map: %v", err)
+		return nil
+	}
+	s, err := structpb.NewStruct(m)
+	if err != nil {
+		mapCtx.Errorf("error converting map to structpb.Struct: %v", err)
+		return nil
+	}
+	return s
 }

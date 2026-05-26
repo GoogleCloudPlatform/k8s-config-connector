@@ -551,13 +551,103 @@ spec:
                             can be set only in policies for boolean constraints.
                           type: boolean
                         parameters:
-                          description: 'Optional. Required for managed constraints
-                            if parameters are defined. Passes parameter values when
-                            policy enforcement is enabled. Ensure that parameter value
-                            types match those defined in the constraint definition.
-                            For example: { "allowedLocations" : ["us-east1", "us-west1"],
-                            "allowAll" : true }'
-                          x-kubernetes-preserve-unknown-fields: true
+                          description: |-
+                            Optional. Required for managed constraints if parameters are defined.
+                             Passes parameter values when policy enforcement is enabled. Each
+                             field corresponds to a known managed-constraint parameter key; the
+                             value type matches the type defined in the constraint definition.
+                             For example, the essentialcontacts.managed.allowedContactDomains
+                             managed constraint takes:
+
+                                 parameters:
+                                   allowedDomains:
+                                     - "@example.com"
+                          properties:
+                            allowAnyGKEPath:
+                              type: boolean
+                            allowPaths:
+                              items:
+                                type: string
+                              type: array
+                            allowedAwsAccountIds:
+                              items:
+                                type: string
+                              type: array
+                            allowedDataSources:
+                              items:
+                                type: string
+                              type: array
+                            allowedDomains:
+                              items:
+                                type: string
+                              type: array
+                            allowedEgressFqdns:
+                              items:
+                                type: string
+                              type: array
+                            allowedEncryptions:
+                              items:
+                                type: string
+                              type: array
+                            allowedMemberSubjects:
+                              items:
+                                type: string
+                              type: array
+                            allowedParents:
+                              items:
+                                type: string
+                              type: array
+                            allowedPreviewFeatures:
+                              items:
+                                type: string
+                              type: array
+                            allowedPrincipalSets:
+                              items:
+                                type: string
+                              type: array
+                            allowedProviders:
+                              items:
+                                type: string
+                              type: array
+                            allowedRetentionDurationSeconds:
+                              format: int64
+                              type: integer
+                            allowedRetentionPeriods:
+                              items:
+                                type: string
+                              type: array
+                            allowedSchemes:
+                              items:
+                                type: string
+                              type: array
+                            allowedServiceList:
+                              items:
+                                type: string
+                              type: array
+                            allowedServices:
+                              items:
+                                type: string
+                              type: array
+                            defaultAwsProvider:
+                              type: string
+                            defaultXmlServiceProvider:
+                              type: string
+                            deniedEditions:
+                              items:
+                                type: string
+                              type: array
+                            enforcedProjects:
+                              items:
+                                type: string
+                              type: array
+                            minimumDestroyScheduleDurationInDays:
+                              format: int64
+                              type: integer
+                            nonFipsMachineTypes:
+                              items:
+                                type: string
+                              type: array
+                          type: object
                         values:
                           description: List of values to be used for this policy rule.
                             This field can be set only in policies for list constraints.
@@ -740,13 +830,103 @@ spec:
                             can be set only in policies for boolean constraints.
                           type: boolean
                         parameters:
-                          description: 'Optional. Required for managed constraints
-                            if parameters are defined. Passes parameter values when
-                            policy enforcement is enabled. Ensure that parameter value
-                            types match those defined in the constraint definition.
-                            For example: { "allowedLocations" : ["us-east1", "us-west1"],
-                            "allowAll" : true }'
-                          x-kubernetes-preserve-unknown-fields: true
+                          description: |-
+                            Optional. Required for managed constraints if parameters are defined.
+                             Passes parameter values when policy enforcement is enabled. Each
+                             field corresponds to a known managed-constraint parameter key; the
+                             value type matches the type defined in the constraint definition.
+                             For example, the essentialcontacts.managed.allowedContactDomains
+                             managed constraint takes:
+
+                                 parameters:
+                                   allowedDomains:
+                                     - "@example.com"
+                          properties:
+                            allowAnyGKEPath:
+                              type: boolean
+                            allowPaths:
+                              items:
+                                type: string
+                              type: array
+                            allowedAwsAccountIds:
+                              items:
+                                type: string
+                              type: array
+                            allowedDataSources:
+                              items:
+                                type: string
+                              type: array
+                            allowedDomains:
+                              items:
+                                type: string
+                              type: array
+                            allowedEgressFqdns:
+                              items:
+                                type: string
+                              type: array
+                            allowedEncryptions:
+                              items:
+                                type: string
+                              type: array
+                            allowedMemberSubjects:
+                              items:
+                                type: string
+                              type: array
+                            allowedParents:
+                              items:
+                                type: string
+                              type: array
+                            allowedPreviewFeatures:
+                              items:
+                                type: string
+                              type: array
+                            allowedPrincipalSets:
+                              items:
+                                type: string
+                              type: array
+                            allowedProviders:
+                              items:
+                                type: string
+                              type: array
+                            allowedRetentionDurationSeconds:
+                              format: int64
+                              type: integer
+                            allowedRetentionPeriods:
+                              items:
+                                type: string
+                              type: array
+                            allowedSchemes:
+                              items:
+                                type: string
+                              type: array
+                            allowedServiceList:
+                              items:
+                                type: string
+                              type: array
+                            allowedServices:
+                              items:
+                                type: string
+                              type: array
+                            defaultAwsProvider:
+                              type: string
+                            defaultXmlServiceProvider:
+                              type: string
+                            deniedEditions:
+                              items:
+                                type: string
+                              type: array
+                            enforcedProjects:
+                              items:
+                                type: string
+                              type: array
+                            minimumDestroyScheduleDurationInDays:
+                              format: int64
+                              type: integer
+                            nonFipsMachineTypes:
+                              items:
+                                type: string
+                              type: array
+                          type: object
                         values:
                           description: List of values to be used for this policy rule.
                             This field can be set only in policies for list constraints.

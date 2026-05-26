@@ -19,7 +19,6 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -233,13 +232,98 @@ type PolicySpec_PolicyRule struct {
 	Condition *Expr `json:"condition,omitempty"`
 
 	// Optional. Required for managed constraints if parameters are defined.
-	//  Passes parameter values when policy enforcement is enabled. Ensure that
-	//  parameter value types match those defined in the constraint definition.
-	//  For example:
-	//  {
-	//    "allowedLocations" : ["us-east1", "us-west1"],
-	//    "allowAll" : true
-	//  }
+	//  Passes parameter values when policy enforcement is enabled. Each
+	//  field corresponds to a known managed-constraint parameter key; the
+	//  value type matches the type defined in the constraint definition.
+	//  For example, the essentialcontacts.managed.allowedContactDomains
+	//  managed constraint takes:
+	//
+	//      parameters:
+	//        allowedDomains:
+	//          - "@example.com"
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicyRule.parameters
-	Parameters *apiextensionsv1.JSON `json:"parameters,omitempty"`
+	// +optional
+	Parameters *PolicySpec_PolicyRule_Parameters `json:"parameters,omitempty"`
+}
+
+// PolicySpec_PolicyRule_Parameters is the strongly-typed parameter set
+// passed to a managed Org Policy constraint at enforcement time. Only keys
+// listed below are accepted; adding support for a new managed-constraint
+// parameter requires adding the corresponding field here. Unknown keys are
+// rejected by CRD validation.
+//
+// On the wire each field round-trips through google.protobuf.Struct
+// (PolicyRule.parameters), so all field types must JSON-marshal cleanly to
+// the value types that structpb supports (bool, string, number, list).
+//
+// +kcc:proto=google.cloud.orgpolicy.v2.PolicyRule.parameters
+type PolicySpec_PolicyRule_Parameters struct {
+	// +optional
+	AllowAnyGKEPath *bool `json:"allowAnyGKEPath,omitempty"`
+
+	// +optional
+	AllowPaths []string `json:"allowPaths,omitempty"`
+
+	// +optional
+	AllowedAwsAccountIds []string `json:"allowedAwsAccountIds,omitempty"`
+
+	// +optional
+	AllowedDataSources []string `json:"allowedDataSources,omitempty"`
+
+	// +optional
+	AllowedDomains []string `json:"allowedDomains,omitempty"`
+
+	// +optional
+	AllowedEgressFqdns []string `json:"allowedEgressFqdns,omitempty"`
+
+	// +optional
+	AllowedEncryptions []string `json:"allowedEncryptions,omitempty"`
+
+	// +optional
+	AllowedMemberSubjects []string `json:"allowedMemberSubjects,omitempty"`
+
+	// +optional
+	AllowedParents []string `json:"allowedParents,omitempty"`
+
+	// +optional
+	AllowedPreviewFeatures []string `json:"allowedPreviewFeatures,omitempty"`
+
+	// +optional
+	AllowedPrincipalSets []string `json:"allowedPrincipalSets,omitempty"`
+
+	// +optional
+	AllowedProviders []string `json:"allowedProviders,omitempty"`
+
+	// +optional
+	AllowedRetentionDurationSeconds *int64 `json:"allowedRetentionDurationSeconds,omitempty"`
+
+	// +optional
+	AllowedRetentionPeriods []string `json:"allowedRetentionPeriods,omitempty"`
+
+	// +optional
+	AllowedSchemes []string `json:"allowedSchemes,omitempty"`
+
+	// +optional
+	AllowedServiceList []string `json:"allowedServiceList,omitempty"`
+
+	// +optional
+	AllowedServices []string `json:"allowedServices,omitempty"`
+
+	// +optional
+	DefaultAwsProvider *string `json:"defaultAwsProvider,omitempty"`
+
+	// +optional
+	DefaultXmlServiceProvider *string `json:"defaultXmlServiceProvider,omitempty"`
+
+	// +optional
+	DeniedEditions []string `json:"deniedEditions,omitempty"`
+
+	// +optional
+	EnforcedProjects []string `json:"enforcedProjects,omitempty"`
+
+	// +optional
+	MinimumDestroyScheduleDurationInDays *int64 `json:"minimumDestroyScheduleDurationInDays,omitempty"`
+
+	// +optional
+	NonFipsMachineTypes []string `json:"nonFipsMachineTypes,omitempty"`
 }
