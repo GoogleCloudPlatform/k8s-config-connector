@@ -56,10 +56,12 @@ func KRMResourceToTFResourceConfig(r *Resource, c client.Client, smLoader *servi
 //   - defaultLabels: if set, these labels will be added to tfConfig.
 func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader,
 	liveState *terraform.InstanceState, jsonSchema *apiextensions.JSONSchemaProps, mustResolveSensitiveFields bool) (tfConfig *terraform.ResourceConfig, secretVersions map[string]string, err error) {
+	fmt.Printf("DEBUG: KRMResourceToTFResourceConfigFull start for %v, generation %v, jsonSchema is nil: %v\n", r.GetName(), r.GetGeneration(), jsonSchema == nil)
 	config := deepcopy.MapStringInterface(r.Spec)
 	if config == nil {
 		config = make(map[string]interface{})
 	}
+	fmt.Printf("DEBUG: KRMResourceToTFResourceConfigFull jsonSchema is nil: %v\n", jsonSchema == nil)
 	if jsonSchema != nil {
 		if err := ResolveLegacyGCPManagedFields(r, liveState, config); err != nil {
 			return nil, nil, fmt.Errorf("error resolving legacy GCP-managed fields: %w", err)
@@ -67,6 +69,31 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 		config, err = resolveUnmanagedFields(config, r, liveState, jsonSchema)
 		if err != nil {
 			return nil, nil, fmt.Errorf("error resolving externally-managed fields: %w", err)
+		}
+
+		/*
+			Due to an existing TF limitation, KCC recommends against setting "remove-default-nodepool" alongside nodeConfig.
+			This field is only relevant to the default pool intended to be deleted, and should be managed in ContainerNodePool resource.
+
+			However, to unblock OrgPolicies/customer requirements when creating the ContainerCluster(b/489359646, b/491324027),
+			we introduced the opt-in "remove-default-node-pool-allow-node-config" annotation. This allows a ContainerCluster
+			to be created and reconciled with both "remove-default-node-pool" and nodeConfig specified.
+		*/
+		removeDefaultNodePoolDirective := "remove-default-node-pool"
+		removeDefaultNodePoolKey := k8s.FormatAnnotation(removeDefaultNodePoolDirective)
+		allowNodeConfigOverrideDirective := "remove-default-node-pool-allow-node-config"
+		allowNodeConfigOverrideKey := k8s.FormatAnnotation(allowNodeConfigOverrideDirective)
+		if r.GroupVersionKind().Kind == "ContainerCluster" {
+			if val, ok := k8s.GetAnnotation(removeDefaultNodePoolKey, r); ok && val == "true" {
+				// Check liveState to determine if it's initial creation or reconcile. If the resource is being created,
+				// we MUST NOT modify the desired configuration. We should assume all user specified values are required
+				// during cluster provisioning.
+				if liveState != nil && liveState.ID != "" {
+					if override, ok := k8s.GetAnnotation(allowNodeConfigOverrideKey, r); ok && override == "true" {
+						unstructured.RemoveNestedField(config, "nodeConfig")
+					}
+				}
+			}
 		}
 	}
 	if err := handleUserSpecifiedID(config, r, smLoader, c); err != nil {
@@ -146,8 +173,10 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	state := InstanceStateToMap(r.TFResource, liveState)
 	config, err = withResourceCustomResolvers(config, state, r.Kind, r.TFResource)
 	if err != nil {
+		fmt.Printf("DEBUG: KRMResourceToTFResourceConfigFull custom resolver error: %v\n", err)
 		return nil, nil, fmt.Errorf("error running resource custom resolver: %w", err)
 	}
+	fmt.Printf("DEBUG: KRMResourceToTFResourceConfigFull success for %v, generation %v\n", r.GetName(), r.GetGeneration())
 	return MapToResourceConfig(r.TFResource, config), secretVersions, nil
 }
 
