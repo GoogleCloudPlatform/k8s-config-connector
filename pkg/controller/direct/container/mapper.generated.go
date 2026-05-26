@@ -509,7 +509,7 @@ func ConfidentialNodes_FromProto(mapCtx *direct.MapContext, in *pb.ConfidentialN
 	}
 	out := &krm.ConfidentialNodes{}
 	out.Enabled = direct.LazyPtr(in.GetEnabled())
-	// MISSING: ConfidentialInstanceType
+	out.ConfidentialInstanceType = direct.Enum_FromProto(mapCtx, in.GetConfidentialInstanceType())
 	return out
 }
 func ConfidentialNodes_ToProto(mapCtx *direct.MapContext, in *krm.ConfidentialNodes) *pb.ConfidentialNodes {
@@ -518,7 +518,7 @@ func ConfidentialNodes_ToProto(mapCtx *direct.MapContext, in *krm.ConfidentialNo
 	}
 	out := &pb.ConfidentialNodes{}
 	out.Enabled = direct.ValueOf(in.Enabled)
-	// MISSING: ConfidentialInstanceType
+	out.ConfidentialInstanceType = direct.Enum_ToProto[pb.ConfidentialNodes_ConfidentialInstanceType](mapCtx, in.ConfidentialInstanceType)
 	return out
 }
 func ConfigConnectorConfig_FromProto(mapCtx *direct.MapContext, in *pb.ConfigConnectorConfig) *krm.ConfigConnectorConfig {

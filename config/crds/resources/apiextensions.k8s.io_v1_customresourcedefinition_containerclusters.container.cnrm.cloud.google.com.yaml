@@ -471,8 +471,8 @@ spec:
                   creation without deleting and recreating the entire cluster.'
                 properties:
                   confidentialInstanceType:
-                    description: Immutable. Confidential instance type for the cluster
-                      nodes. Valid values are SEV, SEV_SNP, and TDX.
+                    description: Immutable. Confidential instance type for the nodes
+                      in the pool. Valid values are SEV, SEV_SNP, and TDX.
                     type: string
                   enabled:
                     description: Immutable. Whether Confidential Nodes feature is
