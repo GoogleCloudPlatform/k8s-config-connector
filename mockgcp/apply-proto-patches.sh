@@ -26,15 +26,6 @@ cd ${REPO_ROOT}/mockgcp
 
 cd tools/patch-proto
 
-go run . --file ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/v1/service.proto --service "ProjectsServer" --mode "replace" <<EOF
-  // Provisions a new Apigee organization with a functioning runtime. This is the standard way to create trial organizations for a free Apigee trial.
-  rpc ProvisionOrganizationProject(ProvisionOrganizationProjectRequest) returns (.google.longrunning.Operation) {
-    option (google.api.http) = {
-      post: "/v1/{name=projects/*}:provisionOrganization"
-      body: "project"
-    };
-  };
-EOF
 
 # ResourceManager v1 patches - temporarily switching to proto3 because patch-proto has issues with proto2
 API_PROTO=${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/resourcemanager/v1/api.proto
@@ -48,34 +39,7 @@ go run . --file ${API_PROTO} --message "TestIamPermissionsRequest" --mode "repla
   repeated string permissions = 2 [json_name="permissions"];
 EOF
 
-go run . --file ${API_PROTO} --service "FoldersServer" --mode "append" <<EOF
-  // Returns permissions that a caller has on the specified project.
-  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{resource=folders/*}:testIamPermissions"
-      body: "*"
-    };
-  };
-EOF
 
-go run . --file ${API_PROTO} --service "OrganizationsServer" --mode "append" <<EOF
-  // Returns permissions that a caller has on the specified project.
-  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{resource=organizations/*}:testIamPermissions"
-      body: "*"
-    };
-  };
-EOF
 
-go run . --file ${API_PROTO} --service "ProjectsServer" --mode "append" <<EOF
-  // Returns permissions that a caller has on the specified project.
-  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{resource=projects/*}:testIamPermissions"
-      body: "*"
-    };
-  };
-EOF
 
 sed -i 's/^syntax = "proto3";/syntax = "proto2";/' ${API_PROTO}
