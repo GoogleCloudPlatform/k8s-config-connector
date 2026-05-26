@@ -26,9 +26,3 @@ go run . generate-types \
   --resource APIGatewayAPIConfig:ApiConfig \
    
 
-go run . generate-mapper \
-  --service google.cloud.apigateway.v1 \
-  --api-version apigateway.cnrm.cloud.google.com/v1alpha1 \
-  --api-version apigateway.cnrm.cloud.google.com/v1beta1 \
-    \
-  --multiversion

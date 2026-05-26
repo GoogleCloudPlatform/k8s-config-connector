@@ -33,6 +33,8 @@ go run . generate-types \
 go run . generate-mapper \
   --service google.cloud.apigateway.v1 \
   --api-version apigateway.cnrm.cloud.google.com/v1beta1 \
+  --api-version apigateway.cnrm.cloud.google.com/v1alpha1 \
+  --multiversion \
   --include-skipped-output
 
 cd ${REPO_ROOT}
