@@ -27,29 +27,38 @@ var NetworkConnectivityRegionalEndpointGVK = GroupVersion.WithKind("NetworkConne
 // +kcc:spec:proto=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint
 type NetworkConnectivityRegionalEndpointSpec struct {
 	// The project that this resource belongs to.
+	// +kubebuilder:validation:Required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
+	// +kubebuilder:validation:Required
 	Location *string `json:"location"`
 
 	// The NetworkConnectivityRegionalEndpoint name. If not given, the metadata.name will be used.
+	// +kubebuilder:validation:Optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The access type of this regional endpoint. This field is reflected in the PSC Forwarding Rule configuration to enable global access.
+	// +kubebuilder:validation:Required
 	AccessType *string `json:"accessType"`
 
 	// Optional. The IP Address of the Regional Endpoint. When no address is provided, an IP from the subnetwork is allocated.
+	// +kubebuilder:validation:Optional
 	AddressRef *refsv1beta1.ComputeAddressRef `json:"addressRef,omitempty"`
 
 	// Optional. A description of this resource.
+	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty"`
 
 	// Optional. The name of the VPC network for this private regional endpoint.
+	// +kubebuilder:validation:Optional
 	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 	// Optional. The name of the subnetwork from which the IP address will be allocated.
+	// +kubebuilder:validation:Optional
 	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Required. The service endpoint this private regional endpoint connects to. Format: `{apiname}.{region}.p.rep.googleapis.com` Example: "cloudkms.us-central1.p.rep.googleapis.com".
+	// +kubebuilder:validation:Required
 	TargetGoogleAPI *string `json:"targetGoogleAPI"`
 }
 
