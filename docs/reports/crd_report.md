@@ -107,6 +107,7 @@
 | cloudasset.cnrm.cloud.google.com              | CloudAssetFolderFeed                            | True         | False       | False  | Terraform  | False       |
 | cloudasset.cnrm.cloud.google.com              | CloudAssetOrganizationFeed                      | True         | False       | False  | Terraform  | False       |
 | cloudasset.cnrm.cloud.google.com              | CloudAssetProjectFeed                           | True         | False       | False  | Terraform  | False       |
+| cloudasset.cnrm.cloud.google.com              | CloudAssetSavedQuery                            | True         | False       | False  | Direct     | True        |
 | batch.cnrm.cloud.google.com                   | CloudBatchResourceAllowance                     | True         | False       | False  | Direct     | True        |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildConnection                            | True         | False       | False  | Direct     | True        |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildTrigger                               | False        | True        | False  | Terraform  | True        |
