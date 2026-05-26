@@ -118,13 +118,23 @@ BLOCKED_KINDS=(
     "NetworkSecurityUrlList"
     "NetworkSecurityTLSInspectionPolicy"
     "NetworkSecurityGatewaySecurityPolicy"
+    "ConnectorsConnection"
+    "ApigeeRegistryInstance"
+    "BlockchainNodeEngineNode"
+    "CloudSecurityFramework"
+    "CCInsightsQaScorecard"
+    "ContentWarehouseSchema"
+    "DataLineageProcess"
+    "DevConnectConnection"
+    "DeviceStreamingSession"
+    "BigQueryMigrationWorkflow"
 )
 
 for f in config/crds/resources/*.yaml; do
     KIND=$(grep -m 1 -E "^    kind: " "$f" | awk '{print $2}')
     EXCLUDE=false
     for BLOCKED in "${BLOCKED_KINDS[@]}"; do
-        if [[ "$KIND" == "$BLOCKED" ]]; then
+        if [[ "${KIND,,}" == "${BLOCKED,,}" ]]; then
             EXCLUDE=true
             break
         fi
