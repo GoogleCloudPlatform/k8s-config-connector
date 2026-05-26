@@ -114,7 +114,7 @@ func (s *tableAdminServer) UpdateAuthorizedView(ctx context.Context, req *pb.Upd
 				},
 			}
 		case "deletion_protection":
-			updated.DeletionProtection = false
+			updated.DeletionProtection = req.GetAuthorizedView().GetDeletionProtection()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
