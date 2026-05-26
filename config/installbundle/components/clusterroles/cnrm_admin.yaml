@@ -728,6 +728,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - datalineage.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - datamigration.cnrm.cloud.google.com
   resources:
   - '*'
