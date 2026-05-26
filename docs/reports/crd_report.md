@@ -228,6 +228,7 @@
 | datastream.cnrm.cloud.google.com              | DatastreamRoute                                 | True         | False       | False  | Direct     | True        |
 | datastream.cnrm.cloud.google.com              | DatastreamStream                                | True         | False       | False  | Terraform  | False       |
 | deploymentmanager.cnrm.cloud.google.com       | DeploymentManagerDeployment                     | True         | False       | False  | Terraform  | False       |
+| devicestreaming.cnrm.cloud.google.com         | DeviceStreamingSession                          | True         | False       | False  | Direct     | True        |
 | dialogflow.cnrm.cloud.google.com              | DialogflowAgent                                 | True         | False       | False  | Terraform  | False       |
 | dialogflowcx.cnrm.cloud.google.com            | DialogflowCXAgent                               | True         | False       | False  | Terraform  | False       |
 | dialogflowcx.cnrm.cloud.google.com            | DialogflowCXEntityType                          | True         | False       | False  | Terraform  | False       |
