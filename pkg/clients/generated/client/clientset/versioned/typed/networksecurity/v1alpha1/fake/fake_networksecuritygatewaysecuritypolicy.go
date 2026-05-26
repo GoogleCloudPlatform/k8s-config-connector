@@ -22,123 +22,38 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeNetworkSecurityGatewaySecurityPolicies implements NetworkSecurityGatewaySecurityPolicyInterface
-type FakeNetworkSecurityGatewaySecurityPolicies struct {
+// fakeNetworkSecurityGatewaySecurityPolicies implements NetworkSecurityGatewaySecurityPolicyInterface
+type fakeNetworkSecurityGatewaySecurityPolicies struct {
+	*gentype.FakeClientWithList[*v1alpha1.NetworkSecurityGatewaySecurityPolicy, *v1alpha1.NetworkSecurityGatewaySecurityPolicyList]
 	Fake *FakeNetworksecurityV1alpha1
-	ns   string
 }
 
-var networksecuritygatewaysecuritypoliciesResource = v1alpha1.SchemeGroupVersion.WithResource("networksecuritygatewaysecuritypolicies")
-
-var networksecuritygatewaysecuritypoliciesKind = v1alpha1.SchemeGroupVersion.WithKind("NetworkSecurityGatewaySecurityPolicy")
-
-// Get takes name of the networkSecurityGatewaySecurityPolicy, and returns the corresponding networkSecurityGatewaySecurityPolicy object, and an error if there is any.
-func (c *FakeNetworkSecurityGatewaySecurityPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkSecurityGatewaySecurityPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(networksecuritygatewaysecuritypoliciesResource, c.ns, name), &v1alpha1.NetworkSecurityGatewaySecurityPolicy{})
-
-	if obj == nil {
-		return nil, err
+func newFakeNetworkSecurityGatewaySecurityPolicies(fake *FakeNetworksecurityV1alpha1, namespace string) networksecurityv1alpha1.NetworkSecurityGatewaySecurityPolicyInterface {
+	return &fakeNetworkSecurityGatewaySecurityPolicies{
+		gentype.NewFakeClientWithList[*v1alpha1.NetworkSecurityGatewaySecurityPolicy, *v1alpha1.NetworkSecurityGatewaySecurityPolicyList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("networksecuritygatewaysecuritypolicies"),
+			v1alpha1.SchemeGroupVersion.WithKind("NetworkSecurityGatewaySecurityPolicy"),
+			func() *v1alpha1.NetworkSecurityGatewaySecurityPolicy {
+				return &v1alpha1.NetworkSecurityGatewaySecurityPolicy{}
+			},
+			func() *v1alpha1.NetworkSecurityGatewaySecurityPolicyList {
+				return &v1alpha1.NetworkSecurityGatewaySecurityPolicyList{}
+			},
+			func(dst, src *v1alpha1.NetworkSecurityGatewaySecurityPolicyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.NetworkSecurityGatewaySecurityPolicyList) []*v1alpha1.NetworkSecurityGatewaySecurityPolicy {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.NetworkSecurityGatewaySecurityPolicyList, items []*v1alpha1.NetworkSecurityGatewaySecurityPolicy) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.NetworkSecurityGatewaySecurityPolicy), err
-}
-
-// List takes label and field selectors, and returns the list of NetworkSecurityGatewaySecurityPolicies that match those selectors.
-func (c *FakeNetworkSecurityGatewaySecurityPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetworkSecurityGatewaySecurityPolicyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(networksecuritygatewaysecuritypoliciesResource, networksecuritygatewaysecuritypoliciesKind, c.ns, opts), &v1alpha1.NetworkSecurityGatewaySecurityPolicyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.NetworkSecurityGatewaySecurityPolicyList{ListMeta: obj.(*v1alpha1.NetworkSecurityGatewaySecurityPolicyList).ListMeta}
-	for _, item := range obj.(*v1alpha1.NetworkSecurityGatewaySecurityPolicyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested networkSecurityGatewaySecurityPolicies.
-func (c *FakeNetworkSecurityGatewaySecurityPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(networksecuritygatewaysecuritypoliciesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a networkSecurityGatewaySecurityPolicy and creates it.  Returns the server's representation of the networkSecurityGatewaySecurityPolicy, and an error, if there is any.
-func (c *FakeNetworkSecurityGatewaySecurityPolicies) Create(ctx context.Context, networkSecurityGatewaySecurityPolicy *v1alpha1.NetworkSecurityGatewaySecurityPolicy, opts v1.CreateOptions) (result *v1alpha1.NetworkSecurityGatewaySecurityPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(networksecuritygatewaysecuritypoliciesResource, c.ns, networkSecurityGatewaySecurityPolicy), &v1alpha1.NetworkSecurityGatewaySecurityPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkSecurityGatewaySecurityPolicy), err
-}
-
-// Update takes the representation of a networkSecurityGatewaySecurityPolicy and updates it. Returns the server's representation of the networkSecurityGatewaySecurityPolicy, and an error, if there is any.
-func (c *FakeNetworkSecurityGatewaySecurityPolicies) Update(ctx context.Context, networkSecurityGatewaySecurityPolicy *v1alpha1.NetworkSecurityGatewaySecurityPolicy, opts v1.UpdateOptions) (result *v1alpha1.NetworkSecurityGatewaySecurityPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(networksecuritygatewaysecuritypoliciesResource, c.ns, networkSecurityGatewaySecurityPolicy), &v1alpha1.NetworkSecurityGatewaySecurityPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkSecurityGatewaySecurityPolicy), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeNetworkSecurityGatewaySecurityPolicies) UpdateStatus(ctx context.Context, networkSecurityGatewaySecurityPolicy *v1alpha1.NetworkSecurityGatewaySecurityPolicy, opts v1.UpdateOptions) (*v1alpha1.NetworkSecurityGatewaySecurityPolicy, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(networksecuritygatewaysecuritypoliciesResource, "status", c.ns, networkSecurityGatewaySecurityPolicy), &v1alpha1.NetworkSecurityGatewaySecurityPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkSecurityGatewaySecurityPolicy), err
-}
-
-// Delete takes name of the networkSecurityGatewaySecurityPolicy and deletes it. Returns an error if one occurs.
-func (c *FakeNetworkSecurityGatewaySecurityPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(networksecuritygatewaysecuritypoliciesResource, c.ns, name, opts), &v1alpha1.NetworkSecurityGatewaySecurityPolicy{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeNetworkSecurityGatewaySecurityPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(networksecuritygatewaysecuritypoliciesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.NetworkSecurityGatewaySecurityPolicyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched networkSecurityGatewaySecurityPolicy.
-func (c *FakeNetworkSecurityGatewaySecurityPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkSecurityGatewaySecurityPolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(networksecuritygatewaysecuritypoliciesResource, c.ns, name, pt, data, subresources...), &v1alpha1.NetworkSecurityGatewaySecurityPolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.NetworkSecurityGatewaySecurityPolicy), err
 }
