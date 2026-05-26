@@ -14,14 +14,8 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The Cloud SQL instance does not exist.",
-        "reason": "instanceDoesNotExist"
-      }
-    ],
-    "message": "The Cloud SQL instance does not exist."
+    "message": "databaseInstance \"projects/${projectId}/SQLInstances/sqluser-dep-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -70,11 +64,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
+  "endTime": null,
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": null,
   "status": "PENDING",
   "targetId": "sqluser-dep-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
@@ -98,7 +100,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
   "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
@@ -128,12 +136,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
+  "failoverReplica": null,
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
@@ -145,15 +158,25 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.10.10.10",
+      "timeToRetire": null,
       "type": "PRIMARY"
     }
   ],
+  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
+  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -163,11 +186,14 @@ X-Xss-Protection: 0
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
+    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -175,34 +201,56 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "location": "",
+      "pointInTimeRecoveryEnabled": null,
+      "replicationLogArchivingEnabled": null,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
+    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
+    "databaseFlags": [],
+    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
+    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": null,
+    "enableGoogleMlIntegration": null,
+    "insightsConfig": null,
     "ipConfiguration": {
+      "allocatedIpRange": "",
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
+      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "followGaeApplication": "",
       "kind": "sql#locationPreference",
+      "secondaryZone": "",
       "zone": "us-central1-a"
     },
+    "maintenanceWindow": null,
+    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
+    "sqlServerAuditConfig": null,
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
+    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -210,6 +258,7 @@ X-Xss-Protection: 0
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
+  "suspensionReason": [],
   "upgradableDatabaseVersions": [
     {
       "displayName": "MySQL 8.0",
@@ -304,17 +353,26 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
+      "password": "",
       "passwordPolicy": {
-        "status": {}
+        "allowedFailedAttempts": 0,
+        "enableFailedAttemptsCheck": false,
+        "enablePasswordVerification": false,
+        "passwordExpirationDuration": null,
+        "status": {
+          "locked": false,
+          "passwordExpirationTime": null
+        }
       },
-      "project": "${projectId}"
+      "project": "${projectId}",
+      "type": "BUILT_IN"
     }
   ],
-  "kind": "sql#usersList"
+  "kind": "sql#usersList",
+  "nextPageToken": ""
 }
 
 ---
@@ -333,7 +391,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
   "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
@@ -363,7 +427,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "kind": "sql#usersList"
+  "items": [],
+  "kind": "sql#usersList",
+  "nextPageToken": ""
 }
 
 ---
@@ -382,12 +448,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
+  "failoverReplica": null,
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
@@ -399,15 +470,25 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.10.10.10",
+      "timeToRetire": null,
       "type": "PRIMARY"
     }
   ],
+  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
+  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -417,11 +498,14 @@ X-Xss-Protection: 0
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
+    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -429,34 +513,56 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "location": "",
+      "pointInTimeRecoveryEnabled": null,
+      "replicationLogArchivingEnabled": null,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
+    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
+    "databaseFlags": [],
+    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
+    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": null,
+    "enableGoogleMlIntegration": null,
+    "insightsConfig": null,
     "ipConfiguration": {
+      "allocatedIpRange": "",
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
+      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "followGaeApplication": "",
       "kind": "sql#locationPreference",
+      "secondaryZone": "",
       "zone": "us-central1-a"
     },
+    "maintenanceWindow": null,
+    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
+    "sqlServerAuditConfig": null,
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
+    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -464,6 +570,7 @@ X-Xss-Protection: 0
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
+  "suspensionReason": [],
   "upgradableDatabaseVersions": [
     {
       "displayName": "MySQL 8.0",
@@ -562,7 +669,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
   "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
@@ -596,17 +709,26 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
+      "password": "",
       "passwordPolicy": {
-        "status": {}
+        "allowedFailedAttempts": 0,
+        "enableFailedAttemptsCheck": false,
+        "enablePasswordVerification": false,
+        "passwordExpirationDuration": null,
+        "status": {
+          "locked": false,
+          "passwordExpirationTime": null
+        }
       },
-      "project": "${projectId}"
+      "project": "${projectId}",
+      "type": "BUILT_IN"
     }
   ],
-  "kind": "sql#usersList"
+  "kind": "sql#usersList",
+  "nextPageToken": ""
 }
 
 ---
@@ -625,12 +747,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
+  "failoverReplica": null,
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
@@ -642,15 +769,25 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.10.10.10",
+      "timeToRetire": null,
       "type": "PRIMARY"
     }
   ],
+  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
+  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -660,11 +797,14 @@ X-Xss-Protection: 0
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
+    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -672,34 +812,56 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "location": "",
+      "pointInTimeRecoveryEnabled": null,
+      "replicationLogArchivingEnabled": null,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
+    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
+    "databaseFlags": [],
+    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
+    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": null,
+    "enableGoogleMlIntegration": null,
+    "insightsConfig": null,
     "ipConfiguration": {
+      "allocatedIpRange": "",
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
+      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "followGaeApplication": "",
       "kind": "sql#locationPreference",
+      "secondaryZone": "",
       "zone": "us-central1-a"
     },
+    "maintenanceWindow": null,
+    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
+    "sqlServerAuditConfig": null,
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
+    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -707,6 +869,7 @@ X-Xss-Protection: 0
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
+  "suspensionReason": [],
   "upgradableDatabaseVersions": [
     {
       "displayName": "MySQL 8.0",
@@ -801,17 +964,26 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
+      "password": "",
       "passwordPolicy": {
-        "status": {}
+        "allowedFailedAttempts": 0,
+        "enableFailedAttemptsCheck": false,
+        "enablePasswordVerification": false,
+        "passwordExpirationDuration": null,
+        "status": {
+          "locked": false,
+          "passwordExpirationTime": null
+        }
       },
-      "project": "${projectId}"
+      "project": "${projectId}",
+      "type": "BUILT_IN"
     }
   ],
-  "kind": "sql#usersList"
+  "kind": "sql#usersList",
+  "nextPageToken": ""
 }
 
 ---
@@ -830,12 +1002,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
+  "failoverReplica": null,
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
@@ -847,15 +1024,25 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.10.10.10",
+      "timeToRetire": null,
       "type": "PRIMARY"
     }
   ],
+  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
+  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -865,11 +1052,14 @@ X-Xss-Protection: 0
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
+    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -877,34 +1067,56 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "location": "",
+      "pointInTimeRecoveryEnabled": null,
+      "replicationLogArchivingEnabled": null,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
+    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
+    "databaseFlags": [],
+    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
+    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": null,
+    "enableGoogleMlIntegration": null,
+    "insightsConfig": null,
     "ipConfiguration": {
+      "allocatedIpRange": "",
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
+      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "followGaeApplication": "",
       "kind": "sql#locationPreference",
+      "secondaryZone": "",
       "zone": "us-central1-a"
     },
+    "maintenanceWindow": null,
+    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
+    "sqlServerAuditConfig": null,
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
+    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -912,6 +1124,7 @@ X-Xss-Protection: 0
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
+  "suspensionReason": [],
   "upgradableDatabaseVersions": [
     {
       "displayName": "MySQL 8.0",
@@ -1006,17 +1219,26 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
+      "password": "",
       "passwordPolicy": {
-        "status": {}
+        "allowedFailedAttempts": 0,
+        "enableFailedAttemptsCheck": false,
+        "enablePasswordVerification": false,
+        "passwordExpirationDuration": null,
+        "status": {
+          "locked": false,
+          "passwordExpirationTime": null
+        }
       },
-      "project": "${projectId}"
+      "project": "${projectId}",
+      "type": "BUILT_IN"
     }
   ],
-  "kind": "sql#usersList"
+  "kind": "sql#usersList",
+  "nextPageToken": ""
 }
 
 ---
@@ -1035,12 +1257,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
+  "failoverReplica": null,
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
@@ -1052,15 +1279,25 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.10.10.10",
+      "timeToRetire": null,
       "type": "PRIMARY"
     }
   ],
+  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
+  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1070,11 +1307,14 @@ X-Xss-Protection: 0
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
+    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -1082,34 +1322,56 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "location": "",
+      "pointInTimeRecoveryEnabled": null,
+      "replicationLogArchivingEnabled": null,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
+    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
+    "databaseFlags": [],
+    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
+    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": null,
+    "enableGoogleMlIntegration": null,
+    "insightsConfig": null,
     "ipConfiguration": {
+      "allocatedIpRange": "",
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
+      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "followGaeApplication": "",
       "kind": "sql#locationPreference",
+      "secondaryZone": "",
       "zone": "us-central1-a"
     },
+    "maintenanceWindow": null,
+    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
+    "sqlServerAuditConfig": null,
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
+    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -1117,6 +1379,7 @@ X-Xss-Protection: 0
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
+  "suspensionReason": [],
   "upgradableDatabaseVersions": [
     {
       "displayName": "MySQL 8.0",
@@ -1207,7 +1470,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
   "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
@@ -1237,12 +1506,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
+  "failoverReplica": null,
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
@@ -1254,15 +1528,25 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.10.10.10",
+      "timeToRetire": null,
       "type": "PRIMARY"
     }
   ],
+  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
+  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1272,11 +1556,14 @@ X-Xss-Protection: 0
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
+    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -1284,34 +1571,56 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "location": "",
+      "pointInTimeRecoveryEnabled": null,
+      "replicationLogArchivingEnabled": null,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
+    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
+    "databaseFlags": [],
+    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
+    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": null,
+    "enableGoogleMlIntegration": null,
+    "insightsConfig": null,
     "ipConfiguration": {
+      "allocatedIpRange": "",
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
+      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "followGaeApplication": "",
       "kind": "sql#locationPreference",
+      "secondaryZone": "",
       "zone": "us-central1-a"
     },
+    "maintenanceWindow": null,
+    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
+    "sqlServerAuditConfig": null,
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
+    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -1319,6 +1628,7 @@ X-Xss-Protection: 0
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
+  "suspensionReason": [],
   "upgradableDatabaseVersions": [
     {
       "displayName": "MySQL 8.0",
@@ -1409,11 +1719,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
+  "endTime": null,
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": null,
   "status": "PENDING",
   "targetId": "sqluser-dep-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
@@ -1437,7 +1755,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
   "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",

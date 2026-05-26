@@ -513,14 +513,8 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The Cloud SQL instance does not exist.",
-        "reason": "instanceDoesNotExist"
-      }
-    ],
-    "message": "The Cloud SQL instance does not exist."
+    "message": "databaseInstance \"projects/${projectId}/SQLInstances/postgres-replication-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -620,11 +614,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
+  "endTime": null,
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": null,
   "status": "PENDING",
   "targetId": "postgres-replication-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
@@ -648,7 +650,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
   "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
@@ -678,12 +686,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:europe-west1:postgres-replication-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
   "databaseInstalledVersion": "POSTGRES_16_3",
   "databaseVersion": "POSTGRES_16",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
+  "failoverReplica": null,
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
@@ -696,15 +709,25 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
+      "timeToRetire": null,
       "type": "PRIVATE"
     }
   ],
+  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
   "name": "postgres-replication-${uniqueId}",
+  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "europe-west1",
-  "satisfiesPzi": true,
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -714,11 +737,14 @@ X-Xss-Protection: 0
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "postgres-replication-${uniqueId}",
     "kind": "sql#sslCert",
+    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
@@ -726,15 +752,20 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": null,
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "location": "",
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
+    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
     "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -755,14 +786,21 @@ X-Xss-Protection: 0
         "value": "180000"
       }
     ],
+    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": true,
+    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": null,
+    "enableGoogleMlIntegration": null,
     "insightsConfig": {
       "queryInsightsEnabled": true,
       "queryPlansPerMinute": 5,
-      "queryStringLength": 2048
+      "queryStringLength": 2048,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
     },
     "ipConfiguration": {
+      "allocatedIpRange": "",
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
@@ -772,6 +810,7 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "followGaeApplication": "",
       "kind": "sql#locationPreference",
       "secondaryZone": "europe-west1-b",
       "zone": "europe-west1-d"
@@ -782,19 +821,24 @@ X-Xss-Protection: 0
       "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
+    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
+    "sqlServerAuditConfig": null,
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-4-15360",
+    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "suspensionReason": [],
+  "upgradableDatabaseVersions": []
 }
 
 ---
@@ -817,17 +861,26 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "postgres-replication-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
+      "password": "",
       "passwordPolicy": {
-        "status": {}
+        "allowedFailedAttempts": 0,
+        "enableFailedAttemptsCheck": false,
+        "enablePasswordVerification": false,
+        "passwordExpirationDuration": null,
+        "status": {
+          "locked": false,
+          "passwordExpirationTime": null
+        }
       },
-      "project": "${projectId}"
+      "project": "${projectId}",
+      "type": "BUILT_IN"
     }
   ],
-  "kind": "sql#usersList"
+  "kind": "sql#usersList",
+  "nextPageToken": ""
 }
 
 ---
@@ -846,12 +899,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:europe-west1:postgres-replication-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
   "databaseInstalledVersion": "POSTGRES_16_3",
   "databaseVersion": "POSTGRES_16",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
+  "failoverReplica": null,
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
@@ -864,15 +922,25 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
+      "timeToRetire": null,
       "type": "PRIVATE"
     }
   ],
+  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
   "name": "postgres-replication-${uniqueId}",
+  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "europe-west1",
-  "satisfiesPzi": true,
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -882,11 +950,14 @@ X-Xss-Protection: 0
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "postgres-replication-${uniqueId}",
     "kind": "sql#sslCert",
+    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
@@ -894,15 +965,20 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": null,
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "location": "",
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
+    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
     "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -923,14 +999,21 @@ X-Xss-Protection: 0
         "value": "180000"
       }
     ],
+    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": true,
+    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": null,
+    "enableGoogleMlIntegration": null,
     "insightsConfig": {
       "queryInsightsEnabled": true,
       "queryPlansPerMinute": 5,
-      "queryStringLength": 2048
+      "queryStringLength": 2048,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
     },
     "ipConfiguration": {
+      "allocatedIpRange": "",
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
@@ -940,6 +1023,7 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "followGaeApplication": "",
       "kind": "sql#locationPreference",
       "secondaryZone": "europe-west1-b",
       "zone": "europe-west1-d"
@@ -950,19 +1034,24 @@ X-Xss-Protection: 0
       "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
+    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
+    "sqlServerAuditConfig": null,
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-4-15360",
+    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "suspensionReason": [],
+  "upgradableDatabaseVersions": []
 }
 
 ---
@@ -1063,11 +1152,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
+  "endTime": null,
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": null,
   "status": "PENDING",
   "targetId": "postgres-replication-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
@@ -1091,7 +1188,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "acquireSsrsLeaseContext": null,
+  "apiWarning": null,
+  "backupContext": null,
   "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
@@ -1121,12 +1224,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:europe-west1:postgres-replication-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
   "databaseInstalledVersion": "POSTGRES_16_3",
   "databaseVersion": "POSTGRES_16",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
+  "failoverReplica": null,
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
@@ -1139,15 +1247,25 @@ X-Xss-Protection: 0
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
+      "timeToRetire": null,
       "type": "PRIVATE"
     }
   ],
+  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
   "name": "postgres-replication-${uniqueId}",
+  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "europe-west1",
-  "satisfiesPzi": true,
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1157,11 +1275,14 @@ X-Xss-Protection: 0
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "postgres-replication-${uniqueId}",
     "kind": "sql#sslCert",
+    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
@@ -1169,15 +1290,20 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": null,
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "location": "",
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
+    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
     "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -1198,14 +1324,21 @@ X-Xss-Protection: 0
         "value": "180000"
       }
     ],
+    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": true,
+    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": null,
+    "enableGoogleMlIntegration": null,
     "insightsConfig": {
       "queryInsightsEnabled": true,
       "queryPlansPerMinute": 5,
-      "queryStringLength": 2048
+      "queryStringLength": 2048,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
     },
     "ipConfiguration": {
+      "allocatedIpRange": "",
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
@@ -1215,6 +1348,7 @@ X-Xss-Protection: 0
     },
     "kind": "sql#settings",
     "locationPreference": {
+      "followGaeApplication": "",
       "kind": "sql#locationPreference",
       "secondaryZone": "europe-west1-b",
       "zone": "europe-west1-d"
@@ -1225,19 +1359,24 @@ X-Xss-Protection: 0
       "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
+    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
+    "sqlServerAuditConfig": null,
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-4-15360",
+    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "suspensionReason": [],
+  "upgradableDatabaseVersions": []
 }
 
 ---
