@@ -97,6 +97,10 @@ func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) a
 			return admission.Errored(http.StatusInternalServerError, err)
 		}
 		refResourceGVK := auditConfig.Spec.ResourceReference.GroupVersionKind()
+		if registry.IsIAMDirect(refResourceGVK.GroupKind()) {
+			return admission.Errored(http.StatusForbidden,
+				fmt.Errorf("GroupVersionKind %v does not support IAM Audit Configs", refResourceGVK))
+		}
 		isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
 		if isDCLResource {
 			return admission.Errored(http.StatusForbidden,
