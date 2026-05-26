@@ -440,6 +440,7 @@ type OAuthRequirements struct {
 	// The list of publicly documented OAuth scopes that are allowed access. An
 	//  OAuth token containing any of these scopes will be accepted.
 	//
+	//
 	//  Example:
 	//
 	//       canonical_scopes: https://www.googleapis.com/auth/calendar,
@@ -634,8 +635,12 @@ type UsageRule struct {
 	// +kcc:proto:field=google.api.UsageRule.selector
 	Selector *string `json:"selector,omitempty"`
 
-	// If true, the selected method allows unregistered calls, e.g. calls
-	//  that don't identify any user or application.
+	// Use this rule to configure unregistered calls for the service. Unregistered
+	//  calls are calls that do not contain consumer project identity.
+	//  (Example: calls that do not contain an API key).
+	//
+	//  WARNING: By default, API methods do not allow unregistered calls, and each
+	//  method call must be identified by a consumer project identity.
 	// +kcc:proto:field=google.api.UsageRule.allow_unregistered_calls
 	AllowUnregisteredCalls *bool `json:"allowUnregisteredCalls,omitempty"`
 
