@@ -732,7 +732,8 @@ type JobStatus struct {
 }
 */
 
-/* unreachable type JupyterConfig
+/* found existing non-generated go type "JupyterConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.JupyterConfig
 type JupyterConfig struct {
 	// Optional. Kernel
@@ -1056,7 +1057,8 @@ type RuntimeInfo struct {
 }
 */
 
-/* unreachable type Session
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Session", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.Session
 type Session struct {
 	// Required. The resource name of the session.
@@ -1108,7 +1110,8 @@ type Session struct {
 }
 */
 
-/* unreachable type Session_SessionStateHistory
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Session.SessionStateHistory", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.Session.SessionStateHistory
 type Session_SessionStateHistory struct {
 }
@@ -1151,7 +1154,8 @@ type SparkBatch struct {
 }
 */
 
-/* unreachable type SparkConnectConfig
+/* found existing non-generated go type "SparkConnectConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.SparkConnectConfig
 type SparkConnectConfig struct {
 }
@@ -1755,7 +1759,8 @@ type RuntimeInfoObservedState struct {
 }
 */
 
-/* unreachable type SessionObservedState
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Session", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.Session
 type SessionObservedState struct {
 	// Output only. A session UUID (Unique Universal Identifier). The service
@@ -1794,7 +1799,8 @@ type SessionObservedState struct {
 }
 */
 
-/* unreachable type Session_SessionStateHistoryObservedState
+/* found existing non-generated go type "Session_SessionStateHistoryObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.Session.SessionStateHistory
 type Session_SessionStateHistoryObservedState struct {
 	// Output only. The state of the session at this point in the session
