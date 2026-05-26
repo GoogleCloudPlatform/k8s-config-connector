@@ -103,6 +103,7 @@ import (
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalabeling/v1alpha1"
+	datalineagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalineage/v1alpha1"
 	datamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datamigration/v1alpha1"
 	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataplex/v1alpha1"
 	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1alpha1"
@@ -295,6 +296,7 @@ type Interface interface {
 	DataformV1beta1() dataformv1beta1.DataformV1beta1Interface
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
 	DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface
+	DatalineageV1alpha1() datalineagev1alpha1.DatalineageV1alpha1Interface
 	DatamigrationV1alpha1() datamigrationv1alpha1.DatamigrationV1alpha1Interface
 	DataplexV1alpha1() dataplexv1alpha1.DataplexV1alpha1Interface
 	DataprocV1alpha1() dataprocv1alpha1.DataprocV1alpha1Interface
@@ -485,6 +487,7 @@ type Clientset struct {
 	dataformV1beta1                 *dataformv1beta1.DataformV1beta1Client
 	datafusionV1beta1               *datafusionv1beta1.DatafusionV1beta1Client
 	datalabelingV1alpha1            *datalabelingv1alpha1.DatalabelingV1alpha1Client
+	datalineageV1alpha1             *datalineagev1alpha1.DatalineageV1alpha1Client
 	datamigrationV1alpha1           *datamigrationv1alpha1.DatamigrationV1alpha1Client
 	dataplexV1alpha1                *dataplexv1alpha1.DataplexV1alpha1Client
 	dataprocV1alpha1                *dataprocv1alpha1.DataprocV1alpha1Client
@@ -982,6 +985,11 @@ func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Inter
 // DatalabelingV1alpha1 retrieves the DatalabelingV1alpha1Client
 func (c *Clientset) DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface {
 	return c.datalabelingV1alpha1
+}
+
+// DatalineageV1alpha1 retrieves the DatalineageV1alpha1Client
+func (c *Clientset) DatalineageV1alpha1() datalineagev1alpha1.DatalineageV1alpha1Interface {
+	return c.datalineageV1alpha1
 }
 
 // DatamigrationV1alpha1 retrieves the DatamigrationV1alpha1Client
@@ -1875,6 +1883,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.datalineageV1alpha1, err = datalineagev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.datamigrationV1alpha1, err = datamigrationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2402,6 +2414,7 @@ func New(c rest.Interface) *Clientset {
 	cs.dataformV1beta1 = dataformv1beta1.New(c)
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
 	cs.datalabelingV1alpha1 = datalabelingv1alpha1.New(c)
+	cs.datalineageV1alpha1 = datalineagev1alpha1.New(c)
 	cs.datamigrationV1alpha1 = datamigrationv1alpha1.New(c)
 	cs.dataplexV1alpha1 = dataplexv1alpha1.New(c)
 	cs.dataprocV1alpha1 = dataprocv1alpha1.New(c)
