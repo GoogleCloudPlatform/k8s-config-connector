@@ -496,14 +496,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
-                      resource.'
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` of a `KMSCryptoKey` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
               controlPlaneEndpointsConfig:
@@ -1293,6 +1293,7 @@ spec:
                       containerLogMaxFiles:
                         description: The maximum number of container log files that
                           can be present for a container.
+                        format: int64
                         type: integer
                       containerLogMaxSize:
                         description: The maximum size of the container log file before
@@ -1311,10 +1312,12 @@ spec:
                       imageGcHighThresholdPercent:
                         description: The percent of disk usage after which image garbage
                           collection is always run.
+                        format: int64
                         type: integer
                       imageGcLowThresholdPercent:
                         description: The percent of disk usage before which image
                           garbage collection is never run. Lowest priority.
+                        format: int64
                         type: integer
                       imageMaximumGcAge:
                         description: The maximum age for an unused image before it
@@ -1326,6 +1329,7 @@ spec:
                         type: string
                       maxParallelImagePulls:
                         description: The maximum number of parallel image pulls allowed.
+                        format: int64
                         type: integer
                       podPidsLimit:
                         description: Controls the maximum number of processes allowed
