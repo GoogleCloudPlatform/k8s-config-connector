@@ -191,24 +191,27 @@ func (a *enrollmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	if err != nil {
 		return err
 	}
-	// Retain updateable fields only
-	paths = paths.Intersection(allowedPaths)
-	var updated *pb.Enrollment
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		// even though there is no update, we still want to update KRM status
-		return nil
-	} else {
+
+	if len(paths) > 0 {
 		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 		for path := range paths {
 			report.AddField(path, nil, nil)
 		}
 		structuredreporting.ReportDiff(ctx, report)
+	}
 
+	// Retain updateable fields only
+	updatePaths := paths.Intersection(allowedPaths)
+	var updated *pb.Enrollment
+	if len(updatePaths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		// even though there is no update, we still want to update KRM status
+		return nil
+	} else {
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateEnrollmentRequest{
 			Enrollment: resource,
-			UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
+			UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(updatePaths)},
 		}
 
 		op, err := a.gcpClient.UpdateEnrollment(ctx, req)

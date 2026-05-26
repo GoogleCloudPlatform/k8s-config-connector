@@ -26,36 +26,44 @@ var EventarcEnrollmentGVK = GroupVersion.WithKind("EventarcEnrollment")
 // +kcc:spec:proto=google.cloud.eventarc.v1.Enrollment
 type EventarcEnrollmentSpec struct {
 	// The project that this resource belongs to.
+	// +kubebuilder:validation:Required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
+	// +kubebuilder:validation:Required
 	Location *string `json:"location,omitempty"`
 
 	// The EventarcEnrollment name. If not given, the metadata.name will be used.
+	// +kubebuilder:validation:Optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. Resource labels.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.labels
+	// +kubebuilder:validation:Optional
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Resource annotations.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.annotations
+	// +kubebuilder:validation:Optional
 	Annotations map[string]string `json:"annotations,omitempty"`
 
 	// Optional. Resource display name.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.display_name
+	// +kubebuilder:validation:Optional
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. A CEL expression identifying which messages this enrollment applies to.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.cel_match
-	// +required
-	CelMatch *string `json:"celMatch,omitempty"`
+	// +kubebuilder:validation:Required
+	CELMatch *string `json:"celMatch,omitempty"`
 
 	// Required. Resource name of the message bus identifying the source of the messages.
-	MessageBusRef *refsv1beta1.EventarcMessageBusRef `json:"messageBusRef,omitempty"`
+	// +kubebuilder:validation:Required
+	MessageBusRef *EventarcMessageBusRef `json:"messageBusRef,omitempty"`
 
 	// Required. Destination is the Pipeline that the Enrollment is delivering to.
-	DestinationRef *refsv1beta1.EventarcPipelineRef `json:"destinationRef,omitempty"`
+	// +kubebuilder:validation:Required
+	DestinationRef *EventarcPipelineRef `json:"destinationRef,omitempty"`
 }
 
 // EventarcEnrollmentStatus defines the config connector machine state of EventarcEnrollment

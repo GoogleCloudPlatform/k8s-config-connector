@@ -17,76 +17,100 @@ package v1alpha1
 import (
 	"context"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &EventarcEnrollmentRef{}
-
-// EventarcEnrollmentRef defines the resource reference to EventarcEnrollment, which "External" field
-// holds the GCP identifier for the KRM object.
-type EventarcEnrollmentRef struct {
-	// A reference to an externally managed EventarcEnrollment resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/enrollments/{{enrollmentID}}".
-	External string `json:"external,omitempty"`
-
-	// The name of a EventarcEnrollment resource.
+type EventarcMessageBusRef struct {
+	// The `name` field of a `EventarcMessageBus` resource.
 	Name string `json:"name,omitempty"`
-
-	// The namespace of a EventarcEnrollment resource.
+	// The `namespace` field of a `EventarcMessageBus` resource.
 	Namespace string `json:"namespace,omitempty"`
+	// A reference to an externally managed EventarcMessageBus resource.
+	// Should be in the format `projects/{{projectID}}/locations/{{location}}/messageBuses/{{messageBusID}}`.
+	External string `json:"external,omitempty"`
 }
 
-func init() {
-	refs.Register(&EventarcEnrollmentRef{})
-}
-
-func (r *EventarcEnrollmentRef) GetGVK() schema.GroupVersionKind {
-	return EventarcEnrollmentGVK
-}
-
-func (r *EventarcEnrollmentRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{
-		Name:      r.Name,
-		Namespace: r.Namespace,
+func (r *EventarcMessageBusRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{
+		Group:   "eventarc.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "EventarcMessageBus",
 	}
 }
 
-func (r *EventarcEnrollmentRef) GetExternal() string {
+func (r *EventarcMessageBusRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *EventarcMessageBusRef) GetExternal() string {
 	return r.External
 }
 
-func (r *EventarcEnrollmentRef) SetExternal(ref string) {
+func (r *EventarcMessageBusRef) SetExternal(ref string) {
 	r.External = ref
 }
 
-func (r *EventarcEnrollmentRef) ValidateExternal(ref string) error {
-	id := &EventarcEnrollmentIdentity{}
-	if err := id.FromExternal(ref); err != nil {
-		return err
-	}
+func (r *EventarcMessageBusRef) ValidateExternal(ref string) error {
+	// TODO: implement format validation
 	return nil
 }
 
-func (r *EventarcEnrollmentRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &EventarcEnrollmentIdentity{}
-	if err := id.FromExternal(r.External); err != nil {
-		return nil, err
-	}
-	return id, nil
+func (r *EventarcMessageBusRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
+	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, nil)
 }
 
-func (r *EventarcEnrollmentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := NewEventarcEnrollmentIdentity(ctx, reader, u)
-		if err != nil {
-			return ""
-		}
-		return identity.String()
+func (r *EventarcMessageBusRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	return r.External, nil
+}
+
+type EventarcPipelineRef struct {
+	// The `name` field of a `EventarcPipeline` resource.
+	Name string `json:"name,omitempty"`
+	// The `namespace` field of a `EventarcPipeline` resource.
+	Namespace string `json:"namespace,omitempty"`
+	// A reference to an externally managed EventarcPipeline resource.
+	// Should be in the format `projects/{{projectID}}/locations/{{location}}/pipelines/{{pipelineID}}`.
+	External string `json:"external,omitempty"`
+}
+
+func (r *EventarcPipelineRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{
+		Group:   "eventarc.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "EventarcPipeline",
+	}
+}
+
+func (r *EventarcPipelineRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *EventarcPipelineRef) GetExternal() string {
+	return r.External
+}
+
+func (r *EventarcPipelineRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *EventarcPipelineRef) ValidateExternal(ref string) error {
+	// TODO: implement format validation
+	return nil
+}
+
+func (r *EventarcPipelineRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
+	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, nil)
+}
+
+func (r *EventarcPipelineRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
+	}
+	return r.External, nil
 }
