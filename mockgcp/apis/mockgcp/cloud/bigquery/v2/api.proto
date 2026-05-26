@@ -787,6 +787,12 @@ message DataMaskingStatistics {
   optional bool data_masking_applied = 1 [json_name="dataMaskingApplied"];
 }
 
+// A list of data policy options. For more information, see [Mask data by applying data policies to a column](https://docs.cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column).
+message DataPolicyList {
+  // Contains a list of data policy options. At most 9 data policies are allowed per field.
+  repeated DataPolicyOption data_policies = 1 [json_name="dataPolicies"];
+}
+
 // Data policy option. For more information, see [Mask data by applying data policies to a column](https://docs.cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column).
 message DataPolicyOption {
   // Data policy resource name in the form of projects/project_id/locations/location_id/dataPolicies/data_policy_id.
@@ -1238,12 +1244,14 @@ message ExternalRuntimeOptions {
   optional double container_cpu = 1 [json_name="containerCpu"];
   // Optional. Amount of memory provisioned for a Python UDF container instance. Format: {number}{unit} where unit is one of "M", "G", "Mi" and "Gi" (e.g. 1G, 512Mi). If not specified, the default value is 512Mi. For more information, see [Configure container limits for Python UDFs](https://cloud.google.com/bigquery/docs/user-defined-functions-python#configure-container-limits)
   optional string container_memory = 2 [json_name="containerMemory"];
+  // Optional. Maximum number of requests that a Cloud Run instance can handle concurrently. If absent or if `0`, a default concurrency is used.
+  optional int64 container_request_concurrency = 3 [json_name="containerRequestConcurrency"];
   // Optional. Maximum number of rows in each batch sent to the external runtime. If absent or if 0, BigQuery dynamically decides the number of rows in a batch.
-  optional int64 max_batching_rows = 3 [json_name="maxBatchingRows"];
+  optional int64 max_batching_rows = 4 [json_name="maxBatchingRows"];
   // Optional. Fully qualified name of the connection whose service account will be used to execute the code in the container. Format: ```"projects/{project_id}/locations/{location_id}/connections/{connection_id}"```
-  optional string runtime_connection = 4 [json_name="runtimeConnection"];
+  optional string runtime_connection = 5 [json_name="runtimeConnection"];
   // Optional. Language runtime version. Example: `python-3.11`.
-  optional string runtime_version = 5 [json_name="runtimeVersion"];
+  optional string runtime_version = 6 [json_name="runtimeVersion"];
 }
 
 // The external service cost is a portion of the total cost, these costs are not additive with total_bytes_billed. Moreover, this field only track external service costs that will show up as BigQuery costs (e.g. training BigQuery ML job with google cloud CAIP or Automl Tables services), not other costs which may be accrued by running the query (e.g. reading from Bigtable or Cloud Storage). The external service costs with different billing sku (e.g. CAIP job is charged based on VM usage) are converted to BigQuery billed_bytes and slot_ms with equivalent amount of US dollars. Services may not directly correlate to these metrics, but these are the equivalents for billing purposes. Output only.
@@ -1292,6 +1300,12 @@ message GenAiErrorStats {
   repeated string errors = 1 [json_name="errors"];
 }
 
+// Provides cache statistics for a GenAi function call.
+message GenAiFunctionCacheStats {
+  // Number of rows served from cache.
+  optional int64 num_cache_hit_rows = 1 [json_name="numCacheHitRows"];
+}
+
 // Provides cost optimization statistics for a GenAi function call.
 message GenAiFunctionCostOptimizationStats {
   // System generated message to provide insights into cost optimization state.
@@ -1310,16 +1324,18 @@ message GenAiFunctionErrorStats {
 
 // Provides statistics for each Ai function call within a query.
 message GenAiFunctionStats {
+  // Cache stats for the function.
+  optional GenAiFunctionCacheStats cache_stats = 1 [json_name="cacheStats"];
   // Cost optimization stats if applied on the rows processed by the function.
-  optional GenAiFunctionCostOptimizationStats cost_optimization_stats = 1 [json_name="costOptimizationStats"];
+  optional GenAiFunctionCostOptimizationStats cost_optimization_stats = 2 [json_name="costOptimizationStats"];
   // Error stats for the function.
-  optional GenAiFunctionErrorStats error_stats = 2 [json_name="errorStats"];
+  optional GenAiFunctionErrorStats error_stats = 3 [json_name="errorStats"];
   // Name of the function.
-  optional string function_name = 3 [json_name="functionName"];
+  optional string function_name = 4 [json_name="functionName"];
   // Number of rows processed by this GenAi function. This includes all cost_optimized, llm_inferred and failed_rows.
-  optional int64 num_processed_rows = 4 [json_name="numProcessedRows"];
+  optional int64 num_processed_rows = 5 [json_name="numProcessedRows"];
   // User input prompt of the function (truncated to 20 chars).
-  optional string prompt = 5 [json_name="prompt"];
+  optional string prompt = 6 [json_name="prompt"];
 }
 
 // GenAi stats for the query job.
@@ -2228,6 +2244,14 @@ message MaterializedViewStatus {
   optional .google.protobuf.Timestamp refresh_watermark = 2 [json_name="refreshWatermark"];
 }
 
+// Column Metadata Index staleness detailed infnormation.
+message MetadataCacheStalenessInsight {
+  // Output only. Average column metadata index staleness of previous runs with the same query hash.
+  optional .google.protobuf.Duration avg_previous_staleness_ms = 1 [json_name="avgPreviousStalenessMs"];
+  // Output only. The percent increase in staleness between the current job and the average staleness of previous jobs with the same query hash.
+  optional double staleness_percentage_increase = 2 [json_name="stalenessPercentageIncrease"];
+}
+
 // Statistics for metadata caching in queried tables.
 message MetadataCacheStatistics {
   // Set for the Metadata caching eligible tables referenced in the query.
@@ -2366,6 +2390,8 @@ message PerformanceInsights {
   repeated StagePerformanceChangeInsight stage_performance_change_insights = 2 [json_name="stagePerformanceChangeInsights"];
   // Output only. Standalone query stage performance insights, for exploring potential improvements.
   repeated StagePerformanceStandaloneInsight stage_performance_standalone_insights = 3 [json_name="stagePerformanceStandaloneInsights"];
+  // Output only. Performance insights for table-level attributes that changed compared to previous runs.
+  repeated TableChangeInsight table_change_insights = 4 [json_name="tableChangeInsights"];
 }
 
 // An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources. A `Policy` is a collection of `bindings`. A `binding` binds one or more `members`, or principals, to a single `role`. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A `role` is a named list of permissions; each `role` can be an IAM predefined role or a user-created custom role. For some types of Google Cloud resources, a `binding` can also specify a `condition`, which is a logical expression that allows access to a resource only if the expression evaluates to `true`. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). **JSON example:** ``` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 } ``` **YAML example:** ``` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3 ``` For a description of IAM and its features, see the [IAM documentation](https://cloud.google.com/iam/docs/).
@@ -3167,6 +3193,16 @@ message TableCell {
   optional .google.protobuf.Any v = 1 [json_name="v"];
 }
 
+// Table-level performance insights compared to previous runs. These insights don't apply to specific query stages, rather they apply to the whole table.
+message TableChangeInsight {
+  // Output only. True if the table's column metadata index was not used in the current job, but was used in a previous job with the same query hash.
+  optional bool metadata_cache_not_used_but_used_previously = 1 [json_name="metadataCacheNotUsedButUsedPreviously"];
+  // Output only. If present, indicates that the table's metadata column index staleness has increased significantly compared to previous jobs with the same query hash.
+  optional MetadataCacheStalenessInsight metadata_cache_staleness_insight = 2 [json_name="metadataCacheStalenessInsight"];
+  // Output only. The table that was queried.
+  optional TableReference table_reference = 3 [json_name="tableReference"];
+}
+
 message ColumnReferences {
   optional string referenced_column = 1 [json_name="referencedColumn"];
   optional string referencing_column = 2 [json_name="referencingColumn"];
@@ -3246,6 +3282,10 @@ message TableFieldSchemaCategories {
   repeated string names = 1 [json_name="names"];
 }
 
+message TableFieldSchemaDataGovernanceTagsInfo {
+  map<string, string> data_governance_tags = 1 [json_name="dataGovernanceTags"];
+}
+
 message TableFieldSchemaPolicyTags {
   repeated string names = 1 [json_name="names"];
 }
@@ -3260,38 +3300,42 @@ message TableFieldSchema {
   optional TableFieldSchemaCategories categories = 1 [json_name="categories"];
   // Optional. Field collation can be set only when the type of field is STRING. The following values are supported: * 'und:ci': undetermined locale, case insensitive. * '': empty string. Default to case-sensitive behavior.
   optional string collation = 2 [json_name="collation"];
+  // Optional. Specifies the data governance tags on this field. This field works with other column-level security fields as follows: - Precedence: If a data governance tag is attached to a column, it takes precedence over the policy tag attached to the column. However, if a data policy is attached to a column, it takes precedence over the data governance tag. - Patching behavior (how this field behaves during a `Table.patch` schema update): - Unset: If the `data_governance_tags_info` field is omitted from the update request, the existing tags on the column are preserved. - Empty Field: To clear data governance tags from a column, send the `data_governance_tags_info` field as an empty object. This will remove all tags from the column. - Updating tags: To replace existing tag, send the field with the new tag.
+  optional TableFieldSchemaDataGovernanceTagsInfo data_governance_tags_info = 3 [json_name="dataGovernanceTagsInfo"];
   // Optional. Data policies attached to this field, used for field-level access control.
-  repeated DataPolicyOption data_policies = 3 [json_name="dataPolicies"];
+  repeated DataPolicyOption data_policies = 4 [json_name="dataPolicies"];
+  // Optional. Specifies data policies attached to this field, used for field-level access control. When set, this will be the source of truth for data policy information.
+  optional DataPolicyList data_policy_list = 5 [json_name="dataPolicyList"];
   // Optional. A SQL expression to specify the [default value] (https://cloud.google.com/bigquery/docs/default-values) for this field.
-  optional string default_value_expression = 4 [json_name="defaultValueExpression"];
+  optional string default_value_expression = 6 [json_name="defaultValueExpression"];
   // Optional. The field description. The maximum length is 1,024 characters.
-  optional string description = 5 [json_name="description"];
+  optional string description = 7 [json_name="description"];
   // Optional. Describes the nested schema fields if the type property is set to RECORD.
-  repeated TableFieldSchema fields = 6 [json_name="fields"];
+  repeated TableFieldSchema fields = 8 [json_name="fields"];
   // Optional. Definition of the foreign data type. Only valid for top-level schema fields (not nested fields). If the type is FOREIGN, this field is required.
-  optional string foreign_type_definition = 7 [json_name="foreignTypeDefinition"];
+  optional string foreign_type_definition = 9 [json_name="foreignTypeDefinition"];
   // Optional. Definition of how values are generated for the field. Only valid for top-level schema fields (not nested fields).
-  optional GeneratedColumn generated_column = 8 [json_name="generatedColumn"];
+  optional GeneratedColumn generated_column = 10 [json_name="generatedColumn"];
   // Optional. Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = "STRING", then max_length represents the maximum UTF-8 length of strings in this field. If type = "BYTES", then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ "STRING" and ≠ "BYTES".
-  optional int64 max_length = 9 [json_name="maxLength"];
+  optional int64 max_length = 11 [json_name="maxLength"];
   // Optional. The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-  optional string mode = 10 [json_name="mode"];
+  optional string mode = 12 [json_name="mode"];
   // Required. The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
-  optional string name = 11 [json_name="name"];
+  optional string name = 13 [json_name="name"];
   // Optional. The policy tags attached to this field, used for field-level access control. If not set, defaults to empty policy_tags.
-  optional TableFieldSchemaPolicyTags policy_tags = 12 [json_name="policyTags"];
+  optional TableFieldSchemaPolicyTags policy_tags = 14 [json_name="policyTags"];
   // Optional. Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ "NUMERIC" and ≠ "BIGNUMERIC". If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: * Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] * Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: * If type = "NUMERIC": 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. * If type = "BIGNUMERIC": 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): * If type = "NUMERIC": 1 ≤ precision ≤ 29. * If type = "BIGNUMERIC": 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
-  optional int64 precision = 13 [json_name="precision"];
+  optional int64 precision = 15 [json_name="precision"];
   // Represents the type of a field element.
-  optional TableFieldSchemaRangeElementType range_element_type = 14 [json_name="rangeElementType"];
+  optional TableFieldSchemaRangeElementType range_element_type = 16 [json_name="rangeElementType"];
   // Optional. Specifies the rounding mode to be used when storing values of NUMERIC and BIGNUMERIC type.
-  optional string rounding_mode = 15 [json_name="roundingMode"];
+  optional string rounding_mode = 17 [json_name="roundingMode"];
   // Optional. See documentation for precision.
-  optional int64 scale = 16 [json_name="scale"];
+  optional int64 scale = 18 [json_name="scale"];
   // Optional. Precision (maximum number of total digits in base 10) for seconds of TIMESTAMP type. Possible values include: * 6 (Default, for TIMESTAMP type with microsecond precision) * 12 (For TIMESTAMP type with picosecond precision)
-  optional int64 timestamp_precision = 17 [json_name="timestampPrecision"];
+  optional int64 timestamp_precision = 19 [json_name="timestampPrecision"];
   // Required. The field data type. Possible values include: * STRING * BYTES * INTEGER (or INT64) * FLOAT (or FLOAT64) * BOOLEAN (or BOOL) * TIMESTAMP * DATE * TIME * DATETIME * GEOGRAPHY * NUMERIC * BIGNUMERIC * JSON * RECORD (or STRUCT) * RANGE Use of RECORD/STRUCT indicates that the field contains a nested schema.
-  optional string type = 18 [json_name="type"];
+  optional string type = 20 [json_name="type"];
 }
 
 message View {
