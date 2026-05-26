@@ -190,7 +190,6 @@ func NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx *direct.M
 	out := &krm.NetworkConnectivityRegionalEndpointObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
-	// MISSING: Labels
 	// MISSING: Name
 	out.PSCForwardingRule = direct.LazyPtr(in.GetPscForwardingRule())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -203,7 +202,6 @@ func NetworkConnectivityRegionalEndpointObservedState_ToProto(mapCtx *direct.Map
 	out := &pb.RegionalEndpoint{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.IpAddress = direct.ValueOf(in.IPAddress)
-	// MISSING: Labels
 	// MISSING: Name
 	out.PscForwardingRule = direct.ValueOf(in.PSCForwardingRule)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -219,7 +217,7 @@ func NetworkConnectivityRegionalEndpointSpec_FromProto(mapCtx *direct.MapContext
 		out.AddressRef = &refsv1beta1.ComputeAddressRef{External: in.GetAddress()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Labels
+	out.Labels = in.Labels
 	// MISSING: Name
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
@@ -240,7 +238,7 @@ func NetworkConnectivityRegionalEndpointSpec_ToProto(mapCtx *direct.MapContext, 
 		out.Address = in.AddressRef.External
 	}
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Labels
+	out.Labels = in.Labels
 	// MISSING: Name
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External

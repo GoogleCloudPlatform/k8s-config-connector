@@ -465,6 +465,13 @@ func (in *NetworkConnectivityRegionalEndpointSpec) DeepCopyInto(out *NetworkConn
 		*out = new(string)
 		**out = **in
 	}
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
 		*out = new(computev1beta1.ComputeNetworkRef)

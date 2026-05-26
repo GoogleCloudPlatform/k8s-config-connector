@@ -101,6 +101,11 @@ spec:
               description:
                 description: Optional. A description of this resource.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: User-defined labels.
+                type: object
               location:
                 description: The location of this resource.
                 type: string
