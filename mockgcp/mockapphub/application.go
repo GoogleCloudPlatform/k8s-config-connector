@@ -31,14 +31,33 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/apphub/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
 type AppHubV1Service struct {
 	*MockService
 	pb.UnimplementedAppHubServer
+}
+
+func (s *AppHubV1Service) ListApplications(ctx context.Context, req *pb.ListApplicationsRequest) (*pb.ListApplicationsResponse, error) {
+	parent := req.Parent
+
+	objs := []*pb.Application{}
+	err := s.storage.List(ctx, (&pb.Application{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: parent}, func(obj proto.Message) error {
+		objs = append(objs, obj.(*pb.Application))
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.ListApplicationsResponse{
+		Applications: objs,
+	}, nil
 }
 
 func (s *AppHubV1Service) GetApplication(ctx context.Context, req *pb.GetApplicationRequest) (*pb.Application, error) {
