@@ -23,6 +23,7 @@
 
 package v1beta1
 
+/* unreachable type CryptoKeyVersion
 // +kcc:proto=google.cloud.kms.v1.CryptoKeyVersion
 type CryptoKeyVersion struct {
 
@@ -40,7 +41,9 @@ type CryptoKeyVersion struct {
 	// +kcc:proto:field=google.cloud.kms.v1.CryptoKeyVersion.external_protection_level_options
 	ExternalProtectionLevelOptions *ExternalProtectionLevelOptions `json:"externalProtectionLevelOptions,omitempty"`
 }
+*/
 
+/* unreachable type ExternalProtectionLevelOptions
 // +kcc:proto=google.cloud.kms.v1.ExternalProtectionLevelOptions
 type ExternalProtectionLevelOptions struct {
 	// The URI for an external resource that this
@@ -55,7 +58,9 @@ type ExternalProtectionLevelOptions struct {
 	// +kcc:proto:field=google.cloud.kms.v1.ExternalProtectionLevelOptions.ekm_connection_key_path
 	EkmConnectionKeyPath *string `json:"ekmConnectionKeyPath,omitempty"`
 }
+*/
 
+/* unreachable type KeyAccessJustificationsPolicy
 // +kcc:proto=google.cloud.kms.v1.KeyAccessJustificationsPolicy
 type KeyAccessJustificationsPolicy struct {
 	// The list of allowed reasons for access to a
@@ -66,10 +71,13 @@ type KeyAccessJustificationsPolicy struct {
 	// +kcc:proto:field=google.cloud.kms.v1.KeyAccessJustificationsPolicy.allowed_access_reasons
 	AllowedAccessReasons []string `json:"allowedAccessReasons,omitempty"`
 }
+*/
 
+/* unreachable type KeyOperationAttestation
 // +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation
 type KeyOperationAttestation struct {
 }
+*/
 
 // +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation.CertificateChains
 type KeyOperationAttestation_CertificateChains struct {
@@ -86,11 +94,12 @@ type KeyOperationAttestation_CertificateChains struct {
 	GooglePartitionCerts []string `json:"googlePartitionCerts,omitempty"`
 }
 
+/* unreachable type CryptoKeyVersionObservedState
 // +kcc:observedstate:proto=google.cloud.kms.v1.CryptoKeyVersion
 type CryptoKeyVersionObservedState struct {
 	// Output only. The resource name for this
 	//  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in the format
-	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*`.
+	//  `projects/-*-/locations/-*-/keyRings/-*-/cryptoKeys/-*-/cryptoKeyVersions/-*`.
 	// +kcc:proto:field=google.cloud.kms.v1.CryptoKeyVersion.name
 	Name *string `json:"name,omitempty"`
 
@@ -179,6 +188,7 @@ type CryptoKeyVersionObservedState struct {
 	// +kcc:proto:field=google.cloud.kms.v1.CryptoKeyVersion.reimport_eligible
 	ReimportEligible *bool `json:"reimportEligible,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.kms.v1.KeyOperationAttestation
 type KeyOperationAttestationObservedState struct {

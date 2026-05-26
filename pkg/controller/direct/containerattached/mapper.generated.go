@@ -77,7 +77,7 @@ func AttachedOidcConfig_FromProto(mapCtx *direct.MapContext, in *pb.AttachedOidc
 	}
 	out := &krm.AttachedOidcConfig{}
 	out.IssuerURL = direct.LazyPtr(in.GetIssuerUrl())
-	out.Jwks = []krm.byte{direct.LazyPtr(in.GetJwks())}
+	out.Jwks = in.GetJwks()
 	return out
 }
 */
@@ -91,9 +91,7 @@ found existing non-generated mapping function "AttachedOidcConfig_ToProto", skip
 		}
 		out := &pb.AttachedOidcConfig{}
 		out.IssuerURL = AttachedOidcConfig_IssuerUrl_ToProto(mapCtx, in.IssuerURL)
-		if len(in.Jwks) > 0 && in.Jwks[0] != nil {
-			out.Jwks = direct.ValueOf(in.Jwks[0])
-		}
+		out.Jwks = in.Jwks
 		return out
 	}
 */
