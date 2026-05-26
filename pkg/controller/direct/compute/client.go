@@ -117,3 +117,28 @@ func (m *gcpClient) newRegionalTargetTcpProxiesClient(ctx context.Context) (*com
 	}
 	return client, err
 }
+
+func (m *gcpClient) newFutureReservationsClient(ctx context.Context) (*compute.FutureReservationsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewFutureReservationsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute FutureReservations client: %w", err)
+
+	}
+	return client, err
+}
+
+func (m *gcpClient) newReservationsClient(ctx context.Context) (*compute.ReservationsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewReservationsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute Reservations client: %w", err)
+	}
+	return client, err
+}

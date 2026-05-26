@@ -51,7 +51,7 @@ type RedisClusterSpec struct {
 	// Required. Each PscConfig configures the consumer network where IPs will
 	//  be designated to the cluster for client access through Private Service
 	//  Connect Automation. Currently, only one PscConfig is supported.
-	PscConfigs []PscConfigSpec `json:"pscConfigs,omitempty"`
+	PSCConfigs []PscConfigSpec `json:"pscConfigs,omitempty"`
 
 	// Optional. The type of a redis node in the cluster. NodeType determines the
 	//  underlying machine-type of a redis node.
@@ -117,22 +117,21 @@ type RedisClusterObservedState struct {
 
 	// Output only. Redis memory size in GB for the entire cluster rounded up to
 	//  the next integer.
-	SizeGb *int32 `json:"sizeGb,omitempty"`
+	SizeGB *int32 `json:"sizeGb,omitempty"`
 
 	// Output only. Endpoints created on each given network, for Redis clients to
 	//  connect to the cluster. Currently only one discovery endpoint is supported.
-	DiscoveryEndpoints []DiscoveryEndpoint `json:"discoveryEndpoints,omitempty"`
+	DiscoveryEndpoints []DiscoveryEndpointObservedState `json:"discoveryEndpoints,omitempty"`
 
 	// Output only. PSC connections for discovery of the cluster topology and
 	//  accessing the cluster.
-	PscConnections []PscConnection `json:"pscConnections,omitempty"`
-
+	PSCConnections []PSCConnection `json:"pscConnections,omitempty"`
 	// Output only. Additional information about the current state of the cluster.
 	StateInfo *Cluster_StateInfo `json:"stateInfo,omitempty"`
 
 	// Output only. Precise value of redis memory size in GB for the entire
 	//  cluster.
-	PreciseSizeGb *float64 `json:"preciseSizeGb,omitempty"`
+	PreciseSizeGB *float64 `json:"preciseSizeGb,omitempty"`
 }
 
 // +genclient
@@ -142,6 +141,7 @@ type RedisClusterObservedState struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=beta"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

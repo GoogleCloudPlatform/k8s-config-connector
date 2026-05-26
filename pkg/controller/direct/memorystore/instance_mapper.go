@@ -23,6 +23,7 @@ import (
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
+	api_refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -151,8 +152,9 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
-	// TODO: fix psc attachment details
-	// out.PscAttachmentDetails = direct.Slice_FromProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_FromProto)
+	out.EffectiveMaintenanceVersion = direct.LazyPtr(in.GetEffectiveMaintenanceVersion())
+	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
+	out.PscAttachmentDetails = direct.Slice_FromProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_FromProto)
 	return out
 }
 func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceObservedState) *pb.Instance {
@@ -167,8 +169,9 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Uid = direct.ValueOf(in.Uid)
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
-	// TODO: fix psc attachment details
-	// out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_ToProto)
+	out.EffectiveMaintenanceVersion = in.EffectiveMaintenanceVersion
+	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
+	out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_ToProto)
 	return out
 }
 func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
@@ -189,9 +192,13 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
+	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
+	out.MaintenanceVersion = in.MaintenanceVersion
 
 	return out
 }
+
 func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceSpec) *pb.Instance {
 	if in == nil {
 		return nil
@@ -210,6 +217,9 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.M
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
 	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
+	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
+	out.MaintenanceVersion = in.MaintenanceVersion
 	return out
 }
 func NodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krmv1beta1.NodeConfigObservedState {
@@ -364,5 +374,123 @@ func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Zo
 	out := &pb.ZoneDistributionConfig{}
 	out.Zone = direct.ValueOf(in.Zone)
 	out.Mode = direct.Enum_ToProto[pb.ZoneDistributionConfig_ZoneDistributionMode](mapCtx, in.Mode)
+	return out
+}
+
+func CrossInstanceReplicationConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CrossInstanceReplicationConfig) *pb.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig{}
+	out.InstanceRole = direct.Enum_ToProto[pb.CrossInstanceReplicationConfig_InstanceRole](mapCtx, in.InstanceRole)
+	if in.PrimaryInstance != nil {
+		out.PrimaryInstance = &pb.CrossInstanceReplicationConfig_RemoteInstance{}
+		if in.PrimaryInstance.InstanceRef != nil {
+			out.PrimaryInstance.Instance = in.PrimaryInstance.InstanceRef.External
+		}
+	}
+	return out
+}
+
+func CrossInstanceReplicationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krmv1beta1.CrossInstanceReplicationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.CrossInstanceReplicationConfigObservedState{}
+	if in.PrimaryInstance != nil {
+		out.PrimaryInstance = &krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState{}
+		out.PrimaryInstance.Instance = direct.LazyPtr(in.PrimaryInstance.Instance)
+		out.PrimaryInstance.Uid = direct.LazyPtr(in.PrimaryInstance.Uid)
+	}
+	if in.SecondaryInstances != nil {
+		for _, s := range in.SecondaryInstances {
+			if s == nil {
+				continue
+			}
+			out.SecondaryInstances = append(out.SecondaryInstances, krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState{
+				Instance: direct.LazyPtr(s.Instance),
+				Uid:      direct.LazyPtr(s.Uid),
+			})
+		}
+	}
+	if in.Membership != nil {
+		out.Membership = &krmv1beta1.CrossInstanceReplicationConfig_MembershipObservedState{}
+		if in.Membership.PrimaryInstance != nil {
+			out.Membership.PrimaryInstance = &krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState{
+				Instance: direct.LazyPtr(in.Membership.PrimaryInstance.Instance),
+				Uid:      direct.LazyPtr(in.Membership.PrimaryInstance.Uid),
+			}
+		}
+		if in.Membership.SecondaryInstances != nil {
+			for _, s := range in.Membership.SecondaryInstances {
+				if s == nil {
+					continue
+				}
+				out.Membership.SecondaryInstances = append(out.Membership.SecondaryInstances, krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState{
+					Instance: direct.LazyPtr(s.Instance),
+					Uid:      direct.LazyPtr(s.Uid),
+				})
+			}
+		}
+	}
+	return out
+}
+
+func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krmv1beta1.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.CrossInstanceReplicationConfig{}
+	out.InstanceRole = direct.Enum_FromProto(mapCtx, in.GetInstanceRole())
+	if in.GetPrimaryInstance() != nil {
+		out.PrimaryInstance = &krmv1beta1.CrossInstanceReplicationConfig_RemoteInstance{}
+		out.PrimaryInstance.InstanceRef = &api_refs.MemorystoreInstanceRef{
+			External: in.GetPrimaryInstance().GetInstance(),
+		}
+	}
+	return out
+}
+
+func AutomatedBackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig) *krmv1beta1.AutomatedBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.AutomatedBackupConfig{}
+	out.AutomatedBackupMode = direct.Enum_FromProto(mapCtx, in.GetAutomatedBackupMode())
+	out.Retention = direct.StringDuration_FromProto(mapCtx, in.GetRetention())
+	out.FixedFrequencySchedule = AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx, in.GetFixedFrequencySchedule())
+	return out
+}
+
+func AutomatedBackupConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AutomatedBackupConfig) *pb.AutomatedBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomatedBackupConfig{}
+	out.AutomatedBackupMode = direct.Enum_ToProto[pb.AutomatedBackupConfig_AutomatedBackupMode](mapCtx, in.AutomatedBackupMode)
+	out.Retention = direct.StringDuration_ToProto(mapCtx, in.Retention)
+	if in.FixedFrequencySchedule != nil {
+		out.Schedule = &pb.AutomatedBackupConfig_FixedFrequencySchedule_{
+			FixedFrequencySchedule: AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx, in.FixedFrequencySchedule),
+		}
+	}
+	return out
+}
+
+func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig_FixedFrequencySchedule) *krmv1beta1.AutomatedBackupConfig_FixedFrequencySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.AutomatedBackupConfig_FixedFrequencySchedule{}
+	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	return out
+}
+
+func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AutomatedBackupConfig_FixedFrequencySchedule) *pb.AutomatedBackupConfig_FixedFrequencySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
+	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
 	return out
 }

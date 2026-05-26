@@ -30,8 +30,8 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/eventarc/v1"
 )
 
 func (s *EventarcV1) GetGoogleChannelConfig(ctx context.Context, req *pb.GetGoogleChannelConfigRequest) (*pb.GoogleChannelConfig, error) {
@@ -74,7 +74,7 @@ func (s *EventarcV1) UpdateGoogleChannelConfig(ctx context.Context, req *pb.Upda
 	if existing.Name == "" {
 		updated.Name = reqName
 	} else {
-		updated = proto.Clone(existing).(*pb.GoogleChannelConfig)
+		updated = proto.CloneOf(existing)
 	}
 
 	if req.GetUpdateMask() == nil || len(req.GetUpdateMask().GetPaths()) == 0 {

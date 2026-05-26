@@ -99,3 +99,17 @@ func (r *GKEHubMembershipRef) Normalize(ctx context.Context, reader client.Reade
 		return NewGKEHubMembershipIdentity(project, location, resourceID).String()
 	})
 }
+
+func ResolveGKEHubMembershipRef(ctx context.Context, reader client.Reader, obj client.Object, ref *GKEHubMembershipRef) (*GKEHubMembershipIdentity, error) {
+	if ref == nil {
+		return nil, nil
+	}
+	if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	id := &GKEHubMembershipIdentity{}
+	if err := id.FromExternal(ref.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}

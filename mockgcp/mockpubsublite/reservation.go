@@ -28,8 +28,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	pb "cloud.google.com/go/pubsublite/apiv1/pubsublitepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/pubsublite/v1"
 )
 
 func (s *PubSubLiteV1) GetReservation(ctx context.Context, req *pb.GetReservationRequest) (*pb.Reservation, error) {
@@ -57,7 +57,7 @@ func (s *PubSubLiteV1) CreateReservation(ctx context.Context, req *pb.CreateRese
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Reservation).(*pb.Reservation)
+	obj := proto.CloneOf(req.Reservation)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

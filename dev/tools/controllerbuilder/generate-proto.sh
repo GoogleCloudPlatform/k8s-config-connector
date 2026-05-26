@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
+  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
+  exit 0
+fi
+
 
 set -o errexit
 set -o nounset
@@ -90,6 +95,7 @@ protoc --include_imports --include_source_info \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \
+    ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
@@ -113,8 +119,10 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/instance/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/database/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto \
+    ${THIRD_PARTY}/googleapis/google/storage/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
+    ${THIRD_PARTY}/googleapis/google/container/*/*.proto \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
 
 cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"

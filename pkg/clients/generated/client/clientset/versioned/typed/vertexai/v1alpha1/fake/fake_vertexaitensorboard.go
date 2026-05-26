@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeVertexAITensorboards implements VertexAITensorboardInterface
-type FakeVertexAITensorboards struct {
+// fakeVertexAITensorboards implements VertexAITensorboardInterface
+type fakeVertexAITensorboards struct {
+	*gentype.FakeClientWithList[*v1alpha1.VertexAITensorboard, *v1alpha1.VertexAITensorboardList]
 	Fake *FakeVertexaiV1alpha1
-	ns   string
 }
 
-var vertexaitensorboardsResource = v1alpha1.SchemeGroupVersion.WithResource("vertexaitensorboards")
-
-var vertexaitensorboardsKind = v1alpha1.SchemeGroupVersion.WithKind("VertexAITensorboard")
-
-// Get takes name of the vertexAITensorboard, and returns the corresponding vertexAITensorboard object, and an error if there is any.
-func (c *FakeVertexAITensorboards) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VertexAITensorboard, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(vertexaitensorboardsResource, c.ns, name), &v1alpha1.VertexAITensorboard{})
-
-	if obj == nil {
-		return nil, err
+func newFakeVertexAITensorboards(fake *FakeVertexaiV1alpha1, namespace string) vertexaiv1alpha1.VertexAITensorboardInterface {
+	return &fakeVertexAITensorboards{
+		gentype.NewFakeClientWithList[*v1alpha1.VertexAITensorboard, *v1alpha1.VertexAITensorboardList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("vertexaitensorboards"),
+			v1alpha1.SchemeGroupVersion.WithKind("VertexAITensorboard"),
+			func() *v1alpha1.VertexAITensorboard { return &v1alpha1.VertexAITensorboard{} },
+			func() *v1alpha1.VertexAITensorboardList { return &v1alpha1.VertexAITensorboardList{} },
+			func(dst, src *v1alpha1.VertexAITensorboardList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.VertexAITensorboardList) []*v1alpha1.VertexAITensorboard {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.VertexAITensorboardList, items []*v1alpha1.VertexAITensorboard) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.VertexAITensorboard), err
-}
-
-// List takes label and field selectors, and returns the list of VertexAITensorboards that match those selectors.
-func (c *FakeVertexAITensorboards) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VertexAITensorboardList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(vertexaitensorboardsResource, vertexaitensorboardsKind, c.ns, opts), &v1alpha1.VertexAITensorboardList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.VertexAITensorboardList{ListMeta: obj.(*v1alpha1.VertexAITensorboardList).ListMeta}
-	for _, item := range obj.(*v1alpha1.VertexAITensorboardList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested vertexAITensorboards.
-func (c *FakeVertexAITensorboards) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(vertexaitensorboardsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a vertexAITensorboard and creates it.  Returns the server's representation of the vertexAITensorboard, and an error, if there is any.
-func (c *FakeVertexAITensorboards) Create(ctx context.Context, vertexAITensorboard *v1alpha1.VertexAITensorboard, opts v1.CreateOptions) (result *v1alpha1.VertexAITensorboard, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(vertexaitensorboardsResource, c.ns, vertexAITensorboard), &v1alpha1.VertexAITensorboard{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VertexAITensorboard), err
-}
-
-// Update takes the representation of a vertexAITensorboard and updates it. Returns the server's representation of the vertexAITensorboard, and an error, if there is any.
-func (c *FakeVertexAITensorboards) Update(ctx context.Context, vertexAITensorboard *v1alpha1.VertexAITensorboard, opts v1.UpdateOptions) (result *v1alpha1.VertexAITensorboard, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(vertexaitensorboardsResource, c.ns, vertexAITensorboard), &v1alpha1.VertexAITensorboard{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VertexAITensorboard), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeVertexAITensorboards) UpdateStatus(ctx context.Context, vertexAITensorboard *v1alpha1.VertexAITensorboard, opts v1.UpdateOptions) (*v1alpha1.VertexAITensorboard, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(vertexaitensorboardsResource, "status", c.ns, vertexAITensorboard), &v1alpha1.VertexAITensorboard{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VertexAITensorboard), err
-}
-
-// Delete takes name of the vertexAITensorboard and deletes it. Returns an error if one occurs.
-func (c *FakeVertexAITensorboards) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(vertexaitensorboardsResource, c.ns, name, opts), &v1alpha1.VertexAITensorboard{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeVertexAITensorboards) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(vertexaitensorboardsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.VertexAITensorboardList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched vertexAITensorboard.
-func (c *FakeVertexAITensorboards) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VertexAITensorboard, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(vertexaitensorboardsResource, c.ns, name, pt, data, subresources...), &v1alpha1.VertexAITensorboard{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.VertexAITensorboard), err
 }

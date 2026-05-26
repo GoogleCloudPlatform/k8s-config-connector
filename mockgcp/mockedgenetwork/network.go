@@ -50,7 +50,7 @@ func (s *EdgenetworkV1) CreateNetwork(ctx context.Context, req *pb.CreateNetwork
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Network).(*pb.Network)
+	obj := proto.CloneOf(req.Network)
 	obj.Name = fqn
 
 	if obj.GetMtu() != 9000 && obj.GetMtu() != 1500 {

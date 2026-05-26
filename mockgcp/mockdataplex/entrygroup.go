@@ -75,7 +75,7 @@ func (s *CatalogService) CreateEntryGroup(ctx context.Context, req *pb.CreateEnt
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetEntryGroup()).(*pb.EntryGroup)
+	obj := proto.CloneOf(req.GetEntryGroup())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

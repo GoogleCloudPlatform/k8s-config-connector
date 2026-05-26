@@ -2882,6 +2882,11 @@ func (in *ComputeForwardingRuleStatus) DeepCopyInto(out *ComputeForwardingRuleSt
 		*out = new(string)
 		**out = **in
 	}
+	if in.Target != nil {
+		in, out := &in.Target, &out.Target
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -6332,6 +6337,11 @@ func (in *ComputeReservationStatus) DeepCopyInto(out *ComputeReservationStatus) 
 	}
 	if in.CreationTimestamp != nil {
 		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
 		*out = new(string)
 		**out = **in
 	}
@@ -13771,7 +13781,7 @@ func (in *ReservationSpecificReservation) DeepCopyInto(out *ReservationSpecificR
 	*out = *in
 	if in.InUseCount != nil {
 		in, out := &in.InUseCount, &out.InUseCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	in.InstanceProperties.DeepCopyInto(&out.InstanceProperties)

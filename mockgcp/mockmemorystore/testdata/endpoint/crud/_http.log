@@ -18,33 +18,41 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": "DISABLED"
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "endpoints": [
     {
       "connections": [
         {
           "pscAutoConnection": {
             "connectionType": "CONNECTION_TYPE_PRIMARY",
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-            "ipAddress": "10.128.0.21",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/default",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456789",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "pscConnectionId": "${pscConnectionId}",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
           "pscAutoConnection": {
             "connectionType": "CONNECTION_TYPE_READER",
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-            "ipAddress": "10.128.0.22",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/default",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456790",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "pscConnectionId": "${pscConnectionId}",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -63,11 +71,11 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -95,27 +103,35 @@ Content-Type: application/json
   "automatedBackupConfig": {
     "automatedBackupMode": "DISABLED"
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "endpoints": [
     {
       "connections": [
         {
           "pscConnection": {
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/test-fwdrule-1-${uniqueId}",
-            "ipAddress": "8.8.8.8",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/test-network-${uniqueId}",
             "pscConnectionId": "",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
           "pscConnection": {
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/test-fwdrule-2-${uniqueId}",
-            "ipAddress": "8.8.8.8",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/test-network-${uniqueId}",
             "pscConnectionId": "",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -134,11 +150,11 @@ Content-Type: application/json
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -208,33 +224,41 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_PRIMARY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/default",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+              "pscConnectionId": "${pscConnectionId}",
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_READER",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/default",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+              "pscConnectionId": "${pscConnectionId}",
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
         ]
@@ -245,26 +269,26 @@ X-Xss-Protection: 0
             "pscConnection": {
               "connectionType": "CONNECTION_TYPE_PRIMARY",
               "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/test-fwdrule-1-${uniqueId}",
-              "ipAddress": "8.8.8.8",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/test-network-${uniqueId}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456791",
+              "pscConnectionId": "${pscConnectionId}",
               "pscConnectionStatus": "ACTIVE",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscConnection": {
               "connectionType": "CONNECTION_TYPE_READER",
               "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/test-fwdrule-2-${uniqueId}",
-              "ipAddress": "8.8.8.8",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/test-network-${uniqueId}",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456792",
+              "pscConnectionId": "${pscConnectionId}",
               "pscConnectionStatus": "ACTIVE",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
         ]
@@ -283,11 +307,11 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_PRIMARY",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
       },
       {
         "connectionType": "CONNECTION_TYPE_READER",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
       }
     ],
     "replicaCount": 0,
@@ -325,33 +349,41 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": "DISABLED"
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "endpoints": [
     {
       "connections": [
         {
           "pscAutoConnection": {
             "connectionType": "CONNECTION_TYPE_PRIMARY",
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-            "ipAddress": "10.128.0.21",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/default",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456789",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "pscConnectionId": "${pscConnectionId}",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
           "pscAutoConnection": {
             "connectionType": "CONNECTION_TYPE_READER",
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-            "ipAddress": "10.128.0.22",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/default",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456790",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "pscConnectionId": "${pscConnectionId}",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -362,26 +394,26 @@ X-Xss-Protection: 0
           "pscConnection": {
             "connectionType": "CONNECTION_TYPE_PRIMARY",
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/test-fwdrule-1-${uniqueId}",
-            "ipAddress": "8.8.8.8",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/test-network-${uniqueId}",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456791",
+            "pscConnectionId": "${pscConnectionId}",
             "pscConnectionStatus": "ACTIVE",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
           "pscConnection": {
             "connectionType": "CONNECTION_TYPE_READER",
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/test-fwdrule-2-${uniqueId}",
-            "ipAddress": "8.8.8.8",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/test-network-${uniqueId}",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456792",
+            "pscConnectionId": "${pscConnectionId}",
             "pscConnectionStatus": "ACTIVE",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -400,11 +432,11 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -432,8 +464,16 @@ Content-Type: application/json
   "automatedBackupConfig": {
     "automatedBackupMode": "DISABLED"
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "engineVersion": "VALKEY_7_2",
   "mode": "CLUSTER_DISABLED",
   "name": "projects/${projectId}/locations/us-central1/instances/test-instance-${uniqueId}",
@@ -447,11 +487,11 @@ Content-Type: application/json
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -521,33 +561,41 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_PRIMARY",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-              "ipAddress": "10.128.0.21",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/default",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456789",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+              "pscConnectionId": "${pscConnectionId}",
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
           {
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_READER",
-              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-              "ipAddress": "10.128.0.22",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/default",
               "port": 6379,
               "projectId": "${projectId}",
-              "pscConnectionId": "1234567890123456790",
-              "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+              "pscConnectionId": "${pscConnectionId}",
+              "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
         ]
@@ -566,11 +614,11 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_PRIMARY",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
       },
       {
         "connectionType": "CONNECTION_TYPE_READER",
-        "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
       }
     ],
     "replicaCount": 0,
@@ -608,33 +656,41 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": "DISABLED"
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
   "endpoints": [
     {
       "connections": [
         {
           "pscAutoConnection": {
             "connectionType": "CONNECTION_TYPE_PRIMARY",
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115",
-            "ipAddress": "10.128.0.21",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/default",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456789",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+            "pscConnectionId": "${pscConnectionId}",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
           "pscAutoConnection": {
             "connectionType": "CONNECTION_TYPE_READER",
-            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116",
-            "ipAddress": "10.128.0.22",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/default",
             "port": 6379,
             "projectId": "${projectId}",
-            "pscConnectionId": "1234567890123456790",
-            "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+            "pscConnectionId": "${pscConnectionId}",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -653,11 +709,11 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": "CONNECTION_TYPE_PRIMARY",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
       "connectionType": "CONNECTION_TYPE_READER",
-      "serviceAttachment": "projects/tp-test-instance-${uniqueId}/regions/us-central1/serviceAttachments/sa-test-instance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,

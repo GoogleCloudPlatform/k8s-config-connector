@@ -63,7 +63,7 @@ func (s *RunV2) CreateJob(ctx context.Context, req *pb.CreateJobRequest) (*longr
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Job).(*pb.Job)
+	obj := proto.CloneOf(req.Job)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	obj.UpdateTime = timestamppb.Now()

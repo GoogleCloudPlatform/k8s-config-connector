@@ -10,15 +10,14 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: cl-dball-${uniqueId}
   namespace: ${uniqueId}
 spec:
   databaseEncryption:
-    keyName: projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/cryptokey-${uniqueId}
-    state: ALL_OBJECTS_ENCRYPTION_ENABLED
+    state: ENCRYPTED
   initialNodeCount: 1
   ipAllocationPolicy:
     clusterIpv4CidrBlock: /20
@@ -39,7 +38,7 @@ status:
   endpoint: 1.23.456.78
   labelFingerprint: abcdef0123A=
   masterVersion: 1.30.5-gke.1014001
-  observedGeneration: 2
+  observedGeneration: 3
   observedState:
     controlPlaneEndpointsConfig:
       dnsEndpointConfig:

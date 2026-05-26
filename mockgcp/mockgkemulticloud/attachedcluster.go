@@ -65,7 +65,7 @@ func (s *GKEMulticloudV1) CreateAttachedCluster(ctx context.Context, req *pb.Cre
 	now := time.Now()
 	fqn := name.String()
 
-	obj := proto.Clone(req.AttachedCluster).(*pb.AttachedCluster)
+	obj := proto.CloneOf(req.AttachedCluster)
 	obj.Name = fqn
 
 	if obj.GetBinaryAuthorization() == nil {

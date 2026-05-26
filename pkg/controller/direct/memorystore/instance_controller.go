@@ -33,6 +33,7 @@ import (
 
 	memorystorepb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -155,7 +156,7 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Instance", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
+	desired := proto.CloneOf(a.desired)
 
 	req := &memorystorepb.CreateInstanceRequest{
 		Parent:     fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
@@ -218,7 +219,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 			path := string(field.ProtoFieldDescriptor.Name())
 
-			desired := direct.ProtoClone(a.desired)
+			desired := proto.CloneOf(a.desired)
 
 			// Workaround: engine_version cannot be updated to empty string (API gives 400 error).
 			// We don't want to upgrade/downgrade engine versions if the user didn't specify one (how would we choose a version?)
@@ -278,6 +279,13 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 			instance.PersistenceConfig.Mode = memorystorepb.PersistenceConfig_DISABLED
 		}
 
+		if instance.AutomatedBackupConfig == nil {
+			instance.AutomatedBackupConfig = &memorystorepb.AutomatedBackupConfig{}
+		}
+		if instance.AutomatedBackupConfig.AutomatedBackupMode == memorystorepb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+			instance.AutomatedBackupConfig.AutomatedBackupMode = memorystorepb.AutomatedBackupConfig_DISABLED
+		}
+
 		// mode is immutable, so we must default this one!
 		if instance.Mode == memorystorepb.Instance_MODE_UNSPECIFIED {
 			instance.Mode = memorystorepb.Instance_CLUSTER
@@ -314,7 +322,7 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 	}
 
 	maskedActual = populateDefaults(maskedActual)
-	desired = populateDefaults(direct.ProtoClone(desired))
+	desired = populateDefaults(proto.CloneOf(desired))
 
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {

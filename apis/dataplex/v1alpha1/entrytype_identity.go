@@ -17,86 +17,92 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ identity.Identity = &EntryTypeIdentity{}
-
-const (
-	EntryTypeIDURL = parent.ProjectAndLocationURL + "/entryTypes/{{entrytypeID}}"
+var (
+	_ identity.IdentityV2 = &EntryTypeIdentity{}
+	_ identity.Resource   = &DataplexEntryType{}
 )
 
-// EntryTypeIdentity defines the resource reference to DataplexEntryType, which "External" field
-// holds the GCP identifier for the KRM object.
+var EntryTypeIdentityFormat = gcpurls.Template[EntryTypeIdentity]("dataplex.googleapis.com", "projects/{project}/locations/{location}/entryTypes/{entrytype}")
+
+// +k8s:deepcopy-gen=false
 type EntryTypeIdentity struct {
-	parent *parent.ProjectAndLocationParent
-	id     string
+	Project   string
+	Location  string
+	EntryType string
 }
 
 func (i *EntryTypeIdentity) String() string {
-	return i.parent.String() + "/entryTypes/" + i.id
-}
-
-func (i *EntryTypeIdentity) ID() string {
-	return i.id
-}
-
-func (i *EntryTypeIdentity) Parent() *parent.ProjectAndLocationParent {
-	return i.parent
+	return EntryTypeIdentityFormat.ToString(*i)
 }
 
 func (i *EntryTypeIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/entryTypes/")
-	if len(tokens) != 2 {
-		return fmt.Errorf("format of DataplexEntryType external=%q was not known (use %s)", ref, EntryTypeIDURL)
+	parsed, match, err := EntryTypeIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of DataplexEntryType external=%q was not known (use %s): %w", ref, EntryTypeIdentityFormat.CanonicalForm(), err)
 	}
-	i.parent = &parent.ProjectAndLocationParent{}
-	if err := i.parent.FromExternal(tokens[0]); err != nil {
-		return err
+	if !match {
+		return fmt.Errorf("format of DataplexEntryType external=%q was not known (use %s)", ref, EntryTypeIdentityFormat.CanonicalForm())
 	}
-	i.id = tokens[1]
-	if i.id == "" {
-		return fmt.Errorf("entryTypeID was empty in external=%q", ref)
-	}
+
+	*i = *parsed
 	return nil
 }
 
-var _ identity.Resource = &DataplexEntryType{}
+func (i *EntryTypeIdentity) Host() string {
+	return EntryTypeIdentityFormat.Host()
+}
 
-func (obj *DataplexEntryType) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	newIdentity := &EntryTypeIdentity{
-		parent: &parent.ProjectAndLocationParent{},
-	}
-
-	// Resolve Parent
-	if err := obj.Spec.ParentRef.Build(ctx, reader, obj.GetNamespace(), newIdentity.parent); err != nil {
-		return nil, err
-	}
-
-	// Get desired ID
-	newIdentity.id = common.ValueOf(obj.Spec.ResourceID)
-	if newIdentity.id == "" {
-		newIdentity.id = obj.GetName()
-	}
-	if newIdentity.id == "" {
+func getIdentityFromEntryTypeSpec(ctx context.Context, reader client.Reader, obj client.Object) (*EntryTypeIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &EntryTypeIdentity{
+		Project:   projectID,
+		Location:  location,
+		EntryType: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *DataplexEntryType) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromEntryTypeSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
+		// Validate desired with actual
 		statusIdentity := &EntryTypeIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
+			return nil, err
 		}
-		if statusIdentity.String() != newIdentity.String() {
-			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change DataplexEntryType identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-	return newIdentity, nil
+
+	return specIdentity, nil
 }

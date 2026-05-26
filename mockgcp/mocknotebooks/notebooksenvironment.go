@@ -61,7 +61,7 @@ func (s *NotebookServiceV1) CreateEnvironment(ctx context.Context, req *pb.Creat
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.GetEnvironment()).(*pb.Environment)
+	obj := proto.CloneOf(req.GetEnvironment())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 
@@ -123,7 +123,7 @@ func (n *environmentName) String() string {
 
 // parseEnvironmentName parses a string into a environmentName.
 // The expected form is projects/<projectID>/environments/<environment>.
-func (s *NotebookServiceV1) parseEnvironmentName(name string) (*environmentName, error) {
+func (s *MockService) parseEnvironmentName(name string) (*environmentName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "environments" {
 		project, err := s.Projects.GetProjectByID(tokens[1])

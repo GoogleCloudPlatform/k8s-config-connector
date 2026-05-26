@@ -12,6 +12,7 @@ require (
 	cloud.google.com/go/alloydb v1.20.0
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
+	cloud.google.com/go/apihub v1.0.0
 	cloud.google.com/go/apikeys v1.2.7
 	cloud.google.com/go/apphub v0.4.0
 	cloud.google.com/go/artifactregistry v1.20.0
@@ -19,6 +20,7 @@ require (
 	cloud.google.com/go/assuredworkloads v1.13.0
 	cloud.google.com/go/backupdr v1.6.0
 	cloud.google.com/go/batch v1.14.0
+	cloud.google.com/go/beyondcorp v1.2.0
 	cloud.google.com/go/bigquery v1.74.0
 	cloud.google.com/go/billing v1.21.0
 	cloud.google.com/go/certificatemanager v1.9.6
@@ -28,6 +30,7 @@ require (
 	cloud.google.com/go/cloudtasks v1.13.7
 	cloud.google.com/go/compute v1.54.0
 	cloud.google.com/go/configdelivery v0.1.1
+	cloud.google.com/go/container v1.52.0
 	cloud.google.com/go/datacatalog v1.26.1
 	cloud.google.com/go/dataflow v0.11.1
 	cloud.google.com/go/dataform v0.13.0
@@ -40,7 +43,7 @@ require (
 	cloud.google.com/go/edgecontainer v1.4.4
 	cloud.google.com/go/essentialcontacts v1.7.7
 	cloud.google.com/go/eventarc v1.18.0
-	cloud.google.com/go/firestore v1.21.0
+	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/gkebackup v1.8.1
 	cloud.google.com/go/gkemulticloud v1.6.0
 	cloud.google.com/go/iam v1.7.0
@@ -48,12 +51,12 @@ require (
 	cloud.google.com/go/kms v1.26.0
 	cloud.google.com/go/logging v1.13.2
 	cloud.google.com/go/managedkafka v0.8.1
-	cloud.google.com/go/memorystore v0.4.0
+	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/metastore v1.14.8
 	cloud.google.com/go/monitoring v1.24.3
 	cloud.google.com/go/netapp v1.12.0
 	cloud.google.com/go/networkmanagement v1.23.0
-	cloud.google.com/go/networksecurity v0.11.0
+	cloud.google.com/go/networksecurity v0.15.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.12.7
 	cloud.google.com/go/orchestration v1.11.10
@@ -142,13 +145,18 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
+	cloud.google.com/go/memcache v1.11.7 // indirect
+	cloud.google.com/go/modelarmor v1.0.0 // indirect
 	cloud.google.com/go/osconfig v1.16.0 // indirect
+	cloud.google.com/go/pubsublite v1.8.2 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0 // indirect
+	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.36.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
+	github.com/google/cel-go v0.23.2 // indirect
 	github.com/google/flatbuffers v24.3.25+incompatible // indirect
 	github.com/google/gnostic-models v0.6.9 // indirect
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 // indirect
@@ -156,12 +164,14 @@ require (
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.6.0 // indirect
+	github.com/stoewer/go-strcase v1.3.0 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.40.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260209163413-e7419c687ee4 // indirect
 	golang.org/x/tools/godoc v0.1.0-deprecated // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
+	k8s.io/apiserver v0.33.10 // indirect
 	sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-871029137730 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 )
@@ -309,7 +319,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/cli-runtime v0.32.1 // indirect
 	k8s.io/component-base v0.33.10 // indirect
-	k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff // indirect
+	k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff
 	k8s.io/kubectl v0.32.1 // indirect
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect

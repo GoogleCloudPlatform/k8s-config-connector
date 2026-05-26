@@ -15,58 +15,45 @@
 package v1alpha1
 
 import (
+	"reflect"
 	"testing"
 )
 
 func TestGKEHubScopeIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name    string
-		ref     string
-		wantErr bool
-		want    *GKEHubScopeIdentity
+		name     string
+		external string
+		want     *GKEHubScopeIdentity
+		wantErr  bool
 	}{
 		{
-			name: "valid reference",
-			ref:  "projects/my-project/locations/global/scopes/my-scope",
+			name:     "canonical format",
+			external: "projects/my-project/locations/global/scopes/my-scope",
 			want: &GKEHubScopeIdentity{
 				ProjectID: "my-project",
 				Location:  "global",
 				ScopeID:   "my-scope",
 			},
+			wantErr: false,
 		},
 		{
-			name:    "invalid reference format",
-			ref:     "invalid/format",
-			wantErr: true,
-		},
-		{
-			name: "full url",
-			ref:  "https://gkehub.googleapis.com/projects/my-project/locations/global/scopes/my-scope",
-			want: &GKEHubScopeIdentity{
-				ProjectID: "my-project",
-				Location:  "global",
-				ScopeID:   "my-scope",
-			},
+			name:     "invalid format",
+			external: "projects/my-project/locations/global",
+			wantErr:  true,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			i := &GKEHubScopeIdentity{}
-			err := i.FromExternal(tt.ref)
-			if (err != nil) != tt.wantErr {
+			if err := i.FromExternal(tt.external); (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
-				return
 			}
 			if !tt.wantErr {
-				if i.ProjectID != tt.want.ProjectID {
-					t.Errorf("ProjectID = %v, want %v", i.ProjectID, tt.want.ProjectID)
+				if !reflect.DeepEqual(i, tt.want) {
+					t.Errorf("FromExternal() = %v, want %v", i, tt.want)
 				}
-				if i.Location != tt.want.Location {
-					t.Errorf("Location = %v, want %v", i.Location, tt.want.Location)
-				}
-				if i.ScopeID != tt.want.ScopeID {
-					t.Errorf("ScopeID = %v, want %v", i.ScopeID, tt.want.ScopeID)
+				if i.String() != tt.external {
+					t.Errorf("String() = %v, want %v", i.String(), tt.external)
 				}
 			}
 		})

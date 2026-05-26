@@ -87,8 +87,16 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -102,10 +110,10 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
       },
       {
-        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
       }
     ],
     "replicaCount": 0,
@@ -142,8 +150,16 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": 1
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
   "engineVersion": "VALKEY_7_2",
   "mode": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -157,10 +173,10 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
-      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,
@@ -241,8 +257,16 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -256,10 +280,10 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
       },
       {
-        "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
+        "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
       }
     ],
     "replicaCount": 0,
@@ -296,8 +320,16 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": 1
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
   "engineVersion": "VALKEY_7_2",
   "mode": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -311,10 +343,10 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
     },
     {
-      "serviceAttachment": "projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2"
+      "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
     }
   ],
   "replicaCount": 0,

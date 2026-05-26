@@ -66,7 +66,7 @@ func (s *featurestoreService) CreateFeaturestore(ctx context.Context, req *pb.Cr
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Featurestore).(*pb.Featurestore)
+	obj := proto.CloneOf(req.Featurestore)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)

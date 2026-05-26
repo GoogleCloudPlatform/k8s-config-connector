@@ -60,7 +60,7 @@ func (s *managedKafka) CreateTopic(ctx context.Context, req *pb.CreateTopicReque
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetTopic()).(*pb.Topic)
+	obj := proto.CloneOf(req.GetTopic())
 	obj.Name = fqn
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

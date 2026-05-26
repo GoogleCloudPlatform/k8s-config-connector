@@ -32,11 +32,11 @@ type FakeAssetV1beta1 struct {
 }
 
 func (c *FakeAssetV1beta1) AssetFeeds(namespace string) v1beta1.AssetFeedInterface {
-	return &FakeAssetFeeds{c, namespace}
+	return newFakeAssetFeeds(c, namespace)
 }
 
 func (c *FakeAssetV1beta1) AssetSavedQueries(namespace string) v1beta1.AssetSavedQueryInterface {
-	return &FakeAssetSavedQueries{c, namespace}
+	return newFakeAssetSavedQueries(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

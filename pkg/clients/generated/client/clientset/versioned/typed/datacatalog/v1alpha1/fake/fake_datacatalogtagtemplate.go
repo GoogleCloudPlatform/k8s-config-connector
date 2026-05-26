@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDataCatalogTagTemplates implements DataCatalogTagTemplateInterface
-type FakeDataCatalogTagTemplates struct {
+// fakeDataCatalogTagTemplates implements DataCatalogTagTemplateInterface
+type fakeDataCatalogTagTemplates struct {
+	*gentype.FakeClientWithList[*v1alpha1.DataCatalogTagTemplate, *v1alpha1.DataCatalogTagTemplateList]
 	Fake *FakeDatacatalogV1alpha1
-	ns   string
 }
 
-var datacatalogtagtemplatesResource = v1alpha1.SchemeGroupVersion.WithResource("datacatalogtagtemplates")
-
-var datacatalogtagtemplatesKind = v1alpha1.SchemeGroupVersion.WithKind("DataCatalogTagTemplate")
-
-// Get takes name of the dataCatalogTagTemplate, and returns the corresponding dataCatalogTagTemplate object, and an error if there is any.
-func (c *FakeDataCatalogTagTemplates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataCatalogTagTemplate, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(datacatalogtagtemplatesResource, c.ns, name), &v1alpha1.DataCatalogTagTemplate{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDataCatalogTagTemplates(fake *FakeDatacatalogV1alpha1, namespace string) datacatalogv1alpha1.DataCatalogTagTemplateInterface {
+	return &fakeDataCatalogTagTemplates{
+		gentype.NewFakeClientWithList[*v1alpha1.DataCatalogTagTemplate, *v1alpha1.DataCatalogTagTemplateList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("datacatalogtagtemplates"),
+			v1alpha1.SchemeGroupVersion.WithKind("DataCatalogTagTemplate"),
+			func() *v1alpha1.DataCatalogTagTemplate { return &v1alpha1.DataCatalogTagTemplate{} },
+			func() *v1alpha1.DataCatalogTagTemplateList { return &v1alpha1.DataCatalogTagTemplateList{} },
+			func(dst, src *v1alpha1.DataCatalogTagTemplateList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DataCatalogTagTemplateList) []*v1alpha1.DataCatalogTagTemplate {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DataCatalogTagTemplateList, items []*v1alpha1.DataCatalogTagTemplate) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DataCatalogTagTemplate), err
-}
-
-// List takes label and field selectors, and returns the list of DataCatalogTagTemplates that match those selectors.
-func (c *FakeDataCatalogTagTemplates) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DataCatalogTagTemplateList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(datacatalogtagtemplatesResource, datacatalogtagtemplatesKind, c.ns, opts), &v1alpha1.DataCatalogTagTemplateList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DataCatalogTagTemplateList{ListMeta: obj.(*v1alpha1.DataCatalogTagTemplateList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DataCatalogTagTemplateList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dataCatalogTagTemplates.
-func (c *FakeDataCatalogTagTemplates) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(datacatalogtagtemplatesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dataCatalogTagTemplate and creates it.  Returns the server's representation of the dataCatalogTagTemplate, and an error, if there is any.
-func (c *FakeDataCatalogTagTemplates) Create(ctx context.Context, dataCatalogTagTemplate *v1alpha1.DataCatalogTagTemplate, opts v1.CreateOptions) (result *v1alpha1.DataCatalogTagTemplate, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(datacatalogtagtemplatesResource, c.ns, dataCatalogTagTemplate), &v1alpha1.DataCatalogTagTemplate{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DataCatalogTagTemplate), err
-}
-
-// Update takes the representation of a dataCatalogTagTemplate and updates it. Returns the server's representation of the dataCatalogTagTemplate, and an error, if there is any.
-func (c *FakeDataCatalogTagTemplates) Update(ctx context.Context, dataCatalogTagTemplate *v1alpha1.DataCatalogTagTemplate, opts v1.UpdateOptions) (result *v1alpha1.DataCatalogTagTemplate, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(datacatalogtagtemplatesResource, c.ns, dataCatalogTagTemplate), &v1alpha1.DataCatalogTagTemplate{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DataCatalogTagTemplate), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDataCatalogTagTemplates) UpdateStatus(ctx context.Context, dataCatalogTagTemplate *v1alpha1.DataCatalogTagTemplate, opts v1.UpdateOptions) (*v1alpha1.DataCatalogTagTemplate, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(datacatalogtagtemplatesResource, "status", c.ns, dataCatalogTagTemplate), &v1alpha1.DataCatalogTagTemplate{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DataCatalogTagTemplate), err
-}
-
-// Delete takes name of the dataCatalogTagTemplate and deletes it. Returns an error if one occurs.
-func (c *FakeDataCatalogTagTemplates) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(datacatalogtagtemplatesResource, c.ns, name, opts), &v1alpha1.DataCatalogTagTemplate{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDataCatalogTagTemplates) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(datacatalogtagtemplatesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DataCatalogTagTemplateList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dataCatalogTagTemplate.
-func (c *FakeDataCatalogTagTemplates) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DataCatalogTagTemplate, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(datacatalogtagtemplatesResource, c.ns, name, pt, data, subresources...), &v1alpha1.DataCatalogTagTemplate{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DataCatalogTagTemplate), err
 }

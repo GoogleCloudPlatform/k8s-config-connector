@@ -138,6 +138,14 @@ type FuturereservationLocalSsds struct {
 	Interface *string `json:"interface,omitempty"`
 }
 
+type FuturereservationProjectMap struct {
+	/* The resource reference that defaults to Project if Kind is not specified. */
+	KeyRef v1alpha1.ResourceRef `json:"keyRef"`
+
+	// +optional
+	Value *FuturereservationValue `json:"value,omitempty"`
+}
+
 type FuturereservationReservedResources struct {
 	/* Properties of accelerator resources in this reservation. */
 	// +optional
@@ -145,6 +153,10 @@ type FuturereservationReservedResources struct {
 }
 
 type FuturereservationShareSettings struct {
+	/* A map of key(i.e. project or other shared resources) and associated project config. This is only valid when shareType's value is SPECIFIC_PROJECTS.` */
+	// +optional
+	ProjectMap []FuturereservationProjectMap `json:"projectMap,omitempty"`
+
 	/* Type of sharing for this shared-reservation Check the ShareType enum for the list of possible values. */
 	// +optional
 	ShareType *string `json:"shareType,omitempty"`
@@ -174,6 +186,12 @@ type FuturereservationTimeWindow struct {
 	/* Start time of the Future Reservation. The start_time is an RFC3339 string. */
 	// +optional
 	StartTime *string `json:"startTime,omitempty"`
+}
+
+type FuturereservationValue struct {
+	/* The project ID, should be same as the key of this project config in the parent map. */
+	// +optional
+	ProjectIDRef *v1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
 }
 
 type ComputeFutureReservationSpec struct {
@@ -412,7 +430,17 @@ type FuturereservationObservedStateStatus struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
+type FuturereservationProjectMapStatus struct {
+	/* The project ID, should be same as the key of this project config in the parent map. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
+}
+
 type FuturereservationShareSettingsStatus struct {
+	/* A map of project id and project config. This is only valid when shareType's value is SPECIFIC_PROJECTS.` */
+	// +optional
+	ProjectMap map[string]FuturereservationProjectMapStatus `json:"projectMap,omitempty"`
+
 	/* Type of sharing for this shared-reservation Check the ShareType enum for the list of possible values. */
 	// +optional
 	ShareType *string `json:"shareType,omitempty"`

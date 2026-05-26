@@ -2782,9 +2782,9 @@
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -9051,9 +9051,9 @@
     "dependencies": [
       "Folder"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -9741,9 +9741,9 @@
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -10185,9 +10185,9 @@
     "dependencies": [
       "KMSCryptoKey"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,

@@ -70,7 +70,7 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	if req.Service.GetHiveMetastoreConfig() != nil {
 		grpc = req.Service.GetHiveMetastoreConfig().EndpointProtocol == pb.HiveMetastoreConfig_GRPC
 	}
-	obj := proto.Clone(req.Service).(*pb.Service)
+	obj := proto.CloneOf(req.Service)
 
 	obj.Name = fqn
 
@@ -218,7 +218,7 @@ func (s *DataprocMetastoreV1) UpdateService(ctx context.Context, req *pb.UpdateS
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	// // Returns with no createTime
-	// lroRet := proto.Clone(obj).(*pb.Workflow)
+	// lroRet := proto.CloneOf(obj)
 	// lroRet.CreateTime = nil
 	// lroRet.UpdateTime = nil
 	// lroRet.RevisionCreateTime = nil

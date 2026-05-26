@@ -72,6 +72,10 @@ type MemorystoreInstanceSpec struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.engine_version
 	EngineVersion *string `json:"engineVersion,omitempty"`
 
+	// Optional. The maintenance version of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_version
+	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
+
 	// Optional. User-provided engine configurations for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.engine_configs
 	EngineConfigs map[string]string `json:"engineConfigs,omitempty"`
@@ -92,6 +96,14 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The mode config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.mode
 	Mode *string `json:"mode,omitempty"`
+
+	// Optional. The cross instance replication config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
+	CrossInstanceReplicationConfig *CrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
+
+	// Optional. The automated backup config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.automated_backup_config
+	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
 }
 
 var _ identity.Resource = &MemorystoreInstance{}
@@ -179,6 +191,18 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. List of PSC connections for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.psc_attachment_details
 	PscAttachmentDetails []PscAttachmentDetailObservedState `json:"pscAttachmentDetails,omitempty"`
+
+	// Optional. The cross instance replication config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
+	CrossInstanceReplicationConfig *CrossInstanceReplicationConfigObservedState `json:"crossInstanceReplicationConfig,omitempty"`
+
+	// Output only. The current version of the maintenance schedule.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.effective_maintenance_version
+	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
+
+	// Output only. The list of available maintenance versions for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.available_maintenance_versions
+	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
@@ -401,4 +425,95 @@ type MemorystoreInstanceList struct {
 
 func init() {
 	SchemeBuilder.Register(&MemorystoreInstance{}, &MemorystoreInstanceList{})
+}
+
+type CrossInstanceReplicationConfig struct {
+	// Required. The role of the instance in cross instance replication.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.instance_role
+	InstanceRole *string `json:"instanceRole,omitempty"`
+
+	// Optional. Details of the primary instance that is used as the replication
+	//  source for this secondary instance.
+	//
+	//  This field is only set for a secondary instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
+	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstance `json:"primaryInstance,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
+type CrossInstanceReplicationConfig_RemoteInstance struct {
+	// Optional. The full resource path of the remote instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
+	InstanceRef *refs.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
+}
+
+type CrossInstanceReplicationConfigObservedState struct {
+	// Optional. Details of the primary instance that is used as the replication
+	//  source for this secondary instance.
+	//
+	//  This field is only set for a secondary instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
+	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
+
+	// Optional. List of secondary instances that are replicating from this
+	//  primary instance.
+	//
+	//  This field is only set for a primary instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.secondary_instances
+	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
+
+	// Output only. An output only view of all the member instances participating
+	//  in the cross instance replication. This view will be provided by every
+	//  member instance irrespective of its instance role(primary or secondary).
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.membership
+	Membership *CrossInstanceReplicationConfig_MembershipObservedState `json:"membership,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
+type CrossInstanceReplicationConfig_RemoteInstanceObservedState struct {
+	// Optional. The full resource path of the remote instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
+	Instance *string `json:"instance,omitempty"`
+
+	// Output only. The unique identifier of the remote instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.uid
+	Uid *string `json:"uid,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
+type CrossInstanceReplicationConfig_MembershipObservedState struct {
+	// Output only. The primary instance that acts as the source of replication
+	//  for the secondary instances.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.primary_instance
+	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
+
+	// Output only. The list of secondary instances replicating from the primary
+	//  instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.secondary_instances
+	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
+}
+
+type AutomatedBackupConfig struct {
+	// Optional. Trigger automated backups at a fixed frequency.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.fixed_frequency_schedule
+	FixedFrequencySchedule *AutomatedBackupConfig_FixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+
+	// Optional. The automated backup mode. If the mode is disabled, the other
+	//  fields will be ignored.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.automated_backup_mode
+	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+
+	// Optional. How long to keep automated backups before the backups are
+	//  deleted. The value should be between 1 day and 365 days. If not specified,
+	//  the default value is 35 days.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.retention
+	Retention *string `json:"retention,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule
+type AutomatedBackupConfig_FixedFrequencySchedule struct {
+	// Required. The start time of every automated backup in UTC. It must be set
+	//  to the start of an hour. This field is required.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule.start_time
+	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }

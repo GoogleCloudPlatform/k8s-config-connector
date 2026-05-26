@@ -30,8 +30,8 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/eventarc/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -63,7 +63,7 @@ func (s *EventarcV1) CreateChannel(ctx context.Context, req *pb.CreateChannelReq
 
 	fqn := name.String()
 	now := time.Now()
-	obj := proto.Clone(req.GetChannel()).(*pb.Channel)
+	obj := proto.CloneOf(req.GetChannel())
 	obj.Name = fqn
 	obj.Uid = name.Channel
 	obj.CreateTime = timestamppb.New(now)
@@ -162,7 +162,7 @@ func (s *EventarcV1) UpdateChannel(ctx context.Context, req *pb.UpdateChannelReq
 		return nil, err
 	}
 
-	lroRet := proto.Clone(obj).(*pb.Channel)
+	lroRet := proto.CloneOf(obj)
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 
 	lroMetadata := &pb.OperationMetadata{

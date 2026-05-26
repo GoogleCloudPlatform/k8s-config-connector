@@ -26,6 +26,7 @@ popd
 
 # For efficiency, we generate CRDs only once at the end
 export SKIP_GENERATE_CRDS=1
+export SKIP_GENERATE_PROTOS=1
 
 for f in $(find apis -name "generate.sh" | sort); do
     # Skip some generate.sh scripts that are not up to date
@@ -90,5 +91,6 @@ done
 
 # Now we generate CRDs
 unset SKIP_GENERATE_CRDS
+unset SKIP_GENERATE_PROTOS
 echo "Generating CRDs"
 dev/tasks/generate-crds

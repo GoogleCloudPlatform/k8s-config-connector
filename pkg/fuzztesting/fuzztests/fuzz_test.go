@@ -34,6 +34,7 @@ func FuzzAllMappers(f *testing.F) {
 }
 
 func TestSomeMappers(t *testing.T) {
+	t.Parallel()
 	seed := time.Now().UnixNano()
 	randStream := rand.New(rand.NewSource(seed))
 

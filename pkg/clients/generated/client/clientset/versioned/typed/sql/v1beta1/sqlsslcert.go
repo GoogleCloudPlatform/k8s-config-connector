@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sql/v1beta1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sql/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // SQLSSLCertsGetter has a method to return a SQLSSLCertInterface.
@@ -41,158 +40,34 @@ type SQLSSLCertsGetter interface {
 
 // SQLSSLCertInterface has methods to work with SQLSSLCert resources.
 type SQLSSLCertInterface interface {
-	Create(ctx context.Context, sQLSSLCert *v1beta1.SQLSSLCert, opts v1.CreateOptions) (*v1beta1.SQLSSLCert, error)
-	Update(ctx context.Context, sQLSSLCert *v1beta1.SQLSSLCert, opts v1.UpdateOptions) (*v1beta1.SQLSSLCert, error)
-	UpdateStatus(ctx context.Context, sQLSSLCert *v1beta1.SQLSSLCert, opts v1.UpdateOptions) (*v1beta1.SQLSSLCert, error)
+	Create(ctx context.Context, sQLSSLCert *sqlv1beta1.SQLSSLCert, opts v1.CreateOptions) (*sqlv1beta1.SQLSSLCert, error)
+	Update(ctx context.Context, sQLSSLCert *sqlv1beta1.SQLSSLCert, opts v1.UpdateOptions) (*sqlv1beta1.SQLSSLCert, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, sQLSSLCert *sqlv1beta1.SQLSSLCert, opts v1.UpdateOptions) (*sqlv1beta1.SQLSSLCert, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.SQLSSLCert, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.SQLSSLCertList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*sqlv1beta1.SQLSSLCert, error)
+	List(ctx context.Context, opts v1.ListOptions) (*sqlv1beta1.SQLSSLCertList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SQLSSLCert, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *sqlv1beta1.SQLSSLCert, err error)
 	SQLSSLCertExpansion
 }
 
 // sQLSSLCerts implements SQLSSLCertInterface
 type sQLSSLCerts struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*sqlv1beta1.SQLSSLCert, *sqlv1beta1.SQLSSLCertList]
 }
 
 // newSQLSSLCerts returns a SQLSSLCerts
 func newSQLSSLCerts(c *SqlV1beta1Client, namespace string) *sQLSSLCerts {
 	return &sQLSSLCerts{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*sqlv1beta1.SQLSSLCert, *sqlv1beta1.SQLSSLCertList](
+			"sqlsslcerts",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *sqlv1beta1.SQLSSLCert { return &sqlv1beta1.SQLSSLCert{} },
+			func() *sqlv1beta1.SQLSSLCertList { return &sqlv1beta1.SQLSSLCertList{} },
+		),
 	}
-}
-
-// Get takes name of the sQLSSLCert, and returns the corresponding sQLSSLCert object, and an error if there is any.
-func (c *sQLSSLCerts) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SQLSSLCert, err error) {
-	result = &v1beta1.SQLSSLCert{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("sqlsslcerts").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of SQLSSLCerts that match those selectors.
-func (c *sQLSSLCerts) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SQLSSLCertList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.SQLSSLCertList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("sqlsslcerts").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested sQLSSLCerts.
-func (c *sQLSSLCerts) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("sqlsslcerts").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a sQLSSLCert and creates it.  Returns the server's representation of the sQLSSLCert, and an error, if there is any.
-func (c *sQLSSLCerts) Create(ctx context.Context, sQLSSLCert *v1beta1.SQLSSLCert, opts v1.CreateOptions) (result *v1beta1.SQLSSLCert, err error) {
-	result = &v1beta1.SQLSSLCert{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("sqlsslcerts").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(sQLSSLCert).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a sQLSSLCert and updates it. Returns the server's representation of the sQLSSLCert, and an error, if there is any.
-func (c *sQLSSLCerts) Update(ctx context.Context, sQLSSLCert *v1beta1.SQLSSLCert, opts v1.UpdateOptions) (result *v1beta1.SQLSSLCert, err error) {
-	result = &v1beta1.SQLSSLCert{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("sqlsslcerts").
-		Name(sQLSSLCert.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(sQLSSLCert).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *sQLSSLCerts) UpdateStatus(ctx context.Context, sQLSSLCert *v1beta1.SQLSSLCert, opts v1.UpdateOptions) (result *v1beta1.SQLSSLCert, err error) {
-	result = &v1beta1.SQLSSLCert{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("sqlsslcerts").
-		Name(sQLSSLCert.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(sQLSSLCert).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the sQLSSLCert and deletes it. Returns an error if one occurs.
-func (c *sQLSSLCerts) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("sqlsslcerts").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *sQLSSLCerts) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("sqlsslcerts").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched sQLSSLCert.
-func (c *sQLSSLCerts) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SQLSSLCert, err error) {
-	result = &v1beta1.SQLSSLCert{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("sqlsslcerts").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

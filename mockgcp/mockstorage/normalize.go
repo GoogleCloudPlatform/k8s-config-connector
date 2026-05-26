@@ -18,21 +18,19 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
-const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
-
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// Bucket
-	replacements.ReplacePath(".softDeletePolicy.effectiveTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".timeCreated", PlaceholderTimestamp)
-	replacements.ReplacePath(".items[].timeCreated", PlaceholderTimestamp)
+	replacements.ReplacePath(".softDeletePolicy.effectiveTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".timeCreated", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].timeCreated", mockgcpregistry.PlaceholderTimestamp)
 
-	replacements.ReplacePath(".updated", PlaceholderTimestamp)
-	replacements.ReplacePath(".items[].updated", PlaceholderTimestamp)
+	replacements.ReplacePath(".updated", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].updated", mockgcpregistry.PlaceholderTimestamp)
 
-	replacements.ReplacePath(".softDeletePolicy.effectiveTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".items[].softDeletePolicy.effectiveTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".softDeletePolicy.effectiveTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].softDeletePolicy.effectiveTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.ReplacePath(".acl[].etag", "abcdef0123A")
 	replacements.ReplacePath(".items[].acl[].etag", "abcdef0123A")
@@ -42,15 +40,15 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".generation", "12345678901234")
 	replacements.ReplacePath(".items[].generation", "12345678901234")
 
-	replacements.ReplacePath(".iamConfiguration.bucketPolicyOnly.lockedTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".items[].iamConfiguration.bucketPolicyOnly.lockedTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".iamConfiguration.bucketPolicyOnly.lockedTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].iamConfiguration.bucketPolicyOnly.lockedTime", mockgcpregistry.PlaceholderTimestamp)
 
-	replacements.ReplacePath(".iamConfiguration.uniformBucketLevelAccess.lockedTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".items[].iamConfiguration.uniformBucketLevelAccess.lockedTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".iamConfiguration.uniformBucketLevelAccess.lockedTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].iamConfiguration.uniformBucketLevelAccess.lockedTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// Managed Folder
-	replacements.ReplacePath(".items[].createTime", PlaceholderTimestamp)
-	replacements.ReplacePath(".items[].updateTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// Anywhere Cache
 	replacements.ReplacePath(".requestId", "1234")

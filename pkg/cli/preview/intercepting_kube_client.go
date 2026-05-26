@@ -141,7 +141,7 @@ type interceptingControllerRuntimeClient struct {
 // blockedMethod is called when a write operation is attempted.
 // It returns an error, so that the write operation is not forwarded upstream.
 func (c *interceptingControllerRuntimeClient) blockedMethod(ctx context.Context, method string, args ...any) error {
-	c.parent.recorder.RecordBlockedKubeMethod(ctx, method, args...)
+	c.parent.recorder.RecordBlockedKubeMethod(ctx, c.typeStore.scheme, method, args...)
 	return fmt.Errorf("%q blocked in preview mode", method)
 }
 
@@ -150,7 +150,7 @@ func (c *interceptingControllerRuntimeClient) blockedMethod(ctx context.Context,
 // This is useful for status updates, where we want to record the GCP operation,
 // which typically happens after the status update is made.
 func (c *interceptingControllerRuntimeClient) ignoredMethod(ctx context.Context, method string, args ...any) error {
-	c.parent.recorder.RecordIgnoredKubeMethod(ctx, method, args...)
+	c.parent.recorder.RecordIgnoredKubeMethod(ctx, c.typeStore.scheme, method, args...)
 	return nil
 }
 
@@ -221,13 +221,13 @@ func (c *interceptingControllerRuntimeClient) Delete(ctx context.Context, obj cl
 // Update updates the given obj in the Kubernetes cluster. obj must be a
 // struct pointer so that obj can be updated with the content returned by the Server.
 func (c *interceptingControllerRuntimeClient) Update(ctx context.Context, obj client.Object, opts ...client.UpdateOption) error {
-	return c.blockedMethod(ctx, "update", obj, opts)
+	return c.ignoredMethod(ctx, "update", obj, opts)
 }
 
 // Patch patches the given obj in the Kubernetes cluster. obj must be a
 // struct pointer so that obj can be updated with the content returned by the Server.
 func (c *interceptingControllerRuntimeClient) Patch(ctx context.Context, obj client.Object, patch client.Patch, opts ...client.PatchOption) error {
-	return c.blockedMethod(ctx, "patch", obj, opts)
+	return c.ignoredMethod(ctx, "patch", obj, opts)
 }
 
 // DeleteAllOf deletes all objects of the given type matching the given options.

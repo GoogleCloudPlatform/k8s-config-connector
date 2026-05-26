@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "application \"projects/${projectId}/locations/us-central1/applications/test-application\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "application \"projects/${projectId}/locations/us-central1/applications/test-application\" not found",
     "status": "NOT_FOUND"
   }

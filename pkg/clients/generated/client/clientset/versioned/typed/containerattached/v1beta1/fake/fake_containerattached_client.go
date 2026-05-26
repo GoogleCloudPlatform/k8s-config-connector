@@ -32,7 +32,7 @@ type FakeContainerattachedV1beta1 struct {
 }
 
 func (c *FakeContainerattachedV1beta1) ContainerAttachedClusters(namespace string) v1beta1.ContainerAttachedClusterInterface {
-	return &FakeContainerAttachedClusters{c, namespace}
+	return newFakeContainerAttachedClusters(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

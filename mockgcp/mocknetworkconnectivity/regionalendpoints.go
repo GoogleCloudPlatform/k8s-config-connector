@@ -66,7 +66,7 @@ func (r *regionalEndpoints) CreateProjectsLocationsRegionalEndpoint(ctx context.
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetProjectsLocationsRegionalEndpoint()).(*pb.RegionalEndpoint)
+	obj := proto.CloneOf(req.GetProjectsLocationsRegionalEndpoint())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

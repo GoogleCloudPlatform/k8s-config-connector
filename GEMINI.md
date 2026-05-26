@@ -23,6 +23,11 @@ New files should be marked "Copyright 2026 Google LLC" with the Apache 2 License
 Do not change the copyright header on existing files.
 Generated files do not need a copyright header (and it's easier not to include one because of the year problem).
 
+# Formatting
+
+Before sending a PR, you MUST run `make fmt` to ensure all code is properly formatted and passes the presubmit validations.
+You MUST also run `go vet ./...` to catch any simple compilation issues (like unused imports or missing variables).
+
 # GCP Projects and Namespaces
 
 KCC can manage resources in multiple GCP projects.  Typically a platform team will run KCC in a central "platfrom" cluster,
@@ -133,6 +138,7 @@ write the `_http.log` (env var `WRITE_GOLDEN_OUTPUT=1`), and then commit this.
 We then run the tests again against our mockgcp emulation/testing layer for GCP (env var `E2E_GCP_TARGET=mock`),
 and often we have to improve our mockgcp layer or the normalization to get the results to be the same.
 We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline this process.
+Detailed guidance on aligning mock logs with real GCP can be found in `mockgcp/GEMINI.md`.
 
 # Presubmit Scripts
 
@@ -156,6 +162,10 @@ We have custom linters in `dev/linters`.
 
 When asked to work with github issues, use the `gh issue` tool to read/update issues.
 
+# Github Pull Requests
+
+When asked to send or update a pull request, please use the `send-pr` skill. It provides a script that handles formatting and git pushing safely.
+
 # Import Alias Convention
 
 When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as the import alias for `v1alpha1` and use `krmv1beta1` for `v1beta1`. This is to minimize the code changes.
@@ -163,6 +173,7 @@ When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as 
 
 # Task-Specific Docs
 
+* `mockgcp/GEMINI.md` provides detailed expert guidance on aligning mock behavior with real GCP APIs.
 * `docs/ai/qualify-alpha-for-beta.md` shares tips on how to qualify alpha resources for beta promotion.
 * `docs/ai/how-to-promote-resource.md` shares tips on how to promote alpha resources to beta.
 * `docs/ai/add-missing-field.md` describes how to add a missing field, for example when the GCP service adds a new field.

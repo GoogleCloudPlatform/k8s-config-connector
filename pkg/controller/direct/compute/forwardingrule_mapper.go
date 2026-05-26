@@ -120,6 +120,7 @@ func ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out.PscConnectionStatus = in.PscConnectionStatus
 	out.SelfLink = in.SelfLink
 	out.ServiceName = in.ServiceName
+	out.Target = in.Target
 	return out
 }
 func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
@@ -134,6 +135,7 @@ func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out.PscConnectionStatus = in.PscConnectionStatus
 	out.SelfLink = in.SelfLink
 	out.ServiceName = in.ServiceName
+	out.Target = in.Target
 	return out
 }
 
@@ -231,11 +233,7 @@ func ComputeForwardingRuleSpec_Target_ToProto(mapCtx *direct.MapContext, in *krm
 		out = in.GoogleAPIsBundle
 	}
 	if oneof := in.MemorystoreInstanceServiceAttachment; oneof != nil {
-		if oneof.MemorystoreInstanceRef == nil || oneof.MemorystoreInstanceRef.External == "" {
-			mapCtx.Errorf("memorystoreInstanceServiceAttachment was not pre-resolved")
-		} else {
-			out = direct.LazyPtr(oneof.MemorystoreInstanceRef.External)
-		}
+		mapCtx.Errorf("memorystoreInstanceServiceAttachment was not pre-resolved")
 	}
 	if oneof := in.ServiceAttachmentRef; oneof != nil {
 		if oneof.External == "" {

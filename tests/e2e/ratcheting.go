@@ -239,6 +239,8 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 		// untouched until we verify they work.
 		if strings.HasPrefix(testName, "containercluster-autoscaling") {
 			return true
+		} else if strings.HasPrefix(testName, "containercluster-databaseencryption") {
+			return true
 		} else {
 			return false
 		}
@@ -367,7 +369,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "managedkafka.cnrm.cloud.google.com", Kind: "ManagedKafkaConsumerGroup"}:
 	case schema.GroupKind{Group: "managedkafka.cnrm.cloud.google.com", Kind: "ManagedKafkaTopic"}:
 	case schema.GroupKind{Group: "memcache.cnrm.cloud.google.com", Kind: "MemcacheInstance"}:
-	case schema.GroupKind{Group: "memorystore.cnrm.cloud.google.com", Kind: "MemorystoreInstance"}:
 	case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreBackup"}:
 	case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreFederation"}:
 	case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreService"}:

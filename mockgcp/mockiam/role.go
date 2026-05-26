@@ -58,7 +58,7 @@ func (s *IAMServer) CreateRole(ctx context.Context, req *pb.CreateRoleRequest) (
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetRole()).(*pb.Role)
+	obj := proto.CloneOf(req.GetRole())
 	obj.Name = fqn
 	obj.Etag = computeEtag(obj)
 

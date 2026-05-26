@@ -59,7 +59,7 @@ func (s *TargetGrpcProxyV1) Insert(ctx context.Context, req *pb.InsertTargetGrpc
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetTargetGrpcProxyResource()).(*pb.TargetGrpcProxy)
+	obj := proto.CloneOf(req.GetTargetGrpcProxyResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.SelfLinkWithId = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/targetGrpcProxies/%d", name.Project.ID, id)))
 	obj.CreationTimestamp = PtrTo(s.nowString())

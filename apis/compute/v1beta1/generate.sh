@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -26,7 +25,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
   --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1beta1  \
+  --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeResourcePolicy:ResourcePolicy \
@@ -34,14 +33,18 @@ go run . generate-types \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
-  --resource ComputeNodeTemplate:NodeTemplate
+  --resource ComputeNodeTemplate:NodeTemplate \
+  --resource ComputeReservation:Reservation \
+  --resource ComputeHealthCheck:HealthCheck \
+  --include-skipped-output
 
 go run . generate-mapper \
     --multiversion \
     --service google.cloud.compute.v1 \
-    --api-version compute.cnrm.cloud.google.com/v1beta1
+    --api-version compute.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/compute/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/compute/

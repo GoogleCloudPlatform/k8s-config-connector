@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 )
@@ -96,7 +96,7 @@ func (s *AlertPolicyService) CreateAlertPolicy(ctx context.Context, req *pb.Crea
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.AlertPolicy).(*pb.AlertPolicy)
+	obj := proto.CloneOf(req.AlertPolicy)
 	obj.CreationRecord = &pb.MutationRecord{
 		MutatedBy:  "user@example.com",
 		MutateTime: timestamppb.New(now),
@@ -133,8 +133,13 @@ func (s *AlertPolicyService) UpdateAlertPolicy(ctx context.Context, req *pb.Upda
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.AlertPolicy)
-	for _, path := range req.GetUpdateMask().GetPaths() {
+	updated := proto.CloneOf(existing)
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		paths = []string{"display_name", "enabled", "conditions", "documentation", "combiner", "notification_channels", "severity"}
+	}
+
+	for _, path := range paths {
 		switch path {
 		case "displayName", "display_name":
 			updated.DisplayName = req.GetAlertPolicy().GetDisplayName()
@@ -146,7 +151,7 @@ func (s *AlertPolicyService) UpdateAlertPolicy(ctx context.Context, req *pb.Upda
 			updated.Documentation = req.GetAlertPolicy().GetDocumentation()
 		case "combiner":
 			updated.Combiner = req.GetAlertPolicy().GetCombiner()
-		case "notificationChannels":
+		case "notificationChannels", "notification_channels":
 			updated.NotificationChannels = req.GetAlertPolicy().GetNotificationChannels()
 		case "severity":
 			updated.Severity = req.GetAlertPolicy().GetSeverity()

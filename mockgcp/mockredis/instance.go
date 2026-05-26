@@ -27,9 +27,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	commonpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/common"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/v1beta1"
 )
 
 type redisServer struct {
@@ -87,7 +87,7 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstance())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 

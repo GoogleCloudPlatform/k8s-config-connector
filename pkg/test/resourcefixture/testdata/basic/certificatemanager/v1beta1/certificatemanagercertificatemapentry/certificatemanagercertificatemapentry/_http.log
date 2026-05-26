@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}' was not found",
+    "message": "certificateMap \"projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -138,7 +138,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}' was not found",
+    "message": "certificate \"projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -269,7 +269,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}' was not found",
+    "message": "certificateMapEntry \"projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }

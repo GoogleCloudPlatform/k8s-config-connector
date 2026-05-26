@@ -47,7 +47,7 @@ func (s *publisherService) CreateTopic(ctx context.Context, req *pb.Topic) (*pb.
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req).(*pb.Topic)
+	obj := proto.CloneOf(req)
 	obj.Name = name.String()
 
 	s.populateDefaultsForTopic(obj)
@@ -105,7 +105,7 @@ func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicR
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 
 	paths := req.GetUpdateMask().GetPaths()
