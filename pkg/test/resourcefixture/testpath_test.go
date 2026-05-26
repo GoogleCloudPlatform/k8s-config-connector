@@ -204,7 +204,7 @@ func loadFixtureTests() ([]FixtureTest, error) {
 				}
 				gvk := u.GroupVersionKind()
 
-				if gvk.Kind == "IAMPolicyMember" {
+				if gvk.Group == "iam.cnrm.cloud.google.com" {
 					// Ignore path validation, the primary resource is not the test in create.yaml
 					return nil
 				}
