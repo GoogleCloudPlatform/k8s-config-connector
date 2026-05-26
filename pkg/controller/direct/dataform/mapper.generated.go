@@ -25,16 +25,65 @@ package dataform
 
 import (
 	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
+	krmdataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DataformFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krmdataformv1alpha1.DataformFolderObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformFolderObservedState{}
+	// MISSING: Name
+	out.TeamFolderName = direct.LazyPtr(in.GetTeamFolderName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.InternalMetadata = in.InternalMetadata
+	out.CreatorIAMPrincipal = in.CreatorIamPrincipal
+	return out
+}
+func DataformFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformFolderObservedState) *pb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Folder{}
+	// MISSING: Name
+	out.TeamFolderName = direct.ValueOf(in.TeamFolderName)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.InternalMetadata = in.InternalMetadata
+	out.CreatorIamPrincipal = in.CreatorIAMPrincipal
+	return out
+}
+func DataformFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krmdataformv1alpha1.DataformFolderSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformFolderSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ContainingFolder = direct.LazyPtr(in.GetContainingFolder())
+	return out
+}
+func DataformFolderSpec_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformFolderSpec) *pb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Folder{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ContainingFolder = direct.ValueOf(in.ContainingFolder)
+	return out
+}
 func DataformRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.DataformRepositoryObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DataformRepositoryObservedState{}
 	// MISSING: Name
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
 	// MISSING: CreateTime
 	// MISSING: Labels
 	// MISSING: KMSKeyName
@@ -48,6 +97,8 @@ func DataformRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.Repository{}
 	// MISSING: Name
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
 	// MISSING: CreateTime
 	// MISSING: Labels
 	// MISSING: KMSKeyName

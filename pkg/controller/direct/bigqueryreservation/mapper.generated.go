@@ -46,6 +46,8 @@ func BigQueryReservationAssignmentObservedState_FromProto(mapCtx *direct.MapCont
 	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
+	// MISSING: Principal
 	return out
 }
 func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentObservedState) *pb.Assignment {
@@ -56,5 +58,7 @@ func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
+	// MISSING: Principal
 	return out
 }

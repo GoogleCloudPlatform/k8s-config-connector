@@ -66,6 +66,11 @@ type AttributeValues struct {
 	//  type is JSON.
 	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.json_values
 	JsonValues *AttributeValues_StringAttributeValues `json:"jsonValues,omitempty"`
+
+	// The attribute values associated with a resource in case attribute data
+	//  type is URL, URI or IP, like gs://bucket-name/object-name.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.uri_values
+	URIValues *AttributeValues_StringAttributeValues `json:"uriValues,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
@@ -90,10 +95,54 @@ type Documentation struct {
 	ExternalURI *string `json:"externalURI,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.SourceMetadata
+type SourceMetadata struct {
+}
+
+// +kcc:proto=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource
+type SourceMetadata_PluginInstanceActionSource struct {
+}
+
 // +kcc:observedstate:proto=google.cloud.apihub.v1.AttributeValues
 type AttributeValuesObservedState struct {
 	// Output only. The name of the attribute.
 	//  Format: projects/{project}/locations/{location}/attributes/{attribute}
 	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.attribute
 	Attribute *string `json:"attribute,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apihub.v1.SourceMetadata
+type SourceMetadataObservedState struct {
+	// Output only. The source of the resource is a plugin instance action.
+	// +kcc:proto:field=google.cloud.apihub.v1.SourceMetadata.plugin_instance_action_source
+	PluginInstanceActionSource *SourceMetadata_PluginInstanceActionSource `json:"pluginInstanceActionSource,omitempty"`
+
+	// Output only. The type of the source.
+	// +kcc:proto:field=google.cloud.apihub.v1.SourceMetadata.source_type
+	SourceType *string `json:"sourceType,omitempty"`
+
+	// Output only. The unique identifier of the resource at the source.
+	// +kcc:proto:field=google.cloud.apihub.v1.SourceMetadata.original_resource_id
+	OriginalResourceID *string `json:"originalResourceID,omitempty"`
+
+	// Output only. The time at which the resource was created at the source.
+	// +kcc:proto:field=google.cloud.apihub.v1.SourceMetadata.original_resource_create_time
+	OriginalResourceCreateTime *string `json:"originalResourceCreateTime,omitempty"`
+
+	// Output only. The time at which the resource was last updated at the source.
+	// +kcc:proto:field=google.cloud.apihub.v1.SourceMetadata.original_resource_update_time
+	OriginalResourceUpdateTime *string `json:"originalResourceUpdateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource
+type SourceMetadata_PluginInstanceActionSourceObservedState struct {
+	// Output only. The resource name of the source plugin instance.
+	//  Format is
+	//  `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+	// +kcc:proto:field=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource.plugin_instance
+	PluginInstance *string `json:"pluginInstance,omitempty"`
+
+	// Output only. The id of the plugin instance action.
+	// +kcc:proto:field=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource.action_id
+	ActionID *string `json:"actionID,omitempty"`
 }

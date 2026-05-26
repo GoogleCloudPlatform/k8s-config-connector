@@ -210,6 +210,9 @@ func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clust
 	// MISSING: KMSKey
 	// MISSING: AutomatedBackupConfig
 	// MISSING: EncryptionInfo
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterObservedState) *pb.Cluster {
@@ -237,6 +240,9 @@ func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisC
 	// MISSING: KMSKey
 	// MISSING: AutomatedBackupConfig
 	// MISSING: EncryptionInfo
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.RedisClusterSpec {
@@ -266,6 +272,9 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	// MISSING: KMSKey
 	// MISSING: AutomatedBackupConfig
 	// MISSING: EncryptionInfo
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpec) *pb.Cluster {
@@ -295,6 +304,9 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	// MISSING: KMSKey
 	// MISSING: AutomatedBackupConfig
 	// MISSING: EncryptionInfo
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
 	return out
 }
 func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfig {
