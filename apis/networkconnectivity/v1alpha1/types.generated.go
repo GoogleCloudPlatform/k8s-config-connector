@@ -23,6 +23,7 @@
 
 package v1alpha1
 
+/* unreachable type Any
 // +kcc:proto=google.protobuf.Any
 type Any struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
@@ -59,7 +60,9 @@ type Any struct {
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }
+*/
 
+/* unreachable type AllocationOptions
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AllocationOptions
 type AllocationOptions struct {
 	// Optional. Allocation strategy Not setting this field when the allocation is requested means an implementation defined strategy is used.
@@ -70,7 +73,9 @@ type AllocationOptions struct {
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AllocationOptions.first_available_ranges_lookup_size
 	FirstAvailableRangesLookupSize *int32 `json:"firstAvailableRangesLookupSize,omitempty"`
 }
+*/
 
+/* unreachable type AutoCreatedSubnetworkInfo
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo
 type AutoCreatedSubnetworkInfo struct {
 	// Output only. Indicates whether the subnetwork is delinked from the Service Connection Policy. Only set if the subnetwork mode is AUTO_CREATED during creation.
@@ -93,6 +98,7 @@ type AutoCreatedSubnetworkInfo struct {
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo.subnetwork_ref
 	SubnetworkRef *string `json:"subnetworkRef,omitempty"`
 }
+*/
 
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.GoogleRpcErrorInfo
 type GoogleRpcErrorInfo struct {
@@ -234,6 +240,8 @@ type PSCConfig struct {
 }
 */
 
+/* found existing non-generated go type "PSCConnection", skipping
+
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.PscConnection
 type PSCConnection struct {
 	// The resource reference of the consumer address.
@@ -292,6 +300,7 @@ type PSCConnection struct {
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint", skipping
 
