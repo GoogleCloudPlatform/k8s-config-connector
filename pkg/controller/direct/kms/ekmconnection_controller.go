@@ -232,16 +232,10 @@ func (a *EKMConnectionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 
 	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
 	obj.Spec.Location = &a.id.Location
-	// EkmConnection doesn't have a user-specified name/id other than the final segment of the URI.
-	// But kcc conventions say resourceID should be the short name if not standard.
-	// Let's set the resourceID to the ID we got from parsing.
-	// Actually we should set resourceID to a.name if it matches.
-	// The resource ID is the last segment of the name.
 	tokens := strings.Split(a.actual.Name, "/")
 	if len(tokens) > 0 {
 		obj.Spec.ResourceID = ptr.To(tokens[len(tokens)-1])
 	}
-
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -252,6 +246,6 @@ func (a *EKMConnectionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 
 func (a *EKMConnectionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("Delete operation not supported for KMSEKMConnection resource; it cannot be deleted via the Google Cloud API. Use 'cnrm.cloud.google.com/deletion-policy: abandon' to remove the resource from KCC.")
-	return false, fmt.Errorf("Delete operation not supported for KMSEKMConnection resource")
+	log.V(2).Info("Delete operation not supported for KMSEKMConnection via the Google Cloud API. The KRM object will be deleted, but the underlying GCP resource will remain.")
+	return true, nil
 }
