@@ -704,6 +704,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - devicestreaming.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - dialogflow.cnrm.cloud.google.com
   resources:
   - '*'

@@ -171,6 +171,8 @@ import (
 	fakedatastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1/fake"
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1"
 	fakedeploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1/fake"
+	devicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1"
+	fakedevicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1/fake"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
 	fakedialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1/fake"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
@@ -804,6 +806,11 @@ func (c *Clientset) DatastreamV1alpha1() datastreamv1alpha1.DatastreamV1alpha1In
 // DeploymentmanagerV1alpha1 retrieves the DeploymentmanagerV1alpha1Client
 func (c *Clientset) DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Interface {
 	return &fakedeploymentmanagerv1alpha1.FakeDeploymentmanagerV1alpha1{Fake: &c.Fake}
+}
+
+// DevicestreamingV1alpha1 retrieves the DevicestreamingV1alpha1Client
+func (c *Clientset) DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface {
+	return &fakedevicestreamingv1alpha1.FakeDevicestreamingV1alpha1{Fake: &c.Fake}
 }
 
 // DialogflowV1alpha1 retrieves the DialogflowV1alpha1Client
