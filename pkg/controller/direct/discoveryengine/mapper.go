@@ -19,18 +19,19 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 // Override but should be unreachable.
 // Would not be needed if we did a reachability analysis in our proto generation.
-func StructSchema_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string]string {
+func StructSchema_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) apiextensionsv1.JSON {
 	mapCtx.NotImplemented()
-	return nil
+	return apiextensionsv1.JSON{}
 }
 
 // Override but should be unreachable
 // Would not be needed if we did a reachability analysis in our proto generation.
-func StructSchema_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.Struct {
+func StructSchema_ToProto(mapCtx *direct.MapContext, in apiextensionsv1.JSON) *structpb.Struct {
 	mapCtx.NotImplemented()
 	return nil
 }

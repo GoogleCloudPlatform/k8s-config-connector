@@ -726,6 +726,11 @@ func (in *EngineChatEngineConfig) DeepCopyInto(out *EngineChatEngineConfig) {
 		*out = new(EngineAgentCreationConfig)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.AllowCrossRegion != nil {
+		in, out := &in.AllowCrossRegion, &out.AllowCrossRegion
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DialogflowAgentToLink != nil {
 		in, out := &in.DialogflowAgentToLink, &out.DialogflowAgentToLink
 		*out = new(string)
