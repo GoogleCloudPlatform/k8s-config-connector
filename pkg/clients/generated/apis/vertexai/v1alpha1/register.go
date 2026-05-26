@@ -77,11 +77,6 @@ var (
 		Kind:    reflect.TypeOf(VertexAIFeaturestore{}).Name(),
 	}
 
-	VertexAIFeaturestoreGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIFeaturestore{}).Name(),
-	}
 
 	VertexAIFeaturestoreEntityTypeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
