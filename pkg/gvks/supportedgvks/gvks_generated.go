@@ -140,7 +140,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "apigateway.cnrm.cloud.google.com",
@@ -149,7 +149,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "apigee.cnrm.cloud.google.com",
@@ -266,7 +266,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "beyondcorp.cnrm.cloud.google.com",
@@ -275,7 +275,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "beyondcorp.cnrm.cloud.google.com",
@@ -284,7 +284,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "bigquerydatapolicy.cnrm.cloud.google.com",
@@ -311,7 +311,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "bigquery.cnrm.cloud.google.com",
@@ -338,7 +338,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "bigquery.cnrm.cloud.google.com",
@@ -347,7 +347,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "bigtable.cnrm.cloud.google.com",
@@ -374,7 +374,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "bigtable.cnrm.cloud.google.com",
@@ -383,7 +383,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "billingbudgets.cnrm.cloud.google.com",
@@ -401,7 +401,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "binaryauthorization.cnrm.cloud.google.com",
@@ -410,7 +410,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "certificatemanager.cnrm.cloud.google.com",
@@ -509,7 +509,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "cloudfunctions.cnrm.cloud.google.com",
@@ -518,7 +518,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "cloudids.cnrm.cloud.google.com",
@@ -590,7 +590,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -608,7 +608,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -635,7 +635,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -734,7 +734,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -770,7 +770,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -779,7 +779,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -797,7 +797,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -896,7 +896,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -905,7 +905,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -1013,7 +1013,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -1085,7 +1085,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -1112,7 +1112,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -1139,7 +1139,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -1175,7 +1175,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
@@ -1256,7 +1256,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "containeranalysis.cnrm.cloud.google.com",
@@ -1265,7 +1265,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "containerattached.cnrm.cloud.google.com",
@@ -1337,7 +1337,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "dataproc.cnrm.cloud.google.com",
@@ -1355,7 +1355,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "dataproc.cnrm.cloud.google.com",
@@ -1364,7 +1364,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "datastore.cnrm.cloud.google.com",
@@ -1625,7 +1625,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "filestore.cnrm.cloud.google.com",
@@ -1742,7 +1742,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "gkehub.cnrm.cloud.google.com",
@@ -1751,7 +1751,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "healthcare.cnrm.cloud.google.com",
@@ -1832,7 +1832,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "iam.cnrm.cloud.google.com",
@@ -1976,7 +1976,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "kms.cnrm.cloud.google.com",
@@ -1994,7 +1994,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "kms.cnrm.cloud.google.com",
@@ -2003,7 +2003,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "kms.cnrm.cloud.google.com",
@@ -2147,7 +2147,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "networkconnectivity.cnrm.cloud.google.com",
@@ -2156,7 +2156,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "networksecurity.cnrm.cloud.google.com",
@@ -2192,7 +2192,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "networkservices.cnrm.cloud.google.com",
@@ -2201,7 +2201,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "networkservices.cnrm.cloud.google.com",
@@ -2210,7 +2210,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "networkservices.cnrm.cloud.google.com",
@@ -2228,7 +2228,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "networkservices.cnrm.cloud.google.com",
@@ -2318,7 +2318,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "privateca.cnrm.cloud.google.com",
@@ -2345,7 +2345,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   false,
 		DCL:         true,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "resourcemanager.cnrm.cloud.google.com",
@@ -2390,7 +2390,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "pubsub.cnrm.cloud.google.com",
@@ -2399,7 +2399,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "pubsub.cnrm.cloud.google.com",
@@ -2408,7 +2408,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "recaptchaenterprise.cnrm.cloud.google.com",
@@ -2498,7 +2498,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "servicedirectory.cnrm.cloud.google.com",
@@ -2525,7 +2525,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "serviceusage.cnrm.cloud.google.com",
@@ -2552,7 +2552,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "serviceusage.cnrm.cloud.google.com",
@@ -2579,7 +2579,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "spanner.cnrm.cloud.google.com",
@@ -2588,7 +2588,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform:   true,
 		DCL:         false,
-		SupportsIAM: true,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "sql.cnrm.cloud.google.com",
