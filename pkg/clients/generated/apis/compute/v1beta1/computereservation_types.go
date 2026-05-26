@@ -72,6 +72,24 @@ type ReservationLocalSsds struct {
 	Interface *string `json:"interface,omitempty"`
 }
 
+type ReservationProjectMap struct {
+	/* The resource reference that defaults to Project if Kind is not specified. */
+	KeyRef v1alpha1.ResourceRef `json:"keyRef"`
+
+	// +optional
+	Value *ReservationValue `json:"value,omitempty"`
+}
+
+type ReservationShareSettings struct {
+	/* A map of key(i.e. project or other shared resources) and associated project config. This is only valid when shareType's value is SPECIFIC_PROJECTS. */
+	// +optional
+	ProjectMap []ReservationProjectMap `json:"projectMap,omitempty"`
+
+	/* Immutable. Type of sharing for this shared-reservation Check the ShareType enum for the list of possible values. */
+	// +optional
+	ShareType *string `json:"shareType,omitempty"`
+}
+
 type ReservationSpecificReservation struct {
 	/* The number of resources that are allocated. */
 	Count int32 `json:"count"`
@@ -84,6 +102,12 @@ type ReservationSpecificReservation struct {
 	InstanceProperties ReservationInstanceProperties `json:"instanceProperties"`
 }
 
+type ReservationValue struct {
+	/* The project ID, should be same as the key of this project config in the parent map. */
+	// +optional
+	ProjectIDRef *v1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
+}
+
 type ComputeReservationSpec struct {
 	/* Immutable. An optional description of this resource. */
 	// +optional
@@ -92,6 +116,10 @@ type ComputeReservationSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* The share setting for reservations and sole tenancy node groups. */
+	// +optional
+	ShareSettings *ReservationShareSettings `json:"shareSettings,omitempty"`
 
 	/* Reservation for instances with specific machine shapes. */
 	SpecificReservation ReservationSpecificReservation `json:"specificReservation"`

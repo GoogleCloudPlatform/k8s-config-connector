@@ -15,23 +15,28 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeReservation
 metadata:
+  name: sharereservation-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_SHARED_RESERVATIONS_PROJECT}
     alpha.cnrm.cloud.google.com/reconciler: "direct"
-  name: computereservation-${uniqueId}
 spec:
-  description: Full compute reservation
   zone: us-central1-a
-  specificReservationRequired: true
+  specificReservationRequired: false
   specificReservation:
-    count: 2
+    count: 1
     instanceProperties:
-      machineType: n1-highmem-8
-      minCpuPlatform: "Intel Skylake"
-      guestAccelerators:
-        - acceleratorCount: 1
-          acceleratorType: nvidia-tesla-v100
-      localSsds:
-        - interface: NVME
-          diskSizeGb: 375
+      machineType: n1-standard-1
   shareSettings:
-    shareType: LOCAL
+    shareType: SPECIFIC_PROJECTS
+    projectMap:
+      - keyRef:
+          external: ${projectId}
+        value:
+          projectIDRef:
+            external: ${projectId}
+      - keyRef:
+          name: project-${uniqueId}
+        value:
+          projectIDRef:
+            name: project-${uniqueId}
+

@@ -12,26 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeReservation
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
 metadata:
   annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
-  name: computereservation-${uniqueId}
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: project-${uniqueId}
 spec:
-  description: Full compute reservation
-  zone: us-central1-a
-  specificReservationRequired: true
-  specificReservation:
-    count: 2
-    instanceProperties:
-      machineType: n1-highmem-8
-      minCpuPlatform: "Intel Skylake"
-      guestAccelerators:
-        - acceleratorCount: 1
-          acceleratorType: nvidia-tesla-v100
-      localSsds:
-        - interface: NVME
-          diskSizeGb: 375
-  shareSettings:
-    shareType: LOCAL
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  name: "project-${uniqueId}"
