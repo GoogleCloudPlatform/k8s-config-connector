@@ -26,3 +26,9 @@ This skill guides the implementation of the IdentityV2 and ExternalIdentifier in
 
 ## Journaling
 Append any template mapping complexities (e.g., multi-parent or multi-hierarchy resources) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
+
+3.  **Implement Identity Tests**:
+    Create `apis/<service>/<api_version>/<resource_lower>_identity_test.go`.
+    - Provide test cases for extracting the identity from the KRM object.
+    - Test `FromExternal` parsing using valid identities.
+    - Test `String()` stringification logic.

@@ -73,3 +73,16 @@ This skill guides the implementation of the `Adapter` interface and the creation
 
 ## Journaling
 Append any reconciliation hurdles, GCP SDK quirks, or MockGCP alignment issues to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
+
+### Handling Resources That Cannot Be Deleted via API
+If the GCP API does not support a `Delete` operation for the resource (e.g., KMSEKMConnection), you should allow the KRM object to be deleted but leave the underlying GCP resource. In your `Delete` method:
+- Do **not** return an error (returning an error blocks KRM deletion and leaves the resource terminating).
+- Instead, log a warning and return `true, nil`.
+```go
+func (a *MyResourceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+    log := klog.FromContext(ctx)
+    log.V(2).Info("Delete operation not supported via the Google Cloud API. The KRM object will be deleted, but the underlying GCP resource will remain.")
+    return true, nil
+}
+```
+
