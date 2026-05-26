@@ -3886,6 +3886,247 @@ var ProjectsLocationsSpokesServer_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
 }
 
+// ProjectsLocationsSpokesGatewayAdvertisedRoutesServerClient is the client API for ProjectsLocationsSpokesGatewayAdvertisedRoutesServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsLocationsSpokesGatewayAdvertisedRoutesServerClient interface {
+	// Create a GatewayAdvertisedRoute
+	CreateProjectsLocationsSpokesGatewayAdvertisedRoute(ctx context.Context, in *CreateProjectsLocationsSpokesGatewayAdvertisedRouteRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Delete a GatewayAdvertisedRoute
+	DeleteProjectsLocationsSpokesGatewayAdvertisedRoute(ctx context.Context, in *DeleteProjectsLocationsSpokesGatewayAdvertisedRouteRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Get a GatewayAdvertisedRoute
+	GetProjectsLocationsSpokesGatewayAdvertisedRoute(ctx context.Context, in *GetProjectsLocationsSpokesGatewayAdvertisedRouteRequest, opts ...grpc.CallOption) (*GatewayAdvertisedRoute, error)
+	// List GatewayAdvertisedRoutes
+	ListProjectsLocationsSpokesGatewayAdvertisedRoutes(ctx context.Context, in *ListProjectsLocationsSpokesGatewayAdvertisedRoutesRequest, opts ...grpc.CallOption) (*ListGatewayAdvertisedRoutesResponse, error)
+	// Update a GatewayAdvertisedRoute
+	PatchProjectsLocationsSpokesGatewayAdvertisedRoute(ctx context.Context, in *PatchProjectsLocationsSpokesGatewayAdvertisedRouteRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+}
+
+type projectsLocationsSpokesGatewayAdvertisedRoutesServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsLocationsSpokesGatewayAdvertisedRoutesServerClient(cc grpc.ClientConnInterface) ProjectsLocationsSpokesGatewayAdvertisedRoutesServerClient {
+	return &projectsLocationsSpokesGatewayAdvertisedRoutesServerClient{cc}
+}
+
+func (c *projectsLocationsSpokesGatewayAdvertisedRoutesServerClient) CreateProjectsLocationsSpokesGatewayAdvertisedRoute(ctx context.Context, in *CreateProjectsLocationsSpokesGatewayAdvertisedRouteRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/CreateProjectsLocationsSpokesGatewayAdvertisedRoute", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsSpokesGatewayAdvertisedRoutesServerClient) DeleteProjectsLocationsSpokesGatewayAdvertisedRoute(ctx context.Context, in *DeleteProjectsLocationsSpokesGatewayAdvertisedRouteRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/DeleteProjectsLocationsSpokesGatewayAdvertisedRoute", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsSpokesGatewayAdvertisedRoutesServerClient) GetProjectsLocationsSpokesGatewayAdvertisedRoute(ctx context.Context, in *GetProjectsLocationsSpokesGatewayAdvertisedRouteRequest, opts ...grpc.CallOption) (*GatewayAdvertisedRoute, error) {
+	out := new(GatewayAdvertisedRoute)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/GetProjectsLocationsSpokesGatewayAdvertisedRoute", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsSpokesGatewayAdvertisedRoutesServerClient) ListProjectsLocationsSpokesGatewayAdvertisedRoutes(ctx context.Context, in *ListProjectsLocationsSpokesGatewayAdvertisedRoutesRequest, opts ...grpc.CallOption) (*ListGatewayAdvertisedRoutesResponse, error) {
+	out := new(ListGatewayAdvertisedRoutesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/ListProjectsLocationsSpokesGatewayAdvertisedRoutes", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsSpokesGatewayAdvertisedRoutesServerClient) PatchProjectsLocationsSpokesGatewayAdvertisedRoute(ctx context.Context, in *PatchProjectsLocationsSpokesGatewayAdvertisedRouteRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/PatchProjectsLocationsSpokesGatewayAdvertisedRoute", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer is the server API for ProjectsLocationsSpokesGatewayAdvertisedRoutesServer service.
+// All implementations must embed UnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer
+// for forward compatibility
+type ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer interface {
+	// Create a GatewayAdvertisedRoute
+	CreateProjectsLocationsSpokesGatewayAdvertisedRoute(context.Context, *CreateProjectsLocationsSpokesGatewayAdvertisedRouteRequest) (*longrunningpb.Operation, error)
+	// Delete a GatewayAdvertisedRoute
+	DeleteProjectsLocationsSpokesGatewayAdvertisedRoute(context.Context, *DeleteProjectsLocationsSpokesGatewayAdvertisedRouteRequest) (*longrunningpb.Operation, error)
+	// Get a GatewayAdvertisedRoute
+	GetProjectsLocationsSpokesGatewayAdvertisedRoute(context.Context, *GetProjectsLocationsSpokesGatewayAdvertisedRouteRequest) (*GatewayAdvertisedRoute, error)
+	// List GatewayAdvertisedRoutes
+	ListProjectsLocationsSpokesGatewayAdvertisedRoutes(context.Context, *ListProjectsLocationsSpokesGatewayAdvertisedRoutesRequest) (*ListGatewayAdvertisedRoutesResponse, error)
+	// Update a GatewayAdvertisedRoute
+	PatchProjectsLocationsSpokesGatewayAdvertisedRoute(context.Context, *PatchProjectsLocationsSpokesGatewayAdvertisedRouteRequest) (*longrunningpb.Operation, error)
+	mustEmbedUnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer()
+}
+
+// UnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer struct {
+}
+
+func (UnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer) CreateProjectsLocationsSpokesGatewayAdvertisedRoute(context.Context, *CreateProjectsLocationsSpokesGatewayAdvertisedRouteRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProjectsLocationsSpokesGatewayAdvertisedRoute not implemented")
+}
+func (UnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer) DeleteProjectsLocationsSpokesGatewayAdvertisedRoute(context.Context, *DeleteProjectsLocationsSpokesGatewayAdvertisedRouteRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProjectsLocationsSpokesGatewayAdvertisedRoute not implemented")
+}
+func (UnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer) GetProjectsLocationsSpokesGatewayAdvertisedRoute(context.Context, *GetProjectsLocationsSpokesGatewayAdvertisedRouteRequest) (*GatewayAdvertisedRoute, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsLocationsSpokesGatewayAdvertisedRoute not implemented")
+}
+func (UnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer) ListProjectsLocationsSpokesGatewayAdvertisedRoutes(context.Context, *ListProjectsLocationsSpokesGatewayAdvertisedRoutesRequest) (*ListGatewayAdvertisedRoutesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectsLocationsSpokesGatewayAdvertisedRoutes not implemented")
+}
+func (UnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer) PatchProjectsLocationsSpokesGatewayAdvertisedRoute(context.Context, *PatchProjectsLocationsSpokesGatewayAdvertisedRouteRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchProjectsLocationsSpokesGatewayAdvertisedRoute not implemented")
+}
+func (UnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer) mustEmbedUnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer() {
+}
+
+// UnsafeProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer will
+// result in compilation errors.
+type UnsafeProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer interface {
+	mustEmbedUnimplementedProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer()
+}
+
+func RegisterProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer(s grpc.ServiceRegistrar, srv ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer) {
+	s.RegisterService(&ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_ServiceDesc, srv)
+}
+
+func _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_CreateProjectsLocationsSpokesGatewayAdvertisedRoute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProjectsLocationsSpokesGatewayAdvertisedRouteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).CreateProjectsLocationsSpokesGatewayAdvertisedRoute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/CreateProjectsLocationsSpokesGatewayAdvertisedRoute",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).CreateProjectsLocationsSpokesGatewayAdvertisedRoute(ctx, req.(*CreateProjectsLocationsSpokesGatewayAdvertisedRouteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_DeleteProjectsLocationsSpokesGatewayAdvertisedRoute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectsLocationsSpokesGatewayAdvertisedRouteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).DeleteProjectsLocationsSpokesGatewayAdvertisedRoute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/DeleteProjectsLocationsSpokesGatewayAdvertisedRoute",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).DeleteProjectsLocationsSpokesGatewayAdvertisedRoute(ctx, req.(*DeleteProjectsLocationsSpokesGatewayAdvertisedRouteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_GetProjectsLocationsSpokesGatewayAdvertisedRoute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectsLocationsSpokesGatewayAdvertisedRouteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).GetProjectsLocationsSpokesGatewayAdvertisedRoute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/GetProjectsLocationsSpokesGatewayAdvertisedRoute",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).GetProjectsLocationsSpokesGatewayAdvertisedRoute(ctx, req.(*GetProjectsLocationsSpokesGatewayAdvertisedRouteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_ListProjectsLocationsSpokesGatewayAdvertisedRoutes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectsLocationsSpokesGatewayAdvertisedRoutesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).ListProjectsLocationsSpokesGatewayAdvertisedRoutes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/ListProjectsLocationsSpokesGatewayAdvertisedRoutes",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).ListProjectsLocationsSpokesGatewayAdvertisedRoutes(ctx, req.(*ListProjectsLocationsSpokesGatewayAdvertisedRoutesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_PatchProjectsLocationsSpokesGatewayAdvertisedRoute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchProjectsLocationsSpokesGatewayAdvertisedRouteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).PatchProjectsLocationsSpokesGatewayAdvertisedRoute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer/PatchProjectsLocationsSpokesGatewayAdvertisedRoute",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer).PatchProjectsLocationsSpokesGatewayAdvertisedRoute(ctx, req.(*PatchProjectsLocationsSpokesGatewayAdvertisedRouteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_ServiceDesc is the grpc.ServiceDesc for ProjectsLocationsSpokesGatewayAdvertisedRoutesServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsSpokesGatewayAdvertisedRoutesServer",
+	HandlerType: (*ProjectsLocationsSpokesGatewayAdvertisedRoutesServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateProjectsLocationsSpokesGatewayAdvertisedRoute",
+			Handler:    _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_CreateProjectsLocationsSpokesGatewayAdvertisedRoute_Handler,
+		},
+		{
+			MethodName: "DeleteProjectsLocationsSpokesGatewayAdvertisedRoute",
+			Handler:    _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_DeleteProjectsLocationsSpokesGatewayAdvertisedRoute_Handler,
+		},
+		{
+			MethodName: "GetProjectsLocationsSpokesGatewayAdvertisedRoute",
+			Handler:    _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_GetProjectsLocationsSpokesGatewayAdvertisedRoute_Handler,
+		},
+		{
+			MethodName: "ListProjectsLocationsSpokesGatewayAdvertisedRoutes",
+			Handler:    _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_ListProjectsLocationsSpokesGatewayAdvertisedRoutes_Handler,
+		},
+		{
+			MethodName: "PatchProjectsLocationsSpokesGatewayAdvertisedRoute",
+			Handler:    _ProjectsLocationsSpokesGatewayAdvertisedRoutesServer_PatchProjectsLocationsSpokesGatewayAdvertisedRoute_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
+}
+
 // ProjectsLocationsTransportsServerClient is the client API for ProjectsLocationsTransportsServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.

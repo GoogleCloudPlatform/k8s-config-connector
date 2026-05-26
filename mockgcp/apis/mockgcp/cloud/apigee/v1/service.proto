@@ -2979,6 +2979,7 @@ service OrganizationsSpacesServer {
 }
 
 service ProjectsServer {
+
   // Provisions a new Apigee organization with a functioning runtime. This is the standard way to create trial organizations for a free Apigee trial.
   rpc ProvisionOrganizationProject(ProvisionOrganizationProjectRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
@@ -3335,34 +3336,36 @@ message GoogleCloudApigeeV1ApiProxyRevision {
   repeated string integration_endpoints = 10 [json_name="integrationEndpoints"];
   // Time that the API proxy revision was last modified in milliseconds since epoch.
   int64 last_modified_at = 11 [json_name="lastModifiedAt"];
+  // Output only. Whether this proxy revision is detected as an MCP (Model Context Protocol) proxy. A proxy revision is identified as MCP if it has a proxy endpoint with the `/mcp` base path that routes to the MCP target URL.
+  bool mcp = 12 [json_name="mcp"];
   // Name of the API proxy.
-  string name = 12 [json_name="name"];
+  string name = 13 [json_name="name"];
   // List of policy names included in the API proxy revision..
-  repeated string policies = 13 [json_name="policies"];
+  repeated string policies = 14 [json_name="policies"];
   // List of proxy names included in the API proxy revision.
-  repeated string proxies = 14 [json_name="proxies"];
+  repeated string proxies = 15 [json_name="proxies"];
   // List of ProxyEndpoints in the `/proxies` directory of the API proxy. Typically, this element is included only when the API proxy was created using the Edge UI. This is a 'manifest' setting designed to provide visibility into the contents of the API proxy.
-  repeated string proxy_endpoints = 15 [json_name="proxyEndpoints"];
+  repeated string proxy_endpoints = 16 [json_name="proxyEndpoints"];
   // List of resource files included in the API proxy revision.
-  GoogleCloudApigeeV1ResourceFiles resource_files = 16 [json_name="resourceFiles"];
+  GoogleCloudApigeeV1ResourceFiles resource_files = 17 [json_name="resourceFiles"];
   // List of the resources included in the API proxy revision formatted as "{type}://{name}".
-  repeated string resources = 17 [json_name="resources"];
+  repeated string resources = 18 [json_name="resources"];
   // API proxy revision.
-  string revision = 18 [json_name="revision"];
+  string revision = 19 [json_name="revision"];
   // List of the shared flows included in the API proxy revision.
-  repeated string shared_flows = 19 [json_name="sharedFlows"];
+  repeated string shared_flows = 20 [json_name="sharedFlows"];
   // OpenAPI Specification that is associated with the API proxy. The value is set to a URL or to a path in the specification store.
-  string spec = 20 [json_name="spec"];
+  string spec = 21 [json_name="spec"];
   // List of TargetEndpoints in the `/targets` directory of the API proxy. Typically, this element is included only when the API proxy was created using the Edge UI. This is a 'manifest' setting designed to provide visibility into the contents of the API proxy.
-  repeated string target_endpoints = 21 [json_name="targetEndpoints"];
+  repeated string target_endpoints = 22 [json_name="targetEndpoints"];
   // List of TargetServers referenced in any TargetEndpoint in the API proxy. Typically, you will see this element only when the API proxy was created using the Edge UI. This is a 'manifest' setting designed to provide visibility into the contents of the API proxy.
-  repeated string target_servers = 22 [json_name="targetServers"];
+  repeated string target_servers = 23 [json_name="targetServers"];
   // List of the targets included in the API proxy revision.
-  repeated string targets = 23 [json_name="targets"];
+  repeated string targets = 24 [json_name="targets"];
   // List of the teams included in the API proxy revision.
-  repeated string teams = 24 [json_name="teams"];
+  repeated string teams = 25 [json_name="teams"];
   // Type. Set to `Application`. Maintained for compatibility with the Apigee Edge API.
-  string type = 25 [json_name="type"];
+  string type = 26 [json_name="type"];
 }
 
 // Configurations of the API Security add-on.

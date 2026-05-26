@@ -631,6 +631,46 @@ service ProjectsLocationsSpokesServer {
   };
 }
 
+service ProjectsLocationsSpokesGatewayAdvertisedRoutesServer {
+
+  // Create a GatewayAdvertisedRoute
+  rpc CreateProjectsLocationsSpokesGatewayAdvertisedRoute(CreateProjectsLocationsSpokesGatewayAdvertisedRouteRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/spokes/*}/gatewayAdvertisedRoutes"
+      body: "projects_locations_spokes_gateway_advertised_route"
+    };
+  };
+
+  // Delete a GatewayAdvertisedRoute
+  rpc DeleteProjectsLocationsSpokesGatewayAdvertisedRoute(DeleteProjectsLocationsSpokesGatewayAdvertisedRouteRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/spokes/*/gatewayAdvertisedRoutes/*}"
+    };
+  };
+
+  // Get a GatewayAdvertisedRoute
+  rpc GetProjectsLocationsSpokesGatewayAdvertisedRoute(GetProjectsLocationsSpokesGatewayAdvertisedRouteRequest) returns (GatewayAdvertisedRoute) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/spokes/*/gatewayAdvertisedRoutes/*}"
+    };
+  };
+
+  // List GatewayAdvertisedRoutes
+  rpc ListProjectsLocationsSpokesGatewayAdvertisedRoutes(ListProjectsLocationsSpokesGatewayAdvertisedRoutesRequest) returns (ListGatewayAdvertisedRoutesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/spokes/*}/gatewayAdvertisedRoutes"
+    };
+  };
+
+  // Update a GatewayAdvertisedRoute
+  rpc PatchProjectsLocationsSpokesGatewayAdvertisedRoute(PatchProjectsLocationsSpokesGatewayAdvertisedRouteRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/spokes/*/gatewayAdvertisedRoutes/*}"
+      body: "projects_locations_spokes_gateway_advertised_route"
+    };
+  };
+}
+
 service ProjectsLocationsTransportsServer {
 
   // Creates a new Transport in a given project and location.
@@ -957,6 +997,42 @@ message Filter {
   string src_range = 4 [json_name="srcRange"];
 }
 
+// A gateway that can apply specialized traffic processing.
+message Gateway {
+  // Optional. The aggregate processing capacity of this gateway.
+  string capacity = 1 [json_name="capacity"];
+  // Output only. The list of Cloud Routers that are connected to this gateway. Should be in the form: https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/routers/{router}
+  repeated string cloud_routers = 2 [json_name="cloudRouters"];
+  // Optional. A list of IP ranges that are reserved for this gateway's internal intfrastructure.
+  repeated IpRangeReservation ip_range_reservations = 3 [json_name="ipRangeReservations"];
+  // Output only. The URI of the connected SACAttachment. Should be in the form: projects/{project}/locations/{location}/sacAttachments/{sac_attachment}
+  string sac_attachment = 4 [json_name="sacAttachment"];
+}
+
+// A gateway advertised route is a route that a gateway spoke advertises somewhere.
+message GatewayAdvertisedRoute {
+  // Output only. The time the gateway advertised route was created.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // An optional description of the gateway advertised route.
+  string description = 2 [json_name="description"];
+  // Immutable. This route's advertised IP address range. Must be a valid CIDR-formatted prefix. If an IP address is provided without a subnet mask, it is interpreted as, for IPv4, a `/32` singular IP address range, and, for IPv6, `/128`.
+  string ip_range = 3 [json_name="ipRange"];
+  // Optional labels in key-value pair format. For more information about labels, see [Requirements for labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).
+  map<string, string> labels = 4 [json_name="labels"];
+  // Identifier. The name of the gateway advertised route. Route names must be unique and use the following form: `projects/{project_number}/locations/{region}/spokes/{spoke}/gatewayAdvertisedRoutes/{gateway_advertised_route_id}`
+  string name = 5 [json_name="name"];
+  // Optional. The priority of this advertised route. You can choose a value from `0` to `65335`. If you don't provide a value, Google Cloud assigns a priority of `100` to the ranges.
+  int32 priority = 6 [json_name="priority"];
+  // Optional. The recipient of this advertised route.
+  string recipient = 7 [json_name="recipient"];
+  // Output only. The current lifecycle state of this gateway advertised route.
+  string state = 8 [json_name="state"];
+  // Output only. The Google-generated UUID for the gateway advertised route. This value is unique across all gateway advertised route resources. If a gateway advertised route is deleted and another with the same name is created, the new route is assigned a different `unique_id`.
+  string unique_id = 9 [json_name="uniqueId"];
+  // Output only. The time the gateway advertised route was last updated.
+  .google.protobuf.Timestamp update_time = 10 [json_name="updateTime"];
+}
+
 // The request message for Operations.CancelOperation.
 message GoogleLongrunningCancelOperationRequest {
 }
@@ -1097,6 +1173,12 @@ message InternalRange {
   repeated string users = 17 [json_name="users"];
 }
 
+// A list of IP ranges that are reserved for this gateway's internal intfrastructure.
+message IpRangeReservation {
+  // Required. A block of IP addresses used to allocate supporting infrastructure for this gateway. This block must not overlap with subnets in any spokes or peer VPC networks that the gateway can communicate with. Example: "10.1.2.0/24"
+  string ip_range = 1 [json_name="ipRange"];
+}
+
 // A collection of VLAN attachment resources. These resources should be redundant attachments that all advertise the same prefixes to Google Cloud. Alternatively, in active/passive configurations, all attachments should be capable of advertising the same prefixes.
 message LinkedInterconnectAttachments {
   // Optional. Dynamic routes overlapped/encompassed by exclude export ranges are excluded during export to hub.
@@ -1203,6 +1285,16 @@ message ListDestinationsResponse {
   // The next page token.
   string next_page_token = 2 [json_name="nextPageToken"];
   // Locations that could not be reached.
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+
+// Response for HubService.ListGatewayAdvertisedRoutes method.
+message ListGatewayAdvertisedRoutesResponse {
+  // The requested gateway advertised routes.
+  repeated GatewayAdvertisedRoute gateway_advertised_routes = 1 [json_name="gatewayAdvertisedRoutes"];
+  // The token for the next page of the response. To see more results, use this value as the page_token for your next request. If this value is empty, there are no more results.
+  string next_page_token = 2 [json_name="nextPageToken"];
+  // Hubs that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
 
@@ -1902,34 +1994,36 @@ message Spoke {
   string etag = 3 [json_name="etag"];
   // Optional. The list of fields waiting for hub administrator's approval.
   repeated string field_paths_pending_update = 4 [json_name="fieldPathsPendingUpdate"];
+  // Optional. This is a gateway that can apply specialized processing to traffic going through it.
+  Gateway gateway = 5 [json_name="gateway"];
   // Optional. The name of the group that this spoke is associated with.
-  string group = 5 [json_name="group"];
+  string group = 6 [json_name="group"];
   // Immutable. The name of the hub that this spoke is attached to.
-  string hub = 6 [json_name="hub"];
+  string hub = 7 [json_name="hub"];
   // Optional labels in key-value pair format. For more information about labels, see [Requirements for labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).
-  map<string, string> labels = 7 [json_name="labels"];
+  map<string, string> labels = 8 [json_name="labels"];
   // Optional. VLAN attachments that are associated with the spoke.
-  LinkedInterconnectAttachments linked_interconnect_attachments = 8 [json_name="linkedInterconnectAttachments"];
+  LinkedInterconnectAttachments linked_interconnect_attachments = 9 [json_name="linkedInterconnectAttachments"];
   // Optional. The linked producer VPC that is associated with the spoke.
-  LinkedProducerVpcNetwork linked_producer_vpc_network = 9 [json_name="linkedProducerVpcNetwork"];
+  LinkedProducerVpcNetwork linked_producer_vpc_network = 10 [json_name="linkedProducerVpcNetwork"];
   // Optional. Router appliance instances that are associated with the spoke.
-  LinkedRouterApplianceInstances linked_router_appliance_instances = 10 [json_name="linkedRouterApplianceInstances"];
+  LinkedRouterApplianceInstances linked_router_appliance_instances = 11 [json_name="linkedRouterApplianceInstances"];
   // Optional. VPC network that is associated with the spoke.
-  LinkedVpcNetwork linked_vpc_network = 11 [json_name="linkedVpcNetwork"];
+  LinkedVpcNetwork linked_vpc_network = 12 [json_name="linkedVpcNetwork"];
   // Optional. VPN tunnels that are associated with the spoke.
-  LinkedVpnTunnels linked_vpn_tunnels = 12 [json_name="linkedVpnTunnels"];
+  LinkedVpnTunnels linked_vpn_tunnels = 13 [json_name="linkedVpnTunnels"];
   // Immutable. The name of the spoke. Spoke names must be unique. They use the following form: `projects/{project_number}/locations/{region}/spokes/{spoke_id}`
-  string name = 13 [json_name="name"];
+  string name = 14 [json_name="name"];
   // Output only. The reasons for current state of the spoke.
-  repeated StateReason reasons = 14 [json_name="reasons"];
+  repeated StateReason reasons = 15 [json_name="reasons"];
   // Output only. The type of resource associated with the spoke.
-  string spoke_type = 15 [json_name="spokeType"];
+  string spoke_type = 16 [json_name="spokeType"];
   // Output only. The current lifecycle state of this spoke.
-  string state = 16 [json_name="state"];
+  string state = 17 [json_name="state"];
   // Output only. The Google-generated UUID for the spoke. This value is unique across all spoke resources. If a spoke is deleted and another with the same name is created, the new spoke is assigned a different `unique_id`.
-  string unique_id = 17 [json_name="uniqueId"];
+  string unique_id = 18 [json_name="uniqueId"];
   // Output only. The time the spoke was last updated.
-  .google.protobuf.Timestamp update_time = 18 [json_name="updateTime"];
+  .google.protobuf.Timestamp update_time = 19 [json_name="updateTime"];
 }
 
 // The number of spokes that are in a particular state and associated with a given hub.
@@ -2525,6 +2619,37 @@ message PatchProjectsLocationsSpokeRequest {
   string request_id = 2;
   string update_mask = 3;
   Spoke projects_locations_spoke = 4;
+}
+
+message CreateProjectsLocationsSpokesGatewayAdvertisedRouteRequest {
+  string gateway_advertised_route_id = 1;
+  string parent = 2;
+  string request_id = 3;
+  GatewayAdvertisedRoute projects_locations_spokes_gateway_advertised_route = 4;
+}
+
+message DeleteProjectsLocationsSpokesGatewayAdvertisedRouteRequest {
+  string name = 1;
+  string request_id = 2;
+}
+
+message GetProjectsLocationsSpokesGatewayAdvertisedRouteRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsSpokesGatewayAdvertisedRoutesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+
+message PatchProjectsLocationsSpokesGatewayAdvertisedRouteRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  GatewayAdvertisedRoute projects_locations_spokes_gateway_advertised_route = 4;
 }
 
 message CreateProjectsLocationsTransportRequest {
