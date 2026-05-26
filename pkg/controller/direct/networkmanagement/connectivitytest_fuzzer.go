@@ -161,27 +161,21 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].storage_bucket")
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].serverless_neg")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].serverless_neg")
-    f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_pod")
-    f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_pod")
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_pod")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_pod")
 
-    f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ip_masquerading_skipped")
-    f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ip_masquerading_skipped")
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ip_masquerading_skipped")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ip_masquerading_skipped")
 
-    f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ngfw_packet_inspection")
-    f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ngfw_packet_inspection")
-
-    f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy")
-    f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_network_policy")
-    f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy.direction")
-    f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_network_policy.direction")
-
-    f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy_skipped.reason")
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ngfw_packet_inspection")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ngfw_packet_inspection")
+
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_network_policy")
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy.direction")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_network_policy.direction")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy_skipped.reason")
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy.action")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_network_policy.action")
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_network_policy_skipped")
