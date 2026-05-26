@@ -21,56 +21,6 @@
 
 package v1alpha1
 
-/* unreachable type Origin
-// +kcc:proto=google.cloud.datacatalog.lineage.v1.Origin
-type Origin struct {
-	// Type of the source.
-	//
-	//  Use of a source_type other than `CUSTOM` for process creation
-	//  or updating is highly discouraged, and may be restricted in the future
-	//  without notice.
-	// +kcc:proto:field=google.cloud.datacatalog.lineage.v1.Origin.source_type
-	SourceType *string `json:"sourceType,omitempty"`
-
-	// If the source_type isn't CUSTOM, the value of this field should be a GCP
-	//  resource name of the system, which reports lineage. The project and
-	//  location parts of the resource name must match the project and location of
-	//  the lineage resource being created. Examples:
-	//
-	//  - `{source_type: COMPOSER, name:
-	//    "projects/foo/locations/us/environments/bar"}`
-	//  - `{source_type: BIGQUERY, name: "projects/foo/locations/eu"}`
-	//  - `{source_type: CUSTOM,   name: "myCustomIntegration"}`
-	// +kcc:proto:field=google.cloud.datacatalog.lineage.v1.Origin.name
-	Name *string `json:"name,omitempty"`
-}
-*/
-
-/* unreachable type Process
-// +kcc:proto=google.cloud.datacatalog.lineage.v1.Process
-type Process struct {
-	// Immutable. The resource name of the lineage process. Format:
-	//  `projects/{project}/locations/{location}/processes/{process}`.
-	//  Can be specified or auto-assigned.
-	//  {process} must be not longer than 200 characters and only
-	//  contain characters in a set: `a-zA-Z0-9_-:.`
-	// +kcc:proto:field=google.cloud.datacatalog.lineage.v1.Process.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. A human-readable name you can set to display in a user interface.
-	//  Must be not longer than 200 characters and only contain UTF-8 letters
-	//  or numbers, spaces or characters like `_-:&.`
-	// +kcc:proto:field=google.cloud.datacatalog.lineage.v1.Process.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-	// Optional. The origin of this process and its runs and lineage events.
-	// +kcc:proto:field=google.cloud.datacatalog.lineage.v1.Process.origin
-	Origin *Origin `json:"origin,omitempty"`
-}
-*/
-
 /* unreachable type ListValue
 // +kcc:proto=google.protobuf.ListValue
 type ListValue struct {
