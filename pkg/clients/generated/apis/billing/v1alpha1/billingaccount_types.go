@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,64 +42,63 @@ var _ = apiextensionsv1.JSON{}
 type BillingAccountSpec struct {
 	/* Optional. The currency in which the billing account is billed and charged,
 	represented as an ISO 4217 code such as `USD`.
-
+	
 	Billing account currency is determined at the time of billing account
 	creation and cannot be updated subsequently, so this field should not be
 	set on update requests. In addition, a subaccount always matches the
 	currency of its parent billing account, so this field should not be set on
 	subaccounts. Clients can read this field to determine the
 	currency of an existing billing account. */
-	// +optional
-	CurrencyCode *string `json:"currencyCode,omitempty"`
+// +optional
+CurrencyCode *string `json:"currencyCode,omitempty"`
 
-	/* The display name given to the billing account, such as `My Billing Account`. This name is displayed in the Google Cloud Console. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* The display name given to the billing account, such as `My Billing Account`. This name is displayed in the Google Cloud Console. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	/* Optional. The billing account's parent resource. */
-	// +optional
-	ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
+/* Optional. The billing account's parent resource. */
+// +optional
+ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
 
-	/* The BillingAccount name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The BillingAccount name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type AccountObservedStateStatus struct {
-	/* Optional. The currency in which the billing account is billed and charged, represented as an ISO 4217 code such as `USD`. */
-	// +optional
-	CurrencyCode *string `json:"currencyCode,omitempty"`
+/* Optional. The currency in which the billing account is billed and charged, represented as an ISO 4217 code such as `USD`. */
+// +optional
+CurrencyCode *string `json:"currencyCode,omitempty"`
 
-	/* If this account is a [subaccount](https://cloud.google.com/billing/docs/concepts), then this will be the resource name of the parent billing account that it is being resold through. Otherwise this will be empty. */
-	// +optional
-	MasterBillingAccount *string `json:"masterBillingAccount,omitempty"`
+/* If this account is a [subaccount](https://cloud.google.com/billing/docs/concepts), then this will be the resource name of the parent billing account that it is being resold through. Otherwise this will be empty. */
+// +optional
+MasterBillingAccount *string `json:"masterBillingAccount,omitempty"`
 
-	/* Output only. The resource name of the billing account. The resource name has the form `billingAccounts/{billing_account_id}`. For example, `billingAccounts/012345-567890-ABCDEF` would be the resource name for billing account `012345-567890-ABCDEF`. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* Output only. The resource name of the billing account. The resource name has the form `billingAccounts/{billing_account_id}`. For example, `billingAccounts/012345-567890-ABCDEF` would be the resource name for billing account `012345-567890-ABCDEF`. */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* Output only. True if the billing account is open, and will therefore be charged for any usage on associated projects. False if the billing account is closed, and therefore projects associated with it are unable to use paid services. */
-	// +optional
-	Open *bool `json:"open,omitempty"`
+/* Output only. True if the billing account is open, and will therefore be charged for any usage on associated projects. False if the billing account is closed, and therefore projects associated with it are unable to use paid services. */
+// +optional
+Open *bool `json:"open,omitempty"`
 }
 
 type BillingAccountStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BillingAccount's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BillingAccount resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    BillingAccount's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the BillingAccount resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *AccountObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *AccountObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbillingaccount;gcpbillingaccounts
@@ -113,22 +113,20 @@ type BillingAccountStatus struct {
 // BillingAccount is the Schema for the billing API
 // +k8s:openapi-gen=true
 type BillingAccount struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BillingAccountSpec   `json:"spec,omitempty"`
-	Status BillingAccountStatus `json:"status,omitempty"`
+  Spec BillingAccountSpec `json:"spec,omitempty"`
+  Status BillingAccountStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BillingAccountList contains a list of BillingAccount
-type BillingAccountList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BillingAccount `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BillingAccount{}, &BillingAccountList{})
-}
+ // BillingAccountList contains a list of BillingAccount
+ type BillingAccountList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BillingAccount `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BillingAccount{}, &BillingAccountList{})
+ }

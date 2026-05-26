@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,68 +30,67 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type NetworkServicesServiceBindingSpec struct {
-	/* Optional. A free-text description of the resource. Max length 1024 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. A free-text description of the resource. Max length 1024 characters. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Optional. Set of label tags associated with the ServiceBinding resource. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+/* Optional. Set of label tags associated with the ServiceBinding resource. */
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* Required. The location of the application. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+/* Required. The location of the application. */
+// +optional
+Location *string `json:"location,omitempty"`
 
-	/* Required. The host project of the application. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Required. The host project of the application. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* The NetworkServicesServiceBinding name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The NetworkServicesServiceBinding name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. The full service directory service name of the format /projects/* /locations/* /namespaces/* /services/* */
-	// +optional
-	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+/* Required. The full service directory service name of the format /projects/* /locations/* /namespaces/* /services/* */
+// +optional
+ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 }
 
 type ServicebindingObservedStateStatus struct {
-	/* Output only. The timestamp when the resource was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The timestamp when the resource was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The timestamp when the resource was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The timestamp when the resource was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type NetworkServicesServiceBindingStatus struct {
 	/* Conditions represent the latest available observations of the
-	   NetworkServicesServiceBinding's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the NetworkServicesServiceBinding resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    NetworkServicesServiceBinding's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the NetworkServicesServiceBinding resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ServicebindingObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *ServicebindingObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkservicesservicebinding;gcpnetworkservicesservicebindings
@@ -105,22 +105,20 @@ type NetworkServicesServiceBindingStatus struct {
 // NetworkServicesServiceBinding is the Schema for the networkservices API
 // +k8s:openapi-gen=true
 type NetworkServicesServiceBinding struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   NetworkServicesServiceBindingSpec   `json:"spec,omitempty"`
-	Status NetworkServicesServiceBindingStatus `json:"status,omitempty"`
+  Spec NetworkServicesServiceBindingSpec `json:"spec,omitempty"`
+  Status NetworkServicesServiceBindingStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// NetworkServicesServiceBindingList contains a list of NetworkServicesServiceBinding
-type NetworkServicesServiceBindingList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []NetworkServicesServiceBinding `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesServiceBinding{}, &NetworkServicesServiceBindingList{})
-}
+ // NetworkServicesServiceBindingList contains a list of NetworkServicesServiceBinding
+ type NetworkServicesServiceBindingList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []NetworkServicesServiceBinding `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&NetworkServicesServiceBinding{}, &NetworkServicesServiceBindingList{})
+ }

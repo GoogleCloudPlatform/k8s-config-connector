@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,44 +30,43 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type AppEngineFirewallRuleSpec struct {
-	/* The action to take if this rule matches. Possible values: ["UNSPECIFIED_ACTION", "ALLOW", "DENY"]. */
-	Action string `json:"action"`
+/* The action to take if this rule matches. Possible values: ["UNSPECIFIED_ACTION", "ALLOW", "DENY"]. */
+Action string `json:"action"`
 
-	/* An optional string description of this rule. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* An optional string description of this rule. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. */
-	// +optional
-	Project *string `json:"project,omitempty"`
+/* Immutable. */
+// +optional
+Project *string `json:"project,omitempty"`
 
-	/* Immutable. Optional. The priority of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The priority of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* IP address or range, defined using CIDR notation, of requests that this rule applies to. */
-	SourceRange string `json:"sourceRange"`
+/* IP address or range, defined using CIDR notation, of requests that this rule applies to. */
+SourceRange string `json:"sourceRange"`
 }
 
 type AppEngineFirewallRuleStatus struct {
 	/* Conditions represent the latest available observations of the
-	   AppEngineFirewallRule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    AppEngineFirewallRule's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpappenginefirewallrule;gcpappenginefirewallrules
@@ -83,22 +83,20 @@ type AppEngineFirewallRuleStatus struct {
 // AppEngineFirewallRule is the Schema for the appengine API
 // +k8s:openapi-gen=true
 type AppEngineFirewallRule struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   AppEngineFirewallRuleSpec   `json:"spec,omitempty"`
-	Status AppEngineFirewallRuleStatus `json:"status,omitempty"`
+  Spec AppEngineFirewallRuleSpec `json:"spec,omitempty"`
+  Status AppEngineFirewallRuleStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// AppEngineFirewallRuleList contains a list of AppEngineFirewallRule
-type AppEngineFirewallRuleList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AppEngineFirewallRule `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&AppEngineFirewallRule{}, &AppEngineFirewallRuleList{})
-}
+ // AppEngineFirewallRuleList contains a list of AppEngineFirewallRule
+ type AppEngineFirewallRuleList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []AppEngineFirewallRule `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&AppEngineFirewallRule{}, &AppEngineFirewallRuleList{})
+ }

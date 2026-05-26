@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,36 +30,36 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type TasksqueueAppEngineRoutingOverride struct {
 	/* Output only. The host that the task is sent to.
-
+	
 	The host is constructed from the domain name of the app associated with
 	the queue's project ID (for example <app-id>.appspot.com), and the
 	[service][google.cloud.tasks.v2.AppEngineRouting.service],
 	[version][google.cloud.tasks.v2.AppEngineRouting.version], and
 	[instance][google.cloud.tasks.v2.AppEngineRouting.instance]. Tasks which
 	were created using the App Engine SDK might have a custom domain name.
-
+	
 	For more information, see
 	[How Requests are
 	Routed](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed). */
-	// +optional
-	Host *string `json:"host,omitempty"`
+// +optional
+Host *string `json:"host,omitempty"`
 
 	/* App instance.
-
+	
 	By default, the task is sent to an instance which is available when
 	the task is attempted.
-
+	
 	Requests can only be sent to a specific instance if
 	[manual scaling is used in App Engine
 	Standard](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes).
@@ -67,14 +68,14 @@ type TasksqueueAppEngineRoutingOverride struct {
 	routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed)
 	and [App Engine Flex request
 	routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed). */
-	// +optional
-	Instance *string `json:"instance,omitempty"`
+// +optional
+Instance *string `json:"instance,omitempty"`
 
 	/* App service.
-
+	
 	By default, the task is sent to the service which is the default
 	service when the task is attempted.
-
+	
 	For some queues or tasks which were created using the App Engine
 	Task Queue API, [host][google.cloud.tasks.v2.AppEngineRouting.host] is not
 	parsable into [service][google.cloud.tasks.v2.AppEngineRouting.service],
@@ -87,14 +88,14 @@ type TasksqueueAppEngineRoutingOverride struct {
 	[version][google.cloud.tasks.v2.AppEngineRouting.version], and
 	[instance][google.cloud.tasks.v2.AppEngineRouting.instance] are the empty
 	string. */
-	// +optional
-	Service *string `json:"service,omitempty"`
+// +optional
+Service *string `json:"service,omitempty"`
 
 	/* App version.
-
+	
 	By default, the task is sent to the version which is the default
 	version when the task is attempted.
-
+	
 	For some queues or tasks which were created using the App Engine
 	Task Queue API, [host][google.cloud.tasks.v2.AppEngineRouting.host] is not
 	parsable into [service][google.cloud.tasks.v2.AppEngineRouting.service],
@@ -107,19 +108,19 @@ type TasksqueueAppEngineRoutingOverride struct {
 	[version][google.cloud.tasks.v2.AppEngineRouting.version], and
 	[instance][google.cloud.tasks.v2.AppEngineRouting.instance] are the empty
 	string. */
-	// +optional
-	Version *string `json:"version,omitempty"`
+// +optional
+Version *string `json:"version,omitempty"`
 }
 
 type TasksqueueRateLimits struct {
 	/* Output only. The max burst size.
-
+	
 	Max burst size limits how fast tasks in queue are processed when
 	many tasks are in the queue and the rate is high. This field
 	allows the queue to have a high rate so processing starts shortly
 	after a task is enqueued, but still limits resource usage when
 	many tasks are enqueued in a short period of time.
-
+	
 	The [token bucket](https://wikipedia.org/wiki/Token_Bucket)
 	algorithm is used to control the rate of task dispatches. Each
 	queue has a token bucket that holds tokens, up to the maximum
@@ -128,11 +129,11 @@ type TasksqueueRateLimits struct {
 	the queue's bucket runs out of tokens. The bucket will be
 	continuously refilled with new tokens based on
 	[max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second].
-
+	
 	Cloud Tasks will pick the value of `max_burst_size` based on the
 	value of
 	[max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second].
-
+	
 	For queues that were created or updated using
 	`queue.yaml/xml`, `max_burst_size` is equal to
 	[bucket_size](https://cloud.google.com/appengine/docs/standard/python/config/queueref#bucket_size).
@@ -144,56 +145,56 @@ type TasksqueueRateLimits struct {
 	regardless of whether
 	[max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second]
 	is updated. */
-	// +optional
-	MaxBurstSize *int32 `json:"maxBurstSize,omitempty"`
+// +optional
+MaxBurstSize *int32 `json:"maxBurstSize,omitempty"`
 
 	/* The maximum number of concurrent tasks that Cloud Tasks allows
 	to be dispatched for this queue. After this threshold has been
 	reached, Cloud Tasks stops dispatching tasks until the number of
 	concurrent requests decreases.
-
+	
 	If unspecified when the queue is created, Cloud Tasks will pick the
 	default.
-
+	
 	The maximum allowed value is 5,000.
-
+	
 	This field has the same meaning as
 	[max_concurrent_requests in
 	queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests). */
-	// +optional
-	MaxConcurrentDispatches *int32 `json:"maxConcurrentDispatches,omitempty"`
+// +optional
+MaxConcurrentDispatches *int32 `json:"maxConcurrentDispatches,omitempty"`
 
 	/* The maximum rate at which tasks are dispatched from this queue.
-
+	
 	If unspecified when the queue is created, Cloud Tasks will pick the
 	default.
-
+	
 	* The maximum allowed value is 500.
-
+	
 	This field has the same meaning as
 	[rate in
 	queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#rate). */
-	// +optional
-	MaxDispatchesPerSecond *float64 `json:"maxDispatchesPerSecond,omitempty"`
+// +optional
+MaxDispatchesPerSecond *float64 `json:"maxDispatchesPerSecond,omitempty"`
 }
 
 type TasksqueueRetryConfig struct {
 	/* Number of attempts per task.
-
+	
 	Cloud Tasks will attempt the task `max_attempts` times (that is, if the
 	first attempt fails, then there will be `max_attempts - 1` retries). Must
 	be >= -1.
-
+	
 	If unspecified when the queue is created, Cloud Tasks will pick the
 	default.
-
+	
 	-1 indicates unlimited attempts.
-
+	
 	This field has the same meaning as
 	[task_retry_limit in
 	queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters). */
-	// +optional
-	MaxAttempts *int32 `json:"maxAttempts,omitempty"`
+// +optional
+MaxAttempts *int32 `json:"maxAttempts,omitempty"`
 
 	/* A task will be [scheduled][google.cloud.tasks.v2.Task.schedule_time] for
 	retry between [min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff]
@@ -201,27 +202,27 @@ type TasksqueueRetryConfig struct {
 	after it fails, if the queue's
 	[RetryConfig][google.cloud.tasks.v2.RetryConfig] specifies that the task
 	should be retried.
-
+	
 	If unspecified when the queue is created, Cloud Tasks will pick the
 	default.
-
+	
 	`max_backoff` will be truncated to the nearest second.
-
+	
 	This field has the same meaning as
 	[max_backoff_seconds in
 	queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters). */
-	// +optional
-	MaxBackoff *string `json:"maxBackoff,omitempty"`
+// +optional
+MaxBackoff *string `json:"maxBackoff,omitempty"`
 
 	/* The time between retries will double `max_doublings` times.
-
+	
 	A task's retry interval starts at
 	[min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff], then doubles
 	`max_doublings` times, then increases linearly, and finally
 	retries at intervals of
 	[max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff] up to
 	[max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts] times.
-
+	
 	For example, if
 	[min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff] is 10s,
 	[max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff] is 300s, and
@@ -232,15 +233,15 @@ type TasksqueueRetryConfig struct {
 	until the task has been attempted
 	[max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts] times. Thus,
 	the requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s, 300s, ....
-
+	
 	If unspecified when the queue is created, Cloud Tasks will pick the
 	default.
-
+	
 	This field has the same meaning as
 	[max_doublings in
 	queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters). */
-	// +optional
-	MaxDoublings *int32 `json:"maxDoublings,omitempty"`
+// +optional
+MaxDoublings *int32 `json:"maxDoublings,omitempty"`
 
 	/* If positive, `max_retry_duration` specifies the time limit for
 	retrying a failed task, measured from when the task was first
@@ -248,19 +249,19 @@ type TasksqueueRetryConfig struct {
 	task has been attempted
 	[max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts] times, no
 	further attempts will be made and the task will be deleted.
-
+	
 	If zero, then the task age is unlimited.
-
+	
 	If unspecified when the queue is created, Cloud Tasks will pick the
 	default.
-
+	
 	`max_retry_duration` will be truncated to the nearest second.
-
+	
 	This field has the same meaning as
 	[task_age_limit in
 	queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters). */
-	// +optional
-	MaxRetryDuration *string `json:"maxRetryDuration,omitempty"`
+// +optional
+MaxRetryDuration *string `json:"maxRetryDuration,omitempty"`
 
 	/* A task will be [scheduled][google.cloud.tasks.v2.Task.schedule_time] for
 	retry between [min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff]
@@ -268,23 +269,23 @@ type TasksqueueRetryConfig struct {
 	after it fails, if the queue's
 	[RetryConfig][google.cloud.tasks.v2.RetryConfig] specifies that the task
 	should be retried.
-
+	
 	If unspecified when the queue is created, Cloud Tasks will pick the
 	default.
-
+	
 	`min_backoff` will be truncated to the nearest second.
-
+	
 	This field has the same meaning as
 	[min_backoff_seconds in
 	queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters). */
-	// +optional
-	MinBackoff *string `json:"minBackoff,omitempty"`
+// +optional
+MinBackoff *string `json:"minBackoff,omitempty"`
 }
 
 type TasksqueueStackdriverLoggingConfig struct {
-	/* Specifies the fraction of operations to write to [Stackdriver Logging](https://cloud.google.com/logging/docs/). This field may contain any value between 0.0 and 1.0, inclusive. 0.0 is the default and means that no operations are logged. */
-	// +optional
-	SamplingRatio *float64 `json:"samplingRatio,omitempty"`
+/* Specifies the fraction of operations to write to [Stackdriver Logging](https://cloud.google.com/logging/docs/). This field may contain any value between 0.0 and 1.0, inclusive. 0.0 is the default and means that no operations are logged. */
+// +optional
+SamplingRatio *float64 `json:"samplingRatio,omitempty"`
 }
 
 type TasksQueueSpec struct {
@@ -294,29 +295,29 @@ type TasksQueueSpec struct {
 	These settings apply only to
 	[App Engine tasks][google.cloud.tasks.v2.AppEngineHttpRequest] in this
 	queue. [Http tasks][google.cloud.tasks.v2.HttpRequest] are not affected.
-
+	
 	If set, `app_engine_routing_override` is used for all
 	[App Engine tasks][google.cloud.tasks.v2.AppEngineHttpRequest] in the
 	queue, no matter what the setting is for the [task-level
 	app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing]. */
-	// +optional
-	AppEngineRoutingOverride *TasksqueueAppEngineRoutingOverride `json:"appEngineRoutingOverride,omitempty"`
+// +optional
+AppEngineRoutingOverride *TasksqueueAppEngineRoutingOverride `json:"appEngineRoutingOverride,omitempty"`
 
-	/* Required. The location of the queue. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+/* Required. The location of the queue. */
+// +optional
+Location *string `json:"location,omitempty"`
 
-	/* Required. The host project of the queue. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Required. The host project of the queue. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Rate limits for task dispatches.
-
+	
 	[rate_limits][google.cloud.tasks.v2.Queue.rate_limits] and
 	[retry_config][google.cloud.tasks.v2.Queue.retry_config] are related
 	because they both control task attempts. However they control task attempts
 	in different ways:
-
+	
 	* [rate_limits][google.cloud.tasks.v2.Queue.rate_limits] controls the total
 	rate of
 	dispatches from a queue (i.e. all traffic dispatched from the
@@ -327,9 +328,9 @@ type TasksQueueSpec struct {
 	particular a task after its first attempt fails. That is,
 	[retry_config][google.cloud.tasks.v2.Queue.retry_config] controls task
 	retries (the second attempt, third attempt, etc).
-
+	
 	The queue's actual dispatch rate is the result of:
-
+	
 	* Number of tasks in the queue
 	* User-specified throttling:
 	[rate_limits][google.cloud.tasks.v2.Queue.rate_limits],
@@ -338,15 +339,15 @@ type TasksQueueSpec struct {
 	* System throttling due to `429` (Too Many Requests) or `503` (Service
 	Unavailable) responses from the worker, high error rates, or to smooth
 	sudden large traffic spikes. */
-	// +optional
-	RateLimits *TasksqueueRateLimits `json:"rateLimits,omitempty"`
+// +optional
+RateLimits *TasksqueueRateLimits `json:"rateLimits,omitempty"`
 
-	/* The TasksQueue name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The TasksQueue name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Settings that determine the retry behavior.
-
+	
 	* For tasks created using Cloud Tasks: the queue-level retry settings
 	apply to all tasks in the queue that were created using Cloud Tasks.
 	Retry settings cannot be set on individual tasks.
@@ -355,59 +356,58 @@ type TasksQueueSpec struct {
 	explicitly set on the task and were created by the App Engine SDK. See
 	[App Engine
 	documentation](https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/retrying-tasks). */
-	// +optional
-	RetryConfig *TasksqueueRetryConfig `json:"retryConfig,omitempty"`
+// +optional
+RetryConfig *TasksqueueRetryConfig `json:"retryConfig,omitempty"`
 
-	/* Configuration options for writing logs to [Stackdriver Logging](https://cloud.google.com/logging/docs/). If this field is unset, then no logs are written. */
-	// +optional
-	StackdriverLoggingConfig *TasksqueueStackdriverLoggingConfig `json:"stackdriverLoggingConfig,omitempty"`
+/* Configuration options for writing logs to [Stackdriver Logging](https://cloud.google.com/logging/docs/). If this field is unset, then no logs are written. */
+// +optional
+StackdriverLoggingConfig *TasksqueueStackdriverLoggingConfig `json:"stackdriverLoggingConfig,omitempty"`
 }
 
 type TasksqueueObservedStateStatus struct {
 	/* Output only. The last time this queue was purged.
-
+	
 	All tasks that were [created][google.cloud.tasks.v2.Task.create_time]
 	before this time were purged.
-
+	
 	A queue can be purged using
 	[PurgeQueue][google.cloud.tasks.v2.CloudTasks.PurgeQueue], the [App Engine
 	Task Queue SDK, or the Cloud
 	Console](https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/deleting-tasks-and-queues#purging_all_tasks_from_a_queue).
-
+	
 	Purge time will be truncated to the nearest microsecond. Purge
 	time will be unset if the queue has never been purged. */
-	// +optional
-	PurgeTime *string `json:"purgeTime,omitempty"`
+// +optional
+PurgeTime *string `json:"purgeTime,omitempty"`
 
 	/* Output only. The state of the queue.
-
+	
 	`state` can only be changed by calling
 	[PauseQueue][google.cloud.tasks.v2.CloudTasks.PauseQueue],
 	[ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue], or uploading
 	[queue.yaml/xml](https://cloud.google.com/appengine/docs/python/config/queueref).
 	[UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue] cannot be used
 	to change `state`. */
-	// +optional
-	State *string `json:"state,omitempty"`
+// +optional
+State *string `json:"state,omitempty"`
 }
 
 type TasksQueueStatus struct {
 	/* Conditions represent the latest available observations of the
-	   TasksQueue's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the TasksQueue resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    TasksQueue's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the TasksQueue resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *TasksqueueObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *TasksqueueObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcptasksqueue;gcptasksqueues
@@ -422,22 +422,20 @@ type TasksQueueStatus struct {
 // TasksQueue is the Schema for the cloudtasks API
 // +k8s:openapi-gen=true
 type TasksQueue struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   TasksQueueSpec   `json:"spec,omitempty"`
-	Status TasksQueueStatus `json:"status,omitempty"`
+  Spec TasksQueueSpec `json:"spec,omitempty"`
+  Status TasksQueueStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// TasksQueueList contains a list of TasksQueue
-type TasksQueueList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []TasksQueue `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&TasksQueue{}, &TasksQueueList{})
-}
+ // TasksQueueList contains a list of TasksQueue
+ type TasksQueueList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []TasksQueue `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&TasksQueue{}, &TasksQueueList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,221 +30,220 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type RepositoryCleanupPolicies struct {
-	/* Policy action. */
-	// +optional
-	Action *string `json:"action,omitempty"`
+/* Policy action. */
+// +optional
+Action *string `json:"action,omitempty"`
 
-	/* Policy condition for matching versions. */
-	// +optional
-	Condition *RepositoryCondition `json:"condition,omitempty"`
+/* Policy condition for matching versions. */
+// +optional
+Condition *RepositoryCondition `json:"condition,omitempty"`
 
-	/* The user-provided ID of the cleanup policy. */
-	// +optional
-	Id *string `json:"id,omitempty"`
+/* The user-provided ID of the cleanup policy. */
+// +optional
+Id *string `json:"id,omitempty"`
 
-	/* Policy condition for retaining a minimum number of versions. May only be specified with a Keep action. */
-	// +optional
-	MostRecentVersions *RepositoryMostRecentVersions `json:"mostRecentVersions,omitempty"`
+/* Policy condition for retaining a minimum number of versions. May only be specified with a Keep action. */
+// +optional
+MostRecentVersions *RepositoryMostRecentVersions `json:"mostRecentVersions,omitempty"`
 }
 
 type RepositoryCondition struct {
-	/* Match versions newer than a duration. */
-	// +optional
-	NewerThan *string `json:"newerThan,omitempty"`
+/* Match versions newer than a duration. */
+// +optional
+NewerThan *string `json:"newerThan,omitempty"`
 
-	/* Match versions older than a duration. */
-	// +optional
-	OlderThan *string `json:"olderThan,omitempty"`
+/* Match versions older than a duration. */
+// +optional
+OlderThan *string `json:"olderThan,omitempty"`
 
-	/* Match versions by package prefix. Applied on any prefix match. */
-	// +optional
-	PackageNamePrefixes []string `json:"packageNamePrefixes,omitempty"`
+/* Match versions by package prefix. Applied on any prefix match. */
+// +optional
+PackageNamePrefixes []string `json:"packageNamePrefixes,omitempty"`
 
-	/* Match versions by tag prefix. Applied on any prefix match. */
-	// +optional
-	TagPrefixes []string `json:"tagPrefixes,omitempty"`
+/* Match versions by tag prefix. Applied on any prefix match. */
+// +optional
+TagPrefixes []string `json:"tagPrefixes,omitempty"`
 
-	/* Match versions by tag status. */
-	// +optional
-	TagState *string `json:"tagState,omitempty"`
+/* Match versions by tag status. */
+// +optional
+TagState *string `json:"tagState,omitempty"`
 
-	/* Match versions by version name prefix. Applied on any prefix match. */
-	// +optional
-	VersionNamePrefixes []string `json:"versionNamePrefixes,omitempty"`
+/* Match versions by version name prefix. Applied on any prefix match. */
+// +optional
+VersionNamePrefixes []string `json:"versionNamePrefixes,omitempty"`
 }
 
 type RepositoryDockerConfig struct {
-	/* The repository which enabled this flag prevents all tags from being modified, moved or deleted. This does not prevent tags from being created. */
-	// +optional
-	ImmutableTags *bool `json:"immutableTags,omitempty"`
+/* The repository which enabled this flag prevents all tags from being modified, moved or deleted. This does not prevent tags from being created. */
+// +optional
+ImmutableTags *bool `json:"immutableTags,omitempty"`
 }
 
 type RepositoryDockerRepository struct {
-	/* One of the publicly available Docker repositories supported by Artifact Registry. */
-	// +optional
-	PublicRepository *string `json:"publicRepository,omitempty"`
+/* One of the publicly available Docker repositories supported by Artifact Registry. */
+// +optional
+PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
 type RepositoryMavenConfig struct {
-	/* The repository with this flag will allow publishing the same snapshot versions. */
-	// +optional
-	AllowSnapshotOverwrites *bool `json:"allowSnapshotOverwrites,omitempty"`
+/* The repository with this flag will allow publishing the same snapshot versions. */
+// +optional
+AllowSnapshotOverwrites *bool `json:"allowSnapshotOverwrites,omitempty"`
 
-	/* Version policy defines the versions that the registry will accept. */
-	// +optional
-	VersionPolicy *string `json:"versionPolicy,omitempty"`
+/* Version policy defines the versions that the registry will accept. */
+// +optional
+VersionPolicy *string `json:"versionPolicy,omitempty"`
 }
 
 type RepositoryMavenRepository struct {
-	/* One of the publicly available Maven repositories supported by Artifact Registry. */
-	// +optional
-	PublicRepository *string `json:"publicRepository,omitempty"`
+/* One of the publicly available Maven repositories supported by Artifact Registry. */
+// +optional
+PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
 type RepositoryMostRecentVersions struct {
-	/* Minimum number of versions to keep. */
-	// +optional
-	KeepCount *int32 `json:"keepCount,omitempty"`
+/* Minimum number of versions to keep. */
+// +optional
+KeepCount *int32 `json:"keepCount,omitempty"`
 
-	/* List of package name prefixes that will apply this rule. */
-	// +optional
-	PackageNamePrefixes []string `json:"packageNamePrefixes,omitempty"`
+/* List of package name prefixes that will apply this rule. */
+// +optional
+PackageNamePrefixes []string `json:"packageNamePrefixes,omitempty"`
 }
 
 type RepositoryNpmRepository struct {
-	/* One of the publicly available Npm repositories supported by Artifact Registry. */
-	// +optional
-	PublicRepository *string `json:"publicRepository,omitempty"`
+/* One of the publicly available Npm repositories supported by Artifact Registry. */
+// +optional
+PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
 type RepositoryPythonRepository struct {
-	/* One of the publicly available Python repositories supported by Artifact Registry. */
-	// +optional
-	PublicRepository *string `json:"publicRepository,omitempty"`
+/* One of the publicly available Python repositories supported by Artifact Registry. */
+// +optional
+PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
 type RepositoryRemoteRepositoryConfig struct {
-	/* The description of the remote source. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* The description of the remote source. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Specific settings for a Docker remote repository. */
-	// +optional
-	DockerRepository *RepositoryDockerRepository `json:"dockerRepository,omitempty"`
+/* Specific settings for a Docker remote repository. */
+// +optional
+DockerRepository *RepositoryDockerRepository `json:"dockerRepository,omitempty"`
 
-	/* Specific settings for a Maven remote repository. */
-	// +optional
-	MavenRepository *RepositoryMavenRepository `json:"mavenRepository,omitempty"`
+/* Specific settings for a Maven remote repository. */
+// +optional
+MavenRepository *RepositoryMavenRepository `json:"mavenRepository,omitempty"`
 
-	/* Specific settings for an Npm remote repository. */
-	// +optional
-	NpmRepository *RepositoryNpmRepository `json:"npmRepository,omitempty"`
+/* Specific settings for an Npm remote repository. */
+// +optional
+NpmRepository *RepositoryNpmRepository `json:"npmRepository,omitempty"`
 
-	/* Specific settings for a Python remote repository. */
-	// +optional
-	PythonRepository *RepositoryPythonRepository `json:"pythonRepository,omitempty"`
+/* Specific settings for a Python remote repository. */
+// +optional
+PythonRepository *RepositoryPythonRepository `json:"pythonRepository,omitempty"`
 }
 
 type RepositoryUpstreamPolicies struct {
-	/* The user-provided ID of the upstream policy. */
-	// +optional
-	Id *string `json:"id,omitempty"`
+/* The user-provided ID of the upstream policy. */
+// +optional
+Id *string `json:"id,omitempty"`
 
-	/* Entries with a greater priority value take precedence in the pull order. */
-	// +optional
-	Priority *int32 `json:"priority,omitempty"`
+/* Entries with a greater priority value take precedence in the pull order. */
+// +optional
+Priority *int32 `json:"priority,omitempty"`
 
-	/* A reference to the repository resource, for example: `projects/p1/locations/us-central1/repositories/repo1`. */
-	// +optional
-	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
+/* A reference to the repository resource, for example: `projects/p1/locations/us-central1/repositories/repo1`. */
+// +optional
+RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
 }
 
 type RepositoryVirtualRepositoryConfig struct {
-	/* Policies that configure the upstream artifacts distributed by the Virtual Repository. Upstream policies cannot be set on a standard repository. */
-	// +optional
-	UpstreamPolicies []RepositoryUpstreamPolicies `json:"upstreamPolicies,omitempty"`
+/* Policies that configure the upstream artifacts distributed by the Virtual Repository. Upstream policies cannot be set on a standard repository. */
+// +optional
+UpstreamPolicies []RepositoryUpstreamPolicies `json:"upstreamPolicies,omitempty"`
 }
 
 type ArtifactRegistryRepositorySpec struct {
-	/* Cleanup policies for this repository. Cleanup policies indicate when certain package versions can be automatically deleted. Map keys are policy IDs supplied by users during policy creation. They must unique within a repository and be under 128 characters in length. */
-	// +optional
-	CleanupPolicies []RepositoryCleanupPolicies `json:"cleanupPolicies,omitempty"`
+/* Cleanup policies for this repository. Cleanup policies indicate when certain package versions can be automatically deleted. Map keys are policy IDs supplied by users during policy creation. They must unique within a repository and be under 128 characters in length. */
+// +optional
+CleanupPolicies []RepositoryCleanupPolicies `json:"cleanupPolicies,omitempty"`
 
-	/* Optional. If true, the cleanup pipeline is prevented from deleting versions in this repository. */
-	// +optional
-	CleanupPolicyDryRun *bool `json:"cleanupPolicyDryRun,omitempty"`
+/* Optional. If true, the cleanup pipeline is prevented from deleting versions in this repository. */
+// +optional
+CleanupPolicyDryRun *bool `json:"cleanupPolicyDryRun,omitempty"`
 
-	/* The user-provided description of the repository. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* The user-provided description of the repository. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Docker repository config contains repository level configuration for the repositories of docker type. */
-	// +optional
-	DockerConfig *RepositoryDockerConfig `json:"dockerConfig,omitempty"`
+/* Docker repository config contains repository level configuration for the repositories of docker type. */
+// +optional
+DockerConfig *RepositoryDockerConfig `json:"dockerConfig,omitempty"`
 
-	/* Optional. The format of packages that are stored in the repository. */
-	// +optional
-	Format *string `json:"format,omitempty"`
+/* Optional. The format of packages that are stored in the repository. */
+// +optional
+Format *string `json:"format,omitempty"`
 
-	/* The Cloud KMS resource name of the customer managed encryption key that's used to encrypt the contents of the Repository. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. This value may not be changed after the Repository has been created. */
-	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+/* The Cloud KMS resource name of the customer managed encryption key that's used to encrypt the contents of the Repository. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. This value may not be changed after the Repository has been created. */
+// +optional
+KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* Immutable. The name of the location this repository is located in. */
-	Location string `json:"location"`
+/* Immutable. The name of the location this repository is located in. */
+Location string `json:"location"`
 
-	/* Maven repository config contains repository level configuration for the repositories of maven type. */
-	// +optional
-	MavenConfig *RepositoryMavenConfig `json:"mavenConfig,omitempty"`
+/* Maven repository config contains repository level configuration for the repositories of maven type. */
+// +optional
+MavenConfig *RepositoryMavenConfig `json:"mavenConfig,omitempty"`
 
-	/* Optional. The mode of the repository. */
-	// +optional
-	Mode *string `json:"mode,omitempty"`
+/* Optional. The mode of the repository. */
+// +optional
+Mode *string `json:"mode,omitempty"`
 
-	/* Configuration specific for a Remote Repository. */
-	// +optional
-	RemoteRepositoryConfig *RepositoryRemoteRepositoryConfig `json:"remoteRepositoryConfig,omitempty"`
+/* Configuration specific for a Remote Repository. */
+// +optional
+RemoteRepositoryConfig *RepositoryRemoteRepositoryConfig `json:"remoteRepositoryConfig,omitempty"`
 
-	/* The ArtifactRegistryRepository name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The ArtifactRegistryRepository name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Configuration specific for a Virtual Repository. */
-	// +optional
-	VirtualRepositoryConfig *RepositoryVirtualRepositoryConfig `json:"virtualRepositoryConfig,omitempty"`
+/* Configuration specific for a Virtual Repository. */
+// +optional
+VirtualRepositoryConfig *RepositoryVirtualRepositoryConfig `json:"virtualRepositoryConfig,omitempty"`
 }
 
 type ArtifactRegistryRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ArtifactRegistryRepository's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. The time when the repository was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	    ArtifactRegistryRepository's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Output only. The time when the repository was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* The name of the repository, for example: "repo1". */
-	// +optional
-	Name *string `json:"name,omitempty"`
+/* The name of the repository, for example: "repo1". */
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. The time when the repository was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The time when the repository was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpartifactregistryrepository;gcpartifactregistryrepositories
@@ -260,22 +260,20 @@ type ArtifactRegistryRepositoryStatus struct {
 // ArtifactRegistryRepository is the Schema for the artifactregistry API
 // +k8s:openapi-gen=true
 type ArtifactRegistryRepository struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ArtifactRegistryRepositorySpec   `json:"spec,omitempty"`
-	Status ArtifactRegistryRepositoryStatus `json:"status,omitempty"`
+  Spec ArtifactRegistryRepositorySpec `json:"spec,omitempty"`
+  Status ArtifactRegistryRepositoryStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ArtifactRegistryRepositoryList contains a list of ArtifactRegistryRepository
-type ArtifactRegistryRepositoryList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ArtifactRegistryRepository `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ArtifactRegistryRepository{}, &ArtifactRegistryRepositoryList{})
-}
+ // ArtifactRegistryRepositoryList contains a list of ArtifactRegistryRepository
+ type ArtifactRegistryRepositoryList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ArtifactRegistryRepository `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ArtifactRegistryRepository{}, &ArtifactRegistryRepositoryList{})
+ }

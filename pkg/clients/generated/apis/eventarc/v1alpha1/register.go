@@ -37,39 +37,40 @@
 package v1alpha1
 
 import (
-	"reflect"
+        "reflect"
 
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
+        "k8s.io/apimachinery/pkg/runtime/schema"
+        "sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
-	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "eventarc.cnrm.cloud.google.com", Version: "v1alpha1"}
+        // SchemeGroupVersion is the group version used to register these objects.
+        SchemeGroupVersion = schema.GroupVersion{Group: "eventarc.cnrm.cloud.google.com", Version: "v1alpha1"}
 
-	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+        // SchemeBuilder is used to add go types to the GroupVersionKind scheme.
+        SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
 
-	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
+        // AddToScheme is a global function that registers this API group & version to a scheme
+        AddToScheme = SchemeBuilder.AddToScheme
 
-	EventarcChannelGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(EventarcChannel{}).Name(),
-	}
 
-	EventarcEnrollmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(EventarcEnrollment{}).Name(),
-	}
+        EventarcChannelGVK = schema.GroupVersionKind{
+                Group:   SchemeGroupVersion.Group,
+                Version: SchemeGroupVersion.Version,
+                Kind:    reflect.TypeOf(EventarcChannel{}).Name(),
+        }
 
-	EventarcGoogleChannelConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(EventarcGoogleChannelConfig{}).Name(),
-	}
+        EventarcEnrollmentGVK = schema.GroupVersionKind{
+                Group:   SchemeGroupVersion.Group,
+                Version: SchemeGroupVersion.Version,
+                Kind:    reflect.TypeOf(EventarcEnrollment{}).Name(),
+        }
 
-	eventarcAPIVersion = SchemeGroupVersion.String()
+        EventarcGoogleChannelConfigGVK = schema.GroupVersionKind{
+                Group:   SchemeGroupVersion.Group,
+                Version: SchemeGroupVersion.Version,
+                Kind:    reflect.TypeOf(EventarcGoogleChannelConfig{}).Name(),
+        }
+
+        eventarcAPIVersion = SchemeGroupVersion.String()
 )

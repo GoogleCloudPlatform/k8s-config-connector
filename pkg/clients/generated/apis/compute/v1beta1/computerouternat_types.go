@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,57 +30,57 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type RouternatAction struct {
-	// +optional
-	SourceNatActiveIpsRefs []v1alpha1.ResourceRef `json:"sourceNatActiveIpsRefs,omitempty"`
+// +optional
+SourceNatActiveIpsRefs []v1alpha1.ResourceRef `json:"sourceNatActiveIpsRefs,omitempty"`
 
-	// +optional
-	SourceNatDrainIpsRefs []v1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
+// +optional
+SourceNatDrainIpsRefs []v1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
 }
 
 type RouternatLogConfig struct {
-	/* Indicates whether or not to export logs. */
-	Enable bool `json:"enable"`
+/* Indicates whether or not to export logs. */
+Enable bool `json:"enable"`
 
-	/* Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]. */
-	Filter string `json:"filter"`
+/* Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]. */
+Filter string `json:"filter"`
 }
 
 type RouternatRules struct {
-	/* The action to be enforced for traffic that matches this rule. */
-	// +optional
-	Action *RouternatAction `json:"action,omitempty"`
+/* The action to be enforced for traffic that matches this rule. */
+// +optional
+Action *RouternatAction `json:"action,omitempty"`
 
-	/* An optional description of this rule. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* An optional description of this rule. */
+// +optional
+Description *string `json:"description,omitempty"`
 
 	/* CEL expression that specifies the match condition that egress traffic from a VM is evaluated against.
 	If it evaluates to true, the corresponding action is enforced.
-
+	
 	The following examples are valid match expressions for public NAT:
-
+	
 	"inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')"
-
+	
 	"destination.ip == '1.1.0.1' || destination.ip == '8.8.8.8'"
-
+	
 	The following example is a valid match expression for private NAT:
-
+	
 	"nexthop.hub == 'https://networkconnectivity.googleapis.com/v1alpha1/projects/my-project/global/hub/hub-1'". */
-	Match string `json:"match"`
+Match string `json:"match"`
 
 	/* An integer uniquely identifying a rule in the list.
 	The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT. */
-	RuleNumber int64 `json:"ruleNumber"`
+RuleNumber int64 `json:"ruleNumber"`
 }
 
 type RouternatSubnetwork struct {
@@ -87,76 +88,76 @@ type RouternatSubnetwork struct {
 	to use NAT. This can be populated only if
 	'LIST_OF_SECONDARY_IP_RANGES' is one of the values in
 	sourceIpRangesToNat. */
-	// +optional
-	SecondaryIpRangeNames []string `json:"secondaryIpRangeNames,omitempty"`
+// +optional
+SecondaryIpRangeNames []string `json:"secondaryIpRangeNames,omitempty"`
 
 	/* List of options for which source IPs in the subnetwork
 	should have NAT enabled. Supported values include:
 	'ALL_IP_RANGES', 'LIST_OF_SECONDARY_IP_RANGES',
 	'PRIMARY_IP_RANGE'. */
-	SourceIpRangesToNat []string `json:"sourceIpRangesToNat"`
+SourceIpRangesToNat []string `json:"sourceIpRangesToNat"`
 
-	/* The subnetwork to NAT. */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
+/* The subnetwork to NAT. */
+SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
 }
 
 type ComputeRouterNATSpec struct {
-	// +optional
-	DrainNatIps []v1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
+// +optional
+DrainNatIps []v1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
 
 	/* Enable Dynamic Port Allocation.
 	If minPortsPerVm is set, minPortsPerVm must be set to a power of two greater than or equal to 32.
 	If minPortsPerVm is not set, a minimum of 32 ports will be allocated to a VM from this NAT config.
 	If maxPortsPerVm is set, maxPortsPerVm must be set to a power of two greater than minPortsPerVm.
 	If maxPortsPerVm is not set, a maximum of 65536 ports will be allocated to a VM from this NAT config.
-
+	
 	Mutually exclusive with enableEndpointIndependentMapping. */
-	// +optional
-	EnableDynamicPortAllocation *bool `json:"enableDynamicPortAllocation,omitempty"`
+// +optional
+EnableDynamicPortAllocation *bool `json:"enableDynamicPortAllocation,omitempty"`
 
 	/* Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information
 	see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs). */
-	// +optional
-	EnableEndpointIndependentMapping *bool `json:"enableEndpointIndependentMapping,omitempty"`
+// +optional
+EnableEndpointIndependentMapping *bool `json:"enableEndpointIndependentMapping,omitempty"`
 
-	/* Timeout (in seconds) for ICMP connections. Defaults to 30s if not set. */
-	// +optional
-	IcmpIdleTimeoutSec *int64 `json:"icmpIdleTimeoutSec,omitempty"`
+/* Timeout (in seconds) for ICMP connections. Defaults to 30s if not set. */
+// +optional
+IcmpIdleTimeoutSec *int64 `json:"icmpIdleTimeoutSec,omitempty"`
 
-	/* Configuration for logging on NAT. */
-	// +optional
-	LogConfig *RouternatLogConfig `json:"logConfig,omitempty"`
+/* Configuration for logging on NAT. */
+// +optional
+LogConfig *RouternatLogConfig `json:"logConfig,omitempty"`
 
 	/* Maximum number of ports allocated to a VM from this NAT.
 	This field can only be set when enableDynamicPortAllocation is enabled. */
-	// +optional
-	MaxPortsPerVm *int64 `json:"maxPortsPerVm,omitempty"`
+// +optional
+MaxPortsPerVm *int64 `json:"maxPortsPerVm,omitempty"`
 
-	/* Minimum number of ports allocated to a VM from this NAT. */
-	// +optional
-	MinPortsPerVm *int64 `json:"minPortsPerVm,omitempty"`
+/* Minimum number of ports allocated to a VM from this NAT. */
+// +optional
+MinPortsPerVm *int64 `json:"minPortsPerVm,omitempty"`
 
 	/* How external IPs should be allocated for this NAT. Valid values are
 	'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
 	Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
-	NatIpAllocateOption string `json:"natIpAllocateOption"`
+NatIpAllocateOption string `json:"natIpAllocateOption"`
 
-	// +optional
-	NatIps []v1alpha1.ResourceRef `json:"natIps,omitempty"`
+// +optional
+NatIps []v1alpha1.ResourceRef `json:"natIps,omitempty"`
 
-	/* Immutable. Region where the router and NAT reside. */
-	Region string `json:"region"`
+/* Immutable. Region where the router and NAT reside. */
+Region string `json:"region"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The Cloud Router in which this NAT will be configured. */
-	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
+/* The Cloud Router in which this NAT will be configured. */
+RouterRef v1alpha1.ResourceRef `json:"routerRef"`
 
-	/* A list of rules associated with this NAT. */
-	// +optional
-	Rules []RouternatRules `json:"rules,omitempty"`
+/* A list of rules associated with this NAT. */
+// +optional
+Rules []RouternatRules `json:"rules,omitempty"`
 
 	/* How NAT should be configured per Subnetwork.
 	If 'ALL_SUBNETWORKS_ALL_IP_RANGES', all of the
@@ -168,42 +169,41 @@ type ComputeRouterNATSpec struct {
 	contains ALL_SUBNETWORKS_ALL_IP_RANGES or
 	ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
 	other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"]. */
-	SourceSubnetworkIpRangesToNat string `json:"sourceSubnetworkIpRangesToNat"`
+SourceSubnetworkIpRangesToNat string `json:"sourceSubnetworkIpRangesToNat"`
 
 	/* One or more subnetwork NAT configurations. Only used if
 	'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'. */
-	// +optional
-	Subnetwork []RouternatSubnetwork `json:"subnetwork,omitempty"`
+// +optional
+Subnetwork []RouternatSubnetwork `json:"subnetwork,omitempty"`
 
 	/* Timeout (in seconds) for TCP established connections.
 	Defaults to 1200s if not set. */
-	// +optional
-	TcpEstablishedIdleTimeoutSec *int64 `json:"tcpEstablishedIdleTimeoutSec,omitempty"`
+// +optional
+TcpEstablishedIdleTimeoutSec *int64 `json:"tcpEstablishedIdleTimeoutSec,omitempty"`
 
 	/* Timeout (in seconds) for TCP connections that are in TIME_WAIT state.
 	Defaults to 120s if not set. */
-	// +optional
-	TcpTimeWaitTimeoutSec *int64 `json:"tcpTimeWaitTimeoutSec,omitempty"`
+// +optional
+TcpTimeWaitTimeoutSec *int64 `json:"tcpTimeWaitTimeoutSec,omitempty"`
 
 	/* Timeout (in seconds) for TCP transitory connections.
 	Defaults to 30s if not set. */
-	// +optional
-	TcpTransitoryIdleTimeoutSec *int64 `json:"tcpTransitoryIdleTimeoutSec,omitempty"`
+// +optional
+TcpTransitoryIdleTimeoutSec *int64 `json:"tcpTransitoryIdleTimeoutSec,omitempty"`
 
-	/* Timeout (in seconds) for UDP connections. Defaults to 30s if not set. */
-	// +optional
-	UdpIdleTimeoutSec *int64 `json:"udpIdleTimeoutSec,omitempty"`
+/* Timeout (in seconds) for UDP connections. Defaults to 30s if not set. */
+// +optional
+UdpIdleTimeoutSec *int64 `json:"udpIdleTimeoutSec,omitempty"`
 }
 
 type ComputeRouterNATStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeRouterNAT's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    ComputeRouterNAT's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputerouternat;gcpcomputerouternats
@@ -220,22 +220,20 @@ type ComputeRouterNATStatus struct {
 // ComputeRouterNAT is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeRouterNAT struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeRouterNATSpec   `json:"spec,omitempty"`
-	Status ComputeRouterNATStatus `json:"status,omitempty"`
+  Spec ComputeRouterNATSpec `json:"spec,omitempty"`
+  Status ComputeRouterNATStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeRouterNATList contains a list of ComputeRouterNAT
-type ComputeRouterNATList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeRouterNAT `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeRouterNAT{}, &ComputeRouterNATList{})
-}
+ // ComputeRouterNATList contains a list of ComputeRouterNAT
+ type ComputeRouterNATList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeRouterNAT `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeRouterNAT{}, &ComputeRouterNATList{})
+ }

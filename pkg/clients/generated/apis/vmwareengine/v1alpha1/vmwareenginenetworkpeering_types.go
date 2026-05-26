@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,113 +30,112 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type NetworkpeeringPeerNetwork struct {
-	/* Reference to a ComputeNetwork. Exactly one of VMwareEngineNetworkRef or ComputeNetworkRef must be specified. */
-	// +optional
-	ComputeNetworkRef *v1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
+/* Reference to a ComputeNetwork. Exactly one of VMwareEngineNetworkRef or ComputeNetworkRef must be specified. */
+// +optional
+ComputeNetworkRef *v1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
 
-	/* Reference to a VmwareEngineNetwork. Exactly one of VMwareEngineNetworkRef or ComputeNetworkRef must be specified. */
-	// +optional
-	VmwareEngineNetworkRef *v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
+/* Reference to a VmwareEngineNetwork. Exactly one of VMwareEngineNetworkRef or ComputeNetworkRef must be specified. */
+// +optional
+VmwareEngineNetworkRef *v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
 }
 
 type VMwareEngineNetworkPeeringSpec struct {
-	/* Optional. User-provided description for this network peering. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. User-provided description for this network peering. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Optional. True if full mesh connectivity is created and managed automatically between peered networks; false otherwise. Currently this field is always true because Google Compute Engine automatically creates and manages subnetwork routes between two VPC networks when peering state is 'ACTIVE'. */
-	// +optional
-	ExchangeSubnetRoutes *bool `json:"exchangeSubnetRoutes,omitempty"`
+/* Optional. True if full mesh connectivity is created and managed automatically between peered networks; false otherwise. Currently this field is always true because Google Compute Engine automatically creates and manages subnetwork routes between two VPC networks when peering state is 'ACTIVE'. */
+// +optional
+ExchangeSubnetRoutes *bool `json:"exchangeSubnetRoutes,omitempty"`
 
-	/* Optional. True if custom routes are exported to the peered network; false otherwise. The default value is true. */
-	// +optional
-	ExportCustomRoutes *bool `json:"exportCustomRoutes,omitempty"`
+/* Optional. True if custom routes are exported to the peered network; false otherwise. The default value is true. */
+// +optional
+ExportCustomRoutes *bool `json:"exportCustomRoutes,omitempty"`
 
-	/* Optional. True if all subnet routes with a public IP address range are exported; false otherwise. The default value is true. IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are always exported to peers and are not controlled by this field. */
-	// +optional
-	ExportCustomRoutesWithPublicIP *bool `json:"exportCustomRoutesWithPublicIP,omitempty"`
+/* Optional. True if all subnet routes with a public IP address range are exported; false otherwise. The default value is true. IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are always exported to peers and are not controlled by this field. */
+// +optional
+ExportCustomRoutesWithPublicIP *bool `json:"exportCustomRoutesWithPublicIP,omitempty"`
 
-	/* Optional. True if custom routes are imported from the peered network; false otherwise. The default value is true. */
-	// +optional
-	ImportCustomRoutes *bool `json:"importCustomRoutes,omitempty"`
+/* Optional. True if custom routes are imported from the peered network; false otherwise. The default value is true. */
+// +optional
+ImportCustomRoutes *bool `json:"importCustomRoutes,omitempty"`
 
-	/* Optional. True if all subnet routes with public IP address range are imported; false otherwise. The default value is true. IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are always imported to peers and are not controlled by this field. */
-	// +optional
-	ImportCustomRoutesWithPublicIP *bool `json:"importCustomRoutesWithPublicIP,omitempty"`
+/* Optional. True if all subnet routes with public IP address range are imported; false otherwise. The default value is true. IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are always imported to peers and are not controlled by this field. */
+// +optional
+ImportCustomRoutesWithPublicIP *bool `json:"importCustomRoutesWithPublicIP,omitempty"`
 
-	/* Immutable. */
-	Location string `json:"location"`
+/* Immutable. */
+Location string `json:"location"`
 
-	/* Optional. Maximum transmission unit (MTU) in bytes. The default value is `1500`. If a value of `0` is provided for this field, VMware Engine uses the default value instead. */
-	// +optional
-	PeerMTU *int32 `json:"peerMTU,omitempty"`
+/* Optional. Maximum transmission unit (MTU) in bytes. The default value is `1500`. If a value of `0` is provided for this field, VMware Engine uses the default value instead. */
+// +optional
+PeerMTU *int32 `json:"peerMTU,omitempty"`
 
-	/* Required. The name of the network to peer with a standard VMware Engine network. The provided network can be a consumer VPC network or another standard VMware Engine network. */
-	PeerNetwork NetworkpeeringPeerNetwork `json:"peerNetwork"`
+/* Required. The name of the network to peer with a standard VMware Engine network. The provided network can be a consumer VPC network or another standard VMware Engine network. */
+PeerNetwork NetworkpeeringPeerNetwork `json:"peerNetwork"`
 
-	/* Required. The type of the network to peer with the VMware Engine network. */
-	PeerNetworkType string `json:"peerNetworkType"`
+/* Required. The type of the network to peer with the VMware Engine network. */
+PeerNetworkType string `json:"peerNetworkType"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The VMwareEngineNetworkPeering name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The VMwareEngineNetworkPeering name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Required. The relative resource name of the VMware Engine network. */
-	VmwareEngineNetworkRef v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef"`
+/* Required. The relative resource name of the VMware Engine network. */
+VmwareEngineNetworkRef v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef"`
 }
 
 type NetworkpeeringObservedStateStatus struct {
-	/* Output only. Creation time of this resource. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Creation time of this resource. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. State of the network peering. This field has a value of 'ACTIVE' when there's a matching configuration in the peer network. New values may be added to this enum when appropriate. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. State of the network peering. This field has a value of 'ACTIVE' when there's a matching configuration in the peer network. New values may be added to this enum when appropriate. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. Output Only. Details about the current state of the network peering. */
-	// +optional
-	StateDetails *string `json:"stateDetails,omitempty"`
+/* Output only. Output Only. Details about the current state of the network peering. */
+// +optional
+StateDetails *string `json:"stateDetails,omitempty"`
 
-	/* Output only. System-generated unique identifier for the resource. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. System-generated unique identifier for the resource. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 
-	/* Output only. Last update time of this resource. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Last update time of this resource. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type VMwareEngineNetworkPeeringStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VMwareEngineNetworkPeering's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VMwareEngineNetworkPeering resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    VMwareEngineNetworkPeering's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the VMwareEngineNetworkPeering resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *NetworkpeeringObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *NetworkpeeringObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvmwareenginenetworkpeering;gcpvmwareenginenetworkpeerings
@@ -150,22 +150,20 @@ type VMwareEngineNetworkPeeringStatus struct {
 // VMwareEngineNetworkPeering is the Schema for the vmwareengine API
 // +k8s:openapi-gen=true
 type VMwareEngineNetworkPeering struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VMwareEngineNetworkPeeringSpec   `json:"spec,omitempty"`
-	Status VMwareEngineNetworkPeeringStatus `json:"status,omitempty"`
+  Spec VMwareEngineNetworkPeeringSpec `json:"spec,omitempty"`
+  Status VMwareEngineNetworkPeeringStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// VMwareEngineNetworkPeeringList contains a list of VMwareEngineNetworkPeering
-type VMwareEngineNetworkPeeringList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VMwareEngineNetworkPeering `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&VMwareEngineNetworkPeering{}, &VMwareEngineNetworkPeeringList{})
-}
+ // VMwareEngineNetworkPeeringList contains a list of VMwareEngineNetworkPeering
+ type VMwareEngineNetworkPeeringList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []VMwareEngineNetworkPeering `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&VMwareEngineNetworkPeering{}, &VMwareEngineNetworkPeeringList{})
+ }

@@ -53,11 +53,13 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	PrivilegedAccessManagerEntitlementGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(PrivilegedAccessManagerEntitlement{}).Name(),
-	}
+	
+  	PrivilegedAccessManagerEntitlementGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(PrivilegedAccessManagerEntitlement{}).Name(),
+  	}
+  
 
-	privilegedaccessmanagerAPIVersion = SchemeGroupVersion.String()
+  	privilegedaccessmanagerAPIVersion = SchemeGroupVersion.String()
 )

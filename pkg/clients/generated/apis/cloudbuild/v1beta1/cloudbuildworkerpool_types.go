@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,128 +30,127 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type WorkerpoolNetworkConfig struct {
-	/* Option to configure network egress for the workers. */
-	// +optional
-	EgressOption *string `json:"egressOption,omitempty"`
+/* Option to configure network egress for the workers. */
+// +optional
+EgressOption *string `json:"egressOption,omitempty"`
 
-	/* Immutable. Subnet IP range within the peered network. This is specified in CIDR notation with a slash and the subnet prefix size. You can optionally specify an IP address before the subnet prefix value. e.g. `192.168.0.0/29` would specify an IP range starting at 192.168.0.0 with a prefix size of 29 bits. `/16` would specify a prefix size of 16 bits, with an automatically determined IP within the peered VPC. If unspecified, a value of `/24` will be used. */
-	// +optional
-	PeeredNetworkIPRange *string `json:"peeredNetworkIPRange,omitempty"`
+/* Immutable. Subnet IP range within the peered network. This is specified in CIDR notation with a slash and the subnet prefix size. You can optionally specify an IP address before the subnet prefix value. e.g. `192.168.0.0/29` would specify an IP range starting at 192.168.0.0 with a prefix size of 29 bits. `/16` would specify a prefix size of 16 bits, with an automatically determined IP within the peered VPC. If unspecified, a value of `/24` will be used. */
+// +optional
+PeeredNetworkIPRange *string `json:"peeredNetworkIPRange,omitempty"`
 
-	/* Immutable. The network definition that the workers are peered to. If this section is left empty, the workers will be peered to `WorkerPool.project_id` on the service producer network. */
-	// +optional
-	PeeredNetworkRef *v1alpha1.ResourceRef `json:"peeredNetworkRef,omitempty"`
+/* Immutable. The network definition that the workers are peered to. If this section is left empty, the workers will be peered to `WorkerPool.project_id` on the service producer network. */
+// +optional
+PeeredNetworkRef *v1alpha1.ResourceRef `json:"peeredNetworkRef,omitempty"`
 }
 
 type WorkerpoolPrivatePoolV1Config struct {
-	/* Network configuration for the pool. */
-	// +optional
-	NetworkConfig *WorkerpoolNetworkConfig `json:"networkConfig,omitempty"`
+/* Network configuration for the pool. */
+// +optional
+NetworkConfig *WorkerpoolNetworkConfig `json:"networkConfig,omitempty"`
 
-	/* Machine configuration for the workers in the pool. */
-	WorkerConfig WorkerpoolWorkerConfig `json:"workerConfig"`
+/* Machine configuration for the workers in the pool. */
+WorkerConfig WorkerpoolWorkerConfig `json:"workerConfig"`
 }
 
 type WorkerpoolWorkerConfig struct {
-	/* Size of the disk attached to the worker, in GB. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). Specify a value of up to 2000. If `0` is specified, Cloud Build will use a standard disk size. */
-	// +optional
-	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
+/* Size of the disk attached to the worker, in GB. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). Specify a value of up to 2000. If `0` is specified, Cloud Build will use a standard disk size. */
+// +optional
+DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
-	/* Machine type of a worker, such as `e2-medium`. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). If left blank, Cloud Build will use a sensible default. */
-	// +optional
-	MachineType *string `json:"machineType,omitempty"`
+/* Machine type of a worker, such as `e2-medium`. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). If left blank, Cloud Build will use a sensible default. */
+// +optional
+MachineType *string `json:"machineType,omitempty"`
 }
 
 type CloudBuildWorkerPoolSpec struct {
-	/* A user-specified, human-readable name for the `WorkerPool`. If provided, this value must be 1-63 characters. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+/* A user-specified, human-readable name for the `WorkerPool`. If provided, this value must be 1-63 characters. */
+// +optional
+DisplayName *string `json:"displayName,omitempty"`
 
-	Location string `json:"location"`
+Location string `json:"location"`
 
-	/* Legacy Private Pool configuration. */
-	PrivatePoolV1Config WorkerpoolPrivatePoolV1Config `json:"privatePoolV1Config"`
+/* Legacy Private Pool configuration. */
+PrivatePoolV1Config WorkerpoolPrivatePoolV1Config `json:"privatePoolV1Config"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The GCP resource identifier. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The GCP resource identifier. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type WorkerpoolNetworkConfigStatus struct {
-	/* Option to configure network egress for the workers. */
-	// +optional
-	EgressOption *string `json:"egressOption,omitempty"`
+/* Option to configure network egress for the workers. */
+// +optional
+EgressOption *string `json:"egressOption,omitempty"`
 
-	/* Immutable. The network definition that the workers are peered to. If this section is left empty, the workers will be peered to `WorkerPool.project_id` on the service producer network. */
-	// +optional
-	PeeredNetwork *string `json:"peeredNetwork,omitempty"`
+/* Immutable. The network definition that the workers are peered to. If this section is left empty, the workers will be peered to `WorkerPool.project_id` on the service producer network. */
+// +optional
+PeeredNetwork *string `json:"peeredNetwork,omitempty"`
 
-	/* Immutable. Subnet IP range within the peered network. This is specified in CIDR notation with a slash and the subnet prefix size. You can optionally specify an IP address before the subnet prefix value. e.g. `192.168.0.0/29` would specify an IP range starting at 192.168.0.0 with a prefix size of 29 bits. `/16` would specify a prefix size of 16 bits, with an automatically determined IP within the peered VPC. If unspecified, a value of `/24` will be used. */
-	// +optional
-	PeeredNetworkIPRange *string `json:"peeredNetworkIPRange,omitempty"`
+/* Immutable. Subnet IP range within the peered network. This is specified in CIDR notation with a slash and the subnet prefix size. You can optionally specify an IP address before the subnet prefix value. e.g. `192.168.0.0/29` would specify an IP range starting at 192.168.0.0 with a prefix size of 29 bits. `/16` would specify a prefix size of 16 bits, with an automatically determined IP within the peered VPC. If unspecified, a value of `/24` will be used. */
+// +optional
+PeeredNetworkIPRange *string `json:"peeredNetworkIPRange,omitempty"`
 }
 
 type WorkerpoolObservedStateStatus struct {
-	/* The creation timestamp of the workerpool. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* The creation timestamp of the workerpool. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* The Checksum computed by the server, using weak indicator. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* The Checksum computed by the server, using weak indicator. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* Network configuration for the pool. */
-	// +optional
-	NetworkConfig *WorkerpoolNetworkConfigStatus `json:"networkConfig,omitempty"`
+/* Network configuration for the pool. */
+// +optional
+NetworkConfig *WorkerpoolNetworkConfigStatus `json:"networkConfig,omitempty"`
 
-	/* The last update timestamp of the workerpool. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* The last update timestamp of the workerpool. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 
-	/* Machine configuration for the workers in the pool. */
-	WorkerConfig WorkerpoolWorkerConfigStatus `json:"workerConfig"`
+/* Machine configuration for the workers in the pool. */
+WorkerConfig WorkerpoolWorkerConfigStatus `json:"workerConfig"`
 }
 
 type WorkerpoolWorkerConfigStatus struct {
-	/* Size of the disk attached to the worker, in GB. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). Specify a value of up to 2000. If `0` is specified, Cloud Build will use a standard disk size. */
-	// +optional
-	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
+/* Size of the disk attached to the worker, in GB. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). Specify a value of up to 2000. If `0` is specified, Cloud Build will use a standard disk size. */
+// +optional
+DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
-	/* Machine type of a worker, such as `e2-medium`. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). If left blank, Cloud Build will use a sensible default. */
-	// +optional
-	MachineType *string `json:"machineType,omitempty"`
+/* Machine type of a worker, such as `e2-medium`. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). If left blank, Cloud Build will use a sensible default. */
+// +optional
+MachineType *string `json:"machineType,omitempty"`
 }
 
 type CloudBuildWorkerPoolStatus struct {
 	/* Conditions represent the latest available observations of the
-	   CloudBuildWorkerPool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique Config Connector specifier for the resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    CloudBuildWorkerPool's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique Config Connector specifier for the resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *WorkerpoolObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *WorkerpoolObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudbuildworkerpool;gcpcloudbuildworkerpools
@@ -162,22 +162,20 @@ type CloudBuildWorkerPoolStatus struct {
 // CloudBuildWorkerPool is the Schema for the cloudbuild API
 // +k8s:openapi-gen=true
 type CloudBuildWorkerPool struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   CloudBuildWorkerPoolSpec   `json:"spec,omitempty"`
-	Status CloudBuildWorkerPoolStatus `json:"status,omitempty"`
+  Spec CloudBuildWorkerPoolSpec `json:"spec,omitempty"`
+  Status CloudBuildWorkerPoolStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// CloudBuildWorkerPoolList contains a list of CloudBuildWorkerPool
-type CloudBuildWorkerPoolList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CloudBuildWorkerPool `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&CloudBuildWorkerPool{}, &CloudBuildWorkerPoolList{})
-}
+ // CloudBuildWorkerPoolList contains a list of CloudBuildWorkerPool
+ type CloudBuildWorkerPoolList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []CloudBuildWorkerPool `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&CloudBuildWorkerPool{}, &CloudBuildWorkerPoolList{})
+ }

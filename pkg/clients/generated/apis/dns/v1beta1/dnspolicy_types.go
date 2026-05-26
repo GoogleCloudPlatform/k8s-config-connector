@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -42,66 +43,65 @@ type PolicyAlternativeNameServerConfig struct {
 	/* Sets an alternative name server for the associated networks. When specified,
 	all DNS queries are forwarded to a name server that you choose. Names such as .internal
 	are not available when an alternative name server is specified. */
-	TargetNameServers []PolicyTargetNameServers `json:"targetNameServers"`
+TargetNameServers []PolicyTargetNameServers `json:"targetNameServers"`
 }
 
 type PolicyNetworks struct {
-	/* VPC network to bind to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+/* VPC network to bind to. */
+NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 }
 
 type PolicyTargetNameServers struct {
 	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
 	decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
 	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"]. */
-	// +optional
-	ForwardingPath *string `json:"forwardingPath,omitempty"`
+// +optional
+ForwardingPath *string `json:"forwardingPath,omitempty"`
 
-	/* IPv4 address to forward to. */
-	Ipv4Address string `json:"ipv4Address"`
+/* IPv4 address to forward to. */
+Ipv4Address string `json:"ipv4Address"`
 }
 
 type DNSPolicySpec struct {
 	/* Sets an alternative name server for the associated networks.
 	When specified, all DNS queries are forwarded to a name server that you choose.
 	Names such as .internal are not available when an alternative name server is specified. */
-	// +optional
-	AlternativeNameServerConfig *PolicyAlternativeNameServerConfig `json:"alternativeNameServerConfig,omitempty"`
+// +optional
+AlternativeNameServerConfig *PolicyAlternativeNameServerConfig `json:"alternativeNameServerConfig,omitempty"`
 
-	/* A textual description field. Defaults to 'Managed by Config Connector'. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* A textual description field. Defaults to 'Managed by Config Connector'. */
+// +optional
+Description *string `json:"description,omitempty"`
 
 	/* Allows networks bound to this policy to receive DNS queries sent
 	by VMs or applications over VPN connections. When enabled, a
 	virtual IP address will be allocated from each of the sub-networks
 	that are bound to this policy. */
-	// +optional
-	EnableInboundForwarding *bool `json:"enableInboundForwarding,omitempty"`
+// +optional
+EnableInboundForwarding *bool `json:"enableInboundForwarding,omitempty"`
 
 	/* Controls whether logging is enabled for the networks bound to this policy.
 	Defaults to no logging if not set. */
-	// +optional
-	EnableLogging *bool `json:"enableLogging,omitempty"`
+// +optional
+EnableLogging *bool `json:"enableLogging,omitempty"`
 
-	/* List of network names specifying networks to which this policy is applied. */
-	// +optional
-	Networks []PolicyNetworks `json:"networks,omitempty"`
+/* List of network names specifying networks to which this policy is applied. */
+// +optional
+Networks []PolicyNetworks `json:"networks,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type DNSPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DNSPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    DNSPolicy's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdnspolicy;gcpdnspolicies
@@ -118,22 +118,20 @@ type DNSPolicyStatus struct {
 // DNSPolicy is the Schema for the dns API
 // +k8s:openapi-gen=true
 type DNSPolicy struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DNSPolicySpec   `json:"spec,omitempty"`
-	Status DNSPolicyStatus `json:"status,omitempty"`
+  Spec DNSPolicySpec `json:"spec,omitempty"`
+  Status DNSPolicyStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// DNSPolicyList contains a list of DNSPolicy
-type DNSPolicyList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DNSPolicy `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&DNSPolicy{}, &DNSPolicyList{})
-}
+ // DNSPolicyList contains a list of DNSPolicy
+ type DNSPolicyList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []DNSPolicy `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&DNSPolicy{}, &DNSPolicyList{})
+ }

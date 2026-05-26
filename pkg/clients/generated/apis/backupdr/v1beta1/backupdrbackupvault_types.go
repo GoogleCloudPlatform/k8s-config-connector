@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +30,11 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
@@ -41,97 +42,96 @@ var _ = apiextensionsv1.JSON{}
 type BackupDRBackupVaultSpec struct {
 	/* Optional. Note: This field is added for future use case and will not be
 	supported in the current release.
-
+	
 	Access restriction for the backup vault.
 	Default value is WITHIN_ORGANIZATION if not provided during creation. */
-	// +optional
-	AccessRestriction *string `json:"accessRestriction,omitempty"`
+// +optional
+AccessRestriction *string `json:"accessRestriction,omitempty"`
 
-	/* Optional. User annotations. See https://google.aip.dev/128#annotations Stores small amounts of arbitrary data. */
-	// +optional
-	Annotations map[string]string `json:"annotations,omitempty"`
+/* Optional. User annotations. See https://google.aip.dev/128#annotations Stores small amounts of arbitrary data. */
+// +optional
+Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* Required. The default and minimum enforced retention for each backup within the backup vault.  The enforced retention for each backup can be extended. */
-	BackupMinimumEnforcedRetentionDuration string `json:"backupMinimumEnforcedRetentionDuration"`
+/* Required. The default and minimum enforced retention for each backup within the backup vault.  The enforced retention for each backup can be extended. */
+BackupMinimumEnforcedRetentionDuration string `json:"backupMinimumEnforcedRetentionDuration"`
 
-	/* Optional. The description of the BackupVault instance (2048 characters or less). */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Optional. The description of the BackupVault instance (2048 characters or less). */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Optional. Time after which the BackupVault resource is locked. */
-	// +optional
-	EffectiveTime *string `json:"effectiveTime,omitempty"`
+/* Optional. Time after which the BackupVault resource is locked. */
+// +optional
+EffectiveTime *string `json:"effectiveTime,omitempty"`
 
-	/* Optional. If set to true, allows deletion of a backup vault even when it contains inactive data sources. This overrides the default restriction that prevents deletion of backup vaults with any data sources, even if those data sources are inactive. */
-	// +optional
-	IgnoreInactiveDatasources *bool `json:"ignoreInactiveDatasources,omitempty"`
+/* Optional. If set to true, allows deletion of a backup vault even when it contains inactive data sources. This overrides the default restriction that prevents deletion of backup vaults with any data sources, even if those data sources are inactive. */
+// +optional
+IgnoreInactiveDatasources *bool `json:"ignoreInactiveDatasources,omitempty"`
 
-	/* Immutable. */
-	Location string `json:"location"`
+/* Immutable. */
+Location string `json:"location"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The BackupDRBackupVault name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The BackupDRBackupVault name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type BackupvaultObservedStateStatus struct {
-	/* Output only. The number of backups in this backup vault. */
-	// +optional
-	BackupCount *int64 `json:"backupCount,omitempty"`
+/* Output only. The number of backups in this backup vault. */
+// +optional
+BackupCount *int64 `json:"backupCount,omitempty"`
 
-	/* Output only. The time when the instance was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. The time when the instance was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Set to true when there are no backups nested under this resource. */
-	// +optional
-	Deletable *bool `json:"deletable,omitempty"`
+/* Output only. Set to true when there are no backups nested under this resource. */
+// +optional
+Deletable *bool `json:"deletable,omitempty"`
 
-	/* Output only. A tag that confirms the content of the BackupVault resource. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* Output only. A tag that confirms the content of the BackupVault resource. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* Output only. Service account used by the BackupVault Service for this BackupVault.  The user should grant this account permissions in their workload project to enable the service to run backups and restores there. */
-	// +optional
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+/* Output only. Service account used by the BackupVault Service for this BackupVault.  The user should grant this account permissions in their workload project to enable the service to run backups and restores there. */
+// +optional
+ServiceAccount *string `json:"serviceAccount,omitempty"`
 
-	/* Output only. The BackupVault resource instance state. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. The BackupVault resource instance state. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. Total size of the storage used by all backup resources. */
-	// +optional
-	TotalStoredBytes *int64 `json:"totalStoredBytes,omitempty"`
+/* Output only. Total size of the storage used by all backup resources. */
+// +optional
+TotalStoredBytes *int64 `json:"totalStoredBytes,omitempty"`
 
-	/* Output only. Immutable after resource creation until resource deletion. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+/* Output only. Immutable after resource creation until resource deletion. */
+// +optional
+Uid *string `json:"uid,omitempty"`
 
-	/* Output only. The time when the instance was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The time when the instance was updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type BackupDRBackupVaultStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BackupDRBackupVault's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BackupDRBackupVault resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    BackupDRBackupVault's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the BackupDRBackupVault resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *BackupvaultObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *BackupvaultObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbackupdrbackupvault;gcpbackupdrbackupvaults
@@ -146,22 +146,20 @@ type BackupDRBackupVaultStatus struct {
 // BackupDRBackupVault is the Schema for the backupdr API
 // +k8s:openapi-gen=true
 type BackupDRBackupVault struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BackupDRBackupVaultSpec   `json:"spec,omitempty"`
-	Status BackupDRBackupVaultStatus `json:"status,omitempty"`
+  Spec BackupDRBackupVaultSpec `json:"spec,omitempty"`
+  Status BackupDRBackupVaultStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// BackupDRBackupVaultList contains a list of BackupDRBackupVault
-type BackupDRBackupVaultList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BackupDRBackupVault `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&BackupDRBackupVault{}, &BackupDRBackupVaultList{})
-}
+ // BackupDRBackupVaultList contains a list of BackupDRBackupVault
+ type BackupDRBackupVaultList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []BackupDRBackupVault `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&BackupDRBackupVault{}, &BackupDRBackupVaultList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,42 +30,41 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type IAPBrandSpec struct {
-	/* Immutable. Application name displayed on OAuth consent screen. */
-	// +optional
-	ApplicationTitle *string `json:"applicationTitle,omitempty"`
+/* Immutable. Application name displayed on OAuth consent screen. */
+// +optional
+ApplicationTitle *string `json:"applicationTitle,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Support email displayed on the OAuth consent screen. */
-	// +optional
-	SupportEmail *string `json:"supportEmail,omitempty"`
+/* Immutable. Support email displayed on the OAuth consent screen. */
+// +optional
+SupportEmail *string `json:"supportEmail,omitempty"`
 }
 
 type IAPBrandStatus struct {
 	/* Conditions represent the latest available observations of the
-	   IAPBrand's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    IAPBrand's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. Whether the brand is only intended for usage inside the G Suite organization only. */
-	// +optional
-	OrgInternalOnly *bool `json:"orgInternalOnly,omitempty"`
+/* Output only. Whether the brand is only intended for usage inside the G Suite organization only. */
+// +optional
+OrgInternalOnly *bool `json:"orgInternalOnly,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpiapbrand;gcpiapbrands
@@ -81,22 +81,20 @@ type IAPBrandStatus struct {
 // IAPBrand is the Schema for the iap API
 // +k8s:openapi-gen=true
 type IAPBrand struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   IAPBrandSpec   `json:"spec,omitempty"`
-	Status IAPBrandStatus `json:"status,omitempty"`
+  Spec IAPBrandSpec `json:"spec,omitempty"`
+  Status IAPBrandStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// IAPBrandList contains a list of IAPBrand
-type IAPBrandList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []IAPBrand `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&IAPBrand{}, &IAPBrandList{})
-}
+ // IAPBrandList contains a list of IAPBrand
+ type IAPBrandList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []IAPBrand `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&IAPBrand{}, &IAPBrandList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,61 +30,60 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type ComputeNetworkFirewallPolicySpec struct {
-	/* An optional description of this resource. Provide this property when you create the resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* An optional description of this resource. Provide this property when you create the resource. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ComputeNetworkFirewallPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
-	   ComputeNetworkFirewallPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Creation timestamp in RFC3339 text format. */
-	// +optional
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+	    ComputeNetworkFirewallPolicy's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* Creation timestamp in RFC3339 text format. */
+// +optional
+CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* Fingerprint of the resource. This field is used internally during updates of this resource. */
-	// +optional
-	Fingerprint *string `json:"fingerprint,omitempty"`
+/* Fingerprint of the resource. This field is used internally during updates of this resource. */
+// +optional
+Fingerprint *string `json:"fingerprint,omitempty"`
 
-	/* The unique identifier for the resource. This identifier is defined by the server. */
-	// +optional
-	NetworkFirewallPolicyId *string `json:"networkFirewallPolicyId,omitempty"`
+/* The unique identifier for the resource. This identifier is defined by the server. */
+// +optional
+NetworkFirewallPolicyId *string `json:"networkFirewallPolicyId,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Total count of all firewall policy rule tuples. A firewall policy can not exceed a set number of tuples. */
-	// +optional
-	RuleTupleCount *int64 `json:"ruleTupleCount,omitempty"`
+/* Total count of all firewall policy rule tuples. A firewall policy can not exceed a set number of tuples. */
+// +optional
+RuleTupleCount *int64 `json:"ruleTupleCount,omitempty"`
 
-	/* Server-defined URL for the resource. */
-	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+/* Server-defined URL for the resource. */
+// +optional
+SelfLink *string `json:"selfLink,omitempty"`
 
-	/* Server-defined URL for this resource with the resource id. */
-	// +optional
-	SelfLinkWithId *string `json:"selfLinkWithId,omitempty"`
+/* Server-defined URL for this resource with the resource id. */
+// +optional
+SelfLinkWithId *string `json:"selfLinkWithId,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputenetworkfirewallpolicy;gcpcomputenetworkfirewallpolicies
@@ -100,22 +100,20 @@ type ComputeNetworkFirewallPolicyStatus struct {
 // ComputeNetworkFirewallPolicy is the Schema for the compute API
 // +k8s:openapi-gen=true
 type ComputeNetworkFirewallPolicy struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeNetworkFirewallPolicySpec   `json:"spec,omitempty"`
-	Status ComputeNetworkFirewallPolicyStatus `json:"status,omitempty"`
+  Spec ComputeNetworkFirewallPolicySpec `json:"spec,omitempty"`
+  Status ComputeNetworkFirewallPolicyStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ComputeNetworkFirewallPolicyList contains a list of ComputeNetworkFirewallPolicy
-type ComputeNetworkFirewallPolicyList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ComputeNetworkFirewallPolicy `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&ComputeNetworkFirewallPolicy{}, &ComputeNetworkFirewallPolicyList{})
-}
+ // ComputeNetworkFirewallPolicyList contains a list of ComputeNetworkFirewallPolicy
+ type ComputeNetworkFirewallPolicyList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []ComputeNetworkFirewallPolicy `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&ComputeNetworkFirewallPolicy{}, &ComputeNetworkFirewallPolicyList{})
+ }

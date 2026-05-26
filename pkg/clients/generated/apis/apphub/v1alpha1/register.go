@@ -53,23 +53,19 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	AppHubDiscoveredServiceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(AppHubDiscoveredService{}).Name(),
-	}
+	
+  	AppHubDiscoveredServiceGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(AppHubDiscoveredService{}).Name(),
+  	}
+  
+  	AppHubDiscoveredWorkloadGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(AppHubDiscoveredWorkload{}).Name(),
+  	}
+  
 
-	AppHubDiscoveredWorkloadGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(AppHubDiscoveredWorkload{}).Name(),
-	}
-
-	AppHubServiceProjectAttachmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(AppHubServiceProjectAttachment{}).Name(),
-	}
-
-	apphubAPIVersion = SchemeGroupVersion.String()
+  	apphubAPIVersion = SchemeGroupVersion.String()
 )

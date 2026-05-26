@@ -53,35 +53,37 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	KMSAutokeyConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(KMSAutokeyConfig{}).Name(),
-	}
+	
+  	KMSAutokeyConfigGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(KMSAutokeyConfig{}).Name(),
+  	}
+  
+  	KMSCryptoKeyGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(KMSCryptoKey{}).Name(),
+  	}
+  
+  	KMSImportJobGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(KMSImportJob{}).Name(),
+  	}
+  
+  	KMSKeyHandleGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(KMSKeyHandle{}).Name(),
+  	}
+  
+  	KMSKeyRingGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(KMSKeyRing{}).Name(),
+  	}
+  
 
-	KMSCryptoKeyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(KMSCryptoKey{}).Name(),
-	}
-
-	KMSImportJobGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(KMSImportJob{}).Name(),
-	}
-
-	KMSKeyHandleGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(KMSKeyHandle{}).Name(),
-	}
-
-	KMSKeyRingGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(KMSKeyRing{}).Name(),
-	}
-
-	kmsAPIVersion = SchemeGroupVersion.String()
+  	kmsAPIVersion = SchemeGroupVersion.String()
 )

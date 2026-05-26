@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,54 +30,53 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type APIQuotaAdjusterSettingsSpec struct {
-	/* Required. The configured value of the enablement at the given resource. */
-	Enablement string `json:"enablement"`
+/* Required. The configured value of the enablement at the given resource. */
+Enablement string `json:"enablement"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The APIQuotaAdjusterSettings name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The APIQuotaAdjusterSettings name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type ApiquotaadjustersettingsObservedStateStatus struct {
-	/* Optional. The current etag of the QuotaAdjusterSettings. If an etag is provided on update and does not match the current server's etag of the QuotaAdjusterSettings, the request will be blocked and an ABORTED error will be returned. See https://google.aip.dev/134#etags for more details on etags. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+/* Optional. The current etag of the QuotaAdjusterSettings. If an etag is provided on update and does not match the current server's etag of the QuotaAdjusterSettings, the request will be blocked and an ABORTED error will be returned. See https://google.aip.dev/134#etags for more details on etags. */
+// +optional
+Etag *string `json:"etag,omitempty"`
 
-	/* Output only. The timestamp when the QuotaAdjusterSettings was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. The timestamp when the QuotaAdjusterSettings was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type APIQuotaAdjusterSettingsStatus struct {
 	/* Conditions represent the latest available observations of the
-	   APIQuotaAdjusterSettings's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the APIQuotaAdjusterSettings resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    APIQuotaAdjusterSettings's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the APIQuotaAdjusterSettings resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *ApiquotaadjustersettingsObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *ApiquotaadjustersettingsObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapiquotaadjustersettings
@@ -91,22 +91,20 @@ type APIQuotaAdjusterSettingsStatus struct {
 // APIQuotaAdjusterSettings is the Schema for the cloudquota API
 // +k8s:openapi-gen=true
 type APIQuotaAdjusterSettings struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   APIQuotaAdjusterSettingsSpec   `json:"spec,omitempty"`
-	Status APIQuotaAdjusterSettingsStatus `json:"status,omitempty"`
+  Spec APIQuotaAdjusterSettingsSpec `json:"spec,omitempty"`
+  Status APIQuotaAdjusterSettingsStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// APIQuotaAdjusterSettingsList contains a list of APIQuotaAdjusterSettings
-type APIQuotaAdjusterSettingsList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []APIQuotaAdjusterSettings `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&APIQuotaAdjusterSettings{}, &APIQuotaAdjusterSettingsList{})
-}
+ // APIQuotaAdjusterSettingsList contains a list of APIQuotaAdjusterSettings
+ type APIQuotaAdjusterSettingsList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []APIQuotaAdjusterSettings `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&APIQuotaAdjusterSettings{}, &APIQuotaAdjusterSettingsList{})
+ }

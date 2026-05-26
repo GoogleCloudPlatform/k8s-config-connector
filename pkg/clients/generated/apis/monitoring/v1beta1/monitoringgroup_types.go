@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,47 +30,46 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type MonitoringGroupSpec struct {
-	/* A user-assigned name for this group, used only for display purposes. */
-	DisplayName string `json:"displayName"`
+/* A user-assigned name for this group, used only for display purposes. */
+DisplayName string `json:"displayName"`
 
-	/* The filter used to determine which monitored resources belong to this group. */
-	Filter string `json:"filter"`
+/* The filter used to determine which monitored resources belong to this group. */
+Filter string `json:"filter"`
 
-	/* If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters. */
-	// +optional
-	IsCluster *bool `json:"isCluster,omitempty"`
+/* If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters. */
+// +optional
+IsCluster *bool `json:"isCluster,omitempty"`
 
-	// +optional
-	ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
+// +optional
+ParentRef *v1alpha1.ResourceRef `json:"parentRef,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+/* Immutable. The Project that this resource belongs to. */
+// +optional
+ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type MonitoringGroupStatus struct {
 	/* Conditions represent the latest available observations of the
-	   MonitoringGroup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	    MonitoringGroup's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmonitoringgroup;gcpmonitoringgroups
@@ -86,22 +86,20 @@ type MonitoringGroupStatus struct {
 // MonitoringGroup is the Schema for the monitoring API
 // +k8s:openapi-gen=true
 type MonitoringGroup struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   MonitoringGroupSpec   `json:"spec,omitempty"`
-	Status MonitoringGroupStatus `json:"status,omitempty"`
+  Spec MonitoringGroupSpec `json:"spec,omitempty"`
+  Status MonitoringGroupStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// MonitoringGroupList contains a list of MonitoringGroup
-type MonitoringGroupList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []MonitoringGroup `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&MonitoringGroup{}, &MonitoringGroupList{})
-}
+ // MonitoringGroupList contains a list of MonitoringGroup
+ type MonitoringGroupList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []MonitoringGroup `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&MonitoringGroup{}, &MonitoringGroupList{})
+ }

@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,78 +30,77 @@
 // Please try it out and give us feedback!
 
 package v1beta1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type EdgeNetworkSubnetSpec struct {
-	/* Immutable. A free-text description of the resource. Max length 1024 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
+/* Immutable. A free-text description of the resource. Max length 1024 characters. */
+// +optional
+Description *string `json:"description,omitempty"`
 
-	/* Immutable. The ranges of ipv4 addresses that are owned by this subnetwork, in CIDR format. */
-	// +optional
-	Ipv4Cidr []string `json:"ipv4Cidr,omitempty"`
+/* Immutable. The ranges of ipv4 addresses that are owned by this subnetwork, in CIDR format. */
+// +optional
+Ipv4Cidr []string `json:"ipv4Cidr,omitempty"`
 
-	/* Immutable. The ranges of ipv6 addresses that are owned by this subnetwork, in CIDR format. */
-	// +optional
-	Ipv6Cidr []string `json:"ipv6Cidr,omitempty"`
+/* Immutable. The ranges of ipv6 addresses that are owned by this subnetwork, in CIDR format. */
+// +optional
+Ipv6Cidr []string `json:"ipv6Cidr,omitempty"`
 
-	/* Immutable. The Google Cloud region to which the target Distributed Cloud Edge zone belongs. */
-	Location string `json:"location"`
+/* Immutable. The Google Cloud region to which the target Distributed Cloud Edge zone belongs. */
+Location string `json:"location"`
 
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The subnetId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* Immutable. Optional. The subnetId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. VLAN ID for this subnetwork. If not specified, one is assigned automatically. */
-	// +optional
-	VlanId *int64 `json:"vlanId,omitempty"`
+/* Immutable. VLAN ID for this subnetwork. If not specified, one is assigned automatically. */
+// +optional
+VlanId *int64 `json:"vlanId,omitempty"`
 
-	/* Immutable. The name of the target Distributed Cloud Edge zone. */
-	Zone string `json:"zone"`
+/* Immutable. The name of the target Distributed Cloud Edge zone. */
+Zone string `json:"zone"`
 }
 
 type EdgeNetworkSubnetStatus struct {
 	/* Conditions represent the latest available observations of the
-	   EdgeNetworkSubnet's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	    EdgeNetworkSubnet's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when the subnet was created.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine
 	fractional digits. Examples: '2014-10-02T15:01:23Z' and '2014-10-02T15:01:23.045123456Z'. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
 	/* The canonical name of this resource, with format
 	'projects/{{project}}/locations/{{location}}/zones/{{zone}}/subnets/{{subnet_id}}'. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+// +optional
+Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Current stage of the resource to the device by config push. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Current stage of the resource to the device by config push. */
+// +optional
+State *string `json:"state,omitempty"`
 
 	/* The time when the subnet was last updated.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine
 	fractional digits. Examples: '2014-10-02T15:01:23Z' and '2014-10-02T15:01:23.045123456Z'. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpedgenetworksubnet;gcpedgenetworksubnets
@@ -117,22 +117,20 @@ type EdgeNetworkSubnetStatus struct {
 // EdgeNetworkSubnet is the Schema for the edgenetwork API
 // +k8s:openapi-gen=true
 type EdgeNetworkSubnet struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   EdgeNetworkSubnetSpec   `json:"spec,omitempty"`
-	Status EdgeNetworkSubnetStatus `json:"status,omitempty"`
+  Spec EdgeNetworkSubnetSpec `json:"spec,omitempty"`
+  Status EdgeNetworkSubnetStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// EdgeNetworkSubnetList contains a list of EdgeNetworkSubnet
-type EdgeNetworkSubnetList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []EdgeNetworkSubnet `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&EdgeNetworkSubnet{}, &EdgeNetworkSubnetList{})
-}
+ // EdgeNetworkSubnetList contains a list of EdgeNetworkSubnet
+ type EdgeNetworkSubnetList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []EdgeNetworkSubnet `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&EdgeNetworkSubnet{}, &EdgeNetworkSubnetList{})
+ }

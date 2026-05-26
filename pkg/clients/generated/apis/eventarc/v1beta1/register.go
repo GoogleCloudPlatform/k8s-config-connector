@@ -53,11 +53,13 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	EventarcTriggerGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(EventarcTrigger{}).Name(),
-	}
+	
+  	EventarcTriggerGVK = schema.GroupVersionKind{
+  		Group:   SchemeGroupVersion.Group,
+  		Version: SchemeGroupVersion.Version,
+  		Kind:    reflect.TypeOf(EventarcTrigger{}).Name(),
+  	}
+  
 
-	eventarcAPIVersion = SchemeGroupVersion.String()
+  	eventarcAPIVersion = SchemeGroupVersion.String()
 )

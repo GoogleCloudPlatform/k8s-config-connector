@@ -1,3 +1,4 @@
+
 // Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,114 +30,113 @@
 // Please try it out and give us feedback!
 
 package v1alpha1
-
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
 
 type FeaturestoreEncryptionSpec struct {
-	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
+KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type FeaturestoreOnlineServingConfig struct {
-	/* The number of nodes for the online store. The number of nodes doesn't scale automatically, but you can manually update the number of nodes. If set to 0, the featurestore will not have an online store and cannot be used for online serving. */
-	// +optional
-	FixedNodeCount *int32 `json:"fixedNodeCount,omitempty"`
+/* The number of nodes for the online store. The number of nodes doesn't scale automatically, but you can manually update the number of nodes. If set to 0, the featurestore will not have an online store and cannot be used for online serving. */
+// +optional
+FixedNodeCount *int32 `json:"fixedNodeCount,omitempty"`
 
-	/* Online serving scaling configuration. Only one of `fixed_node_count` and `scaling` can be set. Setting one will reset the other. */
-	// +optional
-	Scaling *FeaturestoreScaling `json:"scaling,omitempty"`
+/* Online serving scaling configuration. Only one of `fixed_node_count` and `scaling` can be set. Setting one will reset the other. */
+// +optional
+Scaling *FeaturestoreScaling `json:"scaling,omitempty"`
 }
 
 type FeaturestoreScaling struct {
-	/* Optional. The cpu utilization that the Autoscaler should be trying to achieve. This number is on a scale from 0 (no utilization) to 100 (total utilization), and is limited between 10 and 80. When a cluster's CPU utilization exceeds the target that you have set, Bigtable immediately adds nodes to the cluster. When CPU utilization is substantially lower than the target, Bigtable removes nodes. If not set or set to 0, default to 50. */
-	// +optional
-	CpuUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
+/* Optional. The cpu utilization that the Autoscaler should be trying to achieve. This number is on a scale from 0 (no utilization) to 100 (total utilization), and is limited between 10 and 80. When a cluster's CPU utilization exceeds the target that you have set, Bigtable immediately adds nodes to the cluster. When CPU utilization is substantially lower than the target, Bigtable removes nodes. If not set or set to 0, default to 50. */
+// +optional
+CpuUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
 
-	/* The maximum number of nodes to scale up to. Must be greater than min_node_count, and less than or equal to 10 times of 'min_node_count'. */
-	// +optional
-	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
+/* The maximum number of nodes to scale up to. Must be greater than min_node_count, and less than or equal to 10 times of 'min_node_count'. */
+// +optional
+MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
 
-	/* Required. The minimum number of nodes to scale down to. Must be greater than or equal to 1. */
-	// +optional
-	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
+/* Required. The minimum number of nodes to scale down to. Must be greater than or equal to 1. */
+// +optional
+MinNodeCount *int32 `json:"minNodeCount,omitempty"`
 }
 
 type VertexAIFeaturestoreSpec struct {
-	/* Optional. Customer-managed encryption key spec for data storage. If set, both of the online and offline data storage will be secured by this key. */
-	// +optional
-	EncryptionSpec *FeaturestoreEncryptionSpec `json:"encryptionSpec,omitempty"`
+/* Optional. Customer-managed encryption key spec for data storage. If set, both of the online and offline data storage will be secured by this key. */
+// +optional
+EncryptionSpec *FeaturestoreEncryptionSpec `json:"encryptionSpec,omitempty"`
 
 	/* Optional. The labels with user-defined metadata to organize your
 	Featurestore.
-
+	
 	Label keys and values can be no longer than 64 characters
 	(Unicode codepoints), can only contain lowercase letters, numeric
 	characters, underscores and dashes. International characters are allowed.
-
+	
 	See https://goo.gl/xmQnxf for more information on and examples of labels.
 	No more than 64 user labels can be associated with one Featurestore(System
 	labels are excluded)."
 	System reserved label keys are prefixed with "aiplatform.googleapis.com/"
 	and are immutable. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+// +optional
+Labels map[string]string `json:"labels,omitempty"`
 
-	/* The location for the resource. */
-	Location string `json:"location"`
+/* The location for the resource. */
+Location string `json:"location"`
 
-	/* Optional. Config for online storage resources. The field should not co-exist with the field of `OnlineStoreReplicationConfig`. If both of it and OnlineStoreReplicationConfig are unset, the feature store will not have an online store and cannot be used for online serving. */
-	// +optional
-	OnlineServingConfig *FeaturestoreOnlineServingConfig `json:"onlineServingConfig,omitempty"`
+/* Optional. Config for online storage resources. The field should not co-exist with the field of `OnlineStoreReplicationConfig`. If both of it and OnlineStoreReplicationConfig are unset, the feature store will not have an online store and cannot be used for online serving. */
+// +optional
+OnlineServingConfig *FeaturestoreOnlineServingConfig `json:"onlineServingConfig,omitempty"`
 
-	/* Optional. TTL in days for feature values that will be stored in online serving storage. The Feature Store online storage periodically removes obsolete feature values older than `online_storage_ttl_days` since the feature generation time. Note that `online_storage_ttl_days` should be less than or equal to `offline_storage_ttl_days` for each EntityType under a featurestore. If not set, default to 4000 days */
-	// +optional
-	OnlineStorageTTLDays *int32 `json:"onlineStorageTTLDays,omitempty"`
+/* Optional. TTL in days for feature values that will be stored in online serving storage. The Feature Store online storage periodically removes obsolete feature values older than `online_storage_ttl_days` since the feature generation time. Note that `online_storage_ttl_days` should be less than or equal to `offline_storage_ttl_days` for each EntityType under a featurestore. If not set, default to 4000 days */
+// +optional
+OnlineStorageTTLDays *int32 `json:"onlineStorageTTLDays,omitempty"`
 
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+/* The Project that this resource belongs to. */
+ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The VertexAIFeaturestore name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+/* The VertexAIFeaturestore name. If not given, the metadata.name will be used. */
+// +optional
+ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type FeaturestoreObservedStateStatus struct {
-	/* Output only. Timestamp when this Featurestore was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+/* Output only. Timestamp when this Featurestore was created. */
+// +optional
+CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. State of the featurestore. */
-	// +optional
-	State *string `json:"state,omitempty"`
+/* Output only. State of the featurestore. */
+// +optional
+State *string `json:"state,omitempty"`
 
-	/* Output only. Timestamp when this Featurestore was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+/* Output only. Timestamp when this Featurestore was last updated. */
+// +optional
+UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type VertexAIFeaturestoreStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAIFeaturestore's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAIFeaturestore resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	    VertexAIFeaturestore's current state. */
+Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+/* A unique specifier for the VertexAIFeaturestore resource in GCP. */
+// +optional
+ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+// +optional
+ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *FeaturestoreObservedStateStatus `json:"observedState,omitempty"`
+/* ObservedState is the state of the resource as most recently observed in GCP. */
+// +optional
+ObservedState *FeaturestoreObservedStateStatus `json:"observedState,omitempty"`
 }
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaifeaturestore;gcpvertexaifeaturestores
@@ -151,22 +151,20 @@ type VertexAIFeaturestoreStatus struct {
 // VertexAIFeaturestore is the Schema for the vertexai API
 // +k8s:openapi-gen=true
 type VertexAIFeaturestore struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+  metav1.TypeMeta `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAIFeaturestoreSpec   `json:"spec,omitempty"`
-	Status VertexAIFeaturestoreStatus `json:"status,omitempty"`
+  Spec VertexAIFeaturestoreSpec `json:"spec,omitempty"`
+  Status VertexAIFeaturestoreStatus `json:"status,omitempty"`
 }
+ // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// VertexAIFeaturestoreList contains a list of VertexAIFeaturestore
-type VertexAIFeaturestoreList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAIFeaturestore `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&VertexAIFeaturestore{}, &VertexAIFeaturestoreList{})
-}
+ // VertexAIFeaturestoreList contains a list of VertexAIFeaturestore
+ type VertexAIFeaturestoreList struct {
+   metav1.TypeMeta `json:",inline"`
+   metav1.ListMeta `json:"metadata,omitempty"`
+   Items []VertexAIFeaturestore `json:"items"`
+ }
+ func init() {
+   SchemeBuilder.Register(&VertexAIFeaturestore{}, &VertexAIFeaturestoreList{})
+ }
