@@ -16,7 +16,7 @@ package vertexaiindexendpoint
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
-	api "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform"
+	api "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
