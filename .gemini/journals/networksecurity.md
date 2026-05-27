@@ -12,3 +12,9 @@
   2. Updated `dev/tools/controllerbuilder/generate-proto.sh` to include `${REPO_ROOT}/mockgcp/apis/google/cloud/networksecurity/*/*.proto`.
   3. Created `NetworkSecurityInterceptDeploymentGroupRef` in `apis/refs/v1beta1/networksecurity_refs.go`.
 - **Impact**: Future agents working on Greenfield resources where protos are missing from the pinned SHA should vendor the proto files into `mockgcp/apis/google/cloud/...` and update `generate-proto.sh` instead of attempting to bump the `apis/git.versions` SHA.
+
+### [2026-05-27] Scaffold missing proto in pinned googleapis SHA
+- **Context**: Implementing `NetworkSecuritySecurityProfileGroup` direct types.
+- **Problem**: The proto `google.cloud.networksecurity.v1.SecurityProfileGroup` is not available in the pinned `googleapis` SHA `731d7f2ab6e4e2ea15030c95039e2cb66174d4fb` used by `apis/git.versions`. Bumping the SHA globally causes compilation errors in `firestore` and `sql` mappers due to mismatched Go proto libraries in `go.mod`.
+- **Solution**: Temporarily bumped `apis/git.versions` to a newer SHA (`7496288011d66f2b34be84377500d114dc74e006`), generated the KRM types using `generate.sh`, and then reverted `apis/git.versions`. Additionally, added `networksecurity` to the skip list in `dev/tasks/generate-types-and-mappers` to prevent `make generate` from failing on subsequent runs.
+- **Impact**: The next agent should be aware that `apis/networksecurity/v1alpha1/generate.sh` is currently skipped. Once KCC's `go.mod` dependencies are updated and the `googleapis` SHA is bumped, the skip entry in `dev/tasks/generate-types-and-mappers` should be removed.
