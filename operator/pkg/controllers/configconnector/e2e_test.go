@@ -77,7 +77,7 @@ func TestConfigConnectorE2E(t *testing.T) {
 		}
 		time.Sleep(1 * time.Second)
 	}
-	
+
 	status := newCC.GetCommonStatus()
 	if got, want := status.Healthy, true; got != want {
 		t.Errorf("unexpected value for status.healthy: got '%v', want '%v', status: %+v", got, want, status)
