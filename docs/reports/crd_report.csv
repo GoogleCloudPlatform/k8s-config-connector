@@ -411,6 +411,7 @@ secretmanager.cnrm.cloud.google.com,SecretManagerSecret,False,True,False,Terrafo
 secretmanager.cnrm.cloud.google.com,SecretManagerSecretVersion,False,True,False,Terraform,True
 securesourcemanager.cnrm.cloud.google.com,SecureSourceManagerInstance,True,True,False,Direct,True
 securesourcemanager.cnrm.cloud.google.com,SecureSourceManagerRepository,True,True,False,Direct,True
+securitycenter.cnrm.cloud.google.com,SecurityCenterMuteConfig,True,False,False,Direct,True
 securitycenter.cnrm.cloud.google.com,SecurityCenterNotificationConfig,True,False,False,Terraform,False
 securitycenter.cnrm.cloud.google.com,SecurityCenterSource,True,False,False,Terraform,False
 servicedirectory.cnrm.cloud.google.com,ServiceDirectoryEndpoint,False,True,False,Terraform,False
