@@ -47,8 +47,7 @@ type EventarcEnrollmentSpec struct {
 	CelMatch string `json:"celMatch"`
 
 	/* Required. Destination is the Pipeline that the Enrollment is delivering to. */
-	// +optional
-	DestinationRef *v1alpha1.ResourceRef `json:"destinationRef,omitempty"`
+	DestinationRef v1alpha1.ResourceRef `json:"destinationRef"`
 
 	/* Optional. Resource display name. */
 	// +optional
@@ -59,12 +58,10 @@ type EventarcEnrollmentSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* The location of this resource. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location"`
 
 	/* Required. Resource name of the message bus identifying the source of the messages. */
-	// +optional
-	MessageBusRef *v1alpha1.ResourceRef `json:"messageBusRef,omitempty"`
+	MessageBusRef v1alpha1.ResourceRef `json:"messageBusRef"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
