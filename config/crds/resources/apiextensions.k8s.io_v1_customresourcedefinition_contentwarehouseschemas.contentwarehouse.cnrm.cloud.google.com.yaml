@@ -132,6 +132,8 @@ spec:
                             in the document is in the possile value list during document
                             creation. The validation check runs by default.
                           type: boolean
+                      required:
+                      - possibleValues
                       type: object
                     floatTypeOptions:
                       description: Float property.
@@ -177,6 +179,8 @@ spec:
                           description: Required. List of property definitions.
                           items: {}
                           type: array
+                      required:
+                      - propertyDefinitions
                       type: object
                     retrievalImportance:
                       description: The retrieval importance of the property during
@@ -202,6 +206,8 @@ spec:
                       description: Timestamp property. It is not supported by CMEK
                         compliant deployment.
                       type: object
+                  required:
+                  - name
                   type: object
                 type: array
               resourceID:

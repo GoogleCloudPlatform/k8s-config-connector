@@ -2808,6 +2808,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - contentwarehouse.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - datacatalog.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4395,6 +4407,14 @@ rules:
   - watch
 - apiGroups:
   - containerattached.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - contentwarehouse.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
