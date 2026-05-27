@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	servicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -67,12 +68,6 @@ type CloudBuildConnectionSpec struct {
 	// Allows clients to store small amounts of arbitrary data.
 	// +kubebuilder:validation:Optional
 	Annotations map[string]string `json:"annotations,omitempty"`
-
-	// This checksum is computed by the server based on the value of other
-	//  fields, and may be sent on update and delete requests to ensure the
-	//  client has an up-to-date value before proceeding.
-	// +kubebuilder:validation:Optional
-	Etag *string `json:"etag,omitempty"`
 }
 
 // CloudBuildConnectionStatus defines the config connector machine state of CloudBuildConnection
@@ -99,6 +94,11 @@ type CloudBuildConnectionObservedState struct {
 
 	// Output only. Server assigned timestamp for when the connection was updated.
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// This checksum is computed by the server based on the value of other
+	//  fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	Etag *string `json:"etag,omitempty"`
 
 	// Configuration for connections to github.com.
 	GithubConfig *GitHubConfigObservedState `json:"githubConfig,omitempty"`
@@ -327,6 +327,13 @@ type OAuthCredential struct {
 	// +kubebuilder:validation:Optional
 	// +kcc:proto:field=google.devtools.cloudbuild.v2.OAuthCredential.oauth_token_secret_version
 	OauthTokenSecretVersionRef *refsv1beta1.SecretManagerSecretVersionRef `json:"oauthTokenSecretVersionRef,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v2.ServiceDirectoryConfig
+type ServiceDirectoryConfig struct {
+	// Required. The Service Directory service name.
+	// +kcc:proto:field=google.devtools.cloudbuild.v2.ServiceDirectoryConfig.service
+	ServiceRef *servicedirectoryv1alpha1.ServiceDirectoryServiceRef `json:"serviceRef,omitempty"`
 }
 
 // +kcc:proto=google.devtools.cloudbuild.v2.UserCredential

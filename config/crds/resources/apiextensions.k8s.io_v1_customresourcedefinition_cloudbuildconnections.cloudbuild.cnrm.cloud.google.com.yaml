@@ -280,10 +280,34 @@ spec:
                       empty, calls to the Bitbucket Data Center will be made over
                       the public internet.
                     properties:
-                      service:
-                        description: 'Required. The Service Directory service name.
-                          Format: projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}.'
-                        type: string
+                      serviceRef:
+                        description: Required. The Service Directory service name.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed DataprocJob
+                              resource. Should be in the format "/projects/*/locations/*/namespaces/*/services/*".
+                            type: string
+                          name:
+                            description: The name of a DataprocJob resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a DataprocJob resource.
+                            type: string
+                        type: object
                     type: object
                   sslCA:
                     description: Optional. SSL certificate to use for requests to
@@ -331,11 +355,6 @@ spec:
                   for this connection. Repository based API methods and webhooks processing
                   for repositories in this connection will be disabled.
                 type: boolean
-              etag:
-                description: This checksum is computed by the server based on the
-                  value of other fields, and may be sent on update and delete requests
-                  to ensure the client has an up-to-date value before proceeding.
-                type: string
               githubConfig:
                 description: Configuration for connections to github.com.
                 properties:
@@ -443,10 +462,34 @@ spec:
                       to the GitHub Enterprise server will be made over the public
                       internet.
                     properties:
-                      service:
-                        description: 'Required. The Service Directory service name.
-                          Format: projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}.'
-                        type: string
+                      serviceRef:
+                        description: Required. The Service Directory service name.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed DataprocJob
+                              resource. Should be in the format "/projects/*/locations/*/namespaces/*/services/*".
+                            type: string
+                          name:
+                            description: The name of a DataprocJob resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a DataprocJob resource.
+                            type: string
+                        type: object
                     type: object
                   sslCA:
                     description: SSL certificate to use for requests to GitHub Enterprise.
@@ -577,10 +620,34 @@ spec:
                       to the GitLab Enterprise server will be made over the public
                       internet.
                     properties:
-                      service:
-                        description: 'Required. The Service Directory service name.
-                          Format: projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}.'
-                        type: string
+                      serviceRef:
+                        description: Required. The Service Directory service name.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed DataprocJob
+                              resource. Should be in the format "/projects/*/locations/*/namespaces/*/services/*".
+                            type: string
+                          name:
+                            description: The name of a DataprocJob resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a DataprocJob resource.
+                            type: string
+                        type: object
                     type: object
                   sslCA:
                     description: SSL certificate to use for requests to GitLab Enterprise.
@@ -721,6 +788,12 @@ spec:
                   createTime:
                     description: Output only. Server assigned timestamp for when the
                       connection was created.
+                    type: string
+                  etag:
+                    description: This checksum is computed by the server based on
+                      the value of other fields, and may be sent on update and delete
+                      requests to ensure the client has an up-to-date value before
+                      proceeding.
                     type: string
                   githubConfig:
                     description: Configuration for connections to github.com.

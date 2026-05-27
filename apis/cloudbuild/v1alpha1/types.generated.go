@@ -251,6 +251,8 @@ type OAuthCredential struct {
 }
 */
 
+/* found existing non-generated go type "ServiceDirectoryConfig", skipping
+
 // +kcc:proto=google.devtools.cloudbuild.v2.ServiceDirectoryConfig
 type ServiceDirectoryConfig struct {
 	// Required. The Service Directory service name.
@@ -259,6 +261,7 @@ type ServiceDirectoryConfig struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v2.ServiceDirectoryConfig.service
 	Service *string `json:"service,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "UserCredential", skipping
 
