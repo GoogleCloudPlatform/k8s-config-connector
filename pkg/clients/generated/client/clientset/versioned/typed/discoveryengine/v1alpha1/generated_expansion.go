@@ -28,3 +28,5 @@ type DiscoveryEngineDataStoreTargetSiteExpansion interface{}
 type DiscoveryEngineEngineExpansion interface{}
 
 type DiscoveryEngineIdentityMappingStoreExpansion interface{}
+
+type DiscoveryEngineSampleQuerySetExpansion interface{}
