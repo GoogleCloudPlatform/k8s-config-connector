@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,25 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+with open("pkg/controller/direct/compute/utils.go", "r") as f:
+    content = f.read()
 
-set -o errexit
-set -o nounset
-set -o pipefail
+# Replace any double } } at the end, etc.
+lines = content.split('\n')
+if lines[-18].strip() == '}':
+    pass # ok
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
-go run . generate-types \
-  --service google.storage.v1 \
-  --api-version storage.cnrm.cloud.google.com/v1beta1 \
-  --resource StorageBucket:Bucket \
-  --skip-scaffold-files \
-  --include-skipped-output
-
-go run . generate-mapper \
-  --service google.storage.v1 \
-  --api-version storage.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
-
-cd ${REPO_ROOT}
-dev/tasks/generate-crds
+# let's just use replace to be safe.
