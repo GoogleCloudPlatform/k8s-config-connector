@@ -18,13 +18,13 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.discoveryengine.v1
 // resource: DiscoveryEngineDataStore:DataStore
-// resource: DiscoveryEngineDataStoreTargetSite:TargetSite
 // resource: DiscoveryEngineEngine:Engine
+// resource: DiscoveryEngineIdentityMappingStore:IdentityMappingStore
+// resource: DiscoveryEngineTargetSite:TargetSite
 
 package v1alpha1
 
-import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-
+/* unreachable type AdvancedSiteSearchConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.AdvancedSiteSearchConfig
 type AdvancedSiteSearchConfig struct {
 	// If set true, initial indexing is disabled for the DataStore.
@@ -35,6 +35,7 @@ type AdvancedSiteSearchConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.AdvancedSiteSearchConfig.disable_automatic_refresh
 	DisableAutomaticRefresh *bool `json:"disableAutomaticRefresh,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.CmekConfig
 type CmekConfig struct {
@@ -86,11 +87,12 @@ type DataStore_BillingEstimation struct {
 	WebsiteDataUpdateTime *string `json:"websiteDataUpdateTime,omitempty"`
 }
 
+/* unreachable type DocumentProcessingConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig
 type DocumentProcessingConfig struct {
 	// The full resource name of the Document Processing Config.
 	//  Format:
-	//  `projects/*/locations/*/collections/*/dataStores/*/documentProcessingConfig`.
+	//  `projects/-*-/locations/-*-/collections/-*-/dataStores/-*-/documentProcessingConfig`.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.name
 	Name *string `json:"name,omitempty"`
 
@@ -108,14 +110,18 @@ type DocumentProcessingConfig struct {
 	// TODO: unsupported map type with key string and value message
 
 }
+*/
 
+/* unreachable type DocumentProcessingConfig_ChunkingConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ChunkingConfig
 type DocumentProcessingConfig_ChunkingConfig struct {
 	// Configuration for the layout based chunking.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ChunkingConfig.layout_based_chunking_config
 	LayoutBasedChunkingConfig *DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig `json:"layoutBasedChunkingConfig,omitempty"`
 }
+*/
 
+/* unreachable type DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ChunkingConfig.LayoutBasedChunkingConfig
 type DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig struct {
 	// The token size limit for each chunk.
@@ -132,7 +138,9 @@ type DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ChunkingConfig.LayoutBasedChunkingConfig.include_ancestor_headings
 	IncludeAncestorHeadings *bool `json:"includeAncestorHeadings,omitempty"`
 }
+*/
 
+/* unreachable type DocumentProcessingConfig_ParsingConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig
 type DocumentProcessingConfig_ParsingConfig struct {
 	// Configurations applied to digital parser.
@@ -148,11 +156,15 @@ type DocumentProcessingConfig_ParsingConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.layout_parsing_config
 	LayoutParsingConfig *DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig `json:"layoutParsingConfig,omitempty"`
 }
+*/
 
+/* unreachable type DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.DigitalParsingConfig
 type DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig struct {
 }
+*/
 
+/* unreachable type DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig
 type DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig struct {
 	// Optional. If true, the LLM based annotation is added to the table
@@ -184,7 +196,9 @@ type DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.exclude_html_ids
 	ExcludeHTMLIds []string `json:"excludeHTMLIds,omitempty"`
 }
+*/
 
+/* unreachable type DocumentProcessingConfig_ParsingConfig_OcrParsingConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.OcrParsingConfig
 type DocumentProcessingConfig_ParsingConfig_OcrParsingConfig struct {
 	// [DEPRECATED] This field is deprecated. To use the additional enhanced
@@ -197,6 +211,7 @@ type DocumentProcessingConfig_ParsingConfig_OcrParsingConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.OcrParsingConfig.use_native_text
 	UseNativeText *bool `json:"useNativeText,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.ChatEngineConfig
 type Engine_ChatEngineConfig struct {
@@ -274,6 +289,7 @@ type Engine_ChatEngineConfig_AgentCreationConfig struct {
 	Location *string `json:"location,omitempty"`
 }
 
+/* unreachable type Engine_ChatEngineMetadata
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.ChatEngineMetadata
 type Engine_ChatEngineMetadata struct {
 	// The resource name of a Dialogflow agent, that this Chat Engine refers
@@ -284,6 +300,7 @@ type Engine_ChatEngineMetadata struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.ChatEngineMetadata.dialogflow_agent
 	DialogflowAgent *string `json:"dialogflowAgent,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.CommonConfig
 type Engine_CommonConfig struct {
@@ -293,6 +310,7 @@ type Engine_CommonConfig struct {
 	CompanyName *string `json:"companyName,omitempty"`
 }
 
+/* unreachable type Engine_MediaRecommendationEngineConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig
 type Engine_MediaRecommendationEngineConfig struct {
 	// Required. The type of engine. e.g., `recommended-for-you`.
@@ -349,7 +367,9 @@ type Engine_MediaRecommendationEngineConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.engine_features_config
 	EngineFeaturesConfig *Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig `json:"engineFeaturesConfig,omitempty"`
 }
+*/
 
+/* unreachable type Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig
 type Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig struct {
 	// Recommended for you engine feature config.
@@ -360,7 +380,9 @@ type Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig.most_popular_config
 	MostPopularConfig *Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig `json:"mostPopularConfig,omitempty"`
 }
+*/
 
+/* unreachable type Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig
 type Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig struct {
 	// The time window of which the engine is queried at training and
@@ -370,7 +392,9 @@ type Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig.time_window_days
 	TimeWindowDays *int64 `json:"timeWindowDays,omitempty"`
 }
+*/
 
+/* unreachable type Engine_MediaRecommendationEngineConfig_OptimizationObjectiveConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig
 type Engine_MediaRecommendationEngineConfig_OptimizationObjectiveConfig struct {
 	// Required. The name of the field to target. Currently supported
@@ -382,7 +406,9 @@ type Engine_MediaRecommendationEngineConfig_OptimizationObjectiveConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig.target_field_value_float
 	TargetFieldValueFloat *float32 `json:"targetFieldValueFloat,omitempty"`
 }
+*/
 
+/* unreachable type Engine_MediaRecommendationEngineConfig_RecommendedForYouFeatureConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig
 type Engine_MediaRecommendationEngineConfig_RecommendedForYouFeatureConfig struct {
 	// The type of event with which the engine is queried at prediction time.
@@ -395,6 +421,7 @@ type Engine_MediaRecommendationEngineConfig_RecommendedForYouFeatureConfig struc
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig.context_event_type
 	ContextEventType *string `json:"contextEventType,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.SearchEngineConfig
 type Engine_SearchEngineConfig struct {
@@ -414,6 +441,7 @@ type Engine_SearchEngineConfig struct {
 	SearchAddOns []string `json:"searchAddOns,omitempty"`
 }
 
+/* unreachable type HealthcareFhirConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.HealthcareFhirConfig
 type HealthcareFhirConfig struct {
 	// Whether to enable configurable schema for `HEALTHCARE_FHIR` vertical.
@@ -432,7 +460,9 @@ type HealthcareFhirConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.HealthcareFhirConfig.enable_static_indexing_for_batch_ingestion
 	EnableStaticIndexingForBatchIngestion *bool `json:"enableStaticIndexingForBatchIngestion,omitempty"`
 }
+*/
 
+/* unreachable type Schema
 // +kcc:proto=google.cloud.discoveryengine.v1.Schema
 type Schema struct {
 	// The structured representation of the schema.
@@ -451,6 +481,7 @@ type Schema struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.name
 	Name *string `json:"name,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
 type SingleRegionKey struct {
@@ -510,6 +541,7 @@ type WorkspaceConfig struct {
 	SuperAdminEmailAddress *string `json:"superAdminEmailAddress,omitempty"`
 }
 
+/* unreachable type CmekConfigObservedState
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.CmekConfig
 type CmekConfigObservedState struct {
 	// Output only. The states of the CmekConfig.
@@ -528,3 +560,4 @@ type CmekConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.notebooklm_state
 	NotebooklmState *string `json:"notebooklmState,omitempty"`
 }
+*/
