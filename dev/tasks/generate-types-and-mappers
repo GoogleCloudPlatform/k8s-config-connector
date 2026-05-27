@@ -32,6 +32,10 @@ for f in $(find apis -name "generate.sh" | sort); do
     # Skip some generate.sh scripts that are not up to date
     # TODO: Fix these!
 
+    if [[ "${f}" == *"firestore"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
     if [[ "${f}" == *"backupdr"* ]]; then
         echo "Skipping ${f}"
         continue
