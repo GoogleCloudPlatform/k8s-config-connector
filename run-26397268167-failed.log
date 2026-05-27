@@ -1,0 +1,247 @@
+validations	Run validations	﻿2026-05-25T11:05:43.1352601Z ##[group]Run ./scripts/github-actions/ga-validation.sh
+validations	Run validations	2026-05-25T11:05:43.1353061Z [36;1m./scripts/github-actions/ga-validation.sh[0m
+validations	Run validations	2026-05-25T11:05:43.1396374Z shell: /usr/bin/bash -e {0}
+validations	Run validations	2026-05-25T11:05:43.1396630Z env:
+validations	Run validations	2026-05-25T11:05:43.1396822Z   GOTOOLCHAIN: local
+validations	Run validations	2026-05-25T11:05:43.1397170Z   EVENT_NAME: pull_request
+validations	Run validations	2026-05-25T11:05:43.1397447Z   COMMIT_HEAD: b977e9f3dbe33432e5ed2264ee40f519d190d325
+validations	Run validations	2026-05-25T11:05:43.1397763Z   COMMIT_CNT: 4
+validations	Run validations	2026-05-25T11:05:43.1398006Z   BASE_COMMIT: 735ef5f982bcae5a9cc462696bee0004f196a2ca
+validations	Run validations	2026-05-25T11:05:43.1398295Z ##[endgroup]
+validations	Run validations	2026-05-25T11:05:43.1527471Z Downloading envtest assets...
+validations	Run validations	2026-05-25T11:05:43.2297378Z go: downloading sigs.k8s.io/controller-runtime/tools/setup-envtest v0.0.0-20260125163108-a19ec76a3c5d
+validations	Run validations	2026-05-25T11:05:43.2300396Z go: downloading sigs.k8s.io/controller-runtime v0.22.6-0.20260125163108-a19ec76a3c5d
+validations	Run validations	2026-05-25T11:05:43.7155629Z go: downloading github.com/go-logr/zapr v1.3.0
+validations	Run validations	2026-05-25T11:05:43.7160937Z go: downloading github.com/go-logr/logr v1.4.2
+validations	Run validations	2026-05-25T11:05:43.7161866Z go: downloading github.com/spf13/afero v1.12.0
+validations	Run validations	2026-05-25T11:05:43.7169053Z go: downloading github.com/spf13/pflag v1.0.6
+validations	Run validations	2026-05-25T11:05:43.8358566Z go: downloading go.uber.org/zap v1.27.0
+validations	Run validations	2026-05-25T11:05:43.8765067Z go: downloading golang.org/x/text v0.23.0
+validations	Run validations	2026-05-25T11:05:44.0387156Z go: downloading sigs.k8s.io/yaml v1.6.0
+validations	Run validations	2026-05-25T11:05:44.1936690Z go: downloading go.uber.org/multierr v1.10.0
+validations	Run validations	2026-05-25T11:05:44.3165528Z go: downloading go.yaml.in/yaml/v2 v2.4.2
+validations	Run validations	2026-05-25T11:05:59.0775098Z Running validations...
+validations	Run validations	2026-05-25T11:05:59.0917869Z mockgcp/dev/tasks/fix-gofmt
+validations	Run validations	2026-05-25T11:05:59.2030145Z go: downloading golang.org/x/tools v0.44.0
+validations	Run validations	2026-05-25T11:06:00.1152014Z go: downloading golang.org/x/telemetry v0.0.0-20260409153401-be6f6cb8b1fa
+validations	Run validations	2026-05-25T11:06:00.1197688Z go: downloading golang.org/x/mod v0.35.0
+validations	Run validations	2026-05-25T11:06:00.1293315Z go: downloading golang.org/x/sync v0.20.0
+validations	Run validations	2026-05-25T11:06:08.0035654Z make -C operator fmt
+validations	Run validations	2026-05-25T11:06:08.0048080Z make[1]: Entering directory '/home/runner/work/k8s-config-connector/k8s-config-connector/operator'
+validations	Run validations	2026-05-25T11:06:08.0116274Z go fmt ./...
+validations	Run validations	2026-05-25T11:06:08.0499842Z go: downloading k8s.io/api v0.33.10
+validations	Run validations	2026-05-25T11:06:08.0501653Z go: downloading k8s.io/apimachinery v0.33.10
+validations	Run validations	2026-05-25T11:06:08.4300296Z go: downloading sigs.k8s.io/controller-runtime v0.20.4
+validations	Run validations	2026-05-25T11:06:08.4305099Z go: downloading sigs.k8s.io/kubebuilder-declarative-pattern v0.20.0-beta.1.0.20250514194322-871029137730
+validations	Run validations	2026-05-25T11:06:08.4326763Z go: downloading github.com/spf13/pflag v1.0.10
+validations	Run validations	2026-05-25T11:06:08.4959942Z go: downloading k8s.io/client-go v0.33.10
+validations	Run validations	2026-05-25T11:06:08.5132284Z go: downloading k8s.io/klog/v2 v2.130.1
+validations	Run validations	2026-05-25T11:06:08.5983910Z go: downloading github.com/go-logr/logr v1.4.3
+validations	Run validations	2026-05-25T11:06:08.7601915Z go: downloading k8s.io/apiextensions-apiserver v0.33.10
+validations	Run validations	2026-05-25T11:06:08.7613514Z go: downloading sigs.k8s.io/yaml v1.4.0
+validations	Run validations	2026-05-25T11:06:08.8255592Z go: downloading github.com/pkg/errors v0.9.1
+validations	Run validations	2026-05-25T11:06:09.0271840Z go: downloading github.com/blang/semver v3.5.1+incompatible
+validations	Run validations	2026-05-25T11:06:09.0278530Z go: downloading github.com/ghodss/yaml v1.0.0
+validations	Run validations	2026-05-25T11:06:09.0279052Z go: downloading google.golang.org/protobuf v1.36.11
+validations	Run validations	2026-05-25T11:06:09.0294090Z go: downloading github.com/blang/semver/v4 v4.0.0
+validations	Run validations	2026-05-25T11:06:09.0692446Z go: downloading gopkg.in/yaml.v2 v2.4.0
+validations	Run validations	2026-05-25T11:06:09.0707725Z go: downloading github.com/gogo/protobuf v1.3.2
+validations	Run validations	2026-05-25T11:06:09.1163910Z go: downloading k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
+validations	Run validations	2026-05-25T11:06:09.1992002Z go: downloading sigs.k8s.io/randfill v1.0.0
+validations	Run validations	2026-05-25T11:06:09.2468585Z go: downloading sigs.k8s.io/structured-merge-diff/v4 v4.6.0
+validations	Run validations	2026-05-25T11:06:09.3002360Z go: downloading cloud.google.com/go/profiler v0.6.0
+validations	Run validations	2026-05-25T11:06:09.3256902Z go: downloading cloud.google.com/go v0.123.0
+validations	Run validations	2026-05-25T11:06:09.3305445Z go: downloading github.com/prometheus/client_golang v1.22.0
+validations	Run validations	2026-05-25T11:06:09.3590725Z go: downloading gomodules.xyz/jsonpatch/v2 v2.4.0
+validations	Run validations	2026-05-25T11:06:09.3591932Z go: downloading gopkg.in/inf.v0 v0.9.1
+validations	Run validations	2026-05-25T11:06:09.3958487Z go: downloading github.com/cenkalti/backoff v2.2.1+incompatible
+validations	Run validations	2026-05-25T11:06:09.4015237Z go: downloading github.com/evanphx/json-patch/v5 v5.9.11
+validations	Run validations	2026-05-25T11:06:09.4097770Z go: downloading sigs.k8s.io/kustomize/kyaml v0.18.1
+validations	Run validations	2026-05-25T11:06:09.4103808Z go: downloading go.uber.org/multierr v1.11.0
+validations	Run validations	2026-05-25T11:06:09.4432732Z go: downloading github.com/go-git/go-git/v5 v5.18.0
+validations	Run validations	2026-05-25T11:06:09.5531181Z go: downloading golang.org/x/crypto v0.51.0
+validations	Run validations	2026-05-25T11:06:09.5697702Z go: downloading golang.org/x/net v0.54.0
+validations	Run validations	2026-05-25T11:06:09.5698958Z go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+validations	Run validations	2026-05-25T11:06:09.5704679Z go: downloading sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-871029137730
+validations	Run validations	2026-05-25T11:06:09.6147688Z go: downloading sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b
+validations	Run validations	2026-05-25T11:06:09.6182030Z go: downloading sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8
+validations	Run validations	2026-05-25T11:06:09.6704813Z go: downloading github.com/json-iterator/go v1.1.12
+validations	Run validations	2026-05-25T11:06:09.6790921Z go: downloading github.com/fsnotify/fsnotify v1.9.0
+validations	Run validations	2026-05-25T11:06:09.7344139Z go: downloading cloud.google.com/go/compute/metadata v0.9.0
+validations	Run validations	2026-05-25T11:06:09.7374356Z go: downloading github.com/google/pprof v0.0.0-20260402051712-545e8a4df936
+validations	Run validations	2026-05-25T11:06:09.7573678Z go: downloading github.com/googleapis/gax-go/v2 v2.22.0
+validations	Run validations	2026-05-25T11:06:09.7584986Z go: downloading cloud.google.com/go/compute v1.64.0
+validations	Run validations	2026-05-25T11:06:09.8013089Z go: downloading google.golang.org/api v0.280.0
+validations	Run validations	2026-05-25T11:06:09.9661519Z go: downloading google.golang.org/genproto v0.0.0-20260319201613-d00831a3d3e7
+validations	Run validations	2026-05-25T11:06:10.1964001Z go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20260511170946-3700d4141b60
+validations	Run validations	2026-05-25T11:06:10.6242053Z go: downloading google.golang.org/grpc v1.81.1
+validations	Run validations	2026-05-25T11:06:10.9333433Z go: downloading github.com/fxamacker/cbor/v2 v2.9.0
+validations	Run validations	2026-05-25T11:06:10.9334413Z go: downloading github.com/google/go-cmp v0.7.0
+validations	Run validations	2026-05-25T11:06:10.9882907Z go: downloading k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff
+validations	Run validations	2026-05-25T11:06:11.2008498Z go: downloading github.com/google/uuid v1.6.0
+validations	Run validations	2026-05-25T11:06:11.2009412Z go: downloading golang.org/x/time v0.15.0
+validations	Run validations	2026-05-25T11:06:11.2430543Z go: downloading github.com/google/btree v1.1.3
+validations	Run validations	2026-05-25T11:06:11.2446049Z go: downloading github.com/prometheus/client_model v0.6.2
+validations	Run validations	2026-05-25T11:06:11.2853936Z go: downloading github.com/prometheus/common v0.63.0
+validations	Run validations	2026-05-25T11:06:11.2855074Z go: downloading sigs.k8s.io/kustomize/api v0.18.0
+validations	Run validations	2026-05-25T11:06:11.3526439Z go: downloading github.com/beorn7/perks v1.0.1
+validations	Run validations	2026-05-25T11:06:11.3938935Z go: downloading github.com/cespare/xxhash/v2 v2.3.0
+validations	Run validations	2026-05-25T11:06:11.3982363Z go: downloading github.com/prometheus/procfs v0.16.0
+validations	Run validations	2026-05-25T11:06:11.4365453Z go: downloading k8s.io/cli-runtime v0.32.1
+validations	Run validations	2026-05-25T11:06:11.5526449Z go: downloading k8s.io/kubectl v0.32.1
+validations	Run validations	2026-05-25T11:06:11.9086804Z go: downloading sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20230420203711-4abaa68e1923
+validations	Run validations	2026-05-25T11:06:11.9088473Z go: downloading golang.org/x/sys v0.44.0
+validations	Run validations	2026-05-25T11:06:11.9631769Z go: downloading dario.cat/mergo v1.0.0
+validations	Run validations	2026-05-25T11:06:12.0104835Z go: downloading github.com/ProtonMail/go-crypto v1.1.6
+validations	Run validations	2026-05-25T11:06:12.0984729Z go: downloading github.com/go-git/go-billy/v5 v5.8.0
+validations	Run validations	2026-05-25T11:06:12.1486512Z go: downloading github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3
+validations	Run validations	2026-05-25T11:06:12.1487776Z go: downloading github.com/kevinburke/ssh_config v1.2.0
+validations	Run validations	2026-05-25T11:06:12.1918268Z go: downloading github.com/skeema/knownhosts v1.3.1
+validations	Run validations	2026-05-25T11:06:12.2335950Z go: downloading github.com/xanzy/ssh-agent v0.3.3
+validations	Run validations	2026-05-25T11:06:12.2705933Z go: downloading golang.org/x/term v0.43.0
+validations	Run validations	2026-05-25T11:06:12.2735551Z go: downloading golang.org/x/oauth2 v0.36.0
+validations	Run validations	2026-05-25T11:06:12.3239214Z go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+validations	Run validations	2026-05-25T11:06:12.3470521Z go: downloading github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee
+validations	Run validations	2026-05-25T11:06:12.3644666Z go: downloading go.opentelemetry.io/otel v1.43.0
+validations	Run validations	2026-05-25T11:06:12.6501391Z go: downloading go.opentelemetry.io/otel/metric v1.43.0
+validations	Run validations	2026-05-25T11:06:12.6945224Z go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20260511170946-3700d4141b60
+validations	Run validations	2026-05-25T11:06:12.7547116Z go: downloading github.com/x448/float16 v0.8.4
+validations	Run validations	2026-05-25T11:06:13.2650352Z go: downloading github.com/google/gnostic-models v0.6.9
+validations	Run validations	2026-05-25T11:06:13.2651270Z go: downloading gopkg.in/yaml.v3 v3.0.1
+validations	Run validations	2026-05-25T11:06:13.2652010Z go: downloading github.com/go-openapi/jsonreference v0.21.0
+validations	Run validations	2026-05-25T11:06:13.3067089Z go: downloading github.com/go-openapi/swag v0.23.0
+validations	Run validations	2026-05-25T11:06:13.3123732Z go: downloading github.com/spf13/cobra v1.10.2
+validations	Run validations	2026-05-25T11:06:13.3301153Z go: downloading gopkg.in/evanphx/json-patch.v4 v4.12.0
+validations	Run validations	2026-05-25T11:06:13.3302325Z go: downloading github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de
+validations	Run validations	2026-05-25T11:06:13.3525746Z go: downloading golang.org/x/text v0.37.0
+validations	Run validations	2026-05-25T11:06:13.3700471Z go: downloading github.com/moby/term v0.5.0
+validations	Run validations	2026-05-25T11:06:13.3729118Z go: downloading k8s.io/component-base v0.33.10
+validations	Run validations	2026-05-25T11:06:13.4138055Z go: downloading github.com/jonboulle/clockwork v0.4.0
+validations	Run validations	2026-05-25T11:06:13.4588497Z go: downloading sigs.k8s.io/kustomize/kstatus v0.0.2-0.20200509233124-065f70705d4d
+validations	Run validations	2026-05-25T11:06:13.4726672Z go: downloading github.com/go-errors/errors v1.4.2
+validations	Run validations	2026-05-25T11:06:13.5090950Z go: downloading github.com/cyphar/filepath-securejoin v0.4.1
+validations	Run validations	2026-05-25T11:06:13.5136150Z go: downloading github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376
+validations	Run validations	2026-05-25T11:06:13.5543471Z go: downloading github.com/pjbgf/sha1cd v0.3.2
+validations	Run validations	2026-05-25T11:06:13.5588653Z go: downloading github.com/emirpasic/gods v1.18.1
+validations	Run validations	2026-05-25T11:06:13.6373851Z go: downloading github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99
+validations	Run validations	2026-05-25T11:06:13.6793438Z go: downloading github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
+validations	Run validations	2026-05-25T11:06:13.8198226Z go: downloading go.opentelemetry.io/otel/trace v1.43.0
+validations	Run validations	2026-05-25T11:06:13.8200668Z go: downloading bitbucket.org/creachadair/stringset v0.0.8
+validations	Run validations	2026-05-25T11:06:13.8201651Z go: downloading github.com/golang/glog v1.2.5
+validations	Run validations	2026-05-25T11:06:13.8207284Z go: downloading github.com/google/go-cpy v0.0.0-20211218193943-a9c933c06932
+validations	Run validations	2026-05-25T11:06:13.8628799Z go: downloading github.com/kylelemons/godebug v1.1.0
+validations	Run validations	2026-05-25T11:06:13.8661675Z go: downloading cloud.google.com/go/auth v0.20.0
+validations	Run validations	2026-05-25T11:06:13.9043336Z go: downloading cloud.google.com/go/auth/oauth2adapt v0.2.8
+validations	Run validations	2026-05-25T11:06:13.9371891Z go: downloading go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.67.0
+validations	Run validations	2026-05-25T11:06:13.9373363Z go: downloading github.com/go-openapi/jsonpointer v0.21.0
+validations	Run validations	2026-05-25T11:06:13.9385885Z go: downloading github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
+validations	Run validations	2026-05-25T11:06:13.9438296Z go: downloading github.com/peterbourgon/diskv v2.0.1+incompatible
+validations	Run validations	2026-05-25T11:06:13.9797042Z go: downloading github.com/mailru/easyjson v0.7.7
+validations	Run validations	2026-05-25T11:06:13.9846693Z go: downloading github.com/chai2010/gettext-go v1.0.2
+validations	Run validations	2026-05-25T11:06:13.9852222Z go: downloading github.com/MakeNowJust/heredoc v1.0.0
+validations	Run validations	2026-05-25T11:06:14.0260174Z go: downloading github.com/mitchellh/go-wordwrap v1.0.1
+validations	Run validations	2026-05-25T11:06:14.0316959Z go: downloading github.com/russross/blackfriday/v2 v2.1.0
+validations	Run validations	2026-05-25T11:06:14.0318934Z go: downloading github.com/exponent-io/jsonpath v0.0.0-20210407135951-1de76d718b3f
+validations	Run validations	2026-05-25T11:06:14.0655760Z go: downloading github.com/cloudflare/circl v1.6.3
+validations	Run validations	2026-05-25T11:06:14.7619626Z go: downloading gopkg.in/warnings.v0 v0.1.2
+validations	Run validations	2026-05-25T11:06:14.7620882Z go: downloading github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8
+validations	Run validations	2026-05-25T11:06:14.7635244Z go: downloading cloud.google.com/go/resourcemanager v1.15.0
+validations	Run validations	2026-05-25T11:06:14.8077728Z go: downloading github.com/go-logr/stdr v1.2.2
+validations	Run validations	2026-05-25T11:06:14.8081206Z go: downloading go.opentelemetry.io/auto/sdk v1.2.1
+validations	Run validations	2026-05-25T11:06:14.8321478Z go: downloading go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.67.0
+validations	Run validations	2026-05-25T11:06:14.8322604Z go: downloading github.com/google/s2a-go v0.1.9
+validations	Run validations	2026-05-25T11:06:14.8493512Z go: downloading github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00
+validations	Run validations	2026-05-25T11:06:14.8535547Z go: downloading github.com/xlab/treeprint v1.2.0
+validations	Run validations	2026-05-25T11:06:14.8775057Z go: downloading github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
+validations	Run validations	2026-05-25T11:06:14.8926894Z go: downloading github.com/josharian/intern v1.0.0
+validations	Run validations	2026-05-25T11:06:14.8942151Z go: downloading github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
+validations	Run validations	2026-05-25T11:06:14.9178910Z go: downloading cloud.google.com/go/iam v1.11.0
+validations	Run validations	2026-05-25T11:06:14.9181098Z go: downloading cloud.google.com/go/longrunning v1.0.0
+validations	Run validations	2026-05-25T11:06:14.9626496Z go: downloading github.com/googleapis/enterprise-certificate-proxy v0.3.15
+validations	Run validations	2026-05-25T11:06:14.9627316Z go: downloading github.com/emicklei/go-restful/v3 v3.12.2
+validations	Run validations	2026-05-25T11:06:14.9627885Z go: downloading github.com/felixge/httpsnoop v1.0.4
+validations	Run validations	2026-05-25T11:06:14.9975763Z go: downloading github.com/fatih/camelcase v1.0.0
+validations	Run validations	2026-05-25T11:06:15.0137299Z go: downloading github.com/moby/spdystream v0.5.1
+validations	Run validations	2026-05-25T11:06:15.0149230Z go: downloading github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f
+validations	Run validations	2026-05-25T11:06:15.8029971Z make[1]: Leaving directory '/home/runner/work/k8s-config-connector/k8s-config-connector/operator'
+validations	Run validations	2026-05-25T11:06:15.8031191Z dev/tasks/fix-gofmt
+validations	Run validations	2026-05-25T11:06:24.1209190Z # 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
+validations	Run validations	2026-05-25T11:06:24.1217697Z GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
+validations	Run validations	2026-05-25T11:06:24.1218492Z -ignore ".build/**" -ignore "vendor/**" -ignore "third_party/**" \
+validations	Run validations	2026-05-25T11:06:24.1218978Z -ignore "config/crds/**" -ignore "config/cloudcodesnippets/**" \
+validations	Run validations	2026-05-25T11:06:24.1219478Z -ignore "**/*.html" -ignore "config/installbundle/components/clusterroles/cnrm_admin.yaml" \
+validations	Run validations	2026-05-25T11:06:24.1220032Z -ignore "config/installbundle/components/clusterroles/cnrm_viewer.yaml" \
+validations	Run validations	2026-05-25T11:06:24.1220427Z -ignore "operator/channels/**" \
+validations	Run validations	2026-05-25T11:06:24.1220706Z -ignore "operator/autopilot-channels/**" \
+validations	Run validations	2026-05-25T11:06:24.1221003Z -ignore "operator/config/crd/bases/**" \
+validations	Run validations	2026-05-25T11:06:24.1221332Z -ignore "operator/config/gke-addon/image_configmap.yaml" \
+validations	Run validations	2026-05-25T11:06:24.1221706Z -ignore "operator/config/rbac/cnrm_viewer_role.yaml" \
+validations	Run validations	2026-05-25T11:06:24.1222353Z -ignore "operator/vendor/**" \
+validations	Run validations	2026-05-25T11:06:24.1222590Z -ignore "**/testdata/**/*" \
+validations	Run validations	2026-05-25T11:06:24.1222838Z -ignore "experiments/**/testdata/**" \
+validations	Run validations	2026-05-25T11:06:24.1223109Z -ignore "pkg/gcpclients/generated/**" \
+validations	Run validations	2026-05-25T11:06:24.1223361Z ./
+validations	Run validations	2026-05-25T11:06:24.1996472Z go: downloading github.com/google/addlicense v1.0.1-0.20220826150037-04bfe4ee9ca5
+validations	Run validations	2026-05-25T11:06:24.6236527Z go: downloading github.com/bmatcuk/doublestar/v4 v4.0.2
+validations	Run validations	2026-05-25T11:06:24.6237301Z go: downloading golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
+validations	Run validations	2026-05-25T11:06:26.1786447Z Full diff:
+validations	Run validations	2026-05-25T11:06:26.8176872Z diff --git a/pkg/controller/direct/networkmanagement/mapper.go b/pkg/controller/direct/networkmanagement/mapper.go
+validations	Run validations	2026-05-25T11:06:26.8177828Z index e3466a5dde..c815864734 100644
+validations	Run validations	2026-05-25T11:06:26.8178324Z --- a/pkg/controller/direct/networkmanagement/mapper.go
+validations	Run validations	2026-05-25T11:06:26.8178871Z +++ b/pkg/controller/direct/networkmanagement/mapper.go
+validations	Run validations	2026-05-25T11:06:26.8179421Z @@ -1,23 +1,37 @@
+validations	Run validations	2026-05-25T11:06:26.8179737Z +// Copyright 2026 Google LLC
+validations	Run validations	2026-05-25T11:06:26.8180082Z +//
+validations	Run validations	2026-05-25T11:06:26.8180509Z +// Licensed under the Apache License, Version 2.0 (the "License");
+validations	Run validations	2026-05-25T11:06:26.8181173Z +// you may not use this file except in compliance with the License.
+validations	Run validations	2026-05-25T11:06:26.8182015Z +// You may obtain a copy of the License at
+validations	Run validations	2026-05-25T11:06:26.8182259Z +//
+validations	Run validations	2026-05-25T11:06:26.8182498Z +//      http://www.apache.org/licenses/LICENSE-2.0
+validations	Run validations	2026-05-25T11:06:26.8182930Z +//
+validations	Run validations	2026-05-25T11:06:26.8183225Z +// Unless required by applicable law or agreed to in writing, software
+validations	Run validations	2026-05-25T11:06:26.8183665Z +// distributed under the License is distributed on an "AS IS" BASIS,
+validations	Run validations	2026-05-25T11:06:26.8184166Z +// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+validations	Run validations	2026-05-25T11:06:26.8185046Z +// See the License for the specific language governing permissions and
+validations	Run validations	2026-05-25T11:06:26.8185570Z +// limitations under the License.
+validations	Run validations	2026-05-25T11:06:26.8185940Z +
+validations	Run validations	2026-05-25T11:06:26.8186233Z  package networkmanagement
+validations	Run validations	2026-05-25T11:06:26.8186470Z  
+validations	Run validations	2026-05-25T11:06:26.8186639Z  import (
+validations	Run validations	2026-05-25T11:06:26.8186975Z -        pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
+validations	Run validations	2026-05-25T11:06:26.8187561Z -        krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
+validations	Run validations	2026-05-25T11:06:26.8188159Z -        "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+validations	Run validations	2026-05-25T11:06:26.8188699Z +	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
+validations	Run validations	2026-05-25T11:06:26.8189234Z +	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
+validations	Run validations	2026-05-25T11:06:26.8189789Z +	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+validations	Run validations	2026-05-25T11:06:26.8190138Z  )
+validations	Run validations	2026-05-25T11:06:26.8190299Z  
+validations	Run validations	2026-05-25T11:06:26.8191063Z  func ProbingDetails_SingleEdgeResponseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails_SingleEdgeResponse) *krm.ProbingDetails_SingleEdgeResponseObservedState {
+validations	Run validations	2026-05-25T11:06:26.8191832Z -        if in == nil {
+validations	Run validations	2026-05-25T11:06:26.8192059Z -                return nil
+validations	Run validations	2026-05-25T11:06:26.8192265Z -        }
+validations	Run validations	2026-05-25T11:06:26.8192472Z -        mapCtx.NotImplemented()
+validations	Run validations	2026-05-25T11:06:26.8192724Z -        return nil
+validations	Run validations	2026-05-25T11:06:26.8192927Z +	if in == nil {
+validations	Run validations	2026-05-25T11:06:26.8193115Z +		return nil
+validations	Run validations	2026-05-25T11:06:26.8193289Z +	}
+validations	Run validations	2026-05-25T11:06:26.8193473Z +	mapCtx.NotImplemented()
+validations	Run validations	2026-05-25T11:06:26.8193694Z +	return nil
+validations	Run validations	2026-05-25T11:06:26.8193866Z  }
+validations	Run validations	2026-05-25T11:06:26.8194018Z  
+validations	Run validations	2026-05-25T11:06:26.8194777Z  func ProbingDetails_SingleEdgeResponseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProbingDetails_SingleEdgeResponseObservedState) *pb.ProbingDetails_SingleEdgeResponse {
+validations	Run validations	2026-05-25T11:06:26.8195705Z -        if in == nil {
+validations	Run validations	2026-05-25T11:06:26.8195924Z -                return nil
+validations	Run validations	2026-05-25T11:06:26.8196134Z -        }
+validations	Run validations	2026-05-25T11:06:26.8196334Z -        mapCtx.NotImplemented()
+validations	Run validations	2026-05-25T11:06:26.8196774Z -        return nil
+validations	Run validations	2026-05-25T11:06:26.8196968Z +	if in == nil {
+validations	Run validations	2026-05-25T11:06:26.8197160Z +		return nil
+validations	Run validations	2026-05-25T11:06:26.8197327Z +	}
+validations	Run validations	2026-05-25T11:06:26.8197510Z +	mapCtx.NotImplemented()
+validations	Run validations	2026-05-25T11:06:26.8197719Z +	return nil
+validations	Run validations	2026-05-25T11:06:26.8197898Z  }
+validations	Run validations	2026-05-25T11:06:26.8198221Z ERROR: Files not formatted correctly. Please run 'make fmt' and update your PR.
+validations	Run validations	2026-05-25T11:06:26.8198725Z <hint_for_agent>Run 'make fmt' to fix formatting issues.</hint_for_agent>
+validations	Run validations	2026-05-25T11:06:26.8199076Z Affected files:
+validations	Run validations	2026-05-25T11:06:27.4571671Z pkg/controller/direct/networkmanagement/mapper.go
+validations	Run validations	2026-05-25T11:06:27.4599913Z ##[error]Process completed with exit code 1.

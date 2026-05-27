@@ -181,6 +181,7 @@ func DataprocAutoscalingPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetWorkerConfig())
 	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetSecondaryWorkerConfig())
 	// MISSING: Labels
+	// MISSING: ClusterType
 	return out
 }
 func DataprocAutoscalingPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicySpec) *pb.AutoscalingPolicy {
@@ -196,6 +197,7 @@ func DataprocAutoscalingPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.WorkerConfig)
 	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
 	// MISSING: Labels
+	// MISSING: ClusterType
 	return out
 }
 
@@ -208,6 +210,7 @@ func DataprocBatchObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.Uuid = direct.LazyPtr(in.GetUuid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: PysparkNotebookBatch
 	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetRuntimeInfo())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
@@ -228,6 +231,7 @@ func DataprocBatchObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	out.Uuid = direct.ValueOf(in.Uuid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: PysparkNotebookBatch
 	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_ToProto(mapCtx, in.RuntimeInfo)
 	out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
 	out.StateMessage = direct.ValueOf(in.StateMessage)
@@ -250,6 +254,7 @@ func DataprocBatchSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batc
 	out.SparkBatch = SparkBatch_v1alpha1_FromProto(mapCtx, in.GetSparkBatch())
 	out.SparkRBatch = SparkRBatch_v1alpha1_FromProto(mapCtx, in.GetSparkRBatch())
 	out.SparkSQLBatch = SparkSQLBatch_v1alpha1_FromProto(mapCtx, in.GetSparkSqlBatch())
+	// MISSING: PysparkNotebookBatch
 	out.Labels = in.Labels
 	out.RuntimeConfig = RuntimeConfig_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
 	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_FromProto(mapCtx, in.GetEnvironmentConfig())
@@ -276,6 +281,7 @@ func DataprocBatchSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatapr
 	if oneof := SparkSQLBatch_v1alpha1_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
 		out.BatchConfig = &pb.Batch_SparkSqlBatch{SparkSqlBatch: oneof}
 	}
+	// MISSING: PysparkNotebookBatch
 	out.Labels = in.Labels
 	out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
 	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
@@ -542,6 +548,7 @@ func ExecutionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Execut
 		out.StagingBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetStagingBucket()}
 	}
 	// MISSING: AuthenticationConfig
+	// MISSING: ResourceManagerTags
 	return out
 }
 */
@@ -573,6 +580,7 @@ found existing non-generated mapping function "ExecutionConfig_v1alpha1_ToProto"
 			out.StagingBucket = in.StagingBucketRef.External
 		}
 		// MISSING: AuthenticationConfig
+		// MISSING: ResourceManagerTags
 		return out
 	}
 */
@@ -1919,6 +1927,7 @@ func UsageMetrics_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetr
 	out.ShuffleStorageGBSeconds = direct.LazyPtr(in.GetShuffleStorageGbSeconds())
 	out.MilliAcceleratorSeconds = direct.LazyPtr(in.GetMilliAcceleratorSeconds())
 	out.AcceleratorType = direct.LazyPtr(in.GetAcceleratorType())
+	// MISSING: UpdateTime
 	return out
 }
 */
@@ -1933,6 +1942,7 @@ func UsageMetrics_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1a
 	out.ShuffleStorageGbSeconds = direct.ValueOf(in.ShuffleStorageGBSeconds)
 	out.MilliAcceleratorSeconds = direct.ValueOf(in.MilliAcceleratorSeconds)
 	out.AcceleratorType = direct.ValueOf(in.AcceleratorType)
+	// MISSING: UpdateTime
 	return out
 }
 */

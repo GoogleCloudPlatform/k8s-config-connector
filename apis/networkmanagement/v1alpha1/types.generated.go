@@ -62,6 +62,139 @@ type Endpoint_CloudFunctionEndpoint struct {
 	URI *string `json:"uri,omitempty"`
 }
 
+/* unreachable type GKENetworkPolicyInfo
+// +kcc:proto=google.cloud.networkmanagement.v1.GkeNetworkPolicyInfo
+type GKENetworkPolicyInfo struct {
+	// The name of the Network Policy.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.GkeNetworkPolicyInfo.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The URI of the Network Policy.
+	//  Format for a Network Policy in a zonal cluster:
+	//  `projects/<project_id>/zones/<zone>/clusters/<cluster>/k8s/namespaces/<namespace>/networking.k8s.io/networkpolicies/<networkpolicy>`
+	//  Format for a Network Policy in a regional cluster:
+	//  `projects/<project_id>/locations/<location>/clusters/<cluster>/k8s/namespaces/<namespace>/networking.k8s.io/networkpolicies/<networkpolicy>`
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.GkeNetworkPolicyInfo.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Possible values: INGRESS, EGRESS
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.GkeNetworkPolicyInfo.direction
+	Direction *string `json:"direction,omitempty"`
+
+	// Possible values: ALLOW, DENY
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.GkeNetworkPolicyInfo.action
+	Action *string `json:"action,omitempty"`
+}
+*/
+
+/* unreachable type GKENetworkPolicySkippedInfo
+// +kcc:proto=google.cloud.networkmanagement.v1.GkeNetworkPolicySkippedInfo
+type GKENetworkPolicySkippedInfo struct {
+	// Reason why Network Policy evaluation was skipped.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.GkeNetworkPolicySkippedInfo.reason
+	Reason *string `json:"reason,omitempty"`
+}
+*/
+
+/* unreachable type GKEPodInfo
+// +kcc:proto=google.cloud.networkmanagement.v1.GkePodInfo
+type GKEPodInfo struct {
+	// URI of a GKE Pod.
+	//  For Pods in regional Clusters, the URI format is:
+	//  `projects/{project}/locations/{location}/clusters/{cluster}/k8s/namespaces/{namespace}/pods/{pod}`
+	//  For Pods in zonal Clusters, the URI format is:
+	//  `projects/{project}/zones/{zone}/clusters/{cluster}/k8s/namespaces/{namespace}/pods/{pod}`
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.GkePodInfo.pod_uri
+	PodURI *string `json:"podURI,omitempty"`
+
+	// IP address of a GKE Pod. If the Pod is dual-stack, this is the IP address
+	//  relevant to the trace.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.GkePodInfo.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// URI of the network containing the GKE Pod.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.GkePodInfo.network_uri
+	NetworkURI *string `json:"networkURI,omitempty"`
+}
+*/
+
+/* unreachable type HybridSubnetInfo
+// +kcc:proto=google.cloud.networkmanagement.v1.HybridSubnetInfo
+type HybridSubnetInfo struct {
+	// Name of a hybrid subnet.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.HybridSubnetInfo.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// URI of a hybrid subnet.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.HybridSubnetInfo.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Name of a Google Cloud region where the hybrid subnet is configured.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.HybridSubnetInfo.region
+	Region *string `json:"region,omitempty"`
+}
+*/
+
+/* unreachable type InterconnectAttachmentInfo
+// +kcc:proto=google.cloud.networkmanagement.v1.InterconnectAttachmentInfo
+type InterconnectAttachmentInfo struct {
+	// Name of an Interconnect attachment.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.InterconnectAttachmentInfo.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// URI of an Interconnect attachment.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.InterconnectAttachmentInfo.uri
+	URI *string `json:"uri,omitempty"`
+
+	// URI of the Interconnect where the Interconnect attachment is
+	//  configured.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.InterconnectAttachmentInfo.interconnect_uri
+	InterconnectURI *string `json:"interconnectURI,omitempty"`
+
+	// Name of a Google Cloud region where the Interconnect attachment is
+	//  configured.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.InterconnectAttachmentInfo.region
+	Region *string `json:"region,omitempty"`
+
+	// URI of the Cloud Router to be used for dynamic routing.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.InterconnectAttachmentInfo.cloud_router_uri
+	CloudRouterURI *string `json:"cloudRouterURI,omitempty"`
+
+	// The type of interconnect attachment this is.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.InterconnectAttachmentInfo.type
+	Type *string `json:"type,omitempty"`
+
+	// Appliance IP address that was matched for L2_DEDICATED attachments.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.InterconnectAttachmentInfo.l2_attachment_matched_ip_address
+	L2AttachmentMatchedIPAddress *string `json:"l2AttachmentMatchedIPAddress,omitempty"`
+}
+*/
+
+/* unreachable type IPMasqueradingSkippedInfo
+// +kcc:proto=google.cloud.networkmanagement.v1.IpMasqueradingSkippedInfo
+type IPMasqueradingSkippedInfo struct {
+	// Reason why IP masquerading was not applied.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.IpMasqueradingSkippedInfo.reason
+	Reason *string `json:"reason,omitempty"`
+
+	// The matched non-masquerade IP range. Only set if reason is
+	//  DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE or
+	//  DESTINATION_IP_IN_DEFAULT_NON_MASQUERADE_RANGE.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.IpMasqueradingSkippedInfo.non_masquerade_range
+	NonMasqueradeRange *string `json:"nonMasqueradeRange,omitempty"`
+}
+*/
+
+/* unreachable type NgfwPacketInspectionInfo
+// +kcc:proto=google.cloud.networkmanagement.v1.NgfwPacketInspectionInfo
+type NgfwPacketInspectionInfo struct {
+	// URI of the security profile group associated with this firewall packet
+	//  inspection.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.NgfwPacketInspectionInfo.security_profile_group_uri
+	SecurityProfileGroupURI *string `json:"securityProfileGroupURI,omitempty"`
+}
+*/
+
 /* unreachable type ServerlessExternalConnectionInfo
 // +kcc:proto=google.cloud.networkmanagement.v1.ServerlessExternalConnectionInfo
 type ServerlessExternalConnectionInfo struct {

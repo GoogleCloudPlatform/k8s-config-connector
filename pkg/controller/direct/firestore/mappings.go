@@ -64,3 +64,60 @@ func Field_TTLConfig_Spec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.F
 		Enabled: direct.PtrTo(true),
 	}
 }
+
+func Index_IndexField_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krm.Index_IndexField {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexField{}
+	out.FieldPath = direct.LazyPtr(in.GetFieldPath())
+	out.Order = direct.Enum_FromProto(mapCtx, in.GetOrder())
+	out.ArrayConfig = direct.Enum_FromProto(mapCtx, in.GetArrayConfig())
+	out.VectorConfig = Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx, in.GetVectorConfig())
+	return out
+}
+
+func Index_IndexField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField) *pb.Index_IndexField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField{}
+	out.FieldPath = direct.ValueOf(in.FieldPath)
+	if oneof := IndexFields_Order_ToProto(mapCtx, in.Order); oneof != nil {
+		out.ValueMode = oneof
+	}
+	if oneof := IndexFields_ArrayConfig_ToProto(mapCtx, in.ArrayConfig); oneof != nil {
+		out.ValueMode = oneof
+	}
+	if oneof := Index_IndexField_VectorConfig_v1alpha1_ToProto(mapCtx, in.VectorConfig); oneof != nil {
+		out.ValueMode = &pb.Index_IndexField_VectorConfig_{VectorConfig: oneof}
+	}
+	return out
+}
+
+// Stubs to prevent controllerbuilder from generating them and causing compile errors
+
+func Index_IndexField_SearchConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in any) *krm.Index_IndexField_SearchConfig {
+	return nil
+}
+func Index_IndexField_SearchConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_SearchConfig) any {
+	return nil
+}
+func Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in any) *krm.Index_IndexField_SearchConfig_SearchGeoSpec {
+	return nil
+}
+func Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_SearchConfig_SearchGeoSpec) any {
+	return nil
+}
+func Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in any) *krm.Index_IndexField_SearchConfig_SearchTextIndexSpec {
+	return nil
+}
+func Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_SearchConfig_SearchTextIndexSpec) any {
+	return nil
+}
+func Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in any) *krm.Index_IndexField_SearchConfig_SearchTextSpec {
+	return nil
+}
+func Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_SearchConfig_SearchTextSpec) any {
+	return nil
+}

@@ -67,6 +67,54 @@ type Database_SourceInfo_BackupSource struct {
 }
 */
 
+/* unreachable type Index_IndexField_SearchConfig
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig
+type Index_IndexField_SearchConfig struct {
+	// Optional. The specification for building a text search index for a
+	//  field.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.text_spec
+	TextSpec *Index_IndexField_SearchConfig_SearchTextSpec `json:"textSpec,omitempty"`
+
+	// Optional. The specification for building a geo search index for a
+	//  field.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.geo_spec
+	GeoSpec *Index_IndexField_SearchConfig_SearchGeoSpec `json:"geoSpec,omitempty"`
+}
+*/
+
+/* unreachable type Index_IndexField_SearchConfig_SearchGeoSpec
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchGeoSpec
+type Index_IndexField_SearchConfig_SearchGeoSpec struct {
+	// Optional. Disables geoJSON indexing for the field. By default,
+	//  geoJSON points are indexed.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchGeoSpec.geo_json_indexing_disabled
+	GeoJsonIndexingDisabled *bool `json:"geoJsonIndexingDisabled,omitempty"`
+}
+*/
+
+/* unreachable type Index_IndexField_SearchConfig_SearchTextIndexSpec
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextIndexSpec
+type Index_IndexField_SearchConfig_SearchTextIndexSpec struct {
+	// Required. How to index the text field value.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextIndexSpec.index_type
+	IndexType *string `json:"indexType,omitempty"`
+
+	// Required. How to match the text field value.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextIndexSpec.match_type
+	MatchType *string `json:"matchType,omitempty"`
+}
+*/
+
+/* unreachable type Index_IndexField_SearchConfig_SearchTextSpec
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextSpec
+type Index_IndexField_SearchConfig_SearchTextSpec struct {
+	// Required. Specifications for how the field should be indexed.
+	//  Repeated so that the field can be indexed in multiple ways.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextSpec.index_specs
+	IndexSpecs []Index_IndexField_SearchConfig_SearchTextIndexSpec `json:"indexSpecs,omitempty"`
+}
+*/
+
 /* unreachable type Index_IndexField_VectorConfig
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig
 type Index_IndexField_VectorConfig struct {
@@ -86,6 +134,29 @@ type Index_IndexField_VectorConfig struct {
 /* unreachable type Index_IndexField_VectorConfig_FlatIndex
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig.FlatIndex
 type Index_IndexField_VectorConfig_FlatIndex struct {
+}
+*/
+
+/* unreachable type Index_SearchIndexOptions
+// +kcc:proto=google.firestore.admin.v1.Index.SearchIndexOptions
+type Index_SearchIndexOptions struct {
+	// Optional. The language to use for text search indexes. Used as the
+	//  default language if not overridden at the document level by specifying
+	//  the `text_language_override_field`. The language is specified as a BCP 47
+	//  language code.
+	//  For indexes with MONGODB_COMPATIBLE_API ApiScope: If unspecified, the
+	//  default language is English.
+	//  For indexes with `ANY_API` ApiScope: If unspecified, the default behavior
+	//  is autodetect.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.SearchIndexOptions.text_language
+	TextLanguage *string `json:"textLanguage,omitempty"`
+
+	// Optional. The field in the document that specifies which language to use
+	//  for that specific document. For indexes with MONGODB_COMPATIBLE_API
+	//  ApiScope: if unspecified, the language is taken from the "language" field
+	//  if it exists or from `text_language` if it does not.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.SearchIndexOptions.text_language_override_field_path
+	TextLanguageOverrideFieldPath *string `json:"textLanguageOverrideFieldPath,omitempty"`
 }
 */
 

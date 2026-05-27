@@ -1,0 +1,171 @@
+test	Run dev/ci/experiments-ci.sh	﻿2026-05-25T11:05:38.8566168Z ##[group]Run chmod +x dev/ci/experiments-ci.sh
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:38.8566587Z [36;1mchmod +x dev/ci/experiments-ci.sh[0m
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:38.8566875Z [36;1mdev/ci/experiments-ci.sh[0m
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:38.8605251Z shell: /usr/bin/bash -e {0}
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:38.8605488Z env:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:38.8605657Z   GOTOOLCHAIN: local
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:38.8606184Z ##[endgroup]
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:38.8738648Z Downloading envtest assets...
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:38.9586943Z go: downloading sigs.k8s.io/controller-runtime/tools/setup-envtest v0.0.0-20260125163108-a19ec76a3c5d
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:38.9592140Z go: downloading sigs.k8s.io/controller-runtime v0.22.6-0.20260125163108-a19ec76a3c5d
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:39.2964275Z go: downloading github.com/go-logr/zapr v1.3.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:39.2965437Z go: downloading github.com/go-logr/logr v1.4.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:39.2970855Z go: downloading github.com/spf13/afero v1.12.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:39.2977722Z go: downloading github.com/spf13/pflag v1.0.6
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:39.3666010Z go: downloading go.uber.org/zap v1.27.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:39.3993308Z go: downloading golang.org/x/text v0.23.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:39.5081236Z go: downloading sigs.k8s.io/yaml v1.6.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:39.6063523Z go: downloading go.uber.org/multierr v1.10.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:39.6834013Z go: downloading go.yaml.in/yaml/v2 v2.4.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:54.7105543Z --- Testing experiments/kompanion ---
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:54.7195597Z go: downloading github.com/spf13/cobra v1.10.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:54.7196350Z go: downloading k8s.io/apimachinery v0.34.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:54.7196892Z go: downloading github.com/mark3labs/mcp-go v0.45.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:54.9410622Z go: downloading golang.org/x/sync v0.20.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:54.9838178Z go: downloading k8s.io/client-go v0.34.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.4300773Z go: downloading github.com/spf13/pflag v1.0.10
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.4301390Z go: downloading k8s.io/klog/v2 v2.130.1
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.4366515Z go: downloading github.com/invopop/jsonschema v0.13.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.4367173Z go: downloading github.com/spf13/cast v1.7.1
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.4706259Z go: downloading github.com/yosida95/uritemplate/v3 v3.0.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.4719157Z go: downloading github.com/google/uuid v1.6.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.4855296Z go: downloading golang.org/x/term v0.43.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.4878709Z go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.4983618Z go: downloading golang.org/x/net v0.54.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.5005309Z go: downloading k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.5022528Z go: downloading github.com/google/gnostic-models v0.7.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.5142678Z go: downloading google.golang.org/protobuf v1.36.11
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.5573206Z go: downloading k8s.io/api v0.34.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.7377530Z go: downloading github.com/wk8/go-ordered-map/v2 v2.1.8
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.7713803Z go: downloading github.com/go-logr/logr v1.4.3
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.9675828Z go: downloading golang.org/x/time v0.15.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.9686816Z go: downloading golang.org/x/oauth2 v0.36.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.9699419Z go: downloading go.yaml.in/yaml/v3 v3.0.4
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:55.9700097Z go: downloading k8s.io/kube-openapi v0.0.0-20250710124328-f3f2b991d03b
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.0220457Z go: downloading github.com/bahlo/generic-list-go v0.2.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.0475496Z go: downloading github.com/buger/jsonparser v1.1.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.0749056Z go: downloading github.com/mailru/easyjson v0.7.7
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.1106655Z go: downloading gopkg.in/yaml.v3 v3.0.1
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.1461007Z go: downloading github.com/gogo/protobuf v1.3.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.1485964Z go: downloading github.com/go-openapi/swag v0.23.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.1487001Z go: downloading sigs.k8s.io/randfill v1.0.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.1813122Z go: downloading github.com/go-openapi/jsonreference v0.21.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.1830299Z go: downloading sigs.k8s.io/structured-merge-diff/v6 v6.3.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.2080192Z go: downloading gopkg.in/evanphx/json-patch.v4 v4.12.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.2313685Z go: downloading github.com/emicklei/go-restful/v3 v3.12.2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.2399238Z go: downloading github.com/go-openapi/jsonpointer v0.21.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.2610912Z go: downloading github.com/pkg/errors v0.9.1
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.2690783Z go: downloading github.com/josharian/intern v1.0.0
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6397601Z ##[error]pkg/utils/utils.go:22:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6406136Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6413155Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/extensions/extensions.go:22:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6414431Z 	go mod download google.golang.org/protobuf
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6415636Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/extensions/extension.pb.go:24:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6417216Z 	go mod download google.golang.org/protobuf
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6418333Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/extensions/extension.pb.go:25:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6419540Z 	go mod download google.golang.org/protobuf
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6420611Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/extensions/extension.pb.go:26:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6421748Z 	go mod download google.golang.org/protobuf
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6422793Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/jsonschema/models.go:19:8: go.yaml.in/yaml/v3@v3.0.4: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6423856Z 	go mod download go.yaml.in/yaml/v3
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6425037Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/apidiscovery/v2/generated.pb.go:28:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6426447Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6427403Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/apidiscovery/v2/register.go:21:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6428459Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6429517Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/discovery_client.go:37:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6430559Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6431439Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/discovery_client.go:41:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6432474Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6433342Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/discovery_client.go:42:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6434405Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6435481Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/helper.go:25:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6437032Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6438015Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/discovery/discovery_client.go:43:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6439121Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6440134Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/core/v1/generated.pb.go:29:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6441191Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6442269Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/core/v1/generated.pb.go:38:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6443292Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6444112Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/core/v1/types.go:23:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6445085Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6446425Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/extensions/v1beta1/zz_generated.validations.go:28:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6447572Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6448528Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/extensions/v1beta1/zz_generated.validations.go:29:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6449608Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6450564Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/extensions/v1beta1/zz_generated.validations.go:30:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6451716Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6452640Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/extensions/v1beta1/zz_generated.validations.go:32:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6453730Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6454679Z ##[error]/home/runner/go/pkg/mod/k8s.io/api@v0.34.2/resource/v1/types.go:25:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6455679Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6456997Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/openapi/typeconverter.go:23:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6458103Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6459007Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/request.go:37:2: golang.org/x/net@v0.54.0: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6460019Z 	go mod download golang.org/x/net
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6460855Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/config.go:36:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6461849Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6462676Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/request.go:43:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6463657Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6464479Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/request.go:44:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6465463Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6466745Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/rest/request.go:45:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6468018Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6469036Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/features/envvar.go:26:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6470068Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6471069Z ##[error]/home/runner/go/pkg/mod/k8s.io/klog/v2@v2.130.1/contextual.go:22:2: github.com/go-logr/logr@v1.4.3: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6472098Z 	go mod download github.com/go-logr/logr
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6473324Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/plugin/pkg/client/auth/exec/exec.go:35:2: golang.org/x/term@v0.43.0: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6474551Z 	go mod download golang.org/x/term
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6475495Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/plugin/pkg/client/auth/exec/exec.go:40:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6476896Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6478166Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/pkg/apis/clientauthentication/v1/zz_generated.conversion.go:28:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6479336Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6480270Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/transport/cache.go:29:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6481311Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6482413Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/workqueue/default_rate_limiters.go:24:2: golang.org/x/time@v0.15.0: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6483512Z 	go mod download golang.org/x/time
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6484560Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/workqueue/delaying_queue.go:26:2: k8s.io/utils@v0.0.0-20250604170112-4c0f3b243397: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6485680Z 	go mod download k8s.io/utils
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6487072Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/cert/cert.go:37:2: k8s.io/utils@v0.0.0-20250604170112-4c0f3b243397: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6488186Z 	go mod download k8s.io/utils
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6489272Z ##[error]/home/runner/go/pkg/mod/github.com/google/gnostic-models@v0.7.0/openapiv3/annotations.pb.go:26:2: google.golang.org/protobuf@v1.36.11: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6490449Z 	go mod download google.golang.org/protobuf
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6491719Z ##[error]/home/runner/go/pkg/mod/k8s.io/kube-openapi@v0.0.0-20250710124328-f3f2b991d03b/pkg/common/common.go:23:2: github.com/emicklei/go-restful/v3@v3.12.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6492987Z 	go mod download github.com/emicklei/go-restful/v3
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6493841Z ##[error]cmd/export/export.go:32:2: github.com/spf13/cobra@v1.10.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6494743Z 	go mod download github.com/spf13/cobra
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6495467Z ##[error]cmd/export/export.go:34:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6496640Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6497622Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/dynamic/simple.go:22:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6498641Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6499488Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/dynamic/scheme.go:25:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6500485Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6501573Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/apply/apply.go:22:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6502596Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6503438Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/util/apply/apply.go:24:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6504443Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6505625Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/applyconfigurations/internal/internal.go:25:2: sigs.k8s.io/structured-merge-diff/v6@v6.3.0: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6507140Z 	go mod download sigs.k8s.io/structured-merge-diff/v6
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6508534Z ##[error]/home/runner/go/pkg/mod/k8s.io/kube-openapi@v0.0.0-20250710124328-f3f2b991d03b/pkg/util/proto/document.go:25:2: go.yaml.in/yaml/v2@v2.4.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6509705Z 	go mod download go.yaml.in/yaml/v2
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6510609Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/gentype/fake.go:26:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6511610Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6512537Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/testing/fixture.go:32:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6513543Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6514388Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/testing/actions.go:25:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6515378Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6516538Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/testing/fixture.go:40:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6517616Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6518474Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/testing/fixture.go:26:2: sigs.k8s.io/yaml@v1.6.0: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6519460Z 	go mod download sigs.k8s.io/yaml
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6520509Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/tools/clientcmd/overrides.go:23:2: github.com/spf13/pflag@v1.0.10: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6521576Z 	go mod download github.com/spf13/pflag
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6522466Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/tools/clientcmd/loader.go:31:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6523494Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6524526Z ##[error]/home/runner/go/pkg/mod/k8s.io/client-go@v0.34.2/tools/clientcmd/api/latest/latest.go:23:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6525596Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6526632Z ##[error]cmd/mcp/tools.go:27:2: golang.org/x/sync@v0.20.0: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6527523Z 	go mod download golang.org/x/sync
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6528207Z ##[error]cmd/mcp/tools.go:33:2: k8s.io/apimachinery@v0.34.2: missing go.sum entry for go.mod file; to add it:
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6529039Z 	go mod download k8s.io/apimachinery
+test	Run dev/ci/experiments-ci.sh	2026-05-25T11:05:56.6533332Z ##[error]Process completed with exit code 1.

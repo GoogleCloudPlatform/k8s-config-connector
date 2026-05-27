@@ -192,7 +192,7 @@ type Artifacts_MavenArtifact struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.MavenArtifact.repository
 	Repository *string `json:"repository,omitempty"`
 
-	// Path to an artifact in the build's workspace to be uploaded to
+	// Optional. Path to an artifact in the build's workspace to be uploaded to
 	//  Artifact Registry.
 	//  This can be either an absolute path,
 	//  e.g. /workspace/my-app/target/my-app-1.0.SNAPSHOT.jar
@@ -229,8 +229,10 @@ type Artifacts_NpmPackage struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.NpmPackage.repository
 	Repository *string `json:"repository,omitempty"`
 
-	// Path to the package.json.
+	// Optional. Path to the package.json.
 	//  e.g. workspace/path/to/package
+	//
+	//  Only one of `archive` or `package_path` can be specified.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Artifacts.NpmPackage.package_path
 	PackagePath *string `json:"packagePath,omitempty"`
 }
@@ -259,7 +261,7 @@ type Artifacts_PythonPackage struct {
 // +kcc:proto=google.devtools.cloudbuild.v1.Build
 type Build struct {
 
-	// The location of the source files to build.
+	// Optional. The location of the source files to build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.source
 	Source *Source `json:"source,omitempty"`
 
@@ -778,6 +780,26 @@ type BuiltImage struct {
 }
 */
 
+/* unreachable type ConnectedRepository
+// +kcc:proto=google.devtools.cloudbuild.v1.ConnectedRepository
+type ConnectedRepository struct {
+	// Required. Name of the Google Cloud Build repository, formatted as
+	//  `projects/-*-/locations/-*-/connections/-*-/repositories/-*`.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.ConnectedRepository.repository
+	Repository *string `json:"repository,omitempty"`
+
+	// Optional. Directory, relative to the source root, in which to run the
+	//  build.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.ConnectedRepository.dir
+	Dir *string `json:"dir,omitempty"`
+
+	// Required. The revision to fetch from the Git repository such as a branch, a
+	//  tag, a commit SHA, or any Git ref.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.ConnectedRepository.revision
+	Revision *string `json:"revision,omitempty"`
+}
+*/
+
 /* unreachable type Dependency
 // +kcc:proto=google.devtools.cloudbuild.v1.Dependency
 type Dependency struct {
@@ -825,8 +847,7 @@ type Dependency_GitSourceRepository struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Dependency.GitSourceRepository.url
 	URL *string `json:"url,omitempty"`
 
-	// The Developer Connect Git repository link or the url that matches a
-	//  repository link in the current project, formatted as
+	// The Developer Connect Git repository link formatted as
 	//  `projects/-*-/locations/-*-/connections/-*-/gitRepositoryLink/-*`
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Dependency.GitSourceRepository.developer_connect
 	DeveloperConnect *string `json:"developerConnect,omitempty"`
@@ -969,22 +990,23 @@ type GitRepoSource struct {
 /* unreachable type GitSource
 // +kcc:proto=google.devtools.cloudbuild.v1.GitSource
 type GitSource struct {
-	// Location of the Git repo to build.
+	// Required. Location of the Git repo to build.
 	//
 	//  This will be used as a `git remote`, see
 	//  https://git-scm.com/docs/git-remote.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitSource.url
 	URL *string `json:"url,omitempty"`
 
-	// Directory, relative to the source root, in which to run the build.
+	// Optional. Directory, relative to the source root, in which to run the
+	//  build.
 	//
 	//  This must be a relative path. If a step's `dir` is specified and is an
 	//  absolute path, this value is ignored for that step's execution.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitSource.dir
 	Dir *string `json:"dir,omitempty"`
 
-	// The revision to fetch from the Git repository such as a branch, a tag, a
-	//  commit SHA, or any Git ref.
+	// Optional. The revision to fetch from the Git repository such as a branch, a
+	//  tag, a commit SHA, or any Git ref.
 	//
 	//  Cloud Build uses `git fetch` to fetch the revision from the Git
 	//  repository; therefore make sure that the string you provide for `revision`
@@ -1028,8 +1050,8 @@ type InlineSecret struct {
 // +kcc:proto=google.devtools.cloudbuild.v1.PubsubConfig
 type PubsubConfig struct {
 
-	// The name of the topic from which this subscription is receiving messages.
-	//  Format is `projects/{project}/topics/{topic}`.
+	// Optional. The name of the topic from which this subscription is receiving
+	//  messages. Format is `projects/{project}/topics/{topic}`.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.PubsubConfig.topic
 	Topic *string `json:"topic,omitempty"`
 
@@ -1098,12 +1120,12 @@ type PushFilter struct {
 /* unreachable type RepoSource
 // +kcc:proto=google.devtools.cloudbuild.v1.RepoSource
 type RepoSource struct {
-	// ID of the project that owns the Cloud Source Repository. If omitted, the
-	//  project ID requesting the build is assumed.
+	// Optional. ID of the project that owns the Cloud Source Repository. If
+	//  omitted, the project ID requesting the build is assumed.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 
-	// Name of the Cloud Source Repository.
+	// Required. Name of the Cloud Source Repository.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.repo_name
 	RepoName *string `json:"repoName,omitempty"`
 
@@ -1125,19 +1147,20 @@ type RepoSource struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.commit_sha
 	CommitSha *string `json:"commitSha,omitempty"`
 
-	// Directory, relative to the source root, in which to run the build.
+	// Optional. Directory, relative to the source root, in which to run the
+	//  build.
 	//
 	//  This must be a relative path. If a step's `dir` is specified and is an
 	//  absolute path, this value is ignored for that step's execution.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.dir
 	Dir *string `json:"dir,omitempty"`
 
-	// Only trigger a build if the revision regex does NOT match the revision
-	//  regex.
+	// Optional. Only trigger a build if the revision regex does NOT match the
+	//  revision regex.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.invert_regex
 	InvertRegex *bool `json:"invertRegex,omitempty"`
 
-	// Substitutions to use in a triggered build.
+	// Optional. Substitutions to use in a triggered build.
 	//  Should only be used with RunBuildTrigger
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.substitutions
 	Substitutions map[string]string `json:"substitutions,omitempty"`
@@ -1280,6 +1303,11 @@ type Source struct {
 	//  [here](https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher).
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Source.storage_source_manifest
 	StorageSourceManifest *StorageSourceManifest `json:"storageSourceManifest,omitempty"`
+
+	// Optional. If provided, get the source from this 2nd-gen Google Cloud
+	//  Build repository resource.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Source.connected_repository
+	ConnectedRepository *ConnectedRepository `json:"connectedRepository,omitempty"`
 }
 */
 
@@ -1313,19 +1341,20 @@ type StorageSource struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.bucket
 	Bucket *string `json:"bucket,omitempty"`
 
-	// Cloud Storage object containing the source.
+	// Required. Cloud Storage object containing the source.
 	//
 	//  This object must be a zipped (`.zip`) or gzipped archive file (`.tar.gz`)
 	//  containing source to build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.object
 	Object *string `json:"object,omitempty"`
 
-	// Cloud Storage generation for the object. If the generation is
+	// Optional. Cloud Storage generation for the object. If the generation is
 	//  omitted, the latest generation will be used.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.generation
 	Generation *int64 `json:"generation,omitempty"`
 
-	// Option to specify the tool to fetch the source file for the build.
+	// Optional. Option to specify the tool to fetch the source file for the
+	//  build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.source_fetcher
 	SourceFetcher *string `json:"sourceFetcher,omitempty"`
 }
@@ -1334,13 +1363,13 @@ type StorageSource struct {
 /* unreachable type StorageSourceManifest
 // +kcc:proto=google.devtools.cloudbuild.v1.StorageSourceManifest
 type StorageSourceManifest struct {
-	// Cloud Storage bucket containing the source manifest (see [Bucket
+	// Required. Cloud Storage bucket containing the source manifest (see [Bucket
 	//  Name
 	//  Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSourceManifest.bucket
 	Bucket *string `json:"bucket,omitempty"`
 
-	// Cloud Storage object containing the source manifest.
+	// Required. Cloud Storage object containing the source manifest.
 	//
 	//  This object must be a JSON file.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSourceManifest.object
@@ -1652,6 +1681,10 @@ type BuiltImageObservedState struct {
 	// Output only. Stores timing information for pushing the specified image.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuiltImage.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
+
+	// Output only. Path to the artifact in Artifact Registry.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuiltImage.artifact_registry_package
+	ArtifactRegistryPackage *string `json:"artifactRegistryPackage,omitempty"`
 }
 */
 
@@ -1704,6 +1737,15 @@ type ResultsObservedState struct {
 /* unreachable type SourceProvenanceObservedState
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.SourceProvenance
 type SourceProvenanceObservedState struct {
+	// Output only. A copy of the build's `source.connected_repository`, if
+	//  exists, with any revisions resolved.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.SourceProvenance.resolved_connected_repository
+	ResolvedConnectedRepository *ConnectedRepository `json:"resolvedConnectedRepository,omitempty"`
+
+	// Output only. A copy of the build's `source.git_source`, if exists, with any
+	//  revisions resolved.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.SourceProvenance.resolved_git_source
+	ResolvedGitSource *GitSource `json:"resolvedGitSource,omitempty"`
 
 	// TODO: unsupported map type with key string and value message
 
@@ -1716,6 +1758,10 @@ type UploadedGoModuleObservedState struct {
 	// Output only. Stores timing information for pushing the specified artifact.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedGoModule.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
+
+	// Output only. Path to the artifact in Artifact Registry.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedGoModule.artifact_registry_package
+	ArtifactRegistryPackage *string `json:"artifactRegistryPackage,omitempty"`
 }
 */
 
@@ -1725,6 +1771,10 @@ type UploadedMavenArtifactObservedState struct {
 	// Output only. Stores timing information for pushing the specified artifact.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedMavenArtifact.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
+
+	// Output only. Path to the artifact in Artifact Registry.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedMavenArtifact.artifact_registry_package
+	ArtifactRegistryPackage *string `json:"artifactRegistryPackage,omitempty"`
 }
 */
 
@@ -1734,6 +1784,10 @@ type UploadedNpmPackageObservedState struct {
 	// Output only. Stores timing information for pushing the specified artifact.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedNpmPackage.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
+
+	// Output only. Path to the artifact in Artifact Registry.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedNpmPackage.artifact_registry_package
+	ArtifactRegistryPackage *string `json:"artifactRegistryPackage,omitempty"`
 }
 */
 
@@ -1743,5 +1797,9 @@ type UploadedPythonPackageObservedState struct {
 	// Output only. Stores timing information for pushing the specified artifact.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedPythonPackage.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
+
+	// Output only. Path to the artifact in Artifact Registry.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedPythonPackage.artifact_registry_package
+	ArtifactRegistryPackage *string `json:"artifactRegistryPackage,omitempty"`
 }
 */

@@ -44,6 +44,7 @@ func EventarcChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ch
 	out.ActivationToken = direct.LazyPtr(in.GetActivationToken())
 	// MISSING: CryptoKeyName
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	// MISSING: Labels
 	return out
 }
 func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelObservedState) *pb.Channel {
@@ -62,6 +63,7 @@ func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Eve
 	out.ActivationToken = direct.ValueOf(in.ActivationToken)
 	// MISSING: CryptoKeyName
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	// MISSING: Labels
 	return out
 }
 func EventarcEnrollmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Enrollment) *krm.EventarcEnrollmentObservedState {
@@ -132,6 +134,7 @@ func EventarcGoogleChannelConfigObservedState_FromProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: CryptoKeyName
+	// MISSING: Labels
 	return out
 }
 func EventarcGoogleChannelConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleChannelConfigObservedState) *pb.GoogleChannelConfig {
@@ -142,5 +145,6 @@ func EventarcGoogleChannelConfigObservedState_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: CryptoKeyName
+	// MISSING: Labels
 	return out
 }

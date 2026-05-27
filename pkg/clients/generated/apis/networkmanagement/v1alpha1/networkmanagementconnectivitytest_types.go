@@ -498,6 +498,32 @@ type ConnectivitytestDropStatus struct {
 	SourceIP *string `json:"sourceIP,omitempty"`
 }
 
+type ConnectivitytestEdgeResponsesStatus struct {
+	/* The EdgeLocation from which a packet, destined to the internet, will egress the Google network. This will only be populated for a connectivity test which has an internet destination address. The absence of this field *must not* be used as an indication that the destination is part of the Google network. */
+	// +optional
+	DestinationEgressLocation *ConnectivitytestDestinationEgressLocationStatus `json:"destinationEgressLocation,omitempty"`
+
+	/* Router name in the format '{router}.{metroshard}'. For example: pf01.aaa01, pr02.aaa01. */
+	// +optional
+	DestinationRouter *string `json:"destinationRouter,omitempty"`
+
+	/* Latency as measured by active probing in one direction: from the source to the destination endpoint. */
+	// +optional
+	ProbingLatency *ConnectivitytestProbingLatencyStatus `json:"probingLatency,omitempty"`
+
+	/* The overall result of active probing for this egress device. */
+	// +optional
+	Result *string `json:"result,omitempty"`
+
+	/* Number of probes sent. */
+	// +optional
+	SentProbeCount *int32 `json:"sentProbeCount,omitempty"`
+
+	/* Number of probes that reached the destination. */
+	// +optional
+	SuccessfulProbeCount *int32 `json:"successfulProbeCount,omitempty"`
+}
+
 type ConnectivitytestEndpointInfoStatus struct {
 	/* Destination IP address. */
 	// +optional
@@ -987,6 +1013,10 @@ type ConnectivitytestProbingDetailsStatus struct {
 	// +optional
 	DestinationEgressLocation *ConnectivitytestDestinationEgressLocationStatus `json:"destinationEgressLocation,omitempty"`
 
+	/* Probing results for all edge devices. */
+	// +optional
+	EdgeResponses []ConnectivitytestEdgeResponsesStatus `json:"edgeResponses,omitempty"`
+
 	/* The source and destination endpoints derived from the test input and used for active probing. */
 	// +optional
 	EndpointInfo *ConnectivitytestEndpointInfoStatus `json:"endpointInfo,omitempty"`
@@ -994,6 +1024,10 @@ type ConnectivitytestProbingDetailsStatus struct {
 	/* Details about an internal failure or the cancellation of active probing. */
 	// +optional
 	Error *ConnectivitytestErrorStatus `json:"error,omitempty"`
+
+	/* Whether all relevant edge devices were probed. */
+	// +optional
+	ProbedAllDevices *bool `json:"probedAllDevices,omitempty"`
 
 	/* Latency as measured by active probing in one direction: from the source to the destination endpoint. */
 	// +optional
