@@ -278,7 +278,7 @@ type ClusterDatabaseEncryption struct {
 	// +optional
 	KeyName *string `json:"keyName,omitempty"`
 
-	/* ENCRYPTED or DECRYPTED. */
+	/* ENCRYPTED, ALL_OBJECTS_ENCRYPTION_ENABLED or DECRYPTED. */
 	State string `json:"state"`
 }
 
