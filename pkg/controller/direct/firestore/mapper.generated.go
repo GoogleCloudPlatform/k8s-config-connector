@@ -426,7 +426,6 @@ func IndexFields_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_Index
 	out.Order = direct.Enum_FromProto(mapCtx, in.GetOrder())
 	out.ArrayConfig = direct.Enum_FromProto(mapCtx, in.GetArrayConfig())
 	// MISSING: VectorConfig
-	// MISSING: SearchConfig
 	return out
 }
 func IndexFields_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IndexFields) *pb.Index_IndexField {
@@ -442,7 +441,6 @@ func IndexFields_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IndexFields)
 		out.ValueMode = oneof
 	}
 	// MISSING: VectorConfig
-	// MISSING: SearchConfig
 	return out
 }
 func Index_IndexField_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krmfirestorev1alpha1.Index_IndexField {
@@ -454,7 +452,6 @@ func Index_IndexField_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index
 	out.Order = direct.Enum_FromProto(mapCtx, in.GetOrder())
 	out.ArrayConfig = direct.Enum_FromProto(mapCtx, in.GetArrayConfig())
 	out.VectorConfig = Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx, in.GetVectorConfig())
-	out.SearchConfig = Index_IndexField_SearchConfig_v1alpha1_FromProto(mapCtx, in.GetSearchConfig())
 	return out
 }
 func Index_IndexField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField) *pb.Index_IndexField {
@@ -472,9 +469,6 @@ func Index_IndexField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfiresto
 	if oneof := Index_IndexField_VectorConfig_v1alpha1_ToProto(mapCtx, in.VectorConfig); oneof != nil {
 		out.ValueMode = &pb.Index_IndexField_VectorConfig_{VectorConfig: oneof}
 	}
-	if oneof := Index_IndexField_SearchConfig_v1alpha1_ToProto(mapCtx, in.SearchConfig); oneof != nil {
-		out.ValueMode = &pb.Index_IndexField_SearchConfig_{SearchConfig: oneof}
-	}
 	return out
 }
 func Index_IndexField_Order_ToProto(mapCtx *direct.MapContext, in *string) *pb.Index_IndexField_Order_ {
@@ -488,74 +482,6 @@ func Index_IndexField_ArrayConfig_ToProto(mapCtx *direct.MapContext, in *string)
 		return nil
 	}
 	return &pb.Index_IndexField_ArrayConfig_{ArrayConfig: direct.Enum_ToProto[pb.Index_IndexField_ArrayConfig](mapCtx, in)}
-}
-func Index_IndexField_SearchConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig) *krmfirestorev1alpha1.Index_IndexField_SearchConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmfirestorev1alpha1.Index_IndexField_SearchConfig{}
-	out.TextSpec = Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_FromProto(mapCtx, in.GetTextSpec())
-	out.GeoSpec = Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_FromProto(mapCtx, in.GetGeoSpec())
-	return out
-}
-func Index_IndexField_SearchConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_SearchConfig) *pb.Index_IndexField_SearchConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Index_IndexField_SearchConfig{}
-	out.TextSpec = Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_ToProto(mapCtx, in.TextSpec)
-	out.GeoSpec = Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_ToProto(mapCtx, in.GeoSpec)
-	return out
-}
-func Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig_SearchGeoSpec) *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchGeoSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchGeoSpec{}
-	out.GeoJsonIndexingDisabled = direct.LazyPtr(in.GetGeoJsonIndexingDisabled())
-	return out
-}
-func Index_IndexField_SearchConfig_SearchGeoSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchGeoSpec) *pb.Index_IndexField_SearchConfig_SearchGeoSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Index_IndexField_SearchConfig_SearchGeoSpec{}
-	out.GeoJsonIndexingDisabled = direct.ValueOf(in.GeoJsonIndexingDisabled)
-	return out
-}
-func Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig_SearchTextIndexSpec) *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextIndexSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextIndexSpec{}
-	out.IndexType = direct.Enum_FromProto(mapCtx, in.GetIndexType())
-	out.MatchType = direct.Enum_FromProto(mapCtx, in.GetMatchType())
-	return out
-}
-func Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextIndexSpec) *pb.Index_IndexField_SearchConfig_SearchTextIndexSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Index_IndexField_SearchConfig_SearchTextIndexSpec{}
-	out.IndexType = direct.Enum_ToProto[pb.Index_IndexField_SearchConfig_TextIndexType](mapCtx, in.IndexType)
-	out.MatchType = direct.Enum_ToProto[pb.Index_IndexField_SearchConfig_TextMatchType](mapCtx, in.MatchType)
-	return out
-}
-func Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig_SearchTextSpec) *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextSpec{}
-	out.IndexSpecs = direct.Slice_FromProto(mapCtx, in.IndexSpecs, Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_FromProto)
-	return out
-}
-func Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_SearchConfig_SearchTextSpec) *pb.Index_IndexField_SearchConfig_SearchTextSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Index_IndexField_SearchConfig_SearchTextSpec{}
-	out.IndexSpecs = direct.Slice_ToProto(mapCtx, in.IndexSpecs, Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_ToProto)
-	return out
 }
 func Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig) *krmfirestorev1alpha1.Index_IndexField_VectorConfig {
 	if in == nil {

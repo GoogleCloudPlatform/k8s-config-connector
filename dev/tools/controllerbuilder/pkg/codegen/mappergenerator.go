@@ -841,11 +841,11 @@ krmTypeRaw != goTypeForProtoKind(protoKind) && strings.HasPrefix(string(protoFie
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 				functionName := "direct.Enum_ToProto"
 				if protoIsPointerInGo(protoField) {
-					functionName = "EnumPtr_ToProto[" + protoTypeName + "]"
+					functionName = "direct.EnumPtr_ToProto"
 				}
 
 				oneof := protoField.ContainingOneof()
-				if oneof != nil {
+				if oneof != nil && !protoField.HasOptionalKeyword() {
 					// These are very rare and irregular; just require a custom method
 					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 
@@ -894,7 +894,7 @@ krmTypeRaw != goTypeForProtoKind(protoKind) && strings.HasPrefix(string(protoFie
 						protoFieldName,
 						krmFieldName,
 					)
-				} else if oneof != nil {
+				} else if oneof != nil && !protoField.HasOptionalKeyword() {
 					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
 						functionName,

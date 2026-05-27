@@ -2220,12 +2220,8 @@ func SecurityPostureConfig_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPo
 		return nil
 	}
 	out := &pb.SecurityPostureConfig{}
-	if oneof := SecurityPostureConfig_Mode_ToProto(mapCtx, in.Mode); oneof != nil {
-		out.Mode = oneof
-	}
-	if oneof := SecurityPostureConfig_VulnerabilityMode_ToProto(mapCtx, in.VulnerabilityMode); oneof != nil {
-		out.VulnerabilityMode = oneof
-	}
+	out.Mode = direct.EnumPtr_ToProto[pb.SecurityPostureConfig_Mode](mapCtx, in.Mode)
+	out.VulnerabilityMode = direct.EnumPtr_ToProto[pb.SecurityPostureConfig_VulnerabilityMode](mapCtx, in.VulnerabilityMode)
 	return out
 }
 func ServiceExternalIPsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServiceExternalIPsConfig) *krm.ServiceExternalIPsConfig {

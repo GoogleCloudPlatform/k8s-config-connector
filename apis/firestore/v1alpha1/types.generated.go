@@ -65,52 +65,6 @@ type Index_IndexField struct {
 	//  operations on vector.
 	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.vector_config
 	VectorConfig *Index_IndexField_VectorConfig `json:"vectorConfig,omitempty"`
-
-	// Indicates that this field supports search operations. This field
-	//  is only currently supported for indexes with MONGODB_COMPATIBLE_API
-	//  ApiScope.
-	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.search_config
-	SearchConfig *Index_IndexField_SearchConfig `json:"searchConfig,omitempty"`
-}
-
-// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig
-type Index_IndexField_SearchConfig struct {
-	// Optional. The specification for building a text search index for a
-	//  field.
-	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.text_spec
-	TextSpec *Index_IndexField_SearchConfig_SearchTextSpec `json:"textSpec,omitempty"`
-
-	// Optional. The specification for building a geo search index for a
-	//  field.
-	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.geo_spec
-	GeoSpec *Index_IndexField_SearchConfig_SearchGeoSpec `json:"geoSpec,omitempty"`
-}
-
-// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchGeoSpec
-type Index_IndexField_SearchConfig_SearchGeoSpec struct {
-	// Optional. Disables geoJSON indexing for the field. By default,
-	//  geoJSON points are indexed.
-	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchGeoSpec.geo_json_indexing_disabled
-	GeoJsonIndexingDisabled *bool `json:"geoJsonIndexingDisabled,omitempty"`
-}
-
-// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextIndexSpec
-type Index_IndexField_SearchConfig_SearchTextIndexSpec struct {
-	// Required. How to index the text field value.
-	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextIndexSpec.index_type
-	IndexType *string `json:"indexType,omitempty"`
-
-	// Required. How to match the text field value.
-	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextIndexSpec.match_type
-	MatchType *string `json:"matchType,omitempty"`
-}
-
-// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextSpec
-type Index_IndexField_SearchConfig_SearchTextSpec struct {
-	// Required. Specifications for how the field should be indexed.
-	//  Repeated so that the field can be indexed in multiple ways.
-	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextSpec.index_specs
-	IndexSpecs []Index_IndexField_SearchConfig_SearchTextIndexSpec `json:"indexSpecs,omitempty"`
 }
 
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig

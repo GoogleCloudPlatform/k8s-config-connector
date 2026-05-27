@@ -155,12 +155,8 @@ func BackupConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: PointInTimeRecoveryEnabled
 	// MISSING: TransactionLogRetentionDays
 	// MISSING: BackupRetentionSettings
-	if oneof := BackupConfigurationObservedState_TransactionalLogStorageState_ToProto(mapCtx, in.TransactionalLogStorageState); oneof != nil {
-		out.TransactionalLogStorageState = oneof
-	}
-	if oneof := BackupConfigurationObservedState_BackupTier_ToProto(mapCtx, in.BackupTier); oneof != nil {
-		out.BackupTier = oneof
-	}
+	out.TransactionalLogStorageState = direct.EnumPtr_ToProto[pb.BackupConfiguration_TransactionalLogStorageState](mapCtx, in.TransactionalLogStorageState)
+	out.BackupTier = direct.EnumPtr_ToProto[pb.BackupConfiguration_BackupTier](mapCtx, in.BackupTier)
 	return out
 }
 func BackupRetentionSettings_FromProto(mapCtx *direct.MapContext, in *pb.BackupRetentionSettings) *krm.BackupRetentionSettings {
@@ -417,9 +413,7 @@ func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanc
 	// MISSING: AvailableMaintenanceVersions
 	out.MaintenanceVersion = direct.ValueOf(in.MaintenanceVersion)
 	// MISSING: UpgradableDatabaseVersions
-	if oneof := DatabaseInstance_SqlNetworkArchitecture_ToProto(mapCtx, in.SQLNetworkArchitecture); oneof != nil {
-		out.SqlNetworkArchitecture = oneof
-	}
+	out.SqlNetworkArchitecture = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlNetworkArchitecture](mapCtx, in.SQLNetworkArchitecture)
 	// MISSING: PSCServiceAttachmentLink
 	// MISSING: DNSName
 	// MISSING: PrimaryDNSName
@@ -605,9 +599,7 @@ func DatabaseInstance_PoolNodeConfigObservedState_ToProto(mapCtx *direct.MapCont
 	out.GceZone = in.GCEZone
 	out.IpAddresses = direct.Slice_ToProto(mapCtx, in.IPAddresses, IPMapping_ToProto)
 	out.DnsName = in.DNSName
-	if oneof := DatabaseInstance_PoolNodeConfigObservedState_State_ToProto(mapCtx, in.State); oneof != nil {
-		out.State = oneof
-	}
+	out.State = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlInstanceState](mapCtx, in.State)
 	out.DnsNames = direct.Slice_ToProto(mapCtx, in.DNSNames, DNSNameMapping_ToProto)
 	out.PscServiceAttachmentLink = in.PSCServiceAttachmentLink
 	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PSCAutoConnections, PSCAutoConnectionConfig_ToProto)
@@ -645,9 +637,7 @@ func DatabaseInstance_SQLOutOfDiskReport_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.DatabaseInstance_SqlOutOfDiskReport{}
-	if oneof := DatabaseInstance_SQLOutOfDiskReport_SqlOutOfDiskState_ToProto(mapCtx, in.SQLOutOfDiskState); oneof != nil {
-		out.SqlOutOfDiskState = oneof
-	}
+	out.SqlOutOfDiskState = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState](mapCtx, in.SQLOutOfDiskState)
 	out.SqlMinRecommendedIncreaseSizeGb = in.SQLMinRecommendedIncreaseSizeGB
 	return out
 }
@@ -831,14 +821,10 @@ func IPConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.IPConfiguration)
 	out.EnablePrivatePathForGoogleCloudServices = direct.BoolValue_ToProto(mapCtx, in.EnablePrivatePathForGoogleCloudServices)
 	out.SslMode = direct.Enum_ToProto[pb.IpConfiguration_SslMode](mapCtx, in.SSLMode)
 	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
-	if oneof := IPConfiguration_ServerCaMode_ToProto(mapCtx, in.ServerCAMode); oneof != nil {
-		out.ServerCaMode = oneof
-	}
+	out.ServerCaMode = direct.EnumPtr_ToProto[pb.IpConfiguration_CaMode](mapCtx, in.ServerCAMode)
 	out.CustomSubjectAlternativeNames = in.CustomSubjectAlternativeNames
 	out.ServerCaPool = in.ServerCAPool
-	if oneof := IPConfiguration_ServerCertificateRotationMode_ToProto(mapCtx, in.ServerCertificateRotationMode); oneof != nil {
-		out.ServerCertificateRotationMode = oneof
-	}
+	out.ServerCertificateRotationMode = direct.EnumPtr_ToProto[pb.IpConfiguration_ServerCertificateRotationMode](mapCtx, in.ServerCertificateRotationMode)
 	return out
 }
 func IPMapping_FromProto(mapCtx *direct.MapContext, in *pb.IpMapping) *krm.IPMapping {
@@ -1455,9 +1441,7 @@ func Settings_ToProto(mapCtx *direct.MapContext, in *krm.Settings) *pb.Settings 
 	out.ReadPoolAutoScaleConfig = ReadPoolAutoScaleConfig_ToProto(mapCtx, in.ReadPoolAutoScaleConfig)
 	out.AutoUpgradeEnabled = in.AutoUpgradeEnabled
 	out.EntraidConfig = SQLServerEntraIDConfig_ToProto(mapCtx, in.EntraidConfig)
-	if oneof := Settings_DataApiAccess_ToProto(mapCtx, in.DataAPIAccess); oneof != nil {
-		out.DataApiAccess = oneof
-	}
+	out.DataApiAccess = direct.EnumPtr_ToProto[pb.Settings_DataApiAccess](mapCtx, in.DataAPIAccess)
 	out.PerformanceCaptureConfig = PerformanceCaptureConfig_ToProto(mapCtx, in.PerformanceCaptureConfig)
 	return out
 }
