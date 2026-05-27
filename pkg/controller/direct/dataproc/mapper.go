@@ -18,6 +18,7 @@ import (
 	"strconv"
 
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
+	krmdataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -498,7 +499,7 @@ func GkeNodePoolTarget_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeNo
 	}
 	out := &krm.GkeNodePoolTarget{}
 	if in.GetNodePool() != "" {
-		out.NodePoolRef = &krm.DataprocContainerNodePoolRef{External: in.GetNodePool()}
+		out.NodePoolRef = &krm.NodeGroupRef{External: in.GetNodePool()}
 	}
 	out.Roles = direct.EnumSlice_FromProto(mapCtx, in.Roles)
 	out.NodePoolConfig = GkeNodePoolConfig_v1beta1_FromProto(mapCtx, in.GetNodePoolConfig())
@@ -643,4 +644,20 @@ func EncryptionConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Encrypt
 		out.GcePdKmsKeyName = in.GcePdKmsKeyRef.External
 	}
 	return out
+}
+
+func DataprocNodeGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krmdataprocv1alpha1.DataprocNodeGroupSpec {
+	return DataprocNodeGroupSpec_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DataprocNodeGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocNodeGroupSpec) *pb.NodeGroup {
+	return DataprocNodeGroupSpec_v1alpha1_ToProto(mapCtx, in)
+}
+
+func DataprocNodeGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krmdataprocv1alpha1.DataprocNodeGroupObservedState {
+	return DataprocNodeGroupObservedState_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DataprocNodeGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocNodeGroupObservedState) *pb.NodeGroup {
+	return DataprocNodeGroupObservedState_v1alpha1_ToProto(mapCtx, in)
 }

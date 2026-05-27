@@ -282,17 +282,16 @@ spec:
                               - external
                             properties:
                               external:
-                                description: |-
-                                  Required. The URI of a sole-tenant [node group resource](https://cloud.google.com/compute/docs/reference/rest/v1/nodeGroups) that the cluster will be created on. A full URL, partial URI, or node group name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/nodeGroups/node-group-1` * `projects/[project_id]/zones/[zone]/nodeGroups/node-group-1` * `node-group-1`
-
-                                  Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.
+                                description: A reference to an externally managed
+                                  DataprocNodeGroup resource. Should be in the format
+                                  "projects/{{projectID}}/locations/{{location}}/nodegroups/{{nodegroupID}}".
                                 type: string
                               name:
-                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                description: The name of a DataprocNodeGroup resource.
                                 type: string
                               namespace:
-                                description: 'Namespace of the referent. More info:
-                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                description: The namespace of a DataprocNodeGroup
+                                  resource.
                                 type: string
                             type: object
                         required:
@@ -1477,18 +1476,17 @@ spec:
                                     - external
                                   properties:
                                     external:
-                                      description: |-
-                                        Required. The target GKE node pool. Format: 'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'
-
-                                        Allowed value: The `selfLink` field of a `ContainerNodePool` resource.
+                                      description: A reference to an externally managed
+                                        DataprocNodeGroup resource. Should be in the
+                                        format "projects/{{projectID}}/locations/{{location}}/nodegroups/{{nodegroupID}}".
                                       type: string
                                     name:
-                                      description: 'Name of the referent. More info:
-                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                      description: The name of a DataprocNodeGroup
+                                        resource.
                                       type: string
                                     namespace:
-                                      description: 'Namespace of the referent. More
-                                        info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                      description: The namespace of a DataprocNodeGroup
+                                        resource.
                                       type: string
                                   type: object
                                 roles:

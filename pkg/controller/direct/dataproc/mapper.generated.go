@@ -1290,7 +1290,7 @@ func GkeNodePoolTarget_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GkeNo
 	}
 	out := &krm.GkeNodePoolTarget{}
 	if in.GetNodePool() != "" {
-		out.NodePoolRef = &krm.DataprocContainerNodePoolRef{External: in.GetNodePool()}
+		out.NodePoolRef = &krm.NodeGroupRef{External: in.GetNodePool()}
 	}
 	out.Roles = direct.EnumSlice_FromProto(mapCtx, in.Roles)
 	out.NodePoolConfig = GkeNodePoolConfig_v1beta1_FromProto(mapCtx, in.GetNodePoolConfig())

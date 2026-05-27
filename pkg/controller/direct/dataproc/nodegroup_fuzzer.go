@@ -29,8 +29,8 @@ func init() {
 
 func dataprocNodeGroupFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.NodeGroup{},
-		DataprocNodeGroupSpec_v1alpha1_FromProto, DataprocNodeGroupSpec_v1alpha1_ToProto,
-		DataprocNodeGroupObservedState_v1alpha1_FromProto, DataprocNodeGroupObservedState_v1alpha1_ToProto,
+		DataprocNodeGroupSpec_FromProto, DataprocNodeGroupSpec_ToProto,
+		DataprocNodeGroupObservedState_FromProto, DataprocNodeGroupObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".roles")

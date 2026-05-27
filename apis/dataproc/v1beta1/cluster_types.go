@@ -19,187 +19,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type DataprocAutoscalingPolicyRef struct {
-	// Optional. The autoscaling policy used by the cluster. Only resource names including projectid and location (region) are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]` * `projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]` Note that the policy must be in the same project and Dataproc region.
-	//
-	// Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` resource (format: `projects/{{project}}/locations/{{location}}/autoscalingPolicies/{{name}}`).
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocMetastoreServiceRef struct {
-	// Required. Resource name of an existing Dataproc Metastore service. Example: * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`
-	External string `json:"external,omitempty"`
-
-	// [WARNING] DataprocMetastoreService not yet supported in Config Connector, use 'external' field to reference existing resources.
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocContainerNodePoolRef struct {
-	// Required. The target GKE node pool. Format: 'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'
-	//
-	// Allowed value: The `selfLink` field of a `ContainerNodePool` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocClusterProjectRef struct {
-	// Required. The Google Cloud Platform project ID that the cluster belongs to.
-	//
-	// Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocStagingBucketRef struct {
-	// Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
-	//
-	// Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocTempBucketRef struct {
-	// Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
-	//
-	// Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocComputeNetworkRef struct {
-	// Optional. The Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the "default" network of the project is used, if it exists. Cannot be a "Custom Subnet Network" (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for more information). A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/networks/default` * `projects/[project_id]/global/networks/default` * `default`
-	//
-	// Allowed value: The `selfLink` field of a `ComputeNetwork` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocComputeSubnetworkRef struct {
-	// Optional. The Compute Engine subnetwork to be used for machine communications. Cannot be specified with network_uri. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/us-east1/subnetworks/sub0` * `projects/[project_id]/regions/us-east1/subnetworks/sub0` * `sub0`
-	//
-	// Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocIamServiceAccountRef struct {
-	// Optional. The [Dataproc service account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc) (also see [VM Data Plane identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity)) used by Dataproc cluster VM instances to access Google Cloud Platform services. If not specified, the [Compute Engine default service account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account) is used.
-	//
-	// Allowed value: The `email` field of an `IAMServiceAccount` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocPdKmsKeyRef struct {
-	// Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
-	//
-	// Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocKmsKeyRef struct {
-	// Optional. The uri of the KMS key used to encrypt various sensitive files.
-	//
-	// Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocComputeImageRef struct {
-	// Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
-	//
-	// Allowed value: The `selfLink` field of a `ComputeImage` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocContainerClusterRef struct {
-	// Optional. A target GKE cluster to deploy to. It must be in the same project and region as the Dataproc cluster (the GKE cluster can be zonal or regional). Format: 'projects/{project}/locations/{location}/clusters/{cluster_id}'
-	//
-	// Allowed value: The `selfLink` field of a `ContainerCluster` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type DataprocComputeNodeGroupRef struct {
-	// Required. The URI of a sole-tenant [node group resource](https://cloud.google.com/compute/docs/reference/rest/v1/nodeGroups) that the cluster will be created on. A full URL, partial URI, or node group name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/nodeGroups/node-group-1` * `projects/[project_id]/zones/[zone]/nodeGroups/node-group-1` * `node-group-1`
-	//
-	// Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
 // +kcc:spec:proto=google.cloud.dataproc.v1.Cluster
 type DataprocClusterSpec struct {
 	// Immutable. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated.
@@ -396,7 +215,7 @@ type ConfidentialInstanceConfig struct {
 type NodeGroupAffinity struct {
 	/* Immutable. */
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroupAffinity.node_group_uri
-	NodeGroupRef *DataprocComputeNodeGroupRef `json:"nodeGroupRef"`
+	NodeGroupRef *NodeGroupRef `json:"nodeGroupRef"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.ReservationAffinity
@@ -695,7 +514,7 @@ type GkeNodePoolTarget struct {
 
 	/* Immutable. */
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeNodePoolTarget.node_pool
-	NodePoolRef *DataprocContainerNodePoolRef `json:"nodePoolRef"`
+	NodePoolRef *NodeGroupRef `json:"nodePoolRef"`
 
 	/* Immutable. Required. The roles associated with the GKE node pool. */
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeNodePoolTarget.roles
