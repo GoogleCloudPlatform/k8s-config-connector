@@ -72,7 +72,7 @@ func NewBeyondCorpClientConnectorServiceIdentity(ctx context.Context, reader cli
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := common.ValueOf(obj.Spec.Location)
 	if location == "" {
 		return nil, fmt.Errorf("cannot resolve location")
 	}
