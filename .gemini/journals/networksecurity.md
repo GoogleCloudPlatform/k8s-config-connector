@@ -12,3 +12,7 @@
   2. Updated `dev/tools/controllerbuilder/generate-proto.sh` to include `${REPO_ROOT}/mockgcp/apis/google/cloud/networksecurity/*/*.proto`.
   3. Created `NetworkSecurityInterceptDeploymentGroupRef` in `apis/refs/v1beta1/networksecurity_refs.go`.
 - **Impact**: Future agents working on Greenfield resources where protos are missing from the pinned SHA should vendor the proto files into `mockgcp/apis/google/cloud/...` and update `generate-proto.sh` instead of attempting to bump the `apis/git.versions` SHA.
+### [2026-05-27] NetworkSecuritySecurityProfile Missing Proto
+- **Context**: Scaffolding direct KRM types for NetworkSecuritySecurityProfile (google.cloud.networksecurity.v1).
+- **Problem**: The SecurityProfile proto message is missing from googleapis. The KCC controllerbuilder failed because it could not find google.cloud.networksecurity.v1.SecurityProfile.
+- **Solution**: The KRM types were scaffolded by defining a local proto file in mockgcp/apis/google/cloud/networksecurity/v1/security_profile.proto, copying the schema from the networksecurity.googleapis.com Discovery REST API. The file was included in generate-proto.sh to compile .build/googleapis.pb.
