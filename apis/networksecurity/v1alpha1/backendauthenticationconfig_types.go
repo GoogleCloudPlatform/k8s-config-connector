@@ -23,7 +23,7 @@ import (
 var NetworkSecurityBackendAuthenticationConfigGVK = GroupVersion.WithKind("NetworkSecurityBackendAuthenticationConfig")
 
 // NetworkSecurityBackendAuthenticationConfigSpec defines the desired state of NetworkSecurityBackendAuthenticationConfig
-// +kcc:spec:proto=google.cloud.networksecurity.v1.BackendAuthenticationConfig
+// +kcc:spec:proto=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig
 type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -35,11 +35,11 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. Free-text description of the resource.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.description
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig.description
 	Description *string `json:"description,omitempty"`
 
 	// Set of label tags associated with the resource.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.labels
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. A reference to a certificatemanager.googleapis.com.Certificate
@@ -49,7 +49,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	//  Used by a BackendService to negotiate mTLS when the backend connection uses
 	//  TLS and the backend requests a client certificate. Must have a CLIENT_AUTH
 	//  scope.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.client_certificate
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig.client_certificate
 	ClientCertificateRef *refsv1beta1.CertificateManagerCertificateRef `json:"clientCertificateRef,omitempty"`
 
 	// Optional. A reference to a TrustConfig resource from the
@@ -60,11 +60,11 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	//  A BackendService uses the chain of trust represented by this TrustConfig,
 	//  if specified, to validate the server certificates presented by the backend.
 	//  Required unless wellKnownRoots is set to PUBLIC_ROOTS.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.trust_config
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig.trust_config
 	TrustConfigRef *refsv1beta1.CertificateManagerTrustConfigRef `json:"trustConfigRef,omitempty"`
 
 	// Well known roots to use for server certificate validation.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.well_known_roots
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig.well_known_roots
 	// +kubebuilder:validation:Enum=WELL_KNOWN_ROOTS_UNSPECIFIED;NONE;PUBLIC_ROOTS
 	WellKnownRoots *string `json:"wellKnownRoots,omitempty"`
 }
@@ -86,18 +86,18 @@ type NetworkSecurityBackendAuthenticationConfigStatus struct {
 }
 
 // NetworkSecurityBackendAuthenticationConfigObservedState is the state of the NetworkSecurityBackendAuthenticationConfig resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.BackendAuthenticationConfig
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig
 type NetworkSecurityBackendAuthenticationConfigObservedState struct {
 	// Output only. The timestamp when the resource was created.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.create_time
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The timestamp when the resource was updated.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.update_time
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Etag of the resource.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.etag
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.BackendAuthenticationConfig.etag
 	Etag *string `json:"etag,omitempty"`
 }
 

@@ -23,7 +23,7 @@ import (
 var NetworkSecurityMirroringEndpointGroupGVK = GroupVersion.WithKind("NetworkSecurityMirroringEndpointGroup")
 
 // NetworkSecurityMirroringEndpointGroupSpec defines the desired state of NetworkSecurityMirroringEndpointGroup
-// +kcc:spec:proto=google.cloud.networksecurity.v1.MirroringEndpointGroup
+// +kcc:spec:proto=google.cloud.networksecurity.v1alpha1.MirroringEndpointGroup
 type NetworkSecurityMirroringEndpointGroupSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -78,7 +78,7 @@ type NetworkSecurityMirroringEndpointGroupStatus struct {
 }
 
 // NetworkSecurityMirroringEndpointGroupObservedState is the state of the NetworkSecurityMirroringEndpointGroup resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.MirroringEndpointGroup
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.MirroringEndpointGroup
 type NetworkSecurityMirroringEndpointGroupObservedState struct {
 	// Output only. The timestamp when the resource was created.
 	//  See https://google.aip.dev/148#timestamps.
@@ -112,7 +112,7 @@ type NetworkSecurityMirroringEndpointGroupObservedState struct {
 	Associations []MirroringEndpointGroup_AssociationDetailsObservedState `json:"associations,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.MirroringEndpointGroup.AssociationDetails
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.MirroringEndpointGroup.AssociationDetails
 type MirroringEndpointGroup_AssociationDetailsObservedState struct {
 	// Output only. The connected association's resource name, for example:
 	//  `projects/123456789/locations/global/mirroringEndpointGroupAssociations/my-ega`.
@@ -131,7 +131,7 @@ type MirroringEndpointGroup_AssociationDetailsObservedState struct {
 	State *string `json:"state,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.MirroringEndpointGroup.ConnectedDeploymentGroup
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.MirroringEndpointGroup.ConnectedDeploymentGroup
 type MirroringEndpointGroup_ConnectedDeploymentGroupObservedState struct {
 	// Output only. The connected deployment group's resource name, for example:
 	//  `projects/123456789/locations/global/mirroringDeploymentGroups/my-dg`.
@@ -144,7 +144,7 @@ type MirroringEndpointGroup_ConnectedDeploymentGroupObservedState struct {
 	Locations []MirroringLocationObservedState `json:"locations,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.MirroringLocation
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.MirroringLocation
 type MirroringLocationObservedState struct {
 	// Output only. The cloud location, e.g. "us-central1-a" or "asia-south1".
 	// +kubebuilder:validation:Optional
