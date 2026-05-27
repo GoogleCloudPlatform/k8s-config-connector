@@ -33,6 +33,7 @@ type BatchV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	BatchJobsGetter
 	BatchTasksGetter
+	CloudBatchResourceAllowancesGetter
 }
 
 // BatchV1alpha1Client is used to interact with features provided by the batch.cnrm.cloud.google.com group.
@@ -46,6 +47,10 @@ func (c *BatchV1alpha1Client) BatchJobs(namespace string) BatchJobInterface {
 
 func (c *BatchV1alpha1Client) BatchTasks(namespace string) BatchTaskInterface {
 	return newBatchTasks(c, namespace)
+}
+
+func (c *BatchV1alpha1Client) CloudBatchResourceAllowances(namespace string) CloudBatchResourceAllowanceInterface {
+	return newCloudBatchResourceAllowances(c, namespace)
 }
 
 // NewForConfig creates a new BatchV1alpha1Client for the given config.

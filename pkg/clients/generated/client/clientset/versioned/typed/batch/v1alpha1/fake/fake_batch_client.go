@@ -39,6 +39,10 @@ func (c *FakeBatchV1alpha1) BatchTasks(namespace string) v1alpha1.BatchTaskInter
 	return newFakeBatchTasks(c, namespace)
 }
 
+func (c *FakeBatchV1alpha1) CloudBatchResourceAllowances(namespace string) v1alpha1.CloudBatchResourceAllowanceInterface {
+	return newFakeCloudBatchResourceAllowances(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeBatchV1alpha1) RESTClient() rest.Interface {
