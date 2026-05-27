@@ -9,5 +9,7 @@ spec:
   ipVersion: IPV4
   purpose: IPV4_PD
   location: us-central1
+  projectRef:
+    external: ${projectId}
   ipCollectionRef:
     name: computepublicdelegatedprefix-${uniqueId}

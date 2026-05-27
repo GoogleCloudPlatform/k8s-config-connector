@@ -6,3 +6,7 @@ spec:
   location: us-central1
   ipCidrRange: 1.2.3.0/24
   description: "Updated Test Public Delegated Prefix"
+  projectRef:
+    external: ${projectId}
+  parentPrefixRef:
+    external: "projects/${projectId}/global/publicAdvertisedPrefixes/my-parent-prefix"

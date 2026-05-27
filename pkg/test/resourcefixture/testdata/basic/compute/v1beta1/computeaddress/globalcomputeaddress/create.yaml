@@ -25,5 +25,7 @@ spec:
   ipVersion: IPV4
   purpose: VPC_PEERING
   prefixLength: 16
+  projectRef:
+    external: ${projectId}
   networkRef:
     name: default
