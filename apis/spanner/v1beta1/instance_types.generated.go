@@ -112,6 +112,7 @@ type AutoscalingConfig_AutoscalingTargets struct {
 	StorageUtilizationPercent *int32 `json:"storageUtilizationPercent,omitempty"`
 }
 
+/* unreachable type FreeInstanceMetadata
 // +kcc:proto=google.spanner.admin.instance.v1.FreeInstanceMetadata
 type FreeInstanceMetadata struct {
 
@@ -121,6 +122,7 @@ type FreeInstanceMetadata struct {
 	// +kcc:proto:field=google.spanner.admin.instance.v1.FreeInstanceMetadata.expire_behavior
 	ExpireBehavior *string `json:"expireBehavior,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.spanner.admin.instance.v1.Instance", skipping
 
@@ -246,6 +248,7 @@ type Instance struct {
 }
 */
 
+/* unreachable type ReplicaComputeCapacity
 // +kcc:proto=google.spanner.admin.instance.v1.ReplicaComputeCapacity
 type ReplicaComputeCapacity struct {
 	// Required. Identifies replicas by specified properties.
@@ -267,6 +270,7 @@ type ReplicaComputeCapacity struct {
 	// +kcc:proto:field=google.spanner.admin.instance.v1.ReplicaComputeCapacity.processing_units
 	ProcessingUnits *int32 `json:"processingUnits,omitempty"`
 }
+*/
 
 // +kcc:proto=google.spanner.admin.instance.v1.ReplicaSelection
 type ReplicaSelection struct {
@@ -275,6 +279,7 @@ type ReplicaSelection struct {
 	Location *string `json:"location,omitempty"`
 }
 
+/* unreachable type FreeInstanceMetadataObservedState
 // +kcc:observedstate:proto=google.spanner.admin.instance.v1.FreeInstanceMetadata
 type FreeInstanceMetadataObservedState struct {
 	// Output only. Timestamp after which the instance will either be upgraded or
@@ -289,6 +294,7 @@ type FreeInstanceMetadataObservedState struct {
 	// +kcc:proto:field=google.spanner.admin.instance.v1.FreeInstanceMetadata.upgrade_time
 	UpgradeTime *string `json:"upgradeTime,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.spanner.admin.instance.v1.Instance", skipping
 

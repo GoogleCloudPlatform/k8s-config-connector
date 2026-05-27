@@ -150,12 +150,14 @@ type BackupScheduleObservedState struct {
 }
 */
 
+/* unreachable type BackupScheduleSpecObservedState
 // +kcc:observedstate:proto=google.spanner.admin.database.v1.BackupScheduleSpec
 type BackupScheduleSpecObservedState struct {
 	// Cron style schedule specification.
 	// +kcc:proto:field=google.spanner.admin.database.v1.BackupScheduleSpec.cron_spec
 	CronSpec *CrontabSpecObservedState `json:"cronSpec,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.spanner.admin.database.v1.CrontabSpec
 type CrontabSpecObservedState struct {
