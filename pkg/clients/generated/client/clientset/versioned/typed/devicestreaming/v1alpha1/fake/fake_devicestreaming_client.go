@@ -22,30 +22,22 @@
 package fake
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeBatchV1alpha1 struct {
+type FakeDevicestreamingV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeBatchV1alpha1) BatchJobs(namespace string) v1alpha1.BatchJobInterface {
-	return newFakeBatchJobs(c, namespace)
-}
-
-func (c *FakeBatchV1alpha1) BatchTasks(namespace string) v1alpha1.BatchTaskInterface {
-	return newFakeBatchTasks(c, namespace)
-}
-
-func (c *FakeBatchV1alpha1) CloudBatchResourceAllowances(namespace string) v1alpha1.CloudBatchResourceAllowanceInterface {
-	return newFakeCloudBatchResourceAllowances(c, namespace)
+func (c *FakeDevicestreamingV1alpha1) DeviceStreamingSessions(namespace string) v1alpha1.DeviceStreamingSessionInterface {
+	return newFakeDeviceStreamingSessions(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeBatchV1alpha1) RESTClient() rest.Interface {
+func (c *FakeDevicestreamingV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

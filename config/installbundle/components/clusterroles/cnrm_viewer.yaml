@@ -471,6 +471,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - devicestreaming.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - dialogflow.cnrm.cloud.google.com
   resources:
   - '*'

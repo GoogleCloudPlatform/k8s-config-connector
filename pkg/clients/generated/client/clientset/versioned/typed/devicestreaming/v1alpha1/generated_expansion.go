@@ -21,8 +21,4 @@
 
 package v1alpha1
 
-type BatchJobExpansion interface{}
-
-type BatchTaskExpansion interface{}
-
-type CloudBatchResourceAllowanceExpansion interface{}
+type DeviceStreamingSessionExpansion interface{}

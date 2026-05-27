@@ -24,39 +24,29 @@ package v1alpha1
 import (
 	http "net/http"
 
-	batchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/batch/v1alpha1"
+	devicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/devicestreaming/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
-type BatchV1alpha1Interface interface {
+type DevicestreamingV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	BatchJobsGetter
-	BatchTasksGetter
-	CloudBatchResourceAllowancesGetter
+	DeviceStreamingSessionsGetter
 }
 
-// BatchV1alpha1Client is used to interact with features provided by the batch.cnrm.cloud.google.com group.
-type BatchV1alpha1Client struct {
+// DevicestreamingV1alpha1Client is used to interact with features provided by the devicestreaming.cnrm.cloud.google.com group.
+type DevicestreamingV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *BatchV1alpha1Client) BatchJobs(namespace string) BatchJobInterface {
-	return newBatchJobs(c, namespace)
+func (c *DevicestreamingV1alpha1Client) DeviceStreamingSessions(namespace string) DeviceStreamingSessionInterface {
+	return newDeviceStreamingSessions(c, namespace)
 }
 
-func (c *BatchV1alpha1Client) BatchTasks(namespace string) BatchTaskInterface {
-	return newBatchTasks(c, namespace)
-}
-
-func (c *BatchV1alpha1Client) CloudBatchResourceAllowances(namespace string) CloudBatchResourceAllowanceInterface {
-	return newCloudBatchResourceAllowances(c, namespace)
-}
-
-// NewForConfig creates a new BatchV1alpha1Client for the given config.
+// NewForConfig creates a new DevicestreamingV1alpha1Client for the given config.
 // NewForConfig is equivalent to NewForConfigAndClient(c, httpClient),
 // where httpClient was generated with rest.HTTPClientFor(c).
-func NewForConfig(c *rest.Config) (*BatchV1alpha1Client, error) {
+func NewForConfig(c *rest.Config) (*DevicestreamingV1alpha1Client, error) {
 	config := *c
 	setConfigDefaults(&config)
 	httpClient, err := rest.HTTPClientFor(&config)
@@ -66,21 +56,21 @@ func NewForConfig(c *rest.Config) (*BatchV1alpha1Client, error) {
 	return NewForConfigAndClient(&config, httpClient)
 }
 
-// NewForConfigAndClient creates a new BatchV1alpha1Client for the given config and http client.
+// NewForConfigAndClient creates a new DevicestreamingV1alpha1Client for the given config and http client.
 // Note the http client provided takes precedence over the configured transport values.
-func NewForConfigAndClient(c *rest.Config, h *http.Client) (*BatchV1alpha1Client, error) {
+func NewForConfigAndClient(c *rest.Config, h *http.Client) (*DevicestreamingV1alpha1Client, error) {
 	config := *c
 	setConfigDefaults(&config)
 	client, err := rest.RESTClientForConfigAndClient(&config, h)
 	if err != nil {
 		return nil, err
 	}
-	return &BatchV1alpha1Client{client}, nil
+	return &DevicestreamingV1alpha1Client{client}, nil
 }
 
-// NewForConfigOrDie creates a new BatchV1alpha1Client for the given config and
+// NewForConfigOrDie creates a new DevicestreamingV1alpha1Client for the given config and
 // panics if there is an error in the config.
-func NewForConfigOrDie(c *rest.Config) *BatchV1alpha1Client {
+func NewForConfigOrDie(c *rest.Config) *DevicestreamingV1alpha1Client {
 	client, err := NewForConfig(c)
 	if err != nil {
 		panic(err)
@@ -88,13 +78,13 @@ func NewForConfigOrDie(c *rest.Config) *BatchV1alpha1Client {
 	return client
 }
 
-// New creates a new BatchV1alpha1Client for the given RESTClient.
-func New(c rest.Interface) *BatchV1alpha1Client {
-	return &BatchV1alpha1Client{c}
+// New creates a new DevicestreamingV1alpha1Client for the given RESTClient.
+func New(c rest.Interface) *DevicestreamingV1alpha1Client {
+	return &DevicestreamingV1alpha1Client{c}
 }
 
 func setConfigDefaults(config *rest.Config) {
-	gv := batchv1alpha1.SchemeGroupVersion
+	gv := devicestreamingv1alpha1.SchemeGroupVersion
 	config.GroupVersion = &gv
 	config.APIPath = "/apis"
 	config.NegotiatedSerializer = rest.CodecFactoryForGeneratedClient(scheme.Scheme, scheme.Codecs).WithoutConversion()
@@ -106,7 +96,7 @@ func setConfigDefaults(config *rest.Config) {
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *BatchV1alpha1Client) RESTClient() rest.Interface {
+func (c *DevicestreamingV1alpha1Client) RESTClient() rest.Interface {
 	if c == nil {
 		return nil
 	}
