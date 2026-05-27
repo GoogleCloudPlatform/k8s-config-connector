@@ -23,7 +23,6 @@ import (
 
 // Mappers that are not automatically generated
 
-
 func TimeOfDay_v1beta1_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *krmv1beta1.TimeOfDay {
 	if in == nil {
 		return nil
