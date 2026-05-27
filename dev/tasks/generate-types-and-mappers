@@ -68,6 +68,11 @@ for f in $(find apis -name "generate.sh" | sort); do
         echo "Skipping ${f}"
         continue
     fi
+    if [[ "${f}" == *"networksecurity"* ]]; then
+        # TODO: Fix this! NetworkSecuritySecurityProfileGroup is missing in pinned googleapis 731d7f2ab6e4e2ea15030c95039e2cb66174d4fb
+        echo "Skipping ${f}"
+        continue
+    fi
     if [[ "${f}" == *"orgpolicy"* ]]; then
         echo "Skipping ${f}"
         continue

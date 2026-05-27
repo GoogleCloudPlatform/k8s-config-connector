@@ -108,6 +108,7 @@ type NetworkSecurityAuthorizationPolicyStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecurityauthorizationpolicy;gcpnetworksecurityauthorizationpolicies
 // +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"

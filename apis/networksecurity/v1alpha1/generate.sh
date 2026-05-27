@@ -43,6 +43,7 @@ go run . generate-types \
   --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup \
   --resource NetworkSecurityMirroringDeployment:MirroringDeployment \
   --resource NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup \
+  --resource NetworkSecuritySecurityProfileGroup:SecurityProfileGroup \
   --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
