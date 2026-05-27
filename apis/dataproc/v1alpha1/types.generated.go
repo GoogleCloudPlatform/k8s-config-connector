@@ -1154,7 +1154,7 @@ type SparkBatch struct {
 }
 */
 
-/* found existing non-generated go type "SparkConnectConfig", skipping
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SparkConnectConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SparkConnectConfig
 type SparkConnectConfig struct {
