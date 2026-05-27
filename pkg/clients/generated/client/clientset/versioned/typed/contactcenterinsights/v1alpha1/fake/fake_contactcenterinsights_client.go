@@ -39,6 +39,10 @@ func (c *FakeContactcenterinsightsV1alpha1) CCInsightsPhraseMatchers(namespace s
 	return newFakeCCInsightsPhraseMatchers(c, namespace)
 }
 
+func (c *FakeContactcenterinsightsV1alpha1) CCInsightsQaScorecards(namespace string) v1alpha1.CCInsightsQaScorecardInterface {
+	return newFakeCCInsightsQaScorecards(c, namespace)
+}
+
 func (c *FakeContactcenterinsightsV1alpha1) CCInsightsViews(namespace string) v1alpha1.CCInsightsViewInterface {
 	return newFakeCCInsightsViews(c, namespace)
 }

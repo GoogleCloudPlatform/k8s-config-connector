@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(CCInsightsPhraseMatcher{}).Name(),
 	}
 
+	CCInsightsQaScorecardGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CCInsightsQaScorecard{}).Name(),
+	}
+
 	CCInsightsViewGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

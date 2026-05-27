@@ -33,6 +33,7 @@ type ContactcenterinsightsV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	CCInsightsIssueModelsGetter
 	CCInsightsPhraseMatchersGetter
+	CCInsightsQaScorecardsGetter
 	CCInsightsViewsGetter
 }
 
@@ -47,6 +48,10 @@ func (c *ContactcenterinsightsV1alpha1Client) CCInsightsIssueModels(namespace st
 
 func (c *ContactcenterinsightsV1alpha1Client) CCInsightsPhraseMatchers(namespace string) CCInsightsPhraseMatcherInterface {
 	return newCCInsightsPhraseMatchers(c, namespace)
+}
+
+func (c *ContactcenterinsightsV1alpha1Client) CCInsightsQaScorecards(namespace string) CCInsightsQaScorecardInterface {
+	return newCCInsightsQaScorecards(c, namespace)
 }
 
 func (c *ContactcenterinsightsV1alpha1Client) CCInsightsViews(namespace string) CCInsightsViewInterface {

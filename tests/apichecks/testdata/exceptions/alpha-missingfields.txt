@@ -512,6 +512,10 @@
 [missing_field] crd=ccinsightsphrasematchers.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.roleMatch" is not set in unstructured objects
 [missing_field] crd=ccinsightsphrasematchers.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=ccinsightsphrasematchers.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.versionTag" is not set in unstructured objects
+[missing_field] crd=ccinsightsqascorecards.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=ccinsightsqascorecards.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=ccinsightsqascorecards.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=ccinsightsqascorecards.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=ccinsightsviews.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=ccinsightsviews.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=ccinsightsviews.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

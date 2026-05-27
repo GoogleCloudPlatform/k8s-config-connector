@@ -20,6 +20,7 @@
 // resource: CCInsightsView:View
 // resource: CCInsightsPhraseMatcher:PhraseMatcher
 // resource: CCInsightsIssueModel:IssueModel
+// resource: CCInsightsQaScorecard:QaScorecard
 
 package v1alpha1
 
@@ -190,6 +191,26 @@ type PhraseMatcher struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.QaScorecard", skipping
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.QaScorecard
+type QaScorecard struct {
+	// Identifier. The scorecard name.
+	//  Format:
+	//  projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.name
+	Name *string `json:"name,omitempty"`
+
+	// The user-specified display name of the scorecard.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A text description explaining the intent of the scorecard.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.View", skipping
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.View
@@ -271,6 +292,20 @@ type PhraseMatcherObservedState struct {
 
 	// Output only. The most recent time at which the phrase matcher was updated.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.PhraseMatcher.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.QaScorecard", skipping
+
+// +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaScorecard
+type QaScorecardObservedState struct {
+	// Output only. The time at which this scorecard was created.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The most recent time at which the scorecard was updated.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
