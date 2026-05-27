@@ -80,8 +80,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":         true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                   true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":      true,
+		"//bigquerydatatransfer.googleapis.com/projects/{}/locations/{}/transferConfigs/{}":       true,
 		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                         true}
-
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
 		normalized := normalizeTemplateFormat(fullURL)
