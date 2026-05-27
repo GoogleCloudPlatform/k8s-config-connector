@@ -9,19 +9,19 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: networksecurityinterceptdeployments.networksecurity.cnrm.cloud.google.com
+  name: networksecuritymirroringdeployments.networksecurity.cnrm.cloud.google.com
 spec:
   group: networksecurity.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: NetworkSecurityInterceptDeployment
-    listKind: NetworkSecurityInterceptDeploymentList
-    plural: networksecurityinterceptdeployments
+    kind: NetworkSecurityMirroringDeployment
+    listKind: NetworkSecurityMirroringDeploymentList
+    plural: networksecuritymirroringdeployments
     shortNames:
-    - gcpnetworksecurityinterceptdeployment
-    - gcpnetworksecurityinterceptdeployments
-    singular: networksecurityinterceptdeployment
+    - gcpnetworksecuritymirroringdeployment
+    - gcpnetworksecuritymirroringdeployments
+    singular: networksecuritymirroringdeployment
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -44,7 +44,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: NetworkSecurityInterceptDeployment is the Schema for the NetworkSecurityInterceptDeployment
+        description: NetworkSecurityMirroringDeployment is the Schema for the NetworkSecurityMirroringDeployment
           API
         properties:
           apiVersion:
@@ -60,8 +60,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetworkSecurityInterceptDeploymentSpec defines the desired
-              state of NetworkSecurityInterceptDeployment
+            description: NetworkSecurityMirroringDeploymentSpec defines the desired
+              state of NetworkSecurityMirroringDeployment
             properties:
               description:
                 description: Optional. User-provided description of the deployment.
@@ -69,7 +69,8 @@ spec:
                 type: string
               forwardingRuleRef:
                 description: 'Required. Immutable. The regional forwarding rule that
-                  fronts the interceptors, for example: `projects/123456789/regions/us-central1/forwardingRules/my-rule`.'
+                  fronts the mirroring collectors, for example: `projects/123456789/regions/us-central1/forwardingRules/my-rule`.
+                  See https://google.aip.dev/124.'
                 oneOf:
                 - not:
                     required:
@@ -97,9 +98,19 @@ spec:
                       resource.
                     type: string
                 type: object
-              interceptDeploymentGroupRef:
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels are key/value pairs that help to organize
+                  and filter resources.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              mirroringDeploymentGroupRef:
                 description: 'Required. Immutable. The deployment group that this
-                  deployment is a part of, for example: `projects/123456789/locations/global/interceptDeploymentGroups/my-dg`.'
+                  deployment is a part of, for example: `projects/123456789/locations/global/mirroringDeploymentGroups/my-dg`.
+                  See https://google.aip.dev/124.'
                 oneOf:
                 - not:
                     required:
@@ -116,27 +127,18 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed NetworkSecurityInterceptDeploymentGroup
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptDeploymentGroups/{{interceptDeploymentGroupID}}".
+                    description: A reference to an externally managed NetworkSecurityMirroringDeploymentGroup
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringDeploymentGroups/{{mirroringDeploymentGroupID}}".
                     type: string
                   name:
-                    description: The name field of a NetworkSecurityInterceptDeploymentGroup
+                    description: The name field of a NetworkSecurityMirroringDeploymentGroup
                       resource.
                     type: string
                   namespace:
-                    description: The namespace field of a NetworkSecurityInterceptDeploymentGroup
+                    description: The namespace field of a NetworkSecurityMirroringDeploymentGroup
                       resource.
                     type: string
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Labels are key/value pairs that help to organize
-                  and filter resources.
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -170,18 +172,18 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The NetworkSecurityInterceptDeployment name. If not given,
+                description: The NetworkSecurityMirroringDeployment name. If not given,
                   the metadata.name will be used.
                 type: string
             required:
             - forwardingRuleRef
-            - interceptDeploymentGroupRef
             - location
+            - mirroringDeploymentGroupRef
             - projectRef
             type: object
           status:
-            description: NetworkSecurityInterceptDeploymentStatus defines the config
-              connector machine state of NetworkSecurityInterceptDeployment
+            description: NetworkSecurityMirroringDeploymentStatus defines the config
+              connector machine state of NetworkSecurityMirroringDeployment
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -210,7 +212,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the NetworkSecurityInterceptDeployment
+                description: A unique specifier for the NetworkSecurityMirroringDeployment
                   resource in GCP.
                 type: string
               observedGeneration:
@@ -232,7 +234,8 @@ spec:
                   reconciling:
                     description: Output only. The current state of the resource does
                       not match the user's intended state, and the system is working
-                      to reconcile them.
+                      to reconcile them. This part of the normal operation (e.g. linking
+                      a new association to the parent group). See https://google.aip.dev/128.
                     type: boolean
                   state:
                     description: Output only. The current state of the deployment.
