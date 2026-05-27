@@ -101,8 +101,6 @@ func PodAutoscaling_HPAProfile_ToProto(mapCtx *direct.MapContext, in *string) *p
 	return &v
 }
 
-
-
 func MaintenanceExclusionOptions_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceExclusionOptions) *pb.MaintenanceExclusionOptions {
 	if in == nil {
 		return nil

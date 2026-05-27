@@ -75,10 +75,11 @@ func getIdentityFromCloudSecurityFrameworkSpec(ctx context.Context, reader clien
 	var organization string
 	frameworkObj := obj.(*CloudSecurityFramework)
 	if frameworkObj.Spec.OrganizationRef != nil {
-		organization, err = common.ResolveOrganizationID(ctx, reader, frameworkObj.Spec.OrganizationRef, frameworkObj)
+		orgIdentity, err := refs.ResolveOrganization(ctx, reader, frameworkObj, frameworkObj.Spec.OrganizationRef)
 		if err != nil {
 			return nil, err
 		}
+		organization = orgIdentity.OrganizationID
 	} else {
 		return nil, fmt.Errorf("cannot resolve organization: spec.organizationRef must be provided")
 	}
