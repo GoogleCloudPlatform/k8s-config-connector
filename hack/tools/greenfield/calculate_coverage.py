@@ -119,50 +119,47 @@ def match_resources(gcp_resources, kcc_resources):
         "container": ["container", "gke"],
         "sqladmin": ["sql"],
         "cloudquota": ["cloudquotas"],
+        "vertexai": ["aiplatform"],
     }
 
     for gcp_type, info in gcp_resources.items():
         gcp_service_base = info['service']
         gcp_name = info['name']
-        matched_kcc_service = None
+        matched_kcc_services = []
         if gcp_service_base in kcc_map:
-            matched_kcc_service = gcp_service_base
-        elif gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
-            matched_kcc_service = gcp_service_base[:-1]
-        elif gcp_service_base + 's' in kcc_map:
-            matched_kcc_service = gcp_service_base + 's'
-        else:
-            for canonical_name, aliases in service_aliases.items():
-                all_variants = [canonical_name] + aliases
-                if gcp_service_base in all_variants:
-                    for variant in all_variants:
-                        if variant in kcc_map:
-                            matched_kcc_service = variant
-                            break
-                    if matched_kcc_service:
-                        break
+            matched_kcc_services.append(gcp_service_base)
+        if gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
+            matched_kcc_services.append(gcp_service_base[:-1])
+        if gcp_service_base + 's' in kcc_map:
+            matched_kcc_services.append(gcp_service_base + 's')
+        for kcc_s, aliases in service_aliases.items():
+            if gcp_service_base in aliases or gcp_service_base == kcc_s:
+                if kcc_s in kcc_map and kcc_s not in matched_kcc_services:
+                    matched_kcc_services.append(kcc_s)
         
-        if not matched_kcc_service: continue
+        if not matched_kcc_services: continue
         name_norm = gcp_name.lower()
-        for kcc_kind in kcc_map[matched_kcc_service]:
-            kind_norm = kcc_kind.lower()
-            prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
-            if matched_kcc_service.startswith("cloud"):
-                prefixes.append(matched_kcc_service.replace("-", "").lower()[5:])
-            if kind_norm == name_norm:
-                covered.add(gcp_type)
-                break
-            found_prefix_match = False
-            for p in prefixes:
-                if kind_norm.startswith(p) and len(kind_norm) > len(p):
-                    if kind_norm[len(p):] == name_norm:
-                        covered.add(gcp_type)
-                        found_prefix_match = True
-                        break
-            if found_prefix_match: break
-            if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
-                covered.add(gcp_type)
-                break
+        for matched_kcc_service in matched_kcc_services:
+            for kcc_kind in kcc_map[matched_kcc_service]:
+                kind_norm = kcc_kind.lower()
+                prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
+                if matched_kcc_service.startswith("cloud"):
+                    prefixes.append(matched_kcc_service.replace("-", "").lower()[5:])
+                if kind_norm == name_norm:
+                    covered.add(gcp_type)
+                    break
+                found_prefix_match = False
+                for p in prefixes:
+                    if kind_norm.startswith(p) and len(kind_norm) > len(p):
+                        if kind_norm[len(p):] == name_norm:
+                            covered.add(gcp_type)
+                            found_prefix_match = True
+                            break
+                if found_prefix_match: break
+                if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
+                    covered.add(gcp_type)
+                    break
+            if gcp_type in covered: break
     return covered
 
 def is_leaf(patterns):
@@ -298,50 +295,47 @@ def main():
         "container": ["container", "gke"],
         "sqladmin": ["sql"],
         "cloudquota": ["cloudquotas"],
+        "vertexai": ["aiplatform"],
     }
 
     for key, info in gcp_resources.items():
         gcp_service_base = info['service']
         gcp_name = info['name']
-        matched_kcc_service = None
+        matched_kcc_services = []
         if gcp_service_base in kcc_map:
-            matched_kcc_service = gcp_service_base
-        elif gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
-            matched_kcc_service = gcp_service_base[:-1]
-        elif gcp_service_base + 's' in kcc_map:
-            matched_kcc_service = gcp_service_base + 's'
-        else:
-            for canonical_name, aliases in service_aliases.items():
-                all_variants = [canonical_name] + aliases
-                if gcp_service_base in all_variants:
-                    for variant in all_variants:
-                        if variant in kcc_map:
-                            matched_kcc_service = variant
-                            break
-                    if matched_kcc_service:
-                        break
+            matched_kcc_services.append(gcp_service_base)
+        if gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
+            matched_kcc_services.append(gcp_service_base[:-1])
+        if gcp_service_base + 's' in kcc_map:
+            matched_kcc_services.append(gcp_service_base + 's')
+        for kcc_s, aliases in service_aliases.items():
+            if gcp_service_base in aliases or gcp_service_base == kcc_s:
+                if kcc_s in kcc_map and kcc_s not in matched_kcc_services:
+                    matched_kcc_services.append(kcc_s)
         
-        if not matched_kcc_service: continue
+        if not matched_kcc_services: continue
         name_norm = gcp_name.lower()
-        for kcc_kind in kcc_map[matched_kcc_service]:
-            kind_norm = kcc_kind.lower()
-            prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
-            if matched_kcc_service.startswith("cloud"):
-                prefixes.append(matched_kcc_service.replace("-", "").lower()[5:])
-            if kind_norm == name_norm:
-                covered.add(key)
-                break
-            found_prefix_match = False
-            for p in prefixes:
-                if kind_norm.startswith(p) and len(kind_norm) > len(p):
-                    if kind_norm[len(p):] == name_norm:
-                        covered.add(key)
-                        found_prefix_match = True
-                        break
-            if found_prefix_match: break
-            if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
-                covered.add(key)
-                break
+        for matched_kcc_service in matched_kcc_services:
+            for kcc_kind in kcc_map[matched_kcc_service]:
+                kind_norm = kcc_kind.lower()
+                prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
+                if matched_kcc_service.startswith("cloud"):
+                    prefixes.append(matched_kcc_service.replace("-", "").lower()[5:])
+                if kind_norm == name_norm:
+                    covered.add(key)
+                    break
+                found_prefix_match = False
+                for p in prefixes:
+                    if kind_norm.startswith(p) and len(kind_norm) > len(p):
+                        if kind_norm[len(p):] == name_norm:
+                            covered.add(key)
+                            found_prefix_match = True
+                            break
+                if found_prefix_match: break
+                if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
+                    covered.add(key)
+                    break
+            if key in covered: break
     
     # Categorization
     all_gcp_keys = set(gcp_resources.keys())
