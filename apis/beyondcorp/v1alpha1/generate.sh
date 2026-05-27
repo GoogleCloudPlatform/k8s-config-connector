@@ -34,10 +34,4 @@ mv ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservic
 rmdir ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/
 sed -i 's/package beyondcorp/package beyondcorpclientconnectorservice/g' ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go
 
-sed -i 's/ClientConnectorService_Ingress_Config_DestinationRoute/ClientConnectorServiceIngressConfigDestinationRoute/g' ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go
-sed -i 's/ClientConnectorService_Ingress_Config/ClientConnectorServiceIngressConfig/g' ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go
-sed -i 's/ClientConnectorService_Ingress/ClientConnectorServiceIngress/g' ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go
-sed -i 's/ClientConnectorService_Egress_PeeredVpc/ClientConnectorServiceEgressPeeredVpc/g' ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go || true
-sed -i 's/ClientConnectorService_Egress_PeeredVPC/ClientConnectorServiceEgressPeeredVPC/g' ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go || true
-sed -i 's/ClientConnectorService_Egress/ClientConnectorServiceEgress/g' ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go
 
