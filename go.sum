@@ -959,8 +959,6 @@ cloud.google.com/go/networkconnectivity v1.14.1/go.mod h1:LyGPXR742uQcDxZ/wv4EI0
 cloud.google.com/go/networkconnectivity v1.14.2/go.mod h1:5UFlwIisZylSkGG1AdwK/WZUaoz12PKu6wODwIbFzJo=
 cloud.google.com/go/networkconnectivity v1.14.3/go.mod h1:4aoeFdrJpYEXNvrnfyD5kIzs8YtHg945Og4koAjHQek=
 cloud.google.com/go/networkconnectivity v1.14.4/go.mod h1:PU12q++/IMnDJAB+3r+tJtuCXCfwfN+C6Niyj6ji1Po=
-cloud.google.com/go/networkconnectivity v1.21.0 h1:WS5XTNWyLODLO5YmftQmDIZtAa2DYYmRf/neRCLIWHA=
-cloud.google.com/go/networkconnectivity v1.21.0/go.mod h1:XC1UJ+tqBsLWz73dqrMc7kUvdTv0FIxtDGv6YntTBO0=
 cloud.google.com/go/networkmanagement v1.4.0/go.mod h1:Q9mdLLRn60AsOrPc8rs8iNV6OHXaGcDdsIQe1ohekq8=
 cloud.google.com/go/networkmanagement v1.5.0/go.mod h1:ZnOeZ/evzUdUsnvRt792H0uYEnHQEMaz+REhhzJRcf4=
 cloud.google.com/go/networkmanagement v1.6.0/go.mod h1:5pKPqyXjB/sgtvB5xqOemumoQNB7y95Q7S+4rjSOPYY=
