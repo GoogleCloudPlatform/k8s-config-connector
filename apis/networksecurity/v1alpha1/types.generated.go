@@ -21,5 +21,25 @@
 // resource: NetworkSecurityInterceptDeployment:InterceptDeployment
 // resource: NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
 // resource: NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup
+// resource: NetworkSecurityMirroringEndpointGroupAssociation:MirroringEndpointGroupAssociation
 
 package v1alpha1
+
+/* unreachable type MirroringEndpointGroupAssociation_LocationDetails
+// +kcc:proto=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation.LocationDetails
+type MirroringEndpointGroupAssociation_LocationDetails struct {
+}
+*/
+
+/* unreachable type MirroringEndpointGroupAssociation_LocationDetailsObservedState
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation.LocationDetails
+type MirroringEndpointGroupAssociation_LocationDetailsObservedState struct {
+	// Output only. The cloud location, e.g. "us-central1-a" or "asia-south1".
+	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation.LocationDetails.location
+	Location *string `json:"location,omitempty"`
+
+	// Output only. The current state of the association in this location.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation.LocationDetails.state
+	State *string `json:"state,omitempty"`
+}
+*/
