@@ -1,0 +1,34 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computeurlmap-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  description: "test URLMap with routeRules"
+  location: global
+  defaultService:
+    backendServiceRef:
+      name: computebackendservice-${uniqueId}
+  hostRule:
+    - hosts:
+      - "mysite.com"
+      pathMatcher: "allpaths"
+  pathMatcher:
+    - name: "allpaths"
+      defaultService:
+        backendServiceRef:
+          name: computebackendservice-${uniqueId}
+      routeRules:
+        - priority: 1
+          matchRules:
+            - prefixMatch: "/bucket"
+          service:
+            backendBucketRef:
+              name: computebackendbucket-${uniqueId}
+        - priority: 2
+          matchRules:
+            - prefixMatch: "/service"
+          service:
+            backendServiceRef:
+              name: computebackendservice-${uniqueId}

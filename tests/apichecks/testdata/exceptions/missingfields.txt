@@ -1174,8 +1174,6 @@
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].headerAction.responseHeadersToAdd[].headerValue" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].headerAction.responseHeadersToAdd[].replace" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].headerAction.responseHeadersToRemove[]" is not set in unstructured objects
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].service.backendBucketRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].service.backendServiceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].urlRedirect.hostRedirect" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].urlRedirect.httpsRedirect" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].urlRedirect.pathRedirect" is not set in unstructured objects

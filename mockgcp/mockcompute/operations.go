@@ -108,8 +108,8 @@ func (s *computeOperations) newRegionalLRO(ctx context.Context, projectID string
 	op.Kind = PtrTo("compute#operation")
 	fqn := s.regionalOperationFQN(projectID, region, name)
 
-	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
-	op.Region = PtrTo(buildComputeSelfLink(ctx, "projects/"+projectID+"/regions/"+region))
+	op.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
+	op.Region = PtrTo(BuildComputeSelfLink(ctx, "projects/"+projectID+"/regions/"+region))
 
 	op.Status = PtrTo(pb.Operation_DONE)
 
