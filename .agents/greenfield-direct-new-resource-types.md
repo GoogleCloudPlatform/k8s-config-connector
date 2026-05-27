@@ -37,6 +37,11 @@ Your goal is to identify GCP resources that are missing from KCC but defined in 
     - Look at the "Next 5 Easiest Resources to Implement" section.
     - Pick the first resource that is not already tracked by an issue.
 3.  **Verify Necessity**:
+    - Check if the resource already exists in KCC (even under a slightly different name):
+      ```bash
+      grep -r "kind: <Kind>" config/crds/resources/ || grep -ri "<Kind>" config/crds/resources/
+      ```
+      If the resource or a closely related variation already exists, **do not** open an issue. Instead, investigate if the coverage script needs tweaking (e.g. `hack/tools/greenfield/calculate_coverage.py`) or if it should be added to the skip list, then stop.
     - Check if an implementation issue already exists (open or closed):
       ```bash
       gh issue list --state all --search "ai:chore: Implement direct types for: <Kind>"
