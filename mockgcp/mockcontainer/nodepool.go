@@ -403,10 +403,35 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 		return nil, err
 	}
 
+	clusterName := name.ClusterName()
+	clusterFqn := clusterName.String()
+	cluster := &pb.Cluster{}
+	if err := s.storage.Get(ctx, clusterFqn, cluster); err != nil {
+		return nil, err
+	}
+
 	fqn := name.String()
 
 	oldObj := &pb.NodePool{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
+	// Update the cluster's NodePools list after deletion
+	var newNodePools []*pb.NodePool
+	for _, np := range cluster.NodePools {
+		if np.Name != name.NodePool {
+			newNodePools = append(newNodePools, np)
+		}
+	}
+	cluster.NodePools = newNodePools
+
+	// To match realGCP, if the default node pool is deleted, remove NodeConfig on the cluster.
+	if name.NodePool == "default-pool" {
+		cluster.NodeConfig = nil
+	}
+
+	if err := s.storage.Update(ctx, clusterFqn, cluster); err != nil {
 		return nil, err
 	}
 
