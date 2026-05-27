@@ -43,6 +43,7 @@ type LinkedInterconnectAttachments struct {
 }
 */
 
+/* unreachable type LinkedProducerVPCNetwork
 // +kcc:proto=google.cloud.networkconnectivity.v1.LinkedProducerVpcNetwork
 type LinkedProducerVPCNetwork struct {
 	// Immutable. The URI of the Service Consumer VPC that the Producer VPC is
@@ -69,6 +70,7 @@ type LinkedProducerVPCNetwork struct {
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.LinkedProducerVpcNetwork.proposed_include_export_ranges
 	ProposedIncludeExportRanges []string `json:"proposedIncludeExportRanges,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "LinkedRouterApplianceInstances", skipping
 
@@ -211,6 +213,7 @@ type Spoke struct {
 }
 */
 
+/* unreachable type Spoke_StateReason
 // +kcc:proto=google.cloud.networkconnectivity.v1.Spoke.StateReason
 type Spoke_StateReason struct {
 	// The code associated with this reason.
@@ -225,6 +228,7 @@ type Spoke_StateReason struct {
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Spoke.StateReason.user_details
 	UserDetails *string `json:"userDetails,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.LinkedInterconnectAttachments", skipping
 
@@ -236,6 +240,7 @@ type LinkedInterconnectAttachmentsObservedState struct {
 }
 */
 
+/* unreachable type LinkedProducerVPCNetworkObservedState
 // +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.LinkedProducerVpcNetwork
 type LinkedProducerVPCNetworkObservedState struct {
 	// Output only. The Service Consumer Network spoke.
@@ -251,6 +256,7 @@ type LinkedProducerVPCNetworkObservedState struct {
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.LinkedProducerVpcNetwork.proposed_exclude_export_ranges
 	ProposedExcludeExportRanges []string `json:"proposedExcludeExportRanges,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.LinkedRouterApplianceInstances", skipping
 

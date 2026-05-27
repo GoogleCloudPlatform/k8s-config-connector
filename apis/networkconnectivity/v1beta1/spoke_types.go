@@ -16,7 +16,6 @@ package v1beta1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -99,7 +98,7 @@ type NetworkConnectivitySpokeSpec struct {
 
 	// The project that this resource belongs to.
 	// +required
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef *ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
 	// +required
@@ -191,6 +190,19 @@ type SpokeObservedState struct {
 	// Output only. The current lifecycle state of this spoke.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Spoke.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:identifiertype=Project
+type ProjectRef struct {
+	// The `projectID` field of a project, when not managed by Config Connector.
+	// +optional
+	External string `json:"external,omitempty"`
+	// The `name` field of a `Project` resource.
+	// +optional
+	Name string `json:"name,omitempty"`
+	// The `namespace` field of a `Project` resource.
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
