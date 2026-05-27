@@ -71,5 +71,11 @@ var (
 		Kind:    reflect.TypeOf(DataprocNodeGroup{}).Name(),
 	}
 
+	DataprocSessionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataprocSession{}).Name(),
+	}
+
 	dataprocAPIVersion = SchemeGroupVersion.String()
 )
