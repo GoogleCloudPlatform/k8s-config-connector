@@ -129,6 +129,7 @@ func TestE2EScript(t *testing.T) {
 				appliedObjects := []*unstructured.Unstructured{}
 
 				for i, obj := range script.Objects {
+					stepStart := time.Now()
 					testCommand := ""
 					v, ok := obj.Object["TEST"]
 					if ok {
@@ -149,6 +150,7 @@ func TestE2EScript(t *testing.T) {
 						baseOutputPath := filepath.Join(script.SourceDir, fmt.Sprintf("_cli-%d-", i))
 						runCLI(h, args, uniqueID, baseOutputPath)
 						captureHTTPLogEvents(true)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
 
@@ -165,6 +167,7 @@ func TestE2EScript(t *testing.T) {
 						}
 
 						captureHTTPLogEvents(false)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
 
@@ -209,6 +212,7 @@ func TestE2EScript(t *testing.T) {
 						}
 
 						captureHTTPLogEvents(true)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
 
@@ -385,6 +389,7 @@ func TestE2EScript(t *testing.T) {
 
 					default:
 						t.Errorf("FAIL: unknown TEST command %q", testCommand)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
 
@@ -455,6 +460,7 @@ func TestE2EScript(t *testing.T) {
 					}
 
 					captureHTTPLogEvents(false)
+					t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 				}
 
 				t.Logf("***/Finished Steps")
