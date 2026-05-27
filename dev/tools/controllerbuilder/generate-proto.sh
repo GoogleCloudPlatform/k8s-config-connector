@@ -96,6 +96,7 @@ protoc --include_imports --include_source_info \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto \
+    ${REPO_ROOT}/mockgcp/apis/google/cloud/networksecurity/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/partner/aistreams/*/*.proto \
