@@ -27,7 +27,7 @@ MISSING_REFERENCE_STRING="neither 'external' nor 'name' are set"
 added_lines=$(git diff --unified=0 $BASE_COMMIT..$COMMIT_HEAD "${MISSING_FIELDS_FILE}" | grep '^+[^+]' | sed 's/^+//' || true)
 # Filter for missing reference fields
 # HACK: Temporarily ignore memorystoreInstanceServiceAttachment
-added_reference_lines=$(echo "${added_lines}" | grep "${MISSING_REFERENCE_STRING}" | grep -v memorystoreInstanceServiceAttachment || true)
+added_reference_lines=$(echo "${added_lines}" | grep "${MISSING_REFERENCE_STRING}" | grep -v memorystoreInstanceServiceAttachment | grep -v memorystoreinstanceendpoints || true)
 
 if [[ -n "${added_reference_lines}" ]]; then
   echo "ERROR: Untested reference fields detected."

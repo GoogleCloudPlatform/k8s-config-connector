@@ -35,6 +35,10 @@ func (c *FakeMemorystoreV1beta1) MemorystoreInstances(namespace string) v1beta1.
 	return newFakeMemorystoreInstances(c, namespace)
 }
 
+func (c *FakeMemorystoreV1beta1) MemorystoreInstanceEndpoints(namespace string) v1beta1.MemorystoreInstanceEndpointInterface {
+	return &FakeMemorystoreInstanceEndpoints{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeMemorystoreV1beta1) RESTClient() rest.Interface {

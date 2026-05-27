@@ -339,7 +339,7 @@
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaConsumerGroup                       | True         | False       | False  | Direct     | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaTopic                               | True         | True        | False  | Direct     | True        |
 | memcache.cnrm.cloud.google.com                | MemcacheInstance                                | False        | True        | False  | Terraform  | False       |
-| memorystore.cnrm.cloud.google.com             | MemorystoreInstanceEndpoint                     | True         | False       | False  | Direct     | True        |
+| memorystore.cnrm.cloud.google.com             | MemorystoreInstanceEndpoint                     | True         | True        | False  | Direct     | True        |
 | memorystore.cnrm.cloud.google.com             | MemorystoreInstance                             | True         | True        | False  | Direct     | True        |
 | metastore.cnrm.cloud.google.com               | MetastoreBackup                                 | True         | True        | False  | Direct     | True        |
 | metastore.cnrm.cloud.google.com               | MetastoreFederation                             | True         | False       | False  | Direct     | True        |

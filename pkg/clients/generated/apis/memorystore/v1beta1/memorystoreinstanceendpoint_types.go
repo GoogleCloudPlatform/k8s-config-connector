@@ -28,7 +28,7 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
