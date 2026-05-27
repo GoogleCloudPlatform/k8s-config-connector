@@ -1251,6 +1251,8 @@ cloud.google.com/go/securitycenter v1.24.1/go.mod h1:3h9IdjjHhVMXdQnmqzVnM7b0wMn
 cloud.google.com/go/securitycenter v1.24.2/go.mod h1:l1XejOngggzqwr4Fa2Cn+iWZGf+aBLTXtB/vXjy5vXM=
 cloud.google.com/go/securitycenter v1.24.3/go.mod h1:l1XejOngggzqwr4Fa2Cn+iWZGf+aBLTXtB/vXjy5vXM=
 cloud.google.com/go/securitycenter v1.24.4/go.mod h1:PSccin+o1EMYKcFQzz9HMMnZ2r9+7jbc+LvPjXhpwcU=
+cloud.google.com/go/securitycenter v1.38.1 h1:D9zpeguY4frQU35GBw8+M6Gw79CiuTF9iVs4sFm3FDY=
+cloud.google.com/go/securitycenter v1.38.1/go.mod h1:Ge2D/SlG2lP1FrQD7wXHy8qyeloRenvKXeB4e7zO6z0=
 cloud.google.com/go/servicecontrol v1.4.0/go.mod h1:o0hUSJ1TXJAmi/7fLJAedOovnujSEvjKCAFNXPQ1RaU=
 cloud.google.com/go/servicecontrol v1.5.0/go.mod h1:qM0CnXHhyqKVuiZnGKrIurvVImCs8gmqWsDoqe9sU1s=
 cloud.google.com/go/servicecontrol v1.10.0/go.mod h1:pQvyvSRh7YzUF2efw7H87V92mxU8FnFDawMClGCNuAA=

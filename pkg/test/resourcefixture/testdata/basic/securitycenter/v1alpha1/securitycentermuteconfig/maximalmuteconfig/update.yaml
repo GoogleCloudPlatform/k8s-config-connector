@@ -1,0 +1,11 @@
+apiVersion: securitycenter.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterMuteConfig
+metadata:
+  name: ${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  displayName: "Updated Maximal Mute Config"
+  description: "Updated description"
+  filter: category="OPEN_FIREWALL" AND severity="LOW"
+  type: STATIC

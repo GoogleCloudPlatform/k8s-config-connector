@@ -1,0 +1,16 @@
+apiVersion: securitycenter.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterCustomModule
+metadata:
+  name: ${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  displayName: "Minimal Custom Module"
+  enablementState: ENABLED
+  customConfig:
+    predicate:
+      expression: resource.type == "compute.googleapis.com/Instance"
+    resourceSelector:
+      resourceTypes:
+      - compute.googleapis.com/Instance
+    severity: LOW

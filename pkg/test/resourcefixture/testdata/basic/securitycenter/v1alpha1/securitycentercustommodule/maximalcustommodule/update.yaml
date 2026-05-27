@@ -1,0 +1,23 @@
+apiVersion: securitycenter.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterCustomModule
+metadata:
+  name: ${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  displayName: "Maximal Custom Module Updated"
+  enablementState: ENABLED
+  customConfig:
+    predicate:
+      expression: resource.type == "compute.googleapis.com/Instance"
+    customOutput:
+      properties:
+      - name: "my_prop_updated"
+        valueExpression:
+          expression: "resource.name"
+    resourceSelector:
+      resourceTypes:
+      - compute.googleapis.com/Instance
+    severity: HIGH
+    description: "Updated detailed description"
+    recommendation: "Updated fix it"

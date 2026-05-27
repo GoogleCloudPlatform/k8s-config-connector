@@ -1,0 +1,11 @@
+apiVersion: securitycenter.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterBigQueryExport
+metadata:
+  name: ${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  datasetRef:
+    name: bqdataset-${uniqueId}
+  description: "Updated Maximal BigQuery Export"
+  filter: category="OPEN_FIREWALL" OR category="VULNERABILITY"
