@@ -606,11 +606,3 @@ func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Stru
 	}
 	return s
 }
-
-func EnumPtr_ToProto[U ProtoEnum](mapCtx *MapContext, in *string) *U {
-	if in == nil {
-		return nil
-	}
-	u := Enum_ToProto[U](mapCtx, in)
-	return &u
-}
