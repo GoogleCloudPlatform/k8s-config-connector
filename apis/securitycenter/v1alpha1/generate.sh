@@ -23,4 +23,5 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.securitycenter.v1 \
   --api-version securitycenter.cnrm.cloud.google.com/v1alpha1 \
-  --resource SecurityCenterMuteConfig:MuteConfig
+  --resource SecurityCenterMuteConfig:MuteConfig \
+  --resource SecurityCenterBigQueryExport:BigQueryExport

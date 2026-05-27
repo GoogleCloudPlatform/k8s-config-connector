@@ -31,6 +31,7 @@ import (
 
 type SecuritycenterV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	SecurityCenterBigQueryExportsGetter
 	SecurityCenterMuteConfigsGetter
 	SecurityCenterNotificationConfigsGetter
 	SecurityCenterSourcesGetter
@@ -39,6 +40,10 @@ type SecuritycenterV1alpha1Interface interface {
 // SecuritycenterV1alpha1Client is used to interact with features provided by the securitycenter.cnrm.cloud.google.com group.
 type SecuritycenterV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *SecuritycenterV1alpha1Client) SecurityCenterBigQueryExports(namespace string) SecurityCenterBigQueryExportInterface {
+	return newSecurityCenterBigQueryExports(c, namespace)
 }
 
 func (c *SecuritycenterV1alpha1Client) SecurityCenterMuteConfigs(namespace string) SecurityCenterMuteConfigInterface {
