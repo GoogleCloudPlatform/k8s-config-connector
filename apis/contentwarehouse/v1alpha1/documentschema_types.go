@@ -238,6 +238,8 @@ type PropertyTypeOptions struct {
 	// Required. List of property definitions.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyTypeOptions.property_definitions
 	// +kubebuilder:validation:Required
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	PropertyDefinitions []PropertyDefinition `json:"propertyDefinitions,omitempty"`
 }
 
