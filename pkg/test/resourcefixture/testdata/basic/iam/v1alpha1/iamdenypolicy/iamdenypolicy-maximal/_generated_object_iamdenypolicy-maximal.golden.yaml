@@ -1,0 +1,30 @@
+apiVersion: iam.cnrm.cloud.google.com/v1alpha1
+kind: IAMDenyPolicy
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: iamdenypolicy-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: My Updated Deny Policy
+  projectRef:
+    external: ${projectId}
+  rules:
+  - denyRule:
+      deniedPermissions:
+      - iam.googleapis.com/roles.get
+      deniedPrincipals:
+      - principalSet://goog/public:all
+    description: Deny roles.get
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2
