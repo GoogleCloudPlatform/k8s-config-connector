@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/run/apiv2/runpb"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmrunv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	krmsecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
@@ -62,6 +63,182 @@ func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool)
 		return nil
 	}
 	return &pb.BinaryAuthorization_UseDefault{UseDefault: *in}
+}
+func CloudRunInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmrunv1alpha1.CloudRunInstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1alpha1.CloudRunInstanceObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Uid
+	// MISSING: Generation
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	// MISSING: Creator
+	// MISSING: LastModifier
+	// MISSING: Client
+	// MISSING: ClientVersion
+	// MISSING: LaunchStage
+	// MISSING: BinaryAuthorization
+	// MISSING: VPCAccess
+	// MISSING: ServiceAccount
+	// MISSING: Containers
+	// MISSING: Volumes
+	// MISSING: EncryptionKey
+	// MISSING: EncryptionKeyRevocationAction
+	// MISSING: EncryptionKeyShutdownDuration
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	// MISSING: Ingress
+	// MISSING: InvokerIAMDisabled
+	// MISSING: IAPEnabled
+	// MISSING: ObservedGeneration
+	// MISSING: LogURI
+	// MISSING: TerminalCondition
+	// MISSING: Conditions
+	// MISSING: ContainerStatuses
+	// MISSING: SatisfiesPzs
+	// MISSING: Urls
+	// MISSING: Reconciling
+	// MISSING: Etag
+	return out
+}
+func CloudRunInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.CloudRunInstanceObservedState) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Uid
+	// MISSING: Generation
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	// MISSING: Creator
+	// MISSING: LastModifier
+	// MISSING: Client
+	// MISSING: ClientVersion
+	// MISSING: LaunchStage
+	// MISSING: BinaryAuthorization
+	// MISSING: VPCAccess
+	// MISSING: ServiceAccount
+	// MISSING: Containers
+	// MISSING: Volumes
+	// MISSING: EncryptionKey
+	// MISSING: EncryptionKeyRevocationAction
+	// MISSING: EncryptionKeyShutdownDuration
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	// MISSING: Ingress
+	// MISSING: InvokerIAMDisabled
+	// MISSING: IAPEnabled
+	// MISSING: ObservedGeneration
+	// MISSING: LogURI
+	// MISSING: TerminalCondition
+	// MISSING: Conditions
+	// MISSING: ContainerStatuses
+	// MISSING: SatisfiesPzs
+	// MISSING: Urls
+	// MISSING: Reconciling
+	// MISSING: Etag
+	return out
+}
+func CloudRunInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmrunv1alpha1.CloudRunInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1alpha1.CloudRunInstanceSpec{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Uid
+	// MISSING: Generation
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	// MISSING: Creator
+	// MISSING: LastModifier
+	// MISSING: Client
+	// MISSING: ClientVersion
+	// MISSING: LaunchStage
+	// MISSING: BinaryAuthorization
+	// MISSING: VPCAccess
+	// MISSING: ServiceAccount
+	// MISSING: Containers
+	// MISSING: Volumes
+	// MISSING: EncryptionKey
+	// MISSING: EncryptionKeyRevocationAction
+	// MISSING: EncryptionKeyShutdownDuration
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	// MISSING: Ingress
+	// MISSING: InvokerIAMDisabled
+	// MISSING: IAPEnabled
+	// MISSING: ObservedGeneration
+	// MISSING: LogURI
+	// MISSING: TerminalCondition
+	// MISSING: Conditions
+	// MISSING: ContainerStatuses
+	// MISSING: SatisfiesPzs
+	// MISSING: Urls
+	// MISSING: Reconciling
+	// MISSING: Etag
+	return out
+}
+func CloudRunInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.CloudRunInstanceSpec) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Uid
+	// MISSING: Generation
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	// MISSING: Creator
+	// MISSING: LastModifier
+	// MISSING: Client
+	// MISSING: ClientVersion
+	// MISSING: LaunchStage
+	// MISSING: BinaryAuthorization
+	// MISSING: VPCAccess
+	// MISSING: ServiceAccount
+	// MISSING: Containers
+	// MISSING: Volumes
+	// MISSING: EncryptionKey
+	// MISSING: EncryptionKeyRevocationAction
+	// MISSING: EncryptionKeyShutdownDuration
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	// MISSING: Ingress
+	// MISSING: InvokerIAMDisabled
+	// MISSING: IAPEnabled
+	// MISSING: ObservedGeneration
+	// MISSING: LogURI
+	// MISSING: TerminalCondition
+	// MISSING: Conditions
+	// MISSING: ContainerStatuses
+	// MISSING: SatisfiesPzs
+	// MISSING: Urls
+	// MISSING: Reconciling
+	// MISSING: Etag
+	return out
 }
 func CloudSQLInstance_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlInstance) *krm.CloudSQLInstance {
 	if in == nil {
@@ -152,6 +329,7 @@ func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Conta
 	out := &krm.Container{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Image = direct.LazyPtr(in.GetImage())
+	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
@@ -161,6 +339,7 @@ func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Conta
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.LivenessProbe = Probe_FromProto(mapCtx, in.GetLivenessProbe())
 	out.StartupProbe = Probe_FromProto(mapCtx, in.GetStartupProbe())
+	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -173,6 +352,7 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	out := &pb.Container{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Image = direct.ValueOf(in.Image)
+	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
@@ -182,6 +362,7 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.LivenessProbe = Probe_ToProto(mapCtx, in.LivenessProbe)
 	out.StartupProbe = Probe_ToProto(mapCtx, in.StartupProbe)
+	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -756,6 +937,7 @@ func VolumeMount_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount) *krm.V
 	out := &krm.VolumeMount{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
+	out.SubPath = direct.LazyPtr(in.GetSubPath())
 	return out
 }
 func VolumeMount_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMount) *pb.VolumeMount {
@@ -765,5 +947,6 @@ func VolumeMount_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMount) *pb.Vol
 	out := &pb.VolumeMount{}
 	out.Name = direct.ValueOf(in.Name)
 	out.MountPath = direct.ValueOf(in.MountPath)
+	out.SubPath = direct.ValueOf(in.SubPath)
 	return out
 }

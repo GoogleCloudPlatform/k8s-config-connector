@@ -112,6 +112,7 @@
 | cloudids.cnrm.cloud.google.com                | CloudIDSEndpoint                                | True         | True        | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                | CloudIOTDeviceRegistry                          | True         | False       | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                | CloudIOTDevice                                  | True         | False       | False  | Terraform  | False       |
+| run.cnrm.cloud.google.com                     | CloudRunInstance                                | True         | False       | False  | Direct     | True        |
 | cloudscheduler.cnrm.cloud.google.com          | CloudSchedulerJob                               | False        | True        | False  | DCL        | False       |
 | colab.cnrm.cloud.google.com                   | ColabRuntime                                    | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                   | ColabRuntimeTemplate                            | True         | False       | False  | Direct     | True        |
