@@ -12,3 +12,9 @@
   2. Updated `dev/tools/controllerbuilder/generate-proto.sh` to include `${REPO_ROOT}/mockgcp/apis/google/cloud/networksecurity/*/*.proto`.
   3. Created `NetworkSecurityInterceptDeploymentGroupRef` in `apis/refs/v1beta1/networksecurity_refs.go`.
 - **Impact**: Future agents working on Greenfield resources where protos are missing from the pinned SHA should vendor the proto files into `mockgcp/apis/google/cloud/...` and update `generate-proto.sh` instead of attempting to bump the `apis/git.versions` SHA.
+
+### [2026-05-27] MirroringEndpointGroupAssociation Proto Missing
+- **Context**: Implementing Greenfield Resource Types for `NetworkSecurityMirroringEndpointGroupAssociation`.
+- **Problem**: The proto `MirroringEndpointGroupAssociation` was missing from the pinned `googleapis` SHA (731d7f2ab6).
+- **Solution**: Reconstructed a minimal proto `mockgcp/apis/google/cloud/networksecurity/v1/mirroring_endpoint_group_association.proto` based on the discovery document, and updated `dev/tools/controllerbuilder/generate-proto.sh` to include `${REPO_ROOT}/mockgcp/apis/google/cloud/networksecurity/*/*.proto`. We then generated types and references off this mockgcp proto.
+- **Impact**: When adding new KRM types that don't exist in the current pinned `googleapis` commit, agents can extract the resource from the discovery doc, create a minimal `.proto` in `mockgcp/apis/...`, and make sure `generate-proto.sh` includes it.
