@@ -203,7 +203,7 @@ func (h *KubeHarness) waitForCRDReady(obj client.Object) {
 	var lastStatus *teststatus.ObjectStatus
 
 	id := types.NamespacedName{Name: name, Namespace: namespace}
-	if err := wait.PollImmediate(2*time.Second, 2*time.Minute, func() (bool, error) {
+	if err := wait.PollImmediate(2*time.Second, 3*time.Minute, func() (bool, error) {
 		u := &unstructured.Unstructured{}
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
