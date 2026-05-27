@@ -28,7 +28,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
+	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 

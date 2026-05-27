@@ -16,18 +16,18 @@ package mockresourcemanager
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 
+	pb_v3 "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v1"
-	pb_v3 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -108,24 +108,26 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb_v1.RegisterProjectsServerHandler,
-		pb_v3.RegisterProjectsHandler,
-		pb_v3.RegisterFoldersHandler,
-		pb_v3.RegisterTagKeysHandler,
-		pb_v3.RegisterTagValuesHandler,
-		pb_v3.RegisterTagBindingsHandler,
-		s.operations.RegisterOperationsPath("/v1/operations/{name}"),
-		s.operations.RegisterOperationsPath("/v3/operations/{name}"))
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-		response.Header().Del("Cache-Control")
-	}
+	grpcMux.AddService(pb_v1.NewProjectsServerClient(conn))
+	grpcMux.AddService(pb_v3.NewProjectsClient(conn))
+	grpcMux.AddService(pb_v3.NewFoldersClient(conn))
+	grpcMux.AddService(pb_v3.NewTagKeysClient(conn))
+	grpcMux.AddService(pb_v3.NewTagValuesClient(conn))
+	grpcMux.AddService(pb_v3.NewTagBindingsClient(conn))
 
-	return &stripTrailingSlashHandler{mux}, nil
+	grpcMux.AddOperationsPath("/v1/operations/{name}", conn)
+	grpcMux.AddOperationsPath("/v3/operations/{name}", conn)
+
+	grpcMux.OverrideHeaders(func(w http.ResponseWriter) {
+		w.Header().Del("Cache-Control")
+	})
+
+	return &stripTrailingSlashHandler{grpcMux}, nil
 }
 
 // stripTrailingSlashHandler is a middleware that removes trailing slashes from
