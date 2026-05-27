@@ -1,0 +1,5 @@
+### [2026-05-26] DataformFolder Proto Availability
+- **Context**: Implementing direct types for `DataformFolder` (Issue #8679).
+- **Problem**: The proto message `google.cloud.dataform.v1beta1.Folder` did not exist in the baseline `googleapis` commit pinned in `apis/git.versions` (`731d7f2ab6e4e2ea15030c95039e2cb66174d4fb`). `generate-types` failed because it couldn't find the `Folder` proto message.
+- **Solution**: The `apis/git.versions` was globally updated to a newer commit (`ef19b7b7a73f19f33ab86c5b3603e9590025acd7`) which introduced the `Folder` resource to `v1beta1`. This required running `make generate` and `make generate-go-client ensure fmt` across the repository to pick up the schema updates for all affected services.
+- **Impact**: When scaffolding new GCP resources recently added to the upstream `googleapis` repo, agents must check if the pinned SHA contains the proto. If not, bumping `apis/git.versions` globally and regenerating `types`, `crds`, and `clients` is a valid resolution, though it generates a large diff.
