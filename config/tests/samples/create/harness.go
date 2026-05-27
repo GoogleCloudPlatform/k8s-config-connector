@@ -1244,6 +1244,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 }
 
 func (h *Harness) waitForCRDReady(obj client.Object) {
+	start := time.Now()
 	logger := log.FromContext(h.Ctx)
 
 	apiVersion, kind := obj.GetObjectKind().GroupVersionKind().ToAPIVersionAndKind()
@@ -1268,6 +1269,7 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
 				logger.V(2).Info("crd is ready", "kind", kind, "id", id)
+				h.Logf("CRD %s ready in %v", name, time.Since(start).Round(time.Millisecond))
 				return true, nil
 			}
 		}

@@ -33,10 +33,10 @@ export TEST_TIMEOUT=3600s
 echo "Prebuilding e2e tests..."
 export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
 mkdir -p ${REPO_ROOT}/.build
-go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
 
 echo "Building paralleltestrunner..."
-go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner/main.go
+time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner/main.go
 
 echo "Running scenarios tests in parallel..."
 ${REPO_ROOT}/.build/paralleltestrunner \
