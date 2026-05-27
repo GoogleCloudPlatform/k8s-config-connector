@@ -46,7 +46,7 @@ Note if there are more than 10 issues opened for this chore already, do nothing.
     - Check if an issue titled "Implement Direct IAM for <Kind>" already exists (open or closed).
 3.  **Create Issue**:
     - Title: `Implement Direct IAM for <Kind>`
-    - Labels: `overseer`, `area/direct`, `priority/medium`, `step/iam`
+    - Labels: `overseer`, `area/direct`, `direct-migration`, `priority/medium`, `step/iam`
     - Body: Use the **IAM ISSUE BODY TEMPLATE** below. Append a link to this chore file (`.agents/direct-iam-implementation.md`) at the end of the issue body for traceability.
 
 ---

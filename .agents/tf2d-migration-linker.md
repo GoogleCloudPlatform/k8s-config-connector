@@ -31,32 +31,36 @@ Perform a scan of migration issues and add cross-reference comments where they a
    - Search for all issues (open or closed) with the label `area/direct` and `overseer`.
    - `gh issue list --state all --label "area/direct,overseer" --limit 500 --json number,title,labels,state`
 
-2. **Group by Resource**:
+2. **Ensure Labels**:
+   - For each issue found, ensure it has the `direct-migration` label.
+   - If missing, add it: `gh issue edit <ISSUE_NUMBER> --add-label direct-migration`.
+
+3. **Group by Resource**:
    - Group the fetched issues by their resource **Kind** and **Group** (case-insensitive).
    - Be **highly flexible** when extracting the resource details from titles. Do not rely on rigid templates.
    - Titles may vary (e.g., `"Create generate.sh...", "ai:chore: Implement direct types...", "Move <Kind> to...", "Migrate <Kind> from..."`).
    - Use your semantic understanding of KCC and GCP resources to extract the core **Kind** and **Group** (e.g., Kind: `ComputeNetwork` Group: `compute`, Kind: `CloudBuildTrigger` Group: `cloudbuild`).
    - Align minor naming variations **only if they belong to the same GCP service** (e.g., match Step 1 `DataCatalog PolicyTag` with Step 2 `DataCatalogPolicyTag` because both belong to the DataCatalog service).
 
-3. **Identify Missing Links**:
+4. **Identify Missing Links**:
    - For each matched resource pair where both Step 1 and Step 2 issues exist:
      - **Only process OPEN Step 2 issues** (skip closed ones to avoid notification noise).
      - Check the **Step 2** issue.
      - Verify if it already contains a reference to the **Step 1** issue number (e.g., `#123`) in its description or comments.
      - If the reference is missing, proceed to post a linking comment.
 
-4. **Post Context Comment**:
+5. **Post Context Comment**:
    - Post a "Migration Context Chain" comment on the **Step 2** issue.
    - Use the following template:
      ```markdown
      ### Migration Context Chain
      This issue is part of the direct migration for `${group} ${kind}` (Epic #5954).
-     
+
      - [x] **Step 1: Types & Scaffolding** - #${types_issue_number}
      - [ ] **Step 2: Identity & Reference** - #${identity_issue_number}
      ```
      *(Mark Step 1 as `[x]` if the issue is closed, `[ ]` if open. Mark Step 2 as `[ ]` since it's the current task.)*
 
-5. **Throttling**:
+6. **Throttling**:
    - To avoid notification noise, post at most 10 comments per run.
    - If more than 10 links are missing, log the remaining ones and stop.
