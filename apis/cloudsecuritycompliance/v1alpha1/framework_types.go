@@ -128,3 +128,68 @@ type CloudSecurityFrameworkList struct {
 func init() {
 	SchemeBuilder.Register(&CloudSecurityFramework{}, &CloudSecurityFrameworkList{})
 }
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails
+type CloudControlDetails struct {
+	// Required. The name of the cloud control, in one of the following formats:
+	//  `organizations/{organization}/locations/{location}/cloudControls/{cloud_control}`
+	//  or
+	//  `projects/{project}/locations/{location}/cloudControls/{cloud_control}`.
+	//
+	//  The only supported location is `global`.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The major version of the cloud control.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails.major_revision_id
+	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
+
+	// Optional. Parameters are key-value pairs that let you provide your custom
+	//  location requirements, environment requirements, or other settings that are
+	//  relevant to the cloud control. An example parameter is
+	//  `{"name": "location","value": "us-west-1"}`.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails.parameters
+	Parameters []Parameter `json:"parameters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.ParamValue
+type ParamValue struct {
+	// Optional. A string value.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Optional. A boolean value.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// Optional. A repeated string.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.string_list_value
+	StringListValue *StringList `json:"stringListValue,omitempty"`
+
+	// Optional. A double value.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.number_value
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	// Optional. Sub-parameter values.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.oneof_value
+	// +kubebuilder:validation:Type=object
+	OneofValue *Parameter `json:"oneofValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.Parameter
+type Parameter struct {
+	// Required. The name or key of the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Parameter.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The value of the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Parameter.parameter_value
+	ParameterValue *ParamValue `json:"parameterValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.StringList
+type StringList struct {
+	// Required. The strings in the list.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.StringList.values
+	Values []string `json:"values,omitempty"`
+}

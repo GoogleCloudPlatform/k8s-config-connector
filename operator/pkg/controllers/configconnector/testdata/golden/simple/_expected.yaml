@@ -2656,6 +2656,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudsecuritycompliance.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudtasks.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4231,6 +4243,14 @@ rules:
   - watch
 - apiGroups:
   - cloudscheduler.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudsecuritycompliance.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
