@@ -25,4 +25,9 @@ go run . generate-types \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityInterceptDeployment:InterceptDeployment
 
+go run . generate-types \
+    --service google.cloud.networksecurity.v1 \
+    --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+    --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
+
 cd ${REPO_ROOT}
