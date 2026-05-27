@@ -442,6 +442,7 @@ func DataprocSessionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Name
 	out.Uuid = direct.LazyPtr(in.GetUuid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: SparkConnectSession
 	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetRuntimeInfo())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
@@ -458,6 +459,7 @@ func DataprocSessionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.Uuid = direct.ValueOf(in.Uuid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: SparkConnectSession
 	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_ToProto(mapCtx, in.RuntimeInfo)
 	out.State = direct.Enum_ToProto[pb.Session_State](mapCtx, in.State)
 	out.StateMessage = direct.ValueOf(in.StateMessage)
@@ -473,7 +475,7 @@ func DataprocSessionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Se
 	out := &krmdataprocv1alpha1.DataprocSessionSpec{}
 	// MISSING: Name
 	out.JupyterSession = JupyterConfig_v1alpha1_FromProto(mapCtx, in.GetJupyterSession())
-	out.SparkConnectSession = SparkConnectConfig_v1alpha1_FromProto(mapCtx, in.GetSparkConnectSession())
+	// MISSING: SparkConnectSession
 	out.Labels = in.Labels
 	out.RuntimeConfig = RuntimeConfig_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
 	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_FromProto(mapCtx, in.GetEnvironmentConfig())
@@ -490,9 +492,7 @@ func DataprocSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdata
 	if oneof := JupyterConfig_v1alpha1_ToProto(mapCtx, in.JupyterSession); oneof != nil {
 		out.SessionConfig = &pb.Session_JupyterSession{JupyterSession: oneof}
 	}
-	if oneof := SparkConnectConfig_v1alpha1_ToProto(mapCtx, in.SparkConnectSession); oneof != nil {
-		out.SessionConfig = &pb.Session_SparkConnectSession{SparkConnectSession: oneof}
-	}
+	// MISSING: SparkConnectSession
 	out.Labels = in.Labels
 	out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
 	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
@@ -1725,20 +1725,6 @@ func SparkBatch_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.Spa
 		return nil
 	}
 	return &pb.SparkBatch_MainClass{MainClass: *in}
-}
-func SparkConnectConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkConnectConfig) *krmdataprocv1alpha1.SparkConnectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmdataprocv1alpha1.SparkConnectConfig{}
-	return out
-}
-func SparkConnectConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkConnectConfig) *pb.SparkConnectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SparkConnectConfig{}
-	return out
 }
 
 /* found existing non-generated mapping function "SparkHistoryServerConfig_v1alpha1_FromProto", skipping

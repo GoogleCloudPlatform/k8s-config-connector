@@ -1216,6 +1216,29 @@
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeGroupConfig.startupConfig.requiredRegistrationFraction" is not set in unstructured objects
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.roles[]" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.idleTTL" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.networkTags[]" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.networkURI" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.stagingBucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.subnetworkURI" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.ttl" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.peripheralsConfig.metastoreService" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.peripheralsConfig.sparkHistoryServerConfig.dataprocClusterRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.jupyterSession.displayName" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.jupyterSession.kernel" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.autotuningConfig.scenarios[]" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.cohort" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.containerImage" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.properties" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.repositoryConfig.pypiRepositoryConfig.pypiRepository" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.version" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.sessionTemplate" is not set in unstructured objects
+[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.user" is not set in unstructured objects
 [missing_field] crd=datastoreindexes.datastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.ancestor" is not set in unstructured objects
 [missing_field] crd=datastoreindexes.datastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.kind" is not set in unstructured objects
 [missing_field] crd=datastoreindexes.datastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

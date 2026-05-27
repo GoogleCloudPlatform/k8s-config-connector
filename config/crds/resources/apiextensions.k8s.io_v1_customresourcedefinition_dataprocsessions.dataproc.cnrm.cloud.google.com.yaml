@@ -372,9 +372,6 @@ spec:
                    The template must be in the same project and Dataproc region as the
                    session.
                 type: string
-              sparkConnectSession:
-                description: Optional. Spark Connect session config.
-                type: object
               user:
                 description: Optional. The email address of the user who owns the
                   session.

@@ -34,8 +34,6 @@ type JupyterConfig struct {
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.SparkConnectConfig
-type SparkConnectConfig struct {
-}
 
 // DataprocSessionSpec defines the desired state of DataprocSession
 // +kcc:spec:proto=google.cloud.dataproc.v1.Session
@@ -51,9 +49,7 @@ type DataprocSessionSpec struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.jupyter_session
 	JupyterSession *JupyterConfig `json:"jupyterSession,omitempty"`
 
-	// Optional. Spark Connect session config.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.spark_connect_session
-	SparkConnectSession *SparkConnectConfig `json:"sparkConnectSession,omitempty"`
 
 	// Optional. The labels to associate with the session.
 	//  Label **keys** must contain 1 to 63 characters, and must conform to
