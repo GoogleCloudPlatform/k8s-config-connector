@@ -57,9 +57,6 @@ type CloudsecurityframeworkCloudControlDetails struct {
 	Parameters []CloudsecurityframeworkParameters `json:"parameters,omitempty"`
 }
 
-type CloudsecurityframeworkOneofValue struct {
-}
-
 type CloudsecurityframeworkParameterValue struct {
 	/* Optional. A boolean value. */
 	// +optional
@@ -71,7 +68,7 @@ type CloudsecurityframeworkParameterValue struct {
 
 	/* Optional. Sub-parameter values. */
 	// +optional
-	OneofValue *CloudsecurityframeworkOneofValue `json:"oneofValue,omitempty"`
+	OneofValue apiextensionsv1.JSON `json:"oneofValue,omitempty"`
 
 	/* Optional. A repeated string. */
 	// +optional
