@@ -154,9 +154,9 @@ type ConnectionReadAuthorizerCredential struct {
 }
 
 type ConnectionServiceDirectoryConfig struct {
-	/* Required. The Service Directory service name. Format: projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}. */
+	/* Required. The Service Directory service name. */
 	// +optional
-	Service *string `json:"service,omitempty"`
+	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 }
 
 type CloudBuildConnectionSpec struct {
@@ -175,10 +175,6 @@ type CloudBuildConnectionSpec struct {
 	/* If disabled is set to true, functionality is disabled for this connection. Repository based API methods and webhooks processing for repositories in this connection will be disabled. */
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
-
-	/* This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
 
 	/* Configuration for connections to github.com. */
 	// +optional
@@ -259,6 +255,10 @@ type ConnectionObservedStateStatus struct {
 	/* Output only. Server assigned timestamp for when the connection was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
+
+	/* This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
 
 	/* Configuration for connections to github.com. */
 	// +optional
