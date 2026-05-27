@@ -300,3 +300,20 @@ func Uint64_ToProto(in *int64) *uint64 {
 	out := uint64(*in)
 	return &out
 }
+func HealthCheckLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheckLogConfig) *krm.HealthCheckLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HealthCheckLogConfig{}
+	out.Enable = in.Enable
+	return out
+}
+func HealthCheckLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HealthCheckLogConfig) *pb.HealthCheckLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthCheckLogConfig{}
+	out.Enable = in.Enable
+	return out
+}
+
