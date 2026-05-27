@@ -131,10 +131,14 @@ def match_resources(gcp_resources, kcc_resources):
         elif gcp_service_base + 's' in kcc_map:
             matched_kcc_service = gcp_service_base + 's'
         else:
-            for kcc_s, aliases in service_aliases.items():
-                if gcp_service_base in aliases or gcp_service_base == kcc_s:
-                    if kcc_s in kcc_map:
-                        matched_kcc_service = kcc_s
+            for canonical_name, aliases in service_aliases.items():
+                all_variants = [canonical_name] + aliases
+                if gcp_service_base in all_variants:
+                    for variant in all_variants:
+                        if variant in kcc_map:
+                            matched_kcc_service = variant
+                            break
+                    if matched_kcc_service:
                         break
         
         if not matched_kcc_service: continue
@@ -165,6 +169,28 @@ def is_leaf(patterns):
             if segments[0] in ["projects", "folders", "organizations"]:
                 return True
         if len(segments) == 6:
+            if segments[0] == "projects" and segments[2] in ["locations", "regions"]:
+                return True
+    return False
+
+def is_next_layer(patterns):
+    for p in patterns:
+        segments = [s for s in p.split('/') if s]
+        if len(segments) == 6:
+            if segments[0] in ["projects", "folders", "organizations"] and segments[2] not in ["locations", "regions"]:
+                return True
+        if len(segments) == 8:
+            if segments[0] == "projects" and segments[2] in ["locations", "regions"]:
+                return True
+    return False
+
+def is_next_next_layer(patterns):
+    for p in patterns:
+        segments = [s for s in p.split('/') if s]
+        if len(segments) == 8:
+            if segments[0] in ["projects", "folders", "organizations"] and segments[2] not in ["locations", "regions"]:
+                return True
+        if len(segments) == 10:
             if segments[0] == "projects" and segments[2] in ["locations", "regions"]:
                 return True
     return False
@@ -281,10 +307,14 @@ def main():
         elif gcp_service_base + 's' in kcc_map:
             matched_kcc_service = gcp_service_base + 's'
         else:
-            for kcc_s, aliases in service_aliases.items():
-                if gcp_service_base in aliases or gcp_service_base == kcc_s:
-                    if kcc_s in kcc_map:
-                        matched_kcc_service = kcc_s
+            for canonical_name, aliases in service_aliases.items():
+                all_variants = [canonical_name] + aliases
+                if gcp_service_base in all_variants:
+                    for variant in all_variants:
+                        if variant in kcc_map:
+                            matched_kcc_service = variant
+                            break
+                    if matched_kcc_service:
                         break
         
         if not matched_kcc_service: continue
@@ -327,6 +357,12 @@ def main():
     # Easy = Fully Manageable AND Leaf pattern
     missing_easy = {key for key in missing_fully_manageable if is_leaf(gcp_resources[key]['patterns'])}
     
+    # Next Layer = Fully Manageable AND 1 parent deep
+    missing_next_layer = {key for key in missing_fully_manageable if is_next_layer(gcp_resources[key]['patterns'])}
+    
+    # Next Next Layer = Fully Manageable AND 2 parents deep
+    missing_next_next_layer = {key for key in missing_fully_manageable if is_next_next_layer(gcp_resources[key]['patterns'])}
+    
     # Generate Gap Analysis Table for tracking
     gap_file = os.path.join(os.path.dirname(__file__), "gap_analysis.txt")
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -347,6 +383,8 @@ def main():
         "-" * 55,
         f"{'Missing Manageable':<30} | {len(missing_manageable):<10}",
         f"{'Missing Fully Manageable':<30} | {len(missing_fully_manageable):<10}",
+        f"{'Missing Next Layer':<30} | {len(missing_next_layer):<10}",
+        f"{'Missing Next Next Layer':<30} | {len(missing_next_next_layer):<10}",
         "-" * 55,
         f"{'Current Coverage':<30} | {len(covered)/max(1, len(all_gcp_keys)):.2%}",
         ""
@@ -368,6 +406,8 @@ def main():
     print(f"Total Missing:            {len(missing)}")
     print(f"  - Manageable:           {len(missing_manageable)} (Has Create OR Delete)")
     print(f"  - Fully Manageable:     {len(missing_fully_manageable)} (Has Create AND Delete)")
+    print(f"  - Next Next Layer:      {len(missing_next_next_layer)} (Fully Manageable + 2 Parents)")
+    print(f"  - Next Layer Targets:   {len(missing_next_layer)} (Fully Manageable + 1 Parent)")
     print(f"  - Easy Targets:         {len(missing_easy)} (Fully Manageable + Leaf Pattern)")
     print(f"\n[SAVED] Gap analysis snapshot written to {gap_file}")
 
