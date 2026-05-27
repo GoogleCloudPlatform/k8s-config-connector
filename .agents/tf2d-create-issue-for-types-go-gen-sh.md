@@ -48,7 +48,7 @@ In a single run create at most one issue to avoid overwhelming the team.
 5. If an issue already exists for that Group and Kind, inject the issue labels if they dont exist.
 6. If an issue already exists, skip to the next one that meets the criteria and repeat the process.
 The issue should be marked as a subtask of the main epic for the migration effort: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/5954
-If more than 10 pending issues already exist for this task, do not create new issues to avoid overwhelming the team. Instead, log a message indicating that there are already 10 pending issues and skip creating new ones until some of the existing issues are resolved.
+If more than 20 pending issues already exist for this task, do not create new issues to avoid overwhelming the team. Instead, log a message indicating that there are already 20 pending issues and skip creating new ones until some of the existing issues are resolved.
 Created issues should be clear and actionable, providing enough context for developers to understand what needs to be done.
 
 IMPORTANT:

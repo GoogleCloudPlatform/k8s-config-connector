@@ -34,8 +34,8 @@ Find resources that meet the following criteria:
 Your goal is to identify resources that need to be migrated to the identity and reference pattern, and to create minimal issues to track this work.
 
 ## 1. Throttle Check
-   - Count open issues labeled with `overseer` and `step/identity-reference`. If the count is 10 or more, STOP and log: "Throttle limit reached (10). Skipping issue generation."
-   - Check how many issues related to identity and reference have been opened today. To avoid overwhelming the team, **do not open more than 10 issues per day**. If the limit is reached, stop creating new issues.
+   - Count open issues labeled with `overseer` and `step/identity-reference`. If the count is 20 or more, STOP and log: "Throttle limit reached (20). Skipping issue generation."
+   - Check how many issues related to identity and reference have been opened today. To avoid overwhelming the team, **do not open more than 20 issues per day**. If the limit is reached, stop creating new issues.
 
 ## 2. Identify Candidate
    - Run `./hack/directmigration/find-missing-identity-reference.py --output candidates.txt`.
