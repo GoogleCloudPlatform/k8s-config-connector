@@ -116,6 +116,7 @@ spec:
                       description: Date time property. It is not supported by CMEK
                         compliant deployment.
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     displayName:
                       description: The display-name for the property, used for front-end.
                       type: string
@@ -138,9 +139,11 @@ spec:
                     floatTypeOptions:
                       description: Float property.
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     integerTypeOptions:
                       description: Integer property.
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     isFilterable:
                       description: Whether the property can be filtered. If this is
                         a sub-property, all the parent properties must be marked filterable.
@@ -166,6 +169,7 @@ spec:
                     mapTypeOptions:
                       description: Map property.
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     name:
                       description: 'Required. The name of the metadata property. Must
                         be unique within a document schema and is case insensitive.
@@ -201,10 +205,12 @@ spec:
                     textTypeOptions:
                       description: Text/string property.
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     timestampTypeOptions:
                       description: Timestamp property. It is not supported by CMEK
                         compliant deployment.
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                   required:
                   - name
                   type: object
@@ -264,6 +270,7 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
             type: object
         required:
         - spec

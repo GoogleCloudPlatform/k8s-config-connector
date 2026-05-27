@@ -74,6 +74,8 @@ type ContentWarehouseSchemaStatus struct {
 
 // ContentWarehouseSchemaObservedState is the state of the ContentWarehouseSchema resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.contentwarehouse.v1.DocumentSchema
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
 type ContentWarehouseSchemaObservedState struct {
 }
 
@@ -111,6 +113,8 @@ func init() {
 	SchemeBuilder.Register(&ContentWarehouseSchema{}, &ContentWarehouseSchemaList{})
 }
 
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
 type DateTimeTypeOptions struct {
 }
 
@@ -129,14 +133,20 @@ type EnumTypeOptions struct {
 }
 
 // +kcc:proto=google.cloud.contentwarehouse.v1.FloatTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
 type FloatTypeOptions struct {
 }
 
 // +kcc:proto=google.cloud.contentwarehouse.v1.IntegerTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
 type IntegerTypeOptions struct {
 }
 
 // +kcc:proto=google.cloud.contentwarehouse.v1.MapTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
 type MapTypeOptions struct {
 }
 
@@ -244,9 +254,13 @@ type PropertyTypeOptions struct {
 }
 
 // +kcc:proto=google.cloud.contentwarehouse.v1.TextTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
 type TextTypeOptions struct {
 }
 
 // +kcc:proto=google.cloud.contentwarehouse.v1.TimestampTypeOptions
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:XPreserveUnknownFields
 type TimestampTypeOptions struct {
 }
