@@ -19,7 +19,6 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
@@ -31,14 +30,11 @@ go run . generate-types \
   --resource BigtableBackup:Backup \
   --resource BigtableCluster:Cluster \
   --resource BigtableLogicalView:LogicalView \
-  --resource BigtableMaterializedView:MaterializedView
-
-go run . generate-mapper \
-  --service google.bigtable.admin.v2 \
-  --api-version bigtable.cnrm.cloud.google.com/v1alpha1
+  --resource BigtableMaterializedView:MaterializedView \
+  --resource BigtableSchemaBundle:SchemaBundle
 
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/bigtable/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/bigtable/
