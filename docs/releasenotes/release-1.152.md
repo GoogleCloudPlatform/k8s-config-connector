@@ -15,11 +15,11 @@
 
 ## New Fields:
 
-*   [`ComputeForwardingRule`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeforwardingrule)
-    *   Added `status.target` field.
-
 *   [`ComputeReservation`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computereservation)
     *   Added `spec.shareSettings` field.
+
+*   [`ComputeForwardingRule`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeforwardingrule)
+    *   Added `status.target` field.
 
 ## Reconciliation Improvements
 
@@ -30,7 +30,7 @@ We have added support for direct reconciliation to more resources, with opt-in b
 
 ## Bug Fixes:
 
-*   [SQLInstance](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8025) Fix case sensitivity in SQLInstance `availabilityType`.
-*   [Preview Tool](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7743) Fix crash on typed resources and hang on defaulting in preview mode.
-*   [ComputeForwardingRule](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7371) Fix target field matching in ComputeForwardingRule.
-*   [ComputeFutureReservation](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8479) Fix future reservation times validation.
+*   [SQLInstance](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8025): Fix case sensitivity in SQLInstance `availabilityType`.
+*   [Preview Tool](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7743): Fix crash on typed resources and hang on defaulting in preview mode.
+*   [ComputeForwardingRule](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7371): Fix target field matching in ComputeForwardingRule.
+*   [ComputeFutureReservation](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8479): Fix future reservation times validation.
