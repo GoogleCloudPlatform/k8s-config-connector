@@ -1,0 +1,188 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package google.cloud.networksecurity.v1;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "cloud.google.com/go/networksecurity/apiv1/networksecuritypb;networksecuritypb";
+
+// SecurityProfile is a resource that defines the behavior for one of many ProfileTypes.
+message SecurityProfile {
+  option (google.api.resource) = {
+    type: "networksecurity.googleapis.com/SecurityProfile"
+    pattern: "projects/{project}/locations/{location}/securityProfiles/{security_profile}"
+    pattern: "organizations/{organization}/locations/{location}/securityProfiles/{security_profile}"
+  };
+
+  enum ProfileType {
+    PROFILE_TYPE_UNSPECIFIED = 0;
+    THREAT_PREVENTION = 1;
+    CUSTOM_MIRRORING = 2;
+    CUSTOM_INTERCEPT = 3;
+    URL_FILTERING = 4;
+  }
+
+  // Immutable. Identifier. Name of the SecurityProfile resource.
+  string name = 1 [(google.api.field_behavior) = IMMUTABLE, (google.api.field_behavior) = IDENTIFIER];
+
+  // Immutable. The single ProfileType that the SecurityProfile resource configures.
+  ProfileType type = 2 [(google.api.field_behavior) = IMMUTABLE];
+
+  // Optional. An optional description of the profile. Max length 512 characters.
+  string description = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Labels as key value pairs.
+  map<string, string> labels = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // Output only. Resource creation timestamp.
+  google.protobuf.Timestamp create_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Last resource update timestamp.
+  google.protobuf.Timestamp update_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. This checksum is computed by the server based on the value of other fields.
+  string etag = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // The threat prevention configuration for the SecurityProfile.
+  ThreatPreventionProfile threat_prevention_profile = 8;
+
+  // The custom Packet Mirroring v2 configuration for the SecurityProfile.
+  CustomMirroringProfile custom_mirroring_profile = 9;
+
+  // The custom TPPI configuration for the SecurityProfile.
+  CustomInterceptProfile custom_intercept_profile = 10;
+
+  // The URL filtering configuration for the SecurityProfile.
+  UrlFilteringProfile url_filtering_profile = 11;
+}
+
+// ThreatPreventionProfile defines an action for specific threat signatures or severity levels.
+message ThreatPreventionProfile {
+  // Optional. Configuration for overriding threats actions by severity match.
+  repeated SeverityOverride severity_overrides = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Configuration for overriding threats actions by threat_id match.
+  repeated ThreatOverride threat_overrides = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Configuration for overriding antivirus actions per protocol.
+  repeated AntivirusOverride antivirus_overrides = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Defines what action to take for a specific severity match.
+message SeverityOverride {
+  enum Severity {
+    SEVERITY_UNSPECIFIED = 0;
+    INFORMATIONAL = 1;
+    LOW = 2;
+    MEDIUM = 3;
+    HIGH = 4;
+    CRITICAL = 5;
+  }
+
+  enum ThreatAction {
+    THREAT_ACTION_UNSPECIFIED = 0;
+    DEFAULT_ACTION = 1;
+    ALLOW = 2;
+    ALERT = 3;
+    DENY = 4;
+  }
+
+  // Required. Severity level to match.
+  Severity severity = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. Threat action override.
+  ThreatAction action = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Defines what action to take for a specific threat_id match.
+message ThreatOverride {
+  enum ThreatType {
+    THREAT_TYPE_UNSPECIFIED = 0;
+    UNKNOWN = 1;
+    VULNERABILITY = 2;
+    ANTIVIRUS = 3;
+    SPYWARE = 4;
+    DNS = 5;
+  }
+
+  // Required. Vendor-specific ID of a threat to override.
+  string threat_id = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. Threat action override.
+  SeverityOverride.ThreatAction action = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Output only. Type of the threat (read only).
+  ThreatType type = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// Defines what action to take for antivirus threats per protocol.
+message AntivirusOverride {
+  enum Protocol {
+    PROTOCOL_UNSPECIFIED = 0;
+    SMTP = 1;
+    SMB = 2;
+    POP3 = 3;
+    IMAP = 4;
+    HTTP2 = 5;
+    HTTP = 6;
+    FTP = 7;
+  }
+
+  // Required. Protocol to match.
+  Protocol protocol = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. Threat action override.
+  SeverityOverride.ThreatAction action = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// CustomMirroringProfile defines out-of-band integration behavior (mirroring).
+message CustomMirroringProfile {
+  // Required. Immutable. The target MirroringEndpointGroup.
+  string mirroring_endpoint_group = 1 [(google.api.field_behavior) = REQUIRED, (google.api.field_behavior) = IMMUTABLE];
+}
+
+// CustomInterceptProfile defines in-band integration behavior (intercept).
+message CustomInterceptProfile {
+  // Required. The target InterceptEndpointGroup.
+  string intercept_endpoint_group = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// UrlFilteringProfile defines filters based on URL.
+message UrlFilteringProfile {
+  // Optional. The list of filtering configs.
+  repeated UrlFilter url_filters = 1 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// A URL filter defines an action to take for some URL match.
+message UrlFilter {
+  enum UrlFilteringAction {
+    URL_FILTERING_ACTION_UNSPECIFIED = 0;
+    ALLOW = 1;
+    DENY = 2;
+  }
+
+  // Required. The action taken when this filter is applied.
+  UrlFilteringAction filtering_action = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The list of strings that a URL must match with for this filter to be applied.
+  repeated string urls = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The priority of this filter within the URL Filtering Profile.
+  int32 priority = 3 [(google.api.field_behavior) = REQUIRED];
+}

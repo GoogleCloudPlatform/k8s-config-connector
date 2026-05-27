@@ -21,5 +21,118 @@
 // resource: NetworkSecurityInterceptDeployment:InterceptDeployment
 // resource: NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
 // resource: NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup
+// resource: NetworkSecuritySecurityProfile:SecurityProfile
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.networksecurity.v1.AntivirusOverride
+type AntivirusOverride struct {
+	// Required. Protocol to match.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.AntivirusOverride.protocol
+	Protocol *string `json:"protocol,omitempty"`
+
+	// Required. Threat action override. For some threat types, only a subset of
+	//  actions applies.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.AntivirusOverride.action
+	Action *string `json:"action,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networksecurity.v1.CustomInterceptProfile
+type CustomInterceptProfile struct {
+	// Required. The target InterceptEndpointGroup.
+	//  When a firewall rule with this security profile attached matches a packet,
+	//  the packet will be intercepted to the location-local target in this group.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.CustomInterceptProfile.intercept_endpoint_group
+	InterceptEndpointGroup *string `json:"interceptEndpointGroup,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networksecurity.v1.CustomMirroringProfile
+type CustomMirroringProfile struct {
+	// Required. Immutable. The target MirroringEndpointGroup.
+	//  When a mirroring rule with this security profile attached matches a packet,
+	//  a replica will be mirrored to the location-local target in this group.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.CustomMirroringProfile.mirroring_endpoint_group
+	MirroringEndpointGroup *string `json:"mirroringEndpointGroup,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networksecurity.v1.SeverityOverride
+type SeverityOverride struct {
+	// Required. Severity level to match.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SeverityOverride.severity
+	Severity *string `json:"severity,omitempty"`
+
+	// Required. Threat action override.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SeverityOverride.action
+	Action *string `json:"action,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networksecurity.v1.ThreatOverride
+type ThreatOverride struct {
+	// Required. Vendor-specific ID of a threat to override.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatOverride.threat_id
+	ThreatID *string `json:"threatID,omitempty"`
+
+	// Required. Threat action override. For some threat types, only a subset of
+	//  actions applies.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatOverride.action
+	Action *string `json:"action,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networksecurity.v1.ThreatPreventionProfile
+type ThreatPreventionProfile struct {
+	// Optional. Configuration for overriding threats actions by severity match.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatPreventionProfile.severity_overrides
+	SeverityOverrides []SeverityOverride `json:"severityOverrides,omitempty"`
+
+	// Optional. Configuration for overriding threats actions by threat_id match.
+	//  If a threat is matched both by configuration provided in severity_overrides
+	//  and threat_overrides, the threat_overrides action is applied.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatPreventionProfile.threat_overrides
+	ThreatOverrides []ThreatOverride `json:"threatOverrides,omitempty"`
+
+	// Optional. Configuration for overriding antivirus actions per protocol.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatPreventionProfile.antivirus_overrides
+	AntivirusOverrides []AntivirusOverride `json:"antivirusOverrides,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networksecurity.v1.UrlFilter
+type URLFilter struct {
+	// Required. The action taken when this filter is applied.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlFilter.filtering_action
+	FilteringAction *string `json:"filteringAction,omitempty"`
+
+	// Required. The list of strings that a URL must match with for this filter to
+	//  be applied.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlFilter.urls
+	Urls []string `json:"urls,omitempty"`
+
+	// Required. The priority of this filter within the URL Filtering Profile.
+	//  Lower integers indicate higher priorities. The priority of a filter must be
+	//  unique within a URL Filtering Profile.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlFilter.priority
+	Priority *int32 `json:"priority,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networksecurity.v1.UrlFilteringProfile
+type URLFilteringProfile struct {
+	// Optional. The list of filtering configs in which each config defines an
+	//  action to take for some URL match.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.UrlFilteringProfile.url_filters
+	URLFilters []URLFilter `json:"urlFilters,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.ThreatOverride
+type ThreatOverrideObservedState struct {
+	// Output only. Type of the threat (read only).
+	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatOverride.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.ThreatPreventionProfile
+type ThreatPreventionProfileObservedState struct {
+	// Optional. Configuration for overriding threats actions by threat_id match.
+	//  If a threat is matched both by configuration provided in severity_overrides
+	//  and threat_overrides, the threat_overrides action is applied.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.ThreatPreventionProfile.threat_overrides
+	ThreatOverrides []ThreatOverrideObservedState `json:"threatOverrides,omitempty"`
+}
