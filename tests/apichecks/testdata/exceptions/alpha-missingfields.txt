@@ -1673,7 +1673,6 @@
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.defaultLanguageCode" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.location" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.timeZone" is not set in unstructured objects
-[missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.allowCrossRegion" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.dialogflowAgentToLink" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.collection" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.commonConfig.companyName" is not set in unstructured objects

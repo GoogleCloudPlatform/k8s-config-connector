@@ -206,7 +206,7 @@ func (a *enrollmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	if len(updatePaths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		// even though there is no update, we still want to update KRM status
-		return nil
+		updated = a.actual
 	} else {
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateEnrollmentRequest{
