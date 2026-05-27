@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 
 set -o errexit
 set -o nounset
@@ -27,19 +26,17 @@ PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 go run . generate-types \
-    --service google.cloud.networksecurity.v1beta1 \
-    --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
-    --resource NetworkSecurityAuthorizationPolicy:AuthorizationPolicy \
-    --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy \
+    --service google.cloud.networksecurity.v1 \
+    --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+    --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
     --proto-source-path ${PROTO_OUT}
 
 go run . generate-mapper \
     --multiversion \
     --service google.cloud.networksecurity.v1 \
     --service google.cloud.networksecurity.v1beta1 \
-    --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
+    --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
     --proto-source-path ${PROTO_OUT}
-
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
