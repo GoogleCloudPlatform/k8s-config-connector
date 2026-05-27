@@ -107,7 +107,7 @@ spec:
                                 type: number
                               oneofValue:
                                 description: Optional. Sub-parameter values.
-                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               stringListValue:
                                 description: Optional. A repeated string.
                                 properties:

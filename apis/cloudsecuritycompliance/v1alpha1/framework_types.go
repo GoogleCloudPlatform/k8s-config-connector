@@ -172,7 +172,8 @@ type ParamValue struct {
 
 	// Optional. Sub-parameter values.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.oneof_value
-	// +kubebuilder:validation:Type=object
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	OneofValue *Parameter `json:"oneofValue,omitempty"`
 }
 
