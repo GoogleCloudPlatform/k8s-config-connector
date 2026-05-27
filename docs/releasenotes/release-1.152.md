@@ -2,16 +2,8 @@
 
 ## New Alpha Resources (Direct Reconciler):
 
-*   `AIStreamsCluster`
-*   `APIHubDeployment`
-*   `AppHubServiceProjectAttachment`
-*   `BeyondCorpClientConnectorService`
 *   `BinaryAuthorizationPlatformPolicy`
-*   `DeviceStreamingSession`
-*   `EventarcEnrollment`
-*   `NetworkConnectivityRegionalEndpoint`
 *   `VertexAIDeploymentResourcePool`
-*   `VertexAIExampleStore`
 
 ## New Fields:
 
