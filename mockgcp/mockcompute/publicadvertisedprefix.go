@@ -49,7 +49,7 @@ func (s *PublicAdvertisedPrefixesV1) Insert(ctx context.Context, req *pb.InsertP
 
 	obj := proto.Clone(req.GetPublicAdvertisedPrefixResource()).(*pb.PublicAdvertisedPrefix)
 	obj.Kind = proto.String("compute#publicAdvertisedPrefix")
-	obj.SelfLink = proto.String(buildComputeSelfLink(ctx, name.String()))
+	obj.SelfLink = proto.String(BuildComputeSelfLink(ctx, name.String()))
 	obj.CreationTimestamp = proto.String(s.nowString())
 	id := s.generateID()
 	obj.Id = &id

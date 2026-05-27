@@ -50,7 +50,7 @@ func (s *PublicDelegatedPrefixesV1) Insert(ctx context.Context, req *pb.InsertPu
 
 	obj := proto.Clone(req.GetPublicDelegatedPrefixResource()).(*pb.PublicDelegatedPrefix)
 	obj.Kind = proto.String("compute#publicDelegatedPrefix")
-	obj.SelfLink = proto.String(buildComputeSelfLink(ctx, name.String()))
+	obj.SelfLink = proto.String(BuildComputeSelfLink(ctx, name.String()))
 	obj.Region = proto.String(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region))
 	obj.CreationTimestamp = proto.String(s.nowString())
 	id := s.generateID()
@@ -157,7 +157,7 @@ func (s *GlobalPublicDelegatedPrefixesV1) Insert(ctx context.Context, req *pb.In
 
 	obj := proto.Clone(req.GetPublicDelegatedPrefixResource()).(*pb.PublicDelegatedPrefix)
 	obj.Kind = proto.String("compute#publicDelegatedPrefix")
-	obj.SelfLink = proto.String(buildComputeSelfLink(ctx, name.String()))
+	obj.SelfLink = proto.String(BuildComputeSelfLink(ctx, name.String()))
 	obj.CreationTimestamp = proto.String(s.nowString())
 	id := s.generateID()
 	obj.Id = &id
