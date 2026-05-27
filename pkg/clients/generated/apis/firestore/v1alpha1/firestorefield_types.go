@@ -51,10 +51,6 @@ type FieldFields struct {
 	// +optional
 	Order *string `json:"order,omitempty"`
 
-	/* Indicates that this field supports search operations. This field is only currently supported for indexes with MONGODB_COMPATIBLE_API ApiScope. */
-	// +optional
-	SearchConfig *FieldSearchConfig `json:"searchConfig,omitempty"`
-
 	/* Indicates that this field supports nearest neighbor and distance operations on vector. */
 	// +optional
 	VectorConfig *FieldVectorConfig `json:"vectorConfig,omitempty"`
@@ -63,26 +59,10 @@ type FieldFields struct {
 type FieldFlat struct {
 }
 
-type FieldGeoSpec struct {
-	/* Optional. Disables geoJSON indexing for the field. By default, geoJSON points are indexed. */
-	// +optional
-	GeoJsonIndexingDisabled *bool `json:"geoJsonIndexingDisabled,omitempty"`
-}
-
 type FieldIndexConfig struct {
 	/* The indexes supported for this field. */
 	// +optional
 	Indexes []FieldIndexes `json:"indexes,omitempty"`
-}
-
-type FieldIndexSpecs struct {
-	/* Required. How to index the text field value. */
-	// +optional
-	IndexType *string `json:"indexType,omitempty"`
-
-	/* Required. How to match the text field value. */
-	// +optional
-	MatchType *string `json:"matchType,omitempty"`
 }
 
 type FieldIndexes struct {
@@ -132,22 +112,6 @@ type FieldIndexes struct {
 	/* Optional. The number of shards for the index. */
 	// +optional
 	ShardCount *int32 `json:"shardCount,omitempty"`
-}
-
-type FieldSearchConfig struct {
-	/* Optional. The specification for building a geo search index for a field. */
-	// +optional
-	GeoSpec *FieldGeoSpec `json:"geoSpec,omitempty"`
-
-	/* Optional. The specification for building a text search index for a field. */
-	// +optional
-	TextSpec *FieldTextSpec `json:"textSpec,omitempty"`
-}
-
-type FieldTextSpec struct {
-	/* Required. Specifications for how the field should be indexed. Repeated so that the field can be indexed in multiple ways. */
-	// +optional
-	IndexSpecs []FieldIndexSpecs `json:"indexSpecs,omitempty"`
 }
 
 type FieldTtlConfig struct {
