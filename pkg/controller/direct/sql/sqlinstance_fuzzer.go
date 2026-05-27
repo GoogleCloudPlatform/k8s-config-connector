@@ -71,7 +71,8 @@ func sqlInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".node_count")
 	f.Unimplemented_NotYetTriaged(".switch_transaction_logs_to_cloud_storage_enabled")
 	f.SpecField(".replication_cluster")
-	f.SpecField(".gemini_config")	f.Unimplemented_NotYetTriaged(".settings.accelerated_replica_mode")
+	f.SpecField(".gemini_config")
+	f.Unimplemented_NotYetTriaged(".settings.accelerated_replica_mode")
 	f.Unimplemented_NotYetTriaged(".settings.insights_config.enhanced_query_insights_enabled")
 
 	f.StatusField(".settings")
