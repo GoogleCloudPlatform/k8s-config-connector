@@ -21,6 +21,7 @@
 // resource: DiscoveryEngineEngine:Engine
 // resource: DiscoveryEngineIdentityMappingStore:IdentityMappingStore
 // resource: DiscoveryEngineTargetSite:TargetSite
+// resource: DiscoveryEngineSampleQuerySet:SampleQuerySet
 
 package v1alpha1
 

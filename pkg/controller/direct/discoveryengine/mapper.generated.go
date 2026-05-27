@@ -25,6 +25,7 @@ package discoveryengine
 
 import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	discoveryenginepb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -275,6 +276,44 @@ func DiscoveryEngineIdentityMappingStoreSpec_ToProto(mapCtx *direct.MapContext, 
 	out := &pb.IdentityMappingStore{}
 	// MISSING: Name
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	return out
+}
+func DiscoveryEngineSampleQuerySetObservedState_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuerySet) *krm.DiscoveryEngineSampleQuerySetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineSampleQuerySetObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func DiscoveryEngineSampleQuerySetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineSampleQuerySetObservedState) *discoveryenginepb.SampleQuerySet {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SampleQuerySet{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func DiscoveryEngineSampleQuerySetSpec_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuerySet) *krm.DiscoveryEngineSampleQuerySetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineSampleQuerySetSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func DiscoveryEngineSampleQuerySetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineSampleQuerySetSpec) *discoveryenginepb.SampleQuerySet {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SampleQuerySet{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
 	return out
 }
 func Engine_ChatEngineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_ChatEngineConfig) *krm.Engine_ChatEngineConfig {
