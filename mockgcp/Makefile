@@ -111,7 +111,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/vertex_rag_data.proto \
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
-		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
@@ -130,7 +131,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/parametermanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/resourcemanager/v3/*.proto \
-		./third_party/googleapis/mockgcp/cloud/security/privateca/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/servicedirectory/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/sql/v1beta4/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tpu/v2/*.proto \
