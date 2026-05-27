@@ -241,6 +241,8 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 			return true
 		} else if strings.HasPrefix(testName, "containercluster-databaseencryption") {
 			return true
+		} else if strings.HasPrefix(testName, "containercluster-rm-default-np-strip-config") {
+			return true
 		} else {
 			return false
 		}
