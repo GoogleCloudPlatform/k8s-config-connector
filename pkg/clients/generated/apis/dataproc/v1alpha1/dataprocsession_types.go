@@ -150,9 +150,6 @@ type SessionRuntimeConfig struct {
 	Version *string `json:"version,omitempty"`
 }
 
-type SessionSparkConnectSession struct {
-}
-
 type SessionSparkHistoryServerConfig struct {
 	/* Optional. Resource name of an existing Dataproc Cluster to act as a Spark
 	History Server for the workload.
@@ -203,10 +200,6 @@ type DataprocSessionSpec struct {
 	session. */
 	// +optional
 	SessionTemplate *string `json:"sessionTemplate,omitempty"`
-
-	/* Optional. Spark Connect session config. */
-	// +optional
-	SparkConnectSession *SessionSparkConnectSession `json:"sparkConnectSession,omitempty"`
 
 	/* Optional. The email address of the user who owns the session. */
 	// +optional
