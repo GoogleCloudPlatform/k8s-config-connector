@@ -28,16 +28,16 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 )
 
 type serviceConnectionPolicies struct {
 	*MockService
-	pb.UnimplementedCrossNetworkAutomationServiceServer
+	pb.UnimplementedProjectsLocationsServiceConnectionPoliciesServerServer
 }
 
-func (r *serviceConnectionPolicies) GetServiceConnectionPolicy(ctx context.Context, req *pb.GetServiceConnectionPolicyRequest) (*pb.ServiceConnectionPolicy, error) {
+func (r *serviceConnectionPolicies) GetProjectsLocationsServiceConnectionPolicy(ctx context.Context, req *pb.GetProjectsLocationsServiceConnectionPolicyRequest) (*pb.ServiceConnectionPolicy, error) {
 	name, err := r.parseServiceConnectionPolicyName(req.Name)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (r *serviceConnectionPolicies) GetServiceConnectionPolicy(ctx context.Conte
 	return obj, nil
 }
 
-func (r *serviceConnectionPolicies) CreateServiceConnectionPolicy(ctx context.Context, req *pb.CreateServiceConnectionPolicyRequest) (*longrunning.Operation, error) {
+func (r *serviceConnectionPolicies) CreateProjectsLocationsServiceConnectionPolicy(ctx context.Context, req *pb.CreateProjectsLocationsServiceConnectionPolicyRequest) (*longrunning.Operation, error) {
 	reqName := fmt.Sprintf("%s/serviceConnectionPolicies/%s", req.GetParent(), req.GetServiceConnectionPolicyId())
 	name, err := r.parseServiceConnectionPolicyName(reqName)
 	if err != nil {
@@ -67,14 +67,14 @@ func (r *serviceConnectionPolicies) CreateServiceConnectionPolicy(ctx context.Co
 
 	now := time.Now()
 
-	obj := proto.CloneOf(req.GetServiceConnectionPolicy())
+	obj := proto.CloneOf(req.GetProjectsLocationsServiceConnectionPolicy())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
 	r.populateDefaultsForServiceConnectionPolicy(name, obj)
 
-	obj.Etag = proto.String(computeEtag(obj))
+	obj.Etag = computeEtag(obj)
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (r *serviceConnectionPolicies) CreateServiceConnectionPolicy(ctx context.Co
 func redactedForLRO(obj *pb.ServiceConnectionPolicy) *pb.ServiceConnectionPolicy {
 	retObj := proto.CloneOf(obj)
 	retObj.Description = ""
-	retObj.Infrastructure = pb.Infrastructure_INFRASTRUCTURE_UNSPECIFIED
+	retObj.Infrastructure = ""
 	retObj.PscConfig = nil
 	retObj.ServiceClass = ""
 	retObj.Network = ""
@@ -113,15 +113,15 @@ func redactedForLRO(obj *pb.ServiceConnectionPolicy) *pb.ServiceConnectionPolicy
 }
 
 func (r *serviceConnectionPolicies) populateDefaultsForServiceConnectionPolicy(name *serviceConnectionPolicyName, obj *pb.ServiceConnectionPolicy) {
-	if obj.Infrastructure == pb.Infrastructure_INFRASTRUCTURE_UNSPECIFIED {
-		obj.Infrastructure = pb.Infrastructure_PSC
+	if obj.Infrastructure == "" {
+		obj.Infrastructure = "PSC"
 	}
 }
 
-func (r *serviceConnectionPolicies) UpdateServiceConnectionPolicy(ctx context.Context, req *pb.UpdateServiceConnectionPolicyRequest) (*longrunning.Operation, error) {
+func (r *serviceConnectionPolicies) PatchProjectsLocationsServiceConnectionPolicy(ctx context.Context, req *pb.PatchProjectsLocationsServiceConnectionPolicyRequest) (*longrunning.Operation, error) {
 	log := klog.FromContext(ctx)
 
-	reqName := req.GetServiceConnectionPolicy().GetName()
+	reqName := req.GetName()
 
 	name, err := r.parseServiceConnectionPolicyName(reqName)
 	if err != nil {
@@ -138,10 +138,10 @@ func (r *serviceConnectionPolicies) UpdateServiceConnectionPolicy(ctx context.Co
 
 	obj.UpdateTime = timestamppb.New(now)
 
-	if req.GetUpdateMask() != nil {
-		paths := req.GetUpdateMask().GetPaths()
+	if req.GetUpdateMask() != "" {
+		paths := strings.Split(req.GetUpdateMask(), ",")
 
-		patch := req.GetServiceConnectionPolicy()
+		patch := req.GetProjectsLocationsServiceConnectionPolicy()
 		// TODO: Some sort of helper for fieldmask?
 		for _, path := range paths {
 			switch path {
@@ -155,11 +155,11 @@ func (r *serviceConnectionPolicies) UpdateServiceConnectionPolicy(ctx context.Co
 		}
 	} else {
 		// If update_mask is not specified, all fields are overwritten
-		patch := req.GetServiceConnectionPolicy()
+		patch := req.GetProjectsLocationsServiceConnectionPolicy()
 		obj.PscConfig = patch.GetPscConfig()
 	}
 
-	obj.Etag = proto.String(computeEtag(obj))
+	obj.Etag = computeEtag(obj)
 
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -179,7 +179,7 @@ func (r *serviceConnectionPolicies) UpdateServiceConnectionPolicy(ctx context.Co
 	})
 }
 
-func (r *serviceConnectionPolicies) DeleteServiceConnectionPolicy(ctx context.Context, req *pb.DeleteServiceConnectionPolicyRequest) (*longrunning.Operation, error) {
+func (r *serviceConnectionPolicies) DeleteProjectsLocationsServiceConnectionPolicy(ctx context.Context, req *pb.DeleteProjectsLocationsServiceConnectionPolicyRequest) (*longrunning.Operation, error) {
 	name, err := r.parseServiceConnectionPolicyName(req.GetName())
 	if err != nil {
 		return nil, err

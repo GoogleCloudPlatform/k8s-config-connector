@@ -28,16 +28,16 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 )
 
 type internalRanges struct {
 	*MockService
-	pb.UnimplementedInternalRangeServiceServer
+	pb.UnimplementedProjectsLocationsInternalRangesServerServer
 }
 
-func (r *internalRanges) GetInternalRange(ctx context.Context, req *pb.GetInternalRangeRequest) (*pb.InternalRange, error) {
+func (r *internalRanges) GetProjectsLocationsInternalRange(ctx context.Context, req *pb.GetProjectsLocationsInternalRangeRequest) (*pb.InternalRange, error) {
 	name, err := r.parseInternalRangeName(req.Name)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (r *internalRanges) GetInternalRange(ctx context.Context, req *pb.GetIntern
 	return obj, nil
 }
 
-func (r *internalRanges) CreateInternalRange(ctx context.Context, req *pb.CreateInternalRangeRequest) (*longrunning.Operation, error) {
+func (r *internalRanges) CreateProjectsLocationsInternalRange(ctx context.Context, req *pb.CreateProjectsLocationsInternalRangeRequest) (*longrunning.Operation, error) {
 	reqName := fmt.Sprintf("%s/internalRanges/%s", req.GetParent(), req.GetInternalRangeId())
 	name, err := r.parseInternalRangeName(reqName)
 	if err != nil {
@@ -67,7 +67,7 @@ func (r *internalRanges) CreateInternalRange(ctx context.Context, req *pb.Create
 
 	now := time.Now()
 
-	obj := proto.CloneOf(req.GetInternalRange())
+	obj := proto.CloneOf(req.GetProjectsLocationsInternalRange())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -94,10 +94,10 @@ func (r *internalRanges) CreateInternalRange(ctx context.Context, req *pb.Create
 	})
 }
 
-func (r *internalRanges) UpdateInternalRange(ctx context.Context, req *pb.UpdateInternalRangeRequest) (*longrunning.Operation, error) {
+func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context, req *pb.PatchProjectsLocationsInternalRangeRequest) (*longrunning.Operation, error) {
 	log := klog.FromContext(ctx)
 
-	reqName := req.GetInternalRange().GetName()
+	reqName := req.GetName()
 
 	name, err := r.parseInternalRangeName(reqName)
 	if err != nil {
@@ -114,10 +114,10 @@ func (r *internalRanges) UpdateInternalRange(ctx context.Context, req *pb.Update
 
 	obj.UpdateTime = timestamppb.New(now)
 
-	if req.GetUpdateMask() != nil {
-		paths := req.GetUpdateMask().GetPaths()
+	if req.GetUpdateMask() != "" {
+		paths := strings.Split(req.GetUpdateMask(), ",")
 
-		patch := req.GetInternalRange()
+		patch := req.GetProjectsLocationsInternalRange()
 		// TODO: Some sort of helper for fieldmask?
 		for _, path := range paths {
 			switch path {
@@ -162,7 +162,7 @@ func (r *internalRanges) UpdateInternalRange(ctx context.Context, req *pb.Update
 	})
 }
 
-func (r *internalRanges) DeleteInternalRange(ctx context.Context, req *pb.DeleteInternalRangeRequest) (*longrunning.Operation, error) {
+func (r *internalRanges) DeleteProjectsLocationsInternalRange(ctx context.Context, req *pb.DeleteProjectsLocationsInternalRangeRequest) (*longrunning.Operation, error) {
 	name, err := r.parseInternalRangeName(req.GetName())
 	if err != nil {
 		return nil, err

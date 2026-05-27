@@ -15,7 +15,7 @@
 package networkconnectivity
 
 import (
-	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
