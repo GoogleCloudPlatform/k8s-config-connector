@@ -23,6 +23,7 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -74,12 +75,16 @@ func TestConfigConnectorContextE2E(t *testing.T) {
 		t.Fatalf("failed to create ConfigConnectorContext: %v", err)
 	}
 
-	// TODO: Replace with a poll for status/observedGeneration
-	time.Sleep(15 * time.Second)
-
 	newCCC := &corev1beta1.ConfigConnectorContext{}
-	if err := c.Get(ctx, nn, newCCC); err != nil {
-		t.Errorf("failed to get ConfigConnectorContext: %v", err)
+	err := wait.PollImmediate(2*time.Second, 60*time.Second, func() (bool, error) {
+		if err := c.Get(ctx, nn, newCCC); err != nil {
+			return false, err
+		}
+		status := newCCC.GetCommonStatus()
+		return status.Healthy, nil
+	})
+	if err != nil {
+		t.Errorf("ConfigConnectorContext did not become healthy: %v", err)
 	}
 	status := newCCC.GetCommonStatus()
 	if got, want := status.Healthy, true; got != want {
