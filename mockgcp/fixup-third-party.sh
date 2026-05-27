@@ -39,6 +39,7 @@ mv google/pubsub/ mockgcp/
 mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
+rm -rf mockgcp/cloud/parametermanager
 
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/

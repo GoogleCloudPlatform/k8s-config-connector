@@ -27,12 +27,35 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/parametermanager/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ParameterManagerV1 struct {
 	*MockService
 
 	pb.UnimplementedParameterManagerServer
+}
+
+// Lists [Parameters][google.cloud.parametermanager.v1.Parameter] in a given project and location.
+func (s *ParameterManagerV1) ListParameters(ctx context.Context, req *pb.ListParametersRequest) (*pb.ListParametersResponse, error) {
+	tokens := strings.Split(req.Parent, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)
+	}
+
+	res := &pb.ListParametersResponse{}
+	findPrefix := req.Parent + "/"
+	if err := s.storage.List(ctx, (&pb.Parameter{}).ProtoReflect().Descriptor(), storage.ListOptions{}, func(obj proto.Message) error {
+		param := obj.(*pb.Parameter)
+		if strings.HasPrefix(param.Name, findPrefix) {
+			res.Parameters = append(res.Parameters, param)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
 
 // Creates a new [Parameter][google.cloud.parametermanager.v1.Parameter].
@@ -108,7 +131,7 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 	}
 	for _, path := range paths {
 		switch path {
-		case "kmsKey":
+		case "kms_key", "kmsKey":
 			if kmsKey := req.Parameter.GetKmsKey(); kmsKey != "" {
 				updated.KmsKey = &kmsKey
 			} else {
@@ -116,6 +139,8 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 			}
 		case "labels":
 			updated.Labels = req.Parameter.GetLabels()
+		case "format":
+			updated.Format = req.Parameter.GetFormat()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

@@ -26,7 +26,55 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/parametermanager/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+// Lists [ParameterVersions][google.cloud.parametermanager.v1.ParameterVersion] in a given project, location, and parameter.
+func (s *ParameterManagerV1) ListParameterVersions(ctx context.Context, req *pb.ListParameterVersionsRequest) (*pb.ListParameterVersionsResponse, error) {
+	tokens := strings.Split(req.Parent, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "parameters" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)
+	}
+
+	res := &pb.ListParameterVersionsResponse{}
+	findPrefix := req.Parent + "/"
+	if err := s.storage.List(ctx, (&pb.ParameterVersion{}).ProtoReflect().Descriptor(), storage.ListOptions{}, func(obj proto.Message) error {
+		paramVersion := obj.(*pb.ParameterVersion)
+		if strings.HasPrefix(paramVersion.Name, findPrefix) {
+			res.ParameterVersions = append(res.ParameterVersions, paramVersion)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// Gets rendered version of a [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion].
+func (s *ParameterManagerV1) RenderParameterVersion(ctx context.Context, req *pb.RenderParameterVersionRequest) (*pb.RenderParameterVersionResponse, error) {
+	name, err := s.parseParameterVersionName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.ParameterVersion{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if obj.Disabled {
+		return nil, status.Errorf(codes.FailedPrecondition, "ParameterVersion %q is disabled", fqn)
+	}
+
+	res := &pb.RenderParameterVersionResponse{
+		ParameterVersion: fqn,
+		Payload:          obj.Payload,
+	}
+
+	return res, nil
+}
 
 // Creates a new [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion].
 func (s *ParameterManagerV1) CreateParameterVersion(ctx context.Context, req *pb.CreateParameterVersionRequest) (*pb.ParameterVersion, error) {
