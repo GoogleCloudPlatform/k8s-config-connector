@@ -2882,11 +2882,6 @@ func (in *ComputeForwardingRuleStatus) DeepCopyInto(out *ComputeForwardingRuleSt
 		*out = new(string)
 		**out = **in
 	}
-	if in.Target != nil {
-		in, out := &in.Target, &out.Target
-		*out = new(string)
-		**out = **in
-	}
 	return
 }
 
