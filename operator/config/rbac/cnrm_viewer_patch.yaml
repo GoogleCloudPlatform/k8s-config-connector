@@ -37,6 +37,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - aistreams.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - alloydb.cnrm.cloud.google.com
   resources:
   - '*'
@@ -62,6 +70,14 @@ rules:
   - watch
 - apiGroups:
   - apigee.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apihub.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -462,6 +478,14 @@ rules:
   - watch
 - apiGroups:
   - deploymentmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - devicestreaming.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
