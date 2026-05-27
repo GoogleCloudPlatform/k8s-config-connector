@@ -65,9 +65,6 @@ fi
 # Reset to the desired version
 git reset --hard ${GOOGLEAPI_VERSION}
 
-# Patch firestore proto to avoid generating SearchConfig which is not in go client yet
-sed -i "/SearchConfig search_config = 5;/d" google/firestore/admin/v1/index.proto
-
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"

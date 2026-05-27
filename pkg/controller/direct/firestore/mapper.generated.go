@@ -97,7 +97,6 @@ func Field_TTLConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krmfirestorev1alpha1.Field_TTLConfigObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: ExpirationOffset
 	return out
 }
 func Field_TTLConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Field_TTLConfigObservedState) *pb.Field_TtlConfig {
@@ -106,7 +105,6 @@ func Field_TTLConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.Field_TtlConfig{}
 	out.State = direct.Enum_ToProto[pb.Field_TtlConfig_State](mapCtx, in.State)
-	// MISSING: ExpirationOffset
 	return out
 }
 func FirestoreBackupScheduleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupSchedule) *krmfirestorev1alpha1.FirestoreBackupScheduleObservedState {
@@ -175,9 +173,6 @@ func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext,
 	// MISSING: FreeTier
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	// MISSING: DatabaseEdition
-	// MISSING: RealtimeUpdatesMode
-	// MISSING: FirestoreDataAccessMode
-	// MISSING: MongodbCompatibleDataAccessMode
 	return out
 }
 func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseObservedState) *pb.Database {
@@ -202,9 +197,6 @@ func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: FreeTier
 	out.Etag = direct.ValueOf(in.Etag)
 	// MISSING: DatabaseEdition
-	// MISSING: RealtimeUpdatesMode
-	// MISSING: FirestoreDataAccessMode
-	// MISSING: MongodbCompatibleDataAccessMode
 	return out
 }
 func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseSpec {
@@ -226,9 +218,6 @@ func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: Tags
 	// MISSING: FreeTier
 	// MISSING: DatabaseEdition
-	// MISSING: RealtimeUpdatesMode
-	// MISSING: FirestoreDataAccessMode
-	// MISSING: MongodbCompatibleDataAccessMode
 	return out
 }
 func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseSpec) *pb.Database {
@@ -250,9 +239,6 @@ func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fi
 	// MISSING: Tags
 	// MISSING: FreeTier
 	// MISSING: DatabaseEdition
-	// MISSING: RealtimeUpdatesMode
-	// MISSING: FirestoreDataAccessMode
-	// MISSING: MongodbCompatibleDataAccessMode
 	return out
 }
 func FirestoreDocumentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Document) *krmfirestorev1alpha1.FirestoreDocumentObservedState {
@@ -328,8 +314,6 @@ func FirestoreIndexSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Inde
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
-	// MISSING: Unique
-	// MISSING: SearchIndexOptions
 	return out
 }
 func FirestoreIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreIndexSpec) *pb.Index {
@@ -345,8 +329,6 @@ func FirestoreIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fires
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
-	// MISSING: Unique
-	// MISSING: SearchIndexOptions
 	return out
 }
 func FirestoreIndexStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.FirestoreIndexStatus {
@@ -362,8 +344,6 @@ func FirestoreIndexStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
-	// MISSING: Unique
-	// MISSING: SearchIndexOptions
 	return out
 }
 func FirestoreIndexStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreIndexStatus) *pb.Index {
@@ -379,8 +359,6 @@ func FirestoreIndexStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fir
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
-	// MISSING: Unique
-	// MISSING: SearchIndexOptions
 	return out
 }
 func Index_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfirestorev1alpha1.Index {
@@ -396,8 +374,6 @@ func Index_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfires
 	out.Density = direct.Enum_FromProto(mapCtx, in.GetDensity())
 	out.Multikey = direct.LazyPtr(in.GetMultikey())
 	out.ShardCount = direct.LazyPtr(in.GetShardCount())
-	// MISSING: Unique
-	// MISSING: SearchIndexOptions
 	return out
 }
 func Index_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index) *pb.Index {
@@ -413,8 +389,6 @@ func Index_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.
 	out.Density = direct.Enum_ToProto[pb.Index_Density](mapCtx, in.Density)
 	out.Multikey = direct.ValueOf(in.Multikey)
 	out.ShardCount = direct.ValueOf(in.ShardCount)
-	// MISSING: Unique
-	// MISSING: SearchIndexOptions
 	return out
 }
 func IndexFields_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krm.IndexFields {
@@ -530,8 +504,6 @@ func Index_ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
-	// MISSING: Unique
-	// MISSING: SearchIndexOptions
 	return out
 }
 func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_ObservedState) *pb.Index {
@@ -547,8 +519,6 @@ func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfire
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
-	// MISSING: Unique
-	// MISSING: SearchIndexOptions
 	return out
 }
 func WeeklyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyRecurrence) *krmfirestorev1alpha1.WeeklyRecurrence {

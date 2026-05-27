@@ -20,6 +20,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func CleanupPolicyCondition_TagState_ToProto(mapCtx *direct.MapContext, in *string) *pb.CleanupPolicyCondition_TagState {
+	if in == nil {
+		return nil
+	}
+	val := direct.Enum_ToProto[pb.CleanupPolicyCondition_TagState](mapCtx, in)
+	return &val
+}
+
 func ArtifactRegistryRepositoryRef_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositoryRef {
 	if in == nil {
 		return nil

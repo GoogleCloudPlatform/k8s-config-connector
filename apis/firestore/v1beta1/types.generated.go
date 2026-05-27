@@ -89,29 +89,6 @@ type Index_IndexField_VectorConfig_FlatIndex struct {
 }
 */
 
-/* unreachable type Index_SearchIndexOptions
-// +kcc:proto=google.firestore.admin.v1.Index.SearchIndexOptions
-type Index_SearchIndexOptions struct {
-	// Optional. The language to use for text search indexes. Used as the
-	//  default language if not overridden at the document level by specifying
-	//  the `text_language_override_field`. The language is specified as a BCP 47
-	//  language code.
-	//  For indexes with MONGODB_COMPATIBLE_API ApiScope: If unspecified, the
-	//  default language is English.
-	//  For indexes with `ANY_API` ApiScope: If unspecified, the default behavior
-	//  is autodetect.
-	// +kcc:proto:field=google.firestore.admin.v1.Index.SearchIndexOptions.text_language
-	TextLanguage *string `json:"textLanguage,omitempty"`
-
-	// Optional. The field in the document that specifies which language to use
-	//  for that specific document. For indexes with MONGODB_COMPATIBLE_API
-	//  ApiScope: if unspecified, the language is taken from the "language" field
-	//  if it exists or from `text_language` if it does not.
-	// +kcc:proto:field=google.firestore.admin.v1.Index.SearchIndexOptions.text_language_override_field_path
-	TextLanguageOverrideFieldPath *string `json:"textLanguageOverrideFieldPath,omitempty"`
-}
-*/
-
 /* unreachable type Database_CmekConfigObservedState
 // +kcc:observedstate:proto=google.firestore.admin.v1.Database.CmekConfig
 type Database_CmekConfigObservedState struct {

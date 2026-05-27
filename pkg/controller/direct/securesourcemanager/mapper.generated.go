@@ -64,7 +64,6 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	// MISSING: HTTPServiceAttachment
 	// MISSING: SSHServiceAttachment
 	// MISSING: PSCAllowedProjects
-	// MISSING: CustomHostConfig
 	return out
 }
 func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
@@ -79,7 +78,6 @@ func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_
 	// MISSING: HTTPServiceAttachment
 	// MISSING: SSHServiceAttachment
 	// MISSING: PSCAllowedProjects
-	// MISSING: CustomHostConfig
 	return out
 }
 func Instance_PrivateConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfigObservedState {
@@ -92,7 +90,6 @@ func Instance_PrivateConfigObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
 	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
 	// MISSING: PSCAllowedProjects
-	// MISSING: CustomHostConfig
 	return out
 }
 func Instance_PrivateConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfigObservedState) *pb.Instance_PrivateConfig {
@@ -105,7 +102,6 @@ func Instance_PrivateConfigObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
 	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
 	// MISSING: PSCAllowedProjects
-	// MISSING: CustomHostConfig
 	return out
 }
 func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {

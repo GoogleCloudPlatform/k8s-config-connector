@@ -44,9 +44,6 @@ func BackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
-	// MISSING: KMSConfig
-	// MISSING: EncryptionState
-	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultObservedState) *pb.BackupVault {
@@ -64,9 +61,6 @@ func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupV
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
-	// MISSING: KMSConfig
-	// MISSING: EncryptionState
-	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func BackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVaultSpec {
@@ -83,9 +77,6 @@ func BackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *k
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
-	// MISSING: KMSConfig
-	// MISSING: EncryptionState
-	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func BackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec) *pb.BackupVault {
@@ -102,9 +93,6 @@ func BackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec)
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
-	// MISSING: KMSConfig
-	// MISSING: EncryptionState
-	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func NetAppBackupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.NetAppBackupPolicyObservedState {

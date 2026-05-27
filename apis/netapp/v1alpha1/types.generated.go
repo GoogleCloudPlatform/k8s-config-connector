@@ -91,15 +91,9 @@ type BackupVault struct {
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_region
 	BackupRegion *string `json:"backupRegion,omitempty"`
 
-	// Optional. Backup retention policy defining the retention of backups.
+	// Optional. Backup retention policy defining the retenton of backups.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_retention_policy
 	BackupRetentionPolicy *BackupVault_BackupRetentionPolicy `json:"backupRetentionPolicy,omitempty"`
-
-	// Optional. Specifies the Key Management System (KMS) configuration to be
-	//  used for backup encryption. Format:
-	//  `projects/{project}/locations/{location}/kmsConfigs/{kms_config}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.kms_config
-	KMSConfig *string `json:"kmsConfig,omitempty"`
 }
 */
 
@@ -112,25 +106,25 @@ type BackupVault_BackupRetentionPolicy struct {
 	BackupMinimumEnforcedRetentionDays *int32 `json:"backupMinimumEnforcedRetentionDays,omitempty"`
 
 	// Optional. Indicates if the daily backups are immutable.
-	//  At least one of daily_backup_immutable, weekly_backup_immutable,
+	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
 	//  monthly_backup_immutable and manual_backup_immutable must be true.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.daily_backup_immutable
 	DailyBackupImmutable *bool `json:"dailyBackupImmutable,omitempty"`
 
 	// Optional. Indicates if the weekly backups are immutable.
-	//  At least one of daily_backup_immutable, weekly_backup_immutable,
+	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
 	//  monthly_backup_immutable and manual_backup_immutable must be true.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.weekly_backup_immutable
 	WeeklyBackupImmutable *bool `json:"weeklyBackupImmutable,omitempty"`
 
 	// Optional. Indicates if the monthly backups are immutable.
-	//  At least one of daily_backup_immutable, weekly_backup_immutable,
+	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
 	//  monthly_backup_immutable and manual_backup_immutable must be true.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.monthly_backup_immutable
 	MonthlyBackupImmutable *bool `json:"monthlyBackupImmutable,omitempty"`
 
 	// Optional. Indicates if the manual backups are immutable.
-	//  At least one of daily_backup_immutable, weekly_backup_immutable,
+	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
 	//  monthly_backup_immutable and manual_backup_immutable must be true.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.manual_backup_immutable
 	ManualBackupImmutable *bool `json:"manualBackupImmutable,omitempty"`
@@ -183,15 +177,5 @@ type BackupVaultObservedState struct {
 	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.destination_backup_vault
 	DestinationBackupVault *string `json:"destinationBackupVault,omitempty"`
-
-	// Output only. Field indicating encryption state of CMEK backups.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.encryption_state
-	EncryptionState *string `json:"encryptionState,omitempty"`
-
-	// Output only. The crypto key version used to encrypt the backup vault.
-	//  Format:
-	//  `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backups_crypto_key_version
-	BackupsCryptoKeyVersion *string `json:"backupsCryptoKeyVersion,omitempty"`
 }
 */

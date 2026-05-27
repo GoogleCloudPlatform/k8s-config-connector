@@ -53,11 +53,6 @@ type AutoscalingPolicy struct {
 	//  associated with an autoscaling policy.
 	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.labels
 	Labels map[string]string `json:"labels,omitempty"`
-
-	// Optional. The type of the clusters for which this autoscaling policy is to
-	//  be configured.
-	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.cluster_type
-	ClusterType *string `json:"clusterType,omitempty"`
 }
 */
 

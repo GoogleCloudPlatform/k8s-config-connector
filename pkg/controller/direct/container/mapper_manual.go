@@ -101,6 +101,22 @@ func PodAutoscaling_HPAProfile_ToProto(mapCtx *direct.MapContext, in *string) *p
 	return &v
 }
 
+func SecurityPostureConfig_Mode_ToProto(mapCtx *direct.MapContext, in *string) *pb.SecurityPostureConfig_Mode {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[pb.SecurityPostureConfig_Mode](mapCtx, in)
+	return &v
+}
+
+func SecurityPostureConfig_VulnerabilityMode_ToProto(mapCtx *direct.MapContext, in *string) *pb.SecurityPostureConfig_VulnerabilityMode {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[pb.SecurityPostureConfig_VulnerabilityMode](mapCtx, in)
+	return &v
+}
+
 func MaintenanceExclusionOptions_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceExclusionOptions) *pb.MaintenanceExclusionOptions {
 	if in == nil {
 		return nil

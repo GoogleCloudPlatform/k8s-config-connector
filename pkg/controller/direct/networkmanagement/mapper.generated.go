@@ -153,7 +153,6 @@ func DeliverInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Delive
 	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
 	out.StorageBucket = direct.LazyPtr(in.GetStorageBucket())
 	out.PSCGoogleAPITarget = direct.LazyPtr(in.GetPscGoogleApiTarget())
-	// MISSING: GoogleServiceType
 	return out
 }
 func DeliverInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeliverInfoObservedState) *pb.DeliverInfo {
@@ -166,7 +165,6 @@ func DeliverInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Deliver
 	out.IpAddress = direct.ValueOf(in.IPAddress)
 	out.StorageBucket = direct.ValueOf(in.StorageBucket)
 	out.PscGoogleApiTarget = direct.ValueOf(in.PSCGoogleAPITarget)
-	// MISSING: GoogleServiceType
 	return out
 }
 func DropInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DropInfo) *krm.DropInfoObservedState {
@@ -179,8 +177,6 @@ func DropInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DropInfo)
 	out.SourceIP = direct.LazyPtr(in.GetSourceIp())
 	out.DestinationIP = direct.LazyPtr(in.GetDestinationIp())
 	out.Region = direct.LazyPtr(in.GetRegion())
-	// MISSING: SourceGeolocationCode
-	// MISSING: DestinationGeolocationCode
 	return out
 }
 func DropInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DropInfoObservedState) *pb.DropInfo {
@@ -193,8 +189,6 @@ func DropInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DropInfoOb
 	out.SourceIp = direct.ValueOf(in.SourceIP)
 	out.DestinationIp = direct.ValueOf(in.DestinationIP)
 	out.Region = direct.ValueOf(in.Region)
-	// MISSING: SourceGeolocationCode
-	// MISSING: DestinationGeolocationCode
 	return out
 }
 func EndpointInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EndpointInfo) *krm.EndpointInfoObservedState {
@@ -275,8 +269,6 @@ func FirewallInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Firew
 	out.Policy = direct.LazyPtr(in.GetPolicy())
 	out.PolicyURI = direct.LazyPtr(in.GetPolicyUri())
 	out.FirewallRuleType = direct.Enum_FromProto(mapCtx, in.GetFirewallRuleType())
-	// MISSING: PolicyPriority
-	// MISSING: TargetType
 	return out
 }
 func FirewallInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirewallInfoObservedState) *pb.FirewallInfo {
@@ -295,8 +287,6 @@ func FirewallInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Firewa
 	out.Policy = direct.ValueOf(in.Policy)
 	out.PolicyUri = direct.ValueOf(in.PolicyURI)
 	out.FirewallRuleType = direct.Enum_ToProto[pb.FirewallInfo_FirewallRuleType](mapCtx, in.FirewallRuleType)
-	// MISSING: PolicyPriority
-	// MISSING: TargetType
 	return out
 }
 func ForwardInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ForwardInfo) *krm.ForwardInfoObservedState {
@@ -411,8 +401,6 @@ func InstanceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Insta
 	out.NetworkTags = in.NetworkTags
 	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
 	out.PSCNetworkAttachmentURI = direct.LazyPtr(in.GetPscNetworkAttachmentUri())
-	// MISSING: Running
-	// MISSING: Status
 	return out
 }
 func InstanceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceInfoObservedState) *pb.InstanceInfo {
@@ -429,8 +417,6 @@ func InstanceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instan
 	out.NetworkTags = in.NetworkTags
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
 	out.PscNetworkAttachmentUri = direct.ValueOf(in.PSCNetworkAttachmentURI)
-	// MISSING: Running
-	// MISSING: Status
 	return out
 }
 func LatencyDistributionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LatencyDistribution) *krm.LatencyDistributionObservedState {
@@ -567,7 +553,6 @@ func NATInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NatInfo) *
 	out.NewDestinationPort = direct.LazyPtr(in.GetNewDestinationPort())
 	out.RouterURI = direct.LazyPtr(in.GetRouterUri())
 	out.NATGatewayName = direct.LazyPtr(in.GetNatGatewayName())
-	// MISSING: CloudNATGatewayType
 	return out
 }
 func NATInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NATInfoObservedState) *pb.NatInfo {
@@ -588,7 +573,6 @@ func NATInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NATInfoObse
 	out.NewDestinationPort = direct.ValueOf(in.NewDestinationPort)
 	out.RouterUri = direct.ValueOf(in.RouterURI)
 	out.NatGatewayName = direct.ValueOf(in.NATGatewayName)
-	// MISSING: CloudNATGatewayType
 	return out
 }
 func NetworkInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkInfo) *krm.NetworkInfoObservedState {
@@ -693,8 +677,6 @@ func ProbingDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Pro
 	out.EndpointInfo = EndpointInfoObservedState_FromProto(mapCtx, in.GetEndpointInfo())
 	out.ProbingLatency = LatencyDistributionObservedState_FromProto(mapCtx, in.GetProbingLatency())
 	out.DestinationEgressLocation = ProbingDetails_EdgeLocationObservedState_FromProto(mapCtx, in.GetDestinationEgressLocation())
-	// MISSING: EdgeResponses
-	// MISSING: ProbedAllDevices
 	return out
 }
 func ProbingDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProbingDetailsObservedState) *pb.ProbingDetails {
@@ -711,8 +693,6 @@ func ProbingDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Prob
 	out.EndpointInfo = EndpointInfoObservedState_ToProto(mapCtx, in.EndpointInfo)
 	out.ProbingLatency = LatencyDistributionObservedState_ToProto(mapCtx, in.ProbingLatency)
 	out.DestinationEgressLocation = ProbingDetails_EdgeLocationObservedState_ToProto(mapCtx, in.DestinationEgressLocation)
-	// MISSING: EdgeResponses
-	// MISSING: ProbedAllDevices
 	return out
 }
 func ProbingDetails_EdgeLocationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails_EdgeLocation) *krm.ProbingDetails_EdgeLocationObservedState {
@@ -934,10 +914,8 @@ func StepObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Step) *krm.St
 	out.Endpoint = EndpointInfoObservedState_FromProto(mapCtx, in.GetEndpoint())
 	out.GoogleService = GoogleServiceInfoObservedState_FromProto(mapCtx, in.GetGoogleService())
 	out.ForwardingRule = ForwardingRuleInfoObservedState_FromProto(mapCtx, in.GetForwardingRule())
-	// MISSING: HybridSubnet
 	out.VPNGateway = VPNGatewayInfoObservedState_FromProto(mapCtx, in.GetVpnGateway())
 	out.VPNTunnel = VPNTunnelInfoObservedState_FromProto(mapCtx, in.GetVpnTunnel())
-	// MISSING: InterconnectAttachment
 	out.VPCConnector = VPCConnectorInfoObservedState_FromProto(mapCtx, in.GetVpcConnector())
 	// MISSING: DirectVPCEgressConnection
 	// MISSING: ServerlessExternalConnection
@@ -948,10 +926,6 @@ func StepObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Step) *krm.St
 	out.LoadBalancer = LoadBalancerInfoObservedState_FromProto(mapCtx, in.GetLoadBalancer())
 	out.Network = NetworkInfoObservedState_FromProto(mapCtx, in.GetNetwork())
 	out.GKEMaster = GKEMasterInfoObservedState_FromProto(mapCtx, in.GetGkeMaster())
-	// MISSING: GKEPod
-	// MISSING: IPMasqueradingSkipped
-	// MISSING: GKENetworkPolicy
-	// MISSING: GKENetworkPolicySkipped
 	out.CloudSQLInstance = CloudSQLInstanceInfoObservedState_FromProto(mapCtx, in.GetCloudSqlInstance())
 	out.RedisInstance = RedisInstanceInfoObservedState_FromProto(mapCtx, in.GetRedisInstance())
 	out.RedisCluster = RedisClusterInfoObservedState_FromProto(mapCtx, in.GetRedisCluster())
@@ -963,7 +937,6 @@ func StepObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Step) *krm.St
 	out.LoadBalancerBackendInfo = LoadBalancerBackendInfoObservedState_FromProto(mapCtx, in.GetLoadBalancerBackendInfo())
 	out.StorageBucket = StorageBucketInfoObservedState_FromProto(mapCtx, in.GetStorageBucket())
 	out.ServerlessNeg = ServerlessNegInfoObservedState_FromProto(mapCtx, in.GetServerlessNeg())
-	// MISSING: NgfwPacketInspection
 	return out
 }
 func StepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StepObservedState) *pb.Step {
@@ -993,14 +966,12 @@ func StepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StepObservedSt
 	if oneof := ForwardingRuleInfoObservedState_ToProto(mapCtx, in.ForwardingRule); oneof != nil {
 		out.StepInfo = &pb.Step_ForwardingRule{ForwardingRule: oneof}
 	}
-	// MISSING: HybridSubnet
 	if oneof := VPNGatewayInfoObservedState_ToProto(mapCtx, in.VPNGateway); oneof != nil {
 		out.StepInfo = &pb.Step_VpnGateway{VpnGateway: oneof}
 	}
 	if oneof := VPNTunnelInfoObservedState_ToProto(mapCtx, in.VPNTunnel); oneof != nil {
 		out.StepInfo = &pb.Step_VpnTunnel{VpnTunnel: oneof}
 	}
-	// MISSING: InterconnectAttachment
 	if oneof := VPCConnectorInfoObservedState_ToProto(mapCtx, in.VPCConnector); oneof != nil {
 		out.StepInfo = &pb.Step_VpcConnector{VpcConnector: oneof}
 	}
@@ -1027,10 +998,6 @@ func StepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StepObservedSt
 	if oneof := GKEMasterInfoObservedState_ToProto(mapCtx, in.GKEMaster); oneof != nil {
 		out.StepInfo = &pb.Step_GkeMaster{GkeMaster: oneof}
 	}
-	// MISSING: GKEPod
-	// MISSING: IPMasqueradingSkipped
-	// MISSING: GKENetworkPolicy
-	// MISSING: GKENetworkPolicySkipped
 	if oneof := CloudSQLInstanceInfoObservedState_ToProto(mapCtx, in.CloudSQLInstance); oneof != nil {
 		out.StepInfo = &pb.Step_CloudSqlInstance{CloudSqlInstance: oneof}
 	}
@@ -1064,7 +1031,6 @@ func StepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StepObservedSt
 	if oneof := ServerlessNegInfoObservedState_ToProto(mapCtx, in.ServerlessNeg); oneof != nil {
 		out.StepInfo = &pb.Step_ServerlessNeg{ServerlessNeg: oneof}
 	}
-	// MISSING: NgfwPacketInspection
 	return out
 }
 func StorageBucketInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StorageBucketInfo) *krm.StorageBucketInfoObservedState {
