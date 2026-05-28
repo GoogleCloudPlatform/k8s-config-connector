@@ -1248,48 +1248,6 @@ spec:
                           of [google.rpc.Code][google.rpc.Code].
                         format: int32
                         type: integer
-                      details:
-                        description: A list of messages that carry the error details.  There
-                          is a common set of message types for APIs to use.
-                        items:
-                          properties:
-                            typeURL:
-                              description: |-
-                                A URL/resource name that uniquely identifies the type of the serialized
-                                 protocol buffer message. This string must contain at least
-                                 one "/" character. The last segment of the URL's path must represent
-                                 the fully qualified name of the type (as in
-                                 `path/google.protobuf.Duration`). The name should be in a canonical form
-                                 (e.g., leading "." is not accepted).
-
-                                 In practice, teams usually precompile into the binary all types that they
-                                 expect it to use in the context of Any. However, for URLs which use the
-                                 scheme `http`, `https`, or no scheme, one can optionally set up a type
-                                 server that maps type URLs to message definitions as follows:
-
-                                 * If no scheme is provided, `https` is assumed.
-                                 * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                                   value in binary format, or produce an error.
-                                 * Applications are allowed to cache lookup results based on the
-                                   URL, or have them precompiled into a binary to avoid any
-                                   lookup. Therefore, binary compatibility needs to be preserved
-                                   on changes to types. (Use versioned type names to manage
-                                   breaking changes.)
-
-                                 Note: this functionality is not currently available in the official
-                                 protobuf release, and it is not used for type URLs beginning with
-                                 type.googleapis.com.
-
-                                 Schemes other than `http`, `https` (or the empty scheme) might be
-                                 used with implementation specific semantics.
-                              type: string
-                            value:
-                              description: Must be a valid serialized protocol buffer
-                                of the above specified type.
-                              format: byte
-                              type: string
-                          type: object
-                        type: array
                       message:
                         description: A developer-facing error message, which should
                           be in English. Any user-facing error message should be localized
@@ -1302,6 +1260,122 @@ spec:
                     type: string
                   nasJobOutput:
                     description: Output only. Output of the NasJob.
+                    properties:
+                      multiTrialJobOutput:
+                        description: Output only. The output of this multi-trial Neural
+                          Architecture Search (NAS) job.
+                        properties:
+                          searchTrials:
+                            description: Output only. List of NasTrials that were
+                              started as part of search stage.
+                            items:
+                              properties:
+                                endTime:
+                                  description: Output only. Time when the NasTrial's
+                                    status changed to `SUCCEEDED` or `INFEASIBLE`.
+                                  type: string
+                                finalMeasurement:
+                                  description: Output only. The final measurement
+                                    containing the objective value.
+                                  properties:
+                                    elapsedDuration:
+                                      description: Output only. Time that the Trial
+                                        has been running at the point of this Measurement.
+                                      type: string
+                                    metrics:
+                                      description: Output only. A list of metrics
+                                        got by evaluating the objective functions
+                                        using suggested Parameter values.
+                                      items:
+                                        properties:
+                                          metricID:
+                                            description: Output only. The ID of the
+                                              Metric. The Metric should be defined
+                                              in [StudySpec's Metrics][google.cloud.aiplatform.v1beta1.StudySpec.metrics].
+                                            type: string
+                                          value:
+                                            description: Output only. The value for
+                                              this metric.
+                                            type: number
+                                        type: object
+                                      type: array
+                                    stepCount:
+                                      description: Output only. The number of steps
+                                        the machine learning model has been trained
+                                        for. Must be non-negative.
+                                      format: int64
+                                      type: integer
+                                  type: object
+                                id:
+                                  description: Output only. The identifier of the
+                                    NasTrial assigned by the service.
+                                  type: string
+                                startTime:
+                                  description: Output only. Time when the NasTrial
+                                    was started.
+                                  type: string
+                                state:
+                                  description: Output only. The detailed state of
+                                    the NasTrial.
+                                  type: string
+                              type: object
+                            type: array
+                          trainTrials:
+                            description: Output only. List of NasTrials that were
+                              started as part of train stage.
+                            items:
+                              properties:
+                                endTime:
+                                  description: Output only. Time when the NasTrial's
+                                    status changed to `SUCCEEDED` or `INFEASIBLE`.
+                                  type: string
+                                finalMeasurement:
+                                  description: Output only. The final measurement
+                                    containing the objective value.
+                                  properties:
+                                    elapsedDuration:
+                                      description: Output only. Time that the Trial
+                                        has been running at the point of this Measurement.
+                                      type: string
+                                    metrics:
+                                      description: Output only. A list of metrics
+                                        got by evaluating the objective functions
+                                        using suggested Parameter values.
+                                      items:
+                                        properties:
+                                          metricID:
+                                            description: Output only. The ID of the
+                                              Metric. The Metric should be defined
+                                              in [StudySpec's Metrics][google.cloud.aiplatform.v1beta1.StudySpec.metrics].
+                                            type: string
+                                          value:
+                                            description: Output only. The value for
+                                              this metric.
+                                            type: number
+                                        type: object
+                                      type: array
+                                    stepCount:
+                                      description: Output only. The number of steps
+                                        the machine learning model has been trained
+                                        for. Must be non-negative.
+                                      format: int64
+                                      type: integer
+                                  type: object
+                                id:
+                                  description: Output only. The identifier of the
+                                    NasTrial assigned by the service.
+                                  type: string
+                                startTime:
+                                  description: Output only. Time when the NasTrial
+                                    was started.
+                                  type: string
+                                state:
+                                  description: Output only. The detailed state of
+                                    the NasTrial.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
                     type: object
                   satisfiesPzi:
                     description: Output only. Reserved for future use.

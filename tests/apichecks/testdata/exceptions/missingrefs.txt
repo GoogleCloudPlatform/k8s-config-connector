@@ -85,4 +85,16 @@
 [refs] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.entitytype" should be a reference
 [refs] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.featurestore" should be a reference
 [refs] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.experiment" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.experimentRun" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.models" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.network" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.serviceAccount" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.searchTrialSpec.searchTrialJobSpec.tensorboard" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.experiment" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.experimentRun" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.models" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.network" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.serviceAccount" should be a reference
+[refs] crd=vertexainasjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.nasJobSpec.multiTrialAlgorithmSpec.trainTrialSpec.trainTrialJobSpec.tensorboard" should be a reference
 [refs] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" should be a reference

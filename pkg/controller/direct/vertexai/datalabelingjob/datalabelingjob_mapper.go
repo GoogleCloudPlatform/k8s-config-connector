@@ -16,6 +16,7 @@ package datalabelingjob
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
@@ -139,17 +140,17 @@ func Money_ToProto(mapCtx *direct.MapContext, in *krm.Money) *money.Money {
 	return out
 }
 
-func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status {
+func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *common.Status {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Status{}
+	out := &common.Status{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
 
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
+func Status_ToProto(mapCtx *direct.MapContext, in *common.Status) *status.Status {
 	if in == nil {
 		return nil
 	}
