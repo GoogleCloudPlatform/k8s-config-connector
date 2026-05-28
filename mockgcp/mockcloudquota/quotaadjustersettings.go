@@ -76,7 +76,8 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) UpdateQuotaAdjusterSettings(ctx con
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+		// mockgcp hack: gcloud does not send updateMask, grpc-gateway auto-populated it.
+		paths = []string{"enablement"}
 	}
 
 	updated := proto.CloneOf(existing)
@@ -88,6 +89,8 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) UpdateQuotaAdjusterSettings(ctx con
 		switch path {
 		case "enablement":
 			updated.Enablement = req.GetQuotaAdjusterSettings().GetEnablement()
+		case "inherited":
+			updated.Inherited = req.GetQuotaAdjusterSettings().GetInherited()
 		case "name":
 			updated.Name = req.GetQuotaAdjusterSettings().GetName()
 		default:
