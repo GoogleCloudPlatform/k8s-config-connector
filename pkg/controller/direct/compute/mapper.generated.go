@@ -175,14 +175,14 @@ func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krm.ComputeFirewallPolicyRuleSpec{}
-	out.Action = direct.ValueOf(in.Action)
+	out.Action = in.Action
 	out.Description = in.Description
-	out.Direction = direct.ValueOf(in.Direction)
+	out.Direction = in.Direction
 	out.Disabled = in.Disabled
 	out.EnableLogging = in.EnableLogging
 	// MISSING: Kind
 	out.Match = FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx, in.GetMatch())
-	out.Priority = direct.ValueOf(in.Priority)
+	out.Priority = in.Priority
 	// MISSING: RuleName
 	// MISSING: RuleTupleCount
 	// MISSING: SecurityProfileGroup
@@ -1611,7 +1611,7 @@ func FirewallPolicyRuleMatcherLayer4Config_v1beta1_FromProto(mapCtx *direct.MapC
 		return nil
 	}
 	out := &krm.FirewallPolicyRuleMatcherLayer4Config{}
-	out.IPProtocol = direct.ValueOf(in.IpProtocol)
+	out.IPProtocol = in.IpProtocol
 	out.Ports = in.Ports
 	return out
 }
