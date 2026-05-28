@@ -478,48 +478,63 @@ spec:
                             azureSynapseDialect:
                               description: The Azure Synapse dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             bigqueryDialect:
                               description: The BigQuery dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             db2Dialect:
                               description: DB2 dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             greenplumDialect:
                               description: Greenplum dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             hiveqlDialect:
                               description: The HiveQL dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             mysqlDialect:
                               description: The MySQL dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             netezzaDialect:
                               description: The Netezza dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             oracleDialect:
                               description: The Oracle dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             postgresqlDialect:
                               description: The Postgresql dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             prestoDialect:
                               description: The Presto dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             redshiftDialect:
                               description: The Redshift dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             snowflakeDialect:
                               description: The Snowflake dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             sparksqlDialect:
                               description: The SparkSQL dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             sqlServerDialect:
                               description: The SQL Server dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             sqliteDialect:
                               description: SQLite dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             teradataDialect:
                               description: The Teradata dialect
                               properties:
@@ -531,6 +546,7 @@ spec:
                             verticaDialect:
                               description: The Vertica dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                           type: object
                         sourceEnv:
                           description: The default source environment values for the
@@ -565,48 +581,63 @@ spec:
                             azureSynapseDialect:
                               description: The Azure Synapse dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             bigqueryDialect:
                               description: The BigQuery dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             db2Dialect:
                               description: DB2 dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             greenplumDialect:
                               description: Greenplum dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             hiveqlDialect:
                               description: The HiveQL dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             mysqlDialect:
                               description: The MySQL dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             netezzaDialect:
                               description: The Netezza dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             oracleDialect:
                               description: The Oracle dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             postgresqlDialect:
                               description: The Postgresql dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             prestoDialect:
                               description: The Presto dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             redshiftDialect:
                               description: The Redshift dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             snowflakeDialect:
                               description: The Snowflake dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             sparksqlDialect:
                               description: The SparkSQL dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             sqlServerDialect:
                               description: The SQL Server dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             sqliteDialect:
                               description: SQLite dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             teradataDialect:
                               description: The Teradata dialect
                               properties:
@@ -618,6 +649,7 @@ spec:
                             verticaDialect:
                               description: The Vertica dialect
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                           type: object
                         targetTypes:
                           description: The types of output to generate, e.g. sql,

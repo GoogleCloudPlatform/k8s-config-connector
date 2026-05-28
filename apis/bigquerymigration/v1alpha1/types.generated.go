@@ -169,14 +169,17 @@ type Distribution_Range struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.AzureSynapseDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type AzureSynapseDialect struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.BigQueryDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type BigQueryDialect struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.DB2Dialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type Db2Dialect struct {
 }
 
@@ -331,10 +334,12 @@ type GCSReportLogMessage struct {
 */
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.GreenplumDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type GreenplumDialect struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.HiveQLDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type HiveQlDialect struct {
 }
 
@@ -411,6 +416,7 @@ type MigrationTaskResult struct {
 */
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.MySQLDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type MySQLDialect struct {
 }
 
@@ -463,6 +469,7 @@ type NameMappingValue struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.NetezzaDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type NetezzaDialect struct {
 }
 
@@ -485,6 +492,7 @@ type ObjectNameMappingList struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.OracleDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type OracleDialect struct {
 }
 
@@ -508,14 +516,17 @@ type Point struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.PostgresqlDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type PostgresqlDialect struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.PrestoDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type PrestoDialect struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.RedshiftDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type RedshiftDialect struct {
 }
 
@@ -539,14 +550,17 @@ type ResourceErrorDetail struct {
 */
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.SQLServerDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type SQLServerDialect struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.SQLiteDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type SqLiteDialect struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.SnowflakeDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type SnowflakeDialect struct {
 }
 
@@ -621,6 +635,7 @@ type SourceTargetMapping struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.SparkSQLDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type SparkSQLDialect struct {
 }
 
@@ -791,6 +806,7 @@ type TypedValue struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.VerticaDialect
+// +kubebuilder:validation:XPreserveUnknownFields
 type VerticaDialect struct {
 }
 
