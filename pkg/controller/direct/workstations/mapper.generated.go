@@ -71,8 +71,8 @@ func WorkstationClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstat
 	out := &krm.WorkstationClusterSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	// TODO: map type string string for field Annotations
+	// TODO: map type string string for field Labels
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
@@ -93,8 +93,8 @@ func WorkstationClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstati
 	out := &pb.WorkstationCluster{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	// TODO: map type string string for field Annotations
+	// TODO: map type string string for field Labels
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}
@@ -187,8 +187,8 @@ func WorkstationConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstati
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Uid
 	// MISSING: Reconciling
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	// TODO: map type string string for field Annotations
+	// TODO: map type string string for field Labels
 	out.IdleTimeout = direct.StringDuration_FromProto(mapCtx, in.GetIdleTimeout())
 	out.RunningTimeout = direct.StringDuration_FromProto(mapCtx, in.GetRunningTimeout())
 	out.Host = WorkstationConfig_Host_FromProto(mapCtx, in.GetHost())
@@ -212,8 +212,8 @@ func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstatio
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: Uid
 	// MISSING: Reconciling
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	// TODO: map type string string for field Annotations
+	// TODO: map type string string for field Labels
 	out.IdleTimeout = direct.StringDuration_ToProto(mapCtx, in.IdleTimeout)
 	out.RunningTimeout = direct.StringDuration_ToProto(mapCtx, in.RunningTimeout)
 	out.Host = WorkstationConfig_Host_ToProto(mapCtx, in.Host)
@@ -236,7 +236,7 @@ func WorkstationConfig_Container_FromProto(mapCtx *direct.MapContext, in *pb.Wor
 	out.Image = direct.LazyPtr(in.GetImage())
 	out.Command = in.Command
 	out.Args = in.Args
-	out.Env = in.Env
+	// TODO: map type string string for field Env
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.RunAsUser = direct.LazyPtr(in.GetRunAsUser())
 	return out
@@ -252,7 +252,7 @@ func WorkstationConfig_Container_ToProto(mapCtx *direct.MapContext, in *krm.Work
 	out.Image = direct.ValueOf(in.Image)
 	out.Command = in.Command
 	out.Args = in.Args
-	out.Env = in.Env
+	// TODO: map type string string for field Env
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.RunAsUser = direct.ValueOf(in.RunAsUser)
 	return out
@@ -599,8 +599,8 @@ func WorkstationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstation) *k
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Uid
 	// MISSING: Reconciling
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	// TODO: map type string string for field Annotations
+	// TODO: map type string string for field Labels
 	return out
 }
 */
@@ -615,8 +615,8 @@ func WorkstationSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationSpec)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: Uid
 	// MISSING: Reconciling
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	// TODO: map type string string for field Annotations
+	// TODO: map type string string for field Labels
 	return out
 }
 */

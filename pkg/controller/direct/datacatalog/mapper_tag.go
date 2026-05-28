@@ -35,9 +35,9 @@ func DataCatalogTagSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krmv1a
 		External: in.GetTemplate(),
 	}
 	out.Column = direct.LazyPtr(in.GetColumn())
-	out.Fields = make(map[string]krmv1alpha1.TagField)
+	out.Fields = make(map[string]*krmv1alpha1.TagField)
 	for k, v := range in.GetFields() {
-		out.Fields[k] = *TagField_v1alpha1_FromProto(mapCtx, v)
+		out.Fields[k] = TagField_v1alpha1_FromProto(mapCtx, v)
 	}
 	return out
 }
@@ -53,7 +53,7 @@ func DataCatalogTagSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataC
 	}
 	out.Fields = make(map[string]*pb.TagField)
 	for k, v := range in.Fields {
-		out.Fields[k] = TagField_ToProto(mapCtx, &v)
+		out.Fields[k] = TagField_ToProto(mapCtx, v)
 	}
 	return out
 }

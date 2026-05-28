@@ -750,9 +750,14 @@ type JupyterConfig struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.LoggingConfig
 type LoggingConfig struct {
-
-	// TODO: unsupported map type with key string and value enum
-
+	// The per-package log levels for the driver. This can include
+	//  "root" package name to configure rootLogger.
+	//  Examples:
+	//  - 'com.google = FATAL'
+	//  - 'root = INFO'
+	//  - 'org.apache = DEBUG'
+	// +kcc:proto:field=google.cloud.dataproc.v1.LoggingConfig.driver_log_levels
+	DriverLogLevels map[string]string `json:"driverLogLevels,omitempty"`
 }
 */
 

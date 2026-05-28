@@ -56,7 +56,7 @@ type DataCatalogTagTemplateSpec struct {
 
 	// Fields used to create a Tag
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.fields
-	Fields map[string]TagTemplateField `json:"fields,omitempty"`
+	Fields map[string]*TagTemplateField `json:"fields,omitempty"`
 }
 
 // DataCatalogTagTemplateStatus defines the config connector machine state of DataCatalogTagTemplate

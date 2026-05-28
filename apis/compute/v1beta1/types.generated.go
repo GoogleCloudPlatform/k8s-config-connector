@@ -1992,8 +1992,9 @@ type ServerBinding struct {
 
 // +kcc:proto=google.cloud.compute.v1.ShareSettings
 type ShareSettings struct {
-
-	// TODO: unsupported map type with key string and value message
+	// A map of project id and project config. This is only valid when share_type's value is SPECIFIC_PROJECTS.
+	// +kcc:proto:field=google.cloud.compute.v1.ShareSettings.project_map
+	ProjectMap map[string]*ShareSettingsProjectConfig `json:"projectMap,omitempty"`
 
 
 	// Type of sharing for this shared-reservation
