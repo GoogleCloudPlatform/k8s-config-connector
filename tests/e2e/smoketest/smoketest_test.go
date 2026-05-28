@@ -251,6 +251,19 @@ spec:
 		t.Fatalf("StorageBucket CRD not established: %v", err)
 	}
 
+	t.Logf("Waiting for webhook manager to be ready")
+	var waitErr error
+	for i := 0; i < 12; i++ {
+		waitErr = runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=condition=Available", "deployment/cnrm-webhook-manager", "--timeout=10s")
+		if waitErr == nil {
+			break
+		}
+		time.Sleep(5 * time.Second)
+	}
+	if waitErr != nil {
+		t.Fatalf("webhook manager failed to become ready: %v", waitErr)
+	}
+
 	t.Logf("Creating namespace and StorageBucket")
 	ns := "config-control"
 	if err := runCommand(ctx, t, root, "kubectl", "create", "ns", ns); err != nil && !strings.Contains(err.Error(), "already exists") {
@@ -277,10 +290,20 @@ spec:
   uniformBucketLevelAccess: true
 `, ns, ns)
 
-	applyBucket := exec.CommandContext(ctx, "kubectl", "apply", "-f", "-")
-	applyBucket.Stdin = strings.NewReader(bucketManifest)
-	if output, err := applyBucket.CombinedOutput(); err != nil {
-		t.Fatalf("failed to apply StorageBucket: %v\nOutput: %s", err, string(output))
+	t.Logf("Applying StorageBucket with retry (webhook might not be ready yet)")
+	var applyOutput []byte
+	var applyErr error
+	for i := 0; i < 12; i++ {
+		applyBucket := exec.CommandContext(ctx, "kubectl", "apply", "-f", "-")
+		applyBucket.Stdin = strings.NewReader(bucketManifest)
+		applyOutput, applyErr = applyBucket.CombinedOutput()
+		if applyErr == nil {
+			break
+		}
+		time.Sleep(5 * time.Second)
+	}
+	if applyErr != nil {
+		t.Fatalf("failed to apply StorageBucket: %v\nOutput: %s", applyErr, string(applyOutput))
 	}
 
 	t.Logf("Waiting for StorageBucket reconciliation (expected to fail with permission error)")
