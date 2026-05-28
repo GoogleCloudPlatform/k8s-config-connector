@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//	http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,6 +58,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".automated_backup_config")
 	f.SpecFields.Insert(".maintenance_policy.weekly_maintenance_window")
 	f.SpecFields.Insert(".kms_key")
+	f.SpecFields.Insert(".cross_cluster_replication_config")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".state")
@@ -72,6 +73,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".maintenance_policy.create_time")
 	f.StatusFields.Insert(".maintenance_policy.update_time")
 	f.StatusFields.Insert(".encryption_info")
+	f.StatusFields.Insert(".cross_cluster_replication_config")
 
 	return f
 }
