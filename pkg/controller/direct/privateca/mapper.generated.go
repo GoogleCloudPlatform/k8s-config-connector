@@ -36,7 +36,6 @@ func CAPool_IssuancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_Is
 	out := &krm.CAPool_IssuancePolicy{}
 	out.AllowedKeyTypes = direct.Slice_FromProto(mapCtx, in.AllowedKeyTypes, CAPool_IssuancePolicy_AllowedKeyType_FromProto)
 	// MISSING: BackdateDuration
-	// MISSING: AllowRequesterSpecifiedNotBeforeTime
 	out.MaximumLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaximumLifetime())
 	out.AllowedIssuanceModes = CAPool_IssuancePolicy_IssuanceModes_FromProto(mapCtx, in.GetAllowedIssuanceModes())
 	out.BaselineValues = X509Parameters_FromProto(mapCtx, in.GetBaselineValues())
@@ -51,7 +50,6 @@ func CAPool_IssuancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_Iss
 	out := &pb.CaPool_IssuancePolicy{}
 	out.AllowedKeyTypes = direct.Slice_ToProto(mapCtx, in.AllowedKeyTypes, CAPool_IssuancePolicy_AllowedKeyType_ToProto)
 	// MISSING: BackdateDuration
-	// MISSING: AllowRequesterSpecifiedNotBeforeTime
 	out.MaximumLifetime = direct.StringDuration_ToProto(mapCtx, in.MaximumLifetime)
 	out.AllowedIssuanceModes = CAPool_IssuancePolicy_IssuanceModes_ToProto(mapCtx, in.AllowedIssuanceModes)
 	out.BaselineValues = X509Parameters_ToProto(mapCtx, in.BaselineValues)
@@ -291,7 +289,6 @@ func PrivateCACAPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ca
 	}
 	out := &krm.PrivateCACAPoolObservedState{}
 	// MISSING: Name
-	// MISSING: EncryptionSpec
 	// MISSING: Labels
 	return out
 }
@@ -301,7 +298,6 @@ func PrivateCACAPoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Pri
 	}
 	out := &pb.CaPool{}
 	// MISSING: Name
-	// MISSING: EncryptionSpec
 	// MISSING: Labels
 	return out
 }
@@ -314,7 +310,6 @@ func PrivateCACAPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.CaPool) *kr
 	out.Tier = direct.Enum_FromProto(mapCtx, in.GetTier())
 	out.IssuancePolicy = CAPool_IssuancePolicy_FromProto(mapCtx, in.GetIssuancePolicy())
 	out.PublishingOptions = CAPool_PublishingOptions_FromProto(mapCtx, in.GetPublishingOptions())
-	// MISSING: EncryptionSpec
 	// MISSING: Labels
 	return out
 }
@@ -327,7 +322,6 @@ func PrivateCACAPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCACAP
 	out.Tier = direct.Enum_ToProto[pb.CaPool_Tier](mapCtx, in.Tier)
 	out.IssuancePolicy = CAPool_IssuancePolicy_ToProto(mapCtx, in.IssuancePolicy)
 	out.PublishingOptions = CAPool_PublishingOptions_ToProto(mapCtx, in.PublishingOptions)
-	// MISSING: EncryptionSpec
 	// MISSING: Labels
 	return out
 }

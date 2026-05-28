@@ -114,16 +114,6 @@ type CertificateIdentityConstraints struct {
 	AllowSubjectAltNamesPassthrough *bool `json:"allowSubjectAltNamesPassthrough,omitempty"`
 }
 
-/* unreachable type EncryptionSpec
-// +kcc:proto=google.cloud.security.privateca.v1.EncryptionSpec
-type EncryptionSpec struct {
-	// The resource name for a Cloud KMS key in the format
-	//  `projects/-*-/locations/-*-/keyRings/-*-/cryptoKeys/-*`.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.EncryptionSpec.cloud_kms_key
-	CloudKMSKey *string `json:"cloudKMSKey,omitempty"`
-}
-*/
-
 // +kcc:proto=google.cloud.security.privateca.v1.KeyUsage
 type KeyUsage struct {
 	// Describes high-level ways in which a key may be used.

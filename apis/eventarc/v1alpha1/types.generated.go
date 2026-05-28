@@ -40,17 +40,13 @@ type Channel struct {
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.provider
 	Provider *string `json:"provider,omitempty"`
 
-	// Optional. Resource name of a KMS crypto key (managed by the user) used to
+	// Resource name of a KMS crypto key (managed by the user) used to
 	//  encrypt/decrypt their event data.
 	//
 	//  It must match the pattern
 	//  `projects/* /locations/* /keyRings/* /cryptoKeys/*`.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.crypto_key_name
 	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
-
-	// Optional. Resource labels.
-	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.labels
-	Labels map[string]string `json:"labels,omitempty"`
 }
 */
 
@@ -80,8 +76,8 @@ type Enrollment struct {
 	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.cel_match
 	CelMatch *string `json:"celMatch,omitempty"`
 
-	// Required. Immutable. Resource name of the message bus identifying the
-	//  source of the messages. It matches the form
+	// Required. Resource name of the message bus identifying the source of the
+	//  messages. It matches the form
 	//  projects/{project}/locations/{location}/messageBuses/{messageBus}.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Enrollment.message_bus
 	MessageBus *string `json:"messageBus,omitempty"`
@@ -100,8 +96,6 @@ type Enrollment struct {
 type GoogleChannelConfig struct {
 	// Required. The resource name of the config. Must be in the format of,
 	//  `projects/{project}/locations/{location}/googleChannelConfig`.
-	//  In API responses, the config name always includes the projectID, regardless
-	//  of whether the projectID or projectNumber was provided.
 	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.name
 	Name *string `json:"name,omitempty"`
 
@@ -112,10 +106,6 @@ type GoogleChannelConfig struct {
 	//  `projects/* /locations/* /keyRings/* /cryptoKeys/*`.
 	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.crypto_key_name
 	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
-
-	// Optional. Resource labels.
-	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.labels
-	Labels map[string]string `json:"labels,omitempty"`
 }
 */
 

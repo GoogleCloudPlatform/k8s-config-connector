@@ -39,11 +39,6 @@ func APIHubDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Attributes
-	// MISSING: SourceMetadata
-	// MISSING: ManagementURL
-	// MISSING: SourceURI
-	// MISSING: SourceProject
-	// MISSING: SourceEnvironment
 	return out
 }
 func APIHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubDeploymentObservedState) *pb.Deployment {
@@ -56,11 +51,6 @@ func APIHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AP
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Attributes
-	// MISSING: SourceMetadata
-	// MISSING: ManagementURL
-	// MISSING: SourceURI
-	// MISSING: SourceProject
-	// MISSING: SourceEnvironment
 	return out
 }
 func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
@@ -71,7 +61,6 @@ func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues
 	out.EnumValues = AttributeValues_EnumAttributeValues_FromProto(mapCtx, in.GetEnumValues())
 	out.StringValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetStringValues())
 	out.JsonValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetJsonValues())
-	out.URIValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetUriValues())
 	// MISSING: Attribute
 	return out
 }
@@ -89,9 +78,6 @@ func AttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues)
 	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.JsonValues); oneof != nil {
 		out.Value = &pb.AttributeValues_JsonValues{JsonValues: oneof}
 	}
-	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.URIValues); oneof != nil {
-		out.Value = &pb.AttributeValues_UriValues{UriValues: oneof}
-	}
 	// MISSING: Attribute
 	return out
 }
@@ -103,7 +89,6 @@ func AttributeValuesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.At
 	// MISSING: EnumValues
 	// MISSING: StringValues
 	// MISSING: JsonValues
-	// MISSING: URIValues
 	out.Attribute = direct.LazyPtr(in.GetAttribute())
 	return out
 }
@@ -115,7 +100,6 @@ func AttributeValuesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Att
 	// MISSING: EnumValues
 	// MISSING: StringValues
 	// MISSING: JsonValues
-	// MISSING: URIValues
 	out.Attribute = direct.ValueOf(in.Attribute)
 	return out
 }
