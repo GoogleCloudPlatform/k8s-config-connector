@@ -1107,7 +1107,7 @@ type RuntimeInfo struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.Session
 type Session struct {
-	// Required. The resource name of the session.
+	// Identifier. The resource name of the session.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.name
 	Name *string `json:"name,omitempty"`
 
@@ -1115,7 +1115,7 @@ type Session struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.jupyter_session
 	JupyterSession *JupyterConfig `json:"jupyterSession,omitempty"`
 
-	// Optional. Spark Connect session config.
+	// Optional. Spark connect session config.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.spark_connect_session
 	SparkConnectSession *SparkConnectConfig `json:"sparkConnectSession,omitempty"`
 
