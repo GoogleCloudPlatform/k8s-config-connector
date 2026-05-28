@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -88,20 +87,6 @@ func (obj *OSConfigOSPolicyAssignment) GetIdentity(ctx context.Context, reader c
 	specIdentity, err := getIdentityFromOSConfigOSPolicyAssignmentSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
-	}
-
-	// Cross-check the identity against the status value, if present.
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		statusIdentity := &OSConfigOSPolicyAssignmentIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change OSConfigOSPolicyAssignment identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
 	}
 
 	return specIdentity, nil
