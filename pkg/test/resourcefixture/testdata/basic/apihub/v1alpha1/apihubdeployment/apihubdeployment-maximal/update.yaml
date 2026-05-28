@@ -1,0 +1,21 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubDeployment
+metadata:
+  name: apihubdeployment-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  displayName: "Maximal Deployment Updated"
+  description: "An updated and even more detailed deployment description."
+  documentation:
+    externalURI: "https://docs.example.com/api/v2"
+  deploymentTypeRef:
+    external: "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/other"
+  resourceURI: "https://apigee.googleapis.com/v2/organizations/${projectId}"
+  endpoints:
+    - "https://api.example.com/v3"
+  sloRef:
+    external: "projects/${projectId}/locations/global/attributes/system-slo/allowedValues/99_99"
+  environmentRef:
+    external: "projects/${projectId}/locations/global/attributes/system-environment/allowedValues/staging"

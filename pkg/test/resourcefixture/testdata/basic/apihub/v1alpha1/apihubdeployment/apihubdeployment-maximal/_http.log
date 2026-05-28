@@ -1,0 +1,352 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "deployment \"projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments?%24alt=json%3Benum-encoding%3Dint&deploymentId=apihubdeployment-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/apigee"
+        }
+      ]
+    }
+  },
+  "description": "A very detailed deployment description.",
+  "displayName": "Maximal Deployment",
+  "documentation": {
+    "externalUri": "https://docs.example.com/api"
+  },
+  "endpoints": [
+    "https://api.example.com/v1",
+    "https://api.example.com/v2"
+  ],
+  "environment": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-environment/allowedValues/production"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v1/organizations/${projectId}",
+  "slo": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-slo/allowedValues/99_9"
+        }
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/apigee"
+        }
+      ]
+    }
+  },
+  "description": "A very detailed deployment description.",
+  "displayName": "Maximal Deployment",
+  "documentation": {
+    "externalUri": "https://docs.example.com/api"
+  },
+  "endpoints": [
+    "https://api.example.com/v1",
+    "https://api.example.com/v2"
+  ],
+  "environment": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-environment/allowedValues/production"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v1/organizations/${projectId}",
+  "slo": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-slo/allowedValues/99_9"
+        }
+      ]
+    }
+  }
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/apigee"
+        }
+      ]
+    }
+  },
+  "description": "A very detailed deployment description.",
+  "displayName": "Maximal Deployment",
+  "documentation": {
+    "externalUri": "https://docs.example.com/api"
+  },
+  "endpoints": [
+    "https://api.example.com/v1",
+    "https://api.example.com/v2"
+  ],
+  "environment": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-environment/allowedValues/production"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v1/organizations/${projectId}",
+  "slo": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-slo/allowedValues/99_9"
+        }
+      ]
+    }
+  }
+}
+
+---
+
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=documentation%2CdeploymentType%2CresourceUri%2Cendpoints%2Cslo%2Cenvironment%2CdisplayName%2Cdescription
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: deployment.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-maximal-${uniqueId}
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/other"
+        }
+      ]
+    }
+  },
+  "description": "An updated and even more detailed deployment description.",
+  "displayName": "Maximal Deployment Updated",
+  "documentation": {
+    "externalUri": "https://docs.example.com/api/v2"
+  },
+  "endpoints": [
+    "https://api.example.com/v3"
+  ],
+  "environment": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-environment/allowedValues/staging"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v2/organizations/${projectId}",
+  "slo": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-slo/allowedValues/99_99"
+        }
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/other"
+        }
+      ]
+    }
+  },
+  "description": "An updated and even more detailed deployment description.",
+  "displayName": "Maximal Deployment Updated",
+  "documentation": {
+    "externalUri": "https://docs.example.com/api/v2"
+  },
+  "endpoints": [
+    "https://api.example.com/v3"
+  ],
+  "environment": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-environment/allowedValues/staging"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v2/organizations/${projectId}",
+  "slo": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-slo/allowedValues/99_99"
+        }
+      ]
+    }
+  }
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/other"
+        }
+      ]
+    }
+  },
+  "description": "An updated and even more detailed deployment description.",
+  "displayName": "Maximal Deployment Updated",
+  "documentation": {
+    "externalUri": "https://docs.example.com/api/v2"
+  },
+  "endpoints": [
+    "https://api.example.com/v3"
+  ],
+  "environment": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-environment/allowedValues/staging"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v2/organizations/${projectId}",
+  "slo": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-slo/allowedValues/99_99"
+        }
+      ]
+    }
+  }
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

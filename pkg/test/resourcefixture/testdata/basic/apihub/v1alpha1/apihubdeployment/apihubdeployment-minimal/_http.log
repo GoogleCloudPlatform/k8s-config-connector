@@ -1,0 +1,217 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "deployment \"projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments?%24alt=json%3Benum-encoding%3Dint&deploymentId=apihubdeployment-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/apigee"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal Deployment",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v1/organizations/${projectId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/apigee"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal Deployment",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v1/organizations/${projectId}"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/apigee"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal Deployment",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v1/organizations/${projectId}"
+}
+
+---
+
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: deployment.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-minimal-${uniqueId}
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/apigee"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal Deployment Updated",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v1/organizations/${projectId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/apigee"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal Deployment Updated",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v1/organizations/${projectId}"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "projects/${projectId}/locations/global/attributes/system-deployment-type/allowedValues/apigee"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal Deployment Updated",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}",
+  "resourceUri": "https://apigee.googleapis.com/v1/organizations/${projectId}"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/global/deployments/apihubdeployment-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fdeployments%2Fapihubdeployment-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
