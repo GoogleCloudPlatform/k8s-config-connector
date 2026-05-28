@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,13 +25,14 @@ var OSConfigOSPolicyAssignmentGVK = GroupVersion.WithKind("OSConfigOSPolicyAssig
 // OSConfigOSPolicyAssignmentSpec defines the desired state of OSConfigOSPolicyAssignment
 // +kcc:spec:proto=google.cloud.osconfig.v1.OSPolicyAssignment
 type OSConfigOSPolicyAssignmentSpec struct {
-	// The project that this resource belongs to.
+	// Immutable. The Project that this resource belongs to.
+	// +required
 	ProjectRef *parent.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
+	// Immutable. The location for the resource
 	Location string `json:"location"`
 
-	// The OSConfigOSPolicyAssignment name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// OS policy assignment description.
@@ -67,6 +68,9 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	// A unique specifier for the OSConfigOSPolicyAssignment resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	// Output only. Indicates that this revision has been successfully rolled out
 	// in this zone and new VMs will be assigned OS policies from this revision.
 	// For a given OS policy assignment, there is only one revision with a value
@@ -92,7 +96,7 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	// A new revision is committed whenever a rollout is triggered for a OS policy assignment
 	RevisionID *string `json:"revisionId,omitempty"`
 
-	// Output only. OS policy assignment rollout state
+	// Output only. OS policy assignment rollout state Possible values: ROLLOUT_STATE_UNSPECIFIED, IN_PROGRESS, CANCELLING, CANCELLED, SUCCEEDED
 	RolloutState *string `json:"rolloutState,omitempty"`
 
 	// Output only. Server generated unique id for the OS policy assignment resource.
@@ -157,17 +161,18 @@ type OSPolicy struct {
 	//  * Must end with a number or a letter.
 	//  * Must be unique within the assignment.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.id
-	ID *string `json:"id"`
+	// +required
+	ID string `json:"id"`
 
 	// Policy description.
 	//  Length of the description is limited to 1024 characters.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.description
 	Description *string `json:"description,omitempty"`
 
-	// Required. Policy mode
+	// Required. Policy mode Possible values: MODE_UNSPECIFIED, VALIDATION, ENFORCEMENT
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.mode
 	// +required
-	Mode *string `json:"mode"`
+	Mode string `json:"mode"`
 
 	// Required. List of resource groups for the policy.
 	//  For a particular VM, resource groups are evaluated in the order specified
@@ -194,7 +199,7 @@ type OSPolicy_InventoryFilter struct {
 	// Required. The OS short name
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.InventoryFilter.os_short_name
 	// +required
-	OSShortName *string `json:"osShortName"`
+	OSShortName string `json:"osShortName"`
 
 	// The OS version
 	//
@@ -218,7 +223,7 @@ type OSPolicy_Resource struct {
 	//  * Must be unique within the OS policy.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.id
 	// +required
-	ID *string `json:"id"`
+	ID string `json:"id"`
 
 	// Package resource
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.pkg
@@ -269,10 +274,10 @@ type OSPolicy_Resource_ExecResource_Exec struct {
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.Exec.args
 	Args []string `json:"args,omitempty"`
 
-	// Required. The script interpreter to use.
+	// Required. The script interpreter to use. Possible values: INTERPRETER_UNSPECIFIED, NONE, SHELL, POWERSHELL
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.Exec.interpreter
 	// +required
-	Interpreter *string `json:"interpreter"`
+	Interpreter string `json:"interpreter"`
 
 	// Only recorded for enforce Exec.
 	//  Path to an output file (that is created by this Exec) whose
@@ -312,12 +317,12 @@ type OSPolicy_Resource_File_GCS struct {
 	// Required. Bucket of the Cloud Storage object.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Gcs.bucket
 	// +required
-	Bucket *string `json:"bucket"`
+	Bucket string `json:"bucket"`
 
 	// Required. Name of the Cloud Storage object.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Gcs.object
 	// +required
-	Object *string `json:"object"`
+	Object string `json:"object"`
 
 	// Generation number of the Cloud Storage object.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Gcs.generation
@@ -330,7 +335,7 @@ type OSPolicy_Resource_File_Remote struct {
 	//  the protocol and path following the format `{protocol}://{location}`.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Remote.uri
 	// +required
-	URI *string `json:"uri"`
+	URI string `json:"uri"`
 
 	// SHA256 checksum of the remote file.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Remote.sha256_checksum
@@ -351,12 +356,12 @@ type OSPolicy_Resource_FileResource struct {
 	// Required. The absolute path of the file within the VM.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.FileResource.path
 	// +required
-	Path *string `json:"path"`
+	Path string `json:"path"`
 
-	// Required. Desired state of the file.
+	// Required. Desired state of the file. Possible values: OS_POLICY_COMPLIANCE_STATE_UNSPECIFIED, COMPLIANT, NON_COMPLIANT, UNKNOWN, NO_OS_POLICIES_APPLICABLE
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.FileResource.state
 	// +required
-	State *string `json:"state"`
+	State string `json:"state"`
 
 	// Consists of three octal digits which represent, in
 	//  order, the permissions of the owner, group, and other users for the
@@ -377,10 +382,10 @@ type OSPolicy_Resource_FileResource struct {
 
 // +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource
 type OSPolicy_Resource_PackageResource struct {
-	// Required. The desired state the agent should maintain for this package.
+	// Required. The desired state the agent should maintain for this package. Possible values: DESIRED_STATE_UNSPECIFIED, INSTALLED, REMOVED
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.desired_state
 	// +required
-	DesiredState *string `json:"desiredState"`
+	DesiredState string `json:"desiredState"`
 
 	// A package managed by Apt.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.apt
@@ -416,7 +421,7 @@ type OSPolicy_Resource_PackageResource_Apt struct {
 	// Required. Package name.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.APT.name
 	// +required
-	Name *string `json:"name"`
+	Name string `json:"name"`
 }
 
 // +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.Deb
@@ -439,7 +444,7 @@ type OSPolicy_Resource_PackageResource_GooGet struct {
 	// Required. Package name.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.GooGet.name
 	// +required
-	Name *string `json:"name"`
+	Name string `json:"name"`
 }
 
 // +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.MSI
@@ -477,7 +482,7 @@ type OSPolicy_Resource_PackageResource_Yum struct {
 	// Required. Package name.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.YUM.name
 	// +required
-	Name *string `json:"name"`
+	Name string `json:"name"`
 }
 
 // +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.Zypper
@@ -485,7 +490,7 @@ type OSPolicy_Resource_PackageResource_Zypper struct {
 	// Required. Package name.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.Zypper.name
 	// +required
-	Name *string `json:"name"`
+	Name string `json:"name"`
 }
 
 // +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource
@@ -509,20 +514,20 @@ type OSPolicy_Resource_RepositoryResource struct {
 
 // +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository
 type OSPolicy_Resource_RepositoryResource_AptRepository struct {
-	// Required. Type of archive files in this repository.
+	// Required. Type of archive files in this repository. Possible values: ARCHIVE_TYPE_UNSPECIFIED, DEB, DEB_SRC
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository.archive_type
 	// +required
-	ArchiveType *string `json:"archiveType"`
+	ArchiveType string `json:"archiveType"`
 
 	// Required. URI for this repository.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository.uri
 	// +required
-	URI *string `json:"uri"`
+	URI string `json:"uri"`
 
 	// Required. Distribution of this repository.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository.distribution
 	// +required
-	Distribution *string `json:"distribution"`
+	Distribution string `json:"distribution"`
 
 	// Required. List of components for this repository. Must contain at
 	//  least one item.
@@ -540,12 +545,13 @@ type OSPolicy_Resource_RepositoryResource_AptRepository struct {
 type OSPolicy_Resource_RepositoryResource_GooRepository struct {
 	// Required. The name of the repository.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.GooRepository.name
-	Name *string `json:"name"`
+	// +required
+	Name string `json:"name"`
 
 	// Required. The url of the repository.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.GooRepository.url
 	// +required
-	URL *string `json:"url"`
+	URL string `json:"url"`
 }
 
 // +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository
@@ -556,7 +562,7 @@ type OSPolicy_Resource_RepositoryResource_YumRepository struct {
 	//  identifier when checking for resource conflicts.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository.id
 	// +required
-	ID *string `json:"id"`
+	ID string `json:"id"`
 
 	// The display name of the repository.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository.display_name
@@ -565,7 +571,7 @@ type OSPolicy_Resource_RepositoryResource_YumRepository struct {
 	// Required. The location of the repository directory.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository.base_url
 	// +required
-	BaseURL *string `json:"baseUrl"`
+	BaseURL string `json:"baseUrl"`
 
 	// URIs of GPG keys.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository.gpg_keys
@@ -580,7 +586,7 @@ type OSPolicy_Resource_RepositoryResource_ZypperRepository struct {
 	//  identifier when checking for GuestPolicy conflicts.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.ZypperRepository.id
 	// +required
-	ID *string `json:"id"`
+	ID string `json:"id"`
 
 	// The display name of the repository.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.ZypperRepository.display_name
@@ -589,7 +595,7 @@ type OSPolicy_Resource_RepositoryResource_ZypperRepository struct {
 	// Required. The location of the repository directory.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.ZypperRepository.base_url
 	// +required
-	BaseURL *string `json:"baseUrl"`
+	BaseURL string `json:"baseUrl"`
 
 	// URIs of GPG keys.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.ZypperRepository.gpg_keys
@@ -655,7 +661,7 @@ type OSPolicyAssignment_InstanceFilter_Inventory struct {
 	// Required. The OS short name
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.InstanceFilter.Inventory.os_short_name
 	// +required
-	OSShortName *string `json:"osShortName"`
+	OSShortName string `json:"osShortName"`
 
 	// The OS version
 	//
@@ -692,5 +698,5 @@ type OSPolicyAssignment_Rollout struct {
 	//  applied.
 	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.Rollout.min_wait_duration
 	// +required
-	MinWaitDuration *string `json:"minWaitDuration"`
+	MinWaitDuration string `json:"minWaitDuration"`
 }

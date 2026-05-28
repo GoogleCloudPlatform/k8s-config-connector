@@ -137,7 +137,7 @@ spec:
                     type: array
                 type: object
               location:
-                description: The location of this resource.
+                description: Immutable. The location for the resource
                 type: string
               osPolicies:
                 description: Required. List of OS policies to be applied to the VMs.
@@ -165,7 +165,8 @@ spec:
                          * Must be unique within the assignment.
                       type: string
                     mode:
-                      description: Required. Policy mode
+                      description: 'Required. Policy mode Possible values: MODE_UNSPECIFIED,
+                        VALIDATION, ENFORCEMENT'
                       type: string
                     resourceGroups:
                       description: |-
@@ -288,8 +289,9 @@ spec:
                                               type: object
                                           type: object
                                         interpreter:
-                                          description: Required. The script interpreter
-                                            to use.
+                                          description: 'Required. The script interpreter
+                                            to use. Possible values: INTERPRETER_UNSPECIFIED,
+                                            NONE, SHELL, POWERSHELL'
                                           type: string
                                         outputFilePath:
                                           description: Only recorded for enforce Exec.
@@ -376,8 +378,9 @@ spec:
                                               type: object
                                           type: object
                                         interpreter:
-                                          description: Required. The script interpreter
-                                            to use.
+                                          description: 'Required. The script interpreter
+                                            to use. Possible values: INTERPRETER_UNSPECIFIED,
+                                            NONE, SHELL, POWERSHELL'
                                           type: string
                                         outputFilePath:
                                           description: Only recorded for enforce Exec.
@@ -479,8 +482,9 @@ spec:
                                          read only: 4
                                       type: string
                                     state:
-                                      description: Required. Desired state of the
-                                        file.
+                                      description: 'Required. Desired state of the
+                                        file. Possible values: OS_POLICY_COMPLIANCE_STATE_UNSPECIFIED,
+                                        COMPLIANT, NON_COMPLIANT, UNKNOWN, NO_OS_POLICIES_APPLICABLE'
                                       type: string
                                   required:
                                   - path
@@ -575,8 +579,10 @@ spec:
                                       - source
                                       type: object
                                     desiredState:
-                                      description: Required. The desired state the
-                                        agent should maintain for this package.
+                                      description: 'Required. The desired state the
+                                        agent should maintain for this package. Possible
+                                        values: DESIRED_STATE_UNSPECIFIED, INSTALLED,
+                                        REMOVED'
                                       type: string
                                     googet:
                                       description: A package managed by GooGet.
@@ -748,8 +754,9 @@ spec:
                                       description: An Apt Repository.
                                       properties:
                                         archiveType:
-                                          description: Required. Type of archive files
-                                            in this repository.
+                                          description: 'Required. Type of archive
+                                            files in this repository. Possible values:
+                                            ARCHIVE_TYPE_UNSPECIFIED, DEB, DEB_SRC'
                                           type: string
                                         components:
                                           description: Required. List of components
@@ -861,7 +868,7 @@ spec:
                   type: object
                 type: array
               projectRef:
-                description: The project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -889,8 +896,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The OSConfigOSPolicyAssignment name. If not given, the
-                  metadata.name will be used.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               rollout:
                 description: 'Required. Rollout to deploy the OS policy assignment.
@@ -979,6 +987,10 @@ spec:
                 description: The etag for this OS policy assignment. If this is provided
                   on update, it must match the server's etag.
                 type: string
+              externalRef:
+                description: A unique specifier for the OSConfigOSPolicyAssignment
+                  resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -1001,7 +1013,9 @@ spec:
                   is committed whenever a rollout is triggered for a OS policy assignment
                 type: string
               rolloutState:
-                description: Output only. OS policy assignment rollout state
+                description: 'Output only. OS policy assignment rollout state Possible
+                  values: ROLLOUT_STATE_UNSPECIFIED, IN_PROGRESS, CANCELLING, CANCELLED,
+                  SUCCEEDED'
                 type: string
               uid:
                 description: Output only. Server generated unique id for the OS policy
