@@ -61,6 +61,7 @@ For each identified resource, create a new issue using `gh`.
 Add the following labels to the created issue:
 - `overseer`
 - `area/direct`
+- `direct-migration`
 - `priority/medium`
 - `step/identity-reference`
 
