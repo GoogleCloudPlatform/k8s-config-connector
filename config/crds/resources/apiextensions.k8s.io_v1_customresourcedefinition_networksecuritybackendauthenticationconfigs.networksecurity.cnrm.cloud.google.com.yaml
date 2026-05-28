@@ -63,7 +63,7 @@ spec:
             description: NetworkSecurityBackendAuthenticationConfigSpec defines the
               desired state of NetworkSecurityBackendAuthenticationConfig
             properties:
-              clientCertificate:
+              clientCertificateRef:
                 description: |-
                   Optional. A reference to a certificatemanager.googleapis.com.Certificate
                    resource. This is a relative resource path following the form
@@ -72,7 +72,33 @@ spec:
                    Used by a BackendService to negotiate mTLS when the backend connection uses
                    TLS and the backend requests a client certificate. Must have a CLIENT_AUTH
                    scope.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed CertificateManagerCertificate
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificates/{{certificate}}".
+                    type: string
+                  name:
+                    description: The name of a CertificateManagerCertificate resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a CertificateManagerCertificate
+                      resource.
+                    type: string
+                type: object
               description:
                 description: Optional. Free-text description of the resource.
                 type: string
@@ -120,7 +146,7 @@ spec:
                 description: The NetworkSecurityBackendAuthenticationConfig name.
                   If not given, the metadata.name will be used.
                 type: string
-              trustConfig:
+              trustConfigRef:
                 description: |-
                   Optional. A reference to a TrustConfig resource from the
                    certificatemanager.googleapis.com namespace. This is a relative resource
@@ -130,7 +156,33 @@ spec:
                    A BackendService uses the chain of trust represented by this TrustConfig,
                    if specified, to validate the server certificates presented by the backend.
                    Required unless wellKnownRoots is set to PUBLIC_ROOTS.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed CertificateManagerTrustConfig
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/trustConfigs/{{trustConfig}}".
+                    type: string
+                  name:
+                    description: The name of a CertificateManagerTrustConfig resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a CertificateManagerTrustConfig
+                      resource.
+                    type: string
+                type: object
               wellKnownRoots:
                 description: Well known roots to use for server certificate validation.
                 enum:
@@ -139,7 +191,6 @@ spec:
                 - PUBLIC_ROOTS
                 type: string
             required:
-            - location
             - projectRef
             type: object
           status:
