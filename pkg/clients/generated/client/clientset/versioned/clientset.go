@@ -148,6 +148,7 @@ import (
 	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
 	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1alpha1"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1"
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1beta1"
@@ -326,6 +327,7 @@ type Interface interface {
 	NetworkconnectivityV1alpha1() networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Interface
 	NetworkconnectivityV1beta1() networkconnectivityv1beta1.NetworkconnectivityV1beta1Interface
 	NetworkmanagementV1alpha1() networkmanagementv1alpha1.NetworkmanagementV1alpha1Interface
+	NetworksecurityV1alpha1() networksecurityv1alpha1.NetworksecurityV1alpha1Interface
 	NetworksecurityV1beta1() networksecurityv1beta1.NetworksecurityV1beta1Interface
 	NetworkservicesV1alpha1() networkservicesv1alpha1.NetworkservicesV1alpha1Interface
 	NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface
@@ -502,6 +504,7 @@ type Clientset struct {
 	networkconnectivityV1alpha1    *networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Client
 	networkconnectivityV1beta1     *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
 	networkmanagementV1alpha1      *networkmanagementv1alpha1.NetworkmanagementV1alpha1Client
+	networksecurityV1alpha1        *networksecurityv1alpha1.NetworksecurityV1alpha1Client
 	networksecurityV1beta1         *networksecurityv1beta1.NetworksecurityV1beta1Client
 	networkservicesV1alpha1        *networkservicesv1alpha1.NetworkservicesV1alpha1Client
 	networkservicesV1beta1         *networkservicesv1beta1.NetworkservicesV1beta1Client
@@ -1165,6 +1168,11 @@ func (c *Clientset) NetworkconnectivityV1beta1() networkconnectivityv1beta1.Netw
 // NetworkmanagementV1alpha1 retrieves the NetworkmanagementV1alpha1Client
 func (c *Clientset) NetworkmanagementV1alpha1() networkmanagementv1alpha1.NetworkmanagementV1alpha1Interface {
 	return c.networkmanagementV1alpha1
+}
+
+// NetworksecurityV1alpha1 retrieves the NetworksecurityV1alpha1Client
+func (c *Clientset) NetworksecurityV1alpha1() networksecurityv1alpha1.NetworksecurityV1alpha1Interface {
+	return c.networksecurityV1alpha1
 }
 
 // NetworksecurityV1beta1 retrieves the NetworksecurityV1beta1Client
@@ -1943,6 +1951,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.networksecurityV1alpha1, err = networksecurityv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.networksecurityV1beta1, err = networksecurityv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2279,6 +2291,7 @@ func New(c rest.Interface) *Clientset {
 	cs.networkconnectivityV1alpha1 = networkconnectivityv1alpha1.New(c)
 	cs.networkconnectivityV1beta1 = networkconnectivityv1beta1.New(c)
 	cs.networkmanagementV1alpha1 = networkmanagementv1alpha1.New(c)
+	cs.networksecurityV1alpha1 = networksecurityv1alpha1.New(c)
 	cs.networksecurityV1beta1 = networksecurityv1beta1.New(c)
 	cs.networkservicesV1alpha1 = networkservicesv1alpha1.New(c)
 	cs.networkservicesV1beta1 = networkservicesv1beta1.New(c)
