@@ -23,4 +23,4 @@ metadata:
 spec:
   routingMode: GLOBAL
   autoCreateSubnetworks: false
-  enableUlaInternalIPV6: true
+  enableUlaInternalIpv6: true

@@ -63,7 +63,7 @@ type ComputeNetworkSpec struct {
 	// with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs
 	// with varying MTUs.
 	// +kcc:proto:field=google.cloud.compute.v1.Network.mtu
-	Mtu *int32 `json:"mtu,omitempty"`
+	Mtu *int `json:"mtu,omitempty"`
 
 	// Set the order that Firewall Rules and Firewall Policies
 	// are evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
@@ -87,31 +87,13 @@ type ComputeNetworkStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
-	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
-
-	// A unique specifier for the ComputeNetwork resource in GCP.
-	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ComputeNetworkObservedState `json:"observedState,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// The gateway address for default routing out of the network. This value
 	// is selected by GCP.
 	GatewayIPV4 *string `json:"gatewayIpv4,omitempty"`
 
 	// The self link of the ComputeNetwork.
-	SelfLink *string `json:"selfLink,omitempty"`
-}
-
-// ComputeNetworkObservedState is the state of the ComputeNetwork resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.compute.v1.Network
-type ComputeNetworkObservedState struct {
-	// [Output Only] The gateway address for default routing out of the network, selected by Google Cloud.
-	// +kcc:proto:field=google.cloud.compute.v1.Network.gateway_i_pv4
-	GatewayIPV4 *string `json:"gatewayIpv4,omitempty"`
-
-	// [Output Only] Server-defined URL for the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.Network.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 }
 
@@ -134,7 +116,6 @@ type ComputeNetwork struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// +required
 	Spec   ComputeNetworkSpec   `json:"spec,omitempty"`
 	Status ComputeNetworkStatus `json:"status,omitempty"`
 }

@@ -24,4 +24,4 @@ spec:
   routingMode: GLOBAL
   autoCreateSubnetworks: true
   # ULA internal ipv6 is not supported for auto mode network
-  enableUlaInternalIPV6: false
+  enableUlaInternalIpv6: false

@@ -101,7 +101,6 @@ spec:
                   clamping or dropped with an ICMP 'Fragmentation-Needed' message
                   if the packets are routed to the Internet or other VPCs with varying
                   MTUs.
-                format: int32
                 type: integer
               networkFirewallPolicyEnforcementOrder:
                 description: 'Set the order that Firewall Rules and Firewall Policies
@@ -150,10 +149,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              externalRef:
-                description: A unique specifier for the ComputeNetwork resource in
-                  GCP.
-                type: string
               gatewayIpv4:
                 description: The gateway address for default routing out of the network.
                   This value is selected by GCP.
@@ -166,24 +161,10 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                properties:
-                  gatewayIpv4:
-                    description: '[Output Only] The gateway address for default routing
-                      out of the network, selected by Google Cloud.'
-                    type: string
-                  selfLink:
-                    description: '[Output Only] Server-defined URL for the resource.'
-                    type: string
-                type: object
               selfLink:
                 description: The self link of the ComputeNetwork.
                 type: string
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
