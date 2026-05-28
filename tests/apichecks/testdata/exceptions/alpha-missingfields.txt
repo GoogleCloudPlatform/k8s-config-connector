@@ -2181,6 +2181,11 @@
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].substitute.path" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.condition" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.path" is not set in unstructured objects
+[missing_field] crd=securitycentermuteconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=securitycentermuteconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.expiryTime" is not set in unstructured objects
+[missing_field] crd=securitycentermuteconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter" is not set in unstructured objects
+[missing_field] crd=securitycentermuteconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=securitycentermuteconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.configId" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
