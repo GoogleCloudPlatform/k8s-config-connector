@@ -18,7 +18,14 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
+cd "${REPO_ROOT}/dev/tools/controllerbuilder"
+
+# Optional: proto generation
+if [[ -z "${SKIP_GENERATE_PROTOS:-}" ]]; then
+  ./generate-proto.sh
+else
+  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
+fi
 
 # We need a newer googleapis to get BackendAuthenticationConfig
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced" 
@@ -45,4 +52,10 @@ go run . generate-types \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
   --proto-source-path ${PROTO_OUT}
 
-cd ${REPO_ROOT}
+cd "${REPO_ROOT}"
+
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+else
+  echo "SKIP_GENERATE_CRDS is set; skipping generation of CRDs"
+fi
