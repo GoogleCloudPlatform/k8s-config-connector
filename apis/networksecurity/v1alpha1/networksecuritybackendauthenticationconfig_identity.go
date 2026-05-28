@@ -30,7 +30,7 @@ var (
 	_ identity.Resource   = &NetworkSecurityBackendAuthenticationConfig{}
 )
 
-var NetworkSecurityBackendAuthenticationConfigIdentityFormat = gcpurls.Template[NetworkSecurityBackendAuthenticationConfigIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/backendAuthenticationConfigs/{backend_authentication_config}")
+var NetworkSecurityBackendAuthenticationConfigIdentityFormat = gcpurls.Template[NetworkSecurityBackendAuthenticationConfigIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/backendAuthenticationConfigs/{backendauthenticationconfig}")
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityBackendAuthenticationConfigIdentity struct {
