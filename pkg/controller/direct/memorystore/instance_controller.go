@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	memorystorerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -41,7 +42,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(refsv1beta1.MemorystoreInstanceGVK, NewInstanceModel)
+	registry.RegisterModel(memorystorerefs.MemorystoreInstanceGVK, NewInstanceModel)
 }
 
 func NewInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -109,7 +110,7 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 	}
 
 	return &InstanceAdapter{
-		id:        id.(*krm.MemorystoreInstanceIdentity),
+		id:        id.(*memorystorerefs.MemorystoreInstanceIdentity),
 		gcpClient: gcpClient,
 		desired:   desired,
 	}, nil
@@ -121,7 +122,7 @@ func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type InstanceAdapter struct {
-	id        *krm.MemorystoreInstanceIdentity
+	id        *memorystorerefs.MemorystoreInstanceIdentity
 	gcpClient *gcp.Client
 	desired   *memorystorepb.Instance
 	actual    *memorystorepb.Instance
@@ -351,7 +352,7 @@ func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	}
 
 	u.SetName(a.id.Instance)
-	u.SetGroupVersionKind(refsv1beta1.MemorystoreInstanceGVK)
+	u.SetGroupVersionKind(memorystorerefs.MemorystoreInstanceGVK)
 
 	u.Object = uObj
 	return u, nil

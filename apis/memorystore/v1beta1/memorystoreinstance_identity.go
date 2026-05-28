@@ -20,47 +20,16 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	memorystorerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
-	_ identity.IdentityV2 = &MemorystoreInstanceIdentity{}
-	_ identity.Resource   = &MemorystoreInstance{}
+	_ identity.Resource = &MemorystoreInstance{}
 )
 
-var MemorystoreInstanceIdentityFormat = gcpurls.Template[MemorystoreInstanceIdentity]("memorystore.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
-
-// +k8s:deepcopy-gen=false
-type MemorystoreInstanceIdentity struct {
-	Project  string
-	Location string
-	Instance string
-}
-
-func (i *MemorystoreInstanceIdentity) String() string {
-	return MemorystoreInstanceIdentityFormat.ToString(*i)
-}
-
-func (i *MemorystoreInstanceIdentity) FromExternal(ref string) error {
-	parsed, match, err := MemorystoreInstanceIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of MemorystoreInstance external=%q was not known (use %s): %w", ref, MemorystoreInstanceIdentityFormat.CanonicalForm(), err)
-	}
-	if !match {
-		return fmt.Errorf("format of MemorystoreInstance external=%q was not known (use %s)", ref, MemorystoreInstanceIdentityFormat.CanonicalForm())
-	}
-
-	*i = *parsed
-	return nil
-}
-
-func (i *MemorystoreInstanceIdentity) Host() string {
-	return MemorystoreInstanceIdentityFormat.Host()
-}
-
-func getIdentityFromMemorystoreInstanceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*MemorystoreInstanceIdentity, error) {
+func getIdentityFromMemorystoreInstanceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*memorystorerefs.MemorystoreInstanceIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -76,7 +45,7 @@ func getIdentityFromMemorystoreInstanceSpec(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &MemorystoreInstanceIdentity{
+	identity := &memorystorerefs.MemorystoreInstanceIdentity{
 		Project:  projectID,
 		Location: location,
 		Instance: resourceID,
@@ -94,7 +63,7 @@ func (obj *MemorystoreInstance) GetIdentity(ctx context.Context, reader client.R
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &MemorystoreInstanceIdentity{}
+		statusIdentity := &memorystorerefs.MemorystoreInstanceIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}

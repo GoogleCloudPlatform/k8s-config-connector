@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package refs
 
 import (
 	"context"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -28,7 +29,7 @@ var MemorystoreInstanceGVK = schema.GroupVersionKind{
 	Kind:    "MemorystoreInstance",
 }
 
-var _ Ref = &MemorystoreInstanceRef{}
+var _ refs.Ref = &MemorystoreInstanceRef{}
 
 // MemorystoreInstanceRef defines the resource reference to MemorystoreInstance, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -45,7 +46,7 @@ type MemorystoreInstanceRef struct {
 }
 
 func init() {
-	Register(&MemorystoreInstanceRef{})
+	refs.Register(&MemorystoreInstanceRef{})
 }
 
 func (r *MemorystoreInstanceRef) GetGVK() schema.GroupVersionKind {
@@ -78,5 +79,5 @@ func (r *MemorystoreInstanceRef) ValidateExternal(ref string) error {
 // Normalize ensures the "External" reference (in string format) is
 // set for a given Ref, and that it has the correct format.
 func (r *MemorystoreInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return Normalize(ctx, reader, r, defaultNamespace)
+	return refs.Normalize(ctx, reader, r, defaultNamespace)
 }

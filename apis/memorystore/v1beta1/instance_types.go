@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	memorystorerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -412,7 +413,7 @@ type CrossInstanceReplicationConfig struct {
 type CrossInstanceReplicationConfig_RemoteInstance struct {
 	// Optional. The full resource path of the remote instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
-	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
+	InstanceRef *memorystorerefs.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
 }
 
 type CrossInstanceReplicationConfigObservedState struct {
