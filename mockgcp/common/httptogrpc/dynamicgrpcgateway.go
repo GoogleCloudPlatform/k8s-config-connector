@@ -26,11 +26,14 @@ import (
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/klog/v2"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 )
 
 // Mux is the primary interface for mapping HTTP requests to gRPC method calls.
@@ -154,13 +157,32 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	http.Error(w, "not found", http.StatusNotFound)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte(`{
+  "error": {
+    "code": 404,
+    "message": "Not Found",
+    "status": "NOT_FOUND",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not Found",
+        "reason": "notFound"
+      }
+    ]
+  }
+}`))
 }
 
 // serveHTTPMethod serves a single HTTP method mapped to a gRPC method.
 func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method *grpcMethod, pathValues map[string]string) {
 	ctx := r.Context()
 	log := klog.FromContext(ctx)
+
+	// Set the query string in the metadata, so it can be used for field filtering
+	md := metadata.Pairs(common.MetadataKeyHttpRequestQuery, r.URL.RawQuery)
+	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	call := &httpMethodCall{
 		parent:     m,
@@ -262,7 +284,10 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 					// responseOptions.PrettyPrint = values
 					continue
 				}
-
+				if k == "fields" || k == "$fields" {
+					// Handled manually by some methods
+					continue
+				}
 				// Convert camelCase to snake_case
 				var protoKey []rune
 				for _, c := range k {

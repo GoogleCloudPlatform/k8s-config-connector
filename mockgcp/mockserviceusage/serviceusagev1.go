@@ -28,9 +28,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"k8s.io/klog/v2"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/serviceusage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -296,7 +296,7 @@ func (s *ServiceUsageV1) ListServices(ctx context.Context, req *pb.ListServicesR
 		md, _ := metadata.FromIncomingContext(ctx)
 		query := ""
 		if md != nil {
-			values := md.Get(httpmux.MetadataKeyHttpRequestQuery)
+			values := md.Get(common.MetadataKeyHttpRequestQuery)
 			if len(values) > 0 {
 				if len(values) > 1 {
 					return nil, status.Errorf(codes.InvalidArgument, "multiple http.request.query metadata entries found")
