@@ -31,8 +31,9 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/pubsub/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
+	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
 )
 
 type publisherService struct {
@@ -126,9 +127,9 @@ func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicR
 			}
 		case "labels":
 			updated.Labels = req.GetTopic().GetLabels()
-		case "schema_settings":
+		case "schema_settings", "schemaSettings":
 			updated.SchemaSettings = req.GetTopic().GetSchemaSettings()
-		case "message_retention_duration":
+		case "message_retention_duration", "messageRetentionDuration":
 			updated.MessageRetentionDuration = req.GetTopic().GetMessageRetentionDuration()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
