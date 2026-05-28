@@ -84,8 +84,9 @@ Please implement the Phase 2 (Controller and E2E Tests) for `<ResourceKind>` by 
 If you find any shortcomings in the skills, you may update their respective `SKILL.md` files. For service-specific observations, MockGCP alignment issues, or GCP SDK quirks, use `.gemini/journals/<service_name>.md` as described in the `kcc-agentic-journaler` skill to avoid merge conflicts.
 
 4. **Create PR**:
-   - Create a Pull Request with your changes.
-   - Apply the same labels to the PR as are on this issue.
-   - Include a link to the chore file (`.agents/greenfield-direct-controller.md`) in the PR description.
-   - Include `Fixes #<issue-number>` in the PR description.
+   - create a Pull Request with your changes using the `send-pr` skill.
+   - pass the issue labels to the `send-pr.sh` script using the `--labels` flag (e.g. `--labels "overseer,area/direct,priority/medium,step/gen-types,greenfield,chore/ai"`).
+   - apply the same labels to the PR as are on this issue.
+   - include a link to the chore file (`.agents/greenfield-direct-controller.md`) in the PR description.
+   - include `Fixes #<issue-number>` in the PR description.
 ------------ END ISSUE BODY TEMPLATE ------------
