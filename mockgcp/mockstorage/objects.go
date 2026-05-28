@@ -18,7 +18,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -32,7 +32,7 @@ type objects struct {
 func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (*pb.Objects, error) {
 	// A stub implementation, just to support deletion (for now)
 
-	httpmux.SetExpiresHeader(ctx, time.Now())
+	httptogrpc.SetExpiresHeader(ctx, time.Now())
 
 	ret := &pb.Objects{}
 	ret.Kind = PtrTo("storage#objects")

@@ -19,6 +19,7 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -31,11 +32,21 @@ type httpMethodCall struct {
 	grpcMethod *grpcMethod
 	r          *http.Request
 	w          http.ResponseWriter
+
+	headerMD  metadata.MD
+	trailerMD metadata.MD
 }
 
 // SendErrorResponse sends an error response for a GRPC method call over HTTP.
 func (c *httpMethodCall) SendErrorResponse(err error) {
 	ctx := c.r.Context()
+	if c.headerMD != nil || c.trailerMD != nil {
+		md := &ServerMetadata{
+			HeaderMD:  c.headerMD,
+			TrailerMD: c.trailerMD,
+		}
+		ctx = NewContextWithServerMetadata(ctx, md)
+	}
 
 	klog.Warningf("sending error response for %T %+v", err, err)
 
@@ -44,8 +55,8 @@ func (c *httpMethodCall) SendErrorResponse(err error) {
 	if ok {
 		response := statusErr.Proto()
 
-		httpErrorResponse := &httpErrorResponse{
-			Error: &httpError{
+		HTTPErrorResponse := &HTTPErrorResponse{
+			Error: &HTTPError{
 				Code:    http.StatusInternalServerError,
 				Message: response.Message,
 			},
@@ -53,11 +64,24 @@ func (c *httpMethodCall) SendErrorResponse(err error) {
 
 		switch statusErr.Code() {
 		case codes.NotFound:
-			httpErrorResponse.Error.Code = http.StatusNotFound
-			httpErrorResponse.Error.Status = "NOT_FOUND"
+			HTTPErrorResponse.Error.Code = http.StatusNotFound
+			HTTPErrorResponse.Error.Status = "NOT_FOUND"
+		case codes.AlreadyExists:
+			HTTPErrorResponse.Error.Code = http.StatusConflict
+			HTTPErrorResponse.Error.Status = "ALREADY_EXISTS"
+		case codes.PermissionDenied:
+			HTTPErrorResponse.Error.Code = http.StatusForbidden
+			HTTPErrorResponse.Error.Status = "PERMISSION_DENIED"
+		case codes.InvalidArgument:
+			HTTPErrorResponse.Error.Code = http.StatusBadRequest
+			HTTPErrorResponse.Error.Status = "INVALID_ARGUMENT"
 		}
 
-		body, err := json.Marshal(httpErrorResponse)
+		if c.parent.RewriteError != nil {
+			c.parent.RewriteError(ctx, HTTPErrorResponse.Error)
+		}
+
+		body, err := json.Marshal(HTTPErrorResponse)
 		if err != nil {
 			klog.Errorf("failed to marshal error: %v", err)
 			http.Error(c.w, "internal error", http.StatusInternalServerError)
@@ -68,11 +92,11 @@ func (c *httpMethodCall) SendErrorResponse(err error) {
 
 		c.parent.addGCPHeaders(ctx, c.w, response)
 
-		c.w.WriteHeader(httpErrorResponse.Error.Code)
+		c.w.WriteHeader(HTTPErrorResponse.Error.Code)
 		if _, err := c.w.Write(body); err != nil {
 			klog.Errorf("failed to write error: %v", err)
 		}
-		klog.Infof("sent response %v with body %v", httpErrorResponse.Error.Code, string(body))
+		klog.Infof("sent response %v with body %v", HTTPErrorResponse.Error.Code, string(body))
 		return
 	}
 	klog.Warningf("stub-handling error %v", err)
@@ -104,8 +128,18 @@ func (o *ResponseOptions) populateMarshalOptions(marshalOptions *protojson.Marsh
 // SendResponse sends a successful response for a GRPC method call over HTTP.
 func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions ResponseOptions) {
 	ctx := c.r.Context()
+	if c.headerMD != nil || c.trailerMD != nil {
+		md := &ServerMetadata{
+			HeaderMD:  c.headerMD,
+			TrailerMD: c.trailerMD,
+		}
+		ctx = NewContextWithServerMetadata(ctx, md)
+	}
 
 	httpCode := http.StatusOK
+	if code, found := GetStatusCode(ctx); found {
+		httpCode = code
+	}
 
 	c.w.Header().Set("Content-Type", "application/json")
 
@@ -118,6 +152,11 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 		if c.grpcMethod.parentService.options.EmitUnpopulated {
 			marshalOptions.EmitUnpopulated = true
 		}
+	}
+
+	if httpCode == http.StatusNoContent {
+		c.w.WriteHeader(httpCode)
+		return
 	}
 
 	body, err := marshalOptions.Marshal(response)

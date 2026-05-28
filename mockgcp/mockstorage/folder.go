@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
 )
 
@@ -50,7 +50,7 @@ func (s *folder) GetFolder(ctx context.Context, req *pb.GetFolderRequest) (*pb.F
 		return nil, err
 	}
 
-	httpmux.SetExpiresHeader(ctx, time.Now())
+	httptogrpc.SetExpiresHeader(ctx, time.Now())
 
 	return obj, nil
 }
@@ -94,7 +94,7 @@ func (s *folder) DeleteFolder(ctx context.Context, req *pb.DeleteFolderRequest) 
 		return nil, err
 	}
 
-	httpmux.SetStatusCode(ctx, http.StatusNoContent)
+	httptogrpc.SetStatusCode(ctx, http.StatusNoContent)
 
 	return &emptypb.Empty{}, nil
 }

@@ -17,9 +17,75 @@ package httptogrpc
 import (
 	"context"
 	"net/http"
+	"strconv"
+	"time"
 
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
 )
+
+type ServerMetadata struct {
+	HeaderMD  metadata.MD
+	TrailerMD metadata.MD
+}
+
+type serverMetadataKey struct{}
+
+func NewContextWithServerMetadata(ctx context.Context, md *ServerMetadata) context.Context {
+	return context.WithValue(ctx, serverMetadataKey{}, md)
+}
+
+func ServerMetadataFromContext(ctx context.Context) (*ServerMetadata, bool) {
+	md, ok := ctx.Value(serverMetadataKey{}).(*ServerMetadata)
+	return md, ok
+}
+
+const MetadataKeyExpires = "x-expires"
+const MetadataKeyStatusCode = "x-http-code"
+
+func SetExpiresHeader(ctx context.Context, expiresAt time.Time) {
+	expires := expiresAt.UTC().Format(http.TimeFormat)
+
+	if err := grpc.SetHeader(ctx, metadata.Pairs(MetadataKeyExpires, expires)); err != nil {
+		// klog.Fatalf("error setting x-expires header: %v", err)
+	}
+}
+
+func SetStatusCode(ctx context.Context, code int) {
+	if err := grpc.SetHeader(ctx, metadata.Pairs(MetadataKeyStatusCode, strconv.Itoa(code))); err != nil {
+		// klog.Fatalf("error setting x-http-code header: %v", err)
+	}
+}
+
+func GetExpiresHeader(ctx context.Context) (string, bool) {
+	md, ok := ServerMetadataFromContext(ctx)
+	if !ok {
+		return "", false
+	}
+
+	if vals := md.HeaderMD.Get(MetadataKeyExpires); len(vals) > 0 {
+		return vals[0], true
+	}
+	return "", false
+}
+
+func GetStatusCode(ctx context.Context) (int, bool) {
+	md, ok := ServerMetadataFromContext(ctx)
+	if !ok {
+		return 0, false
+	}
+
+	// set x-http-code header
+	if vals := md.HeaderMD.Get(MetadataKeyStatusCode); len(vals) > 0 {
+		code, err := strconv.Atoi(vals[0])
+		if err != nil {
+			return 0, false
+		}
+		return code, true
+	}
+	return 0, false
+}
 
 // addGCPHeaders adds standard GCP headers to the HTTP response.
 // If we made this GRPC gateway general-purpose, we could make this configurable per-service.
@@ -34,19 +100,26 @@ func (m *grpcMux) addGCPHeaders(ctx context.Context, w http.ResponseWriter, resp
 	w.Header().Set("X-Frame-Options", "SAMEORIGIN")
 	w.Header().Set("X-Xss-Protection", "0")
 
-	if m.overrideHeaders != nil {
-		m.overrideHeaders(w)
+	if m.RewriteHeaders != nil {
+		m.RewriteHeaders(ctx, w, resp)
 	}
 	return nil
 }
 
-// httpErrorResponse is the structure of a GCP error response served over HTTP.
-type httpErrorResponse struct {
-	Error *httpError `json:"error,omitempty"`
+// HTTPErrorResponse is the structure of a GCP error response served over HTTP.
+type HTTPErrorResponse struct {
+	Error *HTTPError `json:"error,omitempty"`
 }
 
-type httpError struct {
-	Code    int    `json:"code,omitempty"`
+type HTTPError struct {
+	Code    int                `json:"code,omitempty"`
+	Message string             `json:"message,omitempty"`
+	Status  string             `json:"status,omitempty"`
+	Errors  []HTTPErrorDetails `json:"errors,omitempty"`
+}
+
+type HTTPErrorDetails struct {
+	Domain  string `json:"domain,omitempty"`
 	Message string `json:"message,omitempty"`
-	Status  string `json:"status,omitempty"`
+	Reason  string `json:"reason,omitempty"`
 }

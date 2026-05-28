@@ -17,12 +17,10 @@ package mockbigqueryanalyticshub
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"strconv"
 	"strings"
 
 	pb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
@@ -139,7 +137,6 @@ func (a *analyticsHubServer) DeleteDataExchange(ctx context.Context, request *pb
 		return nil, err
 	}
 
-	httpmux.SetStatusCode(ctx, http.StatusNoContent)
 	return &empty.Empty{}, nil
 }
 
@@ -317,7 +314,6 @@ func (a *analyticsHubServer) DeleteListing(ctx context.Context, request *pb.Dele
 		return nil, err
 	}
 
-	httpmux.SetStatusCode(ctx, http.StatusNoContent)
 	return &empty.Empty{}, nil
 }
 

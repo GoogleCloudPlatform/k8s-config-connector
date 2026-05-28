@@ -54,7 +54,6 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
-		./apis/mockgcp/storage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
@@ -158,6 +157,16 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
 
+	PATH=bin/:${PATH} bin/protoc/bin/protoc \
+		-I ./third_party/googleapis \
+		-I ./apis \
+		--go_out ./generated \
+		--go_opt paths=source_relative \
+		--go-grpc_out ./generated \
+		--go-grpc_opt paths=source_relative \
+		--experimental_allow_proto3_optional \
+		./apis/mockgcp/storage/v1/*.proto
+
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
@@ -179,7 +188,6 @@ generate-grpc-for-google-protos:
 		--grpc-gateway_opt standalone=true \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
 		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
-		./third_party/googleapis/google/storage/control/v2/*.proto \
 		./third_party/googleapis/google/cloud/batch/v1/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
