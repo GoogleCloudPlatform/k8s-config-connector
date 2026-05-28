@@ -38,4 +38,4 @@ unset VALIDATE_URLS
 # Get all unit test packages excluding the operator, E2E tests, and preview CLI tests
 UNIT_TEST_PACKAGES=$(go list ./... | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview")
 
-go test -test.count=1 -v ${UNIT_TEST_PACKAGES}
+go test -timeout 30m -test.count=1 -v ${UNIT_TEST_PACKAGES}

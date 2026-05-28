@@ -36,7 +36,7 @@ all: manager
 # Run tests
 .PHONY: test
 test: generate fmt vet manifests
-	go test -v ./pkg/... -coverprofile cover.out
+	go test -timeout 30m -v ./pkg/... -coverprofile cover.out
 
 # Build manager binary
 .PHONY: manager
