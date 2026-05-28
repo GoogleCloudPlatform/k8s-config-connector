@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type OspolicyassignmentApt struct {
-	/* Required. Type of archive files in this repository. */
+	/* Required. Type of archive files in this repository. Possible values: ARCHIVE_TYPE_UNSPECIFIED, DEB, DEB_SRC */
 	ArchiveType string `json:"archiveType"`
 
 	/* Required. List of components for this repository. Must contain at least one item. */
@@ -84,7 +84,7 @@ type OspolicyassignmentEnforce struct {
 	// +optional
 	File *OspolicyassignmentFile `json:"file,omitempty"`
 
-	/* Required. The script interpreter to use. */
+	/* Required. The script interpreter to use. Possible values: INTERPRETER_UNSPECIFIED, NONE, SHELL, POWERSHELL */
 	Interpreter string `json:"interpreter"`
 
 	/* Only recorded for enforce Exec. Path to an output file (that is created by this Exec) whose content will be recorded in OSPolicyResourceCompliance after a successful run. Absence or failure to read this file will result in this ExecResource being non-compliant. Output file size is limited to 100K bytes. */
@@ -248,7 +248,7 @@ type OspolicyassignmentOsPolicies struct {
 	* Must be unique within the assignment. */
 	Id string `json:"id"`
 
-	/* Required. Policy mode */
+	/* Required. Policy mode Possible values: MODE_UNSPECIFIED, VALIDATION, ENFORCEMENT */
 	Mode string `json:"mode"`
 
 	/* Required. List of resource groups for the policy.
@@ -271,7 +271,7 @@ type OspolicyassignmentPkg struct {
 	// +optional
 	Deb *OspolicyassignmentDeb `json:"deb,omitempty"`
 
-	/* Required. The desired state the agent should maintain for this package. */
+	/* Required. The desired state the agent should maintain for this package. Possible values: DESIRED_STATE_UNSPECIFIED, INSTALLED, REMOVED */
 	DesiredState string `json:"desiredState"`
 
 	/* A package managed by GooGet. */
@@ -418,7 +418,7 @@ type OspolicyassignmentValidate struct {
 	// +optional
 	File *OspolicyassignmentFile `json:"file,omitempty"`
 
-	/* Required. The script interpreter to use. */
+	/* Required. The script interpreter to use. Possible values: INTERPRETER_UNSPECIFIED, NONE, SHELL, POWERSHELL */
 	Interpreter string `json:"interpreter"`
 
 	/* Only recorded for enforce Exec. Path to an output file (that is created by this Exec) whose content will be recorded in OSPolicyResourceCompliance after a successful run. Absence or failure to read this file will result in this ExecResource being non-compliant. Output file size is limited to 100K bytes. */
@@ -470,16 +470,16 @@ type OSConfigOSPolicyAssignmentSpec struct {
 	/* Required. Filter to select VMs. */
 	InstanceFilter OspolicyassignmentInstanceFilter `json:"instanceFilter"`
 
-	/* The location of this resource. */
+	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	/* Required. List of OS policies to be applied to the VMs. */
 	OsPolicies []OspolicyassignmentOsPolicies `json:"osPolicies"`
 
-	/* The project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The OSConfigOSPolicyAssignment name. If not given, the metadata.name will be used. */
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -507,6 +507,10 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
+	/* A unique specifier for the OSConfigOSPolicyAssignment resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -523,7 +527,7 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	// +optional
 	RevisionId *string `json:"revisionId,omitempty"`
 
-	/* Output only. OS policy assignment rollout state */
+	/* Output only. OS policy assignment rollout state Possible values: ROLLOUT_STATE_UNSPECIFIED, IN_PROGRESS, CANCELLING, CANCELLED, SUCCEEDED */
 	// +optional
 	RolloutState *string `json:"rolloutState,omitempty"`
 
