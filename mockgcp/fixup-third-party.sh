@@ -86,6 +86,7 @@ find . -type f -print0 | xargs -0 sed -i \
   -e "s@google\.devtools\.cloudbuild@mockgcp.devtools.cloudbuild@g" \
   -e "s@google/devtools/sourcerepo/@mockgcp/devtools/sourcerepo/@g" \
   -e "s@google\.devtools\.sourcerepo@mockgcp.devtools.sourcerepo@g" \
+  -e 's@option go_package = "cloud.google.com/go/dataplex/apiv1/dataplexpb;dataplexpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1;dataplexpb"@g' \
   -e 's@option go_package = "cloud.google.com/go/gkehub/configmanagement/apiv1beta/configmanagementpb;configmanagementpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/configmanagement;configmanagementpb"@g' \
   -e 's@option go_package = "cloud.google.com/go/gkehub/metering/apiv1beta/meteringpb;meteringpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/metering;meteringpb"@g' \
   -e 's@option go_package = "cloud.google.com/go/gkehub/multiclusteringress/apiv1beta/multiclusteringresspb;multiclusteringresspb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/multiclusteringress;multiclusteringresspb"@g' \

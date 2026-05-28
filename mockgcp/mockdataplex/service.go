@@ -27,12 +27,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-
-	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
-
 // MockService represents a mocked dataplex service.
 type MockService struct {
 	*common.MockEnvironment
@@ -69,6 +66,15 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
 	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
+
+	// Register under the original service names so that the KCC GRPC client works.
+	dataplexDesc := pb.DataplexService_ServiceDesc
+	dataplexDesc.ServiceName = "google.cloud.dataplex.v1.DataplexService"
+	grpcServer.RegisterService(&dataplexDesc, s.dataplexService)
+
+	catalogDesc := pb.CatalogService_ServiceDesc
+	catalogDesc.ServiceName = "google.cloud.dataplex.v1.CatalogService"
+	grpcServer.RegisterService(&catalogDesc, s.catalogService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
