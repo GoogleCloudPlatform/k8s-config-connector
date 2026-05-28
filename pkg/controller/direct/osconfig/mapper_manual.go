@@ -39,8 +39,14 @@ func FixedOrPercent_FromProto(mapCtx *direct.MapContext, in *pb.FixedOrPercent) 
 		return nil
 	}
 	out := &krm.FixedOrPercent{}
-	out.Fixed = direct.LazyPtr(int64(in.GetFixed()))
-	out.Percent = direct.LazyPtr(int64(in.GetPercent()))
+	if in.Mode != nil {
+		switch m := in.Mode.(type) {
+		case *pb.FixedOrPercent_Fixed:
+			out.Fixed = direct.LazyPtr(int64(m.Fixed))
+		case *pb.FixedOrPercent_Percent:
+			out.Percent = direct.LazyPtr(int64(m.Percent))
+		}
+	}
 	return out
 }
 
