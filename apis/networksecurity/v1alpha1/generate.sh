@@ -20,14 +20,13 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 go run . generate-types \
   --service google.cloud.networksecurity.v1 \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
-  --resource NetworkSecurityInterceptDeployment:InterceptDeployment
-
-go run . generate-types \
-    --service google.cloud.networksecurity.v1 \
-    --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
-    --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
+  --resource NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig \
+  --resource NetworkSecurityInterceptDeployment:InterceptDeployment \
+  --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
 
 cd ${REPO_ROOT}
