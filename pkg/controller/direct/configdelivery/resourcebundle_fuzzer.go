@@ -37,7 +37,7 @@ func resourceBundleFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".create_time")
 	f.StatusField(".update_time")
 
-	f.Unimplemented_Identity(".name")
+	f.IdentityField(".name")
 
 	return f
 }
