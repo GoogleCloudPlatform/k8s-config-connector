@@ -15,7 +15,7 @@
 package v1beta1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,7 +26,7 @@ var OSConfigOSPolicyAssignmentGVK = GroupVersion.WithKind("OSConfigOSPolicyAssig
 // +kcc:spec:proto=google.cloud.osconfig.v1.OSPolicyAssignment
 type OSConfigOSPolicyAssignmentSpec struct {
 	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef *parent.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
 	Location string `json:"location"`
@@ -139,12 +139,12 @@ func init() {
 type FixedOrPercent struct {
 	// Specifies a fixed value.
 	// +kcc:proto:field=google.cloud.osconfig.v1.FixedOrPercent.fixed
-	Fixed *int32 `json:"fixed,omitempty"`
+	Fixed *int64 `json:"fixed,omitempty"`
 
 	// Specifies the relative value defined as a percentage, which will be
 	//  multiplied by a reference value.
 	// +kcc:proto:field=google.cloud.osconfig.v1.FixedOrPercent.percent
-	Percent *int32 `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 }
 
 // +kcc:proto=google.cloud.osconfig.v1.OSPolicy

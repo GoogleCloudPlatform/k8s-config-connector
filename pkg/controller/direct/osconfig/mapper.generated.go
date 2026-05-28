@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+/* found existing non-generated mapping function "FixedOrPercent_FromProto", skipping
 func FixedOrPercent_FromProto(mapCtx *direct.MapContext, in *pb.FixedOrPercent) *krm.FixedOrPercent {
 	if in == nil {
 		return nil
@@ -38,6 +39,9 @@ func FixedOrPercent_FromProto(mapCtx *direct.MapContext, in *pb.FixedOrPercent) 
 	out.Percent = direct.LazyPtr(in.GetPercent())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "FixedOrPercent_ToProto", skipping
 func FixedOrPercent_ToProto(mapCtx *direct.MapContext, in *krm.FixedOrPercent) *pb.FixedOrPercent {
 	if in == nil {
 		return nil
@@ -51,18 +55,27 @@ func FixedOrPercent_ToProto(mapCtx *direct.MapContext, in *krm.FixedOrPercent) *
 	}
 	return out
 }
-func FixedOrPercent_Fixed_ToProto(mapCtx *direct.MapContext, in *int32) *pb.FixedOrPercent_Fixed {
+*/
+
+/* found existing non-generated mapping function "FixedOrPercent_Fixed_ToProto", skipping
+func FixedOrPercent_Fixed_ToProto(mapCtx *direct.MapContext, in *int64) *pb.FixedOrPercent_Fixed {
 	if in == nil {
 		return nil
 	}
 	return &pb.FixedOrPercent_Fixed{Fixed: *in}
 }
-func FixedOrPercent_Percent_ToProto(mapCtx *direct.MapContext, in *int32) *pb.FixedOrPercent_Percent {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "FixedOrPercent_Percent_ToProto", skipping
+
+	func FixedOrPercent_Percent_ToProto(mapCtx *direct.MapContext, in *int64) *pb.FixedOrPercent_Percent {
+		if in == nil {
+			return nil
+		}
+		return &pb.FixedOrPercent_Percent{Percent: *in}
 	}
-	return &pb.FixedOrPercent_Percent{Percent: *in}
-}
+*/
 func OSConfigOSPolicyAssignmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.OSPolicyAssignment) *krm.OSConfigOSPolicyAssignmentSpec {
 	if in == nil {
 		return nil
