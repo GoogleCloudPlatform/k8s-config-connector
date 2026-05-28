@@ -1212,13 +1212,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "BackupPlan \"projects/${projectId}/locations/us-central1/backupPlans/gkebackupbackupplan-minimal-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "BackupPlan \"projects/${projectId}/locations/us-central1/backupPlans/gkebackupbackupplan-minimal-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
@@ -1331,13 +1324,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "RestorePlan \"projects/${projectId}/locations/us-central1/restorePlans/gkebackuprestoreplan-minimal-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "RestorePlan \"projects/${projectId}/locations/us-central1/restorePlans/gkebackuprestoreplan-minimal-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
