@@ -3256,6 +3256,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - modelarmor.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - monitoring.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4655,6 +4667,14 @@ rules:
   - watch
 - apiGroups:
   - mlengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - modelarmor.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
