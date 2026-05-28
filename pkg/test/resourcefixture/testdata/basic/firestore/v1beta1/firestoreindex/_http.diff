@@ -1,335 +1,62 @@
-25a26,117
-> POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?%24alt=json%3Benum-encoding%3Dint
-> Content-Type: application/json
-> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-> X-Goog-Request-Params: parent=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}
-> 
-> {
->   "fields": [
->     {
->       "fieldPath": "field1",
->       "order": 1
->     },
->     {
->       "fieldPath": "field2",
->       "order": 2
->     }
->   ],
->   "queryScope": 1
-> }
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "metadata": {
->     "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
->     "index": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
->     "startTime": "2024-04-01T12:34:56.123456Z",
->     "state": 1
->   },
->   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}"
-> }
-> 
-> ---
-> 
-> GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
-> Content-Type: application/json
-> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "done": true,
->   "metadata": {
->     "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
->     "endTime": "2024-04-01T12:34:56.123456Z",
->     "index": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
->     "progressDocuments": {},
->     "startTime": "2024-04-01T12:34:56.123456Z",
->     "state": "SUCCESSFUL"
->   },
->   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
->   "response": {
->     "@type": "type.googleapis.com/google.firestore.admin.v1.Index",
->     "density": "SPARSE_ALL",
->     "fields": [
->       {
->         "fieldPath": "field1",
->         "order": "ASCENDING"
->       },
->       {
->         "fieldPath": "field2",
->         "order": "DESCENDING"
->       },
->       {
->         "fieldPath": "__name__",
->         "order": "DESCENDING"
->       }
->     ],
->     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
->     "queryScope": "COLLECTION",
->     "state": "CREATING"
->   }
-> }
-> 
-> ---
-> 
-117c209
+152c152
 < POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?alt=json
 ---
-> GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-119a212,222
-> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-122,132c225,239
-<   "fields": [
-<     {
-<       "fieldPath": "field1",
+> POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?%24alt=json%3Benum-encoding%3Dint
+154a155
+> X-Goog-Request-Params: parent=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}
+160c161
 <       "order": "ASCENDING"
-<     },
-<     {
-<       "fieldPath": "field2",
+---
+>       "order": 1
+164c165
 <       "order": "DESCENDING"
-<     }
-<   ],
+---
+>       "order": 2
+167c168
 <   "queryScope": "COLLECTION"
 ---
->   "appEngineIntegrationMode": 2,
->   "concurrencyMode": 2,
->   "createTime": "2024-04-01T12:34:56.123456Z",
->   "databaseEdition": 1,
->   "deleteProtectionState": 1,
->   "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
->   "etag": "abcdef0123A=",
->   "freeTier": true,
->   "locationId": "us-west2",
->   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
->   "pointInTimeRecoveryEnablement": 2,
->   "type": 1,
->   "uid": "111111111111111111111",
->   "updateTime": "2024-04-01T12:34:56.123456Z",
->   "versionRetentionPeriod": "3600s"
-134a242,248
-> ---
-> 
-> GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
-> Content-Type: application/json
-> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}%2Findexes%2F${indexID}
-> 
-146,152c260,277
-<   "metadata": {
-<     "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
-<     "index": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-<     "startTime": "2024-04-01T12:34:56.123456Z",
+>   "queryScope": 1
+185c186
 <     "state": "INITIALIZING"
-<   },
-<   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}"
 ---
->   "density": 1,
->   "fields": [
->     {
->       "fieldPath": "field1",
->       "order": 1
->     },
->     {
->       "fieldPath": "field2",
->       "order": 2
->     },
->     {
->       "fieldPath": "__name__",
->       "order": 2
->     }
->   ],
->   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
->   "queryScope": 1,
->   "state": 2
-157c282
+>     "state": 1
+192c193
 < GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}?alt=json
 ---
-> GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-159a285
-> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
-172,202c298,312
-<   "done": true,
-<   "metadata": {
-<     "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
-<     "endTime": "2024-04-01T12:34:56.123456Z",
-<     "index": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-<     "progressDocuments": {},
-<     "startTime": "2024-04-01T12:34:56.123456Z",
-<     "state": "SUCCESSFUL"
-<   },
-<   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
-<   "response": {
-<     "@type": "type.googleapis.com/google.firestore.admin.v1.Index",
-<     "density": "SPARSE_ALL",
-<     "fields": [
-<       {
-<         "fieldPath": "field1",
-<         "order": "ASCENDING"
-<       },
-<       {
-<         "fieldPath": "field2",
-<         "order": "DESCENDING"
-<       },
-<       {
-<         "fieldPath": "__name__",
-<         "order": "DESCENDING"
-<       }
-<     ],
-<     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-<     "queryScope": "COLLECTION",
-<     "state": "CREATING"
-<   }
----
->   "appEngineIntegrationMode": 2,
->   "concurrencyMode": 2,
->   "createTime": "2024-04-01T12:34:56.123456Z",
->   "databaseEdition": 1,
->   "deleteProtectionState": 1,
->   "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
->   "etag": "abcdef0123A=",
->   "freeTier": true,
->   "locationId": "us-west2",
->   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
->   "pointInTimeRecoveryEnablement": 2,
->   "type": 1,
->   "uid": "111111111111111111111",
->   "updateTime": "2024-04-01T12:34:56.123456Z",
->   "versionRetentionPeriod": "3600s"
-207c317
+> GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
+194a196
+> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
+242c244
 < GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
 ---
 > GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
-209a320
+244a247
 > X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}%2Findexes%2F${indexID}
-222c333
+257c260
 <   "density": "SPARSE_ALL",
 ---
 >   "density": 1,
-226c337
+261c264
 <       "order": "ASCENDING"
 ---
 >       "order": 1
-230c341
+265c268
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-234c345
+269c272
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-238,239c349,350
+273,274c276,277
 <   "queryScope": "COLLECTION",
 <   "state": "READY"
 ---
 >   "queryScope": 1,
 >   "state": 2
-243a355,373
-> DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
-> Content-Type: application/json
-> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}%2Findexes%2F${indexID}
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {}
-> 
-> ---
-> 
-347,402c477
-< }
-< 
-< ---
-< 
-< GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
-< Content-Type: application/json
-< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "density": "SPARSE_ALL",
-<   "fields": [
-<     {
-<       "fieldPath": "field1",
-<       "order": "ASCENDING"
-<     },
-<     {
-<       "fieldPath": "field2",
-<       "order": "DESCENDING"
-<     },
-<     {
-<       "fieldPath": "__name__",
-<       "order": "DESCENDING"
-<     }
-<   ],
-<   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-<   "queryScope": "COLLECTION",
-<   "state": "READY"
-< }
-< 
-< ---
-< 
+279c282
 < DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
-< Content-Type: application/json
-< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {}
-\ No newline at end of file
 ---
-> }
-\ No newline at end of file
+> DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
+281a285
+> X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}%2Findexes%2F${indexID}
