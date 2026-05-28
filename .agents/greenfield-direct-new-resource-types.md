@@ -84,9 +84,9 @@ To ensure stability and reproducibility, this task is pinned to the following re
 4. **Journal Findings**: Use skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` to capture quirks and update knowledge.
 
 5. **Create PR**:
-   - create a Pull Request with your changes.
+   - create a Pull Request with your changes using the `send-pr` skill.
    - make sure the Pull Request does not contain the controller or mapper steps.
-   - apply the same labels to the PR as are on this issue.
+   - pass the issue labels to the `send-pr.sh` script using the `--labels` flag (e.g. `--labels "overseer,area/direct,priority/medium,step/gen-types,greenfield,chore/ai"`).
    - include a link to the chore file (`.agents/greenfield-direct-new-resource-types.md`) in the PR description.
    - include `Fixes #<issue-number>` in the PR description.
 
