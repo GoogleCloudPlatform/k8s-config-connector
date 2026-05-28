@@ -98,6 +98,10 @@ func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) a
 		}
 		refResourceGVK := auditConfig.Spec.ResourceReference.GroupVersionKind()
 		isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
+		if registry.IsIAMDirect(refResourceGVK.GroupKind()) {
+			return admission.Errored(http.StatusForbidden,
+				fmt.Errorf("object of GroupVersionKind %v does not have IAM Audit Config support", obj.GroupVersionKind()))
+		}
 		if isDCLResource {
 			return admission.Errored(http.StatusForbidden,
 				fmt.Errorf("object of GroupVersionKind %v does not have IAM Audit Config support", obj.GroupVersionKind()))
@@ -182,6 +186,9 @@ func getResourceConfigs(smLoader *servicemappingloader.ServiceMappingLoader, gvk
 
 func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCLResource bool) admission.Response {
 	resourceRef := policy.Spec.ResourceReference
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
 	if isDCLResource {
 		return a.dclValidateIAMPolicy(policy)
 	}
@@ -196,6 +203,9 @@ func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCL
 
 func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IAMPartialPolicy, isDCLResource bool) admission.Response {
 	resourceRef := partialPolicy.Spec.ResourceReference
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
 	if isDCLResource {
 		return a.dclValidateIAMPartialPolicy(partialPolicy)
 	}
@@ -209,6 +219,9 @@ func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IA
 
 func (a *iamValidatorHandler) validateIAMPolicyMember(policyMember *v1beta1.IAMPolicyMember, isDCLResource bool) admission.Response {
 	resourceRef := policyMember.Spec.ResourceReference
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
 	if isDCLResource {
 		return a.dclValidateIAMPolicyMember(policyMember)
 	}
