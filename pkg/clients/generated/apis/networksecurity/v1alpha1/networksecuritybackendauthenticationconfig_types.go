@@ -47,7 +47,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	TLS and the backend requests a client certificate. Must have a CLIENT_AUTH
 	scope. */
 	// +optional
-	ClientCertificate *string `json:"clientCertificate,omitempty"`
+	ClientCertificateRef *v1alpha1.ResourceRef `json:"clientCertificateRef,omitempty"`
 
 	/* Optional. Free-text description of the resource. */
 	// +optional
@@ -58,7 +58,8 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* The location of this resource. */
-	Location string `json:"location"`
+	// +optional
+	Location *string `json:"location,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -76,7 +77,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	if specified, to validate the server certificates presented by the backend.
 	Required unless wellKnownRoots is set to PUBLIC_ROOTS. */
 	// +optional
-	TrustConfig *string `json:"trustConfig,omitempty"`
+	TrustConfigRef *v1alpha1.ResourceRef `json:"trustConfigRef,omitempty"`
 
 	/* Well known roots to use for server certificate validation. */
 	// +optional
