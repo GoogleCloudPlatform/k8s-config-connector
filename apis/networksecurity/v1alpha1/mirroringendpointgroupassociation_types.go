@@ -44,7 +44,7 @@ type NetworkSecurityMirroringEndpointGroupAssociationSpec struct {
 
 	// The location of this resource.
 	// +kubebuilder:validation:Required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The NetworkSecurityMirroringEndpointGroupAssociation name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
