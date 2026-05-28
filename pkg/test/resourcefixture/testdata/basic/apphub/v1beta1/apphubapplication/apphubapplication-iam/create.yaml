@@ -1,0 +1,11 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: apphubapplication-iam-${uniqueId}
+spec:
+  resourceRef:
+    apiVersion: apphub.cnrm.cloud.google.com/v1beta1
+    kind: AppHubApplication
+    name: apphubapplication-iam-${uniqueId}
+  role: roles/apphub.admin
+  member: "serviceAccount:test-iam-policy-member@${projectId}.iam.gserviceaccount.com"

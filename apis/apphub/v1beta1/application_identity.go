@@ -116,3 +116,14 @@ func ParseApplicationExternal(external string) (parent *ApplicationParent, resou
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+func NewApplicationIdentityExternal(external string) (*ApplicationIdentity, error) {
+	parent, resourceID, err := ParseApplicationExternal(external)
+	if err != nil {
+		return nil, err
+	}
+	return &ApplicationIdentity{
+		parent: parent,
+		id:     resourceID,
+	}, nil
+}
