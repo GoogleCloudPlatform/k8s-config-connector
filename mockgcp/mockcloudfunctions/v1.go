@@ -18,12 +18,12 @@ import (
 	"context"
 	"fmt"
 
-	"google.golang.org/genproto/googleapis/longrunning"
+	longrunning "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/klog/v2"
 
+	pb "cloud.google.com/go/functions/apiv1/functionspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/functions/v1"
 )
 
 type CloudFunctionsV1 struct {
