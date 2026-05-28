@@ -14,13 +14,15 @@ require (
 	cloud.google.com/go/alloydb v1.20.0
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
+	cloud.google.com/go/apphub v0.4.0
 	cloud.google.com/go/batch v1.14.0
 	cloud.google.com/go/bigquery v1.74.0
 	cloud.google.com/go/bigtable v1.42.0
 	cloud.google.com/go/billing v1.21.0
+	cloud.google.com/go/certificatemanager v1.9.6
 	cloud.google.com/go/clouddms v1.8.8
 	cloud.google.com/go/compute v1.54.0
-	cloud.google.com/go/dataplex v1.28.0
+	cloud.google.com/go/dataplex v1.31.0
 	cloud.google.com/go/dataproc/v2 v2.19.0
 	cloud.google.com/go/datastream v1.15.1
 	cloud.google.com/go/deploy v1.27.3
@@ -38,6 +40,7 @@ require (
 	cloud.google.com/go/memcache v1.11.7
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/modelarmor v1.0.0
+	cloud.google.com/go/monitoring v1.24.3
 	cloud.google.com/go/netapp v1.12.0
 	cloud.google.com/go/networkmanagement v1.23.0
 	cloud.google.com/go/networksecurity v0.15.0
@@ -79,7 +82,6 @@ require (
 	cloud.google.com/go/auth v0.18.2 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
-	cloud.google.com/go/monitoring v1.24.3 // indirect
 	cloud.google.com/go/resourcemanager v1.10.7 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0 // indirect
