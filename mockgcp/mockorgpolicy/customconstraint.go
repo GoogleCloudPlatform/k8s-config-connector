@@ -26,11 +26,28 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type orgPolicyV2 struct {
 	*MockService
 	pb.UnimplementedOrgPolicyServer
+}
+
+func (s *orgPolicyV2) ListCustomConstraints(ctx context.Context, req *pb.ListCustomConstraintsRequest) (*pb.ListCustomConstraintsResponse, error) {
+	prefix := req.GetParent() + "/customConstraints/"
+
+	response := &pb.ListCustomConstraintsResponse{}
+	kind := (&pb.CustomConstraint{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		customConstraint := obj.(*pb.CustomConstraint)
+		response.CustomConstraints = append(response.CustomConstraints, customConstraint)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (s *orgPolicyV2) GetCustomConstraint(ctx context.Context, req *pb.GetCustomConstraintRequest) (*pb.CustomConstraint, error) {
