@@ -16,8 +16,8 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -62,12 +62,12 @@ func (r *DiscoveryEngineIdentityMappingStoreRef) SetExternal(external string) {
 	r.External = external
 }
 
-func (r *DiscoveryEngineIdentityMappingStoreRef) ValidateExternal() error {
+func (r *DiscoveryEngineIdentityMappingStoreRef) ValidateExternal(ref string) error {
 	id := &DiscoveryEngineIdentityMappingStoreIdentity{}
-	return id.FromExternal(r.External)
+	return id.FromExternal(ref)
 }
 
-func (r *DiscoveryEngineIdentityMappingStoreRef) ParseExternalToIdentity() (any, error) {
+func (r *DiscoveryEngineIdentityMappingStoreRef) ParseExternalToIdentity() (identity.Identity, error) {
 	id := &DiscoveryEngineIdentityMappingStoreIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
@@ -75,12 +75,13 @@ func (r *DiscoveryEngineIdentityMappingStoreRef) ParseExternalToIdentity() (any,
 	return id, nil
 }
 
-func (r *DiscoveryEngineIdentityMappingStoreRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) (string, error) {
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) (string, error) {
+func (r *DiscoveryEngineIdentityMappingStoreRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
 		id, err := getIdentityFromDiscoveryEngineIdentityMappingStoreSpec(ctx, reader, u)
 		if err != nil {
-			return "", fmt.Errorf("failed to get identity from spec: %w", err)
+			return ""
 		}
-		return id.String(), nil
-	})
+		return id.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
