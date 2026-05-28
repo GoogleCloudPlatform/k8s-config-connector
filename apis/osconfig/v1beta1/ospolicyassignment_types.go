@@ -68,9 +68,6 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the OSConfigOSPolicyAssignment resource in GCP.
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	// Output only. Indicates that this revision has been successfully rolled out
 	// in this zone and new VMs will be assigned OS policies from this revision.
 	// For a given OS policy assignment, there is only one revision with a value

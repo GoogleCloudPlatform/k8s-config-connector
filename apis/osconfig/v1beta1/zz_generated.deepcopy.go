@@ -188,11 +188,6 @@ func (in *OSConfigOSPolicyAssignmentStatus) DeepCopyInto(out *OSConfigOSPolicyAs
 		*out = new(int64)
 		**out = **in
 	}
-	if in.ExternalRef != nil {
-		in, out := &in.ExternalRef, &out.ExternalRef
-		*out = new(string)
-		**out = **in
-	}
 	if in.Baseline != nil {
 		in, out := &in.Baseline, &out.Baseline
 		*out = new(bool)
