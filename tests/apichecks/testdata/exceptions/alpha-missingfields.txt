@@ -2095,6 +2095,20 @@
 [missing_field] crd=networksecuritymirroringdeployments.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=networksecuritymirroringdeployments.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.mirroringDeploymentGroupRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecuritymirroringdeployments.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecuritymirroringendpointgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=networksecuritymirroringendpointgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=networksecuritymirroringendpointgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=networksecuritymirroringendpointgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.mirroringDeploymentGroupRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecuritymirroringendpointgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecuritymirroringendpointgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
+[missing_field] crd=networksecuritysecurityprofilegroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.customInterceptProfile" is not set in unstructured objects
+[missing_field] crd=networksecuritysecurityprofilegroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.customMirroringProfile" is not set in unstructured objects
+[missing_field] crd=networksecuritysecurityprofilegroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=networksecuritysecurityprofilegroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=networksecuritysecurityprofilegroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=networksecuritysecurityprofilegroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecuritysecurityprofilegroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.threatPreventionProfile" is not set in unstructured objects
+[missing_field] crd=networksecuritysecurityprofilegroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.urlFilteringProfile" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicKey[].managed" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicKey[].value.value" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicKey[].value.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
