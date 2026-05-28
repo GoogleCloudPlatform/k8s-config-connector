@@ -492,36 +492,23 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 				}
 
-				isPointerInKRM := strings.HasPrefix(krmField.Type, "*")
-				if !isPointerInKRM && (krmTypeName == "string" || krmTypeName == "bool" || krmTypeName == "int64" || krmTypeName == "int32") {
-					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(%s(mapCtx, in.%s))\n",
-						krmFieldName,
-						functionName,
-						protoAccessor,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-						krmFieldName,
-						functionName,
-						protoAccessor,
-					)
-				}
+				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+					krmFieldName,
+					functionName,
+					protoAccessor,
+				)
 			case protoreflect.EnumKind:
-				isPointerInKRM := strings.HasPrefix(krmField.Type, "*")
 				functionName := "direct.Enum_FromProto"
-				if isPointerInKRM {
-					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-						krmFieldName,
-						functionName,
-						protoAccessor,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(%s(mapCtx, in.%s))\n",
-						krmFieldName,
-						functionName,
-						protoAccessor,
-					)
-				}
+				// Not needed if we use the accessor:
+				// protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+				// if protoIsPointerInGo(protoField) {
+				// 	functionName = "EnumPtr_FromProto[" + protoTypeName + "]"
+				// }
+				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+					krmFieldName,
+					functionName,
+					protoAccessor,
+				)
 			case protoreflect.StringKind,
 				protoreflect.FloatKind,
 				protoreflect.DoubleKind,
@@ -532,31 +519,16 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoreflect.Uint64Kind,
 				protoreflect.Fixed64Kind,
 				protoreflect.BytesKind:
-				isPointerInKRM := strings.HasPrefix(krmField.Type, "*")
-				if isPointerInKRM {
-					if protoIsPointerInGo(protoField) {
-						fmt.Fprintf(out, "\tout.%s = in.%s\n",
-							krmFieldName,
-							protoFieldName,
-						)
-					} else {
-						fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
-							krmFieldName,
-							protoAccessor,
-						)
-					}
+				if protoIsPointerInGo(protoField) {
+					fmt.Fprintf(out, "\tout.%s = in.%s\n",
+						krmFieldName,
+						protoFieldName,
+					)
 				} else {
-					if protoIsPointerInGo(protoField) {
-						fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
-							krmFieldName,
-							protoFieldName,
-						)
-					} else {
-						fmt.Fprintf(out, "\tout.%s = in.%s\n",
-							krmFieldName,
-							protoAccessor,
-						)
-					}
+					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
+						krmFieldName,
+						protoAccessor,
+					)
 				}
 
 			default:
@@ -832,20 +804,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
-				isPointerInKRM := strings.HasPrefix(krmField.Type, "*")
-				if !isPointerInKRM && (krmTypeName == "string" || krmTypeName == "bool" || krmTypeName == "int64" || krmTypeName == "int32") {
-					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, &in.%s)\n",
-						protoFieldName,
-						functionName,
-						krmFieldName,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-						protoFieldName,
-						functionName,
-						krmFieldName,
-					)
-				}
+				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+					protoFieldName,
+					functionName,
+					krmFieldName,
+				)
 			case protoreflect.EnumKind:
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 				functionName := "direct.Enum_ToProto"
@@ -871,22 +834,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					continue
 				}
 
-				isPointerInKRM := strings.HasPrefix(krmField.Type, "*")
-				if isPointerInKRM {
-					fmt.Fprintf(out, "\tout.%s = %s[%s](mapCtx, in.%s)\n",
-						protoFieldName,
-						functionName,
-						protoTypeName,
-						krmFieldName,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = %s[%s](mapCtx, &in.%s)\n",
-						protoFieldName,
-						functionName,
-						protoTypeName,
-						krmFieldName,
-					)
-				}
+				fmt.Fprintf(out, "\tout.%s = %s[%s](mapCtx, in.%s)\n",
+					protoFieldName,
+					functionName,
+					protoTypeName,
+					krmFieldName,
+				)
 			case protoreflect.StringKind,
 				protoreflect.FloatKind,
 				protoreflect.DoubleKind,
@@ -899,11 +852,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoreflect.BytesKind:
 
 				useCustomMethod := ""
-				isPointerInKRM := strings.HasPrefix(krmField.Type, "*")
 
 				switch protoField.Kind() {
 				case protoreflect.StringKind:
-					if isPointerInKRM && krmField.Type != "*string" {
+					if krmField.Type != "*string" {
 						useCustomMethod = fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 					}
 				}
@@ -938,31 +890,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						krmFieldName,
 					)
 				} else {
-					if isPointerInKRM {
-						if protoIsPointerInGo(protoField) {
-							fmt.Fprintf(out, "\tout.%s = in.%s\n",
-								protoFieldName,
-								krmFieldName,
-							)
-						} else {
-							fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
-								protoFieldName,
-								krmFieldName,
-							)
-						}
-					} else {
-						if protoIsPointerInGo(protoField) {
-							fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
-								protoFieldName,
-								krmFieldName,
-							)
-						} else {
-							fmt.Fprintf(out, "\tout.%s = in.%s\n",
-								protoFieldName,
-								krmFieldName,
-							)
-						}
-					}
+					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
+						protoFieldName,
+						krmFieldName,
+					)
 				}
 
 			default:
@@ -1065,53 +996,23 @@ func protoNameForEnum(msg protoreflect.EnumDescriptor) string {
 	return fullName
 }
 
-func checkCollision(msg protoreflect.MessageDescriptor, file protoreflect.FileDescriptor, name string) bool {
-	msgs := file.Messages()
-	for i := 0; i < msgs.Len(); i++ {
-		m := msgs.Get(i)
-		if protoNameForType(m) == name {
-			return true
-		}
-		if checkCollisionNested(m, name) {
-			return true
-		}
-	}
-	enums := file.Enums()
-	for i := 0; i < enums.Len(); i++ {
-		if protoNameForEnum(enums.Get(i)) == name {
-			return true
-		}
-	}
-	return false
-}
-
-func checkCollisionNested(msg protoreflect.MessageDescriptor, name string) bool {
-	msgs := msg.Messages()
-	for i := 0; i < msgs.Len(); i++ {
-		m := msgs.Get(i)
-		if protoNameForType(m) == name {
-			return true
-		}
-		if checkCollisionNested(m, name) {
-			return true
-		}
-	}
-	enums := msg.Enums()
-	for i := 0; i < enums.Len(); i++ {
-		if protoNameForEnum(enums.Get(i)) == name {
-			return true
-		}
-	}
-	return false
-}
-
 func protoNameForOneOf(field protoreflect.FieldDescriptor) string {
 	msg := field.Parent().(protoreflect.MessageDescriptor)
 	oneofKey := ToGoFieldName(field.Name())
 	name := protoNameForType(msg) + "_" + oneofKey
 
-	if checkCollision(msg, msg.ParentFile(), name) {
-		name += "_"
+	// Special case: check for a collision
+	if field.Message() != nil {
+		elemTypeName := protoNameForType(field.Message())
+		if name == elemTypeName {
+			name += "_"
+		}
+	}
+	if field.Enum() != nil {
+		elemTypeName := protoNameForEnum(field.Enum())
+		if name == elemTypeName {
+			name += "_"
+		}
 	}
 	return name
 }
