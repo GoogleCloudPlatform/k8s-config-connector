@@ -17,6 +17,7 @@ package apihubdeployment
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 
@@ -180,7 +181,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	updateMask := &fieldmaskpb.FieldMask{}
+	uniquePaths := make(map[string]bool)
 	for path := range paths {
+		parts := strings.Split(path, ".")
+		uniquePaths[parts[0]] = true
+	}
+	for path := range uniquePaths {
 		updateMask.Paths = append(updateMask.Paths, path)
 	}
 
