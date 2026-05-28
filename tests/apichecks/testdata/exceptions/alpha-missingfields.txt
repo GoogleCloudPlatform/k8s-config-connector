@@ -710,6 +710,8 @@
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.logLevel" is not set in unstructured objects
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.registry" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkTags[]" is not set in unstructured objects

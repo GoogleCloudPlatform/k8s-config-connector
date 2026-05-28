@@ -46,14 +46,6 @@ type CloudRunInstanceStatus struct {
 
 	// A unique specifier for the CloudRunInstance resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *CloudRunInstanceObservedState `json:"observedState,omitempty"`
-}
-
-// CloudRunInstanceObservedState is the state of the CloudRunInstance resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.run.v2.Instance
-type CloudRunInstanceObservedState struct {
 }
 
 // +genclient
