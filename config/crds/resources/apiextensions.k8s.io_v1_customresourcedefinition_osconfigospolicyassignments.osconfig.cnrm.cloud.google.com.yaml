@@ -989,6 +989,10 @@ spec:
                 description: The etag for this OS policy assignment. If this is provided
                   on update, it must match the server's etag.
                 type: string
+              externalRef:
+                description: A unique specifier for the OSConfigOSPolicyAssignment
+                  resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
