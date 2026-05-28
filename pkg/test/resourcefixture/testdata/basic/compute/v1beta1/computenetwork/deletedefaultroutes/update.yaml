@@ -1,0 +1,10 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computenetwork-deletedefaultroutes
+spec:
+  projectRef:
+    external: ${projectId}
+  autoCreateSubnetworks: false
+  deleteDefaultRoutesOnCreate: true
+  description: Updated description

@@ -132,7 +132,7 @@ type ComputeNetwork struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ComputeNetworkSpec   `json:"spec,omitempty"`
+	Spec   ComputeNetworkSpec   `json:"spec"`
 	Status ComputeNetworkStatus `json:"status,omitempty"`
 }
 

@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computenetwork-networkprofile
+spec:
+  projectRef:
+    external: ${projectId}
+  autoCreateSubnetworks: false
+  networkProfile: projects/${projectId}/global/networkProfiles/us-central1-b-vpc-roce
