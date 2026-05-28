@@ -37,6 +37,20 @@ func apihubDeploymentFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".source_uri")
 	f.UnimplementedFields.Insert(".source_project")
 	f.UnimplementedFields.Insert(".source_environment")
+
+	f.SpecFields.Insert(".display_name")
+	f.SpecFields.Insert(".description")
+	f.SpecFields.Insert(".documentation")
+	f.SpecFields.Insert(".deployment_type")
+	f.SpecFields.Insert(".resource_uri")
+	f.SpecFields.Insert(".endpoints")
+	f.SpecFields.Insert(".slo")
+	f.SpecFields.Insert(".environment")
+
+	f.UnimplementedFields.Insert(".deployment_type")
+	f.UnimplementedFields.Insert(".slo")
+	f.UnimplementedFields.Insert(".environment")
+
 	f.StatusFields.Insert(".api_versions")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
