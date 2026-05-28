@@ -15,19 +15,18 @@
 package v1beta1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
-
-var AlloyDBUserGVK = GroupVersion.WithKind("AlloyDBUser")
 
 // AlloyDBUserSpec defines the desired state of AlloyDBUser
 // +kcc:spec:proto=google.cloud.alloydb.v1beta.User
 type AlloyDBUserSpec struct {
 	/* Immutable. */
 	// +required
-	ClusterRef *ClusterRef `json:"clusterRef"`
+	ClusterRef *refs.AlloyDBClusterRef `json:"clusterRef"`
 
 	// List of database roles this database user has.
 	DatabaseRoles []string `json:"databaseRoles,omitempty"`
