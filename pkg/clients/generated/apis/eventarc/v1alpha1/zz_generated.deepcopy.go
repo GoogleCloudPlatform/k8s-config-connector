@@ -316,11 +316,7 @@ func (in *EventarcEnrollmentSpec) DeepCopyInto(out *EventarcEnrollmentSpec) {
 			(*out)[key] = val
 		}
 	}
-	if in.DestinationRef != nil {
-		in, out := &in.DestinationRef, &out.DestinationRef
-		*out = new(k8sv1alpha1.ResourceRef)
-		**out = **in
-	}
+	out.DestinationRef = in.DestinationRef
 	if in.DisplayName != nil {
 		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)
@@ -333,16 +329,7 @@ func (in *EventarcEnrollmentSpec) DeepCopyInto(out *EventarcEnrollmentSpec) {
 			(*out)[key] = val
 		}
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
-	if in.MessageBusRef != nil {
-		in, out := &in.MessageBusRef, &out.MessageBusRef
-		*out = new(k8sv1alpha1.ResourceRef)
-		**out = **in
-	}
+	out.MessageBusRef = in.MessageBusRef
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
