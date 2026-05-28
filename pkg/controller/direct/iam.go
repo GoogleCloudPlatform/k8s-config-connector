@@ -30,6 +30,129 @@ type IAMAdapter interface {
 	SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error)
 }
 
+// GetIAMPolicy returns the actual IAMPolicy for the referenced resource.
+func GetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy, err := iamAdapter.GetIAMPolicy(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec = v1beta1.IAMPolicySpec{
+		ResourceReference: want.Spec.ResourceReference,
+	}
+
+	// Map Bindings from Proto to KRM
+	if len(policy.Bindings) > 0 {
+		actual.Spec.Bindings = make([]v1beta1.IAMPolicyBinding, 0, len(policy.Bindings))
+		for _, pbBinding := range policy.Bindings {
+			binding := v1beta1.IAMPolicyBinding{
+				Role:    pbBinding.Role,
+				Members: make([]v1beta1.Member, len(pbBinding.Members)),
+			}
+			for i, member := range pbBinding.Members {
+				binding.Members[i] = v1beta1.Member(member)
+			}
+			actual.Spec.Bindings = append(actual.Spec.Bindings, binding)
+		}
+	}
+
+	return actual, nil
+}
+
+// SetIAMPolicy will update the IAM policy for the referenced resource.
+func SetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	protoPolicy := &iampb.Policy{
+		Version: 3,
+	}
+
+	// Map Bindings from KRM to Proto
+	if len(want.Spec.Bindings) > 0 {
+		protoPolicy.Bindings = make([]*iampb.Binding, 0, len(want.Spec.Bindings))
+		for _, b := range want.Spec.Bindings {
+			pbBinding := &iampb.Binding{
+				Role:    b.Role,
+				Members: make([]string, len(b.Members)),
+			}
+			for i, member := range b.Members {
+				pbBinding.Members[i] = string(member)
+			}
+			protoPolicy.Bindings = append(protoPolicy.Bindings, pbBinding)
+		}
+	}
+
+	newPolicy, err := iamAdapter.SetIAMPolicy(ctx, protoPolicy)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec = v1beta1.IAMPolicySpec{
+		ResourceReference: want.Spec.ResourceReference,
+	}
+
+	// Map Bindings from Proto to KRM
+	if len(newPolicy.Bindings) > 0 {
+		actual.Spec.Bindings = make([]v1beta1.IAMPolicyBinding, 0, len(newPolicy.Bindings))
+		for _, pbBinding := range newPolicy.Bindings {
+			binding := v1beta1.IAMPolicyBinding{
+				Role:    pbBinding.Role,
+				Members: make([]v1beta1.Member, len(pbBinding.Members)),
+			}
+			for i, member := range pbBinding.Members {
+				binding.Members[i] = v1beta1.Member(member)
+			}
+			actual.Spec.Bindings = append(actual.Spec.Bindings, binding)
+		}
+	}
+
+	return actual, nil
+}
+
+// DeleteIAMPolicy will remove the IAM policy for the referenced resource.
+func DeleteIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) error {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	// To delete a policy, we set an empty policy.
+	protoPolicy := &iampb.Policy{
+		Version: 3,
+	}
+
+	_, err = iamAdapter.SetIAMPolicy(ctx, protoPolicy)
+	if err != nil {
+		return fmt.Errorf("deleting IAM policy (setting empty policy): %w", err)
+	}
+
+	return nil
+}
+
 // GetIAMPolicyMember returns the actual IAMPolicyMember for the specified member and referenced resource.
 func GetIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicyMember, memberID v1beta1.Member) (*v1beta1.IAMPolicyMember, error) {
 	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
