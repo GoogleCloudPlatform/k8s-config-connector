@@ -29,7 +29,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	Location *string `json:"location,omitempty"`
 
 	// The NetworkSecurityBackendAuthenticationConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -50,7 +50,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	//  TLS and the backend requests a client certificate. Must have a CLIENT_AUTH
 	//  scope.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.client_certificate
-	ClientCertificate *string `json:"clientCertificate,omitempty"`
+	ClientCertificateRef *refsv1beta1.CertificateManagerCertificateRef `json:"clientCertificateRef,omitempty"`
 
 	// Optional. A reference to a TrustConfig resource from the
 	//  certificatemanager.googleapis.com namespace. This is a relative resource
@@ -61,7 +61,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	//  if specified, to validate the server certificates presented by the backend.
 	//  Required unless wellKnownRoots is set to PUBLIC_ROOTS.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.trust_config
-	TrustConfig *string `json:"trustConfig,omitempty"`
+	TrustConfigRef *refsv1beta1.CertificateManagerTrustConfigRef `json:"trustConfigRef,omitempty"`
 
 	// Well known roots to use for server certificate validation.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.well_known_roots

@@ -71,7 +71,7 @@ func getIdentityFromNetworkSecurityBackendAuthenticationConfigSpec(ctx context.C
 	}
 
 	location := resource.Spec.Location
-	if location == "" {
+	if location == nil || *location == "" {
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
@@ -82,7 +82,7 @@ func getIdentityFromNetworkSecurityBackendAuthenticationConfigSpec(ctx context.C
 
 	identity := &NetworkSecurityBackendAuthenticationConfigIdentity{
 		Project:                     projectID,
-		Location:                    location,
+		Location:                    *location,
 		BackendAuthenticationConfig: resourceID,
 	}
 	return identity, nil
