@@ -809,7 +809,7 @@
 [missing_field] crd=computenetworkpeerings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.stackType" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.deleteDefaultRoutesOnCreate" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.internalIPV6Range" is not set in unstructured objects
+[missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.internalIpv6Range" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.mtu" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkFirewallPolicyEnforcementOrder" is not set in unstructured objects
 [missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingPolicy.maxNodes" is not set in unstructured objects
@@ -831,6 +831,11 @@
 [missing_field] crd=computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudRun.tag" is not set in unstructured objects
 [missing_field] crd=computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudRun.urlMask" is not set in unstructured objects
 [missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.inUseCount" is not set in unstructured objects
+[missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.instanceProperties.guestAccelerators[].acceleratorCount" is not set in unstructured objects
+[missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.instanceProperties.guestAccelerators[].acceleratorType" is not set in unstructured objects
+[missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.instanceProperties.localSsds[].diskSizeGb" is not set in unstructured objects
+[missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.instanceProperties.localSsds[].interface" is not set in unstructured objects
+[missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservationRequired" is not set in unstructured objects
 [missing_field] crd=computeresourcepolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computeresourcepolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.diskConsistencyGroupPolicy.enabled" is not set in unstructured objects
 [missing_field] crd=computeresourcepolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.groupPlacementPolicy.availabilityDomainCount" is not set in unstructured objects
