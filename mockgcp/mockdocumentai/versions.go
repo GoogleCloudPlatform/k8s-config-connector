@@ -28,7 +28,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/documentai/v1"
+	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
 )
 
 func (s *DocumentProcessorV1) GetProcessorVersion(ctx context.Context, req *pb.GetProcessorVersionRequest) (*pb.ProcessorVersion, error) {
