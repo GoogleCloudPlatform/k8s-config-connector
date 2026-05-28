@@ -395,10 +395,6 @@ type JobVolumeMounts struct {
 	/* Required. This must match the Name of a Volume. */
 	// +optional
 	Name *string `json:"name,omitempty"`
-
-	/* Optional. Path within the volume from which the container's volume should be mounted. Defaults to "" (volume's root). */
-	// +optional
-	SubPath *string `json:"subPath,omitempty"`
 }
 
 type JobVolumes struct {
