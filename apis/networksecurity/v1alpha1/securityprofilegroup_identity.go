@@ -85,7 +85,7 @@ func getIdentityFromNetworkSecuritySecurityProfileGroupSpec(ctx context.Context,
 
 	return &NetworkSecuritySecurityProfileGroupIdentity{
 		Project:              projectID,
-		Location:             obj.Spec.Location,
+		Location:             common.ValueOf(obj.Spec.Location),
 		SecurityProfileGroup: resourceID,
 	}, nil
 }
