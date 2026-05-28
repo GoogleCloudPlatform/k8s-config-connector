@@ -47,6 +47,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmanagedkafka"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmemcache"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmemorystore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmetastore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworksecurity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
