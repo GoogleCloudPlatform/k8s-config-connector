@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -352,7 +353,7 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 	}
 
 	if desired.NodeConfig == nil && actual.NodeConfig != nil {
-		desired.NodeConfig = actual.NodeConfig
+		desired.NodeConfig = proto.Clone(actual.NodeConfig).(*composerpb.NodeConfig)
 	} else if desired.NodeConfig != nil && actual.NodeConfig != nil {
 		// Preserve immutable, server-assigned fields.
 		// These fields are not sent in update requests (see NodeConfig_ToProto),
@@ -373,8 +374,8 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 		if desired.NodeConfig.Subnetwork == "" {
 			desired.NodeConfig.Subnetwork = actual.NodeConfig.Subnetwork
 		}
-		if desired.NodeConfig.IpAllocationPolicy == nil {
-			desired.NodeConfig.IpAllocationPolicy = actual.NodeConfig.IpAllocationPolicy
+		if desired.NodeConfig.IpAllocationPolicy == nil && actual.NodeConfig.IpAllocationPolicy != nil {
+			desired.NodeConfig.IpAllocationPolicy = proto.Clone(actual.NodeConfig.IpAllocationPolicy).(*composerpb.IPAllocationPolicy)
 		}
 		if desired.NodeConfig.MachineType == "" {
 			desired.NodeConfig.MachineType = actual.NodeConfig.MachineType
