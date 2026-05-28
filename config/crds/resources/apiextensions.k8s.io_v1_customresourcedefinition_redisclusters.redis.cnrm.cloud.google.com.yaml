@@ -111,6 +111,88 @@ spec:
                       365 days. If not specified, the default value is 35 days.
                     type: string
                 type: object
+              crossClusterReplicationConfig:
+                description: Optional. Cross cluster replication config.
+                properties:
+                  clusterRole:
+                    description: The role of the cluster in cross cluster replication.
+                    type: string
+                  primaryCluster:
+                    description: |-
+                      Details of the primary cluster that is used as the replication source for
+                       this secondary cluster.
+
+                       This field is only set for a secondary cluster.
+                    properties:
+                      clusterRef:
+                        description: 'The full resource path of the remote cluster
+                          in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed RedisCluster
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                            type: string
+                          name:
+                            description: The name of a RedisCluster resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a RedisCluster resource.
+                            type: string
+                        type: object
+                    type: object
+                  secondaryClusters:
+                    description: |-
+                      List of secondary clusters that are replicating from this primary cluster.
+
+                       This field is only set for a primary cluster.
+                    items:
+                      properties:
+                        clusterRef:
+                          description: 'The full resource path of the remote cluster
+                            in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed RedisCluster
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                              type: string
+                            name:
+                              description: The name of a RedisCluster resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a RedisCluster resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
               deletionProtectionEnabled:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
@@ -384,6 +466,89 @@ spec:
                     description: Output only. The timestamp associated with the cluster
                       creation request.
                     type: string
+                  crossClusterReplicationConfig:
+                    description: Output only. Cross cluster replication config.
+                    properties:
+                      membership:
+                        description: |-
+                          Output only. An output only view of all the member clusters participating
+                           in the cross cluster replication. This view will be provided by every
+                           member cluster irrespective of its cluster role(primary or secondary).
+
+                           A primary cluster can provide information about all the secondary clusters
+                           replicating from it. However, a secondary cluster only knows about the
+                           primary cluster from which it is replicating. However, for scenarios, where
+                           the primary cluster is unavailable(e.g. regional outage), a GetCluster
+                           request can be sent to any other member cluster and this field will list
+                           all the member clusters participating in cross cluster replication.
+                        properties:
+                          primaryCluster:
+                            description: Output only. The primary cluster that acts
+                              as the source of replication for the secondary clusters.
+                            properties:
+                              cluster:
+                                description: 'The full resource path of the remote
+                                  cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote cluster.
+                                type: string
+                            type: object
+                          secondaryClusters:
+                            description: Output only. The list of secondary clusters
+                              replicating from the primary cluster.
+                            items:
+                              properties:
+                                cluster:
+                                  description: 'The full resource path of the remote
+                                    cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote cluster.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryCluster:
+                        description: |-
+                          Details of the primary cluster that is used as the replication source for
+                           this secondary cluster.
+
+                           This field is only set for a secondary cluster.
+                        properties:
+                          cluster:
+                            description: 'The full resource path of the remote cluster
+                              in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote cluster.
+                            type: string
+                        type: object
+                      secondaryClusters:
+                        description: |-
+                          List of secondary clusters that are replicating from this primary cluster.
+
+                           This field is only set for a primary cluster.
+                        items:
+                          properties:
+                            cluster:
+                              description: 'The full resource path of the remote cluster
+                                in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                              type: string
+                            uid:
+                              description: Output only. The unique identifier of the
+                                remote cluster.
+                              type: string
+                          type: object
+                        type: array
+                      updateTime:
+                        description: Output only. The last time cross cluster replication
+                          config was updated.
+                        type: string
+                    type: object
                   discoveryEndpoints:
                     description: Output only. Endpoints created on each given network,
                       for Redis clients to connect to the cluster. Currently only
@@ -634,6 +799,88 @@ spec:
                       365 days. If not specified, the default value is 35 days.
                     type: string
                 type: object
+              crossClusterReplicationConfig:
+                description: Optional. Cross cluster replication config.
+                properties:
+                  clusterRole:
+                    description: The role of the cluster in cross cluster replication.
+                    type: string
+                  primaryCluster:
+                    description: |-
+                      Details of the primary cluster that is used as the replication source for
+                       this secondary cluster.
+
+                       This field is only set for a secondary cluster.
+                    properties:
+                      clusterRef:
+                        description: 'The full resource path of the remote cluster
+                          in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed RedisCluster
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                            type: string
+                          name:
+                            description: The name of a RedisCluster resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a RedisCluster resource.
+                            type: string
+                        type: object
+                    type: object
+                  secondaryClusters:
+                    description: |-
+                      List of secondary clusters that are replicating from this primary cluster.
+
+                       This field is only set for a primary cluster.
+                    items:
+                      properties:
+                        clusterRef:
+                          description: 'The full resource path of the remote cluster
+                            in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed RedisCluster
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                              type: string
+                            name:
+                              description: The name of a RedisCluster resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a RedisCluster resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
               deletionProtectionEnabled:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
@@ -907,6 +1154,89 @@ spec:
                     description: Output only. The timestamp associated with the cluster
                       creation request.
                     type: string
+                  crossClusterReplicationConfig:
+                    description: Output only. Cross cluster replication config.
+                    properties:
+                      membership:
+                        description: |-
+                          Output only. An output only view of all the member clusters participating
+                           in the cross cluster replication. This view will be provided by every
+                           member cluster irrespective of its cluster role(primary or secondary).
+
+                           A primary cluster can provide information about all the secondary clusters
+                           replicating from it. However, a secondary cluster only knows about the
+                           primary cluster from which it is replicating. However, for scenarios, where
+                           the primary cluster is unavailable(e.g. regional outage), a GetCluster
+                           request can be sent to any other member cluster and this field will list
+                           all the member clusters participating in cross cluster replication.
+                        properties:
+                          primaryCluster:
+                            description: Output only. The primary cluster that acts
+                              as the source of replication for the secondary clusters.
+                            properties:
+                              cluster:
+                                description: 'The full resource path of the remote
+                                  cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote cluster.
+                                type: string
+                            type: object
+                          secondaryClusters:
+                            description: Output only. The list of secondary clusters
+                              replicating from the primary cluster.
+                            items:
+                              properties:
+                                cluster:
+                                  description: 'The full resource path of the remote
+                                    cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote cluster.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryCluster:
+                        description: |-
+                          Details of the primary cluster that is used as the replication source for
+                           this secondary cluster.
+
+                           This field is only set for a secondary cluster.
+                        properties:
+                          cluster:
+                            description: 'The full resource path of the remote cluster
+                              in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote cluster.
+                            type: string
+                        type: object
+                      secondaryClusters:
+                        description: |-
+                          List of secondary clusters that are replicating from this primary cluster.
+
+                           This field is only set for a primary cluster.
+                        items:
+                          properties:
+                            cluster:
+                              description: 'The full resource path of the remote cluster
+                                in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                              type: string
+                            uid:
+                              description: Output only. The unique identifier of the
+                                remote cluster.
+                              type: string
+                          type: object
+                        type: array
+                      updateTime:
+                        description: Output only. The last time cross cluster replication
+                          config was updated.
+                        type: string
+                    type: object
                   discoveryEndpoints:
                     description: Output only. Endpoints created on each given network,
                       for Redis clients to connect to the cluster. Currently only
