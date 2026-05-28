@@ -36,7 +36,9 @@ func Workload_SaaEnrollmentResponse_FromProto(mapCtx *direct.MapContext, in *pb.
 			out.SetupErrors = append(out.SetupErrors, e.String())
 		}
 	}
-	out.SetupStatus = direct.LazyPtr(in.SetupStatus.String())
+	if in.SetupStatus != nil {
+		out.SetupStatus = direct.LazyPtr(in.SetupStatus.String())
+	}
 	return out
 }
 
@@ -45,13 +47,17 @@ func Workload_SaaEnrollmentResponse_ToProto(mapCtx *direct.MapContext, in *krm.W
 		return nil
 	}
 	out := &pb.Workload_SaaEnrollmentResponse{}
-	out.SetupErrors = []pb.Workload_SaaEnrollmentResponse_SetupError{}
-	for _, e := range in.SetupErrors {
-		setupErr := pb.Workload_SaaEnrollmentResponse_SetupError_value[e]
-		out.SetupErrors = append(out.SetupErrors, pb.Workload_SaaEnrollmentResponse_SetupError(setupErr))
+	if in.SetupErrors != nil {
+		out.SetupErrors = []pb.Workload_SaaEnrollmentResponse_SetupError{}
+		for _, e := range in.SetupErrors {
+			setupErr := pb.Workload_SaaEnrollmentResponse_SetupError_value[e]
+			out.SetupErrors = append(out.SetupErrors, pb.Workload_SaaEnrollmentResponse_SetupError(setupErr))
+		}
 	}
 
-	setupState := pb.Workload_SaaEnrollmentResponse_SetupState_value[direct.ValueOf(in.SetupStatus)]
-	out.SetupStatus = direct.LazyPtr(pb.Workload_SaaEnrollmentResponse_SetupState(setupState))
+	if in.SetupStatus != nil {
+		setupState := pb.Workload_SaaEnrollmentResponse_SetupState_value[*in.SetupStatus]
+		out.SetupStatus = direct.LazyPtr(pb.Workload_SaaEnrollmentResponse_SetupState(setupState))
+	}
 	return out
 }

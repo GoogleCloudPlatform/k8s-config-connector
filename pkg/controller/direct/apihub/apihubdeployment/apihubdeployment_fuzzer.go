@@ -41,5 +41,8 @@ func apihubDeploymentFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 
+	f.Unimplemented_NotYetTriaged(".deployment_type")
+	f.Unimplemented_NotYetTriaged(".slo")
+
 	return f
 }
