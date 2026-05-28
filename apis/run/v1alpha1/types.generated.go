@@ -104,10 +104,6 @@ type Container struct {
 	// +kcc:proto:field=google.cloud.run.v2.Container.image
 	Image *string `json:"image,omitempty"`
 
-	// Optional. Location of the source.
-	// +kcc:proto:field=google.cloud.run.v2.Container.source_code
-	SourceCode *SourceCode `json:"sourceCode,omitempty"`
-
 	// Entrypoint array. Not executed within a shell.
 	//  The docker image's ENTRYPOINT is used if this is not provided.
 	// +kcc:proto:field=google.cloud.run.v2.Container.command
@@ -156,10 +152,6 @@ type Container struct {
 	//  fails.
 	// +kcc:proto:field=google.cloud.run.v2.Container.startup_probe
 	StartupProbe *Probe `json:"startupProbe,omitempty"`
-
-	// Readiness probe to be used for health checks.
-	// +kcc:proto:field=google.cloud.run.v2.Container.readiness_probe
-	ReadinessProbe *Probe `json:"readinessProbe,omitempty"`
 
 	// Names of the containers that must start before this container.
 	// +kcc:proto:field=google.cloud.run.v2.Container.depends_on
@@ -397,7 +389,7 @@ type Probe struct {
 /* unreachable type ResourceRequirements
 // +kcc:proto=google.cloud.run.v2.ResourceRequirements
 type ResourceRequirements struct {
-	// Only `memory`, `cpu` and `nvidia.com/gpu` keys in the map are supported.
+	// Only `memory` and `cpu` keys in the map are supported.
 	//
 	//  <p>Notes:
 	//   * The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
@@ -405,7 +397,6 @@ type ResourceRequirements struct {
 	//  https://cloud.google.com/run/docs/configuring/cpu.
 	//    * For supported 'memory' values and syntax, go to
 	//   https://cloud.google.com/run/docs/configuring/memory-limits
-	//   * The only supported 'nvidia.com/gpu' value is '1'.
 	// +kcc:proto:field=google.cloud.run.v2.ResourceRequirements.limits
 	Limits map[string]string `json:"limits,omitempty"`
 
@@ -452,7 +443,7 @@ type SecretVolumeSource struct {
 	Secret *string `json:"secret,omitempty"`
 
 	// If unspecified, the volume will expose a file whose name is the
-	//  secret, relative to VolumeMount.mount_path + VolumeMount.sub_path.
+	//  secret, relative to VolumeMount.mount_path.
 	//  If specified, the key will be used as the version to fetch from Cloud
 	//  Secret Manager and the path will be the name of the file exposed in the
 	//  volume. When items are defined, they must specify a path and a version.
@@ -478,32 +469,6 @@ type SecretVolumeSource struct {
 	//  file mode, like fsGroup, and as a result, other mode bits could be set.
 	// +kcc:proto:field=google.cloud.run.v2.SecretVolumeSource.default_mode
 	DefaultMode *int32 `json:"defaultMode,omitempty"`
-}
-*/
-
-/* unreachable type SourceCode
-// +kcc:proto=google.cloud.run.v2.SourceCode
-type SourceCode struct {
-	// The source is a Cloud Storage bucket.
-	// +kcc:proto:field=google.cloud.run.v2.SourceCode.cloud_storage_source
-	CloudStorageSource *SourceCode_CloudStorageSource `json:"cloudStorageSource,omitempty"`
-}
-*/
-
-/* unreachable type SourceCode_CloudStorageSource
-// +kcc:proto=google.cloud.run.v2.SourceCode.CloudStorageSource
-type SourceCode_CloudStorageSource struct {
-	// Required. The Cloud Storage bucket name.
-	// +kcc:proto:field=google.cloud.run.v2.SourceCode.CloudStorageSource.bucket
-	Bucket *string `json:"bucket,omitempty"`
-
-	// Required. The Cloud Storage object name.
-	// +kcc:proto:field=google.cloud.run.v2.SourceCode.CloudStorageSource.object
-	Object *string `json:"object,omitempty"`
-
-	// Optional. The Cloud Storage object generation.
-	// +kcc:proto:field=google.cloud.run.v2.SourceCode.CloudStorageSource.generation
-	Generation *int64 `json:"generation,omitempty"`
 }
 */
 
@@ -595,11 +560,6 @@ type VolumeMount struct {
 	//  volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run
 	// +kcc:proto:field=google.cloud.run.v2.VolumeMount.mount_path
 	MountPath *string `json:"mountPath,omitempty"`
-
-	// Optional. Path within the volume from which the container's volume should
-	//  be mounted. Defaults to "" (volume's root).
-	// +kcc:proto:field=google.cloud.run.v2.VolumeMount.sub_path
-	SubPath *string `json:"subPath,omitempty"`
 }
 */
 

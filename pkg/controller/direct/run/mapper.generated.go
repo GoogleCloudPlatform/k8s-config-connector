@@ -329,7 +329,6 @@ func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Conta
 	out := &krm.Container{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Image = direct.LazyPtr(in.GetImage())
-	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
@@ -339,7 +338,6 @@ func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Conta
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.LivenessProbe = Probe_FromProto(mapCtx, in.GetLivenessProbe())
 	out.StartupProbe = Probe_FromProto(mapCtx, in.GetStartupProbe())
-	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -352,7 +350,6 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	out := &pb.Container{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Image = direct.ValueOf(in.Image)
-	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
@@ -362,7 +359,6 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.LivenessProbe = Probe_ToProto(mapCtx, in.LivenessProbe)
 	out.StartupProbe = Probe_ToProto(mapCtx, in.StartupProbe)
-	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -937,7 +933,6 @@ func VolumeMount_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount) *krm.V
 	out := &krm.VolumeMount{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
-	out.SubPath = direct.LazyPtr(in.GetSubPath())
 	return out
 }
 func VolumeMount_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMount) *pb.VolumeMount {
@@ -947,6 +942,5 @@ func VolumeMount_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMount) *pb.Vol
 	out := &pb.VolumeMount{}
 	out.Name = direct.ValueOf(in.Name)
 	out.MountPath = direct.ValueOf(in.MountPath)
-	out.SubPath = direct.ValueOf(in.SubPath)
 	return out
 }

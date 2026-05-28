@@ -105,6 +105,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/bigtable/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/bigquery/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*.proto \
+    ${REPO_ROOT}/mockgcp/apis/google/cloud/run/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/dataflow/*/*.proto \
