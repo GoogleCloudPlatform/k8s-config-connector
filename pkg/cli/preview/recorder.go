@@ -89,8 +89,6 @@ type event struct {
 	kubeAction *kubeAction
 	// gcpAction is the gcp action that was recorded
 	gcpAction *gcpAction
-	// object is the object that was reconciled
-	object *unstructured.Unstructured
 	// the type of reconciler that the manager is using
 	reconcilerType k8s.ReconcilerType
 }
@@ -191,6 +189,7 @@ func (r *Recorder) recordDiff(ctx context.Context, diff *structuredreporting.Dif
 	log.V(1).Info("recordDiffs", "gknn", gknn)
 
 	info := r.getObjectInfo(gknn)
+	diff.Object = nil // Clear reference to the large unstructured object to enable dynamic GC reclamation
 	info.events = append(info.events, event{
 		eventType: EventTypeDiff,
 		diff:      diff,
@@ -207,7 +206,6 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
 		eventType:      EventTypeReconcileStart,
-		object:         u.DeepCopy(),
 		reconcilerType: t,
 	})
 }
@@ -223,7 +221,6 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
 		eventType:      EventTypeReconcileEnd,
-		object:         u.DeepCopy(),
 		reconcilerType: t,
 	})
 	r.reconcileTrackerMutex.Lock()
@@ -537,9 +534,7 @@ func (e event) DeepCopy() event {
 			IsNewObject: e.diff.IsNewObject,
 			Fields:      make([]structuredreporting.DiffField, len(e.diff.Fields)),
 		}
-		if e.diff.Object != nil {
-			res.diff.Object = e.diff.Object.DeepCopy()
-		}
+
 		copy(res.diff.Fields, e.diff.Fields)
 	}
 	if e.kubeAction != nil {
@@ -559,9 +554,6 @@ func (e event) DeepCopy() event {
 			res.gcpAction.UpdateMask = make([]string, len(e.gcpAction.UpdateMask))
 			copy(res.gcpAction.UpdateMask, e.gcpAction.UpdateMask)
 		}
-	}
-	if e.object != nil {
-		res.object = e.object.DeepCopy()
 	}
 	return res
 }
