@@ -32,6 +32,8 @@ cloud.google.com/go/backupdr v1.6.0 h1:Li555lIgwiURa9RjqZi1ry1pPOGzpE5pmI98szXyG
 cloud.google.com/go/backupdr v1.6.0/go.mod h1:uX5Du+agaVKsrcm7qSWn1S/dN5sogKXlEH/JS5j4868=
 cloud.google.com/go/batch v1.14.0 h1:r5DEMPNXZk1as36Le3DaNQTRhhnR+E95a99SFxwF52o=
 cloud.google.com/go/batch v1.14.0/go.mod h1:oeQveyG6NDS/ks2ilOP4LzKRmuIaI7GLe0CkR7WF6pk=
+cloud.google.com/go/beyondcorp v1.2.0 h1:mre997ya7QHFWSU+O5cT/FhBKTMy6Riqf1EXFxN46zw=
+cloud.google.com/go/beyondcorp v1.2.0/go.mod h1:sszcgxpPPBEfLzbI0aYCTg6tT1tyt3CmKav3NZIUcvI=
 cloud.google.com/go/bigquery v1.74.0 h1:Q6bAMv+eyvufOpIrfrYxhM46qq1D3ZQTdgUDQqKS+n8=
 cloud.google.com/go/bigquery v1.74.0/go.mod h1:iViO7Cx3A/cRKcHNRsHB3yqGAMInFBswrE9Pxazsc90=
 cloud.google.com/go/bigtable v1.42.0 h1:SREvT4jLhJQZXUjsLmFs/1SMQJ+rKEj1cJuPE9liQs8=
