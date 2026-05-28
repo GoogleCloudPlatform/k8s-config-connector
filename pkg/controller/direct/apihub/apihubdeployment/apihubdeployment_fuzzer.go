@@ -44,5 +44,12 @@ func apihubDeploymentFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".deployment_type")
 	f.Unimplemented_NotYetTriaged(".slo")
 
+	f.Unimplemented_NotYetTriaged(".resource_uri")
+	f.Unimplemented_NotYetTriaged(".environment")
+	f.Unimplemented_NotYetTriaged(".display_name")
+	f.Unimplemented_NotYetTriaged(".documentation")
+	f.Unimplemented_NotYetTriaged(".description")
+	f.Unimplemented_NotYetTriaged(".endpoints")
+
 	return f
 }
