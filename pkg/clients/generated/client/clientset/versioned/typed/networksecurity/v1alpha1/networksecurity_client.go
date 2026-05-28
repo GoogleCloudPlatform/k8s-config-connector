@@ -31,6 +31,7 @@ import (
 
 type NetworksecurityV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	NetworkSecurityBackendAuthenticationConfigsGetter
 	NetworkSecurityInterceptDeploymentsGetter
 	NetworkSecurityInterceptEndpointGroupsGetter
 }
@@ -38,6 +39,10 @@ type NetworksecurityV1alpha1Interface interface {
 // NetworksecurityV1alpha1Client is used to interact with features provided by the networksecurity.cnrm.cloud.google.com group.
 type NetworksecurityV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityBackendAuthenticationConfigs(namespace string) NetworkSecurityBackendAuthenticationConfigInterface {
+	return newNetworkSecurityBackendAuthenticationConfigs(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeployments(namespace string) NetworkSecurityInterceptDeploymentInterface {
