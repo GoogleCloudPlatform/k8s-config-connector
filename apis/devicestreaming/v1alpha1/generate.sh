@@ -26,7 +26,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.devicestreaming.v1 \
   --api-version devicestreaming.cnrm.cloud.google.com/v1alpha1 \
-  --resource DeviceStreamingSession:DeviceSession
+  --resource DeviceStreamingSession:DeviceSession \
+  --skip-scaffold-files
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
