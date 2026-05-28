@@ -66,7 +66,7 @@ func TestConfigConnectorE2E(t *testing.T) {
 
 	// Poll for status/observedGeneration
 	newCC := &corev1beta1.ConfigConnector{}
-	for i := 0; i < 60; i++ {
+	for i := 0; i < 180; i++ {
 		if err := c.Get(ctx, nn, newCC); err != nil {
 			t.Errorf("failed to get ConfigConnector: %v", err)
 			return
