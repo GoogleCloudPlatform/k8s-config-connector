@@ -56,12 +56,10 @@ func KRMResourceToTFResourceConfig(r *Resource, c client.Client, smLoader *servi
 //   - defaultLabels: if set, these labels will be added to tfConfig.
 func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader,
 	liveState *terraform.InstanceState, jsonSchema *apiextensions.JSONSchemaProps, mustResolveSensitiveFields bool) (tfConfig *terraform.ResourceConfig, secretVersions map[string]string, err error) {
-	fmt.Printf("DEBUG: KRMResourceToTFResourceConfigFull start for %v, generation %v, jsonSchema is nil: %v\n", r.GetName(), r.GetGeneration(), jsonSchema == nil)
 	config := deepcopy.MapStringInterface(r.Spec)
 	if config == nil {
 		config = make(map[string]interface{})
 	}
-	fmt.Printf("DEBUG: KRMResourceToTFResourceConfigFull jsonSchema is nil: %v\n", jsonSchema == nil)
 	if jsonSchema != nil {
 		if err := ResolveLegacyGCPManagedFields(r, liveState, config); err != nil {
 			return nil, nil, fmt.Errorf("error resolving legacy GCP-managed fields: %w", err)
@@ -173,10 +171,8 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	state := InstanceStateToMap(r.TFResource, liveState)
 	config, err = withResourceCustomResolvers(config, state, r.Kind, r.TFResource)
 	if err != nil {
-		fmt.Printf("DEBUG: KRMResourceToTFResourceConfigFull custom resolver error: %v\n", err)
 		return nil, nil, fmt.Errorf("error running resource custom resolver: %w", err)
 	}
-	fmt.Printf("DEBUG: KRMResourceToTFResourceConfigFull success for %v, generation %v\n", r.GetName(), r.GetGeneration())
 	return MapToResourceConfig(r.TFResource, config), secretVersions, nil
 }
 
