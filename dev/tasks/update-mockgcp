@@ -36,8 +36,8 @@ cat > git.versions <<EOF
 https://github.com/googleapis/googleapis ${GOOGLEAPIS_SHA}
 EOF
 
-# Update and run code generation
-make
+# Sync the repository to ensure protos are available
+make sync-repo
 
 # Add boilerplate, fix formatting
 cd ${REPO_ROOT}

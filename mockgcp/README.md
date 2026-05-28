@@ -26,7 +26,7 @@ To add a new service, the easiest way is to copy one of the existing PRs. Exampl
 
 Broadly the steps are:
 
-1. Add the proto to the Makefile and run `make gen-proto` (or just `make`).
+1. Add the proto to the Makefile and run `make gen-proto SERVICE=<service>` (or just `make SERVICE=<service>`).
 
    All google services are located in [googleapis GitHub repo](https://github.com/googleapis/googleapis/tree/master/google),
    refer to your resource's API documentation to identify the service name, for example [privateca](https://cloud.google.com/certificate-authority-service/docs/reference/rest#service:-privateca.googleapis.com).
@@ -40,6 +40,14 @@ Broadly the steps are:
 
 
    * (Optional) If you determine that the proto file is not up to date, or if it doesn't exist at all, refer to the [Generating Proto](#generating-proto) section
+
+## googleapis Update Strategy
+
+We keep our `mockgcp` dependencies up to date with the latest `googleapis` protos through an automated process:
+1. A GitHub Action runs weekly to update the `googleapis` commit SHA in `mockgcp/git.versions`.
+2. This allows contributors to access new protos without requiring a full regeneration of all services, which helps keep PRs small and focused.
+3. Contributors can selectively regenerate the services they are working on using the `SERVICE` variable: `make SERVICE=<service>`.
+
    
 1. (Optional). If you're adding an API outside of `googleapis/google/cloud`,
    you may need to add commands to rename the API to mockgcp in [fixup-third-party.sh](fixup-third-party.sh). Example:
