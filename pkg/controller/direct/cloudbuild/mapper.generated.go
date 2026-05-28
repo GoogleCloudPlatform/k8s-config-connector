@@ -201,7 +201,7 @@ func CloudBuildWorkerPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.Worker
 	}
 	out := &krm.CloudBuildWorkerPoolSpec{}
 	// MISSING: Name
-	out.DisplayName = in.GetDisplayName()
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Uid
 	// MISSING: Annotations
 	// MISSING: DeleteTime
@@ -219,7 +219,7 @@ func CloudBuildWorkerPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudBu
 	}
 	out := &pb.WorkerPool{}
 	// MISSING: Name
-	out.DisplayName = in.DisplayName
+	out.DisplayName = CloudBuildWorkerPoolSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
 	// MISSING: Uid
 	// MISSING: Annotations
 	// MISSING: DeleteTime
