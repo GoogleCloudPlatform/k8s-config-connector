@@ -155,6 +155,18 @@ type IAMDenyPolicySpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
+	/* The folder that this resource belongs to. */
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+
+	/* The organization that this resource belongs to. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
+	/* The project that this resource belongs to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
 	/* The IAMDenyPolicy name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
