@@ -68,7 +68,7 @@ X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
       "nanos": 101,
       "seconds": "86400"
     },
-    "startTime": "2026-11-10T00:00:00Z"
+    "startTime": "2026-05-10T00:00:00Z"
   }
 }
 
@@ -150,7 +150,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoCreatedReservationsDeleteTime": "2026-11-11T00:00:01.000000102Z",
+  "autoCreatedReservationsDeleteTime": "2026-05-11T00:00:01.000000102Z",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A full future reservation test",
   "id": "000000000000000000000",
@@ -175,15 +175,11 @@ X-Xss-Protection: 0
     "totalCount": "1"
   },
   "status": {
-    "existingMatchingUsageInfo": {
-      "count": "0",
-      "timestamp": "2024-04-01T12:34:56.123456Z"
-    },
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2026-11-11T00:00:00.000000101Z",
-    "startTime": "2026-11-10T00:00:00Z"
+    "endTime": "2026-05-11T00:00:00.000000101Z",
+    "startTime": "2026-05-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
@@ -229,7 +225,7 @@ X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservatio
       "nanos": 102,
       "seconds": "86401"
     },
-    "startTime": "2026-11-10T00:00:00Z"
+    "startTime": "2026-05-10T00:00:00Z"
   }
 }
 
@@ -311,7 +307,59 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoCreatedReservationsDeleteTime": "2026-11-11T00:00:02.000000103Z",
+  "autoCreatedReservationsDeleteTime": "2026-05-11T00:00:02.000000103Z",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A full future reservation test - updated",
+  "id": "000000000000000000000",
+  "kind": "compute#futureReservation",
+  "name": "${futureReservationID}",
+  "namePrefix": "fr-full",
+  "planningStatus": "DRAFT",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
+  "specificReservationRequired": false,
+  "specificSkuProperties": {
+    "instanceProperties": {
+      "localSsds": [
+        {
+          "diskSizeGb": "375",
+          "interface": "SCSI"
+        }
+      ],
+      "machineType": "n2-standard-4",
+      "minCpuPlatform": "Intel Cascade Lake"
+    },
+    "totalCount": "2"
+  },
+  "status": {
+    "procurementStatus": "DRAFTING"
+  },
+  "timeWindow": {
+    "endTime": "2026-05-11T00:00:01.000000102Z",
+    "startTime": "2026-05-10T00:00:00Z"
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreatedReservationsDeleteTime": "2026-05-11T00:00:02.000000103Z",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A full future reservation test - updated",
   "id": "000000000000000000000",
@@ -343,8 +391,8 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2026-11-11T00:00:01.000000102Z",
-    "startTime": "2026-11-10T00:00:00Z"
+    "endTime": "2026-05-11T00:00:01.000000102Z",
+    "startTime": "2026-05-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }

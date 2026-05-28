@@ -150,16 +150,18 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'The project of the fleet. Allowed value: The
-                          Google Cloud resource name of a `Project` resource (format:
-                          `projects/{{name}}`).'
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
                         type: string
                       name:
-                        description: 'Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `name` field of a `Project` resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the project resource. More info:
-                          https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `namespace` field of a `Project` resource.
                         type: string
                     type: object
                 required:

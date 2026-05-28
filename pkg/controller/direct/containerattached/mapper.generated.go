@@ -207,7 +207,7 @@ func Fleet_FromProto(mapCtx *direct.MapContext, in *pb.Fleet) *krm.Fleet {
 	}
 	out := &krm.Fleet{}
 	if in.GetProject() != "" {
-		out.ProjectRef = &krm.FleetProjectRef{External: in.GetProject()}
+		out.ProjectRef = &refsv1beta1.ProjectRef{External: in.GetProject()}
 	}
 	out.Membership = direct.LazyPtr(in.GetMembership())
 	return out

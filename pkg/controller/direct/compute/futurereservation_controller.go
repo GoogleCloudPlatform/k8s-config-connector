@@ -25,10 +25,6 @@ import (
 	"sort"
 	"strings"
 
-	"google.golang.org/protobuf/proto"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
-
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -91,11 +87,10 @@ func (m *futureReservationModel) AdapterForObject(ctx context.Context, op *direc
 	}
 
 	return &FutureReservationAdapter{
-		gcpClient:     futureReservationClient,
-		projectMapper: m.config.ProjectMapper,
-		id:            id.(*krm.ComputeFutureReservationIdentity),
-		desired:       obj,
-		reader:        reader,
+		gcpClient: futureReservationClient,
+		id:        id.(*krm.ComputeFutureReservationIdentity),
+		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -105,12 +100,11 @@ func (m *futureReservationModel) AdapterForURL(ctx context.Context, url string) 
 }
 
 type FutureReservationAdapter struct {
-	gcpClient     *compute.FutureReservationsClient
-	projectMapper *projects.ProjectMapper
-	id            *v1alpha1.ComputeFutureReservationIdentity
-	desired       *krm.ComputeFutureReservation
-	actual        *computepb.FutureReservation
-	reader        client.Reader
+	gcpClient *compute.FutureReservationsClient
+	id        *v1alpha1.ComputeFutureReservationIdentity
+	desired   *krm.ComputeFutureReservation
+	actual    *computepb.FutureReservation
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &FutureReservationAdapter{}
@@ -147,9 +141,6 @@ func (a *FutureReservationAdapter) Create(ctx context.Context, createOp *directb
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	if err := ResolveComputeFutureReservationRefs(ctx, a.reader, a.projectMapper, desired); err != nil {
-		return err
-	}
 	resource := ComputeFutureReservationSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -194,9 +185,6 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	if err := ResolveComputeFutureReservationRefs(ctx, a.reader, a.projectMapper, desired); err != nil {
-		return err
-	}
 	resource := ComputeFutureReservationSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -308,16 +296,6 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 				updateMask.Paths = append(updateMask.Paths, "specific_sku_properties.instance_properties.min_cpu_platform")
 			}
 		}
-	}
-
-	desiredShareSettings := resource.GetShareSettings()
-	if desiredShareSettings != nil && desiredShareSettings.GetShareType() == "LOCAL" {
-		desiredShareSettings = nil
-	}
-
-	if !proto.Equal(desiredShareSettings, a.actual.GetShareSettings()) {
-		report.AddField("share_settings", a.actual.GetShareSettings(), resource.GetShareSettings())
-		updateMask.Paths = append(updateMask.Paths, "share_settings")
 	}
 
 	if len(updateMask.Paths) == 0 {

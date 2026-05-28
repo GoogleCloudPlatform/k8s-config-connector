@@ -10,7 +10,7 @@ metadata:
   name: ${futureReservationID}
   namespace: ${uniqueId}
 spec:
-  autoCreatedReservationsDeleteTime: "2026-11-11T00:00:02Z"
+  autoCreatedReservationsDeleteTime: "2026-05-11T00:00:02Z"
   autoDeleteAutoCreatedReservations: true
   description: A full future reservation test - updated
   enableEmergentMaintenance: false
@@ -32,8 +32,8 @@ spec:
       minCPUPlatform: Intel Cascade Lake
     totalCount: 2
   timeWindow:
-    endTime: "2026-11-11T00:00:01Z"
-    startTime: "2026-11-10T00:00:00Z"
+    endTime: "2026-05-11T00:00:01Z"
+    startTime: "2026-05-10T00:00:00Z"
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
