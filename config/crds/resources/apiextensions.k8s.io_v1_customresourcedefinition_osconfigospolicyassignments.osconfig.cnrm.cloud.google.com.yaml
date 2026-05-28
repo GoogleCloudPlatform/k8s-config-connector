@@ -881,10 +881,6 @@ spec:
                     description: The `projectID` field of a project, when not managed
                       by Config Connector.
                     type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
                   name:
                     description: The `name` field of a `Project` resource.
                     type: string
@@ -909,12 +905,12 @@ spec:
                     properties:
                       fixed:
                         description: Specifies a fixed value.
-                        format: int32
+                        format: int64
                         type: integer
                       percent:
                         description: Specifies the relative value defined as a percentage,
                           which will be multiplied by a reference value.
-                        format: int32
+                        format: int64
                         type: integer
                     type: object
                   minWaitDuration:

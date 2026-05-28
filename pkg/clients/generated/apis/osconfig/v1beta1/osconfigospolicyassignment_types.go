@@ -68,11 +68,11 @@ type OspolicyassignmentDeb struct {
 type OspolicyassignmentDisruptionBudget struct {
 	/* Specifies a fixed value. */
 	// +optional
-	Fixed *int32 `json:"fixed,omitempty"`
+	Fixed *int64 `json:"fixed,omitempty"`
 
 	/* Specifies the relative value defined as a percentage, which will be multiplied by a reference value. */
 	// +optional
-	Percent *int32 `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 }
 
 type OspolicyassignmentEnforce struct {
