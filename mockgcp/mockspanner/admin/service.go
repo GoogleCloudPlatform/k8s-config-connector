@@ -19,13 +19,12 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 
+	databasepb "cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
+	instancepb "cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	databasepb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/database/v1"
-	instancepb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/instance/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -57,28 +56,23 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	databasepb_v1.RegisterDatabaseAdminServer(grpcServer, s.databaseV1)
-	instancepb_v1.RegisterInstanceAdminServer(grpcServer, s.instanceV1)
+	databasepb.RegisterDatabaseAdminServer(grpcServer, s.databaseV1)
+	instancepb.RegisterInstanceAdminServer(grpcServer, s.instanceV1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		databasepb_v1.RegisterDatabaseAdminHandler,
-		instancepb_v1.RegisterInstanceAdminHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	// Returns  non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+	mux.AddService(databasepb.NewDatabaseAdminClient(conn))
+	mux.AddService(instancepb.NewInstanceAdminClient(conn))
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
+	mux.OverrideHeaders(func(response http.ResponseWriter) {
 		response.Header().Del("X-Content-Type-Options")
-	}
+	})
 
 	return mux, nil
 }

@@ -31,26 +31,27 @@ In `mockgcp/mock<service_name>/service.go`, update the `NewHTTPMux` method.
 - Replace `"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"` with `"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"`
 - Remove the `httpmux.NewServeMux` call and replace it with `httptogrpc.NewGRPCMux(conn)`.
 - If the old code used `mux.RewriteError`, you should safely delete it. `httptogrpc` does not support it (and handles errors differently).
-- If the old code used `mux.RewriteHeaders`, use `mux.OverrideHeaders(func(response http.ResponseWriter) { ... })`.
+- If the old code used `mux.RewriteHeaders`, you can use `mux.OverrideHeaders(func(response http.ResponseWriter) { ... })` to achieve similar results.
 
 Example:
 
 ```go
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httptogrpc.NewGRPCMux(conn)
-	if err != nil {
-		return nil, fmt.Errorf("error building grpc service: %w", err)
-	}
+        mux, err := httptogrpc.NewGRPCMux(conn)
+        if err != nil {
+                return nil, fmt.Errorf("error building grpc service: %w", err)
+        }
 
-	mux.AddService(pb.NewMemorystoreClient(conn)) // Replace MemorystoreClient with the correct client
-	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+        mux.AddService(pb.NewMemorystoreClient(conn)) // Replace MemorystoreClient with the correct client
+        mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
-	// Custom header handling
-	mux.OverrideHeaders(func(response http.ResponseWriter) {
-		response.Header().Del("Cache-Control")
-	})
+        // Custom header handling
+        mux.OverrideHeaders(func(response http.ResponseWriter) {
+                response.Header().Del("Cache-Control")
+                response.Header().Del("X-Content-Type-Options")
+        })
 
-	return mux, nil
+        return mux, nil
 }
 ```
 
