@@ -26,7 +26,7 @@ require (
 	cloud.google.com/go/certificatemanager v1.9.6
 	cloud.google.com/go/cloudbuild v1.25.0
 	cloud.google.com/go/clouddms v1.8.8
-	cloud.google.com/go/cloudquotas v1.4.0
+	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/cloudtasks v1.13.7
 	cloud.google.com/go/compute v1.54.0
 	cloud.google.com/go/configdelivery v0.1.1
