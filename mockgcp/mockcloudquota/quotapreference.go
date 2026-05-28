@@ -92,7 +92,8 @@ func (s *CloudQuotasV1) UpdateQuotaPreference(ctx context.Context, req *pb.Updat
 	}
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+		// mockgcp hack: gcloud does not send updateMask, grpc-gateway auto-populated it.
+		paths = []string{"quota_config.preferred_value"}
 	}
 
 	now := time.Now()

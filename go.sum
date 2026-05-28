@@ -363,8 +363,8 @@ cloud.google.com/go/clouddms v1.7.3/go.mod h1:fkN2HQQNUYInAU3NQ3vRLkV2iWs8lIdmBK
 cloud.google.com/go/clouddms v1.7.4/go.mod h1:RdrVqoFG9RWI5AvZ81SxJ/xvxPdtcRhFotwdE79DieY=
 cloud.google.com/go/clouddms v1.8.8 h1:YWsmRXTyK6Ba0hm4qTBak5g1oLhryuM8rSBxHWC8iq4=
 cloud.google.com/go/clouddms v1.8.8/go.mod h1:QtCyw+a73dlkDb2q20aTAPvfaTZCepDDi6Gb1AKq0a4=
-cloud.google.com/go/cloudquotas v1.4.0 h1:BvAxucMeKH+yuvpHzK8Aw/YlNg4ud8vEMpEe57SkLXU=
-cloud.google.com/go/cloudquotas v1.4.0/go.mod h1:scJFYMJg03mDu5D7qegDL4We9lOf5VZ+ppr0oreKZ0s=
+cloud.google.com/go/cloudquotas v1.11.0 h1:/V18B5MjitIfA1Ggb3p0nLFjdZutlaUeiEnx53JVxeQ=
+cloud.google.com/go/cloudquotas v1.11.0/go.mod h1:4i/yo7jay43HyTMpYxaZwHdpAePkTEK7mAcGwRMf2tI=
 cloud.google.com/go/cloudtasks v1.5.0/go.mod h1:fD92REy1x5woxkKEkLdvavGnPJGEn8Uic9nWuLzqCpY=
 cloud.google.com/go/cloudtasks v1.6.0/go.mod h1:C6Io+sxuke9/KNRkbQpihnW93SWDU3uXt92nu85HkYI=
 cloud.google.com/go/cloudtasks v1.7.0/go.mod h1:ImsfdYWwlWNJbdgPIIGJWC+gemEGTBK/SunNQQNCAb4=
