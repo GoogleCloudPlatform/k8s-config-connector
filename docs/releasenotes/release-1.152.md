@@ -1,10 +1,5 @@
 *   Special shout-outs to @acpana, @anhdle-sso, @barney-s, @codebot-robot, @gemmahou, @himanigulati01, @justinsb, @katrielt, @ldanielmadariaga, @maqiuyujoyce, @suwandim, @xiaoweim for their contributions to this release.
 
-## New Alpha Resources (Direct Reconciler):
-
-*   `BinaryAuthorizationPlatformPolicy`
-*   `VertexAIDeploymentResourcePool`
-
 ## New Fields:
 
 *   [`ComputeReservation`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computereservation)
