@@ -91,19 +91,11 @@ type DataLineageProcessStatus struct {
 
 	// A unique specifier for the DataLineageProcess resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *DataLineageProcessObservedState `json:"observedState,omitempty"`
-}
-
-// DataLineageProcessObservedState is the state of the DataLineageProcess resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.datacatalog.lineage.v1.Process
-type DataLineageProcessObservedState struct {
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdatalineageprocess;gcpdatalineageprocesss
+// +kubebuilder:resource:categories=gcp,shortName=gcpdatalineageprocess;gcpdatalineageprocesses
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"

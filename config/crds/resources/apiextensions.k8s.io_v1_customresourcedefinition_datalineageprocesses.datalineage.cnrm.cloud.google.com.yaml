@@ -21,7 +21,7 @@ spec:
     plural: datalineageprocesses
     shortNames:
     - gcpdatalineageprocess
-    - gcpdatalineageprocesss
+    - gcpdatalineageprocesses
     singular: datalineageprocess
   preserveUnknownFields: false
   scope: Namespaced
@@ -188,10 +188,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
             type: object
         type: object
     served: true

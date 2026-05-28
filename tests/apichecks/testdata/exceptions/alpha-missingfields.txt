@@ -1358,6 +1358,12 @@
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.pdfInstruction.gcsFileURI" is not set in unstructured objects
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=datalineageprocesses.datalineage.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributes" is not set in unstructured objects
+[missing_field] crd=datalineageprocesses.datalineage.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=datalineageprocesses.datalineage.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=datalineageprocesses.datalineage.cnrm.cloud.google.com version=v1alpha1: field ".spec.origin.name" is not set in unstructured objects
+[missing_field] crd=datalineageprocesses.datalineage.cnrm.cloud.google.com version=v1alpha1: field ".spec.origin.sourceType" is not set in unstructured objects
+[missing_field] crd=datalineageprocesses.datalineage.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.authorization.alternateUsePermission" is not set in unstructured objects
 [missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=dataplexaspecttypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
