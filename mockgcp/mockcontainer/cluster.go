@@ -26,8 +26,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"k8s.io/klog/v2"
 
+	pb "cloud.google.com/go/container/apiv1/containerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
 )
 
 type ClusterManagerV1 struct {
@@ -512,7 +512,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	if controlPlaneEndpointsConfig := obj.ControlPlaneEndpointsConfig; controlPlaneEndpointsConfig != nil {
 		if ipEndpointsConfig := controlPlaneEndpointsConfig.GetIpEndpointsConfig(); ipEndpointsConfig != nil {
 			if ipEndpointsConfig.Enabled != nil && ipEndpointsConfig.GetEnabled() == false {
-				obj.PrivateCluster = true
 			}
 		}
 	}
@@ -622,116 +621,14 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.ClusterIpv4Cidr = "10.92.0.0/14"
 	}
 
-	// ClusterTelemetry
-	if obj.ClusterTelemetry == nil {
-		obj.ClusterTelemetry = &pb.ClusterTelemetry{}
-	}
-
-	if obj.ClusterTelemetry.Type == pb.ClusterTelemetry_UNSPECIFIED {
-		obj.ClusterTelemetry.Type = pb.ClusterTelemetry_ENABLED
-	}
-
-	if obj.CurrentMasterVersion == "" {
-		obj.CurrentMasterVersion = obj.InitialClusterVersion
-	}
-	if obj.CurrentNodeVersion == "" {
-		obj.CurrentNodeVersion = obj.InitialClusterVersion
-	}
-
-	if obj.CurrentNodeCount == 0 {
-		obj.CurrentNodeCount = 1
-	}
-
-	// If databaseEncryption field doesn't exist and databaseEncryption.state is UNKNOWN, then it should be defaulted to
-	// DECRYPTED with no key.
-	// Otherwise, UNKNOWN actually represents ALL_OBJECTS_ENCRYPTION_ENABLED (more details see the comments below), and
-	// we will update it to ENCRYPTED.
-	if obj.DatabaseEncryption == nil {
-		obj.DatabaseEncryption = &pb.DatabaseEncryption{
-			State: pb.DatabaseEncryption_DECRYPTED,
-		}
-	} else {
-		// Possibly because mockgcp is using an older version of the proto,
-		// when the requested state is pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED,
-		// it's dropped in the received request, and then got parsed to pb.DatabaseEncryption_UNKNOWN.
-		//
-		// Besides, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
-		// here, this error shows up in the test log:
-		//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
-		//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
-		if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN {
-			obj.DatabaseEncryption.State = pb.DatabaseEncryption_ENCRYPTED
-		}
-	}
-
-	if obj.DatabaseEncryption.CurrentState == nil {
-		switch obj.DatabaseEncryption.State {
-		case pb.DatabaseEncryption_DECRYPTED:
-			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
-			if obj.DatabaseEncryption.KeyName != "" {
-				obj.DatabaseEncryption.DecryptionKeys = []string{obj.DatabaseEncryption.KeyName}
-				obj.DatabaseEncryption.KeyName = ""
-			}
-		case pb.DatabaseEncryption_ENCRYPTED:
-			// The real GCP service decided to return `ALL_OBJECTS_ENCRYPTION_ENABLED` when the input is `ENCRYPTED`
-			// for the latest version (1.35 and above).
-			// However, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
-			// here, this error shows up in the test log:
-			//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
-			//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
-			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
-		case pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED:
-			// CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED value is not yet supported in googleapis library.
-			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
-		default:
-			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
-		}
-	}
-
-	// defaultMaxPodsConstraint
-	if obj.DefaultMaxPodsConstraint == nil {
-		obj.DefaultMaxPodsConstraint = &pb.MaxPodsConstraint{}
-	}
-	if obj.DefaultMaxPodsConstraint.MaxPodsPerNode == 0 {
-		obj.DefaultMaxPodsConstraint.MaxPodsPerNode = 110
-	}
-
-	// enterpriseConfig
-	if obj.EnterpriseConfig == nil {
-		obj.EnterpriseConfig = &pb.EnterpriseConfig{}
-	}
-
-	if obj.EnterpriseConfig.ClusterTier == pb.EnterpriseConfig_CLUSTER_TIER_UNSPECIFIED {
-		obj.EnterpriseConfig.ClusterTier = pb.EnterpriseConfig_STANDARD
-	}
-
-	if obj.Etag == "" {
-		obj.Etag = "abcdef0123A="
-	}
-
-	if obj.Id == "" {
-		obj.Id = "000000000000000000000"
-	}
-
-	zone, err := locationToZone(obj.Location)
-	if err != nil {
-		return err
-	}
-
-	if obj.InstanceGroupUrls == nil {
-		obj.InstanceGroupUrls = []string{
-			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef", project.ID, zone),
-		}
-	}
-
 	// IpAllocationPolicy
 	if obj.IpAllocationPolicy == nil {
 		obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
 	}
 	ipAllocationPolicy := obj.IpAllocationPolicy
 	{
-		if ipAllocationPolicy.StackType == pb.IPAllocationPolicy_STACK_TYPE_UNSPECIFIED {
-			ipAllocationPolicy.StackType = pb.IPAllocationPolicy_IPV4
+		if ipAllocationPolicy.StackType == pb.StackType_STACK_TYPE_UNSPECIFIED {
+			ipAllocationPolicy.StackType = pb.StackType_IPV4
 		}
 		ipAllocationPolicy.UseIpAliases = true
 		if ipAllocationPolicy.PodCidrOverprovisionConfig == nil {
@@ -979,19 +876,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		dnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
 	}
 
-	if obj.ProtectConfig == nil {
-		obj.ProtectConfig = &pb.ProtectConfig{}
-	}
-	if obj.ProtectConfig.WorkloadConfig == nil {
-		obj.ProtectConfig.WorkloadConfig = &pb.WorkloadConfig{}
-	}
-	if obj.ProtectConfig.WorkloadConfig.AuditMode == nil {
-		obj.ProtectConfig.WorkloadConfig.AuditMode = PtrTo(pb.WorkloadConfig_BASIC)
-	}
-	if obj.ProtectConfig.WorkloadVulnerabilityMode == nil {
-		obj.ProtectConfig.WorkloadVulnerabilityMode = PtrTo(pb.ProtectConfig_WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED)
-	}
-
 	if obj.RbacBindingConfig == nil {
 		obj.RbacBindingConfig = &pb.RBACBindingConfig{}
 	}
@@ -1055,10 +939,8 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	// Endpoint reflects the Control plane config
 	if getWithDefault(obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().EnablePublicEndpoint, true) {
 		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPublicEndpoint()
-		obj.PrivateCluster = false
 	} else {
 		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPrivateEndpoint()
-		obj.PrivateCluster = true
 	}
 	if obj.Endpoint == "" {
 		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetDnsEndpointConfig().GetEndpoint()

@@ -15,6 +15,7 @@
 package httptogrpc
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -26,12 +27,29 @@ import (
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/klog/v2"
 )
+
+// originalPathKey is the (unique) type for storing the original request path in the context
+type originalPathKey string
+
+// originalPath is the (unique) value for storing the original request path in the context
+var originalPath originalPathKey = "originalPath"
+
+// RewriteRequest returns a new http.Request for the specified URL,
+// also stashing the original request for addMetadata.
+func RewriteRequest(r *http.Request, newURL *url.URL) *http.Request {
+	ctx := r.Context()
+	ctx = context.WithValue(ctx, originalPath, r.URL.Path)
+	r = r.WithContext(ctx)
+	r.URL = newURL
+	return r
+}
 
 // Mux is the primary interface for mapping HTTP requests to gRPC method calls.
 type Mux interface {
@@ -160,6 +178,17 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // serveHTTPMethod serves a single HTTP method mapped to a gRPC method.
 func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method *grpcMethod, pathValues map[string]string) {
 	ctx := r.Context()
+
+	// Add metadata so mocks can know the request details (like API version)
+	md := make(metadata.MD)
+	path := r.URL.Path
+	if v := r.Context().Value(originalPath); v != nil {
+		path = v.(string)
+	}
+	md.Set("path", path)
+	md.Set("http.request.query", r.URL.RawQuery)
+	ctx = metadata.NewIncomingContext(ctx, md)
+
 	log := klog.FromContext(ctx)
 
 	call := &httpMethodCall{
