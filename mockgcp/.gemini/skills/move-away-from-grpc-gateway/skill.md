@@ -23,6 +23,7 @@ Update the Go files in `mockgcp/mock<service_name>/` (typically `service.go`, `i
 
 - Remove the local generated import: `pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/<service_name>/<version>"`
 - Add the official client library import: `pb "cloud.google.com/go/<service_name>/apiv1/<service_name>pb"`
+  - Note: For BigQuery v2, use `pb "cloud.google.com/go/bigquery/v2/apiv2/bigquerypb"`. You may need to `go get` this package.
 
 ## Step 4: Switch HTTP Multiplexer to httptogrpc
 

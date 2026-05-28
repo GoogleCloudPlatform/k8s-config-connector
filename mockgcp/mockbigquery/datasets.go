@@ -24,18 +24,19 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 
+	pb "cloud.google.com/go/bigquery/v2/apiv2/bigquerypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
-	"github.com/golang/protobuf/ptypes/empty"
 )
 
 var defaultMaxTimeTravelHours = int64(168)
 
 type datasetsServer struct {
 	*MockService
-	pb.UnimplementedDatasetsServerServer
+	pb.UnimplementedDatasetServiceServer
 }
 
 func (s *datasetsServer) GetDataset(ctx context.Context, req *pb.GetDatasetRequest) (*pb.Dataset, error) {
@@ -54,7 +55,7 @@ func (s *datasetsServer) GetDataset(ctx context.Context, req *pb.GetDatasetReque
 		return nil, err
 	}
 	if obj.MaxTimeTravelHours == nil {
-		obj.MaxTimeTravelHours = &defaultMaxTimeTravelHours
+		obj.MaxTimeTravelHours = wrapperspb.Int64(defaultMaxTimeTravelHours)
 	}
 
 	return obj, nil
@@ -78,42 +79,42 @@ func (s *datasetsServer) InsertDataset(ctx context.Context, req *pb.InsertDatase
 	if obj.GetDatasetReference().GetProjectId() == "" {
 		obj.DatasetReference.ProjectId = req.ProjectId
 	}
-	obj.CreationTime = PtrTo(now.UnixMilli())
-	obj.LastModifiedTime = PtrTo(now.UnixMilli())
-	obj.Id = PtrTo(obj.GetDatasetReference().GetProjectId() + ":" + obj.GetDatasetReference().GetDatasetId())
-	obj.Kind = PtrTo("bigquery#dataset")
-	if obj.Location == nil {
-		obj.Location = PtrTo("US")
+	obj.CreationTime = now.UnixMilli()
+	obj.LastModifiedTime = now.UnixMilli()
+	obj.Id = obj.GetDatasetReference().GetProjectId() + ":" + obj.GetDatasetReference().GetDatasetId()
+	obj.Kind = "bigquery#dataset"
+	if obj.Location == "" {
+		obj.Location = "US"
 	}
-	if obj.Type == nil {
-		obj.Type = PtrTo("DEFAULT")
+	if obj.Type == "" {
+		obj.Type = "DEFAULT"
 	}
 	if len(obj.Access) == 0 {
-		obj.Access = []*pb.DatasetAccess{
+		obj.Access = []*pb.Access{
 			{
-				Role:         PtrTo("WRITER"),
-				SpecialGroup: PtrTo("projectWriters"),
+				Role:         "WRITER",
+				SpecialGroup: "projectWriters",
 			},
 			{
-				Role:         PtrTo("OWNER"),
-				SpecialGroup: PtrTo("projectOwners"),
+				Role:         "OWNER",
+				SpecialGroup: "projectOwners",
 			},
 			{
-				Role:        PtrTo("OWNER"),
-				UserByEmail: PtrTo("me@example.com"),
+				Role:        "OWNER",
+				UserByEmail: "me@example.com",
 			},
 			{
-				Role:         PtrTo("READER"),
-				SpecialGroup: PtrTo("projectReaders"),
+				Role:         "READER",
+				SpecialGroup: "projectReaders",
 			},
 		}
 	}
 
-	obj.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
+	obj.SelfLink = "https://bigquery.googleapis.com/bigquery/v2/" + name.String()
 
 	sortAccess(obj)
 
-	obj.Etag = PtrTo(computeEtag(obj))
+	obj.Etag = computeEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating dataset: %v", err)
@@ -127,7 +128,7 @@ func sortAccess(obj *pb.Dataset) {
 	// and it shouldn't actually matter, but it helps our golden testing.
 	// This order seems to keep our test data happy
 
-	getRoleKey := func(a *pb.DatasetAccess) string {
+	getRoleKey := func(a *pb.Access) string {
 		roleKey := a.GetRole()
 		switch roleKey {
 		case "WRITER":
@@ -172,7 +173,7 @@ func sortAccess(obj *pb.Dataset) {
 	})
 }
 
-func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatasetRequest) (*pb.Dataset, error) {
+func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateOrPatchDatasetRequest) (*pb.Dataset, error) {
 	name, err := s.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
 	if err != nil {
 		return nil, err
@@ -191,25 +192,25 @@ func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatase
 	updated.DatasetReference = existing.DatasetReference
 
 	updated.CreationTime = existing.CreationTime
-	updated.LastModifiedTime = PtrTo(now.UnixMilli())
-	updated.Id = PtrTo(existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId())
-	updated.Kind = PtrTo("bigquery#dataset")
+	updated.LastModifiedTime = now.UnixMilli()
+	updated.Id = existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId()
+	updated.Kind = "bigquery#dataset"
 	updated.Location = existing.Location
 	updated.Type = existing.Type
-	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
+	updated.SelfLink = "https://bigquery.googleapis.com/bigquery/v2/" + name.String()
 
 	sortAccess(updated)
 
-	updated.Etag = PtrTo(computeEtag(updated))
+	updated.Etag = computeEtag(updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
-	return updated, err
+	return updated, nil
 }
 
-func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetRequest) (*pb.Dataset, error) {
+func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.UpdateOrPatchDatasetRequest) (*pb.Dataset, error) {
 	name, err := s.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
 	if err != nil {
 		return nil, err
@@ -228,25 +229,25 @@ func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetR
 	updated.DatasetReference = existing.DatasetReference
 
 	updated.CreationTime = existing.CreationTime
-	updated.LastModifiedTime = PtrTo(now.UnixMilli())
-	updated.Id = PtrTo(existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId())
-	updated.Kind = PtrTo("bigquery#dataset")
+	updated.LastModifiedTime = now.UnixMilli()
+	updated.Id = existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId()
+	updated.Kind = "bigquery#dataset"
 	updated.Location = existing.Location
 	updated.Type = existing.Type
-	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
+	updated.SelfLink = "https://bigquery.googleapis.com/bigquery/v2/" + name.String()
 
 	sortAccess(updated)
 
-	updated.Etag = PtrTo(computeEtag(updated))
+	updated.Etag = computeEtag(updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
-	return updated, err
+	return updated, nil
 }
 
-func (s *datasetsServer) DeleteDataset(ctx context.Context, req *pb.DeleteDatasetRequest) (*empty.Empty, error) {
+func (s *datasetsServer) DeleteDataset(ctx context.Context, req *pb.DeleteDatasetRequest) (*emptypb.Empty, error) {
 	name, err := s.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
 	if err != nil {
 		return nil, err
@@ -261,7 +262,7 @@ func (s *datasetsServer) DeleteDataset(ctx context.Context, req *pb.DeleteDatase
 
 	httpmux.SetStatusCode(ctx, http.StatusNoContent)
 
-	return &empty.Empty{}, nil
+	return &emptypb.Empty{}, nil
 }
 
 type datasetName struct {

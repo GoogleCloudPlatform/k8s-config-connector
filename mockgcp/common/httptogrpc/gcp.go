@@ -46,7 +46,14 @@ type httpErrorResponse struct {
 }
 
 type httpError struct {
-	Code    int    `json:"code,omitempty"`
+	Code    int                `json:"code,omitempty"`
+	Message string             `json:"message,omitempty"`
+	Status  string             `json:"status,omitempty"`
+	Errors  []httpErrorDetails `json:"errors,omitempty"`
+}
+
+type httpErrorDetails struct {
+	Domain  string `json:"domain,omitempty"`
 	Message string `json:"message,omitempty"`
-	Status  string `json:"status,omitempty"`
+	Reason  string `json:"reason,omitempty"`
 }

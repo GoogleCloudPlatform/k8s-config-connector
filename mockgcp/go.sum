@@ -32,6 +32,8 @@ cloud.google.com/go/batch v1.14.0 h1:r5DEMPNXZk1as36Le3DaNQTRhhnR+E95a99SFxwF52o
 cloud.google.com/go/batch v1.14.0/go.mod h1:oeQveyG6NDS/ks2ilOP4LzKRmuIaI7GLe0CkR7WF6pk=
 cloud.google.com/go/bigquery v1.74.0 h1:Q6bAMv+eyvufOpIrfrYxhM46qq1D3ZQTdgUDQqKS+n8=
 cloud.google.com/go/bigquery v1.74.0/go.mod h1:iViO7Cx3A/cRKcHNRsHB3yqGAMInFBswrE9Pxazsc90=
+cloud.google.com/go/bigquery/v2 v2.0.0-20260515163928-9168ab887eb5 h1:fDZEI8ebEiuGu0lhOfdluXg+NtpihfzpVj6YHa+GxYg=
+cloud.google.com/go/bigquery/v2 v2.0.0-20260515163928-9168ab887eb5/go.mod h1:oiOZSqggwJQLxf2z9oB3z2Ghjrekm3yIw2/R1jknWWU=
 cloud.google.com/go/bigtable v1.42.0 h1:SREvT4jLhJQZXUjsLmFs/1SMQJ+rKEj1cJuPE9liQs8=
 cloud.google.com/go/bigtable v1.42.0/go.mod h1:oZ30nofVB6/UYGg7lBwGLWSea7NZUvw/WvBBgLY07xU=
 cloud.google.com/go/billing v1.21.0 h1:nbQjTXkpgB/E4XnYZQwcZnR63QFsbFwJ9DGsNg61Ghg=

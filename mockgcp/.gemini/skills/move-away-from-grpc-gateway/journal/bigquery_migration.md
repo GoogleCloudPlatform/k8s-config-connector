@@ -1,0 +1,5 @@
+- BigQuery v2 protos are located in `cloud.google.com/go/bigquery/v2/apiv2/bigquerypb`. This required a `go get` as it was not in the main `bigquery` module.
+- `httptogrpc` was enhanced to support `x-http-code` and `x-expires` headers from gRPC metadata, allowing mocks to return custom HTTP status codes (like 204 No Content).
+- `httptogrpc` was also enhanced to match the standard GCP error structure, including the `errors` array for 404 (NotFound) errors, which is expected by BigQuery clients.
+- Some BigQuery methods were combined in the official proto (e.g., `UpdateOrPatchDatasetRequest`), requiring updates to the server implementation.
+- Many fields changed from pointers to direct values or wrappers (`wrapperspb`).

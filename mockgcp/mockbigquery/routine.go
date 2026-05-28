@@ -19,21 +19,21 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
-	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
+
+	pb "cloud.google.com/go/bigquery/v2/apiv2/bigquerypb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
-var defaultLanguage = "SQL"
-var DeterminismLevelUnspecified = "DETERMINISM_LEVEL_UNSPECIFIED"
+var defaultLanguage = pb.Routine_SQL
 
 type routinesServer struct {
 	*MockService
-	pb.UnimplementedRoutinesServerServer
+	pb.UnimplementedRoutineServiceServer
 }
 
 func (s *routinesServer) GetRoutine(ctx context.Context, req *pb.GetRoutineRequest) (*pb.Routine, error) {
@@ -51,11 +51,8 @@ func (s *routinesServer) GetRoutine(ctx context.Context, req *pb.GetRoutineReque
 		}
 		return nil, err
 	}
-	if obj.Language == nil {
-		obj.Language = &defaultLanguage
-	}
-	if obj.DeterminismLevel != nil && *obj.DeterminismLevel == DeterminismLevelUnspecified {
-		obj.DeterminismLevel = nil
+	if obj.Language == pb.Routine_LANGUAGE_UNSPECIFIED {
+		obj.Language = defaultLanguage
 	}
 
 	return obj, nil
@@ -76,21 +73,18 @@ func (s *routinesServer) InsertRoutine(ctx context.Context, req *pb.InsertRoutin
 	if obj.RoutineReference == nil {
 		obj.RoutineReference = &pb.RoutineReference{}
 	}
-	if obj.GetRoutineReference().ProjectId == nil {
+	if obj.GetRoutineReference().ProjectId == "" {
 		obj.RoutineReference.ProjectId = req.ProjectId
 	}
-	obj.CreationTime = PtrTo(now.UnixMilli())
-	obj.LastModifiedTime = PtrTo(now.UnixMilli())
-	obj.Etag = PtrTo(computeEtag(obj))
+	obj.CreationTime = now.UnixMilli()
+	obj.LastModifiedTime = now.UnixMilli()
+	obj.Etag = computeEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating routine: %v", err)
 	}
-	if obj.Language == nil {
-		obj.Language = &defaultLanguage
-	}
-	if obj.DeterminismLevel != nil && *obj.DeterminismLevel == DeterminismLevelUnspecified {
-		obj.DeterminismLevel = nil
+	if obj.Language == pb.Routine_LANGUAGE_UNSPECIFIED {
+		obj.Language = defaultLanguage
 	}
 	return obj, nil
 }
@@ -114,18 +108,18 @@ func (s *routinesServer) UpdateRoutine(ctx context.Context, req *pb.UpdateRoutin
 	updated.RoutineReference = existing.RoutineReference
 
 	updated.CreationTime = existing.CreationTime
-	updated.LastModifiedTime = PtrTo(now.UnixMilli())
+	updated.LastModifiedTime = now.UnixMilli()
 	updated.RoutineType = existing.RoutineType
-	updated.Etag = PtrTo(computeEtag(updated))
+	updated.Etag = computeEtag(updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
-	return updated, err
+	return updated, nil
 }
 
-func (s *routinesServer) DeleteRoutine(ctx context.Context, req *pb.DeleteRoutineRequest) (*empty.Empty, error) {
+func (s *routinesServer) DeleteRoutine(ctx context.Context, req *pb.DeleteRoutineRequest) (*emptypb.Empty, error) {
 	name, err := s.buildRoutineName(req.GetProjectId(), req.GetDatasetId(), req.GetRoutineId())
 	if err != nil {
 		return nil, err
@@ -143,7 +137,7 @@ func (s *routinesServer) DeleteRoutine(ctx context.Context, req *pb.DeleteRoutin
 
 	httpmux.SetStatusCode(ctx, http.StatusNoContent)
 
-	return &empty.Empty{}, nil
+	return &emptypb.Empty{}, nil
 }
 
 type routineName struct {

@@ -15,6 +15,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "KeyRing projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId} not found.",
+        "reason": "notFound"
+      }
+    ],
     "message": "KeyRing projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
@@ -81,6 +88,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "CryptoKey projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
+        "reason": "notFound"
+      }
+    ],
     "message": "CryptoKey projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }

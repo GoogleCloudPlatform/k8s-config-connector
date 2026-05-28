@@ -23,20 +23,21 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 
+	pb "cloud.google.com/go/bigquery/v2/apiv2/bigquerypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
-	"github.com/golang/protobuf/ptypes/empty"
 )
 
 type tablesServer struct {
 	*MockService
-	pb.UnimplementedTablesServerServer
+	pb.UnimplementedTableServiceServer
 }
 
-func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest) (*pb.Table, error) {
+func (s *tablesServer) PatchTable(ctx context.Context, req *pb.UpdateOrPatchTableRequest) (*pb.Table, error) {
 	name, err := s.buildTableName(req.GetProjectId(), req.GetDatasetId(), req.GetTableId())
 	if err != nil {
 		return nil, err
@@ -52,16 +53,16 @@ func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest
 	now := time.Now()
 
 	updated := CloneProto(existing)
-	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
+	updated.LastModifiedTime = uint64(now.UnixMilli())
 
 	updated.FriendlyName = req.GetTable().FriendlyName
 	updated.Description = req.GetTable().Description
 	updated.Schema = req.GetTable().Schema
 	if updated.GetExternalDataConfiguration() != nil {
-		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
+		updated.RequirePartitionFilter = req.GetTable().RequirePartitionFilter
 	}
 
-	updated.Etag = PtrTo(computeEtag(updated))
+	updated.Etag = computeEtag(updated)
 
 	s.normalizeTable(updated)
 
@@ -69,7 +70,7 @@ func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest
 		return nil, err
 	}
 
-	return updated, err
+	return updated, nil
 }
 
 func (s *tablesServer) GetTable(ctx context.Context, req *pb.GetTableRequest) (*pb.Table, error) {
@@ -128,53 +129,56 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 	if obj.GetTableReference().GetProjectId() == "" {
 		obj.TableReference.ProjectId = req.ProjectId
 	}
-	obj.CreationTime = PtrTo(now.UnixMilli())
-	obj.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
-	obj.Id = PtrTo(obj.GetTableReference().GetProjectId() + ":" + obj.GetTableReference().GetTableId())
-	obj.Kind = PtrTo("bigquery#table")
+	obj.CreationTime = now.UnixMilli()
+	obj.LastModifiedTime = uint64(now.UnixMilli())
+	obj.Id = obj.GetTableReference().GetProjectId() + ":" + obj.GetTableReference().GetTableId()
+	obj.Kind = "bigquery#table"
 
 	if obj.TimePartitioning != nil {
-		col := pb.PartitionedColumn{Field: obj.TimePartitioning.Field}
+		col := pb.PartitionedColumn{}
+		if obj.TimePartitioning.Field != nil {
+			col.Field = &obj.TimePartitioning.Field.Value
+		}
 		obj.PartitionDefinition = &pb.PartitioningDefinition{PartitionedColumn: []*pb.PartitionedColumn{&col}}
 	}
-	if obj.Location == nil {
-		obj.Location = PtrTo("us-central1")
+	if obj.Location == "" {
+		obj.Location = "us-central1"
 	}
 
 	if obj.GetExternalDataConfiguration() != nil {
-		obj.Type = PtrTo("EXTERNAL")
+		obj.Type = "EXTERNAL"
 	} else if obj.GetView() != nil {
-		obj.Type = PtrTo("VIEW")
+		obj.Type = "VIEW"
 	} else {
-		obj.Type = PtrTo("TABLE")
+		obj.Type = "TABLE"
 	}
 
 	if obj.NumActiveLogicalBytes == nil {
-		obj.NumActiveLogicalBytes = PtrTo(int64(0))
+		obj.NumActiveLogicalBytes = wrapperspb.Int64(0)
 	}
 	if obj.NumBytes == nil {
-		obj.NumBytes = PtrTo(int64(0))
+		obj.NumBytes = wrapperspb.Int64(0)
 	}
 	if obj.NumLongTermBytes == nil {
-		obj.NumLongTermBytes = PtrTo(int64(0))
+		obj.NumLongTermBytes = wrapperspb.Int64(0)
 	}
 	if obj.NumLongTermLogicalBytes == nil {
-		obj.NumLongTermLogicalBytes = PtrTo(int64(0))
+		obj.NumLongTermLogicalBytes = wrapperspb.Int64(0)
 	}
 	if obj.NumRows == nil {
-		obj.NumRows = PtrTo(uint64(0))
+		obj.NumRows = wrapperspb.UInt64(0)
 	}
 	if obj.NumTotalLogicalBytes == nil {
-		obj.NumTotalLogicalBytes = PtrTo(int64(0))
+		obj.NumTotalLogicalBytes = wrapperspb.Int64(0)
 	}
 
 	if obj.GetExternalDataConfiguration() != nil {
 		if obj.RequirePartitionFilter == nil {
-			obj.RequirePartitionFilter = PtrTo(false)
+			obj.RequirePartitionFilter = wrapperspb.Bool(false)
 		}
 
 		if obj.Schema == nil {
-			if obj.GetExternalDataConfiguration().GetAutodetect() {
+			if obj.GetExternalDataConfiguration().GetAutodetect().GetValue() {
 				obj.Schema = &pb.TableSchema{}
 				sourceURI := ""
 				if len(obj.GetExternalDataConfiguration().SourceUris) == 1 {
@@ -184,121 +188,121 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 				case "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv":
 					obj.Schema.Fields = []*pb.TableFieldSchema{
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("name"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "name",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("post_abbr"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "post_abbr",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("date"),
-							Type: PtrTo("DATE"),
+							Mode: "NULLABLE",
+							Name: "date",
+							Type: "DATE",
 						},
 					}
 				case "gs://cloud-samples-data/bigquery/us-states/us-states.avro":
 					obj.Schema.Fields = []*pb.TableFieldSchema{
 						{
-							Mode:        PtrTo("REQUIRED"),
-							Name:        PtrTo("name"),
-							Type:        PtrTo("STRING"),
-							Description: PtrTo("The common name of the state."),
+							Mode:        "REQUIRED",
+							Name:        "name",
+							Type:        "STRING",
+							Description: wrapperspb.String("The common name of the state."),
 						},
 						{
-							Mode:        PtrTo("REQUIRED"),
-							Name:        PtrTo("post_abbr"),
-							Type:        PtrTo("STRING"),
-							Description: PtrTo("The postal code abbreviation of the state."),
+							Mode:        "REQUIRED",
+							Name:        "post_abbr",
+							Type:        "STRING",
+							Description: wrapperspb.String("The postal code abbreviation of the state."),
 						},
 					}
 				case "gs://cloud-samples-data/bigquery/us-states/us-states.parquet":
 					obj.Schema.Fields = []*pb.TableFieldSchema{
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("name"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "name",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("post_abbr"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "post_abbr",
+							Type: "STRING",
 						},
 					}
 				default:
 					// Schema for "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
 					obj.Schema.Fields = []*pb.TableFieldSchema{
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("string_field_0"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "string_field_0",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("string_field_1"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "string_field_1",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("string_field_2"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "string_field_2",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("string_field_3"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "string_field_3",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("string_field_4"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "string_field_4",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("string_field_5"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "string_field_5",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("int64_field_6"),
-							Type: PtrTo("INTEGER"),
+							Mode: "NULLABLE",
+							Name: "int64_field_6",
+							Type: "INTEGER",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("int64_field_7"),
-							Type: PtrTo("INTEGER"),
+							Mode: "NULLABLE",
+							Name: "int64_field_7",
+							Type: "INTEGER",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("int64_field_8"),
-							Type: PtrTo("INTEGER"),
+							Mode: "NULLABLE",
+							Name: "int64_field_8",
+							Type: "INTEGER",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("int64_field_9"),
-							Type: PtrTo("INTEGER"),
+							Mode: "NULLABLE",
+							Name: "int64_field_9",
+							Type: "INTEGER",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("string_field_10"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "string_field_10",
+							Type: "STRING",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("int64_field_11"),
-							Type: PtrTo("INTEGER"),
+							Mode: "NULLABLE",
+							Name: "int64_field_11",
+							Type: "INTEGER",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("int64_field_12"),
-							Type: PtrTo("INTEGER"),
+							Mode: "NULLABLE",
+							Name: "int64_field_12",
+							Type: "INTEGER",
 						},
 						{
-							Mode: PtrTo("NULLABLE"),
-							Name: PtrTo("string_field_13"),
-							Type: PtrTo("STRING"),
+							Mode: "NULLABLE",
+							Name: "string_field_13",
+							Type: "STRING",
 						},
 					}
 				}
@@ -306,25 +310,25 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 		}
 	}
 	if obj.GetView() != nil {
-		if strings.HasPrefix(ValueOf(obj.View.Query), "SELECT distinct dt, user_id FROM") {
+		if strings.HasPrefix(obj.View.Query, "SELECT distinct dt, user_id FROM") {
 			obj.Schema = &pb.TableSchema{}
 			obj.Schema.Fields = []*pb.TableFieldSchema{
 				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("dt"),
-					Type: PtrTo("DATE"),
+					Mode: "NULLABLE",
+					Name: "dt",
+					Type: "DATE",
 				},
 				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("user_id"),
-					Type: PtrTo("STRING"),
+					Mode: "NULLABLE",
+					Name: "user_id",
+					Type: "STRING",
 				},
 			}
 		}
 	}
 	if obj.MaterializedView != nil {
-		obj.Type = PtrTo("MATERIALIZED_VIEW")
-		obj.MaterializedView.LastRefreshTime = PtrTo(now.UnixMilli())
+		obj.Type = "MATERIALIZED_VIEW"
+		obj.MaterializedView.LastRefreshTime = now.UnixMilli()
 		obj.MaterializedViewStatus = &pb.MaterializedViewStatus{
 			RefreshWatermark: timestamppb.New(now),
 		}
@@ -334,32 +338,26 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 			// schema of the query in bigquerytable-view test case
 			obj.Schema.Fields = []*pb.TableFieldSchema{
 				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("dt"),
-					Type: PtrTo("DATE"),
+					Mode: "NULLABLE",
+					Name: "dt",
+					Type: "DATE",
 				},
 				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("user_id"),
-					Type: PtrTo("STRING"),
+					Mode: "NULLABLE",
+					Name: "user_id",
+					Type: "STRING",
 				},
 			}
 		}
 	}
 
-	obj.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
+	obj.SelfLink = "https://bigquery.googleapis.com/bigquery/v2/" + name.String()
 
-	obj.Etag = PtrTo(computeEtag(obj))
+	obj.Etag = computeEtag(obj)
 
 	s.normalizeTable(obj)
 
 	ret := CloneProto(obj)
-
-	// TimePartitioning.RequirePartitionFilter is not returned in the POST response,
-	// but will be returned after the table is created.
-	if obj.RequirePartitionFilter != nil && obj.TimePartitioning != nil {
-		obj.TimePartitioning.RequirePartitionFilter = obj.RequirePartitionFilter
-	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating Table: %v", err)
@@ -372,7 +370,7 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 	return ret, nil
 }
 
-func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableRequest) (*pb.Table, error) {
+func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateOrPatchTableRequest) (*pb.Table, error) {
 	name, err := s.buildTableName(req.GetProjectId(), req.GetDatasetId(), req.GetTableId())
 	if err != nil {
 		return nil, err
@@ -388,18 +386,18 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 	now := time.Now()
 
 	updated := CloneProto(existing)
-	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
+	updated.LastModifiedTime = uint64(now.UnixMilli())
 	updated.Description = req.GetTable().Description
 	updated.FriendlyName = req.GetTable().FriendlyName
 	updated.Schema = req.GetTable().GetSchema()
 	if updated.GetExternalDataConfiguration() != nil {
-		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
+		updated.RequirePartitionFilter = req.GetTable().RequirePartitionFilter
 		updated.ExternalDataConfiguration = req.GetTable().ExternalDataConfiguration
 	}
 	updated.Schema = req.GetTable().Schema
 	updated.ExpirationTime = req.GetTable().ExpirationTime
 
-	updated.Etag = PtrTo(computeEtag(updated))
+	updated.Etag = computeEtag(updated)
 	updated.Labels = req.GetTable().Labels
 
 	updated.TableConstraints = req.GetTable().TableConstraints
@@ -407,26 +405,26 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 	updated.View = req.GetTable().View
 
 	if req.GetTable().View != nil {
-		if strings.HasPrefix(ValueOf(req.GetTable().View.Query), "SELECT distinct dt, user_id, guid FROM") {
+		if strings.HasPrefix(req.GetTable().View.Query, "SELECT distinct dt, user_id, guid FROM") {
 			updated.Schema = &pb.TableSchema{}
 			updated.Schema.Fields = []*pb.TableFieldSchema{
 				{
-					Mode:        PtrTo("NULLABLE"),
-					Name:        PtrTo("dt"),
-					Type:        PtrTo("DATE"),
-					Description: PtrTo("dt"),
+					Mode:        "NULLABLE",
+					Name:        "dt",
+					Type:        "DATE",
+					Description: wrapperspb.String("dt"),
 				},
 				{
-					Mode:        PtrTo("NULLABLE"),
-					Name:        PtrTo("user_id"),
-					Type:        PtrTo("STRING"),
-					Description: PtrTo("user_id"),
+					Mode:        "NULLABLE",
+					Name:        "user_id",
+					Type:        "STRING",
+					Description: wrapperspb.String("user_id"),
 				},
 				{
-					Mode:        PtrTo("NULLABLE"),
-					Name:        PtrTo("guid"),
-					Type:        PtrTo("STRING"),
-					Description: PtrTo("guid"),
+					Mode:        "NULLABLE",
+					Name:        "guid",
+					Type:        "STRING",
+					Description: wrapperspb.String("guid"),
 				},
 			}
 		}
@@ -438,10 +436,10 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 		return nil, err
 	}
 
-	return updated, err
+	return updated, nil
 }
 
-func (s *tablesServer) DeleteTable(ctx context.Context, req *pb.DeleteTableRequest) (*empty.Empty, error) {
+func (s *tablesServer) DeleteTable(ctx context.Context, req *pb.DeleteTableRequest) (*emptypb.Empty, error) {
 	name, err := s.buildTableName(req.GetProjectId(), req.GetDatasetId(), req.GetTableId())
 	if err != nil {
 		return nil, err
@@ -456,7 +454,7 @@ func (s *tablesServer) DeleteTable(ctx context.Context, req *pb.DeleteTableReque
 
 	httpmux.SetStatusCode(ctx, http.StatusNoContent)
 
-	return &empty.Empty{}, nil
+	return &emptypb.Empty{}, nil
 }
 
 type tableName struct {
