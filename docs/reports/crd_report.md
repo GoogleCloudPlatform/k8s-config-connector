@@ -387,7 +387,7 @@
 | notebooks.cnrm.cloud.google.com               | NotebookInstance                                | True         | True        | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com               | NotebooksEnvironment                            | True         | False       | False  | Direct     | True        |
 | orgpolicy.cnrm.cloud.google.com               | OrgPolicyCustomConstraint                       | True         | True        | False  | Direct     | True        |
-| orgpolicy.cnrm.cloud.google.com               | OrgPolicyPolicy                                 | True         | False       | False  | Direct     | True        |
+| orgpolicy.cnrm.cloud.google.com               | OrgPolicyPolicy                                 | True         | True        | False  | Direct     | True        |
 | osconfig.cnrm.cloud.google.com                | OSConfigGuestPolicy                             | False        | True        | False  | DCL        | False       |
 | osconfig.cnrm.cloud.google.com                | OSConfigOSPolicyAssignment                      | False        | True        | False  | DCL        | False       |
 | osconfig.cnrm.cloud.google.com                | OSConfigPatchDeployment                         | True         | False       | False  | Terraform  | False       |

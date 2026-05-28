@@ -258,72 +258,96 @@ type PolicySpec_PolicyRule struct {
 //
 // +kcc:proto=google.cloud.orgpolicy.v2.PolicyRule.parameters
 type PolicySpec_PolicyRule_Parameters struct {
+	// When true, any Google Kubernetes Engine resource path is permitted.
 	// +optional
 	AllowAnyGKEPath *bool `json:"allowAnyGKEPath,omitempty"`
 
+	// Resource paths that are explicitly allowed by the managed constraint.
 	// +optional
 	AllowPaths []string `json:"allowPaths,omitempty"`
 
+	// AWS account IDs that are allowed by the managed constraint.
 	// +optional
-	AllowedAwsAccountIds []string `json:"allowedAwsAccountIds,omitempty"`
+	AllowedAWSAccountIDs []string `json:"allowedAwsAccountIds,omitempty"`
 
+	// Data sources that are allowed by the managed constraint.
 	// +optional
 	AllowedDataSources []string `json:"allowedDataSources,omitempty"`
 
+	// Contact domains that are allowed by the managed constraint (for example,
+	// email domains permitted by essentialcontacts.managed.allowedContactDomains).
 	// +optional
 	AllowedDomains []string `json:"allowedDomains,omitempty"`
 
+	// Fully qualified domain names that are allowed for egress traffic.
 	// +optional
-	AllowedEgressFqdns []string `json:"allowedEgressFqdns,omitempty"`
+	AllowedEgressFQDNs []string `json:"allowedEgressFqdns,omitempty"`
 
+	// Encryption types or modes that are allowed by the managed constraint.
 	// +optional
 	AllowedEncryptions []string `json:"allowedEncryptions,omitempty"`
 
+	// Member subjects (for example, users or service accounts) that are allowed.
 	// +optional
 	AllowedMemberSubjects []string `json:"allowedMemberSubjects,omitempty"`
 
+	// Parent resources (organizations, folders, or projects) that are allowed.
 	// +optional
 	AllowedParents []string `json:"allowedParents,omitempty"`
 
+	// Preview features that are allowed by the managed constraint.
 	// +optional
 	AllowedPreviewFeatures []string `json:"allowedPreviewFeatures,omitempty"`
 
+	// Principal sets that are allowed by the managed constraint.
 	// +optional
 	AllowedPrincipalSets []string `json:"allowedPrincipalSets,omitempty"`
 
+	// Providers that are allowed by the managed constraint.
 	// +optional
 	AllowedProviders []string `json:"allowedProviders,omitempty"`
 
+	// Retention durations (in seconds) that are allowed by the managed constraint.
 	// +optional
 	AllowedRetentionDurationSeconds *int64 `json:"allowedRetentionDurationSeconds,omitempty"`
 
+	// Retention periods that are allowed by the managed constraint.
 	// +optional
 	AllowedRetentionPeriods []string `json:"allowedRetentionPeriods,omitempty"`
 
+	// URI schemes that are allowed by the managed constraint.
 	// +optional
 	AllowedSchemes []string `json:"allowedSchemes,omitempty"`
 
+	// Services that are allowed by the managed constraint (service list form).
 	// +optional
 	AllowedServiceList []string `json:"allowedServiceList,omitempty"`
 
+	// Services that are allowed by the managed constraint.
 	// +optional
 	AllowedServices []string `json:"allowedServices,omitempty"`
 
+	// Default AWS provider used when no explicit provider is specified.
 	// +optional
-	DefaultAwsProvider *string `json:"defaultAwsProvider,omitempty"`
+	DefaultAWSProvider *string `json:"defaultAwsProvider,omitempty"`
 
+	// Default XML service provider used when no explicit provider is specified.
 	// +optional
-	DefaultXmlServiceProvider *string `json:"defaultXmlServiceProvider,omitempty"`
+	DefaultXMLServiceProvider *string `json:"defaultXmlServiceProvider,omitempty"`
 
+	// Editions that are denied by the managed constraint.
 	// +optional
 	DeniedEditions []string `json:"deniedEditions,omitempty"`
 
+	// Projects where the managed constraint is enforced.
 	// +optional
 	EnforcedProjects []string `json:"enforcedProjects,omitempty"`
 
+	// Minimum destroy schedule duration, in days, required by the managed constraint.
 	// +optional
 	MinimumDestroyScheduleDurationInDays *int64 `json:"minimumDestroyScheduleDurationInDays,omitempty"`
 
+	// Compute Engine machine types that are not FIPS-compliant but are allowed.
 	// +optional
-	NonFipsMachineTypes []string `json:"nonFipsMachineTypes,omitempty"`
+	NonFIPSMachineTypes []string `json:"nonFipsMachineTypes,omitempty"`
 }

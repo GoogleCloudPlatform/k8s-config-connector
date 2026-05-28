@@ -564,86 +564,133 @@ spec:
                                      - "@example.com"
                           properties:
                             allowAnyGKEPath:
+                              description: When true, any Google Kubernetes Engine
+                                resource path is permitted.
                               type: boolean
                             allowPaths:
+                              description: Resource paths that are explicitly allowed
+                                by the managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedAwsAccountIds:
+                              description: AWS account IDs that are allowed by the
+                                managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedDataSources:
+                              description: Data sources that are allowed by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             allowedDomains:
+                              description: Contact domains that are allowed by the
+                                managed constraint (for example, email domains permitted
+                                by essentialcontacts.managed.allowedContactDomains).
                               items:
                                 type: string
                               type: array
                             allowedEgressFqdns:
+                              description: Fully qualified domain names that are allowed
+                                for egress traffic.
                               items:
                                 type: string
                               type: array
                             allowedEncryptions:
+                              description: Encryption types or modes that are allowed
+                                by the managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedMemberSubjects:
+                              description: Member subjects (for example, users or
+                                service accounts) that are allowed.
                               items:
                                 type: string
                               type: array
                             allowedParents:
+                              description: Parent resources (organizations, folders,
+                                or projects) that are allowed.
                               items:
                                 type: string
                               type: array
                             allowedPreviewFeatures:
+                              description: Preview features that are allowed by the
+                                managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedPrincipalSets:
+                              description: Principal sets that are allowed by the
+                                managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedProviders:
+                              description: Providers that are allowed by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             allowedRetentionDurationSeconds:
+                              description: Retention durations (in seconds) that are
+                                allowed by the managed constraint.
                               format: int64
                               type: integer
                             allowedRetentionPeriods:
+                              description: Retention periods that are allowed by the
+                                managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedSchemes:
+                              description: URI schemes that are allowed by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             allowedServiceList:
+                              description: Services that are allowed by the managed
+                                constraint (service list form).
                               items:
                                 type: string
                               type: array
                             allowedServices:
+                              description: Services that are allowed by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             defaultAwsProvider:
+                              description: Default AWS provider used when no explicit
+                                provider is specified.
                               type: string
                             defaultXmlServiceProvider:
+                              description: Default XML service provider used when
+                                no explicit provider is specified.
                               type: string
                             deniedEditions:
+                              description: Editions that are denied by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             enforcedProjects:
+                              description: Projects where the managed constraint is
+                                enforced.
                               items:
                                 type: string
                               type: array
                             minimumDestroyScheduleDurationInDays:
+                              description: Minimum destroy schedule duration, in days,
+                                required by the managed constraint.
                               format: int64
                               type: integer
                             nonFipsMachineTypes:
+                              description: Compute Engine machine types that are not
+                                FIPS-compliant but are allowed.
                               items:
                                 type: string
                               type: array
@@ -843,86 +890,133 @@ spec:
                                      - "@example.com"
                           properties:
                             allowAnyGKEPath:
+                              description: When true, any Google Kubernetes Engine
+                                resource path is permitted.
                               type: boolean
                             allowPaths:
+                              description: Resource paths that are explicitly allowed
+                                by the managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedAwsAccountIds:
+                              description: AWS account IDs that are allowed by the
+                                managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedDataSources:
+                              description: Data sources that are allowed by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             allowedDomains:
+                              description: Contact domains that are allowed by the
+                                managed constraint (for example, email domains permitted
+                                by essentialcontacts.managed.allowedContactDomains).
                               items:
                                 type: string
                               type: array
                             allowedEgressFqdns:
+                              description: Fully qualified domain names that are allowed
+                                for egress traffic.
                               items:
                                 type: string
                               type: array
                             allowedEncryptions:
+                              description: Encryption types or modes that are allowed
+                                by the managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedMemberSubjects:
+                              description: Member subjects (for example, users or
+                                service accounts) that are allowed.
                               items:
                                 type: string
                               type: array
                             allowedParents:
+                              description: Parent resources (organizations, folders,
+                                or projects) that are allowed.
                               items:
                                 type: string
                               type: array
                             allowedPreviewFeatures:
+                              description: Preview features that are allowed by the
+                                managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedPrincipalSets:
+                              description: Principal sets that are allowed by the
+                                managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedProviders:
+                              description: Providers that are allowed by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             allowedRetentionDurationSeconds:
+                              description: Retention durations (in seconds) that are
+                                allowed by the managed constraint.
                               format: int64
                               type: integer
                             allowedRetentionPeriods:
+                              description: Retention periods that are allowed by the
+                                managed constraint.
                               items:
                                 type: string
                               type: array
                             allowedSchemes:
+                              description: URI schemes that are allowed by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             allowedServiceList:
+                              description: Services that are allowed by the managed
+                                constraint (service list form).
                               items:
                                 type: string
                               type: array
                             allowedServices:
+                              description: Services that are allowed by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             defaultAwsProvider:
+                              description: Default AWS provider used when no explicit
+                                provider is specified.
                               type: string
                             defaultXmlServiceProvider:
+                              description: Default XML service provider used when
+                                no explicit provider is specified.
                               type: string
                             deniedEditions:
+                              description: Editions that are denied by the managed
+                                constraint.
                               items:
                                 type: string
                               type: array
                             enforcedProjects:
+                              description: Projects where the managed constraint is
+                                enforced.
                               items:
                                 type: string
                               type: array
                             minimumDestroyScheduleDurationInDays:
+                              description: Minimum destroy schedule duration, in days,
+                                required by the managed constraint.
                               format: int64
                               type: integer
                             nonFipsMachineTypes:
+                              description: Compute Engine machine types that are not
+                                FIPS-compliant but are allowed.
                               items:
                                 type: string
                               type: array
