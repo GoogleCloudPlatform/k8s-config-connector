@@ -145,6 +145,7 @@ import (
 	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1alpha1"
 	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1beta1"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkmanagement/v1alpha1"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1alpha1"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1beta1"
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1alpha1"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
@@ -327,6 +328,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	networkconnectivityv1alpha1.AddToScheme,
 	networkconnectivityv1beta1.AddToScheme,
 	networkmanagementv1alpha1.AddToScheme,
+	networksecurityv1alpha1.AddToScheme,
 	networksecurityv1beta1.AddToScheme,
 	networkservicesv1alpha1.AddToScheme,
 	networkservicesv1beta1.AddToScheme,

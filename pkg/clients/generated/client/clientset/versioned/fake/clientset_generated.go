@@ -269,6 +269,8 @@ import (
 	fakenetworkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1/fake"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1"
 	fakenetworkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1/fake"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1alpha1"
+	fakenetworksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1alpha1/fake"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1"
 	fakenetworksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1/fake"
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
@@ -1051,6 +1053,11 @@ func (c *Clientset) NetworkconnectivityV1beta1() networkconnectivityv1beta1.Netw
 // NetworkmanagementV1alpha1 retrieves the NetworkmanagementV1alpha1Client
 func (c *Clientset) NetworkmanagementV1alpha1() networkmanagementv1alpha1.NetworkmanagementV1alpha1Interface {
 	return &fakenetworkmanagementv1alpha1.FakeNetworkmanagementV1alpha1{Fake: &c.Fake}
+}
+
+// NetworksecurityV1alpha1 retrieves the NetworksecurityV1alpha1Client
+func (c *Clientset) NetworksecurityV1alpha1() networksecurityv1alpha1.NetworksecurityV1alpha1Interface {
+	return &fakenetworksecurityv1alpha1.FakeNetworksecurityV1alpha1{Fake: &c.Fake}
 }
 
 // NetworksecurityV1beta1 retrieves the NetworksecurityV1beta1Client
