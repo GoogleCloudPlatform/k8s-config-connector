@@ -30,7 +30,7 @@ var (
 	_ identity.Resource   = &DeviceStreamingSession{}
 )
 
-var DeviceStreamingSessionIdentityFormat = gcpurls.Template[DeviceStreamingSessionIdentity]("devicestreaming.googleapis.com", "projects/{project}/deviceSessions/{device_session}")
+var DeviceStreamingSessionIdentityFormat = gcpurls.Template[DeviceStreamingSessionIdentity]("devicestreaming.googleapis.com", "projects/{project}/deviceSessions/{devicesession}")
 
 // +k8s:deepcopy-gen=false
 type DeviceStreamingSessionIdentity struct {
