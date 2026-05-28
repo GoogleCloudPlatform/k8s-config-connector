@@ -29,7 +29,7 @@ import (
 var _ refsv1beta1.Ref = &StorageBucketRef{}
 
 func init() {
-	refsv1beta1.Register(&StorageBucketRef{})
+	refsv1beta1.Register(&StorageBucketRef{}, &StorageBucketIdentity{})
 }
 
 // StorageBucketRef defines the resource reference to StorageBucket, which "External" field

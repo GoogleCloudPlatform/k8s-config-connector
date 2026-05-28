@@ -42,7 +42,7 @@ type InternalRangeRef struct {
 }
 
 func init() {
-	refs.Register(&InternalRangeRef{})
+	refs.Register(&InternalRangeRef{}, &InternalRangeIdentity{})
 }
 
 func (r *InternalRangeRef) GetGVK() schema.GroupVersionKind {
