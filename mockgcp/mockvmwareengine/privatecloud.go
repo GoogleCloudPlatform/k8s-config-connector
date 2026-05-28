@@ -30,8 +30,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vmwareengine/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
