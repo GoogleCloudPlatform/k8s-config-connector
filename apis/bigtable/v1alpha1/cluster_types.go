@@ -26,7 +26,7 @@ var BigtableClusterGVK = GroupVersion.WithKind("BigtableCluster")
 
 type BigtableClusterParent struct {
 	// +required
-	InstanceRef bigtablev1beta1.InstanceRef `json:"instanceRef"`
+	BigtableInstanceRef bigtablev1beta1.BigtableInstanceRef `json:"instanceRef"`
 }
 
 // +kcc:proto=google.bigtable.admin.v2.AutoscalingTargets

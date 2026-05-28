@@ -17,7 +17,6 @@ package bigtable
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -60,16 +59,6 @@ func (m *modelBigtableAppProfile) client(ctx context.Context, parentProject stri
 	return gcpClient, err
 }
 
-// This helper function converts a fully qualified project like "projects/myproject" into
-// the unqualified project ID, like "myproject".
-func (m *modelBigtableAppProfile) getProjectId(fullyQualifiedProject string) (string, error) {
-	tokens := strings.Split(fullyQualifiedProject, "/")
-	if len(tokens) != 2 || tokens[0] != "projects" {
-		return "", fmt.Errorf("Unexpected format for AppProfile Parent Project ID=%q was not known (expected projects/{projectID})", fullyQualifiedProject)
-	}
-	return tokens[1], nil
-}
-
 func (m *modelBigtableAppProfile) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -85,11 +74,7 @@ func (m *modelBigtableAppProfile) AdapterForObject(ctx context.Context, op *dire
 
 	// Get bigtable instance admin GCP client. Accepts the non-fully qualified project ID.
 	// E.G. "myproject" instead of "projects/myproject"
-	parentProjectId, err := m.getProjectId(id.Parent().ParentString())
-	if err != nil {
-		return nil, err
-	}
-	instanceAdminClient, err := m.client(ctx, parentProjectId)
+	instanceAdminClient, err := m.client(ctx, id.Project)
 	if err != nil {
 		return nil, fmt.Errorf("error creating instance admin client: %w", err)
 	}
@@ -303,7 +288,7 @@ func (a *BigtableAppProfileAdapter) Export(ctx context.Context) (*unstructured.U
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.InstanceRef = &krm.InstanceRef{External: a.id.ParentInstanceIdString()}
+	obj.Spec.BigtableInstanceRef = &krm.BigtableInstanceRef{External: a.id.ParentInstanceIdString()}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

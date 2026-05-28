@@ -152,8 +152,6 @@ spec:
                     type: object
                 type: object
               instanceRef:
-                description: InstanceRef defines the resource reference to BigtableInstance,
-                  which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -171,7 +169,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed BigtableInstance
-                      resource.
+                      resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}"
                     type: string
                   name:
                     description: The name of a BigtableInstance resource.

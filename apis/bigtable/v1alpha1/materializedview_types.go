@@ -24,7 +24,7 @@ var BigtableMaterializedViewGVK = GroupVersion.WithKind("BigtableMaterializedVie
 
 type BigtableMaterializedViewParent struct {
 	// +reqired
-	InstanceRef *v1beta1.InstanceRef `json:"instanceRef,omitempty"`
+	BigtableInstanceRef *v1beta1.BigtableInstanceRef `json:"instanceRef,omitempty"`
 }
 
 // BigtableMaterializedViewSpec defines the desired state of BigtableMaterializedView

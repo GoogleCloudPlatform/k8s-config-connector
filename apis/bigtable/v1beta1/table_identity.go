@@ -17,14 +17,12 @@ package v1beta1
 import (
 	"fmt"
 	"strings"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
 // TableIdentity defines the resource reference to BigtableTable, which "External" field
 // holds the GCP identifier for the KRM object.
 type TableIdentity struct {
-	Parent *InstanceIdentity
+	Parent *BigtableInstanceIdentity
 	Id     string
 }
 
@@ -40,16 +38,14 @@ func (i *TableIdentity) ParentString() string {
 	return i.Parent.String()
 }
 
-func ParseTableExternal(external string) (*InstanceIdentity, string, error) {
+func ParseTableExternal(external string) (*BigtableInstanceIdentity, string, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "tables" {
 		return nil, "", fmt.Errorf("format of BigtableTable external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/tables/{{tableID}})", external)
 	}
-	p := &InstanceIdentity{
-		Parent: &parent.ProjectParent{
-			ProjectID: tokens[1],
-		},
-		Id: tokens[3],
+	p := &BigtableInstanceIdentity{
+		Project:  tokens[1],
+		Instance: tokens[3],
 	}
 	resourceID := tokens[5]
 	return p, resourceID, nil

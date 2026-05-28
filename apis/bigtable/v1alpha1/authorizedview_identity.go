@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -71,11 +70,11 @@ func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *B
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.Parent.Parent.ProjectID != tableParent.Parent.ProjectID {
-			return nil, fmt.Errorf("spec.tableRef ProjectID changed, expect %s, got %s", actualParent.Parent.Parent.ProjectID, tableParent.Parent.ProjectID)
+		if actualParent.Parent.Project != tableParent.Project {
+			return nil, fmt.Errorf("spec.tableRef ProjectID changed, expect %s, got %s", actualParent.Parent.Project, tableParent.Project)
 		}
-		if actualParent.Parent.Id != tableParent.Id {
-			return nil, fmt.Errorf("spec.tableRef InstanceID changed, expect %s, got %s", actualParent.Parent.Id, tableParent.Id)
+		if actualParent.Parent.Instance != tableParent.Instance {
+			return nil, fmt.Errorf("spec.tableRef InstanceID changed, expect %s, got %s", actualParent.Parent.Instance, tableParent.Instance)
 		}
 		if actualParent.Id != tableID {
 			return nil, fmt.Errorf("spec.tableRef tableID changed, expect %s, got %s", actualParent.Id, tableID)
@@ -100,11 +99,9 @@ func ParseAuthorizedViewExternal(external string) (*bigtablev1beta1.TableIdentit
 		return nil, "", fmt.Errorf("format of BigtableAuthorizedView external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/tables/{{tableID}}/authorizedViews/{{authorizedViewID}})", external)
 	}
 	p := &bigtablev1beta1.TableIdentity{
-		Parent: &bigtablev1beta1.InstanceIdentity{
-			Parent: &parent.ProjectParent{
-				ProjectID: tokens[1],
-			},
-			Id: tokens[3],
+		Parent: &bigtablev1beta1.BigtableInstanceIdentity{
+			Project:  tokens[1],
+			Instance: tokens[3],
 		},
 		Id: tokens[5],
 	}
