@@ -1,0 +1,2 @@
+- Moved mockgcp filestore to httptogrpc and the official client library.
+- Filestore's `OperationMetadata` is not present in the official Filestore proto library. Kept `commonpb.OperationMetadata` from `mockgcp/generated/mockgcp/cloud/common` to satisfy the LRO requirements.
