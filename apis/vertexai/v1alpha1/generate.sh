@@ -31,7 +31,10 @@ go run . generate-types \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
-    --resource VertexAIDataLabelingJob:DataLabelingJob
+    --resource VertexAIDataLabelingJob:DataLabelingJob \
+    --resource VertexAINasJob:NasJob
+
+# go run . generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
