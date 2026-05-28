@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -351,8 +352,40 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 		desired.MaintenanceWindow = actual.MaintenanceWindow
 	}
 
-	if desired.NodeConfig == nil {
-		desired.NodeConfig = actual.NodeConfig
+	if desired.NodeConfig == nil && actual.NodeConfig != nil {
+		desired.NodeConfig = proto.Clone(actual.NodeConfig).(*composerpb.NodeConfig)
+	} else if desired.NodeConfig != nil && actual.NodeConfig != nil {
+		// Preserve immutable, server-assigned fields.
+		// These fields are not sent in update requests (see NodeConfig_ToProto),
+		// but we need to match them in the desired state so CompareProtoMessage
+		// doesn't flag them as changed (drift).
+		if desired.NodeConfig.ComposerInternalIpv4CidrBlock == "" {
+			desired.NodeConfig.ComposerInternalIpv4CidrBlock = actual.NodeConfig.ComposerInternalIpv4CidrBlock
+		}
+		if desired.NodeConfig.ComposerNetworkAttachment == "" {
+			desired.NodeConfig.ComposerNetworkAttachment = actual.NodeConfig.ComposerNetworkAttachment
+		}
+		if desired.NodeConfig.ServiceAccount == "" {
+			desired.NodeConfig.ServiceAccount = actual.NodeConfig.ServiceAccount
+		}
+		if desired.NodeConfig.Network == "" {
+			desired.NodeConfig.Network = actual.NodeConfig.Network
+		}
+		if desired.NodeConfig.Subnetwork == "" {
+			desired.NodeConfig.Subnetwork = actual.NodeConfig.Subnetwork
+		}
+		if desired.NodeConfig.IpAllocationPolicy == nil && actual.NodeConfig.IpAllocationPolicy != nil {
+			desired.NodeConfig.IpAllocationPolicy = proto.Clone(actual.NodeConfig.IpAllocationPolicy).(*composerpb.IPAllocationPolicy)
+		}
+		if desired.NodeConfig.MachineType == "" {
+			desired.NodeConfig.MachineType = actual.NodeConfig.MachineType
+		}
+		if desired.NodeConfig.DiskSizeGb == 0 {
+			desired.NodeConfig.DiskSizeGb = actual.NodeConfig.DiskSizeGb
+		}
+		if desired.NodeConfig.Location == "" {
+			desired.NodeConfig.Location = actual.NodeConfig.Location
+		}
 	}
 
 	if actual.PrivateEnvironmentConfig != nil {
