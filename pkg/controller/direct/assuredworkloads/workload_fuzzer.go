@@ -49,6 +49,7 @@ func assuredWorkloadsWorkloadFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".partner")
 	f.Unimplemented_NotYetTriaged(".partner_permissions")
 	f.Unimplemented_NotYetTriaged(".workload_options")
+	f.Unimplemented_NotYetTriaged(".saa_enrollment_response.setup_status")
 
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_Etag()
