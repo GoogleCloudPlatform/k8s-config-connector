@@ -338,8 +338,8 @@ func ResolveComputeFirewallPolicy(ctx context.Context, reader client.Reader, src
 type ComputeForwardingRuleRef struct {
 	/* The ComputeForwardingRule selflink in the form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
-	/* The `name` field of a `ComputeForwardingRule` resource. */
+	/* The name field of a ComputeForwardingRule resource. */
 	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `ComputeForwardingRule` resource. */
+	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
