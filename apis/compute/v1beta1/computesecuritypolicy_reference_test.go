@@ -49,6 +49,16 @@ func TestComputeSecurityPolicyRef_ValidateExternal(t *testing.T) {
 			ref:     "",
 			wantErr: true,
 		},
+		{
+			name:    "valid regional reference",
+			ref:     "projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			wantErr: false,
+		},
+		{
+			name:    "full regional url",
+			ref:     "https://compute.googleapis.com/compute/v1/projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
