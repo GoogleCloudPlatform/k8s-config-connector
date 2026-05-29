@@ -83,3 +83,23 @@ func ComputeNetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compu
 	// MISSING: Subnetworks
 	return out
 }
+
+func ComputeNetworkStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkStatus{}
+	out.GatewayIPV4 = in.GatewayIPv4
+	out.SelfLink = in.SelfLink
+	return out
+}
+
+func ComputeNetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkStatus) *pb.Network {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Network{}
+	out.GatewayIPv4 = in.GatewayIPV4
+	out.SelfLink = in.SelfLink
+	return out
+}

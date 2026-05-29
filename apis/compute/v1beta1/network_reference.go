@@ -136,7 +136,7 @@ func (id *NetworkIdentity) ConvertToProjectNumber(ctx context.Context, projectMa
 		return fmt.Errorf("error looking up project number for project %q: %w", id.Parent().ProjectID, err)
 	}
 
-	id.parent.ProjectID = strconv.FormatInt(projectNumber, 10)
+	id.Project = strconv.FormatInt(projectNumber, 10)
 	return nil
 }
 
@@ -172,10 +172,10 @@ func (ref *ComputeNetworkRef) ConvertClientToProjectNumber(ctx context.Context, 
 
 	// Check if the project number is already a valid integer
 	// If not, we need to look it up
-	projectNumber, err := strconv.ParseInt(id.parent.ProjectID, 10, 64)
+	projectNumber, err := strconv.ParseInt(id.Project, 10, 64)
 	if err != nil {
 		req := &resourcemanagerpb.GetProjectRequest{
-			Name: "projects/" + id.parent.ProjectID,
+			Name: "projects/" + id.Project,
 		}
 		project, err := projectsClient.GetProject(ctx, req)
 		if err != nil {
@@ -187,7 +187,7 @@ func (ref *ComputeNetworkRef) ConvertClientToProjectNumber(ctx context.Context, 
 		}
 		projectNumber = n
 	}
-	id.parent.ProjectID = strconv.FormatInt(projectNumber, 10)
+	id.Project = strconv.FormatInt(projectNumber, 10)
 	ref.External = id.String()
 	return nil
 }
