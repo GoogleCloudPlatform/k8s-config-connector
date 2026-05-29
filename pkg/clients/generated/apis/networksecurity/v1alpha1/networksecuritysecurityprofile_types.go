@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type SecurityprofileAntivirusOverrides struct {
-	/* Required. Threat action override. */
+	/* Required. Threat action override. For some threat types, only a subset of actions applies. */
 	// +optional
 	Action *string `json:"action,omitempty"`
 
@@ -49,13 +49,13 @@ type SecurityprofileAntivirusOverrides struct {
 }
 
 type SecurityprofileCustomInterceptProfile struct {
-	/* Required. The target InterceptEndpointGroup. */
+	/* Required. The target InterceptEndpointGroup. When a firewall rule with this security profile attached matches a packet, the packet will be intercepted to the location-local target in this group. */
 	// +optional
 	InterceptEndpointGroup *string `json:"interceptEndpointGroup,omitempty"`
 }
 
 type SecurityprofileCustomMirroringProfile struct {
-	/* Required. Immutable. The target MirroringEndpointGroup. */
+	/* Required. Immutable. The target MirroringEndpointGroup. When a mirroring rule with this security profile attached matches a packet, a replica will be mirrored to the location-local target in this group. */
 	// +optional
 	MirroringEndpointGroup *string `json:"mirroringEndpointGroup,omitempty"`
 }
@@ -71,7 +71,7 @@ type SecurityprofileSeverityOverrides struct {
 }
 
 type SecurityprofileThreatOverrides struct {
-	/* Required. Threat action override. */
+	/* Required. Threat action override. For some threat types, only a subset of actions applies. */
 	// +optional
 	Action *string `json:"action,omitempty"`
 
@@ -89,13 +89,13 @@ type SecurityprofileThreatPreventionProfile struct {
 	// +optional
 	SeverityOverrides []SecurityprofileSeverityOverrides `json:"severityOverrides,omitempty"`
 
-	/* Optional. Configuration for overriding threats actions by threat_id match. */
+	/* Optional. Configuration for overriding threats actions by threat_id match. If a threat is matched both by configuration provided in severity_overrides and threat_overrides, the threat_overrides action is applied. */
 	// +optional
 	ThreatOverrides []SecurityprofileThreatOverrides `json:"threatOverrides,omitempty"`
 }
 
 type SecurityprofileUrlFilteringProfile struct {
-	/* Optional. The list of filtering configs. */
+	/* Optional. The list of filtering configs in which each config defines an action to take for some URL match. */
 	// +optional
 	UrlFilters []SecurityprofileUrlFilters `json:"urlFilters,omitempty"`
 }
@@ -105,7 +105,7 @@ type SecurityprofileUrlFilters struct {
 	// +optional
 	FilteringAction *string `json:"filteringAction,omitempty"`
 
-	/* Required. The priority of this filter within the URL Filtering Profile. */
+	/* Required. The priority of this filter within the URL Filtering Profile. Lower integers indicate higher priorities. The priority of a filter must be unique within a URL Filtering Profile. */
 	// +optional
 	Priority *int32 `json:"priority,omitempty"`
 
@@ -174,7 +174,7 @@ type SecurityprofileThreatOverridesStatus struct {
 }
 
 type SecurityprofileThreatPreventionProfileStatus struct {
-	/* Optional. Configuration for overriding threats actions by threat_id match. */
+	/* Optional. Configuration for overriding threats actions by threat_id match. If a threat is matched both by configuration provided in severity_overrides and threat_overrides, the threat_overrides action is applied. */
 	// +optional
 	ThreatOverrides []SecurityprofileThreatOverridesStatus `json:"threatOverrides,omitempty"`
 }

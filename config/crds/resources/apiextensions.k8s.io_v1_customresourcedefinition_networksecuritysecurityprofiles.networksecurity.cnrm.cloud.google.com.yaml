@@ -67,7 +67,10 @@ spec:
                 description: The custom TPPI configuration for the SecurityProfile.
                 properties:
                   interceptEndpointGroup:
-                    description: Required. The target InterceptEndpointGroup.
+                    description: Required. The target InterceptEndpointGroup. When
+                      a firewall rule with this security profile attached matches
+                      a packet, the packet will be intercepted to the location-local
+                      target in this group.
                     type: string
                 type: object
               customMirroringProfile:
@@ -76,6 +79,9 @@ spec:
                 properties:
                   mirroringEndpointGroup:
                     description: Required. Immutable. The target MirroringEndpointGroup.
+                      When a mirroring rule with this security profile attached matches
+                      a packet, a replica will be mirrored to the location-local target
+                      in this group.
                     type: string
                 type: object
               description:
@@ -130,7 +136,8 @@ spec:
                     items:
                       properties:
                         action:
-                          description: Required. Threat action override.
+                          description: Required. Threat action override. For some
+                            threat types, only a subset of actions applies.
                           type: string
                         protocol:
                           description: Required. Protocol to match.
@@ -152,11 +159,14 @@ spec:
                     type: array
                   threatOverrides:
                     description: Optional. Configuration for overriding threats actions
-                      by threat_id match.
+                      by threat_id match. If a threat is matched both by configuration
+                      provided in severity_overrides and threat_overrides, the threat_overrides
+                      action is applied.
                     items:
                       properties:
                         action:
-                          description: Required. Threat action override.
+                          description: Required. Threat action override. For some
+                            threat types, only a subset of actions applies.
                           type: string
                         threatID:
                           description: Required. Vendor-specific ID of a threat to
@@ -178,7 +188,8 @@ spec:
                 description: The URL filtering configuration for the SecurityProfile.
                 properties:
                   urlFilters:
-                    description: Optional. The list of filtering configs.
+                    description: Optional. The list of filtering configs in which
+                      each config defines an action to take for some URL match.
                     items:
                       properties:
                         filteringAction:
@@ -187,7 +198,9 @@ spec:
                           type: string
                         priority:
                           description: Required. The priority of this filter within
-                            the URL Filtering Profile.
+                            the URL Filtering Profile. Lower integers indicate higher
+                            priorities. The priority of a filter must be unique within
+                            a URL Filtering Profile.
                           format: int32
                           type: integer
                         urls:
@@ -262,7 +275,9 @@ spec:
                     properties:
                       threatOverrides:
                         description: Optional. Configuration for overriding threats
-                          actions by threat_id match.
+                          actions by threat_id match. If a threat is matched both
+                          by configuration provided in severity_overrides and threat_overrides,
+                          the threat_overrides action is applied.
                         items:
                           properties:
                             type:
