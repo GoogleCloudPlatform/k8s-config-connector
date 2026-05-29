@@ -2015,6 +2015,26 @@
 [missing_field] crd=mlenginemodels.mlengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultVersion.name" is not set in unstructured objects
 [missing_field] crd=mlenginemodels.mlengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.onlinePredictionConsoleLogging" is not set in unstructured objects
 [missing_field] crd=mlenginemodels.mlengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.onlinePredictionLogging" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.maliciousURIFilterSettings.filterEnforcement" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.piAndJailbreakFilterSettings.confidenceLevel" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.piAndJailbreakFilterSettings.filterEnforcement" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.raiSettings.raiFilters[].confidenceLevel" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.raiSettings.raiFilters[].filterType" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.advancedConfig.deidentifyTemplateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.advancedConfig.inspectTemplateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.basicConfig.filterEnforcement" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateMetadata.customLlmResponseSafetyErrorCode" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateMetadata.customLlmResponseSafetyErrorMessage" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateMetadata.customPromptSafetyErrorCode" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateMetadata.customPromptSafetyErrorMessage" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateMetadata.enforcementType" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateMetadata.ignorePartialInvocationFailures" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateMetadata.logSanitizeOperations" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateMetadata.logTemplateOperations" is not set in unstructured objects
+[missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateMetadata.multiLanguageDetection.enableMultiLanguageDetection" is not set in unstructured objects
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.enabled" is not set in unstructured objects
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.monthlyBackupLimit" is not set in unstructured objects

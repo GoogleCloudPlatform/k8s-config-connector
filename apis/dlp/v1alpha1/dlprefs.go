@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package v1alpha1
 
 type DLPInspectTemplateRef struct {
 	// A reference to an externally managed DLP Inspect Template.

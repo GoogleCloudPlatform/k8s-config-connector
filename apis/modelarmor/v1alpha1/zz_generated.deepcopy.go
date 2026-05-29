@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	dlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dlp/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -337,12 +338,12 @@ func (in *SdpAdvancedConfig) DeepCopyInto(out *SdpAdvancedConfig) {
 	*out = *in
 	if in.InspectTemplateRef != nil {
 		in, out := &in.InspectTemplateRef, &out.InspectTemplateRef
-		*out = new(v1beta1.DLPInspectTemplateRef)
+		*out = new(dlpv1alpha1.DLPInspectTemplateRef)
 		**out = **in
 	}
 	if in.DeidentifyTemplateRef != nil {
 		in, out := &in.DeidentifyTemplateRef, &out.DeidentifyTemplateRef
-		*out = new(v1beta1.DLPDeidentifyTemplateRef)
+		*out = new(dlpv1alpha1.DLPDeidentifyTemplateRef)
 		**out = **in
 	}
 }

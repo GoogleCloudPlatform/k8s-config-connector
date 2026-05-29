@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	dlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dlp/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -118,7 +119,7 @@ type SdpAdvancedConfig struct {
 	//  e.g.
 	//  `projects/{project}/locations/{location}/inspectTemplates/{inspect_template}`
 	// +kcc:proto:field=google.cloud.modelarmor.v1.SdpAdvancedConfig.inspect_template
-	InspectTemplateRef *refsv1beta1.DLPInspectTemplateRef `json:"inspectTemplateRef,omitempty"`
+	InspectTemplateRef *dlpv1alpha1.DLPInspectTemplateRef `json:"inspectTemplateRef,omitempty"`
 
 	// Optional. Optional Sensitive Data Protection Deidentify template resource
 	//  name.
@@ -132,7 +133,7 @@ type SdpAdvancedConfig struct {
 	//  e.g.
 	//  `projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}`
 	// +kcc:proto:field=google.cloud.modelarmor.v1.SdpAdvancedConfig.deidentify_template
-	DeidentifyTemplateRef *refsv1beta1.DLPDeidentifyTemplateRef `json:"deidentifyTemplateRef,omitempty"`
+	DeidentifyTemplateRef *dlpv1alpha1.DLPDeidentifyTemplateRef `json:"deidentifyTemplateRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.modelarmor.v1.RaiFilterSettings
