@@ -82,6 +82,15 @@ You are strictly responsible for reviewing the following files generated or modi
 
 ## 5. Schema Compatibility (No Breaking Changes)
 *   **Strict Rule:** No changes to the schema (fields added, removed, or type changes) are allowed compared to the existing CRD in the `master` branch.
+    * **Exception:** Removing the following top level `status` block located at the end of the CRD yaml file is fine and should not be flagged in the review:
+      ```yaml
+      status:
+        acceptedNames:
+          kind: ""
+          plural: ""
+        conditions: []
+        storedVersions: []
+      ```  
 *   The generated CRD must match the existing one exactly, except for minor differences like descriptions.
 *   **Action:** Run `./dev/tasks/diff-crds --base master` from the repository root. If the output shows any added or removed fields under `spec` or `status` (excluding comments or description text updates), fail the review.
 
