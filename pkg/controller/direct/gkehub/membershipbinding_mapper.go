@@ -36,9 +36,9 @@ func GKEHubMembershipBindingSpec_FromAPI(mapCtx *direct.MapContext, r *gkehubv1.
 		return nil
 	}
 	out := &krm.GKEHubMembershipBindingSpec{}
-	out.MembershipRef.External = id.Parent().String()
+	out.MembershipRef.External = id.Parent()
 	out.ScopeRef.External = r.Scope
-	out.ResourceID = direct.LazyPtr(id.ID())
+	out.ResourceID = direct.LazyPtr(id.MembershipBinding)
 	out.Labels = r.Labels
 	return out
 }
