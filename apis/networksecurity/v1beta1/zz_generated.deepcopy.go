@@ -524,11 +524,6 @@ func (in *NetworkSecurityClientTLSPolicyStatus) DeepCopyInto(out *NetworkSecurit
 		*out = new(int64)
 		**out = **in
 	}
-	if in.ExternalRef != nil {
-		in, out := &in.ExternalRef, &out.ExternalRef
-		*out = new(string)
-		**out = **in
-	}
 	if in.CreateTime != nil {
 		in, out := &in.CreateTime, &out.CreateTime
 		*out = new(string)
