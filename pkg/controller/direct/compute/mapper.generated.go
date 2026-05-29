@@ -803,20 +803,80 @@ func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_FromProto(mapCtx *direct.Map
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
+func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEdgeSecurityService{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	// MISSING: Name
+	if in.SecurityPolicyRef != nil {
+		out.SecurityPolicy = &in.SecurityPolicyRef.External
+	}
+	return out
+}
+*/
 
-	func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+/* found existing non-generated mapping function "ComputeNetworkSpec_v1beta1_FromProto", skipping
+func ComputeNetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkSpec{}
+	// MISSING: IPv4Range
+	out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.EnableUlaInternalIPV6 = in.EnableUlaInternalIpv6
+	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
+	// MISSING: ID
+	out.InternalIPV6Range = in.InternalIpv6Range
+	// MISSING: Kind
+	out.Mtu = in.Mtu
+	// MISSING: Name
+	out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
+	// MISSING: NetworkProfile
+	// MISSING: Params
+	// MISSING: Peerings
+	// MISSING: RoutingConfig
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: Subnetworks
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeNetworkSpec_v1beta1_ToProto", skipping
+
+	func ComputeNetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkSpec) *pb.Network {
 		if in == nil {
 			return nil
 		}
-		out := &pb.NetworkEdgeSecurityService{}
+		out := &pb.Network{}
+		// MISSING: IPv4Range
+		out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
+		// MISSING: CreationTimestamp
 		out.Description = in.Description
-		out.Fingerprint = in.Fingerprint
+		out.EnableUlaInternalIpv6 = in.EnableUlaInternalIPV6
+		// MISSING: FirewallPolicy
+		// MISSING: GatewayIPv4
+		// MISSING: ID
+		out.InternalIpv6Range = in.InternalIPV6Range
+		// MISSING: Kind
+		out.Mtu = in.Mtu
 		// MISSING: Name
-		if in.SecurityPolicyRef != nil {
-			out.SecurityPolicy = &in.SecurityPolicyRef.External
-		}
+		out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
+		// MISSING: NetworkProfile
+		// MISSING: Params
+		// MISSING: Peerings
+		// MISSING: RoutingConfig
+		// MISSING: SelfLink
+		// MISSING: SelfLinkWithID
+		// MISSING: Subnetworks
 		return out
 	}
 */
