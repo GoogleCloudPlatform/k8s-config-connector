@@ -138,6 +138,16 @@ spec:
               location:
                 description: The location of this resource.
                 type: string
+              organizationRef:
+                description: The organization that this resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -238,7 +248,6 @@ spec:
                 type: object
             required:
             - location
-            - projectRef
             type: object
           status:
             description: NetworkSecuritySecurityProfileGroupStatus defines the config

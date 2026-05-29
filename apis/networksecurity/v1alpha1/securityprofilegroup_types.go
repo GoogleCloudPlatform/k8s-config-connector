@@ -26,8 +26,12 @@ var NetworkSecuritySecurityProfileGroupGVK = GroupVersion.WithKind("NetworkSecur
 // +kcc:spec:proto=google.cloud.networksecurity.v1.SecurityProfileGroup
 type NetworkSecuritySecurityProfileGroupSpec struct {
 	// The project that this resource belongs to.
-	// +required
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// +optional
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// The organization that this resource belongs to.
+	// +optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 
 	// The location of this resource.
 	// +required

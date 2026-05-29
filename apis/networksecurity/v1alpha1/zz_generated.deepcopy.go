@@ -1060,6 +1060,11 @@ func (in *NetworkSecurityMirroringEndpointGroupSpec) DeepCopyInto(out *NetworkSe
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
+	if in.OrganizationRef != nil {
+		in, out := &in.OrganizationRef, &out.OrganizationRef
+		*out = new(v1beta1.OrganizationRef)
+		**out = **in
+	}
 	if in.Location != nil {
 		in, out := &in.Location, &out.Location
 		*out = new(string)

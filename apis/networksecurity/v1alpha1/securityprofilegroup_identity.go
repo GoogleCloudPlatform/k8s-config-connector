@@ -30,34 +30,48 @@ var (
 	_ identity.Resource   = &NetworkSecuritySecurityProfileGroup{}
 )
 
-var NetworkSecuritySecurityProfileGroupIdentityFormat = gcpurls.Template[NetworkSecuritySecurityProfileGroupIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/securityProfileGroups/{security_profile_group}")
+var NetworkSecuritySecurityProfileGroupProjectIdentityFormat = gcpurls.Template[NetworkSecuritySecurityProfileGroupIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/securityProfileGroups/{security_profile_group}")
+var NetworkSecuritySecurityProfileGroupOrganizationIdentityFormat = gcpurls.Template[NetworkSecuritySecurityProfileGroupIdentity]("networksecurity.googleapis.com", "organizations/{organization}/locations/{location}/securityProfileGroups/{security_profile_group}")
 
 // +k8s:deepcopy-gen=false
 type NetworkSecuritySecurityProfileGroupIdentity struct {
 	Project              string
+	Organization         string
 	Location             string
 	SecurityProfileGroup string `gcpurls:"security_profile_group"`
 }
 
 func (i *NetworkSecuritySecurityProfileGroupIdentity) String() string {
-	return NetworkSecuritySecurityProfileGroupIdentityFormat.ToString(*i)
+	if i.Organization != "" {
+		return NetworkSecuritySecurityProfileGroupOrganizationIdentityFormat.ToString(*i)
+	}
+	return NetworkSecuritySecurityProfileGroupProjectIdentityFormat.ToString(*i)
 }
 
 func (i *NetworkSecuritySecurityProfileGroupIdentity) FromExternal(ref string) error {
-	parsed, match, err := NetworkSecuritySecurityProfileGroupIdentityFormat.Parse(ref)
+	parsed, match, err := NetworkSecuritySecurityProfileGroupProjectIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of NetworkSecuritySecurityProfileGroup external=%q was not known (use %s): %w", ref, NetworkSecuritySecurityProfileGroupIdentityFormat.CanonicalForm(), err)
+		return err
 	}
-	if !match {
-		return fmt.Errorf("format of NetworkSecuritySecurityProfileGroup external=%q was not known (use %s)", ref, NetworkSecuritySecurityProfileGroupIdentityFormat.CanonicalForm())
+	if match {
+		*i = *parsed
+		return nil
 	}
 
-	*i = *parsed
-	return nil
+	parsed, match, err = NetworkSecuritySecurityProfileGroupOrganizationIdentityFormat.Parse(ref)
+	if err != nil {
+		return err
+	}
+	if match {
+		*i = *parsed
+		return nil
+	}
+
+	return fmt.Errorf("format of NetworkSecuritySecurityProfileGroup external=%q was not known (use %s or %s)", ref, NetworkSecuritySecurityProfileGroupProjectIdentityFormat.CanonicalForm(), NetworkSecuritySecurityProfileGroupOrganizationIdentityFormat.CanonicalForm())
 }
 
 func (i *NetworkSecuritySecurityProfileGroupIdentity) Host() string {
-	return NetworkSecuritySecurityProfileGroupIdentityFormat.Host()
+	return NetworkSecuritySecurityProfileGroupProjectIdentityFormat.Host()
 }
 
 func (i *NetworkSecuritySecurityProfileGroupIdentity) ID() string {
@@ -65,17 +79,40 @@ func (i *NetworkSecuritySecurityProfileGroupIdentity) ID() string {
 }
 
 func (i *NetworkSecuritySecurityProfileGroupIdentity) ParentString() string {
+	if i.Organization != "" {
+		return fmt.Sprintf("organizations/%s/locations/%s", i.Organization, i.Location)
+	}
 	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
 }
 
 func getIdentityFromNetworkSecuritySecurityProfileGroupSpec(ctx context.Context, reader client.Reader, obj *NetworkSecuritySecurityProfileGroup) (*NetworkSecuritySecurityProfileGroupIdentity, error) {
-	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
+	if obj.Spec.ProjectRef == nil && obj.Spec.OrganizationRef == nil {
+		return nil, fmt.Errorf("one of projectRef or organizationRef must be set")
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if obj.Spec.ProjectRef != nil && obj.Spec.OrganizationRef != nil {
+		return nil, fmt.Errorf("only one of projectRef or organizationRef can be set")
+	}
+
+	var projectID, organizationID string
+
+	if obj.Spec.ProjectRef != nil {
+		projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+		if err != nil {
+			return nil, err
+		}
+		projectID = projectRef.ProjectID
+		if projectID == "" {
+			return nil, fmt.Errorf("cannot resolve project")
+		}
+	} else if obj.Spec.OrganizationRef != nil {
+		organizationRef, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
+		if err != nil {
+			return nil, err
+		}
+		organizationID = organizationRef.OrganizationID
+		if organizationID == "" {
+			return nil, fmt.Errorf("cannot resolve organization")
+		}
 	}
 
 	resourceID, err := refs.GetResourceID(obj)
@@ -85,6 +122,7 @@ func getIdentityFromNetworkSecuritySecurityProfileGroupSpec(ctx context.Context,
 
 	return &NetworkSecuritySecurityProfileGroupIdentity{
 		Project:              projectID,
+		Organization:         organizationID,
 		Location:             common.ValueOf(obj.Spec.Location),
 		SecurityProfileGroup: resourceID,
 	}, nil
