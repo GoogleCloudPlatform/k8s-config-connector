@@ -25,6 +25,11 @@ cd ${REPO_ROOT}
 VERSION=$(cat version/VERSION)
 export VERSION
 
+SED="sed"
+if command -v gsed &>/dev/null; then
+  SED="gsed"
+fi
+
 BUILD_DIR="${REPO_ROOT}/.build"
 mkdir -p "${BUILD_DIR}"
 
@@ -76,7 +81,7 @@ done
 # TODO: This is only needed for release bundles that we didn't build with our scripts here (i.e. only needed for release bundles built with the legacy process)
 # Swap container registry
 for channeldir in channels autopilot-channels; do
-  find ${REPO_ROOT}/operator/${channeldir}/packages -type f -name "*.yaml" | xargs sed -i -e "s@gcr.io/cnrm-eap/@gcr.io/gke-release/@g"
+  find ${REPO_ROOT}/operator/${channeldir}/packages -type f -name "*.yaml" | xargs $SED -i "s@gcr.io/cnrm-eap/@gcr.io/gke-release/@g"
 done
 
 # Add licenses

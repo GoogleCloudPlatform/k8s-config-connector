@@ -22,6 +22,10 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd ${REPO_ROOT}
 
 VERSION=${VERSION:-dev}
+SED="sed"
+if command -v gsed &>/dev/null; then
+  SED="gsed"
+fi
 
 BUILD_DIR="${REPO_ROOT}/.build"
 mkdir -p "${BUILD_DIR}"
@@ -193,26 +197,26 @@ GCP_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-gcp-identity
 mkdir -p ${GCP_IDENTITY_BUNDLE_DIR}
 $LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/withsecretvolume) > ${GCP_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
 cp $CRDS_FILE ${GCP_IDENTITY_BUNDLE_DIR}/crds.yaml
-sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${GCP_IDENTITY_BUNDLE_DIR}/*
+$SED -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${GCP_IDENTITY_BUNDLE_DIR}/*
 # Create the autopilot variant of the secret volume install bundle
 AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-gcp-identity
 mkdir -p ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}
 $LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/autopilot-withsecretvolume) > ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
 cp $CRDS_FILE ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/crds.yaml
-sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/*
+$SED -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/*
 
 # Build the install bundle with workload identity
 WORKLOAD_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-workload-identity
 mkdir -p ${WORKLOAD_IDENTITY_BUNDLE_DIR}
 $LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity) > ${WORKLOAD_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
 cp $CRDS_FILE ${WORKLOAD_IDENTITY_BUNDLE_DIR}/crds.yaml
-sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${WORKLOAD_IDENTITY_BUNDLE_DIR}/*
+$SED -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${WORKLOAD_IDENTITY_BUNDLE_DIR}/*
 # Create the autopilot variant of the workload identity install bundle
 AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-workload-identity
 mkdir -p ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}
 $LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity) > ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
 cp $CRDS_FILE ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/crds.yaml
-sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/*
+$SED -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/*
 
 # Build the namespaced-mode install bundle (uses workload identity)
 NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-namespaced
@@ -223,7 +227,7 @@ kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-co
   sed -e 's/mynamespace/${NAMESPACE?}/g' > ${NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
 add_license ${NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
 cp $CRDS_FILE ${NAMESPACED_BUNDLE_DIR}/crds.yaml
-sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${NAMESPACED_BUNDLE_DIR}/*
+$SED -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${NAMESPACED_BUNDLE_DIR}/*
 
 # Create the autopilot variant of the namespaced-mode install bundle
 AUTOPILOT_NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-namespaced
@@ -234,7 +238,7 @@ kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-co
   sed -e 's/mynamespace/${NAMESPACE?}/g' > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
 add_license ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
 cp $CRDS_FILE ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/crds.yaml
-sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/*
+$SED -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/*
 
 # Add the sample YAML files and applications to tarball
 cp -r config/samples/ ${BUNDLE_DIR}/
