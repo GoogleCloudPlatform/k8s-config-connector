@@ -212,10 +212,6 @@ spec:
                 description: Output only. The timestamp when the resource was created.
                 format: date-time
                 type: string
-              externalRef:
-                description: A unique specifier for the NetworkSecurityClientTLSPolicy
-                  resource in GCP.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
