@@ -885,8 +885,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The Google Cloud resource name of
-                      a `Project` resource (format: `projects/{{name}}`).'
+                    description: |-
+                      The project for the resource
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
