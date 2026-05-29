@@ -173,13 +173,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
 	log := klog.FromContext(ctx)
-	// To populate a.actual calling a.Find()
-	isExist, err := a.Find(ctx)
-	if !isExist {
-		return nil, fmt.Errorf("updateAutokeyConfig failed as AutokeyConfig does not exist, name: %s", a.id)
-	}
-	if err != nil {
-		return nil, err
+	if a.actual == nil {
+		return nil, fmt.Errorf("updateAutokeyConfig failed: Find() was not called or returned false")
 	}
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(resource.KeyProject, a.actual.KeyProject) {
@@ -242,9 +237,8 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting AutokeyConfig", "name", a.id)
-	_, err := a.Find(ctx)
-	if err != nil {
-		return false, err
+	if a.actual == nil {
+		return false, fmt.Errorf("delete AutokeyConfig failed: Find() was not called or returned false")
 	}
 	mapCtx := &direct.MapContext{}
 	// make a copy of the a.actual, and disable AutokeyConfig / clear the project reference
