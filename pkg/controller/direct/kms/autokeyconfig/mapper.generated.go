@@ -85,18 +85,6 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 	return out
 }
 
-func KMSAutokeyConfig_FromFields(mapCtx *direct.MapContext, id *krm.KMSAutokeyConfigIdentity, keyProject *refs.ProjectIdentity, keyProjectResolutionMode *string) *pb.AutokeyConfig {
-	out := &pb.AutokeyConfig{}
-	out.Name = id.String()
-	if keyProject != nil {
-		out.KeyProject = "projects/" + keyProject.ProjectID // keyProject expects project of the form `projects/<projectId>` or `projects/<projectNumber>`
-	}
-	if keyProjectResolutionMode != nil {
-		out.KeyProjectResolutionMode = direct.Enum_ToProto[pb.AutokeyConfig_KeyProjectResolutionMode](mapCtx, keyProjectResolutionMode)
-	}
-	return out
-}
-
 func KMSAutokeyConfigStatusObservedState_FromProto(mapCtx *direct.MapContext, updated *kmspb.AutokeyConfig) *krm.KMSAutokeyConfigObservedState {
 	if updated == nil {
 		return nil

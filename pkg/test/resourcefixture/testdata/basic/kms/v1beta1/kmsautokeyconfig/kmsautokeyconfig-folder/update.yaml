@@ -19,4 +19,6 @@ metadata:
 spec:
   folderRef:
     external: folders/${TEST_FOLDER_ID}
-  keyProjectResolutionMode: RESOURCE_PROJECT
+  keyProject:
+    name: project2-${uniqueId}
+    kind: Project

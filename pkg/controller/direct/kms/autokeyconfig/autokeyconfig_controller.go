@@ -220,9 +220,11 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	parent := a.id.Parent()
 	if parent.FolderID != "" {
 		obj.Spec.FolderRef = &refs.FolderRef{External: parent.FolderID}
+		obj.Spec.ProjectRef = nil
 	}
 	if parent.ProjectID != "" {
 		obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.ProjectID}
+		obj.Spec.FolderRef = nil
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
