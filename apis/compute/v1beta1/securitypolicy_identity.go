@@ -22,6 +22,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -30,33 +32,39 @@ var (
 	_ identity.Resource   = &ComputeSecurityPolicy{}
 )
 
-var ComputeSecurityPolicyIdentityFormat = gcpurls.Template[ComputeSecurityPolicyIdentity]("compute.googleapis.com", "projects/{project}/global/securityPolicies/{name}")
+var ComputeGlobalSecurityPolicyIdentityFormat = gcpurls.Template[ComputeSecurityPolicyIdentity]("compute.googleapis.com", "projects/{project}/global/securityPolicies/{name}")
+var ComputeRegionalSecurityPolicyIdentityFormat = gcpurls.Template[ComputeSecurityPolicyIdentity]("compute.googleapis.com", "projects/{project}/regions/{region}/securityPolicies/{name}")
 
 // +k8s:deepcopy-gen=false
 type ComputeSecurityPolicyIdentity struct {
 	Project string
+	Region  string
 	Name    string
 }
 
 func (i *ComputeSecurityPolicyIdentity) String() string {
-	return ComputeSecurityPolicyIdentityFormat.ToString(*i)
+	if i.Region != "" {
+		return ComputeRegionalSecurityPolicyIdentityFormat.ToString(*i)
+	}
+	return ComputeGlobalSecurityPolicyIdentityFormat.ToString(*i)
 }
 
 func (i *ComputeSecurityPolicyIdentity) FromExternal(ref string) error {
-	parsed, match, err := ComputeSecurityPolicyIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of ComputeSecurityPolicy external=%q was not known (use %s): %w", ref, ComputeSecurityPolicyIdentityFormat.CanonicalForm(), err)
-	}
-	if !match {
-		return fmt.Errorf("format of ComputeSecurityPolicy external=%q was not known (use %s)", ref, ComputeSecurityPolicyIdentityFormat.CanonicalForm())
-	}
+	ref = refs.TrimComputeURIPrefix(ref)
 
-	*i = *parsed
-	return nil
+	if parsed, match, _ := ComputeGlobalSecurityPolicyIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	if parsed, match, _ := ComputeRegionalSecurityPolicyIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	return fmt.Errorf("format of ComputeSecurityPolicy external=%q was not known (use %s or %s)", ref, ComputeGlobalSecurityPolicyIdentityFormat.CanonicalForm(), ComputeRegionalSecurityPolicyIdentityFormat.CanonicalForm())
 }
 
 func (i *ComputeSecurityPolicyIdentity) Host() string {
-	return ComputeSecurityPolicyIdentityFormat.Host()
+	return ComputeGlobalSecurityPolicyIdentityFormat.Host()
 }
 
 func getIdentityFromComputeSecurityPolicySpec(ctx context.Context, reader client.Reader, obj client.Object) (*ComputeSecurityPolicyIdentity, error) {
@@ -74,6 +82,22 @@ func getIdentityFromComputeSecurityPolicySpec(ctx context.Context, reader client
 		Project: projectID,
 		Name:    resourceID,
 	}
+
+	// Read location from the spec if present to handle regional ComputeSecurityPolicy objects.
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err == nil {
+			u = &unstructured.Unstructured{Object: m}
+			ok = true
+		}
+	}
+	if ok {
+		if location, _, _ := unstructured.NestedString(u.Object, "spec", "location"); location != "" {
+			identity.Region = location
+		}
+	}
+
 	return identity, nil
 }
 
