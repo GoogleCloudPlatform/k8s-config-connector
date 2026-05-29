@@ -16,9 +16,11 @@ package mockdataform
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataform/v1beta1"
@@ -27,11 +29,76 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type RepositoryV1Beta1 struct {
 	*MockService
 	pb.UnimplementedDataformServer
+}
+
+func (r *RepositoryV1Beta1) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := r.parseDataformRepository(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	policy, err := r.getIAMPolicy(ctx, fqn)
+	if err != nil {
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (r *RepositoryV1Beta1) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := r.parseDataformRepository(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	// Validate the repository exists
+	repository := &pb.Repository{}
+	if err := r.storage.Get(ctx, fqn, repository); err != nil {
+		return nil, err
+	}
+
+	policy := req.Policy
+	policy.Etag = []byte(fmt.Sprintf("%d", timestamppb.Now().AsTime().UnixNano()))
+
+	if err := r.storage.Update(ctx, fqn+"/iam", policy); err != nil {
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (r *RepositoryV1Beta1) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+
+func (r *RepositoryV1Beta1) getIAMPolicy(ctx context.Context, fqn string) (*iampb.Policy, error) {
+	// Validate the repository exists
+	repository := &pb.Repository{}
+	if err := r.storage.Get(ctx, fqn, repository); err != nil {
+		return nil, err
+	}
+
+	policy := &iampb.Policy{}
+	if err := r.storage.Get(ctx, fqn+"/iam", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return &iampb.Policy{
+				Etag: []byte(fmt.Sprintf("%d", timestamppb.Now().AsTime().UnixNano())),
+			}, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
 }
 
 func (r *RepositoryV1Beta1) ListRepositories(context.Context, *pb.ListRepositoriesRequest) (*pb.ListRepositoriesResponse, error) {

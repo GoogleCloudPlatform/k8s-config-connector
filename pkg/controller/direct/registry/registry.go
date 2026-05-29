@@ -127,6 +127,8 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 	switch groupKind {
 	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
 		return true
+	case schema.GroupKind{Group: "dataform.cnrm.cloud.google.com", Kind: "DataformRepository"}:
+		return true
 	}
 	return false
 }
