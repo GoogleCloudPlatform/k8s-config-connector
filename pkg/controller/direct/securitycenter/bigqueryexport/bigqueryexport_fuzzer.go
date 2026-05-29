@@ -31,6 +31,11 @@ func securitycenterBigQueryExportFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.UnimplementedFields.Insert(".name")
+
+	f.SpecFields.Insert(".dataset")
+	f.SpecFields.Insert(".description")
+	f.SpecFields.Insert(".filter")
+
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".most_recent_editor")
