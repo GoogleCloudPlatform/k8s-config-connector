@@ -58,8 +58,13 @@ type NetworkSecuritySecurityProfileGroupSpec struct {
 	/* The location of this resource. */
 	Location string `json:"location"`
 
+	/* The organization that this resource belongs to. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The NetworkSecuritySecurityProfileGroup name. If not given, the metadata.name will be used. */
 	// +optional

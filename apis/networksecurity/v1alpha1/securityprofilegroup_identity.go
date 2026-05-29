@@ -30,8 +30,8 @@ var (
 	_ identity.Resource   = &NetworkSecuritySecurityProfileGroup{}
 )
 
-var NetworkSecuritySecurityProfileGroupProjectIdentityFormat = gcpurls.Template[NetworkSecuritySecurityProfileGroupIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/securityProfileGroups/{security_profile_group}")
-var NetworkSecuritySecurityProfileGroupOrganizationIdentityFormat = gcpurls.Template[NetworkSecuritySecurityProfileGroupIdentity]("networksecurity.googleapis.com", "organizations/{organization}/locations/{location}/securityProfileGroups/{security_profile_group}")
+var NetworkSecuritySecurityProfileGroupProjectIdentityFormat = gcpurls.Template[NetworkSecuritySecurityProfileGroupIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/securityProfileGroups/{securityprofilegroup}")
+var NetworkSecuritySecurityProfileGroupOrganizationIdentityFormat = gcpurls.Template[NetworkSecuritySecurityProfileGroupIdentity]("networksecurity.googleapis.com", "organizations/{organization}/locations/{location}/securityProfileGroups/{securityprofilegroup}")
 
 // +k8s:deepcopy-gen=false
 type NetworkSecuritySecurityProfileGroupIdentity struct {
