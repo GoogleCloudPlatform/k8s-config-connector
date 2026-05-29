@@ -91,11 +91,10 @@ spec:
                       when not managed by Config Connector.
                     type: string
                   name:
-                    description: The `name` field of a `ComputeForwardingRule` resource.
+                    description: The name field of a ComputeForwardingRule resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeForwardingRule`
-                      resource.
+                    description: The namespace field of a ComputeForwardingRule resource.
                     type: string
                 type: object
               labels:
