@@ -18,8 +18,8 @@ import (
 	"context"
 	"time"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networksecurity/v1"
 	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networksecurity/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
