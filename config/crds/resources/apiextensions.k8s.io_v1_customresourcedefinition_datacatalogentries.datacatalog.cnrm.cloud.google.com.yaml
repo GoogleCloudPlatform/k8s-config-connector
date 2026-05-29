@@ -929,9 +929,21 @@ spec:
                           here.
                         items:
                           properties:
-                            filePath:
-                              description: 'Required. Full file path. Example: `gs://bucket_name/a/b.txt`.'
-                              type: string
+                            gcsTimestamps:
+                              description: Output only. Creation, modification, and
+                                expiration timestamps of a Cloud Storage file.
+                              properties:
+                                expireTime:
+                                  description: |-
+                                    Output only. Expiration timestamp of the resource within the given system.
+
+                                     Currently only applicable to BigQuery resources.
+                                  type: string
+                              type: object
+                            sizeBytes:
+                              description: Output only. File size in bytes.
+                              format: int64
+                              type: integer
                           type: object
                         type: array
                     type: object

@@ -1524,7 +1524,7 @@ type BuildObservedState struct {
 
 	// Output only. Results of the build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.results
-	Results *Results `json:"results,omitempty"`
+	Results *ResultsObservedState `json:"results,omitempty"`
 
 	// Output only. Time at which the request to create the build was received.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.create_time
@@ -1548,7 +1548,7 @@ type BuildObservedState struct {
 
 	// Output only. A permanent fixed identifier for source.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.source_provenance
-	SourceProvenance *SourceProvenance `json:"sourceProvenance,omitempty"`
+	SourceProvenance *SourceProvenanceObservedState `json:"sourceProvenance,omitempty"`
 
 	// Output only. The ID of the `BuildTrigger` that triggered this build, if it
 	//  was triggered automatically.
@@ -1564,7 +1564,7 @@ type BuildObservedState struct {
 	// Output only. Describes this build's approval configuration, status,
 	//  and result.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.approval
-	Approval *BuildApproval `json:"approval,omitempty"`
+	Approval *BuildApprovalObservedState `json:"approval,omitempty"`
 
 	// Output only. Non-fatal problems encountered during the execution of the
 	//  build.
@@ -1590,7 +1590,7 @@ type BuildApprovalObservedState struct {
 
 	// Output only. Result of manual approval for this Build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildApproval.result
-	Result *ApprovalResult `json:"result,omitempty"`
+	Result *ApprovalResultObservedState `json:"result,omitempty"`
 }
 */
 

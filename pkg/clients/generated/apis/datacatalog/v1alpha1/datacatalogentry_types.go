@@ -840,6 +840,14 @@ type EntryGcsFilesetSpecStatus struct {
 	SampleGCSFileSpecs []EntrySampleGCSFileSpecsStatus `json:"sampleGCSFileSpecs,omitempty"`
 }
 
+type EntryGcsTimestampsStatus struct {
+	/* Output only. Expiration timestamp of the resource within the given system.
+
+	Currently only applicable to BigQuery resources. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
+}
+
 type EntryObservedStateStatus struct {
 	/* Output only. Specification for a group of BigQuery tables with
 	the `[prefix]YYYYMMDD` name pattern.
@@ -923,9 +931,13 @@ type EntryProtobufStatus struct {
 }
 
 type EntrySampleGCSFileSpecsStatus struct {
-	/* Required. Full file path. Example: `gs://bucket_name/a/b.txt`. */
+	/* Output only. Creation, modification, and expiration timestamps of a Cloud Storage file. */
 	// +optional
-	FilePath *string `json:"filePath,omitempty"`
+	GcsTimestamps *EntryGcsTimestampsStatus `json:"gcsTimestamps,omitempty"`
+
+	/* Output only. File size in bytes. */
+	// +optional
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
 }
 
 type EntryStoragePropertiesStatus struct {
