@@ -17,95 +17,100 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"regexp"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	util "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const (
-	// BackupIdentityURL is the format for the externalRef of an alloydb Backup.
-	// This format is used in the AlloyDB API.
-	// See: https://docs.cloud.google.com/asset-inventory/docs/asset-names
-	BackupIdentityURL = "projects/{{projectID}}/locations/{{location}}/backups/{{backup}}"
+var (
+	_ identity.IdentityV2 = &AlloyDBBackupIdentity{}
+	_ identity.Resource   = &AlloyDBBackup{}
 )
 
-var _ identity.Identity = &BackupIdentity{}
-var _ identity.Resource = &AlloyDBBackup{}
+var AlloyDBBackupIdentityFormat = gcpurls.Template[AlloyDBBackupIdentity]("alloydb.googleapis.com", "projects/{project}/locations/{location}/backups/{backup}")
 
-var parser = regexp.MustCompile(`((//)?alloydb.googleapis.com)?/?projects/(?P<projects>` + util.ProjectIDRegexp + `)/locations/(?P<locations>[a-z0-9-]+)/backups/(?P<backups>[a-z0-9-]+)`)
-
-// BackupIdentity represents the identity of an alloydb backup.
 // +k8s:deepcopy-gen=false
-type BackupIdentity struct {
-	Parent   string
+type AlloyDBBackupIdentity struct {
+	Project  string
 	Location string
 	Backup   string
 }
 
-func (i *BackupIdentity) String() string {
-	return "projects/" + i.Parent + "/locations/" + i.Location + "/backups/" + i.Backup
+func (i *AlloyDBBackupIdentity) String() string {
+	return AlloyDBBackupIdentityFormat.ToString(*i)
 }
 
-func (i *BackupIdentity) FromExternal(ref string) error {
-	// TODO: Should be able to parse https://docs.cloud.google.com/asset-inventory/docs/asset-names
-	// But that format is //alloydb.googleapis.com/projects/PROJECT_ID/locations/LOCATION/backups/BACKUP
-	// which is not the format used by the service.
-
-	err, identityMap := util.ParseIdentityMap(ref, parser, 3)
+func (i *AlloyDBBackupIdentity) FromExternal(ref string) error {
+	parsed, match, err := AlloyDBBackupIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of backup external=%q was not known (use %s): %w", ref, BackupIdentityURL, err)
+		return fmt.Errorf("format of AlloyDBBackup external=%q was not known (use %s): %w", ref, AlloyDBBackupIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of AlloyDBBackup external=%q was not known (use %s)", ref, AlloyDBBackupIdentityFormat.CanonicalForm())
 	}
 
-	i.Parent = identityMap["projects"]
-	i.Location = identityMap["locations"]
-	i.Backup = identityMap["backups"]
-
+	*i = *parsed
 	return nil
 }
 
+func (i *AlloyDBBackupIdentity) Host() string {
+	return AlloyDBBackupIdentityFormat.Host()
+}
+
+func (i *AlloyDBBackupIdentity) ID() string {
+	return i.Backup
+}
+
+func (i *AlloyDBBackupIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
+func getIdentityFromAlloyDBBackupSpec(ctx context.Context, reader client.Reader, obj client.Object) (*AlloyDBBackupIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &AlloyDBBackupIdentity{
+		Project:  projectID,
+		Location: location,
+		Backup:   resourceID,
+	}
+	return identity, nil
+}
+
 func (obj *AlloyDBBackup) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	// Get desired resource ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	specIdentity, err := getIdentityFromAlloyDBBackupSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
 	}
 
-	var specIdentity *BackupIdentity
-	if resourceID != "" {
-		specIdentity = &BackupIdentity{}
-		if !strings.HasPrefix(resourceID, "projects/") {
-			resourceID = "projects/" + resourceID
-		}
-		if err := specIdentity.FromExternal(resourceID); err != nil {
-			return nil, fmt.Errorf("cannot parse spec.resourceID=%q: %w", resourceID, err)
-		}
-	}
-
-	// Validate against the ID stored in status.externalRef
-	var statusIdentity *BackupIdentity
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		statusIdentity = &BackupIdentity{}
+		// Validate desired with actual
+		statusIdentity := &AlloyDBBackupIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change AlloyDBBackup identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 
-	if specIdentity != nil {
-		if statusIdentity != nil && statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, specIdentity.String())
-		}
-		return specIdentity, nil
-	}
-
-	if statusIdentity != nil {
-		return statusIdentity, nil
-	}
-
-	return nil, fmt.Errorf("cannot determine identity: spec.resourceID and status.externalRef are both unset")
+	return specIdentity, nil
 }
