@@ -33,4 +33,13 @@ echo "Running unit tests..."
 gcloud config set project foobar --quiet
 
 GITHUB_ACTION=1 \
-./scripts/unit-test.sh
+./scripts/unit-test.sh || TEST_EXIT_CODE=$?
+
+# Move artifact to where the generator expects it
+mkdir -p /tmp/artifacts
+if [ -f unittest_result.json ]; then
+  mv unittest_result.json /tmp/artifacts/
+fi
+if [ -n "${TEST_EXIT_CODE:-}" ]; then
+  exit $TEST_EXIT_CODE
+fi
