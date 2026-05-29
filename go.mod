@@ -39,6 +39,7 @@ require (
 	cloud.google.com/go/dataproc/v2 v2.19.0
 	cloud.google.com/go/datastream v1.15.1
 	cloud.google.com/go/deploy v1.27.3
+	cloud.google.com/go/devicestreaming v0.1.0
 	cloud.google.com/go/discoveryengine v1.22.0
 	cloud.google.com/go/documentai v1.42.0
 	cloud.google.com/go/edgecontainer v1.4.4
@@ -148,7 +149,6 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
-	cloud.google.com/go/devicestreaming v0.1.0 // indirect
 	cloud.google.com/go/edgenetwork v1.8.0 // indirect
 	cloud.google.com/go/memcache v1.11.7 // indirect
 	cloud.google.com/go/modelarmor v1.0.0 // indirect
