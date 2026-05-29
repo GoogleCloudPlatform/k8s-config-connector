@@ -15,19 +15,31 @@
 package v1beta1
 
 import (
-	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var OSConfigOSPolicyAssignmentGVK = GroupVersion.WithKind("OSConfigOSPolicyAssignment")
 
+// OSConfigProjectRef represents a reference to a Project resource.
+// +kcc:proto:ignore
+type OSConfigProjectRef struct {
+	// Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
+	External string `json:"external,omitempty"`
+
+	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	Name string `json:"name,omitempty"`
+
+	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	Namespace string `json:"namespace,omitempty"`
+}
+
 // OSConfigOSPolicyAssignmentSpec defines the desired state of OSConfigOSPolicyAssignment
 // +kcc:spec:proto=google.cloud.osconfig.v1.OSPolicyAssignment
 type OSConfigOSPolicyAssignmentSpec struct {
 	// Immutable. The Project that this resource belongs to.
 	// +required
-	ProjectRef *parent.ProjectRef `json:"projectRef"`
+	ProjectRef *OSConfigProjectRef `json:"projectRef"`
 
 	// Immutable. The location for the resource
 	Location string `json:"location"`
@@ -66,7 +78,7 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	// Output only. Indicates that this revision has been successfully rolled out
 	// in this zone and new VMs will be assigned OS policies from this revision.

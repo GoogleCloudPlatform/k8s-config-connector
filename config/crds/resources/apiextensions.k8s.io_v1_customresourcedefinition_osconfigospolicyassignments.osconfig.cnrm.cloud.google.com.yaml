@@ -885,14 +885,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
+                    description: 'Allowed value: The Google Cloud resource name of
+                      a `Project` resource (format: `projects/{{name}}`).'
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               resourceID:
@@ -993,7 +993,6 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
               reconciling:
                 description: 'Output only. Indicates that reconciliation is in progress
