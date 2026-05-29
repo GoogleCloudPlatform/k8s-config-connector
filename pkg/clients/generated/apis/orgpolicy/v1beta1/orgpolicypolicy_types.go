@@ -93,7 +93,7 @@ type PolicyParameters struct {
 
 	/* AWS account IDs that are allowed by the managed constraint. */
 	// +optional
-	AllowedAwsAccountIds []string `json:"allowedAwsAccountIds,omitempty"`
+	AllowedAWSAccountIDs []string `json:"allowedAWSAccountIDs,omitempty"`
 
 	/* Data sources that are allowed by the managed constraint. */
 	// +optional
@@ -105,7 +105,7 @@ type PolicyParameters struct {
 
 	/* Fully qualified domain names that are allowed for egress traffic. */
 	// +optional
-	AllowedEgressFqdns []string `json:"allowedEgressFqdns,omitempty"`
+	AllowedEgressFQDNs []string `json:"allowedEgressFQDNs,omitempty"`
 
 	/* Encryption types or modes that are allowed by the managed constraint. */
 	// +optional
@@ -153,11 +153,11 @@ type PolicyParameters struct {
 
 	/* Default AWS provider used when no explicit provider is specified. */
 	// +optional
-	DefaultAwsProvider *string `json:"defaultAwsProvider,omitempty"`
+	DefaultAWSProvider *string `json:"defaultAWSProvider,omitempty"`
 
 	/* Default XML service provider used when no explicit provider is specified. */
 	// +optional
-	DefaultXmlServiceProvider *string `json:"defaultXmlServiceProvider,omitempty"`
+	DefaultXMLServiceProvider *string `json:"defaultXMLServiceProvider,omitempty"`
 
 	/* Editions that are denied by the managed constraint. */
 	// +optional
@@ -173,7 +173,7 @@ type PolicyParameters struct {
 
 	/* Compute Engine machine types that are not FIPS-compliant but are allowed. */
 	// +optional
-	NonFipsMachineTypes []string `json:"nonFipsMachineTypes,omitempty"`
+	NonFIPSMachineTypes []string `json:"nonFIPSMachineTypes,omitempty"`
 }
 
 type PolicyRules struct {

@@ -471,8 +471,8 @@ func (in *PolicyParameters) DeepCopyInto(out *PolicyParameters) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.AllowedAwsAccountIds != nil {
-		in, out := &in.AllowedAwsAccountIds, &out.AllowedAwsAccountIds
+	if in.AllowedAWSAccountIDs != nil {
+		in, out := &in.AllowedAWSAccountIDs, &out.AllowedAWSAccountIDs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -486,8 +486,8 @@ func (in *PolicyParameters) DeepCopyInto(out *PolicyParameters) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.AllowedEgressFqdns != nil {
-		in, out := &in.AllowedEgressFqdns, &out.AllowedEgressFqdns
+	if in.AllowedEgressFQDNs != nil {
+		in, out := &in.AllowedEgressFQDNs, &out.AllowedEgressFQDNs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -546,13 +546,13 @@ func (in *PolicyParameters) DeepCopyInto(out *PolicyParameters) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.DefaultAwsProvider != nil {
-		in, out := &in.DefaultAwsProvider, &out.DefaultAwsProvider
+	if in.DefaultAWSProvider != nil {
+		in, out := &in.DefaultAWSProvider, &out.DefaultAWSProvider
 		*out = new(string)
 		**out = **in
 	}
-	if in.DefaultXmlServiceProvider != nil {
-		in, out := &in.DefaultXmlServiceProvider, &out.DefaultXmlServiceProvider
+	if in.DefaultXMLServiceProvider != nil {
+		in, out := &in.DefaultXMLServiceProvider, &out.DefaultXMLServiceProvider
 		*out = new(string)
 		**out = **in
 	}
@@ -571,8 +571,8 @@ func (in *PolicyParameters) DeepCopyInto(out *PolicyParameters) {
 		*out = new(int64)
 		**out = **in
 	}
-	if in.NonFipsMachineTypes != nil {
-		in, out := &in.NonFipsMachineTypes, &out.NonFipsMachineTypes
+	if in.NonFIPSMachineTypes != nil {
+		in, out := &in.NonFIPSMachineTypes, &out.NonFIPSMachineTypes
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}

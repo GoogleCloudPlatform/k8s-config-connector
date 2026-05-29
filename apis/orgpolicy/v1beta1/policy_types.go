@@ -107,6 +107,7 @@ type OrgPolicyPolicyObservedState struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
@@ -268,7 +269,7 @@ type PolicySpec_PolicyRule_Parameters struct {
 
 	// AWS account IDs that are allowed by the managed constraint.
 	// +optional
-	AllowedAWSAccountIDs []string `json:"allowedAwsAccountIds,omitempty"`
+	AllowedAWSAccountIDs []string `json:"allowedAWSAccountIDs,omitempty"`
 
 	// Data sources that are allowed by the managed constraint.
 	// +optional
@@ -281,7 +282,7 @@ type PolicySpec_PolicyRule_Parameters struct {
 
 	// Fully qualified domain names that are allowed for egress traffic.
 	// +optional
-	AllowedEgressFQDNs []string `json:"allowedEgressFqdns,omitempty"`
+	AllowedEgressFQDNs []string `json:"allowedEgressFQDNs,omitempty"`
 
 	// Encryption types or modes that are allowed by the managed constraint.
 	// +optional
@@ -329,11 +330,11 @@ type PolicySpec_PolicyRule_Parameters struct {
 
 	// Default AWS provider used when no explicit provider is specified.
 	// +optional
-	DefaultAWSProvider *string `json:"defaultAwsProvider,omitempty"`
+	DefaultAWSProvider *string `json:"defaultAWSProvider,omitempty"`
 
 	// Default XML service provider used when no explicit provider is specified.
 	// +optional
-	DefaultXMLServiceProvider *string `json:"defaultXmlServiceProvider,omitempty"`
+	DefaultXMLServiceProvider *string `json:"defaultXMLServiceProvider,omitempty"`
 
 	// Editions that are denied by the managed constraint.
 	// +optional
@@ -349,5 +350,5 @@ type PolicySpec_PolicyRule_Parameters struct {
 
 	// Compute Engine machine types that are not FIPS-compliant but are allowed.
 	// +optional
-	NonFIPSMachineTypes []string `json:"nonFipsMachineTypes,omitempty"`
+	NonFIPSMachineTypes []string `json:"nonFIPSMachineTypes,omitempty"`
 }
