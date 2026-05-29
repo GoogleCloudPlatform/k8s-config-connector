@@ -108,8 +108,12 @@ spec:
                             filterType:
                               description: Required. Type of responsible AI filter.
                               type: string
+                          required:
+                          - filterType
                           type: object
                         type: array
+                    required:
+                    - raiFilters
                     type: object
                   sdpSettings:
                     description: Optional. Sensitive Data Protection settings.
@@ -120,7 +124,7 @@ spec:
                           templates. Supports both Sensitive Data Protection inspection
                           and de-identification operations.
                         properties:
-                          deidentifyTemplate:
+                          deidentifyTemplateRef:
                             description: |-
                               Optional. Optional Sensitive Data Protection Deidentify template resource
                                name.
@@ -133,8 +137,36 @@ spec:
 
                                e.g.
                                `projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}`
-                            type: string
-                          inspectTemplate:
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  DLP Deidentify Template. Should be in the format
+                                  `projects/[project_id]/locations/[location]/deidentifyTemplates/[deidentify_template]`.
+                                type: string
+                              name:
+                                description: The `name` of a `DLPDeidentifyTemplate`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `namespace` of a `DLPDeidentifyTemplate`
+                                  resource.
+                                type: string
+                            type: object
+                          inspectTemplateRef:
                             description: |-
                               Optional. Sensitive Data Protection inspect template resource name
 
@@ -145,7 +177,34 @@ spec:
 
                                e.g.
                                `projects/{project}/locations/{location}/inspectTemplates/{inspect_template}`
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  DLP Inspect Template. Should be in the format `projects/[project_id]/locations/[location]/inspectTemplates/[inspect_template]`.
+                                type: string
+                              name:
+                                description: The `name` of a `DLPInspectTemplate`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `namespace` of a `DLPInspectTemplate`
+                                  resource.
+                                type: string
+                            type: object
                         type: object
                       basicConfig:
                         description: Optional. Basic Sensitive Data Protection configuration
@@ -250,6 +309,8 @@ spec:
                         description: Required. If true, multi language detection will
                           be enabled.
                         type: boolean
+                    required:
+                    - enableMultiLanguageDetection
                     type: object
                 type: object
             required:

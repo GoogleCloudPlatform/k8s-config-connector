@@ -63,57 +63,6 @@ type PiAndJailbreakFilterSettings struct {
 	ConfidenceLevel *string `json:"confidenceLevel,omitempty"`
 }
 
-// +kcc:proto=google.cloud.modelarmor.v1.RaiFilterSettings
-type RaiFilterSettings struct {
-	// Required. List of Responsible AI filters enabled for template.
-	// +kcc:proto:field=google.cloud.modelarmor.v1.RaiFilterSettings.rai_filters
-	RaiFilters []RaiFilterSettings_RaiFilter `json:"raiFilters,omitempty"`
-}
-
-// +kcc:proto=google.cloud.modelarmor.v1.RaiFilterSettings.RaiFilter
-type RaiFilterSettings_RaiFilter struct {
-	// Required. Type of responsible AI filter.
-	// +kcc:proto:field=google.cloud.modelarmor.v1.RaiFilterSettings.RaiFilter.filter_type
-	FilterType *string `json:"filterType,omitempty"`
-
-	// Optional. Confidence level for this RAI filter.
-	//  During data sanitization, if data is classified under this filter with a
-	//  confidence level equal to or greater than the specified level, a positive
-	//  match is reported. If the confidence level is unspecified (i.e., 0), the
-	//  system will use a reasonable default level based on the `filter_type`.
-	// +kcc:proto:field=google.cloud.modelarmor.v1.RaiFilterSettings.RaiFilter.confidence_level
-	ConfidenceLevel *string `json:"confidenceLevel,omitempty"`
-}
-
-// +kcc:proto=google.cloud.modelarmor.v1.SdpAdvancedConfig
-type SdpAdvancedConfig struct {
-	// Optional. Sensitive Data Protection inspect template resource name
-	//
-	//  If only inspect template is provided (de-identify template not provided),
-	//  then Sensitive Data Protection InspectContent action is performed during
-	//  Sanitization. All Sensitive Data Protection findings identified during
-	//  inspection will be returned as SdpFinding in SdpInsepctionResult.
-	//
-	//  e.g.
-	//  `projects/{project}/locations/{location}/inspectTemplates/{inspect_template}`
-	// +kcc:proto:field=google.cloud.modelarmor.v1.SdpAdvancedConfig.inspect_template
-	InspectTemplate *string `json:"inspectTemplate,omitempty"`
-
-	// Optional. Optional Sensitive Data Protection Deidentify template resource
-	//  name.
-	//
-	//  If provided then DeidentifyContent action is performed during Sanitization
-	//  using this template and inspect template. The De-identified data will
-	//  be returned in SdpDeidentifyResult.
-	//  Note that all info-types present in the deidentify template must be present
-	//  in inspect template.
-	//
-	//  e.g.
-	//  `projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}`
-	// +kcc:proto:field=google.cloud.modelarmor.v1.SdpAdvancedConfig.deidentify_template
-	DeidentifyTemplate *string `json:"deidentifyTemplate,omitempty"`
-}
-
 // +kcc:proto=google.cloud.modelarmor.v1.SdpBasicConfig
 type SdpBasicConfig struct {
 	// Optional. Tells whether the Sensitive Data Protection basic config is
@@ -181,11 +130,4 @@ type Template_TemplateMetadata struct {
 	// Optional. Metadata for multi language detection.
 	// +kcc:proto:field=google.cloud.modelarmor.v1.Template.TemplateMetadata.multi_language_detection
 	MultiLanguageDetection *Template_TemplateMetadata_MultiLanguageDetection `json:"multiLanguageDetection,omitempty"`
-}
-
-// +kcc:proto=google.cloud.modelarmor.v1.Template.TemplateMetadata.MultiLanguageDetection
-type Template_TemplateMetadata_MultiLanguageDetection struct {
-	// Required. If true, multi language detection will be enabled.
-	// +kcc:proto:field=google.cloud.modelarmor.v1.Template.TemplateMetadata.MultiLanguageDetection.enable_multi_language_detection
-	EnableMultiLanguageDetection *bool `json:"enableMultiLanguageDetection,omitempty"`
 }

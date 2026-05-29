@@ -51,7 +51,7 @@ type TemplateAdvancedConfig struct {
 	e.g.
 	`projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}` */
 	// +optional
-	DeidentifyTemplate *string `json:"deidentifyTemplate,omitempty"`
+	DeidentifyTemplateRef *v1alpha1.ResourceRef `json:"deidentifyTemplateRef,omitempty"`
 
 	/* Optional. Sensitive Data Protection inspect template resource name
 
@@ -63,7 +63,7 @@ type TemplateAdvancedConfig struct {
 	e.g.
 	`projects/{project}/locations/{location}/inspectTemplates/{inspect_template}` */
 	// +optional
-	InspectTemplate *string `json:"inspectTemplate,omitempty"`
+	InspectTemplateRef *v1alpha1.ResourceRef `json:"inspectTemplateRef,omitempty"`
 }
 
 type TemplateBasicConfig struct {
@@ -98,8 +98,7 @@ type TemplateMaliciousURIFilterSettings struct {
 
 type TemplateMultiLanguageDetection struct {
 	/* Required. If true, multi language detection will be enabled. */
-	// +optional
-	EnableMultiLanguageDetection *bool `json:"enableMultiLanguageDetection,omitempty"`
+	EnableMultiLanguageDetection bool `json:"enableMultiLanguageDetection"`
 }
 
 type TemplatePiAndJailbreakFilterSettings struct {
@@ -118,14 +117,12 @@ type TemplateRaiFilters struct {
 	ConfidenceLevel *string `json:"confidenceLevel,omitempty"`
 
 	/* Required. Type of responsible AI filter. */
-	// +optional
-	FilterType *string `json:"filterType,omitempty"`
+	FilterType string `json:"filterType"`
 }
 
 type TemplateRaiSettings struct {
 	/* Required. List of Responsible AI filters enabled for template. */
-	// +optional
-	RaiFilters []TemplateRaiFilters `json:"raiFilters,omitempty"`
+	RaiFilters []TemplateRaiFilters `json:"raiFilters"`
 }
 
 type TemplateSdpSettings struct {
