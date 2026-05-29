@@ -276,14 +276,14 @@
     "state": "Not Started",
     "steps": {
       "gen-types": false,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 121,
     "downstreamCount": 0
   },
