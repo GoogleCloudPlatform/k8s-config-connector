@@ -20,35 +20,5 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-echo "Generating types and mappers..."
-dev/tasks/generate-types-and-mappers
-
-echo "Generating resource report..."
-dev/tasks/generate-resource-report
-
-echo "Generating static config..."
-dev/tasks/generate_static_config.py
-
-echo "Generating GitHub Actions..."
-dev/tasks/generate-github-actions
-
-echo "Running go generate..."
-go generate ./pkg/apis/...
-
-echo "Generating operator code..."
-make -C operator generate
-
-echo "Formatting..."
-make fmt
-
-echo "Generating manifests..."
-make manifests
-
-echo "Generating go client..."
-./scripts/generate-go-crd-clients/generate-clients.sh
-
-echo "Ensuring dependencies..."
-make ensure
-
-echo "Final formatting..."
-make fmt
+echo "Running custom linter..."
+make lint-custom

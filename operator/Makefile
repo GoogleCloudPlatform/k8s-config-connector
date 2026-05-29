@@ -35,7 +35,7 @@ all: manager
 
 # Run tests
 .PHONY: test
-test: generate fmt vet manifests
+test:
 	go run gotest.tools/gotestsum@latest --format testname -- -v ./pkg/... -coverprofile cover.out
 
 # Build manager binary
