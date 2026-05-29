@@ -53,7 +53,7 @@ You are strictly responsible for reviewing the following files generated or modi
 *   **Requesting changes**: If a PR under review needs changes/fixes before it can be LGTM'ed (`/lgtm`) then you **must use the `--request-changes`** flag when submitting your review, see: `gh pr review <PR_NUMBER> --request-changes`
 *   **No Direct Approvals:** You are not authorized to write `/approve` or hit the GitHub approval API. You may only output `/lgtm` or request changes.
 *   **Ready for Human Labeling:** Upon submitting an `/lgtm` review, you must add the label `ready-for-human` to the PR using the GitHub CLI (e.g., `gh pr edit <PR_NUMBER> --add-label ready-for-human`).
-*   **Github CLI:** Use the Github CLI for reviews: https://cli.github.com/manual/gh_pr_review 
+*   **Github CLI:** Use the Github CLI for reviews: https://cli.github.com/manual/gh_pr_review
 
 ---
 
