@@ -148,9 +148,12 @@ func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespac
 		return fmt.Errorf("unexpected status from %v: %v", u, response.Status)
 	}
 
-	dec := json.NewDecoder(response.Body)
+	return c.decodeJSONResponse(ctx, response.Body, typeInfo, listener, u)
+}
 
-	// We expect the beginning of a JSON object
+func (c *StreamingClient) decodeJSONResponse(ctx context.Context, body io.Reader, typeInfo *typeInfo, listener ListListener, u *url.URL) error {
+	dec := json.NewDecoder(body)
+
 	token, err := dec.Token()
 	if err != nil {
 		return fmt.Errorf("decoding list begin from %v: %w", u, err)
@@ -161,9 +164,7 @@ func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespac
 
 	var metadata ListMetadata
 
-	// Iterate through the top-level object fields
 	for dec.More() {
-		// Read the field key
 		token, err := dec.Token()
 		if err != nil {
 			return fmt.Errorf("decoding field key from %v: %w", u, err)
@@ -199,36 +200,8 @@ func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespac
 			metadata.ResourceVersion = m.ResourceVersion
 
 		case "items":
-			// We expect the beginning of an array
-			token, err := dec.Token()
-			if err != nil {
-				return fmt.Errorf("items field error starting from %v: %w", u, err)
-			}
-			if delim, ok := token.(json.Delim); !ok || delim != '[' {
-				return fmt.Errorf("expected JSON array start '[' from %v, got %v", u, token)
-			}
-
-			// Call OnListBegin now that we have parsed apiVersion, kind, and metadata
-			listener.OnListBegin(metadata)
-
-			// Stream individual list items
-			for dec.More() {
-				itemObj := typeInfo.factory()
-				if err := dec.Decode(&itemObj); err != nil {
-					return fmt.Errorf("streaming list item decode from %v: %w", u, err)
-				}
-				if err := listener.OnListObject(ctx, itemObj); err != nil {
-					return err
-				}
-			}
-
-			// We expect the end of the array
-			token, err = dec.Token()
-			if err != nil {
-				return fmt.Errorf("items field error ending from %v: %w", u, err)
-			}
-			if delim, ok := token.(json.Delim); !ok || delim != ']' {
-				return fmt.Errorf("expected JSON array end ']' from %v, got %v", u, token)
+			if err := c.decodeListItems(ctx, dec, typeInfo, metadata, listener, u); err != nil {
+				return err
 			}
 
 		default:
@@ -240,7 +213,6 @@ func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespac
 		}
 	}
 
-	// We expect the end of the object
 	token, err = dec.Token()
 	if err != nil {
 		return fmt.Errorf("decoding list end from %v: %w", u, err)
@@ -250,6 +222,39 @@ func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespac
 	}
 
 	listener.OnListEnd()
+
+	return nil
+}
+
+func (c *StreamingClient) decodeListItems(ctx context.Context, dec *json.Decoder, typeInfo *typeInfo, metadata ListMetadata, listener ListListener, u *url.URL) error {
+	token, err := dec.Token()
+	if err != nil {
+		return fmt.Errorf("items field error starting from %v: %w", u, err)
+	}
+	if delim, ok := token.(json.Delim); !ok || delim != '[' {
+		return fmt.Errorf("expected JSON array start '[' from %v, got %v", u, token)
+	}
+
+	// We call OnListBegin here because apiVersion, kind, and metadata are serialized before the items array in standard Kubernetes responses, allowing us to build the complete ListMetadata first.
+	listener.OnListBegin(metadata)
+
+	for dec.More() {
+		itemObj := typeInfo.factory()
+		if err := dec.Decode(&itemObj); err != nil {
+			return fmt.Errorf("streaming list item decode from %v: %w", u, err)
+		}
+		if err := listener.OnListObject(ctx, itemObj); err != nil {
+			return err
+		}
+	}
+
+	token, err = dec.Token()
+	if err != nil {
+		return fmt.Errorf("items field error ending from %v: %w", u, err)
+	}
+	if delim, ok := token.(json.Delim); !ok || delim != ']' {
+		return fmt.Errorf("expected JSON array end ']' from %v, got %v", u, token)
+	}
 
 	return nil
 }
