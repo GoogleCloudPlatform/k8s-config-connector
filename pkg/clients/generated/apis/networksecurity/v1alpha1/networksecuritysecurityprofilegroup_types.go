@@ -41,11 +41,11 @@ var _ = apiextensionsv1.JSON{}
 type NetworkSecuritySecurityProfileGroupSpec struct {
 	/* Optional. Reference to a SecurityProfile with the CustomIntercept configuration. */
 	// +optional
-	CustomInterceptProfile *string `json:"customInterceptProfile,omitempty"`
+	CustomInterceptProfileRef *v1alpha1.ResourceRef `json:"customInterceptProfileRef,omitempty"`
 
 	/* Optional. Reference to a SecurityProfile with the CustomMirroring configuration. */
 	// +optional
-	CustomMirroringProfile *string `json:"customMirroringProfile,omitempty"`
+	CustomMirroringProfileRef *v1alpha1.ResourceRef `json:"customMirroringProfileRef,omitempty"`
 
 	/* Optional. An optional description of the profile group. Max length 2048 characters. */
 	// +optional
@@ -67,11 +67,11 @@ type NetworkSecuritySecurityProfileGroupSpec struct {
 
 	/* Optional. Reference to a SecurityProfile with the ThreatPrevention configuration. */
 	// +optional
-	ThreatPreventionProfile *string `json:"threatPreventionProfile,omitempty"`
+	ThreatPreventionProfileRef *v1alpha1.ResourceRef `json:"threatPreventionProfileRef,omitempty"`
 
 	/* Optional. Reference to a SecurityProfile with the UrlFiltering configuration. */
 	// +optional
-	UrlFilteringProfile *string `json:"urlFilteringProfile,omitempty"`
+	UrlFilteringProfileRef *v1alpha1.ResourceRef `json:"urlFilteringProfileRef,omitempty"`
 }
 
 type SecurityprofilegroupObservedStateStatus struct {
@@ -114,6 +114,7 @@ type NetworkSecuritySecurityProfileGroupStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecuritysecurityprofilegroup;gcpnetworksecuritysecurityprofilegroups
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
