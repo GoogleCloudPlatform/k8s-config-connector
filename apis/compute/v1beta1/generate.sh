@@ -37,6 +37,7 @@ go run . generate-types \
   --resource ComputeNodeTemplate:NodeTemplate \
   --resource ComputeReservation:Reservation \
   --resource ComputeHealthCheck:HealthCheck \
+  --resource ComputeNodeGroup:NodeGroup \
   --include-skipped-output
 
 go run . generate-mapper \

@@ -28,6 +28,7 @@
 // resource: ComputeNodeTemplate:NodeTemplate
 // resource: ComputeReservation:Reservation
 // resource: ComputeHealthCheck:HealthCheck
+// resource: ComputeNodeGroup:NodeGroup
 
 package v1beta1
 
@@ -1152,6 +1153,113 @@ type NetworkRoutingConfig struct {
 	//  Check the RoutingMode enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.routing_mode
 	RoutingMode *string `json:"routingMode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NodeGroup", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NodeGroup
+type NodeGroup struct {
+	// Specifies how autoscaling should behave.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.autoscaling_policy
+	AutoscalingPolicy *NodeGroupAutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] The type of the resource. Always compute#nodeGroup for node group.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// An opaque location hint used to place the Node close to other resources. This field is for use by internal tools that use the public API. The location hint here on the NodeGroup overrides any location_hint present in the NodeTemplate.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.location_hint
+	LocationHint *string `json:"locationHint,omitempty"`
+
+	// Specifies the frequency of planned maintenance events. The accepted values are: `AS_NEEDED` and `RECURRENT`.
+	//  Check the MaintenanceInterval enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.maintenance_interval
+	MaintenanceInterval *string `json:"maintenanceInterval,omitempty"`
+
+	// Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. For more information, see Maintenance policies.
+	//  Check the MaintenancePolicy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.maintenance_policy
+	MaintenancePolicy *string `json:"maintenancePolicy,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.maintenance_window
+	MaintenanceWindow *NodeGroupMaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
+	// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// URL of the node template to create the node group from.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.node_template
+	NodeTemplate *string `json:"nodeTemplate,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Share-settings for the node group
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.share_settings
+	ShareSettings *ShareSettings `json:"shareSettings,omitempty"`
+
+	// [Output Only] The total number of nodes in the node group.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.size
+	Size *int32 `json:"size,omitempty"`
+
+	// Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.status
+	Status *string `json:"status,omitempty"`
+
+	// [Output Only] The name of the zone where the node group resides, such as us-central1-a.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeGroupAutoscalingPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NodeGroupAutoscalingPolicy
+type NodeGroupAutoscalingPolicy struct {
+	// The maximum number of nodes that the group should have. Must be set if autoscaling is enabled. Maximum value allowed is 100.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupAutoscalingPolicy.max_nodes
+	MaxNodes *int32 `json:"maxNodes,omitempty"`
+
+	// The minimum number of nodes that the group should have.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupAutoscalingPolicy.min_nodes
+	MinNodes *int32 `json:"minNodes,omitempty"`
+
+	// The autoscaling mode. Set to one of: ON, OFF, or ONLY_SCALE_OUT. For more information, see Autoscaler modes.
+	//  Check the Mode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupAutoscalingPolicy.mode
+	Mode *string `json:"mode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodeGroupMaintenanceWindow", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NodeGroupMaintenanceWindow
+type NodeGroupMaintenanceWindow struct {
+	// [Output only] A predetermined duration for the window, automatically chosen to be the smallest possible in the given scenario.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupMaintenanceWindow.maintenance_duration
+	MaintenanceDuration *Duration `json:"maintenanceDuration,omitempty"`
+
+	// Start time of the window. This must be in UTC format that resolves to one of 00:00, 04:00, 08:00, 12:00, 16:00, or 20:00. For example, both 13:00-5 and 08:00 are valid.
+	// +kcc:proto:field=google.cloud.compute.v1.NodeGroupMaintenanceWindow.start_time
+	StartTime *string `json:"startTime,omitempty"`
 }
 */
 
