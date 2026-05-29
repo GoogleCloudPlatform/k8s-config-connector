@@ -15,86 +15,56 @@
 package v1beta1
 
 import (
-	"maps"
 	"testing"
 
-	util "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/identity"
+	"github.com/google/go-cmp/cmp"
 )
 
-func TestBackupParse(t *testing.T) {
+func TestAlloyDBBackupIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name      string
-		input     string
-		parsedMap map[string]string
-		hasError  bool
+		name    string
+		ref     string
+		wantErr bool
+		want    *AlloyDBBackupIdentity
 	}{
 		{
-			name:      "Normal parse",
-			input:     "projects/my-project/locations/mylocation/backups/mybackup",
-			parsedMap: map[string]string{"projects": "my-project", "locations": "mylocation", "backups": "mybackup"},
-			hasError:  false,
+			name: "valid reference",
+			ref:  "projects/my-project/locations/us-central1/backups/my-backup",
+			want: &AlloyDBBackupIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Backup:   "my-backup",
+			},
 		},
 		{
-			name:      "Normal parse with leading slash",
-			input:     "/projects/p12345/locations/l1/backups/b1",
-			parsedMap: map[string]string{"projects": "p12345", "locations": "l1", "backups": "b1"},
-			hasError:  false,
+			name:    "invalid reference format",
+			ref:     "invalid/format",
+			wantErr: true,
 		},
 		{
-			name:      "Normal parse with domain",
-			input:     "alloydb.googleapis.com/projects/project1/locations/second/backups/third",
-			parsedMap: map[string]string{"projects": "project1", "locations": "second", "backups": "third"},
-			hasError:  false,
-		},
-		{
-			name:      "Normal parse with slashed domain",
-			input:     "//alloydb.googleapis.com/projects/project2/locations/porthos/backups/aramis",
-			parsedMap: map[string]string{"projects": "project2", "locations": "porthos", "backups": "aramis"},
-			hasError:  false,
-		},
-		{
-			name:      "Normal parse with wrong domain",
-			input:     "//anthos.googleapis.com/projects/myProject/locations/mylocation/backups/mybackup",
-			parsedMap: nil,
-			hasError:  true,
-		},
-		{
-			name:      "Normal parse with wrong project key",
-			input:     "org/myProject/locations/mylocation/backups/mybackup",
-			parsedMap: nil,
-			hasError:  true,
-		},
-		{
-			name:      "Normal parse with wrong location key",
-			input:     "projects/myProject/regions/mylocation/backups/mybackup",
-			parsedMap: nil,
-			hasError:  true,
-		},
-		{
-			name:      "Normal parse with wrong backup key",
-			input:     "projects/myProject/locations/mylocation/cluster/mybackup",
-			parsedMap: nil,
-			hasError:  true,
+			name: "full url",
+			ref:  "https://alloydb.googleapis.com/projects/my-project/locations/us-central1/backups/my-backup",
+			want: &AlloyDBBackupIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Backup:   "my-backup",
+			},
 		},
 	}
 
-	for _, tc := range tests {
-		err, result := util.ParseIdentityMap(tc.input, parser, 3)
-		if tc.hasError {
-			if err == nil {
-				t.Fatalf("Test %s expected error but did not get one", tc.name)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			i := &AlloyDBBackupIdentity{}
+			err := i.FromExternal(tt.ref)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+				return
 			}
-			continue
-		}
-		// Error no expected at this point
-		if err != nil {
-			t.Fatalf("Test %s did not expect error but got %v", tc.name, err)
-		}
-		if result == nil {
-			t.Fatalf("Test %s expected a result but did not get one", tc.name)
-		}
-		if !maps.Equal(result, tc.parsedMap) {
-			t.Fatalf("Test %s bad result %v != %v", tc.name, result, tc.parsedMap)
-		}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
+				}
+			}
+		})
 	}
 }
