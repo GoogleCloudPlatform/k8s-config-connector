@@ -24,6 +24,8 @@ var OSConfigOSPolicyAssignmentGVK = GroupVersion.WithKind("OSConfigOSPolicyAssig
 // OSConfigProjectRef represents a reference to a Project resource.
 // +kcc:proto:ignore
 type OSConfigProjectRef struct {
+	// The project for the resource
+	//
 	// Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
 	External string `json:"external,omitempty"`
 
