@@ -24,5 +24,5 @@ UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/...  ./scripts/r
 if [ -z ${GITHUB_ACTION+x} ]; then
     go test -coverprofile cover.out -count=1 ${UNIT_TEST_PACKAGES}
 else
-    go test -v -coverprofile cover.out -count=1 ${UNIT_TEST_PACKAGES}
+    (while true; do echo "Keep-alive: tests are still running..."; sleep 60; done) & KEEPALIVE_PID=$!; go test -json -coverprofile cover.out -count=1 ${UNIT_TEST_PACKAGES} > unittest_result.json || (kill $KEEPALIVE_PID; exit 1); kill $KEEPALIVE_PID
 fi
