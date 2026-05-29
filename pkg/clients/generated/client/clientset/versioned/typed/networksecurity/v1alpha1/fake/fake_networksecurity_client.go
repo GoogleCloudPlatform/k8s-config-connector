@@ -31,6 +31,10 @@ type FakeNetworksecurityV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityBackendAuthenticationConfigs(namespace string) v1alpha1.NetworkSecurityBackendAuthenticationConfigInterface {
+	return newFakeNetworkSecurityBackendAuthenticationConfigs(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptDeployments(namespace string) v1alpha1.NetworkSecurityInterceptDeploymentInterface {
 	return newFakeNetworkSecurityInterceptDeployments(c, namespace)
 }
