@@ -1,0 +1,20 @@
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: CloudBatchResourceAllowance
+metadata:
+  name: batchallow-${uniqueId}
+  labels:
+    gcp-label: updated-value
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  labels:
+    spec-label-key: spec-label-value-updated
+  usageResourceAllowance:
+    spec:
+      type: "cpu-core-hour"
+      limit:
+        limit: 300
+        calendarPeriod: "MONTH"
+  notifications:
+    - pubsubTopic: "projects/${projectId}/topics/topic-${uniqueId}"
