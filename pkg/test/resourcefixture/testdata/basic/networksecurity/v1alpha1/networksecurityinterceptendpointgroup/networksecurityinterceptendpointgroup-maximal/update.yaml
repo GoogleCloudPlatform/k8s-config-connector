@@ -1,0 +1,13 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityInterceptEndpointGroup
+metadata:
+  name: interceptendpointgroup-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  interceptDeploymentGroupRef:
+    external: projects/${projectId}/locations/global/interceptDeploymentGroups/dep-group-${uniqueId}
+  description: "An updated description of this endpoint group"
+  labels:
+    foo: baz
