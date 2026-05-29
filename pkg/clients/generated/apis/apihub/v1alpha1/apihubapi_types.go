@@ -81,17 +81,11 @@ type ApiApiTechnicalRequirements struct {
 }
 
 type ApiAttributes struct {
-	/* The attribute values associated with a resource in case attribute data type is enum. */
-	// +optional
-	EnumValues *ApiEnumValues `json:"enumValues,omitempty"`
+	/* Reference to the attribute. */
+	AttributeRef v1alpha1.ResourceRef `json:"attributeRef"`
 
-	/* The attribute values associated with a resource in case attribute data type is JSON. */
-	// +optional
-	JsonValues *ApiJsonValues `json:"jsonValues,omitempty"`
-
-	/* The attribute values associated with a resource in case attribute data type is string. */
-	// +optional
-	StringValues *ApiStringValues `json:"stringValues,omitempty"`
+	/* The value of the attribute. */
+	Values ApiValues `json:"values"`
 }
 
 type ApiDocumentation struct {
@@ -155,7 +149,7 @@ type ApiValues struct {
 	Immutable *bool `json:"immutable,omitempty"`
 }
 
-type APIHubApiSpec struct {
+type APIHubAPISpec struct {
 	/* Optional. The API functional requirements of the API. */
 	// +optional
 	ApiFunctionalRequirements *ApiApiFunctionalRequirements `json:"apiFunctionalRequirements,omitempty"`
@@ -174,7 +168,7 @@ type APIHubApiSpec struct {
 
 	/* Optional. The list of user defined attributes associated with the API resource. The key is the attribute name. It will be of the format: `projects/{project}/locations/{location}/attributes/{attribute}`. */
 	// +optional
-	Attributes map[string]ApiAttributes `json:"attributes,omitempty"`
+	Attributes []ApiAttributes `json:"attributes,omitempty"`
 
 	/* Optional. The business unit owning the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-business-unit` */
 	// +optional
@@ -209,13 +203,13 @@ type APIHubApiSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The APIHubApi name. If not given, the metadata.name will be used. */
+	/* The APIHubAPI name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Optional. The selected version for an API resource. This can be used when special handling is needed on client side for particular version of the API. Format is `projects/{project}/locations/{location}/apis/{api}/versions/{version}` */
 	// +optional
-	SelectedVersion *string `json:"selectedVersion,omitempty"`
+	SelectedVersionRef *v1alpha1.ResourceRef `json:"selectedVersionRef,omitempty"`
 
 	/* Optional. The target users for the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-target-user` */
 	// +optional
@@ -262,11 +256,11 @@ type ApiSourceMetadataStatus struct {
 	SourceType *string `json:"sourceType,omitempty"`
 }
 
-type APIHubApiStatus struct {
+type APIHubAPIStatus struct {
 	/* Conditions represent the latest available observations of the
-	   APIHubApi's current state. */
+	   APIHubAPI's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the APIHubApi resource in GCP. */
+	/* A unique specifier for the APIHubAPI resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -291,25 +285,25 @@ type APIHubApiStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// APIHubApi is the Schema for the apihub API
+// APIHubAPI is the Schema for the apihub API
 // +k8s:openapi-gen=true
-type APIHubApi struct {
+type APIHubAPI struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   APIHubApiSpec   `json:"spec,omitempty"`
-	Status APIHubApiStatus `json:"status,omitempty"`
+	Spec   APIHubAPISpec   `json:"spec,omitempty"`
+	Status APIHubAPIStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// APIHubApiList contains a list of APIHubApi
-type APIHubApiList struct {
+// APIHubAPIList contains a list of APIHubAPI
+type APIHubAPIList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []APIHubApi `json:"items"`
+	Items           []APIHubAPI `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&APIHubApi{}, &APIHubApiList{})
+	SchemeBuilder.Register(&APIHubAPI{}, &APIHubAPIList{})
 }

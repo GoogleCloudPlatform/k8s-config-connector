@@ -27,24 +27,24 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeAPIHubApis implements APIHubApiInterface
-type fakeAPIHubApis struct {
-	*gentype.FakeClientWithList[*v1alpha1.APIHubApi, *v1alpha1.APIHubApiList]
+// fakeAPIHubAPIs implements APIHubAPIInterface
+type fakeAPIHubAPIs struct {
+	*gentype.FakeClientWithList[*v1alpha1.APIHubAPI, *v1alpha1.APIHubAPIList]
 	Fake *FakeApihubV1alpha1
 }
 
-func newFakeAPIHubApis(fake *FakeApihubV1alpha1, namespace string) apihubv1alpha1.APIHubApiInterface {
-	return &fakeAPIHubApis{
-		gentype.NewFakeClientWithList[*v1alpha1.APIHubApi, *v1alpha1.APIHubApiList](
+func newFakeAPIHubAPIs(fake *FakeApihubV1alpha1, namespace string) apihubv1alpha1.APIHubAPIInterface {
+	return &fakeAPIHubAPIs{
+		gentype.NewFakeClientWithList[*v1alpha1.APIHubAPI, *v1alpha1.APIHubAPIList](
 			fake.Fake,
 			namespace,
 			v1alpha1.SchemeGroupVersion.WithResource("apihubapis"),
-			v1alpha1.SchemeGroupVersion.WithKind("APIHubApi"),
-			func() *v1alpha1.APIHubApi { return &v1alpha1.APIHubApi{} },
-			func() *v1alpha1.APIHubApiList { return &v1alpha1.APIHubApiList{} },
-			func(dst, src *v1alpha1.APIHubApiList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.APIHubApiList) []*v1alpha1.APIHubApi { return gentype.ToPointerSlice(list.Items) },
-			func(list *v1alpha1.APIHubApiList, items []*v1alpha1.APIHubApi) {
+			v1alpha1.SchemeGroupVersion.WithKind("APIHubAPI"),
+			func() *v1alpha1.APIHubAPI { return &v1alpha1.APIHubAPI{} },
+			func() *v1alpha1.APIHubAPIList { return &v1alpha1.APIHubAPIList{} },
+			func(dst, src *v1alpha1.APIHubAPIList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.APIHubAPIList) []*v1alpha1.APIHubAPI { return gentype.ToPointerSlice(list.Items) },
+			func(list *v1alpha1.APIHubAPIList, items []*v1alpha1.APIHubAPI) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),

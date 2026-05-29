@@ -108,11 +108,11 @@ func APIHubDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubDeplo
 	return out
 }
 
-func APIHubApiSpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIHubApiSpec {
+func APIHubAPISpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIHubAPISpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.APIHubApiSpec{}
+	out := &krm.APIHubAPISpec{}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
@@ -123,12 +123,18 @@ func APIHubApiSpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIHubA
 	out.BusinessUnitRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetBusinessUnit())
 	out.MaturityLevelRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetMaturityLevel())
 	out.APIStyleRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetApiStyle())
-	out.SelectedVersion = direct.LazyPtr(in.GetSelectedVersion())
+	if in.GetSelectedVersion() != "" {
+		out.SelectedVersionRef = &krm.APIHubVersionRef{External: in.GetSelectedVersion()}
+	}
 
 	if in.GetAttributes() != nil {
-		out.Attributes = make(map[string]krm.AttributeValues)
+		out.Attributes = make([]krm.APIHubAPIAttribute, 0, len(in.GetAttributes()))
 		for k, v := range in.GetAttributes() {
-			out.Attributes[k] = *AttributeValues_FromProto(mapCtx, v)
+			attr := krm.APIHubAPIAttribute{
+				AttributeRef: &krm.APIHubAttributeRef{External: k},
+				Values:       AttributeValues_FromProto(mapCtx, v),
+			}
+			out.Attributes = append(out.Attributes, attr)
 		}
 	}
 	out.APIRequirements = AttributeValues_FromProto(mapCtx, in.GetApiRequirements())
@@ -139,7 +145,7 @@ func APIHubApiSpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIHubA
 	return out
 }
 
-func APIHubApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubApiSpec) *pb.Api {
+func APIHubAPISpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAPISpec) *pb.Api {
 	if in == nil {
 		return nil
 	}
@@ -154,13 +160,16 @@ func APIHubApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubApiSpec) *pb
 	out.BusinessUnit = APIHubAttributeValueRef_ToProto(mapCtx, in.BusinessUnitRef)
 	out.MaturityLevel = APIHubAttributeValueRef_ToProto(mapCtx, in.MaturityLevelRef)
 	out.ApiStyle = APIHubAttributeValueRef_ToProto(mapCtx, in.APIStyleRef)
-	out.SelectedVersion = direct.ValueOf(in.SelectedVersion)
+	if in.SelectedVersionRef != nil {
+		out.SelectedVersion = in.SelectedVersionRef.External
+	}
 
 	if in.Attributes != nil {
 		out.Attributes = make(map[string]*pb.AttributeValues)
-		for k, v := range in.Attributes {
-			val := v
-			out.Attributes[k] = AttributeValues_ToProto(mapCtx, &val)
+		for _, attr := range in.Attributes {
+			if attr.AttributeRef != nil {
+				out.Attributes[attr.AttributeRef.External] = AttributeValues_ToProto(mapCtx, attr.Values)
+			}
 		}
 	}
 	out.ApiRequirements = AttributeValues_ToProto(mapCtx, in.APIRequirements)
@@ -199,11 +208,11 @@ func SourceMetadataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Sour
 	return out
 }
 
-func APIHubApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIHubApiObservedState {
+func APIHubAPIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIHubAPIObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.APIHubApiObservedState{}
+	out := &krm.APIHubAPIObservedState{}
 	out.Versions = in.Versions
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -219,7 +228,7 @@ func APIHubApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *kr
 	return out
 }
 
-func APIHubApiObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubApiObservedState) *pb.Api {
+func APIHubAPIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAPIObservedState) *pb.Api {
 	if in == nil {
 		return nil
 	}

@@ -18,17 +18,17 @@ import (
 	"testing"
 )
 
-func TestAPIHubApiIdentity_FromExternal(t *testing.T) {
+func TestAPIHubAPIIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
-		expected *APIHubApiIdentity
+		expected *APIHubAPIIdentity
 		hasError bool
 	}{
 		{
 			name:  "Full resource name",
 			input: "projects/my-project/locations/us-central1/apis/my-api",
-			expected: &APIHubApiIdentity{
+			expected: &APIHubAPIIdentity{
 				Project:  "my-project",
 				Location: "us-central1",
 				Api:      "my-api",
@@ -38,7 +38,7 @@ func TestAPIHubApiIdentity_FromExternal(t *testing.T) {
 		{
 			name:  "Full resource name with host",
 			input: "apihub.googleapis.com/projects/my-project/locations/us-central1/apis/my-api",
-			expected: &APIHubApiIdentity{
+			expected: &APIHubAPIIdentity{
 				Project:  "my-project",
 				Location: "us-central1",
 				Api:      "my-api",
@@ -55,7 +55,7 @@ func TestAPIHubApiIdentity_FromExternal(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			id := &APIHubApiIdentity{}
+			id := &APIHubAPIIdentity{}
 			err := id.FromExternal(tc.input)
 			if tc.hasError {
 				if err == nil {

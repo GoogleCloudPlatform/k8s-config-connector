@@ -98,7 +98,7 @@ BLOCKED_KINDS=(
     "AutoMLDataset"
     "AppHubServiceProjectAttachment"
     "ApiHubDeployment"
-    "APIHubApi"
+    "APIHubAPI"
     "ApiHubDependency"
     "ApiHubCuration"
     "ApiHubAttribute"

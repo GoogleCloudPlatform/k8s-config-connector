@@ -26,7 +26,7 @@ go run . generate-types \
   --service google.cloud.apihub.v1 \
   --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
   --resource APIHubDeployment:Deployment \
-  --resource APIHubApi:Api \
+  --resource APIHubAPI:Api \
   --prune-unused-types=false
 
 go run . generate-mapper --service google.cloud.apihub.v1 --api-version apihub.cnrm.cloud.google.com/v1alpha1
