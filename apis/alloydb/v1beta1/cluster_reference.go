@@ -90,3 +90,26 @@ func (r *ClusterRef) Normalize(ctx context.Context, reader client.Reader, defaul
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
+func (r *ClusterRef) Resolve(ctx context.Context, reader client.Reader, src client.Object) (*AlloyDBClusterIdentity, error) {
+	if r == nil {
+		return nil, nil
+	}
+
+	// Work on a copy of ClusterRef to avoid mutating the original struct inside Spec
+	rCopy := &ClusterRef{
+		External:  r.External,
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+
+	if err := rCopy.Normalize(ctx, reader, src.GetNamespace()); err != nil {
+		return nil, err
+	}
+
+	identity, err := rCopy.ParseExternalToIdentity()
+	if err != nil {
+		return nil, err
+	}
+
+	return identity.(*AlloyDBClusterIdentity), nil
+}

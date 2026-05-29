@@ -26,50 +26,50 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &AlloyDBInstanceIdentity{}
-	_ identity.Resource   = &AlloyDBInstance{}
+	_ identity.IdentityV2 = &AlloyDBUserIdentity{}
+	_ identity.Resource   = &AlloyDBUser{}
 )
 
-var AlloyDBInstanceIdentityFormat = gcpurls.Template[AlloyDBInstanceIdentity]("alloydb.googleapis.com", "projects/{project}/locations/{location}/clusters/{cluster}/instances/{instance}")
+var AlloyDBUserIdentityFormat = gcpurls.Template[AlloyDBUserIdentity]("alloydb.googleapis.com", "projects/{project}/locations/{location}/clusters/{cluster}/users/{user}")
 
 // +k8s:deepcopy-gen=false
-type AlloyDBInstanceIdentity struct {
+type AlloyDBUserIdentity struct {
 	Project  string
 	Location string
 	Cluster  string
-	Instance string
+	User     string
 }
 
-func (i *AlloyDBInstanceIdentity) String() string {
-	return AlloyDBInstanceIdentityFormat.ToString(*i)
+func (i *AlloyDBUserIdentity) String() string {
+	return AlloyDBUserIdentityFormat.ToString(*i)
 }
 
-func (i *AlloyDBInstanceIdentity) FromExternal(ref string) error {
-	parsed, match, err := AlloyDBInstanceIdentityFormat.Parse(ref)
+func (i *AlloyDBUserIdentity) FromExternal(ref string) error {
+	parsed, match, err := AlloyDBUserIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of AlloyDBInstance external=%q was not known (use %s): %w", ref, AlloyDBInstanceIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of AlloyDBUser external=%q was not known (use %s): %w", ref, AlloyDBUserIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of AlloyDBInstance external=%q was not known (use %s)", ref, AlloyDBInstanceIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of AlloyDBUser external=%q was not known (use %s)", ref, AlloyDBUserIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *AlloyDBInstanceIdentity) Host() string {
-	return AlloyDBInstanceIdentityFormat.Host()
+func (i *AlloyDBUserIdentity) Host() string {
+	return AlloyDBUserIdentityFormat.Host()
 }
 
-func (i *AlloyDBInstanceIdentity) ID() string {
-	return i.Instance
+func (i *AlloyDBUserIdentity) ID() string {
+	return i.User
 }
 
-func (i *AlloyDBInstanceIdentity) ParentString() string {
+func (i *AlloyDBUserIdentity) ParentString() string {
 	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", i.Project, i.Location, i.Cluster)
 }
 
-func getIdentityFromAlloyDBInstanceSpec(ctx context.Context, reader client.Reader, obj *AlloyDBInstance) (*AlloyDBInstanceIdentity, error) {
+func getIdentityFromAlloyDBUserSpec(ctx context.Context, reader client.Reader, obj *AlloyDBUser) (*AlloyDBUserIdentity, error) {
 	if obj.Spec.ClusterRef == nil {
 		return nil, fmt.Errorf("spec.clusterRef is required")
 	}
@@ -83,31 +83,31 @@ func getIdentityFromAlloyDBInstanceSpec(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 
-	return &AlloyDBInstanceIdentity{
+	return &AlloyDBUserIdentity{
 		Project:  clusterRef.Project,
 		Location: clusterRef.Location,
 		Cluster:  clusterRef.Cluster,
-		Instance: resourceID,
+		User:     resourceID,
 	}, nil
 }
 
-func (obj *AlloyDBInstance) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromAlloyDBInstanceSpec(ctx, reader, obj)
+func (obj *AlloyDBUser) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAlloyDBUserSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
 
 	// Cross-check the identity against the status value, if present.
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	externalRef := common.ValueOf(obj.Status.Name)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &AlloyDBInstanceIdentity{}
+		statusIdentity := &AlloyDBUserIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change AlloyDBInstance identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change AlloyDBUser identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 
