@@ -65,7 +65,7 @@ type NetworkSecurityPartnerSSEGatewaySpec struct {
 	//  PartnerSSEGateway
 	// +kubebuilder:validation:Required
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_gateway_reference_id
-	SseGatewayReferenceID *string `json:"sseGatewayReferenceID,omitempty"`
+	SSEGatewayReferenceID *string `json:"sseGatewayReferenceID,omitempty"`
 
 	// Optional. Subnet range of the partner_vpc
 	//  This field is deprecated. Use partner_subnet_range instead.
@@ -76,7 +76,7 @@ type NetworkSecurityPartnerSSEGatewaySpec struct {
 	//  Default value is set to "100.88.255.0/24".
 	//  The CIDR suffix should be less than or equal to 25.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_subnet_range
-	SseSubnetRange *string `json:"sseSubnetRange,omitempty"`
+	SSESubnetRange *string `json:"sseSubnetRange,omitempty"`
 
 	// Optional. Subnet range of the partner-owned subnet.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.partner_subnet_range
@@ -85,7 +85,7 @@ type NetworkSecurityPartnerSSEGatewaySpec struct {
 	// Optional. Virtual Network Identifier to use in NCG.
 	//  Today the only partner that depends on it is Symantec.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.vni
-	Vni *int32 `json:"vni,omitempty"`
+	VNI *int32 `json:"vni,omitempty"`
 
 	// Optional. Required iff Partner is Symantec.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.symantec_options
@@ -106,29 +106,29 @@ type NetworkSecurityPartnerSSEGatewayObservedState struct {
 	// Output only. Subnet range of the subnet where partner traffic is routed.
 	//  This field is deprecated. Use sse_subnet_range instead.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_vpc_subnet_range
-	SseVPCSubnetRange *string `json:"sseVPCSubnetRange,omitempty"`
+	SSEVPCSubnetRange *string `json:"sseVPCSubnetRange,omitempty"`
 
 	// Output only. This is the IP where the partner traffic should be routed to.
 	//  This field is deprecated. Use sse_target_ip instead.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_vpc_target_ip
-	SseVPCTargetIP *string `json:"sseVPCTargetIP,omitempty"`
+	SSEVPCTargetIP *string `json:"sseVPCTargetIP,omitempty"`
 
 	// Output only. IP of SSE BGP
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_bgp_ips
-	SseBGPIps []string `json:"sseBGPIps,omitempty"`
+	SSEBGPIps []string `json:"sseBGPIps,omitempty"`
 
 	// Output only. ASN of SSE BGP
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_bgp_asn
-	SseBGPAsn *int32 `json:"sseBGPAsn,omitempty"`
+	SSEBGPAsn *int32 `json:"sseBGPAsn,omitempty"`
 
 	// Output only. name of PartnerSSERealm owning the PartnerSSEGateway
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.partner_sse_realm
-	PartnerSseRealm *string `json:"partnerSseRealm,omitempty"`
+	PartnerSSERealm *string `json:"partnerSseRealm,omitempty"`
 
 	// Output only. Target IP that belongs to sse_subnet_range where partner
 	//  should send the traffic to reach the customer networks.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_target_ip
-	SseTargetIP *string `json:"sseTargetIP,omitempty"`
+	SSETargetIP *string `json:"sseTargetIP,omitempty"`
 
 	// Optional. Required iff Partner is Symantec.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.symantec_options
@@ -137,19 +137,19 @@ type NetworkSecurityPartnerSSEGatewayObservedState struct {
 	// Output only. The project owning partner_facing_network. Only filled for
 	//  PartnerSSEGateways associated with Symantec today.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_project
-	SseProject *string `json:"sseProject,omitempty"`
+	SSEProject *string `json:"sseProject,omitempty"`
 
 	// Output only. The ID of the network in sse_project containing
 	//  sse_subnet_range. This is also known as the partnerFacingNetwork. Only
 	//  filled for PartnerSSEGateways associated with Symantec today.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_network
-	SseNetwork *string `json:"sseNetwork,omitempty"`
+	SSENetwork *string `json:"sseNetwork,omitempty"`
 
 	// Output only. Full URI of the partner environment this PartnerSSEGateway is
 	//  connected to. Filled from the customer SSEGateway, and only for
 	//  PartnerSSEGateways associated with Symantec today.
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.partner_sse_environment
-	PartnerSseEnvironment *string `json:"partnerSseEnvironment,omitempty"`
+	PartnerSSEEnvironment *string `json:"partnerSseEnvironment,omitempty"`
 
 	// Output only. ISO-3166 alpha 2 country code used for localization.
 	//  Filled from the customer SSEGateway, and only for PartnerSSEGateways

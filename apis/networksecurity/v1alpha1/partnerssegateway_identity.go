@@ -30,7 +30,7 @@ var (
 	_ identity.Resource   = &NetworkSecurityPartnerSSEGateway{}
 )
 
-var NetworkSecurityPartnerSSEGatewayIdentityFormat = gcpurls.Template[NetworkSecurityPartnerSSEGatewayIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/partnerSSEGateways/{partner_sse_gateway}")
+var NetworkSecurityPartnerSSEGatewayIdentityFormat = gcpurls.Template[NetworkSecurityPartnerSSEGatewayIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/partnerSseGateways/{partnerSseGateway}")
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityPartnerSSEGatewayIdentity struct {
