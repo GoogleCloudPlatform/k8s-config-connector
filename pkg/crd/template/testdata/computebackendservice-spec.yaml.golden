@@ -7,10 +7,12 @@ backend:
   group:
     instanceGroupRef:
       external: string
+      kind: string
       name: string
       namespace: string
     networkEndpointGroupRef:
       external: string
+      kind: string
       name: string
       namespace: string
   maxConnections: integer
@@ -77,6 +79,7 @@ customResponseHeaders:
 description: string
 edgeSecurityPolicyRef:
   external: string
+  kind: string
   name: string
   namespace: string
 enableCdn: boolean
@@ -87,16 +90,19 @@ failoverPolicy:
 healthChecks:
 - healthCheckRef:
     external: string
+    kind: string
     name: string
     namespace: string
   httpHealthCheckRef:
     external: string
+    kind: string
     name: string
     namespace: string
 iap:
   oauth2ClientId: string
   oauth2ClientIdRef:
     external: string
+    kind: string
     name: string
     namespace: string
   oauth2ClientSecret:
@@ -120,6 +126,7 @@ logConfig:
   sampleRate: float
 networkRef:
   external: string
+  kind: string
   name: string
   namespace: string
 outlierDetection:
@@ -144,11 +151,13 @@ resourceID: string
 securityPolicy: string
 securityPolicyRef:
   external: string
+  kind: string
   name: string
   namespace: string
 securitySettings:
   clientTLSPolicyRef:
     external: string
+    kind: string
     name: string
     namespace: string
   subjectAltNames:

@@ -133,6 +133,7 @@
 [acronyms] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.iap.oauth2ClientId" should be ".spec.iap.oauth2ClientID"
 [acronyms] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.iap.oauth2ClientIdRef" should be ".spec.iap.oauth2ClientIDRef"
 [acronyms] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.iap.oauth2ClientIdRef.external" should be ".spec.iap.oauth2ClientIDRef.external"
+[acronyms] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.iap.oauth2ClientIdRef.kind" should be ".spec.iap.oauth2ClientIDRef.kind"
 [acronyms] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.iap.oauth2ClientIdRef.name" should be ".spec.iap.oauth2ClientIDRef.name"
 [acronyms] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.iap.oauth2ClientIdRef.namespace" should be ".spec.iap.oauth2ClientIDRef.namespace"
 [acronyms] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".status.generatedId" should be ".status.generatedID"
