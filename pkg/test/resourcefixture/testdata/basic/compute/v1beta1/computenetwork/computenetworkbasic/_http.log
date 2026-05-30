@@ -15,14 +15,8 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
+    "status": "NOT_FOUND"
   }
 }
 

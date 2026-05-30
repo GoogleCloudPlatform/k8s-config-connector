@@ -67,3 +67,9 @@ The official client library proto types might differ slightly from the old grpc-
 ## Journaling
 
 If you discover any new patterns, edge cases, or workarounds during migration, document them in the `mockgcp/.gemini/skills/move-away-from-grpc-gateway/journal/` directory. Create a new file with a descriptive, topic-based name (e.g., `netapp_leftover_generated_files.md` or `datastream_rewriteerror_not_needed.md`) to capture the learning for future reference.
+
+## Additional Complexities
+
+- **Ambiguous Service Matching**: If `httptogrpc` fails with "found multiple matching service", you MUST specify the service name explicitly using `httptogrpc.WithServiceName("google.cloud.<service>.<version>.<ServiceName>")` in the `AddService` call.
+- **Unhandled Annotations**: If `httptogrpc` fails with "unhandled annotation", update `mockgcp/common/httptogrpc/service.go` to ignore the annotation if it's not critical for the mock.
+- **Error Format Changes**: `httptogrpc` produces a different error format than `grpc-gateway`. You may need to update golden `_http.log` files.

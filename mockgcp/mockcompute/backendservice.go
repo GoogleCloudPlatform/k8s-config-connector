@@ -15,7 +15,7 @@
 package mockcompute
 
 import (
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 )
 
 func (s *MockService) populateBackendServiceDefaults(obj *pb.BackendService) {

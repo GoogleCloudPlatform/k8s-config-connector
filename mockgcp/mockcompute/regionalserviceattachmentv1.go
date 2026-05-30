@@ -26,8 +26,8 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/klog/v2"
 
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
 type RegionalServiceAttachmentV1 struct {

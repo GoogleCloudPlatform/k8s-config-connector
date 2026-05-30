@@ -218,6 +218,8 @@ func newGRPCService(grpcClient any, service protoreflect.ServiceDescriptor, opti
 			case "[google.api.oauth_scopes]":
 				// ignore for now
 				// obj.oauthScopes = v.String()
+			case "[google.cloud.operation_service]":
+				// ignore for now
 			default:
 				errs = append(errs, fmt.Errorf("unhandled annotation string %q", fd.JSONName()))
 			}
@@ -277,6 +279,8 @@ func (s *grpcService) addGRPCMethod(goMethod reflect.Value, goMethodType reflect
 			switch fd.JSONName() {
 			case "[google.api.method_signature]":
 				// ignore for now
+			case "[google.cloud.operation_service]":
+				// ignore for now
 			default:
 				errs = append(errs, fmt.Errorf("unhandled annotation string %q", fd.JSONName()))
 			}
@@ -284,6 +288,8 @@ func (s *grpcService) addGRPCMethod(goMethod reflect.Value, goMethodType reflect
 		case protoreflect.BoolKind:
 			switch fd.JSONName() {
 			case "deprecated":
+				// ignore
+			case "[google.cloud.operation_polling_method]":
 				// ignore
 			default:
 				errs = append(errs, fmt.Errorf("unhandled annotation bool %q", fd.JSONName()))

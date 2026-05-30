@@ -19,8 +19,8 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
 type RegionalHealthCheckV1 struct {
