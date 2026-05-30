@@ -60,19 +60,24 @@ func (i *CloudBuildTriggerIdentity) Host() string {
 	return CloudBuildTriggerIdentityFormat.Host()
 }
 
-func getIdentityFromCloudBuildTriggerSpec(ctx context.Context, reader client.Reader, obj *CloudBuildTrigger) (*CloudBuildTriggerIdentity, error) {
-	location := common.ValueOf(obj.Spec.Location)
-	if location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
+func getIdentityFromCloudBuildTriggerSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CloudBuildTriggerIdentity, error) {
+	u, ok := obj.(*CloudBuildTrigger)
+	if !ok {
+		return nil, fmt.Errorf("object is not a CloudBuildTrigger")
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	location := common.ValueOf(u.Spec.Location)
+	if location == "" {
+		location = "global"
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, u)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
 	// Trigger ID is server-generated. Use TriggerId from status if it exists.
-	triggerID := common.ValueOf(obj.Status.TriggerId)
+	triggerID := common.ValueOf(u.Status.TriggerId)
 	if triggerID == "" {
 		return nil, nil
 	}
