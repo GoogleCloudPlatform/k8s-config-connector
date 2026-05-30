@@ -46,9 +46,11 @@ func NewOperationsService(storage storage.Storage) *Operations {
 }
 
 func (s *Operations) RegisterGRPCServices(grpcServer *grpc.Server) {
+	if _, ok := grpcServer.GetServiceInfo()["google.longrunning.Operations"]; ok {
+		return
+	}
 	pb.RegisterOperationsServer(grpcServer, s)
 }
-
 func buildOperationName(prefix string) string {
 	now := time.Now()
 	millis := now.UnixMilli()

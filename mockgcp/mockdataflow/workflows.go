@@ -21,8 +21,8 @@ import (
 	"strings"
 	"time"
 
+	pb "cloud.google.com/go/dataflow/apiv1beta3/dataflowpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/dataflow/v1beta3"
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
