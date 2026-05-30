@@ -27,6 +27,32 @@ type BuildInfo struct {
 }
 */
 
+/* unreachable type SourceCode
+// +kcc:proto=google.cloud.run.v2.SourceCode
+type SourceCode struct {
+	// The source is a Cloud Storage bucket.
+	// +kcc:proto:field=google.cloud.run.v2.SourceCode.cloud_storage_source
+	CloudStorageSource *SourceCode_CloudStorageSource `json:"cloudStorageSource,omitempty"`
+}
+*/
+
+/* unreachable type SourceCode_CloudStorageSource
+// +kcc:proto=google.cloud.run.v2.SourceCode.CloudStorageSource
+type SourceCode_CloudStorageSource struct {
+	// Required. The Cloud Storage bucket name.
+	// +kcc:proto:field=google.cloud.run.v2.SourceCode.CloudStorageSource.bucket
+	Bucket *string `json:"bucket,omitempty"`
+
+	// Required. The Cloud Storage object name.
+	// +kcc:proto:field=google.cloud.run.v2.SourceCode.CloudStorageSource.object
+	Object *string `json:"object,omitempty"`
+
+	// Optional. The Cloud Storage object generation.
+	// +kcc:proto:field=google.cloud.run.v2.SourceCode.CloudStorageSource.generation
+	Generation *int64 `json:"generation,omitempty"`
+}
+*/
+
 /* unreachable type BuildInfoObservedState
 // +kcc:observedstate:proto=google.cloud.run.v2.BuildInfo
 type BuildInfoObservedState struct {
