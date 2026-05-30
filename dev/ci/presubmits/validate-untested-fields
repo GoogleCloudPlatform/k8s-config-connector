@@ -23,8 +23,29 @@ MISSING_FIELDS_FILE="${REPO_ROOT}/tests/apichecks/testdata/exceptions/missingfie
 # Checks for a partial string to determine if the missing field is a reference field
 MISSING_REFERENCE_STRING="neither 'external' nor 'name' are set"
 
+# Default BASE_COMMIT to origin/master or master if not provided or empty
+BASE_COMMIT="${BASE_COMMIT:-}"
+COMMIT_HEAD="${COMMIT_HEAD:-}"
+
+if [[ -z "${BASE_COMMIT}" ]]; then
+  if git rev-parse --verify origin/master >/dev/null 2>&1; then
+    BASE_COMMIT="origin/master"
+  elif git rev-parse --verify master >/dev/null 2>&1; then
+    BASE_COMMIT="master"
+  else
+    # Fallback if neither exists
+    BASE_COMMIT="HEAD~1"
+  fi
+fi
+
+if [[ -z "${COMMIT_HEAD}" ]]; then
+  COMMIT_HEAD="HEAD"
+fi
+
+echo "Comparing ${BASE_COMMIT} with ${COMMIT_HEAD}..."
+
 # Get the lines added to missingfields.txt in the current branch compared to master
-added_lines=$(git diff --unified=0 $BASE_COMMIT..$COMMIT_HEAD "${MISSING_FIELDS_FILE}" | grep '^+[^+]' | sed 's/^+//' || true)
+added_lines=$(git diff --unified=0 "${BASE_COMMIT}..${COMMIT_HEAD}" "${MISSING_FIELDS_FILE}" | grep '^+[^+]' | sed 's/^+//' || true)
 # Filter for missing reference fields
 # HACK: Temporarily ignore memorystoreInstanceServiceAttachment
 added_reference_lines=$(echo "${added_lines}" | grep "${MISSING_REFERENCE_STRING}" | grep -v memorystoreInstanceServiceAttachment || true)
@@ -37,7 +58,7 @@ if [[ -n "${added_reference_lines}" ]]; then
   exit 1
 elif [[ -n "${added_lines}" ]]; then
   echo "WARNING: Untested fields detected."
-  echo "The following lines were added in ${MISSING_FIELDS_FILE}::"
+  echo "The following lines were added in ${MISSING_FIELDS_FILE}:"
   echo "${added_lines}"
   echo "Please ensure they are intentional and covered by tests in the future."
   exit 0
