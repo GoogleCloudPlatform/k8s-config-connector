@@ -263,28 +263,6 @@ OK
 
 ---
 
-GRPC /google.cloud.netapp.v1.NetApp/GetBackupPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-${uniqueId}"
-}
-
-OK
-
-{
-  "assignedVolumeCount": 0,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dailyBackupLimit": 2,
-  "description": "",
-  "enabled": true,
-  "monthlyBackupLimit": 0,
-  "name": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-${uniqueId}",
-  "state": "READY",
-  "weeklyBackupLimit": 0
-}
-
----
-
 GRPC /google.iam.v1.IAMPolicy/SetIamPolicy
 
 {
@@ -308,6 +286,28 @@ OK
     }
   ],
   "etag": "abcdef0123A="
+}
+
+---
+
+GRPC /google.cloud.netapp.v1.NetApp/GetBackupPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-${uniqueId}"
+}
+
+OK
+
+{
+  "assignedVolumeCount": 0,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dailyBackupLimit": 2,
+  "description": "",
+  "enabled": true,
+  "monthlyBackupLimit": 0,
+  "name": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-${uniqueId}",
+  "state": "READY",
+  "weeklyBackupLimit": 0
 }
 
 ---
