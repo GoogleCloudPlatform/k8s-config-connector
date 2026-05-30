@@ -104,3 +104,8 @@ func (obj *DiscoveryEngineSampleQuerySet) GetIdentity(ctx context.Context, reade
 
 	return specIdentity, nil
 }
+
+// ExternalIdentifier implements ExternalIdentifier
+func (obj *DiscoveryEngineSampleQuerySet) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
+}
