@@ -39,8 +39,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/batch/v1alpha"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/batch/v1alpha"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -241,7 +241,7 @@ func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ProjectRef = &v1beta1.ProjectRef{External: a.id.Project}
-	obj.Spec.Location = a.id.Location
+	obj.Spec.Location = &a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

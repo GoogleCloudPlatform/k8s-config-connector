@@ -76,10 +76,35 @@ spec:
                 description: Optional. Notification configurations.
                 items:
                   properties:
-                    pubsubTopic:
+                    pubsubTopicRef:
                       description: Required. The Pub/Sub topic where notifications
                         like the resource allowance state changes will be published.
-                      type: string
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed PubSubTopic
+                            resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
+                          type: string
+                        name:
+                          description: The name of a PubSubTopic resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a PubSubTopic resource.
+                          type: string
+                      type: object
                   type: object
                 type: array
               projectRef:

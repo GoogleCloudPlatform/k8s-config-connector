@@ -17,4 +17,5 @@ spec:
         limit: 200
         calendarPeriod: "MONTH"
   notifications:
-    - pubsubTopic: "projects/${projectId}/topics/topic-${uniqueId}"
+    - pubsubTopicRef:
+        name: topic-${uniqueId}

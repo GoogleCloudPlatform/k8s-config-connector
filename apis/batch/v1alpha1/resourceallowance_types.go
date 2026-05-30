@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -31,7 +32,7 @@ type CloudBatchResourceAllowanceSpec struct {
 
 	// The location of this resource.
 	// +kubebuilder:validation:Required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The CloudBatchResourceAllowance name. If not given, the metadata.name will be used.
 	// +kubebuilder:validation:Optional
@@ -219,5 +220,5 @@ type Notification struct {
 	// Required. The Pub/Sub topic where notifications like the resource allowance
 	// state changes will be published.
 	// +kcc:proto:field=google.cloud.batch.v1alpha.Notification.pubsub_topic
-	PubsubTopic *string `json:"pubsubTopic,omitempty"`
+	PubsubTopicRef *pubsubv1beta1.PubSubTopicRef `json:"pubsubTopicRef,omitempty"`
 }
