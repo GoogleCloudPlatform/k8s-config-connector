@@ -47,7 +47,16 @@ After running the generator, verify the `_types.go` file meets these requirement
   ```
 - **Proto Mapping**: Ensure `+kcc:proto` tags are present on the Spec and ObservedState structs to link them to the GCP API definitions.
 - **Status Fields**: `status.observedGeneration` must be an `*int64`.
+- **Use Existing References**: ALWAYS reuse existing resource reference structures that live in `apis/refs/` instead of hand-coding or defining duplicate types.
+  * For example, `ProjectRef` (which lives in `apis/refs/v1beta1/project_ref.go`) and other resource reference types should be imported from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1` rather than being defined locally in `<kind>_types.go`.
+- **Strict Schema Compatibility**: At the initial stage of creating a direct Go type for an existing resource (transitioning from Terraform/DCL), the Go type should be strictly schema-compatible with the existing CRD definition.
+  * Do NOT add new fields like `externalRef` or `observedState` under `Status` yet.
+  * Run `dev/tasks/diff-crds` to verify schema compatibility and ensure no unintended new fields are introduced.
 
-### 3. Registration
+### 3. Fuzzers
+- Create a fuzzer for the mapper to verify that round-trip conversions (FromProto and ToProto) are lossless and correct.
+- See the `kcc-direct-controller-implementer` skill for details on implementing fuzzers.
+
+### 4. Registration
 - Ensure the new Kind is registered in `apis/<service>/v1alpha1/register.go`.
 - Run `dev/tasks/generate-crds` and verify the YAML appears in `config/crds/resources/`.
