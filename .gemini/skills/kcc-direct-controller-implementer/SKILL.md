@@ -22,6 +22,9 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
 
 3.  **Fuzzer**:
     Implement `<resource_lower>_fuzzer.go` and register it with `fuzztesting.RegisterKRMFuzzer`.
+    - **Fuzzer Implementation Guidelines**:
+      * ALWAYS prefer and encourage using the fluent `f.SpecField(".foo")` and `f.StatusField(".bar")` methods rather than inserting directly into `SpecFields`/`StatusFields` sets (e.g. avoid `f.SpecFields.Insert...`).
+      * For unhandled or unimplemented fields, prefer highly descriptive helper methods (such as `f.Unimplemented_NotYetTriaged(".baz")`, `f.Unimplemented_Identity(".id")`, or other specific variants) rather than standard inserts into `UnimplementedFields` sets. This categorizes why we are not handling specific fields.
 
 4.  **Final Generation & Reporting**:
     Run `make ready-pr` from the repository root. This is a critical step that:
