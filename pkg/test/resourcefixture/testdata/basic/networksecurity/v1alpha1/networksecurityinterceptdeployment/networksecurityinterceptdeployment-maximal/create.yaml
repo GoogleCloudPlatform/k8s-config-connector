@@ -5,6 +5,8 @@ metadata:
     cnrm.cloud.google.com/project-id: clienttls-${uniqueId}
   name: interceptdeployment-${uniqueId}
 spec:
+  projectRef:
+    name: clienttls-${uniqueId}
   location: us-central1
   forwardingRuleRef:
     name: fr-${uniqueId}
