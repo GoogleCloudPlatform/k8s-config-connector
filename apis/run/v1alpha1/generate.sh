@@ -20,9 +20,23 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+# We need a newer googleapis to get Instance fields
+PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 go run . generate-types \
     --service google.cloud.run.v2 \
     --api-version run.cnrm.cloud.google.com/v1alpha1 \
-    --resource CloudRunInstance:Instance
+    --resource CloudRunInstance:Instance \
+    --proto-source-path ${PROTO_OUT}
