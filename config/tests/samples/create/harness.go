@@ -412,10 +412,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		if err != nil {
 			h.Fatalf("error loading crds: %v", err)
 		}
-		{
+		if len(crds) > 0 {
+			start := time.Now()
 			var wg sync.WaitGroup
 			var errsMutex sync.Mutex
 			var errs []error
+			var installedCount int
 
 			for i := range crds {
 				crd := &crds[i]
@@ -425,6 +427,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 						continue
 					}
 				}
+				installedCount++
 				wg.Add(1)
 				log.V(2).Info("loading crd", "name", crd.GetName())
 
@@ -434,6 +437,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 						errsMutex.Lock()
 						defer errsMutex.Unlock()
 						errs = append(errs, fmt.Errorf("error creating crd %v: %w", crd.GroupVersionKind(), err))
+						return
 					}
 					h.waitForCRDReady(crd)
 				}()
@@ -442,6 +446,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			if len(errs) != 0 {
 				h.Fatalf("error creating crds: %v", errors.Join(errs...))
 			}
+
+			duration := time.Since(start)
+			h.Logf("Installed %d CRDs in %v", installedCount, duration.Round(time.Millisecond))
+			log.Info("Installed CRDs", "count", installedCount, "duration", duration)
 		}
 	}
 
@@ -1236,14 +1244,17 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 }
 
 func (h *Harness) waitForCRDReady(obj client.Object) {
+	start := time.Now()
 	logger := log.FromContext(h.Ctx)
 
 	apiVersion, kind := obj.GetObjectKind().GroupVersionKind().ToAPIVersionAndKind()
 	name := obj.GetName()
 	namespace := obj.GetNamespace()
 
+	var lastStatus *teststatus.ObjectStatus
+
 	id := types.NamespacedName{Name: name, Namespace: namespace}
-	if err := wait.PollImmediate(2*time.Second, 1*time.Minute, func() (bool, error) {
+	if err := wait.PollImmediate(2*time.Second, 2*time.Minute, func() (bool, error) {
 		u := &unstructured.Unstructured{}
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
@@ -1253,10 +1264,12 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 			return false, err
 		}
 		objectStatus := teststatus.GetObjectStatus(h.T, u)
+		lastStatus = &objectStatus
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
 				logger.V(2).Info("crd is ready", "kind", kind, "id", id)
+				h.Logf("CRD %s ready in %v", name, time.Since(start).Round(time.Millisecond))
 				return true, nil
 			}
 		}
@@ -1264,7 +1277,20 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 		logger.V(2).Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
 		return false, nil
 	}); err != nil {
-		h.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
+		u := &unstructured.Unstructured{}
+		u.SetAPIVersion(apiVersion)
+		u.SetKind(kind)
+		if getErr := h.GetClient().Get(h.Ctx, id, u); getErr == nil {
+			logger.Info("CRD status on timeout", "kind", kind, "id", id, "status", u.Object["status"])
+		} else {
+			logger.Info("Error retrieving CRD status on timeout", "kind", kind, "id", id, "error", getErr)
+		}
+
+		if lastStatus != nil {
+			h.Fatalf("error while polling for ready on %v %v: %v (last status conditions: %v)", kind, id, err, lastStatus.Conditions)
+		} else {
+			h.Fatalf("error while polling for ready on %v %v: %v", kind, id, err)
+		}
 		return
 	}
 }
