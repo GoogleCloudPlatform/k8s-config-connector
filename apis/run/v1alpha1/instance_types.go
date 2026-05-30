@@ -67,7 +67,6 @@ type CloudRunInstanceObservedState struct {
 	ObservedGeneration *int64                    `json:"observedGeneration,omitempty"`
 	LogUri             *string                   `json:"logUri,omitempty"`
 	TerminalCondition  *InstanceCondition        `json:"terminalCondition,omitempty"`
-	Conditions         []InstanceCondition       `json:"conditions,omitempty"`
 	ContainerStatuses  []InstanceContainerStatus `json:"containerStatuses,omitempty"`
 	SatisfiesPzs       *bool                     `json:"satisfiesPzs,omitempty"`
 	Urls               []string                  `json:"urls,omitempty"`
