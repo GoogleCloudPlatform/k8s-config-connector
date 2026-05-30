@@ -164,14 +164,29 @@ func (a *ServiceProjectAttachmentAdapter) Create(ctx context.Context, createOp *
 	if err != nil {
 		return fmt.Errorf("waiting for ServiceProjectAttachment %q to be created: %w", a.id.String(), err)
 	}
+	log.V(2).Info("successfully created ServiceProjectAttachment", "name", a.id.String())
 
-	a.inner.Status.ExternalRef = direct.LazyPtr(apiObj.GetName())
-	return nil
+	status := &krm.AppHubServiceProjectAttachmentStatus{}
+	status.ObservedState = AppHubServiceProjectAttachmentObservedState_v1alpha1_FromProto(mapCtx, apiObj)
+	if mapCtx.Err() != nil {
+		return fmt.Errorf("mapping to AppHubServiceProjectAttachmentObservedState: %w", mapCtx.Err())
+	}
+	status.ExternalRef = direct.LazyPtr(apiObj.GetName())
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 // Update updates the GCP resource.
 func (a *ServiceProjectAttachmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return nil
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating ServiceProjectAttachment", "name", a.id.String())
+	status := &krm.AppHubServiceProjectAttachmentStatus{}
+	status.ObservedState = a.inner.Status.ObservedState
+	if a.inner.Status.ExternalRef != nil {
+		status.ExternalRef = a.inner.Status.ExternalRef
+	} else {
+		status.ExternalRef = direct.LazyPtr(a.id.String())
+	}
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export returns the KRM representation.
