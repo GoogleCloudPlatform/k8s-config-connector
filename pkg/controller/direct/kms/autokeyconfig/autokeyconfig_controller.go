@@ -76,10 +76,12 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewAutokeyConfigIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s, err: %w", obj.GetName(), err)
 	}
+	kmsID := id.(*krm.KMSAutokeyConfigIdentity)
+
 	var keyProject *refs.ProjectIdentity
 	if obj.Spec.KeyProjectRef != nil {
 		var err error
@@ -93,7 +95,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, err
 	}
 	return &Adapter{
-		id:                id,
+		id:                kmsID,
 		desiredKeyProject: keyProject,
 		gcpClient:         gcpClient,
 		desired:           obj,
@@ -206,8 +208,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent := a.id.Parent()
-	obj.Spec.FolderRef = &refs.FolderRef{External: parent.FolderID}
+	obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Folder}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

@@ -16,23 +16,22 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &KMSAutokeyConfigRef{}
+var _ refs.Ref = &KMSAutokeyConfigRef{}
 
 // KMSAutokeyConfigRef defines the resource reference to KMSAutokeyConfig, which "External" field
 // holds the GCP identifier for the KRM object.
 type KMSAutokeyConfigRef struct {
 	// A reference to an externally managed KMSAutokeyConfig resource.
-	// Should be in the format "folders/<folderID>/autokeyConfig".
+	// Should be in the format "folders/{{folderID}}/autokeyConfig".
 	External string `json:"external,omitempty"`
 
 	// The name of a KMSAutokeyConfig resource.
@@ -42,44 +41,54 @@ type KMSAutokeyConfigRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on KMSAutokeyConfig.
-// If the "External" is given in the other resource's spec.KMSAutokeyConfigRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual KMSAutokeyConfig object from the cluster.
-func (r *KMSAutokeyConfigRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", KMSAutokeyConfigGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, err := ParseKMSAutokeyConfigExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func init() {
+	refs.Register(&KMSAutokeyConfigRef{})
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *KMSAutokeyConfigRef) GetGVK() schema.GroupVersionKind {
+	return KMSAutokeyConfigGVK
+}
+
+func (r *KMSAutokeyConfigRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(KMSAutokeyConfigGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+}
+
+func (r *KMSAutokeyConfigRef) GetExternal() string {
+	return r.External
+}
+
+func (r *KMSAutokeyConfigRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *KMSAutokeyConfigRef) ValidateExternal(ref string) error {
+	id := &KMSAutokeyConfigIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *KMSAutokeyConfigRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &KMSAutokeyConfigIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *KMSAutokeyConfigRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromKMSAutokeyConfigSpec(ctx, reader, u)
+		if err != nil {
+			return ""
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", KMSAutokeyConfigGVK, key, err)
+		return identity.String()
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 func valueOf[T any](t *T) T {

@@ -64,9 +64,13 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 		return nil
 	}
 	out := &krm.KMSAutokeyConfigSpec{}
-	parent, _ := krm.ParseKMSAutokeyConfigExternal(in.Name)
-	out.FolderRef = &refs.FolderRef{
-		External: parent.String(),
+	id := &krm.KMSAutokeyConfigIdentity{}
+	if err := id.FromExternal(in.Name); err != nil {
+		mapCtx.Errorf("parsing external %q: %w", in.Name, err)
+	} else {
+		out.FolderRef = &refs.FolderRef{
+			External: "folders/" + id.Folder,
+		}
 	}
 	if in.GetKeyProject() != "" {
 		out.KeyProjectRef = &refs.ProjectRef{
