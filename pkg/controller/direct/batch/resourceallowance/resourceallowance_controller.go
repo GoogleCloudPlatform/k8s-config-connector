@@ -36,10 +36,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch/resourceallowance/pb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/batch/v1alpha"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"google.golang.org/protobuf/proto"
 )

@@ -27,7 +27,7 @@ import (
 	krmbatchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/batch/v1alpha"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch/resourceallowance/pb"
 )
 
 func CloudBatchResourceAllowanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourceAllowance) *krmbatchv1alpha1.CloudBatchResourceAllowanceObservedState {

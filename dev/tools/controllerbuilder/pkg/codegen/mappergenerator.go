@@ -1216,7 +1216,7 @@ func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 	case "cloud.google.com/go/sql/apiv1beta4/sqlpb":
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
 	case "cloud.google.com/go/batch/apiv1alpha/batchpb":
-		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/batch/v1alpha"
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch/resourceallowance/pb"
 	}
 
 	return protoGoPackage
