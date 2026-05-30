@@ -106,3 +106,10 @@ func (obj *NetworkSecurityMirroringEndpointGroupAssociation) GetIdentity(ctx con
 
 	return specIdentity, nil
 }
+
+func (obj *NetworkSecurityMirroringEndpointGroupAssociation) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
+}
