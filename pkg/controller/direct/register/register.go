@@ -34,6 +34,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydatatransfer"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryreservation"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigtable"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigtable/bigtableauthorizedview"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigtable/bigtablebackup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/billing"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/billingbudgets"

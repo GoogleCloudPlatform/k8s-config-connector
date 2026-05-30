@@ -1,0 +1,30 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1alpha1
+kind: BigtableAuthorizedView
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: av-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  deletionProtection: true
+  resourceID: av-${uniqueId}
+  subsetView:
+    rowPrefixes:
+    - dXNlcg==
+    - YWRtaW4=
+  tableRef:
+    name: avdep-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}
+  observedGeneration: 3
+  observedState: {}

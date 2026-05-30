@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:fuzz-gen
-// proto.message: google.bigtable.admin.v2.AuthorizedView
-// api.group: bigtable.cnrm.cloud.google.com
-
-package bigtable
+package bigtableauthorizedview
 
 import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
+	bigtable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigtable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -29,7 +26,7 @@ func init() {
 
 func bigtableAuthorizedViewFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.AuthorizedView{},
-		BigtableAuthorizedViewSpec_v1alpha1_FromProto, BigtableAuthorizedViewSpec_v1alpha1_ToProto,
+		bigtable.BigtableAuthorizedViewSpec_v1alpha1_FromProto, bigtable.BigtableAuthorizedViewSpec_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".subset_view")
