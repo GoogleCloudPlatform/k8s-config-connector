@@ -24,7 +24,7 @@ import (
 	"strings"
 	"time"
 
-	pb "cloud.google.com/go/logging/apiv2/loggingpb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/logging/v2"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/genproto/googleapis/api"
 	metricpb "google.golang.org/genproto/googleapis/api/metric"
