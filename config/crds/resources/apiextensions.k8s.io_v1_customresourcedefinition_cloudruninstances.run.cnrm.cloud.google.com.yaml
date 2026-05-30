@@ -942,41 +942,6 @@ spec:
                 type: integer
               observedState:
                 properties:
-                  conditions:
-                    items:
-                      properties:
-                        executionReason:
-                          description: A reason for the execution condition.
-                          type: string
-                        lastTransitionTime:
-                          description: Last time the condition transitioned from one
-                            status to another.
-                          type: string
-                        message:
-                          description: Human readable message indicating details about
-                            the current status.
-                          type: string
-                        reason:
-                          description: A common (service-level) reason for this condition.
-                          type: string
-                        revisionReason:
-                          description: A reason for the revision condition.
-                          type: string
-                        severity:
-                          description: How to interpret failures of this condition,
-                            one of Error, Warning, Info
-                          type: string
-                        state:
-                          description: State of the condition.
-                          type: string
-                        type:
-                          description: 'type is used to communicate the status of
-                            the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
-                            Types common to all resources include: * "Ready": True
-                            when the Resource is ready.'
-                          type: string
-                      type: object
-                    type: array
                   containerStatuses:
                     items:
                       properties:
