@@ -97,17 +97,16 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The external name of the referenced resource
-                              type: string
-                            kind:
-                              description: Kind of the referent.
+                              description: A reference to an externally managed ComputeInstanceGroup
+                                resource.
                               type: string
                             name:
-                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              description: The `name` field of a `ComputeInstanceGroup`
+                                resource.
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info:
-                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: The `namespace` field of a `ComputeInstanceGroup`
+                                resource.
                               type: string
                           type: object
                         networkEndpointGroupRef:
@@ -127,17 +126,16 @@ spec:
                             - external
                           properties:
                             external:
-                              description: The external name of the referenced resource
-                              type: string
-                            kind:
-                              description: Kind of the referent.
+                              description: A reference to an externally managed ComputeNetworkEndpointGroup
+                                resource.
                               type: string
                             name:
-                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              description: The `name` field of a `ComputeNetworkEndpointGroup`
+                                resource.
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info:
-                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: The `namespace` field of a `ComputeNetworkEndpointGroup`
+                                resource.
                               type: string
                           type: object
                       type: object
@@ -329,16 +327,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: A reference to an externally managed ComputeSecurityPolicy
+                      resource.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `ComputeSecurityPolicy` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `ComputeSecurityPolicy`
+                      resource.
                     type: string
                 type: object
               enableCdn:
@@ -372,16 +369,16 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The external name of the referenced resource
-                          type: string
-                        kind:
-                          description: Kind of the referent.
+                          description: A reference to an externally managed ComputeHealthCheck
+                            resource.
                           type: string
                         name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          description: The `name` field of a `ComputeHealthCheck`
+                            resource.
                           type: string
                         namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          description: The `namespace` field of a `ComputeHealthCheck`
+                            resource.
                           type: string
                       type: object
                     httpHealthCheckRef:
@@ -401,16 +398,16 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The external name of the referenced resource
-                          type: string
-                        kind:
-                          description: Kind of the referent.
+                          description: A reference to an externally managed ComputeHealthCheck
+                            resource.
                           type: string
                         name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          description: The `name` field of a `ComputeHealthCheck`
+                            resource.
                           type: string
                         namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          description: The `namespace` field of a `ComputeHealthCheck`
+                            resource.
                           type: string
                       type: object
                   type: object
@@ -436,16 +433,16 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The external name of the referenced resource
-                        type: string
-                      kind:
-                        description: Kind of the referent.
+                        description: A reference to an externally managed IAPIdentityAwareProxyClient
+                          resource.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name field of a IAPIdentityAwareProxyClient
+                          resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace field of a IAPIdentityAwareProxyClient
+                          resource.
                         type: string
                     type: object
                   oauth2ClientSecret:
@@ -523,16 +520,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: A reference to an externally managed ComputeNetwork
+                      resource.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `ComputeNetwork` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `ComputeNetwork` resource.
                     type: string
                 type: object
               outlierDetection:
@@ -612,16 +607,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: A reference to an externally managed ComputeSecurityPolicy
+                      resource.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `ComputeSecurityPolicy` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `ComputeSecurityPolicy`
+                      resource.
                     type: string
                 type: object
               securitySettings:
@@ -643,16 +637,16 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The external name of the referenced resource
-                        type: string
-                      kind:
-                        description: Kind of the referent.
+                        description: A reference to an externally managed NetworkSecurityClientTLSPolicy
+                          resource.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name field of a NetworkSecurityClientTLSPolicy
+                          resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace field of a NetworkSecurityClientTLSPolicy
+                          resource.
                         type: string
                     type: object
                   subjectAltNames:

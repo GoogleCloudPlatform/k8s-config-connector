@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -59,10 +60,10 @@ type BackendServiceBackend struct {
 
 type BackendServiceGroup struct {
 	// +optional
-	InstanceGroupRef *v1alpha1.ResourceRef `json:"instanceGroupRef,omitempty"`
+	InstanceGroupRef *refsv1beta1.ComputeInstanceGroupRef `json:"instanceGroupRef,omitempty"`
 
 	// +optional
-	NetworkEndpointGroupRef *v1alpha1.ResourceRef `json:"networkEndpointGroupRef,omitempty"`
+	NetworkEndpointGroupRef *refsv1beta1.ComputeNetworkEndpointGroupRef `json:"networkEndpointGroupRef,omitempty"`
 }
 
 type BackendServiceBaseEjectionTime struct {
@@ -214,10 +215,10 @@ type BackendServiceFailoverPolicy struct {
 
 type BackendServiceHealthChecks struct {
 	// +optional
-	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
+	HealthCheckRef *refsv1beta1.ComputeHealthCheckRef `json:"healthCheckRef,omitempty"`
 
 	// +optional
-	HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
+	HttpHealthCheckRef *refsv1beta1.ComputeHealthCheckRef `json:"httpHealthCheckRef,omitempty"`
 }
 
 type BackendServiceOauth2ClientSecret struct {
@@ -238,7 +239,7 @@ type BackendServiceIap struct {
 	Oauth2ClientId *string `json:"oauth2ClientId,omitempty"`
 
 	// +optional
-	Oauth2ClientIdRef *v1alpha1.ResourceRef `json:"oauth2ClientIdRef,omitempty"`
+	Oauth2ClientIdRef *refsv1beta1.IAPOAuth2ClientIDRef `json:"oauth2ClientIdRef,omitempty"`
 
 	// +optional
 	Oauth2ClientSecret *BackendServiceOauth2ClientSecret `json:"oauth2ClientSecret,omitempty"`
@@ -325,7 +326,7 @@ type BackendServiceOutlierDetection struct {
 }
 
 type BackendServiceSecuritySettings struct {
-	ClientTLSPolicyRef v1alpha1.ResourceRef `json:"clientTLSPolicyRef"`
+	ClientTLSPolicyRef refsv1beta1.NetworkSecurityClientTLSPolicyRef `json:"clientTLSPolicyRef"`
 
 	SubjectAltNames []string `json:"subjectAltNames"`
 }
@@ -370,7 +371,7 @@ type ComputeBackendServiceSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	EdgeSecurityPolicyRef *v1alpha1.ResourceRef `json:"edgeSecurityPolicyRef,omitempty"`
+	EdgeSecurityPolicyRef *refsv1beta1.ComputeSecurityPolicyRef `json:"edgeSecurityPolicyRef,omitempty"`
 
 	// +optional
 	EnableCdn *bool `json:"enableCdn,omitempty"`
@@ -399,7 +400,7 @@ type ComputeBackendServiceSpec struct {
 	LogConfig *BackendServiceLogConfig `json:"logConfig,omitempty"`
 
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// +optional
 	OutlierDetection *BackendServiceOutlierDetection `json:"outlierDetection,omitempty"`
@@ -417,7 +418,7 @@ type ComputeBackendServiceSpec struct {
 	SecurityPolicy *string `json:"securityPolicy,omitempty"`
 
 	// +optional
-	SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
+	SecurityPolicyRef *refsv1beta1.ComputeSecurityPolicyRef `json:"securityPolicyRef,omitempty"`
 
 	// +optional
 	SecuritySettings *BackendServiceSecuritySettings `json:"securitySettings,omitempty"`

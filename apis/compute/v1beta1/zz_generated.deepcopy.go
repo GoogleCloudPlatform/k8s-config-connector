@@ -437,12 +437,12 @@ func (in *BackendServiceGroup) DeepCopyInto(out *BackendServiceGroup) {
 	*out = *in
 	if in.InstanceGroupRef != nil {
 		in, out := &in.InstanceGroupRef, &out.InstanceGroupRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeInstanceGroupRef)
 		**out = **in
 	}
 	if in.NetworkEndpointGroupRef != nil {
 		in, out := &in.NetworkEndpointGroupRef, &out.NetworkEndpointGroupRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeNetworkEndpointGroupRef)
 		**out = **in
 	}
 }
@@ -462,12 +462,12 @@ func (in *BackendServiceHealthChecks) DeepCopyInto(out *BackendServiceHealthChec
 	*out = *in
 	if in.HealthCheckRef != nil {
 		in, out := &in.HealthCheckRef, &out.HealthCheckRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeHealthCheckRef)
 		**out = **in
 	}
 	if in.HttpHealthCheckRef != nil {
 		in, out := &in.HttpHealthCheckRef, &out.HttpHealthCheckRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeHealthCheckRef)
 		**out = **in
 	}
 }
@@ -522,7 +522,7 @@ func (in *BackendServiceIap) DeepCopyInto(out *BackendServiceIap) {
 	}
 	if in.Oauth2ClientIdRef != nil {
 		in, out := &in.Oauth2ClientIdRef, &out.Oauth2ClientIdRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.IAPOAuth2ClientIDRef)
 		**out = **in
 	}
 	if in.Oauth2ClientSecret != nil {
@@ -999,7 +999,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.EdgeSecurityPolicyRef != nil {
 		in, out := &in.EdgeSecurityPolicyRef, &out.EdgeSecurityPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeSecurityPolicyRef)
 		**out = **in
 	}
 	if in.EnableCdn != nil {
@@ -1048,7 +1048,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.OutlierDetection != nil {
@@ -1078,7 +1078,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.SecurityPolicyRef != nil {
 		in, out := &in.SecurityPolicyRef, &out.SecurityPolicyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(refsv1beta1.ComputeSecurityPolicyRef)
 		**out = **in
 	}
 	if in.SecuritySettings != nil {
