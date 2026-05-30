@@ -251,35 +251,6 @@ func NetworkConnectivityRegionalEndpointSpec_ToProto(mapCtx *direct.MapContext, 
 	out.TargetGoogleApi = direct.ValueOf(in.TargetGoogleAPI)
 	return out
 }
-*/
-
-/*
-found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_ToProto", skipping
-
-	func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
-		if in == nil {
-			return nil
-		}
-		out := &pb.InternalRange{}
-		// MISSING: AllocationOptions
-		out.Description = direct.ValueOf(in.Description)
-		// MISSING: ExcludeCIDRRanges
-		// MISSING: Immutable
-		out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
-		out.Labels = in.Labels
-		out.Migration = Migration_ToProto(mapCtx, in.Migration)
-		// MISSING: Name
-		if in.NetworkRef != nil {
-			out.Network = in.NetworkRef.External
-		}
-		out.Overlaps = in.Overlaps
-		out.Peering = direct.ValueOf(in.Peering)
-		out.PrefixLength = direct.ValueOf(in.PrefixLength)
-		out.TargetCidrRange = in.TargetCIDRRange
-		out.Usage = direct.ValueOf(in.Usage)
-		return out
-	}
-*/
 func NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicyObservedState {
 	if in == nil {
 		return nil
