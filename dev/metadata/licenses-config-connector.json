@@ -49,12 +49,12 @@
   },
   {
     "name": "cloud.google.com/go/aiplatform",
-    "sum": "h1:Qc8tv4DD6IbQfDKDd1Hu2qeGeYxTKTeZ7GH0vQrLAm8=",
-    "version": "v1.116.0",
+    "sum": "h1:Gh/SjaxI5wu/jeYQPPn8m+iGECBxlvsoyCWv8MqJ6xs=",
+    "version": "v1.123.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/cloud.google.com/go/aiplatform@v1.116.0?tab=licenses"
+        "https://pkg.go.dev/cloud.google.com/go/aiplatform@v1.123.0?tab=licenses"
       ],
       "mustShipCode": false
     }
