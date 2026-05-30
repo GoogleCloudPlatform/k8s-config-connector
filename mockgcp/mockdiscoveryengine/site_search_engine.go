@@ -34,7 +34,6 @@ type siteSearchEngineService struct {
 	pb.UnimplementedSiteSearchEngineServiceServer
 }
 
-
 func (s *siteSearchEngineService) GetTargetSite(ctx context.Context, req *pb.GetTargetSiteRequest) (*pb.TargetSite, error) {
 	name, err := s.parseTargetSiteName(req.Name)
 	if err != nil {
