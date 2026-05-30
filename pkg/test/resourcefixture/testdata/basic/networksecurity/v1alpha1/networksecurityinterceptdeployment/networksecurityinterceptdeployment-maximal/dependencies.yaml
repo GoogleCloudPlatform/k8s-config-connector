@@ -1,0 +1,122 @@
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: clienttls-${uniqueId}
+spec:
+  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: "Dependent Project"
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  billingAccountRef:
+    external: ${TEST_BILLING_ACCOUNT_ID}
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: networksecurity.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: compute.googleapis.com
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: network-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
+  routingMode: REGIONAL
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: subnet-${uniqueId}
+spec:
+  region: us-central1
+  ipCidrRange: 10.0.0.0/24
+  networkRef:
+    name: network-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: proxy-subnet-${uniqueId}
+spec:
+  region: us-central1
+  ipCidrRange: 10.1.0.0/24
+  purpose: REGIONAL_MANAGED_PROXY
+  role: ACTIVE
+  networkRef:
+    name: network-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: hc-${uniqueId}
+spec:
+  location: us-central1
+  checkIntervalSec: 5
+  timeoutSec: 5
+  healthyThreshold: 2
+  unhealthyThreshold: 2
+  http2HealthCheck:
+    port: 443
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: bs-lb-${uniqueId}
+spec:
+  location: us-central1
+  loadBalancingScheme: INTERNAL_MANAGED
+  protocol: HTTP
+  healthChecks:
+    - healthCheckRef:
+        name: hc-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: urlmap-${uniqueId}
+spec:
+  location: us-central1
+  defaultService:
+    backendServiceRef:
+      name: bs-lb-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPProxy
+metadata:
+  name: proxy-${uniqueId}
+spec:
+  location: us-central1
+  urlMapRef:
+    name: urlmap-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  name: fr-${uniqueId}
+spec:
+  location: us-central1
+  loadBalancingScheme: INTERNAL_MANAGED
+  networkRef:
+    name: network-${uniqueId}
+  subnetworkRef:
+    name: subnet-${uniqueId}
+  target:
+    targetHTTPProxyRef:
+      name: proxy-${uniqueId}
+  portRange: "80"

@@ -1,0 +1,12 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityInterceptDeployment
+metadata:
+  labels:
+    cnrm.cloud.google.com/project-id: clienttls-${uniqueId}
+  name: interceptdeployment-${uniqueId}
+spec:
+  location: us-central1
+  forwardingRuleRef:
+    name: fr-${uniqueId}
+  interceptDeploymentGroupRef:
+    external: projects/${TEST_DEPENDENT_ORG_PROJECT_ID}/locations/global/interceptDeploymentGroups/dg-${uniqueId}
