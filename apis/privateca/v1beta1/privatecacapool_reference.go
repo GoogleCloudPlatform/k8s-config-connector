@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -26,23 +28,75 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var (
+	_ refs.Ref         = &PrivateCACAPoolRef{}
+	_ refs.ExternalRef = &PrivateCACAPoolRef{}
+)
+
 type PrivateCACAPoolRef struct {
-	// A reference to an externally managed PrivateCACAPool.
-	// Should be in the format `projects/{project_id}/locations/{region}/caPools/{caPool}`.
+	// A reference to an externally managed PrivateCACAPool resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/caPools/{{caPoolID}}".
 	External string `json:"external,omitempty"`
 
-	// The `name` of a `PrivateCACAPool` resource.
+	// The name of a PrivateCACAPool resource.
 	Name string `json:"name,omitempty"`
-	// The `namespace` of a `PrivateCACAPool` resource.
+
+	// The namespace of a PrivateCACAPool resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type PrivateCACAPool struct {
-	Ref        *PrivateCACAPoolRef
-	ResourceID string
+func init() {
+	refs.Register(&PrivateCACAPoolRef{})
 }
 
-// ResolvePrivateCACAPoolRef will resolve a PrivateCACAPoolRef to a PrivateCACAPool.
+func (r *PrivateCACAPoolRef) GetGVK() schema.GroupVersionKind {
+	return PrivateCACAPoolGVK
+}
+
+func (r *PrivateCACAPoolRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *PrivateCACAPoolRef) GetExternal() string {
+	return r.External
+}
+
+func (r *PrivateCACAPoolRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *PrivateCACAPoolRef) ValidateExternal(ref string) error {
+	id := &PrivateCACAPoolIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *PrivateCACAPoolRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &PrivateCACAPoolIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *PrivateCACAPoolRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromPrivateCACAPoolSpec(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+// ResolvePrivateCACAPoolRef will resolve a PrivateCACAPoolRef to a PrivateCACAPoolRef.
+// Deprecated: Use Normalize or generic reference resolution instead.
 func ResolvePrivateCACAPoolRef(ctx context.Context, reader client.Reader, src client.Object, ref *PrivateCACAPoolRef) (*PrivateCACAPoolRef, error) {
 	if ref == nil {
 		return nil, nil
@@ -77,11 +131,7 @@ func ResolvePrivateCACAPoolRef(ctx context.Context, reader client.Reader, src cl
 
 	// Fetch object from k8s cluster to construct the external form
 	caPool := &unstructured.Unstructured{}
-	caPool.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "privateca.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "PrivateCACAPool",
-	})
+	caPool.SetGroupVersionKind(PrivateCACAPoolGVK)
 	if err := reader.Get(ctx, key, caPool); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, fmt.Errorf("referenced PrivateCACAPool %v not found", key)
@@ -89,17 +139,17 @@ func ResolvePrivateCACAPoolRef(ctx context.Context, reader client.Reader, src cl
 		return nil, fmt.Errorf("error reading referenced PrivateCACAPool %v: %w", key, err)
 	}
 
-	caPoolResourceID, err := GetResourceID(caPool)
+	caPoolResourceID, err := refs.GetResourceID(caPool)
 	if err != nil {
 		return nil, err
 	}
 
-	projectID, err := ResolveProjectID(ctx, reader, caPool)
+	projectID, err := refs.ResolveProjectID(ctx, reader, caPool)
 	if err != nil {
 		return nil, err
 	}
 
-	location, err := GetLocation(caPool)
+	location, err := refs.GetLocation(caPool)
 	if err != nil {
 		return nil, err
 	}

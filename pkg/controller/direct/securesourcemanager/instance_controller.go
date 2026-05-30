@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -85,7 +86,7 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 	}
 
 	if obj.Spec.PrivateConfig != nil {
-		caPoolRef, err := refs.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CAPoolRef)
+		caPoolRef, err := privatecav1beta1.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CAPoolRef)
 		if err != nil {
 			return nil, err
 		}
