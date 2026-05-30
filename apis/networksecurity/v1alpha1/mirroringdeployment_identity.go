@@ -30,13 +30,13 @@ var (
 	_ identity.Resource   = &NetworkSecurityMirroringDeployment{}
 )
 
-var NetworkSecurityMirroringDeploymentIdentityFormat = gcpurls.Template[NetworkSecurityMirroringDeploymentIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/mirroringDeployments/{mirroringdeployment}")
+var NetworkSecurityMirroringDeploymentIdentityFormat = gcpurls.Template[NetworkSecurityMirroringDeploymentIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/mirroringDeployments/{mirroring_deployment}")
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityMirroringDeploymentIdentity struct {
-	Project             string
-	Location            string
-	Mirroringdeployment string
+	Project              string
+	Location             string
+	Mirroring_deployment string
 }
 
 func (i *NetworkSecurityMirroringDeploymentIdentity) String() string {
@@ -77,9 +77,9 @@ func getIdentityFromNetworkSecurityMirroringDeploymentSpec(ctx context.Context, 
 	}
 
 	identity := &NetworkSecurityMirroringDeploymentIdentity{
-		Project:             projectID,
-		Location:            location,
-		Mirroringdeployment: resourceID,
+		Project:              projectID,
+		Location:             location,
+		Mirroring_deployment: resourceID,
 	}
 	return identity, nil
 }
@@ -104,4 +104,12 @@ func (obj *NetworkSecurityMirroringDeployment) GetIdentity(ctx context.Context, 
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier returns the GCP external identifier (the GCP URL).
+func (obj *NetworkSecurityMirroringDeployment) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
 }
