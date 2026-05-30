@@ -350,8 +350,8 @@ cloud.google.com/go/cloudbuild v1.14.2/go.mod h1:Bn6RO0mBYk8Vlrt+8NLrru7WXlQ9/RD
 cloud.google.com/go/cloudbuild v1.14.3/go.mod h1:eIXYWmRt3UtggLnFGx4JvXcMj4kShhVzGndL1LwleEM=
 cloud.google.com/go/cloudbuild v1.15.0/go.mod h1:eIXYWmRt3UtggLnFGx4JvXcMj4kShhVzGndL1LwleEM=
 cloud.google.com/go/cloudbuild v1.15.1/go.mod h1:gIofXZSu+XD2Uy+qkOrGKEx45zd7s28u/k8f99qKals=
-cloud.google.com/go/cloudbuild v1.25.0 h1:Fkg+iJdN7bfICZJzLr/XV+k9aVxXS/hakIlhjDIRIDw=
-cloud.google.com/go/cloudbuild v1.25.0/go.mod h1:lCu+T6IPkobPo2Nw+vCE7wuaAl9HbXLzdPx/tcF+oWo=
+cloud.google.com/go/cloudbuild v1.30.0 h1:iOvtaQAcMmdLJaseR6qV76RgFHAAwZlwbpHwWMTqIdo=
+cloud.google.com/go/cloudbuild v1.30.0/go.mod h1:rg52xEmndQQPiC9NV/8sCaVtKxHMU9D9MeU+oE9VGKA=
 cloud.google.com/go/clouddms v1.3.0/go.mod h1:oK6XsCDdW4Ib3jCCBugx+gVjevp2TMXFtgxvPSee3OM=
 cloud.google.com/go/clouddms v1.4.0/go.mod h1:Eh7sUGCC+aKry14O1NRljhjyrr0NFC0G2cjwX0cByRk=
 cloud.google.com/go/clouddms v1.5.0/go.mod h1:QSxQnhikCLUw13iAbffF2CZxAER3xDGNHjsTAkQJcQA=

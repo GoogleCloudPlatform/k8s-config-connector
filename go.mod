@@ -24,7 +24,7 @@ require (
 	cloud.google.com/go/bigquery v1.74.0
 	cloud.google.com/go/billing v1.21.0
 	cloud.google.com/go/certificatemanager v1.9.6
-	cloud.google.com/go/cloudbuild v1.25.0
+	cloud.google.com/go/cloudbuild v1.30.0
 	cloud.google.com/go/clouddms v1.8.8
 	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/cloudtasks v1.13.7

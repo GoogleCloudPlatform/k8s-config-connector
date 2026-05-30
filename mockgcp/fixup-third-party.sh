@@ -46,7 +46,6 @@ rm -rf mockgcp/cloud/privilegedaccessmanager/
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
 mv google/devtools/artifactregistry mockgcp/devtools
-mv google/devtools/cloudbuild mockgcp/devtools
 mv google/devtools/sourcerepo mockgcp/devtools
 
 rm -rf mockgrafeas/
@@ -82,8 +81,6 @@ find . -type f -print0 | xargs -0 sed -i \
   -e "s@google\.api\.serviceusage@mockgcp.api.serviceusage@g" \
   -e "s@google/devtools/artifactregistry/@mockgcp/devtools/artifactregistry/@g" \
   -e "s@google\.devtools\.artifactregistry@mockgcp.devtools.artifactregistry@g" \
-  -e "s@google/devtools/cloudbuild/@mockgcp/devtools/cloudbuild/@g" \
-  -e "s@google\.devtools\.cloudbuild@mockgcp.devtools.cloudbuild@g" \
   -e "s@google/devtools/sourcerepo/@mockgcp/devtools/sourcerepo/@g" \
   -e "s@google\.devtools\.sourcerepo@mockgcp.devtools.sourcerepo@g" \
   -e 's@option go_package = "cloud.google.com/go/gkehub/configmanagement/apiv1beta/configmanagementpb;configmanagementpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/configmanagement;configmanagementpb"@g' \
