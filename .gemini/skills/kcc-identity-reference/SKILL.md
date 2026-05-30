@@ -56,7 +56,7 @@ Read the canonical `apis/artifactregistry/v1beta1/artifactregistryrepository_ref
 Create or update the file to match the canonical example. Key requirements:
 - Use the standard copyright header (Year 2026).
 - Implement `_ refs.Ref = &<Kind>Ref{}`.
-- Define the GVK variable: `var <Kind>GVK = schema.GroupVersionKind{...}` (It is also acceptable if this is defined in `<kind>_types.go`).
+- Define the GVK variable: `var <Kind>GVK = schema.GroupVersionKind{...}` (It is also acceptable if this is defined in `<kind>_types.go`). **Note:** If `<Kind>GVK` is already defined in `_types.go` or elsewhere in the package, do NOT redefine it in `_reference.go` to prevent compiler "redeclared in this package" errors.
 - Define the `<Kind>Ref` struct with exactly 3 fields: `External`, `Name`, and `Namespace`.
   - The `External` field MUST have specific godoc: `"A reference to an externally managed <Kind> resource. Should be in the format \"projects/{{projectID}}/...\""`. Do not use generic docstrings.
   - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
