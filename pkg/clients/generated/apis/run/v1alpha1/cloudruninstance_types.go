@@ -38,30 +38,547 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type CloudruninstanceBinaryAuthorization struct {
+	/* Optional. If present, indicates to use Breakglass using this justification. If use_default is False, then it must be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass */
+	// +optional
+	BreakglassJustification *string `json:"breakglassJustification,omitempty"`
+
+	/* Optional. If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled. */
+	// +optional
+	UseDefault *bool `json:"useDefault,omitempty"`
+}
+
+type CloudruninstanceCloudSqlInstance struct {
+	/* The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance} */
+	// +optional
+	InstanceRefs []v1alpha1.ResourceRef `json:"instanceRefs,omitempty"`
+}
+
+type CloudruninstanceContainers struct {
+	/* Arguments to the entrypoint. The docker image's CMD is used if this is not provided. */
+	// +optional
+	Args []string `json:"args,omitempty"`
+
+	/* Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. */
+	// +optional
+	Command []string `json:"command,omitempty"`
+
+	/* Names of the containers that must start before this container. */
+	// +optional
+	DependsOn []string `json:"dependsOn,omitempty"`
+
+	/* List of environment variables to set in the container. */
+	// +optional
+	Env []CloudruninstanceEnv `json:"env,omitempty"`
+
+	/* Required. Name of the container image in Dockerhub, Google Artifact Registry, or Google Container Registry. If the host is not provided, Dockerhub is assumed. */
+	// +optional
+	Image *string `json:"image,omitempty"`
+
+	/* Periodic probe of container liveness. Container will be restarted if the probe fails. */
+	// +optional
+	LivenessProbe *CloudruninstanceLivenessProbe `json:"livenessProbe,omitempty"`
+
+	/* Name of the container specified as a DNS_LABEL (RFC 1123). */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* List of ports to expose from the container. Only a single port can be
+	specified. The specified ports must be listening on all interfaces
+	(0.0.0.0) within the container to be accessible.
+
+	If omitted, a port number will be chosen and passed to the container
+	through the PORT environment variable for the container to listen on. */
+	// +optional
+	Ports []CloudruninstancePorts `json:"ports,omitempty"`
+
+	/* Compute Resource requirements by this container. */
+	// +optional
+	Resources *CloudruninstanceResources `json:"resources,omitempty"`
+
+	/* Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. */
+	// +optional
+	StartupProbe *CloudruninstanceStartupProbe `json:"startupProbe,omitempty"`
+
+	/* InstanceVolume to mount into the container's filesystem. */
+	// +optional
+	VolumeMounts []CloudruninstanceVolumeMounts `json:"volumeMounts,omitempty"`
+
+	/* Container's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image. */
+	// +optional
+	WorkingDir *string `json:"workingDir,omitempty"`
+}
+
+type CloudruninstanceEmptyDir struct {
+	/* The medium on which the data is stored. Acceptable values today is only MEMORY or none. When none, the default will currently be backed by memory but could change over time. +optional */
+	// +optional
+	Medium *string `json:"medium,omitempty"`
+
+	/* Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers. The default is nil which means that the limit is undefined. More info: https://cloud.google.com/run/docs/configuring/in-memory-volumes#configure-volume. Info in Kubernetes: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir */
+	// +optional
+	SizeLimit *string `json:"sizeLimit,omitempty"`
+}
+
+type CloudruninstanceEnv struct {
+	/* Required. Name of the environment variable. Must not exceed 32768 characters. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Literal value of the environment variable. Defaults to "", and the maximum length is 32768 bytes. Variable references are not supported in Cloud Run. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+
+	/* Source for the environment variable's value. */
+	// +optional
+	ValueSource *CloudruninstanceValueSource `json:"valueSource,omitempty"`
+}
+
+type CloudruninstanceGcs struct {
+	/* Cloud Storage Bucket name. */
+	// +optional
+	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+
+	/* A list of additional flags to pass to the gcsfuse CLI. Options should be specified without the leading "--". */
+	// +optional
+	MountOptions []string `json:"mountOptions,omitempty"`
+
+	/* If true, the volume will be mounted as read only for all mounts. */
+	// +optional
+	ReadOnly *bool `json:"readOnly,omitempty"`
+}
+
+type CloudruninstanceHttpGet struct {
+	/* Optional. Custom headers to set in the request. HTTP allows repeated headers. */
+	// +optional
+	HttpHeaders []CloudruninstanceHttpHeaders `json:"httpHeaders,omitempty"`
+
+	/* Optional. Path to access on the HTTP server. Defaults to '/'. */
+	// +optional
+	Path *string `json:"path,omitempty"`
+
+	/* Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort. */
+	// +optional
+	Port *int32 `json:"port,omitempty"`
+}
+
+type CloudruninstanceHttpHeaders struct {
+	/* Required. The header field name */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Optional. The header field value */
+	// +optional
+	Value *string `json:"value,omitempty"`
+}
+
+type CloudruninstanceItems struct {
+	/* Integer octal mode bits to use on this file, must be a value between
+	01 and 0777 (octal). If 0 or not set, the InstanceVolume's default mode will be
+	used.
+
+	Notes
+
+	* Internally, a umask of 0222 will be applied to any non-zero value.
+	* This is an integer representation of the mode bits. So, the octal
+	integer value should look exactly as the chmod numeric notation with a
+	leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
+	or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
+	493 (base-10).
+	* This might be in conflict with other options that affect the
+	file mode, like fsGroup, and the result can be other mode bits set. */
+	// +optional
+	Mode *int32 `json:"mode,omitempty"`
+
+	/* Required. The relative path of the secret in the container. */
+	// +optional
+	Path *string `json:"path,omitempty"`
+
+	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest value, or an integer or a secret alias for a specific version. */
+	// +optional
+	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+}
+
+type CloudruninstanceLivenessProbe struct {
+	/* Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
+	// +optional
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	/* Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
+	// +optional
+	HttpGet *CloudruninstanceHttpGet `json:"httpGet,omitempty"`
+
+	/* Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. */
+	// +optional
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
+	/* Optional. How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeout_seconds. */
+	// +optional
+	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+
+	/* Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
+	// +optional
+	TcpSocket *CloudruninstanceTcpSocket `json:"tcpSocket,omitempty"`
+
+	/* Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds. */
+	// +optional
+	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+}
+
+type CloudruninstanceNetworkInterfaces struct {
+	/* Optional. The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be looked up from the subnetwork. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
+	/* Optional. The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used. */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+
+	/* Optional. Network tags applied to this Cloud Run resource. */
+	// +optional
+	Tags []string `json:"tags,omitempty"`
+}
+
+type CloudruninstanceNfs struct {
+	/* Path that is exported by the NFS server. */
+	// +optional
+	Path *string `json:"path,omitempty"`
+
+	/* If true, the volume will be mounted as read only for all mounts. */
+	// +optional
+	ReadOnly *bool `json:"readOnly,omitempty"`
+
+	/* Hostname or IP address of the NFS server */
+	// +optional
+	Server *string `json:"server,omitempty"`
+}
+
+type CloudruninstanceNodeSelector struct {
+	// +optional
+	Accelerator *string `json:"accelerator,omitempty"`
+}
+
+type CloudruninstancePorts struct {
+	/* Port number the container listens on. This must be a valid TCP port number, 0 < container_port < 65536. */
+	// +optional
+	ContainerPort *int32 `json:"containerPort,omitempty"`
+
+	/* If specified, used to specify which protocol to use. Allowed values are "http1" and "h2c". */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
+type CloudruninstanceResources struct {
+	/* Only `memory` and `cpu` keys in the map are supported.
+
+	<p>Notes:
+	* The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
+	CPU requires at least 2Gi of memory. For more information, go to
+	https://cloud.google.com/run/docs/configuring/cpu.
+	* For supported 'memory' values and syntax, go to
+	https://cloud.google.com/run/docs/configuring/memory-limits */
+	// +optional
+	Limits map[string]string `json:"limits,omitempty"`
+}
+
+type CloudruninstanceSecret struct {
+	/* Integer representation of mode bits to use on created files by default.
+	Must be a value between 0000 and 0777 (octal), defaulting to 0444.
+	Directories within the path are not affected by  this setting.
+
+	Notes
+
+	* Internally, a umask of 0222 will be applied to any non-zero value.
+	* This is an integer representation of the mode bits. So, the octal
+	integer value should look exactly as the chmod numeric notation with a
+	leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
+	or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
+	493 (base-10).
+	* This might be in conflict with other options that affect the
+	file mode, like fsGroup, and the result can be other mode bits set.
+
+	This might be in conflict with other options that affect the
+	file mode, like fsGroup, and as a result, other mode bits could be set. */
+	// +optional
+	DefaultMode *int32 `json:"defaultMode,omitempty"`
+
+	/* If unspecified, the volume will expose a file whose name is the secret, relative to InstanceVolumeMount.mount_path. If specified, the key will be used as the version to fetch from Cloud Secret Manager and the path will be the name of the file exposed in the volume. When items are defined, they must specify a path and a version. */
+	// +optional
+	Items []CloudruninstanceItems `json:"items,omitempty"`
+
+	/* Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+}
+
+type CloudruninstanceSecretKeyRef struct {
+	/* Required. The name of the secret in Cloud Secret  Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+
+	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest version, an integer for a specific version, or a version alias. */
+	// +optional
+	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+}
+
+type CloudruninstanceStartupProbe struct {
+	/* Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
+	// +optional
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	/* Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
+	// +optional
+	HttpGet *CloudruninstanceHttpGet `json:"httpGet,omitempty"`
+
+	/* Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. */
+	// +optional
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
+	/* Optional. How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeout_seconds. */
+	// +optional
+	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+
+	/* Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
+	// +optional
+	TcpSocket *CloudruninstanceTcpSocket `json:"tcpSocket,omitempty"`
+
+	/* Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds. */
+	// +optional
+	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+}
+
+type CloudruninstanceTcpSocket struct {
+	/* Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort. */
+	// +optional
+	Port *int32 `json:"port,omitempty"`
+}
+
+type CloudruninstanceValueSource struct {
+	/* Selects a secret and a specific version from Cloud Secret Manager. */
+	// +optional
+	SecretKeyRef *CloudruninstanceSecretKeyRef `json:"secretKeyRef,omitempty"`
+}
+
+type CloudruninstanceVolumeMounts struct {
+	/* Required. Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run */
+	// +optional
+	MountPath *string `json:"mountPath,omitempty"`
+
+	/* Required. This must match the Name of a Volume. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
+type CloudruninstanceVolumes struct {
+	/* For Cloud SQL volumes, contains the specific instances that should be mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. */
+	// +optional
+	CloudSqlInstance *CloudruninstanceCloudSqlInstance `json:"cloudSqlInstance,omitempty"`
+
+	/* Ephemeral storage used as a shared volume. */
+	// +optional
+	EmptyDir *CloudruninstanceEmptyDir `json:"emptyDir,omitempty"`
+
+	/* Persistent storage backed by a Google Cloud Storage bucket. */
+	// +optional
+	Gcs *CloudruninstanceGcs `json:"gcs,omitempty"`
+
+	/* Required. Volume's name. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* For Nfs Volumes, contains the path to the nfs Volume */
+	// +optional
+	Nfs *CloudruninstanceNfs `json:"nfs,omitempty"`
+
+	/* Secret represents a secret that should populate this volume. */
+	// +optional
+	Secret *CloudruninstanceSecret `json:"secret,omitempty"`
+}
+
+type CloudruninstanceVpcAccess struct {
+	/* VPC Access connector name. Format: `projects/{project}/locations/{location}/connectors/{connector}`, where `{project}` can be project id or number. For more information on sending traffic to a VPC network via a connector, visit https://cloud.google.com/run/docs/configuring/vpc-connectors. */
+	// +optional
+	ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
+
+	/* Optional. Traffic VPC egress settings. If not provided, it defaults to PRIVATE_RANGES_ONLY. */
+	// +optional
+	Egress *string `json:"egress,omitempty"`
+
+	/* Optional. Direct VPC egress settings. Currently only single network interface is supported. */
+	// +optional
+	NetworkInterfaces []CloudruninstanceNetworkInterfaces `json:"networkInterfaces,omitempty"`
+}
+
 type CloudRunInstanceSpec struct {
-	/* The location of this resource. */
+	// +optional
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// +optional
+	BinaryAuthorization *CloudruninstanceBinaryAuthorization `json:"binaryAuthorization,omitempty"`
+
+	// +optional
+	Client *string `json:"client,omitempty"`
+
+	// +optional
+	ClientVersion *string `json:"clientVersion,omitempty"`
+
+	Containers []CloudruninstanceContainers `json:"containers"`
+
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	// +optional
+	EncryptionKeyRef *v1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
+
+	// +optional
+	EncryptionKeyRevocationAction *string `json:"encryptionKeyRevocationAction,omitempty"`
+
+	// +optional
+	EncryptionKeyShutdownDuration *string `json:"encryptionKeyShutdownDuration,omitempty"`
+
+	// +optional
+	GpuZonalRedundancyDisabled *bool `json:"gpuZonalRedundancyDisabled,omitempty"`
+
+	// +optional
+	IapEnabled *bool `json:"iapEnabled,omitempty"`
+
+	// +optional
+	Ingress *string `json:"ingress,omitempty"`
+
+	// +optional
+	InvokerIamDisabled *bool `json:"invokerIamDisabled,omitempty"`
+
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// +optional
+	LaunchStage *string `json:"launchStage,omitempty"`
+
 	// +optional
 	Location *string `json:"location,omitempty"`
 
-	/* The project that this resource belongs to. */
+	// +optional
+	NodeSelector *CloudruninstanceNodeSelector `json:"nodeSelector,omitempty"`
+
+	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The CloudRunInstance name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// +optional
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
+	// +optional
+	Volumes []CloudruninstanceVolumes `json:"volumes,omitempty"`
+
+	// +optional
+	VpcAccess *CloudruninstanceVpcAccess `json:"vpcAccess,omitempty"`
+}
+
+type CloudruninstanceContainerStatusesStatus struct {
+	// +optional
+	ImageDigest *string `json:"imageDigest,omitempty"`
+
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
+type CloudruninstanceObservedStateStatus struct {
+	// +optional
+	ContainerStatuses []CloudruninstanceContainerStatusesStatus `json:"containerStatuses,omitempty"`
+
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// +optional
+	Creator *string `json:"creator,omitempty"`
+
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// +optional
+	Generation *int64 `json:"generation,omitempty"`
+
+	// +optional
+	LastModifier *string `json:"lastModifier,omitempty"`
+
+	// +optional
+	LogUri *string `json:"logUri,omitempty"`
+
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// +optional
+	Reconciling *bool `json:"reconciling,omitempty"`
+
+	// +optional
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// +optional
+	TerminalCondition *CloudruninstanceTerminalConditionStatus `json:"terminalCondition,omitempty"`
+
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// +optional
+	Urls []string `json:"urls,omitempty"`
+}
+
+type CloudruninstanceTerminalConditionStatus struct {
+	/* A reason for the execution condition. */
+	// +optional
+	ExecutionReason *string `json:"executionReason,omitempty"`
+
+	/* Last time the condition transitioned from one status to another. */
+	// +optional
+	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
+
+	/* Human readable message indicating details about the current status. */
+	// +optional
+	Message *string `json:"message,omitempty"`
+
+	/* A common (service-level) reason for this condition. */
+	// +optional
+	Reason *string `json:"reason,omitempty"`
+
+	/* A reason for the revision condition. */
+	// +optional
+	RevisionReason *string `json:"revisionReason,omitempty"`
+
+	/* How to interpret failures of this condition, one of Error, Warning, Info */
+	// +optional
+	Severity *string `json:"severity,omitempty"`
+
+	/* State of the condition. */
+	// +optional
+	State *string `json:"state,omitempty"`
+
+	/* type is used to communicate the status of the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting Types common to all resources include: * "Ready": True when the Resource is ready. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type CloudRunInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudRunInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the CloudRunInstance resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// +optional
+	ObservedState *CloudruninstanceObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
