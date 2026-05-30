@@ -73,10 +73,15 @@ func getIdentityFromAlloyDBUserSpec(ctx context.Context, reader client.Reader, o
 	if obj.Spec.ClusterRef == nil {
 		return nil, fmt.Errorf("spec.clusterRef is required")
 	}
-	clusterRef, err := obj.Spec.ClusterRef.Resolve(ctx, reader, obj)
+	clusterRef := obj.Spec.ClusterRef.DeepCopy()
+	if err := clusterRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	identity, err := clusterRef.ParseExternalToIdentity()
 	if err != nil {
 		return nil, err
 	}
+	clusterIdentity := identity.(*AlloyDBClusterIdentity)
 
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
@@ -84,9 +89,9 @@ func getIdentityFromAlloyDBUserSpec(ctx context.Context, reader client.Reader, o
 	}
 
 	return &AlloyDBUserIdentity{
-		Project:  clusterRef.Project,
-		Location: clusterRef.Location,
-		Cluster:  clusterRef.Cluster,
+		Project:  clusterIdentity.Project,
+		Location: clusterIdentity.Location,
+		Cluster:  clusterIdentity.Cluster,
 		User:     resourceID,
 	}, nil
 }
