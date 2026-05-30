@@ -104,3 +104,10 @@ func (obj *NetworkSecurityPartnerSSEGateway) GetIdentity(ctx context.Context, re
 
 	return specIdentity, nil
 }
+
+func (obj *NetworkSecurityPartnerSSEGateway) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
+}
