@@ -25,6 +25,8 @@ import (
 	"fmt"
 	"reflect"
 
+	iamapi "cloud.google.com/go/iam/apiv1"
+	"cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/speech/apiv2"
 	pb "cloud.google.com/go/speech/apiv2/speechpb"
 	"google.golang.org/api/option"
@@ -55,6 +57,15 @@ var _ directbase.Model = &recognizerModel{}
 
 type recognizerModel struct {
 	config config.ControllerConfig
+}
+
+func (m *recognizerModel) iamClient(ctx context.Context) (*iamapi.IamPolicyClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("https://speech.googleapis.com"))
+	return iamapi.NewIamPolicyRESTClient(ctx, opts...)
 }
 
 func (m *recognizerModel) client(ctx context.Context, projectID string) (*gcp.Client, error) {
@@ -93,8 +104,14 @@ func (m *recognizerModel) AdapterForObject(ctx context.Context, op *directbase.A
 		return nil, err
 	}
 
+	iamClient, err := m.iamClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	return &recognizerAdapter{
 		gcpClient: gcpClient,
+		iamClient: iamClient,
 		id:        id,
 		desired:   obj,
 		reader:    reader,
@@ -108,6 +125,7 @@ func (m *recognizerModel) AdapterForURL(ctx context.Context, url string) (direct
 
 type recognizerAdapter struct {
 	gcpClient *gcp.Client
+	iamClient *iamapi.IamPolicyClient
 	id        *krm.RecognizerIdentity
 	desired   *krm.SpeechRecognizer
 	actual    *pb.Recognizer
@@ -396,4 +414,37 @@ func adaptationConfigsEqual(a, b *pb.SpeechAdaptation) bool {
 	}
 
 	return true
+}
+
+func (a *recognizerAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil || a.id.String() == "" {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *recognizerAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil || a.id.String() == "" {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }

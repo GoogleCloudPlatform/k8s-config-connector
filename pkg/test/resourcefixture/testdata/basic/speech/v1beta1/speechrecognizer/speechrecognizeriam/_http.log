@@ -1,0 +1,473 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/kcc-test-sa@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "kcc-test-sa",
+  "serviceAccount": {
+    "displayName": "kcc-test-sa"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "kcc-test-sa",
+  "email": "kcc-test-sa@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/kcc-test-sa@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/kcc-test-sa@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "kcc-test-sa",
+  "email": "kcc-test-sa@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/kcc-test-sa@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Unable to find Recognizer speechrecognizer-${uniqueId} from project ${projectNumber}.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers?%24alt=json%3Benum-encoding%3Dint&recognizerId=speechrecognizer-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "defaultRecognitionConfig": {
+    "languageCodes": [
+      "en-US"
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createRecognizerRequest": {
+      "parent": "projects/${projectNumber}/locations/global",
+      "recognizer": {
+        "defaultRecognitionConfig": {
+          "languageCodes": [
+            "en-US"
+          ]
+        }
+      },
+      "recognizerId": "speechrecognizer-${uniqueId}"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.speech.v2.Speech.CreateRecognizer",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.Recognizer",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultRecognitionConfig": {
+      "languageCodes": [
+        "en-US"
+      ]
+    },
+    "etag": "abcdef0123A=",
+    "languageCodes": [
+      "en-US"
+    ],
+    "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-${uniqueId}",
+    "state": 2,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+POST https://speech.googleapis.com/v1/projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: resource=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-${uniqueId}
+
+{
+  "resource": "projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://speech.googleapis.com/v1/projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: resource=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-${uniqueId}
+
+{
+  "resource": "projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://speech.googleapis.com/v1/projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}:setIamPolicy?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: resource=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-${uniqueId}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:kcc-test-sa@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/speech.client"
+      }
+    ],
+    "etag": "abcdef0123A="
+  },
+  "resource": "projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:kcc-test-sa@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/speech.client"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://speech.googleapis.com/v1/projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: resource=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-${uniqueId}
+
+{
+  "resource": "projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:kcc-test-sa@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/speech.client"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://speech.googleapis.com/v1/projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}:setIamPolicy?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: resource=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-${uniqueId}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "role": "roles/speech.client"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 1
+  },
+  "resource": "projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "role": "roles/speech.client"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultRecognitionConfig": {
+    "languageCodes": [
+      "en-US"
+    ]
+  },
+  "etag": "abcdef0123A=",
+  "languageCodes": [
+    "en-US"
+  ],
+  "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-${uniqueId}",
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteRecognizerRequest": {
+      "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-${uniqueId}"
+    },
+    "method": "google.cloud.speech.v2.Speech.DeleteRecognizer",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.Recognizer",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultRecognitionConfig": {
+      "languageCodes": [
+        "en-US"
+      ]
+    },
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "languageCodes": [
+      "en-US"
+    ],
+    "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-${uniqueId}",
+    "state": 4,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/kcc-test-sa@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "kcc-test-sa",
+  "email": "kcc-test-sa@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/kcc-test-sa@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/kcc-test-sa@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -1,0 +1,11 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: speechrecognizer-iam-member
+spec:
+  member: serviceAccount:kcc-test-sa@${projectId}.iam.gserviceaccount.com
+  role: roles/speech.client
+  resourceRef:
+    apiVersion: speech.cnrm.cloud.google.com/v1beta1
+    kind: SpeechRecognizer
+    name: speechrecognizer-${uniqueId}
