@@ -49,8 +49,6 @@ mv google/devtools/artifactregistry mockgcp/devtools
 mv google/devtools/cloudbuild mockgcp/devtools
 mv google/devtools/sourcerepo mockgcp/devtools
 
-rm -rf mockgrafeas/
-mv grafeas mockgrafeas
 
 cd mockgcp
 
@@ -93,8 +91,3 @@ find . -type f -print0 | xargs -0 sed -i \
   -e 's@option go_package = "cloud.google.com/go/gkehub/policycontroller/apiv1beta/policycontrollerpb;policycontrollerpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta;policycontrollerpb"@g'
 
 
-cd ${GOOGLEAPIS}/mockgrafeas
-# Rewrite grafeas -> mockgrafeas
-find . -type f -print0 | xargs -0 sed -i \
-  -e "s@grafeas/@mockgrafeas/@g" \
-  -e "s@grafeas\.@mockgrafeas.@g"
