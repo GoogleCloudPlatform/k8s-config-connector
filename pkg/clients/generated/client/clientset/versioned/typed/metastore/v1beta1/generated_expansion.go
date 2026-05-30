@@ -22,3 +22,7 @@
 package v1beta1
 
 type MetastoreBackupExpansion interface{}
+
+type MetastoreFederationExpansion interface{}
+
+type MetastoreServiceExpansion interface{}

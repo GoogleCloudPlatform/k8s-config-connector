@@ -35,6 +35,14 @@ func (c *FakeMetastoreV1beta1) MetastoreBackups(namespace string) v1beta1.Metast
 	return newFakeMetastoreBackups(c, namespace)
 }
 
+func (c *FakeMetastoreV1beta1) MetastoreFederations(namespace string) v1beta1.MetastoreFederationInterface {
+	return newFakeMetastoreFederations(c, namespace)
+}
+
+func (c *FakeMetastoreV1beta1) MetastoreServices(namespace string) v1beta1.MetastoreServiceInterface {
+	return newFakeMetastoreServices(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeMetastoreV1beta1) RESTClient() rest.Interface {

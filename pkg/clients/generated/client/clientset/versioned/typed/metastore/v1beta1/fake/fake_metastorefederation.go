@@ -22,31 +22,31 @@
 package fake
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1alpha1"
-	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1beta1"
+	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
 	gentype "k8s.io/client-go/gentype"
 )
 
 // fakeMetastoreFederations implements MetastoreFederationInterface
 type fakeMetastoreFederations struct {
-	*gentype.FakeClientWithList[*v1alpha1.MetastoreFederation, *v1alpha1.MetastoreFederationList]
-	Fake *FakeMetastoreV1alpha1
+	*gentype.FakeClientWithList[*v1beta1.MetastoreFederation, *v1beta1.MetastoreFederationList]
+	Fake *FakeMetastoreV1beta1
 }
 
-func newFakeMetastoreFederations(fake *FakeMetastoreV1alpha1, namespace string) metastorev1alpha1.MetastoreFederationInterface {
+func newFakeMetastoreFederations(fake *FakeMetastoreV1beta1, namespace string) metastorev1beta1.MetastoreFederationInterface {
 	return &fakeMetastoreFederations{
-		gentype.NewFakeClientWithList[*v1alpha1.MetastoreFederation, *v1alpha1.MetastoreFederationList](
+		gentype.NewFakeClientWithList[*v1beta1.MetastoreFederation, *v1beta1.MetastoreFederationList](
 			fake.Fake,
 			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("metastorefederations"),
-			v1alpha1.SchemeGroupVersion.WithKind("MetastoreFederation"),
-			func() *v1alpha1.MetastoreFederation { return &v1alpha1.MetastoreFederation{} },
-			func() *v1alpha1.MetastoreFederationList { return &v1alpha1.MetastoreFederationList{} },
-			func(dst, src *v1alpha1.MetastoreFederationList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.MetastoreFederationList) []*v1alpha1.MetastoreFederation {
+			v1beta1.SchemeGroupVersion.WithResource("metastorefederations"),
+			v1beta1.SchemeGroupVersion.WithKind("MetastoreFederation"),
+			func() *v1beta1.MetastoreFederation { return &v1beta1.MetastoreFederation{} },
+			func() *v1beta1.MetastoreFederationList { return &v1beta1.MetastoreFederationList{} },
+			func(dst, src *v1beta1.MetastoreFederationList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.MetastoreFederationList) []*v1beta1.MetastoreFederation {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.MetastoreFederationList, items []*v1alpha1.MetastoreFederation) {
+			func(list *v1beta1.MetastoreFederationList, items []*v1beta1.MetastoreFederation) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),

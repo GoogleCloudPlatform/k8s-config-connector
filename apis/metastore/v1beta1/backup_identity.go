@@ -20,10 +20,8 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 
 	// TODO: Add import for the parent service reference if needed, e.g.,
-	// metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -68,7 +66,7 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 	if err != nil {
 		return nil, err
 	}
-	serviceParent, serviceID, err := v1alpha1.ParseServiceExternal(serviceExternalRef)
+	serviceParent, serviceID, err := ParseServiceExternal(serviceExternalRef)
 	if err != nil {
 		return nil, err
 	}

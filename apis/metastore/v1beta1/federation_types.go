@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -129,6 +129,7 @@ type MetastoreFederationObservedState struct {
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // MetastoreFederation is the Schema for the MetastoreFederation API
+// +kubebuilder:storageversion
 // +k8s:openapi-gen=true
 type MetastoreFederation struct {
 	metav1.TypeMeta   `json:",inline"`

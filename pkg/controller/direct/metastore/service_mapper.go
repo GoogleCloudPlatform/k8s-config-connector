@@ -14,7 +14,7 @@
 
 // +generated:mapper
 // krm.group: metastore.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.metastore.v1
 
 package metastore
@@ -26,7 +26,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -34,17 +34,17 @@ import (
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
-func AuxiliaryVersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuxiliaryVersionConfig) *krmv1alpha1.AuxiliaryVersionConfig {
+func AuxiliaryVersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuxiliaryVersionConfig) *krm.AuxiliaryVersionConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.AuxiliaryVersionConfig{}
+	out := &krm.AuxiliaryVersionConfig{}
 	out.Version = direct.LazyPtr(in.GetVersion())
 	out.ConfigOverrides = in.ConfigOverrides
 	// MISSING: NetworkConfig
 	return out
 }
-func AuxiliaryVersionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AuxiliaryVersionConfig) *pb.AuxiliaryVersionConfig {
+func AuxiliaryVersionConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuxiliaryVersionConfig) *pb.AuxiliaryVersionConfig {
 	if in == nil {
 		return nil
 	}
@@ -54,18 +54,18 @@ func AuxiliaryVersionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.A
 	// MISSING: NetworkConfig
 	return out
 }
-func BackendMetastore_FromProto(mapCtx *direct.MapContext, in *pb.BackendMetastore) *krmv1alpha1.BackendMetastore {
+func BackendMetastore_FromProto(mapCtx *direct.MapContext, in *pb.BackendMetastore) *krm.BackendMetastore {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.BackendMetastore{}
-	out.ServiceRef = &krmv1alpha1.ServiceRef{
+	out := &krm.BackendMetastore{}
+	out.ServiceRef = &krm.ServiceRef{
 		External: in.GetName(),
 	}
 	out.MetastoreType = direct.Enum_FromProto(mapCtx, in.GetMetastoreType())
 	return out
 }
-func BackendMetastore_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BackendMetastore) *pb.BackendMetastore {
+func BackendMetastore_ToProto(mapCtx *direct.MapContext, in *krm.BackendMetastore) *pb.BackendMetastore {
 	if in == nil {
 		return nil
 	}
@@ -74,15 +74,15 @@ func BackendMetastore_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Backend
 	out.MetastoreType = direct.Enum_ToProto[pb.BackendMetastore_MetastoreType](mapCtx, in.MetastoreType)
 	return out
 }
-func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krmv1alpha1.EncryptionConfig {
+func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.EncryptionConfig{}
+	out := &krm.EncryptionConfig{}
 	out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	return out
 }
-func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EncryptionConfig) *pb.EncryptionConfig {
+func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
 	if in == nil {
 		return nil
 	}
@@ -90,11 +90,11 @@ func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Encrypt
 	out.KmsKey = in.KMSKeyRef.External
 	return out
 }
-func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetastoreConfig) *krmv1alpha1.HiveMetastoreConfig {
+func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetastoreConfig) *krm.HiveMetastoreConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.HiveMetastoreConfig{}
+	out := &krm.HiveMetastoreConfig{}
 	out.Version = direct.LazyPtr(in.GetVersion())
 	out.ConfigOverrides = in.ConfigOverrides
 	out.KerberosConfig = KerberosConfig_FromProto(mapCtx, in.GetKerberosConfig())
@@ -102,7 +102,7 @@ func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetasto
 	// MISSING: AuxiliaryVersions
 	return out
 }
-func HiveMetastoreConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.HiveMetastoreConfig) *pb.HiveMetastoreConfig {
+func HiveMetastoreConfig_ToProto(mapCtx *direct.MapContext, in *krm.HiveMetastoreConfig) *pb.HiveMetastoreConfig {
 	if in == nil {
 		return nil
 	}
@@ -114,17 +114,17 @@ func HiveMetastoreConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Hive
 	// MISSING: AuxiliaryVersions
 	return out
 }
-func KerberosConfig_FromProto(mapCtx *direct.MapContext, in *pb.KerberosConfig) *krmv1alpha1.KerberosConfig {
+func KerberosConfig_FromProto(mapCtx *direct.MapContext, in *pb.KerberosConfig) *krm.KerberosConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.KerberosConfig{}
+	out := &krm.KerberosConfig{}
 	out.Keytab = Secret_FromProto(mapCtx, in.GetKeytab())
 	out.Principal = direct.LazyPtr(in.GetPrincipal())
 	out.Krb5ConfigGCSURI = direct.LazyPtr(in.GetKrb5ConfigGcsUri())
 	return out
 }
-func KerberosConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.KerberosConfig) *pb.KerberosConfig {
+func KerberosConfig_ToProto(mapCtx *direct.MapContext, in *krm.KerberosConfig) *pb.KerberosConfig {
 	if in == nil {
 		return nil
 	}
@@ -134,21 +134,21 @@ func KerberosConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.KerberosC
 	out.Krb5ConfigGcsUri = direct.ValueOf(in.Krb5ConfigGCSURI)
 	return out
 }
-func MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWindow) *krmv1alpha1.MaintenanceWindow {
+func MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWindow) *krm.MaintenanceWindow {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.MaintenanceWindow{}
+	out := &krm.MaintenanceWindow{}
 	if in.GetHourOfDay() != nil {
 		value := in.GetHourOfDay().GetValue()
-		out.HourOfDay = &krmv1alpha1.Int32Value{
+		out.HourOfDay = &krm.Int32Value{
 			Value: &value,
 		}
 	}
 	out.DayOfWeek = direct.LazyPtr(in.GetDayOfWeek().String())
 	return out
 }
-func MaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MaintenanceWindow) *pb.MaintenanceWindow {
+func MaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceWindow) *pb.MaintenanceWindow {
 	if in == nil {
 		return nil
 	}
@@ -167,11 +167,11 @@ func MaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Mainte
 	}
 	return out
 }
-func MetadataExport_FromProto(mapCtx *direct.MapContext, in *pb.MetadataExport) *krmv1alpha1.MetadataExport {
+func MetadataExport_FromProto(mapCtx *direct.MapContext, in *pb.MetadataExport) *krm.MetadataExport {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.MetadataExport{}
+	out := &krm.MetadataExport{}
 	// MISSING: DestinationGCSURI
 	// MISSING: StartTime
 	// MISSING: EndTime
@@ -179,7 +179,7 @@ func MetadataExport_FromProto(mapCtx *direct.MapContext, in *pb.MetadataExport) 
 	// MISSING: DatabaseDumpType
 	return out
 }
-func MetadataExport_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetadataExport) *pb.MetadataExport {
+func MetadataExport_ToProto(mapCtx *direct.MapContext, in *krm.MetadataExport) *pb.MetadataExport {
 	if in == nil {
 		return nil
 	}
@@ -191,11 +191,11 @@ func MetadataExport_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetadataE
 	// MISSING: DatabaseDumpType
 	return out
 }
-func MetadataExportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataExport) *krmv1alpha1.MetadataExportObservedState {
+func MetadataExportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataExport) *krm.MetadataExportObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.MetadataExportObservedState{}
+	out := &krm.MetadataExportObservedState{}
 	out.DestinationGCSURI = direct.LazyPtr(in.GetDestinationGcsUri())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
@@ -203,7 +203,7 @@ func MetadataExportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Met
 	out.DatabaseDumpType = direct.Enum_FromProto(mapCtx, in.GetDatabaseDumpType())
 	return out
 }
-func MetadataExportObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetadataExportObservedState) *pb.MetadataExport {
+func MetadataExportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataExportObservedState) *pb.MetadataExport {
 	if in == nil {
 		return nil
 	}
@@ -219,16 +219,16 @@ func MetadataExportObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alp
 	out.DatabaseDumpType = direct.Enum_ToProto[pb.DatabaseDumpSpec_Type](mapCtx, in.DatabaseDumpType)
 	return out
 }
-func MetadataManagementActivity_FromProto(mapCtx *direct.MapContext, in *pb.MetadataManagementActivity) *krmv1alpha1.MetadataManagementActivity {
+func MetadataManagementActivity_FromProto(mapCtx *direct.MapContext, in *pb.MetadataManagementActivity) *krm.MetadataManagementActivity {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.MetadataManagementActivity{}
+	out := &krm.MetadataManagementActivity{}
 	// MISSING: MetadataExports
 	// MISSING: Restores
 	return out
 }
-func MetadataManagementActivity_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetadataManagementActivity) *pb.MetadataManagementActivity {
+func MetadataManagementActivity_ToProto(mapCtx *direct.MapContext, in *krm.MetadataManagementActivity) *pb.MetadataManagementActivity {
 	if in == nil {
 		return nil
 	}
@@ -237,16 +237,16 @@ func MetadataManagementActivity_ToProto(mapCtx *direct.MapContext, in *krmv1alph
 	// MISSING: Restores
 	return out
 }
-func MetadataManagementActivityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataManagementActivity) *krmv1alpha1.MetadataManagementActivityObservedState {
+func MetadataManagementActivityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataManagementActivity) *krm.MetadataManagementActivityObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.MetadataManagementActivityObservedState{}
+	out := &krm.MetadataManagementActivityObservedState{}
 	out.MetadataExports = direct.Slice_FromProto(mapCtx, in.MetadataExports, MetadataExportObservedState_FromProto)
 	out.Restores = direct.Slice_FromProto(mapCtx, in.Restores, RestoreObservedState_FromProto)
 	return out
 }
-func MetadataManagementActivityObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetadataManagementActivityObservedState) *pb.MetadataManagementActivity {
+func MetadataManagementActivityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataManagementActivityObservedState) *pb.MetadataManagementActivity {
 	if in == nil {
 		return nil
 	}
@@ -256,11 +256,11 @@ func MetadataManagementActivityObservedState_ToProto(mapCtx *direct.MapContext, 
 	return out
 }
 
-func MetastoreFederationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Federation) *krmv1alpha1.MetastoreFederationObservedState {
+func MetastoreFederationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Federation) *krm.MetastoreFederationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.MetastoreFederationObservedState{}
+	out := &krm.MetastoreFederationObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -270,7 +270,7 @@ func MetastoreFederationObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.Uid = direct.LazyPtr(in.GetUid())
 	return out
 }
-func MetastoreFederationObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetastoreFederationObservedState) *pb.Federation {
+func MetastoreFederationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreFederationObservedState) *pb.Federation {
 	if in == nil {
 		return nil
 	}
@@ -284,21 +284,21 @@ func MetastoreFederationObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Uid = direct.ValueOf(in.Uid)
 	return out
 }
-func MetastoreFederationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Federation) *krmv1alpha1.MetastoreFederationSpec {
+func MetastoreFederationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Federation) *krm.MetastoreFederationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.MetastoreFederationSpec{}
+	out := &krm.MetastoreFederationSpec{}
 	// MISSING: Name
 	out.Labels = in.Labels
 	out.Version = direct.LazyPtr(in.GetVersion())
-	out.BackendMetastores = make(map[string]krmv1alpha1.BackendMetastore)
+	out.BackendMetastores = make(map[string]krm.BackendMetastore)
 	for k, v := range in.GetBackendMetastores() {
 		out.BackendMetastores[fmt.Sprintf("%d", k)] = *BackendMetastore_FromProto(mapCtx, v)
 	}
 	return out
 }
-func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetastoreFederationSpec) *pb.Federation {
+func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreFederationSpec) *pb.Federation {
 	if in == nil {
 		return nil
 	}
@@ -321,11 +321,11 @@ func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 	return out
 }
 
-func MetastoreServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krmv1alpha1.MetastoreServiceObservedState {
+func MetastoreServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.MetastoreServiceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.MetastoreServiceObservedState{}
+	out := &krm.MetastoreServiceObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -338,7 +338,7 @@ func MetastoreServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 	out.NetworkConfig = NetworkConfigObservedState_FromProto(mapCtx, in.GetNetworkConfig())
 	return out
 }
-func MetastoreServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetastoreServiceObservedState) *pb.Service {
+func MetastoreServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreServiceObservedState) *pb.Service {
 	if in == nil {
 		return nil
 	}
@@ -355,11 +355,11 @@ func MetastoreServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1a
 	out.NetworkConfig = NetworkConfigObservedState_ToProto(mapCtx, in.NetworkConfig)
 	return out
 }
-func MetastoreServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krmv1alpha1.MetastoreServiceSpec {
+func MetastoreServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.MetastoreServiceSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.MetastoreServiceSpec{}
+	out := &krm.MetastoreServiceSpec{}
 	out.HiveMetastoreConfig = HiveMetastoreConfig_FromProto(mapCtx, in.GetHiveMetastoreConfig())
 	// MISSING: Name
 	out.Labels = in.Labels
@@ -377,7 +377,7 @@ func MetastoreServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *
 	out.ScalingConfig = ScalingConfig_FromProto(mapCtx, in.GetScalingConfig())
 	return out
 }
-func MetastoreServiceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetastoreServiceSpec) *pb.Service {
+func MetastoreServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreServiceSpec) *pb.Service {
 	if in == nil {
 		return nil
 	}
@@ -401,15 +401,15 @@ func MetastoreServiceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Met
 	out.ScalingConfig = ScalingConfig_ToProto(mapCtx, in.ScalingConfig)
 	return out
 }
-func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krmv1alpha1.NetworkConfig {
+func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.NetworkConfig{}
+	out := &krm.NetworkConfig{}
 	out.Consumers = direct.Slice_FromProto(mapCtx, in.Consumers, NetworkConfig_Consumer_FromProto)
 	return out
 }
-func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.NetworkConfig) *pb.NetworkConfig {
+func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
 	if in == nil {
 		return nil
 	}
@@ -417,15 +417,15 @@ func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.NetworkCon
 	out.Consumers = direct.Slice_ToProto(mapCtx, in.Consumers, NetworkConfig_Consumer_ToProto)
 	return out
 }
-func NetworkConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krmv1alpha1.NetworkConfigObservedState {
+func NetworkConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.NetworkConfigObservedState{}
+	out := &krm.NetworkConfigObservedState{}
 	out.Consumers = direct.Slice_FromProto(mapCtx, in.Consumers, NetworkConfig_ConsumerObservedState_FromProto)
 	return out
 }
-func NetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.NetworkConfigObservedState) *pb.NetworkConfig {
+func NetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfigObservedState) *pb.NetworkConfig {
 	if in == nil {
 		return nil
 	}
@@ -433,17 +433,17 @@ func NetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alph
 	out.Consumers = direct.Slice_ToProto(mapCtx, in.Consumers, NetworkConfig_ConsumerObservedState_ToProto)
 	return out
 }
-func NetworkConfig_Consumer_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig_Consumer) *krmv1alpha1.NetworkConfig_Consumer {
+func NetworkConfig_Consumer_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig_Consumer) *krm.NetworkConfig_Consumer {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.NetworkConfig_Consumer{}
+	out := &krm.NetworkConfig_Consumer{}
 	out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	// MISSING: EndpointURI
 	// MISSING: EndpointLocation
 	return out
 }
-func NetworkConfig_Consumer_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.NetworkConfig_Consumer) *pb.NetworkConfig_Consumer {
+func NetworkConfig_Consumer_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig_Consumer) *pb.NetworkConfig_Consumer {
 	if in == nil {
 		return nil
 	}
@@ -457,17 +457,17 @@ func NetworkConfig_Consumer_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.N
 	// MISSING: EndpointLocation
 	return out
 }
-func NetworkConfig_ConsumerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig_Consumer) *krmv1alpha1.NetworkConfig_ConsumerObservedState {
+func NetworkConfig_ConsumerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig_Consumer) *krm.NetworkConfig_ConsumerObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.NetworkConfig_ConsumerObservedState{}
+	out := &krm.NetworkConfig_ConsumerObservedState{}
 	// MISSING: Subnetwork
 	out.EndpointURI = direct.LazyPtr(in.GetEndpointUri())
 	out.EndpointLocation = direct.LazyPtr(in.GetEndpointLocation())
 	return out
 }
-func NetworkConfig_ConsumerObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.NetworkConfig_ConsumerObservedState) *pb.NetworkConfig_Consumer {
+func NetworkConfig_ConsumerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig_ConsumerObservedState) *pb.NetworkConfig_Consumer {
 	if in == nil {
 		return nil
 	}
@@ -477,11 +477,11 @@ func NetworkConfig_ConsumerObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.EndpointLocation = direct.ValueOf(in.EndpointLocation)
 	return out
 }
-func Restore_FromProto(mapCtx *direct.MapContext, in *pb.Restore) *krmv1alpha1.Restore {
+func Restore_FromProto(mapCtx *direct.MapContext, in *pb.Restore) *krm.Restore {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Restore{}
+	out := &krm.Restore{}
 	// MISSING: StartTime
 	// MISSING: EndTime
 	// MISSING: State
@@ -490,7 +490,7 @@ func Restore_FromProto(mapCtx *direct.MapContext, in *pb.Restore) *krmv1alpha1.R
 	// MISSING: Details
 	return out
 }
-func Restore_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Restore) *pb.Restore {
+func Restore_ToProto(mapCtx *direct.MapContext, in *krm.Restore) *pb.Restore {
 	if in == nil {
 		return nil
 	}
@@ -503,11 +503,11 @@ func Restore_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Restore) *pb.Res
 	// MISSING: Details
 	return out
 }
-func RestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Restore) *krmv1alpha1.RestoreObservedState {
+func RestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Restore) *krm.RestoreObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.RestoreObservedState{}
+	out := &krm.RestoreObservedState{}
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
@@ -516,7 +516,7 @@ func RestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Restore) *
 	out.Details = direct.LazyPtr(in.GetDetails())
 	return out
 }
-func RestoreObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.RestoreObservedState) *pb.Restore {
+func RestoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RestoreObservedState) *pb.Restore {
 	if in == nil {
 		return nil
 	}
@@ -529,16 +529,16 @@ func RestoreObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Res
 	out.Details = direct.ValueOf(in.Details)
 	return out
 }
-func ScalingConfig_FromProto(mapCtx *direct.MapContext, in *pb.ScalingConfig) *krmv1alpha1.ScalingConfig {
+func ScalingConfig_FromProto(mapCtx *direct.MapContext, in *pb.ScalingConfig) *krm.ScalingConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.ScalingConfig{}
+	out := &krm.ScalingConfig{}
 	out.InstanceSize = direct.Enum_FromProto(mapCtx, in.GetInstanceSize())
 	out.ScalingFactor = direct.LazyPtr(in.GetScalingFactor())
 	return out
 }
-func ScalingConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ScalingConfig) *pb.ScalingConfig {
+func ScalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.ScalingConfig) *pb.ScalingConfig {
 	if in == nil {
 		return nil
 	}
@@ -556,15 +556,15 @@ func ScalingConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ScalingCon
 	}
 	return out
 }
-func Secret_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krmv1alpha1.Secret {
+func Secret_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.Secret {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Secret{}
+	out := &krm.Secret{}
 	out.SecretRef = &secretmanagerv1beta1.SecretRef{External: in.GetCloudSecret()}
 	return out
 }
-func Secret_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Secret) *pb.Secret {
+func Secret_ToProto(mapCtx *direct.MapContext, in *krm.Secret) *pb.Secret {
 	if in == nil {
 		return nil
 	}
@@ -574,15 +574,15 @@ func Secret_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Secret) *pb.Secre
 	}
 	return out
 }
-func TelemetryConfig_FromProto(mapCtx *direct.MapContext, in *pb.TelemetryConfig) *krmv1alpha1.TelemetryConfig {
+func TelemetryConfig_FromProto(mapCtx *direct.MapContext, in *pb.TelemetryConfig) *krm.TelemetryConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.TelemetryConfig{}
+	out := &krm.TelemetryConfig{}
 	out.LogFormat = direct.Enum_FromProto(mapCtx, in.GetLogFormat())
 	return out
 }
-func TelemetryConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TelemetryConfig) *pb.TelemetryConfig {
+func TelemetryConfig_ToProto(mapCtx *direct.MapContext, in *krm.TelemetryConfig) *pb.TelemetryConfig {
 	if in == nil {
 		return nil
 	}

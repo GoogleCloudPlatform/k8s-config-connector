@@ -140,7 +140,6 @@ import (
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
 	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1"
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
-	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
@@ -319,7 +318,6 @@ type Interface interface {
 	MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface
 	MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha1Interface
 	MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface
-	MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface
 	MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface
 	MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface
 	MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface
@@ -496,7 +494,6 @@ type Clientset struct {
 	memcacheV1beta1                *memcachev1beta1.MemcacheV1beta1Client
 	memorystoreV1alpha1            *memorystorev1alpha1.MemorystoreV1alpha1Client
 	memorystoreV1beta1             *memorystorev1beta1.MemorystoreV1beta1Client
-	metastoreV1alpha1              *metastorev1alpha1.MetastoreV1alpha1Client
 	metastoreV1beta1               *metastorev1beta1.MetastoreV1beta1Client
 	mlengineV1alpha1               *mlenginev1alpha1.MlengineV1alpha1Client
 	monitoringV1beta1              *monitoringv1beta1.MonitoringV1beta1Client
@@ -1128,11 +1125,6 @@ func (c *Clientset) MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha
 // MemorystoreV1beta1 retrieves the MemorystoreV1beta1Client
 func (c *Clientset) MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface {
 	return c.memorystoreV1beta1
-}
-
-// MetastoreV1alpha1 retrieves the MetastoreV1alpha1Client
-func (c *Clientset) MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface {
-	return c.metastoreV1alpha1
 }
 
 // MetastoreV1beta1 retrieves the MetastoreV1beta1Client
@@ -1919,10 +1911,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.metastoreV1alpha1, err = metastorev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
 	cs.metastoreV1beta1, err = metastorev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2283,7 +2271,6 @@ func New(c rest.Interface) *Clientset {
 	cs.memcacheV1beta1 = memcachev1beta1.New(c)
 	cs.memorystoreV1alpha1 = memorystorev1alpha1.New(c)
 	cs.memorystoreV1beta1 = memorystorev1beta1.New(c)
-	cs.metastoreV1alpha1 = metastorev1alpha1.New(c)
 	cs.metastoreV1beta1 = metastorev1beta1.New(c)
 	cs.mlengineV1alpha1 = mlenginev1alpha1.New(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.New(c)

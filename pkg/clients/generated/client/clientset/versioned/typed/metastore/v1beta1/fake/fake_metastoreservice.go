@@ -22,31 +22,31 @@
 package fake
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1alpha1"
-	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1beta1"
+	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
 	gentype "k8s.io/client-go/gentype"
 )
 
 // fakeMetastoreServices implements MetastoreServiceInterface
 type fakeMetastoreServices struct {
-	*gentype.FakeClientWithList[*v1alpha1.MetastoreService, *v1alpha1.MetastoreServiceList]
-	Fake *FakeMetastoreV1alpha1
+	*gentype.FakeClientWithList[*v1beta1.MetastoreService, *v1beta1.MetastoreServiceList]
+	Fake *FakeMetastoreV1beta1
 }
 
-func newFakeMetastoreServices(fake *FakeMetastoreV1alpha1, namespace string) metastorev1alpha1.MetastoreServiceInterface {
+func newFakeMetastoreServices(fake *FakeMetastoreV1beta1, namespace string) metastorev1beta1.MetastoreServiceInterface {
 	return &fakeMetastoreServices{
-		gentype.NewFakeClientWithList[*v1alpha1.MetastoreService, *v1alpha1.MetastoreServiceList](
+		gentype.NewFakeClientWithList[*v1beta1.MetastoreService, *v1beta1.MetastoreServiceList](
 			fake.Fake,
 			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("metastoreservices"),
-			v1alpha1.SchemeGroupVersion.WithKind("MetastoreService"),
-			func() *v1alpha1.MetastoreService { return &v1alpha1.MetastoreService{} },
-			func() *v1alpha1.MetastoreServiceList { return &v1alpha1.MetastoreServiceList{} },
-			func(dst, src *v1alpha1.MetastoreServiceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.MetastoreServiceList) []*v1alpha1.MetastoreService {
+			v1beta1.SchemeGroupVersion.WithResource("metastoreservices"),
+			v1beta1.SchemeGroupVersion.WithKind("MetastoreService"),
+			func() *v1beta1.MetastoreService { return &v1beta1.MetastoreService{} },
+			func() *v1beta1.MetastoreServiceList { return &v1beta1.MetastoreServiceList{} },
+			func(dst, src *v1beta1.MetastoreServiceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.MetastoreServiceList) []*v1beta1.MetastoreService {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.MetastoreServiceList, items []*v1alpha1.MetastoreService) {
+			func(list *v1beta1.MetastoreServiceList, items []*v1beta1.MetastoreService) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),
