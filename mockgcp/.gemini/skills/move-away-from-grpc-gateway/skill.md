@@ -7,6 +7,16 @@ description: Moves a mockgcp service from using locally generated grpc-gateway p
 
 This skill outlines the steps to transition a mockgcp service from using `grpc-gateway` to using reflection via `httptogrpc`.
 
+## Step 0: Verify gRPC client library existence
+
+Before migrating, verify that an official gRPC Go client and protobuf module exists for the service. Some services (e.g., `servicenetworking`) only have REST-only client libraries (`google.golang.org/api`) and do not have official protobuf packages under `cloud.google.com/go/` (or `google.golang.org/genproto/googleapis/api/`).
+
+Check if the client package can be imported:
+```go
+import pb "cloud.google.com/go/<service_name>/apiv1/<service_name>pb"
+```
+Or check if it exists in the standard Google Cloud Go module repository. If no such package exists, the migration is **blocked** and cannot be completed. In this case, please document this in a new journal file under `mockgcp/.gemini/skills/move-away-from-grpc-gateway/journal/<service_name>.md` and do not perform the migration.
+
 ## Step 1: Stop generating protos
 
 In `mockgcp/Makefile`, remove the service from the `gen-proto-no-fixup` target. Find the line that looks like `./third_party/googleapis/google/cloud/<service_name>/v1/*.proto \` (or `./third_party/googleapis/mockgcp/cloud/...`) and delete it.
