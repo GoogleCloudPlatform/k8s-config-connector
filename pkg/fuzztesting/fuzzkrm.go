@@ -126,11 +126,6 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_NotYetTriag
 	f.UnimplementedFields.Insert(fieldPath)
 }
 
-// IdentityField marks a field as not supported in the mapper, because it is part of the identity (URL) rather than being part of the object itself.
-func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) IdentityField(fieldPath string) {
-	f.UnimplementedFields.Insert(fieldPath)
-}
-
 type KRMFuzzer interface {
 	FuzzSpec(t *testing.T, seed int64)
 	FuzzStatus(t *testing.T, seed int64)
