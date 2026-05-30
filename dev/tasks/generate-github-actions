@@ -137,11 +137,21 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
+    if [[ "${name}" == "validate-untested-fields" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+EOF
+    else
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 EOF
+    fi
 
     if [[ "${name}" == "unit-tests" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
@@ -166,12 +176,27 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
+    if [[ "${name}" == "validate-untested-fields" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - name: "Run ${f}"
+        run: |
+          ./${f}
+        env:
+          COMMIT_HEAD: \${{ github.event.pull_request.head.sha }}
+          BASE_COMMIT: \${{ github.event.pull_request.base.sha }}
+          ARTIFACTS: /tmp/artifacts
+EOF
+    else
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Run ${f}"
         run: |
           ./${f}
         env:
           ARTIFACTS: /tmp/artifacts
+EOF
+    fi
+
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
         if: \${{ !cancelled() }}
