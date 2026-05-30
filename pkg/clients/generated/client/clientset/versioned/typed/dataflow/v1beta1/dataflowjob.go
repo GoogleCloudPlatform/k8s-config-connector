@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // DataflowJobsGetter has a method to return a DataflowJobInterface.
@@ -40,34 +41,158 @@ type DataflowJobsGetter interface {
 
 // DataflowJobInterface has methods to work with DataflowJob resources.
 type DataflowJobInterface interface {
-	Create(ctx context.Context, dataflowJob *dataflowv1beta1.DataflowJob, opts v1.CreateOptions) (*dataflowv1beta1.DataflowJob, error)
-	Update(ctx context.Context, dataflowJob *dataflowv1beta1.DataflowJob, opts v1.UpdateOptions) (*dataflowv1beta1.DataflowJob, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, dataflowJob *dataflowv1beta1.DataflowJob, opts v1.UpdateOptions) (*dataflowv1beta1.DataflowJob, error)
+	Create(ctx context.Context, dataflowJob *v1beta1.DataflowJob, opts v1.CreateOptions) (*v1beta1.DataflowJob, error)
+	Update(ctx context.Context, dataflowJob *v1beta1.DataflowJob, opts v1.UpdateOptions) (*v1beta1.DataflowJob, error)
+	UpdateStatus(ctx context.Context, dataflowJob *v1beta1.DataflowJob, opts v1.UpdateOptions) (*v1beta1.DataflowJob, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*dataflowv1beta1.DataflowJob, error)
-	List(ctx context.Context, opts v1.ListOptions) (*dataflowv1beta1.DataflowJobList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.DataflowJob, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.DataflowJobList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *dataflowv1beta1.DataflowJob, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DataflowJob, err error)
 	DataflowJobExpansion
 }
 
 // dataflowJobs implements DataflowJobInterface
 type dataflowJobs struct {
-	*gentype.ClientWithList[*dataflowv1beta1.DataflowJob, *dataflowv1beta1.DataflowJobList]
+	client rest.Interface
+	ns     string
 }
 
 // newDataflowJobs returns a DataflowJobs
 func newDataflowJobs(c *DataflowV1beta1Client, namespace string) *dataflowJobs {
 	return &dataflowJobs{
-		gentype.NewClientWithList[*dataflowv1beta1.DataflowJob, *dataflowv1beta1.DataflowJobList](
-			"dataflowjobs",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *dataflowv1beta1.DataflowJob { return &dataflowv1beta1.DataflowJob{} },
-			func() *dataflowv1beta1.DataflowJobList { return &dataflowv1beta1.DataflowJobList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the dataflowJob, and returns the corresponding dataflowJob object, and an error if there is any.
+func (c *dataflowJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataflowJob, err error) {
+	result = &v1beta1.DataflowJob{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dataflowjobs").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of DataflowJobs that match those selectors.
+func (c *dataflowJobs) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.DataflowJobList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.DataflowJobList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("dataflowjobs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested dataflowJobs.
+func (c *dataflowJobs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("dataflowjobs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a dataflowJob and creates it.  Returns the server's representation of the dataflowJob, and an error, if there is any.
+func (c *dataflowJobs) Create(ctx context.Context, dataflowJob *v1beta1.DataflowJob, opts v1.CreateOptions) (result *v1beta1.DataflowJob, err error) {
+	result = &v1beta1.DataflowJob{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("dataflowjobs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataflowJob).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a dataflowJob and updates it. Returns the server's representation of the dataflowJob, and an error, if there is any.
+func (c *dataflowJobs) Update(ctx context.Context, dataflowJob *v1beta1.DataflowJob, opts v1.UpdateOptions) (result *v1beta1.DataflowJob, err error) {
+	result = &v1beta1.DataflowJob{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dataflowjobs").
+		Name(dataflowJob.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataflowJob).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *dataflowJobs) UpdateStatus(ctx context.Context, dataflowJob *v1beta1.DataflowJob, opts v1.UpdateOptions) (result *v1beta1.DataflowJob, err error) {
+	result = &v1beta1.DataflowJob{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("dataflowjobs").
+		Name(dataflowJob.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(dataflowJob).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the dataflowJob and deletes it. Returns an error if one occurs.
+func (c *dataflowJobs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dataflowjobs").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *dataflowJobs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("dataflowjobs").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched dataflowJob.
+func (c *dataflowJobs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DataflowJob, err error) {
+	result = &v1beta1.DataflowJob{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("dataflowjobs").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

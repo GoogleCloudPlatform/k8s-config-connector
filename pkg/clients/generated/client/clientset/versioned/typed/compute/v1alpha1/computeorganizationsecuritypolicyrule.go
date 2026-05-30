@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ComputeOrganizationSecurityPolicyRulesGetter has a method to return a ComputeOrganizationSecurityPolicyRuleInterface.
@@ -40,38 +41,158 @@ type ComputeOrganizationSecurityPolicyRulesGetter interface {
 
 // ComputeOrganizationSecurityPolicyRuleInterface has methods to work with ComputeOrganizationSecurityPolicyRule resources.
 type ComputeOrganizationSecurityPolicyRuleInterface interface {
-	Create(ctx context.Context, computeOrganizationSecurityPolicyRule *computev1alpha1.ComputeOrganizationSecurityPolicyRule, opts v1.CreateOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyRule, error)
-	Update(ctx context.Context, computeOrganizationSecurityPolicyRule *computev1alpha1.ComputeOrganizationSecurityPolicyRule, opts v1.UpdateOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyRule, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, computeOrganizationSecurityPolicyRule *computev1alpha1.ComputeOrganizationSecurityPolicyRule, opts v1.UpdateOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyRule, error)
+	Create(ctx context.Context, computeOrganizationSecurityPolicyRule *v1alpha1.ComputeOrganizationSecurityPolicyRule, opts v1.CreateOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyRule, error)
+	Update(ctx context.Context, computeOrganizationSecurityPolicyRule *v1alpha1.ComputeOrganizationSecurityPolicyRule, opts v1.UpdateOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyRule, error)
+	UpdateStatus(ctx context.Context, computeOrganizationSecurityPolicyRule *v1alpha1.ComputeOrganizationSecurityPolicyRule, opts v1.UpdateOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyRule, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyRule, error)
-	List(ctx context.Context, opts v1.ListOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyRuleList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyRule, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyRuleList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1alpha1.ComputeOrganizationSecurityPolicyRule, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeOrganizationSecurityPolicyRule, err error)
 	ComputeOrganizationSecurityPolicyRuleExpansion
 }
 
 // computeOrganizationSecurityPolicyRules implements ComputeOrganizationSecurityPolicyRuleInterface
 type computeOrganizationSecurityPolicyRules struct {
-	*gentype.ClientWithList[*computev1alpha1.ComputeOrganizationSecurityPolicyRule, *computev1alpha1.ComputeOrganizationSecurityPolicyRuleList]
+	client rest.Interface
+	ns     string
 }
 
 // newComputeOrganizationSecurityPolicyRules returns a ComputeOrganizationSecurityPolicyRules
 func newComputeOrganizationSecurityPolicyRules(c *ComputeV1alpha1Client, namespace string) *computeOrganizationSecurityPolicyRules {
 	return &computeOrganizationSecurityPolicyRules{
-		gentype.NewClientWithList[*computev1alpha1.ComputeOrganizationSecurityPolicyRule, *computev1alpha1.ComputeOrganizationSecurityPolicyRuleList](
-			"computeorganizationsecuritypolicyrules",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *computev1alpha1.ComputeOrganizationSecurityPolicyRule {
-				return &computev1alpha1.ComputeOrganizationSecurityPolicyRule{}
-			},
-			func() *computev1alpha1.ComputeOrganizationSecurityPolicyRuleList {
-				return &computev1alpha1.ComputeOrganizationSecurityPolicyRuleList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the computeOrganizationSecurityPolicyRule, and returns the corresponding computeOrganizationSecurityPolicyRule object, and an error if there is any.
+func (c *computeOrganizationSecurityPolicyRules) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyRule, err error) {
+	result = &v1alpha1.ComputeOrganizationSecurityPolicyRule{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computeorganizationsecuritypolicyrules").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ComputeOrganizationSecurityPolicyRules that match those selectors.
+func (c *computeOrganizationSecurityPolicyRules) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyRuleList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.ComputeOrganizationSecurityPolicyRuleList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("computeorganizationsecuritypolicyrules").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested computeOrganizationSecurityPolicyRules.
+func (c *computeOrganizationSecurityPolicyRules) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("computeorganizationsecuritypolicyrules").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a computeOrganizationSecurityPolicyRule and creates it.  Returns the server's representation of the computeOrganizationSecurityPolicyRule, and an error, if there is any.
+func (c *computeOrganizationSecurityPolicyRules) Create(ctx context.Context, computeOrganizationSecurityPolicyRule *v1alpha1.ComputeOrganizationSecurityPolicyRule, opts v1.CreateOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyRule, err error) {
+	result = &v1alpha1.ComputeOrganizationSecurityPolicyRule{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("computeorganizationsecuritypolicyrules").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeOrganizationSecurityPolicyRule).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a computeOrganizationSecurityPolicyRule and updates it. Returns the server's representation of the computeOrganizationSecurityPolicyRule, and an error, if there is any.
+func (c *computeOrganizationSecurityPolicyRules) Update(ctx context.Context, computeOrganizationSecurityPolicyRule *v1alpha1.ComputeOrganizationSecurityPolicyRule, opts v1.UpdateOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyRule, err error) {
+	result = &v1alpha1.ComputeOrganizationSecurityPolicyRule{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computeorganizationsecuritypolicyrules").
+		Name(computeOrganizationSecurityPolicyRule.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeOrganizationSecurityPolicyRule).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *computeOrganizationSecurityPolicyRules) UpdateStatus(ctx context.Context, computeOrganizationSecurityPolicyRule *v1alpha1.ComputeOrganizationSecurityPolicyRule, opts v1.UpdateOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyRule, err error) {
+	result = &v1alpha1.ComputeOrganizationSecurityPolicyRule{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("computeorganizationsecuritypolicyrules").
+		Name(computeOrganizationSecurityPolicyRule.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(computeOrganizationSecurityPolicyRule).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the computeOrganizationSecurityPolicyRule and deletes it. Returns an error if one occurs.
+func (c *computeOrganizationSecurityPolicyRules) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computeorganizationsecuritypolicyrules").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *computeOrganizationSecurityPolicyRules) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("computeorganizationsecuritypolicyrules").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched computeOrganizationSecurityPolicyRule.
+func (c *computeOrganizationSecurityPolicyRules) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeOrganizationSecurityPolicyRule, err error) {
+	result = &v1alpha1.ComputeOrganizationSecurityPolicyRule{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("computeorganizationsecuritypolicyrules").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	identityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // IdentityPlatformConfigsGetter has a method to return a IdentityPlatformConfigInterface.
@@ -40,38 +41,158 @@ type IdentityPlatformConfigsGetter interface {
 
 // IdentityPlatformConfigInterface has methods to work with IdentityPlatformConfig resources.
 type IdentityPlatformConfigInterface interface {
-	Create(ctx context.Context, identityPlatformConfig *identityplatformv1beta1.IdentityPlatformConfig, opts v1.CreateOptions) (*identityplatformv1beta1.IdentityPlatformConfig, error)
-	Update(ctx context.Context, identityPlatformConfig *identityplatformv1beta1.IdentityPlatformConfig, opts v1.UpdateOptions) (*identityplatformv1beta1.IdentityPlatformConfig, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, identityPlatformConfig *identityplatformv1beta1.IdentityPlatformConfig, opts v1.UpdateOptions) (*identityplatformv1beta1.IdentityPlatformConfig, error)
+	Create(ctx context.Context, identityPlatformConfig *v1beta1.IdentityPlatformConfig, opts v1.CreateOptions) (*v1beta1.IdentityPlatformConfig, error)
+	Update(ctx context.Context, identityPlatformConfig *v1beta1.IdentityPlatformConfig, opts v1.UpdateOptions) (*v1beta1.IdentityPlatformConfig, error)
+	UpdateStatus(ctx context.Context, identityPlatformConfig *v1beta1.IdentityPlatformConfig, opts v1.UpdateOptions) (*v1beta1.IdentityPlatformConfig, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*identityplatformv1beta1.IdentityPlatformConfig, error)
-	List(ctx context.Context, opts v1.ListOptions) (*identityplatformv1beta1.IdentityPlatformConfigList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.IdentityPlatformConfig, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.IdentityPlatformConfigList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *identityplatformv1beta1.IdentityPlatformConfig, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IdentityPlatformConfig, err error)
 	IdentityPlatformConfigExpansion
 }
 
 // identityPlatformConfigs implements IdentityPlatformConfigInterface
 type identityPlatformConfigs struct {
-	*gentype.ClientWithList[*identityplatformv1beta1.IdentityPlatformConfig, *identityplatformv1beta1.IdentityPlatformConfigList]
+	client rest.Interface
+	ns     string
 }
 
 // newIdentityPlatformConfigs returns a IdentityPlatformConfigs
 func newIdentityPlatformConfigs(c *IdentityplatformV1beta1Client, namespace string) *identityPlatformConfigs {
 	return &identityPlatformConfigs{
-		gentype.NewClientWithList[*identityplatformv1beta1.IdentityPlatformConfig, *identityplatformv1beta1.IdentityPlatformConfigList](
-			"identityplatformconfigs",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *identityplatformv1beta1.IdentityPlatformConfig {
-				return &identityplatformv1beta1.IdentityPlatformConfig{}
-			},
-			func() *identityplatformv1beta1.IdentityPlatformConfigList {
-				return &identityplatformv1beta1.IdentityPlatformConfigList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the identityPlatformConfig, and returns the corresponding identityPlatformConfig object, and an error if there is any.
+func (c *identityPlatformConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IdentityPlatformConfig, err error) {
+	result = &v1beta1.IdentityPlatformConfig{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("identityplatformconfigs").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of IdentityPlatformConfigs that match those selectors.
+func (c *identityPlatformConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.IdentityPlatformConfigList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.IdentityPlatformConfigList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("identityplatformconfigs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested identityPlatformConfigs.
+func (c *identityPlatformConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("identityplatformconfigs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a identityPlatformConfig and creates it.  Returns the server's representation of the identityPlatformConfig, and an error, if there is any.
+func (c *identityPlatformConfigs) Create(ctx context.Context, identityPlatformConfig *v1beta1.IdentityPlatformConfig, opts v1.CreateOptions) (result *v1beta1.IdentityPlatformConfig, err error) {
+	result = &v1beta1.IdentityPlatformConfig{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("identityplatformconfigs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(identityPlatformConfig).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a identityPlatformConfig and updates it. Returns the server's representation of the identityPlatformConfig, and an error, if there is any.
+func (c *identityPlatformConfigs) Update(ctx context.Context, identityPlatformConfig *v1beta1.IdentityPlatformConfig, opts v1.UpdateOptions) (result *v1beta1.IdentityPlatformConfig, err error) {
+	result = &v1beta1.IdentityPlatformConfig{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("identityplatformconfigs").
+		Name(identityPlatformConfig.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(identityPlatformConfig).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *identityPlatformConfigs) UpdateStatus(ctx context.Context, identityPlatformConfig *v1beta1.IdentityPlatformConfig, opts v1.UpdateOptions) (result *v1beta1.IdentityPlatformConfig, err error) {
+	result = &v1beta1.IdentityPlatformConfig{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("identityplatformconfigs").
+		Name(identityPlatformConfig.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(identityPlatformConfig).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the identityPlatformConfig and deletes it. Returns an error if one occurs.
+func (c *identityPlatformConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("identityplatformconfigs").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *identityPlatformConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("identityplatformconfigs").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched identityPlatformConfig.
+func (c *identityPlatformConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.IdentityPlatformConfig, err error) {
+	result = &v1beta1.IdentityPlatformConfig{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("identityplatformconfigs").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

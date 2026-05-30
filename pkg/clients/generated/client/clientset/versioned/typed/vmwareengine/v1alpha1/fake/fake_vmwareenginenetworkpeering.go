@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
-	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeVMwareEngineNetworkPeerings implements VMwareEngineNetworkPeeringInterface
-type fakeVMwareEngineNetworkPeerings struct {
-	*gentype.FakeClientWithList[*v1alpha1.VMwareEngineNetworkPeering, *v1alpha1.VMwareEngineNetworkPeeringList]
+// FakeVMwareEngineNetworkPeerings implements VMwareEngineNetworkPeeringInterface
+type FakeVMwareEngineNetworkPeerings struct {
 	Fake *FakeVmwareengineV1alpha1
+	ns   string
 }
 
-func newFakeVMwareEngineNetworkPeerings(fake *FakeVmwareengineV1alpha1, namespace string) vmwareenginev1alpha1.VMwareEngineNetworkPeeringInterface {
-	return &fakeVMwareEngineNetworkPeerings{
-		gentype.NewFakeClientWithList[*v1alpha1.VMwareEngineNetworkPeering, *v1alpha1.VMwareEngineNetworkPeeringList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("vmwareenginenetworkpeerings"),
-			v1alpha1.SchemeGroupVersion.WithKind("VMwareEngineNetworkPeering"),
-			func() *v1alpha1.VMwareEngineNetworkPeering { return &v1alpha1.VMwareEngineNetworkPeering{} },
-			func() *v1alpha1.VMwareEngineNetworkPeeringList { return &v1alpha1.VMwareEngineNetworkPeeringList{} },
-			func(dst, src *v1alpha1.VMwareEngineNetworkPeeringList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.VMwareEngineNetworkPeeringList) []*v1alpha1.VMwareEngineNetworkPeering {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.VMwareEngineNetworkPeeringList, items []*v1alpha1.VMwareEngineNetworkPeering) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var vmwareenginenetworkpeeringsResource = v1alpha1.SchemeGroupVersion.WithResource("vmwareenginenetworkpeerings")
+
+var vmwareenginenetworkpeeringsKind = v1alpha1.SchemeGroupVersion.WithKind("VMwareEngineNetworkPeering")
+
+// Get takes name of the vMwareEngineNetworkPeering, and returns the corresponding vMwareEngineNetworkPeering object, and an error if there is any.
+func (c *FakeVMwareEngineNetworkPeerings) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VMwareEngineNetworkPeering, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(vmwareenginenetworkpeeringsResource, c.ns, name), &v1alpha1.VMwareEngineNetworkPeering{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.VMwareEngineNetworkPeering), err
+}
+
+// List takes label and field selectors, and returns the list of VMwareEngineNetworkPeerings that match those selectors.
+func (c *FakeVMwareEngineNetworkPeerings) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VMwareEngineNetworkPeeringList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(vmwareenginenetworkpeeringsResource, vmwareenginenetworkpeeringsKind, c.ns, opts), &v1alpha1.VMwareEngineNetworkPeeringList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.VMwareEngineNetworkPeeringList{ListMeta: obj.(*v1alpha1.VMwareEngineNetworkPeeringList).ListMeta}
+	for _, item := range obj.(*v1alpha1.VMwareEngineNetworkPeeringList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested vMwareEngineNetworkPeerings.
+func (c *FakeVMwareEngineNetworkPeerings) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(vmwareenginenetworkpeeringsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a vMwareEngineNetworkPeering and creates it.  Returns the server's representation of the vMwareEngineNetworkPeering, and an error, if there is any.
+func (c *FakeVMwareEngineNetworkPeerings) Create(ctx context.Context, vMwareEngineNetworkPeering *v1alpha1.VMwareEngineNetworkPeering, opts v1.CreateOptions) (result *v1alpha1.VMwareEngineNetworkPeering, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(vmwareenginenetworkpeeringsResource, c.ns, vMwareEngineNetworkPeering), &v1alpha1.VMwareEngineNetworkPeering{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.VMwareEngineNetworkPeering), err
+}
+
+// Update takes the representation of a vMwareEngineNetworkPeering and updates it. Returns the server's representation of the vMwareEngineNetworkPeering, and an error, if there is any.
+func (c *FakeVMwareEngineNetworkPeerings) Update(ctx context.Context, vMwareEngineNetworkPeering *v1alpha1.VMwareEngineNetworkPeering, opts v1.UpdateOptions) (result *v1alpha1.VMwareEngineNetworkPeering, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(vmwareenginenetworkpeeringsResource, c.ns, vMwareEngineNetworkPeering), &v1alpha1.VMwareEngineNetworkPeering{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.VMwareEngineNetworkPeering), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeVMwareEngineNetworkPeerings) UpdateStatus(ctx context.Context, vMwareEngineNetworkPeering *v1alpha1.VMwareEngineNetworkPeering, opts v1.UpdateOptions) (*v1alpha1.VMwareEngineNetworkPeering, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(vmwareenginenetworkpeeringsResource, "status", c.ns, vMwareEngineNetworkPeering), &v1alpha1.VMwareEngineNetworkPeering{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.VMwareEngineNetworkPeering), err
+}
+
+// Delete takes name of the vMwareEngineNetworkPeering and deletes it. Returns an error if one occurs.
+func (c *FakeVMwareEngineNetworkPeerings) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(vmwareenginenetworkpeeringsResource, c.ns, name, opts), &v1alpha1.VMwareEngineNetworkPeering{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeVMwareEngineNetworkPeerings) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(vmwareenginenetworkpeeringsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.VMwareEngineNetworkPeeringList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched vMwareEngineNetworkPeering.
+func (c *FakeVMwareEngineNetworkPeerings) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VMwareEngineNetworkPeering, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(vmwareenginenetworkpeeringsResource, c.ns, name, pt, data, subresources...), &v1alpha1.VMwareEngineNetworkPeering{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.VMwareEngineNetworkPeering), err
 }

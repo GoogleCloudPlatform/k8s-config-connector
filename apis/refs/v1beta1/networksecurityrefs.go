@@ -33,3 +33,23 @@ type NetworkSecurityMirroringDeploymentGroupRef struct {
 	/* The namespace field of a NetworkSecurityMirroringDeploymentGroup resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type NetworkSecurityInterceptEndpointGroupRef struct {
+	/* A reference to an externally managed NetworkSecurityInterceptEndpointGroup resource.
+	Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptEndpointGroups/{{interceptEndpointGroupID}}". */
+	External string `json:"external,omitempty"`
+	/* The name field of a NetworkSecurityInterceptEndpointGroup resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a NetworkSecurityInterceptEndpointGroup resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type NetworkSecurityMirroringEndpointGroupRef struct {
+	/* A reference to an externally managed NetworkSecurityMirroringEndpointGroup resource.
+	Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringEndpointGroups/{{mirroringEndpointGroupID}}". */
+	External string `json:"external,omitempty"`
+	/* The name field of a NetworkSecurityMirroringEndpointGroup resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a NetworkSecurityMirroringEndpointGroup resource. */
+	Namespace string `json:"namespace,omitempty"`
+}

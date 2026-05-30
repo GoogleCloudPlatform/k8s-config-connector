@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeComputeGlobalNetworkEndpoints implements ComputeGlobalNetworkEndpointInterface
-type fakeComputeGlobalNetworkEndpoints struct {
-	*gentype.FakeClientWithList[*v1alpha1.ComputeGlobalNetworkEndpoint, *v1alpha1.ComputeGlobalNetworkEndpointList]
+// FakeComputeGlobalNetworkEndpoints implements ComputeGlobalNetworkEndpointInterface
+type FakeComputeGlobalNetworkEndpoints struct {
 	Fake *FakeComputeV1alpha1
+	ns   string
 }
 
-func newFakeComputeGlobalNetworkEndpoints(fake *FakeComputeV1alpha1, namespace string) computev1alpha1.ComputeGlobalNetworkEndpointInterface {
-	return &fakeComputeGlobalNetworkEndpoints{
-		gentype.NewFakeClientWithList[*v1alpha1.ComputeGlobalNetworkEndpoint, *v1alpha1.ComputeGlobalNetworkEndpointList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("computeglobalnetworkendpoints"),
-			v1alpha1.SchemeGroupVersion.WithKind("ComputeGlobalNetworkEndpoint"),
-			func() *v1alpha1.ComputeGlobalNetworkEndpoint { return &v1alpha1.ComputeGlobalNetworkEndpoint{} },
-			func() *v1alpha1.ComputeGlobalNetworkEndpointList { return &v1alpha1.ComputeGlobalNetworkEndpointList{} },
-			func(dst, src *v1alpha1.ComputeGlobalNetworkEndpointList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ComputeGlobalNetworkEndpointList) []*v1alpha1.ComputeGlobalNetworkEndpoint {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.ComputeGlobalNetworkEndpointList, items []*v1alpha1.ComputeGlobalNetworkEndpoint) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var computeglobalnetworkendpointsResource = v1alpha1.SchemeGroupVersion.WithResource("computeglobalnetworkendpoints")
+
+var computeglobalnetworkendpointsKind = v1alpha1.SchemeGroupVersion.WithKind("ComputeGlobalNetworkEndpoint")
+
+// Get takes name of the computeGlobalNetworkEndpoint, and returns the corresponding computeGlobalNetworkEndpoint object, and an error if there is any.
+func (c *FakeComputeGlobalNetworkEndpoints) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeGlobalNetworkEndpoint, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(computeglobalnetworkendpointsResource, c.ns, name), &v1alpha1.ComputeGlobalNetworkEndpoint{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.ComputeGlobalNetworkEndpoint), err
+}
+
+// List takes label and field selectors, and returns the list of ComputeGlobalNetworkEndpoints that match those selectors.
+func (c *FakeComputeGlobalNetworkEndpoints) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeGlobalNetworkEndpointList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(computeglobalnetworkendpointsResource, computeglobalnetworkendpointsKind, c.ns, opts), &v1alpha1.ComputeGlobalNetworkEndpointList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.ComputeGlobalNetworkEndpointList{ListMeta: obj.(*v1alpha1.ComputeGlobalNetworkEndpointList).ListMeta}
+	for _, item := range obj.(*v1alpha1.ComputeGlobalNetworkEndpointList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested computeGlobalNetworkEndpoints.
+func (c *FakeComputeGlobalNetworkEndpoints) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(computeglobalnetworkendpointsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a computeGlobalNetworkEndpoint and creates it.  Returns the server's representation of the computeGlobalNetworkEndpoint, and an error, if there is any.
+func (c *FakeComputeGlobalNetworkEndpoints) Create(ctx context.Context, computeGlobalNetworkEndpoint *v1alpha1.ComputeGlobalNetworkEndpoint, opts v1.CreateOptions) (result *v1alpha1.ComputeGlobalNetworkEndpoint, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(computeglobalnetworkendpointsResource, c.ns, computeGlobalNetworkEndpoint), &v1alpha1.ComputeGlobalNetworkEndpoint{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeGlobalNetworkEndpoint), err
+}
+
+// Update takes the representation of a computeGlobalNetworkEndpoint and updates it. Returns the server's representation of the computeGlobalNetworkEndpoint, and an error, if there is any.
+func (c *FakeComputeGlobalNetworkEndpoints) Update(ctx context.Context, computeGlobalNetworkEndpoint *v1alpha1.ComputeGlobalNetworkEndpoint, opts v1.UpdateOptions) (result *v1alpha1.ComputeGlobalNetworkEndpoint, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(computeglobalnetworkendpointsResource, c.ns, computeGlobalNetworkEndpoint), &v1alpha1.ComputeGlobalNetworkEndpoint{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeGlobalNetworkEndpoint), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeComputeGlobalNetworkEndpoints) UpdateStatus(ctx context.Context, computeGlobalNetworkEndpoint *v1alpha1.ComputeGlobalNetworkEndpoint, opts v1.UpdateOptions) (*v1alpha1.ComputeGlobalNetworkEndpoint, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(computeglobalnetworkendpointsResource, "status", c.ns, computeGlobalNetworkEndpoint), &v1alpha1.ComputeGlobalNetworkEndpoint{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeGlobalNetworkEndpoint), err
+}
+
+// Delete takes name of the computeGlobalNetworkEndpoint and deletes it. Returns an error if one occurs.
+func (c *FakeComputeGlobalNetworkEndpoints) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(computeglobalnetworkendpointsResource, c.ns, name, opts), &v1alpha1.ComputeGlobalNetworkEndpoint{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeComputeGlobalNetworkEndpoints) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(computeglobalnetworkendpointsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.ComputeGlobalNetworkEndpointList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched computeGlobalNetworkEndpoint.
+func (c *FakeComputeGlobalNetworkEndpoints) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeGlobalNetworkEndpoint, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(computeglobalnetworkendpointsResource, c.ns, name, pt, data, subresources...), &v1alpha1.ComputeGlobalNetworkEndpoint{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.ComputeGlobalNetworkEndpoint), err
 }

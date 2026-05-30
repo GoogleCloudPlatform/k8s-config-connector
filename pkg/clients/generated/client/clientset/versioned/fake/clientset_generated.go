@@ -29,8 +29,6 @@ import (
 	fakeaccesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1/fake"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
 	fakeaiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1/fake"
-	aistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aistreams/v1alpha1"
-	fakeaistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aistreams/v1alpha1/fake"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	fakealloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1/fake"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1"
@@ -43,8 +41,6 @@ import (
 	fakeapigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1/fake"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
 	fakeapigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1/fake"
-	apihubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apihub/v1alpha1"
-	fakeapihubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apihub/v1alpha1/fake"
 	apikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1"
 	fakeapikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1/fake"
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
@@ -95,8 +91,6 @@ import (
 	fakebillingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billing/v1alpha1/fake"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
 	fakebillingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1/fake"
-	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1alpha1"
-	fakebinaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1alpha1/fake"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	fakebinaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1/fake"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
@@ -171,8 +165,6 @@ import (
 	fakedatastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1/fake"
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1"
 	fakedeploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1/fake"
-	devicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1"
-	fakedevicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1/fake"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
 	fakedialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1/fake"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
@@ -269,8 +261,6 @@ import (
 	fakenetworkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1/fake"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1"
 	fakenetworkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1/fake"
-	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1alpha1"
-	fakenetworksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1alpha1/fake"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1"
 	fakenetworksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1/fake"
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
@@ -367,7 +357,6 @@ import (
 	fakeworkflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1/fake"
 	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1"
 	fakeworkstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1/fake"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -377,7 +366,7 @@ import (
 
 // NewSimpleClientset returns a clientset that will respond with the provided objects.
 // It's backed by a very simple object tracker that processes creates, updates and deletions as-is,
-// without applying any field management, validations and/or defaults. It shouldn't be considered a replacement
+// without applying any validations and/or defaults. It shouldn't be considered a replacement
 // for a real clientset and is mostly useful in simple unit tests.
 func NewSimpleClientset(objects ...runtime.Object) *Clientset {
 	o := testing.NewObjectTracker(scheme, codecs.UniversalDecoder())
@@ -391,13 +380,9 @@ func NewSimpleClientset(objects ...runtime.Object) *Clientset {
 	cs.discovery = &fakediscovery.FakeDiscovery{Fake: &cs.Fake}
 	cs.AddReactor("*", "*", testing.ObjectReaction(o))
 	cs.AddWatchReactor("*", func(action testing.Action) (handled bool, ret watch.Interface, err error) {
-		var opts metav1.ListOptions
-		if watchAction, ok := action.(testing.WatchActionImpl); ok {
-			opts = watchAction.ListOptions
-		}
 		gvr := action.GetResource()
 		ns := action.GetNamespace()
-		watch, err := o.Watch(gvr, ns, opts)
+		watch, err := o.Watch(gvr, ns)
 		if err != nil {
 			return false, nil, err
 		}
@@ -424,17 +409,6 @@ func (c *Clientset) Tracker() testing.ObjectTracker {
 	return c.tracker
 }
 
-// IsWatchListSemanticsUnSupported informs the reflector that this client
-// doesn't support WatchList semantics.
-//
-// This is a synthetic method whose sole purpose is to satisfy the optional
-// interface check performed by the reflector.
-// Returning true signals that WatchList can NOT be used.
-// No additional logic is implemented here.
-func (c *Clientset) IsWatchListSemanticsUnSupported() bool {
-	return true
-}
-
 var (
 	_ clientset.Interface = &Clientset{}
 	_ testing.FakeClient  = &Clientset{}
@@ -453,11 +427,6 @@ func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.
 // AiplatformV1alpha1 retrieves the AiplatformV1alpha1Client
 func (c *Clientset) AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface {
 	return &fakeaiplatformv1alpha1.FakeAiplatformV1alpha1{Fake: &c.Fake}
-}
-
-// AistreamsV1alpha1 retrieves the AistreamsV1alpha1Client
-func (c *Clientset) AistreamsV1alpha1() aistreamsv1alpha1.AistreamsV1alpha1Interface {
-	return &fakeaistreamsv1alpha1.FakeAistreamsV1alpha1{Fake: &c.Fake}
 }
 
 // AlloydbV1beta1 retrieves the AlloydbV1beta1Client
@@ -488,11 +457,6 @@ func (c *Clientset) ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface {
 // ApigeeV1beta1 retrieves the ApigeeV1beta1Client
 func (c *Clientset) ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface {
 	return &fakeapigeev1beta1.FakeApigeeV1beta1{Fake: &c.Fake}
-}
-
-// ApihubV1alpha1 retrieves the ApihubV1alpha1Client
-func (c *Clientset) ApihubV1alpha1() apihubv1alpha1.ApihubV1alpha1Interface {
-	return &fakeapihubv1alpha1.FakeApihubV1alpha1{Fake: &c.Fake}
 }
 
 // ApikeysV1alpha1 retrieves the ApikeysV1alpha1Client
@@ -618,11 +582,6 @@ func (c *Clientset) BillingV1alpha1() billingv1alpha1.BillingV1alpha1Interface {
 // BillingbudgetsV1beta1 retrieves the BillingbudgetsV1beta1Client
 func (c *Clientset) BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface {
 	return &fakebillingbudgetsv1beta1.FakeBillingbudgetsV1beta1{Fake: &c.Fake}
-}
-
-// BinaryauthorizationV1alpha1 retrieves the BinaryauthorizationV1alpha1Client
-func (c *Clientset) BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Interface {
-	return &fakebinaryauthorizationv1alpha1.FakeBinaryauthorizationV1alpha1{Fake: &c.Fake}
 }
 
 // BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
@@ -808,11 +767,6 @@ func (c *Clientset) DatastreamV1alpha1() datastreamv1alpha1.DatastreamV1alpha1In
 // DeploymentmanagerV1alpha1 retrieves the DeploymentmanagerV1alpha1Client
 func (c *Clientset) DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Interface {
 	return &fakedeploymentmanagerv1alpha1.FakeDeploymentmanagerV1alpha1{Fake: &c.Fake}
-}
-
-// DevicestreamingV1alpha1 retrieves the DevicestreamingV1alpha1Client
-func (c *Clientset) DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface {
-	return &fakedevicestreamingv1alpha1.FakeDevicestreamingV1alpha1{Fake: &c.Fake}
 }
 
 // DialogflowV1alpha1 retrieves the DialogflowV1alpha1Client
@@ -1053,11 +1007,6 @@ func (c *Clientset) NetworkconnectivityV1beta1() networkconnectivityv1beta1.Netw
 // NetworkmanagementV1alpha1 retrieves the NetworkmanagementV1alpha1Client
 func (c *Clientset) NetworkmanagementV1alpha1() networkmanagementv1alpha1.NetworkmanagementV1alpha1Interface {
 	return &fakenetworkmanagementv1alpha1.FakeNetworkmanagementV1alpha1{Fake: &c.Fake}
-}
-
-// NetworksecurityV1alpha1 retrieves the NetworksecurityV1alpha1Client
-func (c *Clientset) NetworksecurityV1alpha1() networksecurityv1alpha1.NetworksecurityV1alpha1Interface {
-	return &fakenetworksecurityv1alpha1.FakeNetworksecurityV1alpha1{Fake: &c.Fake}
 }
 
 // NetworksecurityV1beta1 retrieves the NetworksecurityV1beta1Client

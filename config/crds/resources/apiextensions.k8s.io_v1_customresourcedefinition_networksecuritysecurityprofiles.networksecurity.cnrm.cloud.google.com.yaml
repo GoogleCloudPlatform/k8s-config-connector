@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: networksecuritysecurityprofiles.networksecurity.cnrm.cloud.google.com
 spec:
@@ -66,31 +67,100 @@ spec:
               customInterceptProfile:
                 description: The custom TPPI configuration for the SecurityProfile.
                 properties:
-                  interceptEndpointGroup:
+                  interceptEndpointGroupRef:
                     description: Required. The target InterceptEndpointGroup. When
                       a firewall rule with this security profile attached matches
                       a packet, the packet will be intercepted to the location-local
                       target in this group.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed NetworkSecurityInterceptEndpointGroup
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptEndpointGroups/{{interceptEndpointGroupID}}".
+                        type: string
+                      name:
+                        description: The name field of a NetworkSecurityInterceptEndpointGroup
+                          resource.
+                        type: string
+                      namespace:
+                        description: The namespace field of a NetworkSecurityInterceptEndpointGroup
+                          resource.
+                        type: string
+                    type: object
                 type: object
               customMirroringProfile:
                 description: The custom Packet Mirroring v2 configuration for the
                   SecurityProfile.
                 properties:
-                  mirroringEndpointGroup:
+                  mirroringEndpointGroupRef:
                     description: Required. Immutable. The target MirroringEndpointGroup.
                       When a mirroring rule with this security profile attached matches
                       a packet, a replica will be mirrored to the location-local target
                       in this group.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed NetworkSecurityMirroringEndpointGroup
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringEndpointGroups/{{mirroringEndpointGroupID}}".
+                        type: string
+                      name:
+                        description: The name field of a NetworkSecurityMirroringEndpointGroup
+                          resource.
+                        type: string
+                      namespace:
+                        description: The namespace field of a NetworkSecurityMirroringEndpointGroup
+                          resource.
+                        type: string
+                    type: object
                 type: object
               description:
                 description: Optional. An optional description of the profile. Max
                   length 512 characters.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels as key value pairs
+                type: object
               location:
                 description: The location of this resource.
                 type: string
+              organizationRef:
+                description: The organization that this resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -214,7 +284,6 @@ spec:
                 type: object
             required:
             - location
-            - projectRef
             - type
             type: object
           status:

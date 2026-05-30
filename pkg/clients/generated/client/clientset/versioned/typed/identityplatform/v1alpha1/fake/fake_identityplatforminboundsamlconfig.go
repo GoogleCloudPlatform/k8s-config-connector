@@ -22,38 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1alpha1"
-	identityplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeIdentityPlatformInboundSAMLConfigs implements IdentityPlatformInboundSAMLConfigInterface
-type fakeIdentityPlatformInboundSAMLConfigs struct {
-	*gentype.FakeClientWithList[*v1alpha1.IdentityPlatformInboundSAMLConfig, *v1alpha1.IdentityPlatformInboundSAMLConfigList]
+// FakeIdentityPlatformInboundSAMLConfigs implements IdentityPlatformInboundSAMLConfigInterface
+type FakeIdentityPlatformInboundSAMLConfigs struct {
 	Fake *FakeIdentityplatformV1alpha1
+	ns   string
 }
 
-func newFakeIdentityPlatformInboundSAMLConfigs(fake *FakeIdentityplatformV1alpha1, namespace string) identityplatformv1alpha1.IdentityPlatformInboundSAMLConfigInterface {
-	return &fakeIdentityPlatformInboundSAMLConfigs{
-		gentype.NewFakeClientWithList[*v1alpha1.IdentityPlatformInboundSAMLConfig, *v1alpha1.IdentityPlatformInboundSAMLConfigList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("identityplatforminboundsamlconfigs"),
-			v1alpha1.SchemeGroupVersion.WithKind("IdentityPlatformInboundSAMLConfig"),
-			func() *v1alpha1.IdentityPlatformInboundSAMLConfig {
-				return &v1alpha1.IdentityPlatformInboundSAMLConfig{}
-			},
-			func() *v1alpha1.IdentityPlatformInboundSAMLConfigList {
-				return &v1alpha1.IdentityPlatformInboundSAMLConfigList{}
-			},
-			func(dst, src *v1alpha1.IdentityPlatformInboundSAMLConfigList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.IdentityPlatformInboundSAMLConfigList) []*v1alpha1.IdentityPlatformInboundSAMLConfig {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.IdentityPlatformInboundSAMLConfigList, items []*v1alpha1.IdentityPlatformInboundSAMLConfig) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var identityplatforminboundsamlconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("identityplatforminboundsamlconfigs")
+
+var identityplatforminboundsamlconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("IdentityPlatformInboundSAMLConfig")
+
+// Get takes name of the identityPlatformInboundSAMLConfig, and returns the corresponding identityPlatformInboundSAMLConfig object, and an error if there is any.
+func (c *FakeIdentityPlatformInboundSAMLConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.IdentityPlatformInboundSAMLConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(identityplatforminboundsamlconfigsResource, c.ns, name), &v1alpha1.IdentityPlatformInboundSAMLConfig{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.IdentityPlatformInboundSAMLConfig), err
+}
+
+// List takes label and field selectors, and returns the list of IdentityPlatformInboundSAMLConfigs that match those selectors.
+func (c *FakeIdentityPlatformInboundSAMLConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.IdentityPlatformInboundSAMLConfigList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(identityplatforminboundsamlconfigsResource, identityplatforminboundsamlconfigsKind, c.ns, opts), &v1alpha1.IdentityPlatformInboundSAMLConfigList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.IdentityPlatformInboundSAMLConfigList{ListMeta: obj.(*v1alpha1.IdentityPlatformInboundSAMLConfigList).ListMeta}
+	for _, item := range obj.(*v1alpha1.IdentityPlatformInboundSAMLConfigList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested identityPlatformInboundSAMLConfigs.
+func (c *FakeIdentityPlatformInboundSAMLConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(identityplatforminboundsamlconfigsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a identityPlatformInboundSAMLConfig and creates it.  Returns the server's representation of the identityPlatformInboundSAMLConfig, and an error, if there is any.
+func (c *FakeIdentityPlatformInboundSAMLConfigs) Create(ctx context.Context, identityPlatformInboundSAMLConfig *v1alpha1.IdentityPlatformInboundSAMLConfig, opts v1.CreateOptions) (result *v1alpha1.IdentityPlatformInboundSAMLConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(identityplatforminboundsamlconfigsResource, c.ns, identityPlatformInboundSAMLConfig), &v1alpha1.IdentityPlatformInboundSAMLConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.IdentityPlatformInboundSAMLConfig), err
+}
+
+// Update takes the representation of a identityPlatformInboundSAMLConfig and updates it. Returns the server's representation of the identityPlatformInboundSAMLConfig, and an error, if there is any.
+func (c *FakeIdentityPlatformInboundSAMLConfigs) Update(ctx context.Context, identityPlatformInboundSAMLConfig *v1alpha1.IdentityPlatformInboundSAMLConfig, opts v1.UpdateOptions) (result *v1alpha1.IdentityPlatformInboundSAMLConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(identityplatforminboundsamlconfigsResource, c.ns, identityPlatformInboundSAMLConfig), &v1alpha1.IdentityPlatformInboundSAMLConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.IdentityPlatformInboundSAMLConfig), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeIdentityPlatformInboundSAMLConfigs) UpdateStatus(ctx context.Context, identityPlatformInboundSAMLConfig *v1alpha1.IdentityPlatformInboundSAMLConfig, opts v1.UpdateOptions) (*v1alpha1.IdentityPlatformInboundSAMLConfig, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(identityplatforminboundsamlconfigsResource, "status", c.ns, identityPlatformInboundSAMLConfig), &v1alpha1.IdentityPlatformInboundSAMLConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.IdentityPlatformInboundSAMLConfig), err
+}
+
+// Delete takes name of the identityPlatformInboundSAMLConfig and deletes it. Returns an error if one occurs.
+func (c *FakeIdentityPlatformInboundSAMLConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(identityplatforminboundsamlconfigsResource, c.ns, name, opts), &v1alpha1.IdentityPlatformInboundSAMLConfig{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeIdentityPlatformInboundSAMLConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(identityplatforminboundsamlconfigsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.IdentityPlatformInboundSAMLConfigList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched identityPlatformInboundSAMLConfig.
+func (c *FakeIdentityPlatformInboundSAMLConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.IdentityPlatformInboundSAMLConfig, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(identityplatforminboundsamlconfigsResource, c.ns, name, pt, data, subresources...), &v1alpha1.IdentityPlatformInboundSAMLConfig{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.IdentityPlatformInboundSAMLConfig), err
 }

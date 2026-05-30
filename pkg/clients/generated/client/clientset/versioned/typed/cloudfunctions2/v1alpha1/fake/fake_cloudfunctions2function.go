@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudfunctions2/v1alpha1"
-	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakeCloudFunctions2Functions implements CloudFunctions2FunctionInterface
-type fakeCloudFunctions2Functions struct {
-	*gentype.FakeClientWithList[*v1alpha1.CloudFunctions2Function, *v1alpha1.CloudFunctions2FunctionList]
+// FakeCloudFunctions2Functions implements CloudFunctions2FunctionInterface
+type FakeCloudFunctions2Functions struct {
 	Fake *FakeCloudfunctions2V1alpha1
+	ns   string
 }
 
-func newFakeCloudFunctions2Functions(fake *FakeCloudfunctions2V1alpha1, namespace string) cloudfunctions2v1alpha1.CloudFunctions2FunctionInterface {
-	return &fakeCloudFunctions2Functions{
-		gentype.NewFakeClientWithList[*v1alpha1.CloudFunctions2Function, *v1alpha1.CloudFunctions2FunctionList](
-			fake.Fake,
-			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("cloudfunctions2functions"),
-			v1alpha1.SchemeGroupVersion.WithKind("CloudFunctions2Function"),
-			func() *v1alpha1.CloudFunctions2Function { return &v1alpha1.CloudFunctions2Function{} },
-			func() *v1alpha1.CloudFunctions2FunctionList { return &v1alpha1.CloudFunctions2FunctionList{} },
-			func(dst, src *v1alpha1.CloudFunctions2FunctionList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.CloudFunctions2FunctionList) []*v1alpha1.CloudFunctions2Function {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1alpha1.CloudFunctions2FunctionList, items []*v1alpha1.CloudFunctions2Function) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var cloudfunctions2functionsResource = v1alpha1.SchemeGroupVersion.WithResource("cloudfunctions2functions")
+
+var cloudfunctions2functionsKind = v1alpha1.SchemeGroupVersion.WithKind("CloudFunctions2Function")
+
+// Get takes name of the cloudFunctions2Function, and returns the corresponding cloudFunctions2Function object, and an error if there is any.
+func (c *FakeCloudFunctions2Functions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudFunctions2Function, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(cloudfunctions2functionsResource, c.ns, name), &v1alpha1.CloudFunctions2Function{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1alpha1.CloudFunctions2Function), err
+}
+
+// List takes label and field selectors, and returns the list of CloudFunctions2Functions that match those selectors.
+func (c *FakeCloudFunctions2Functions) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudFunctions2FunctionList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(cloudfunctions2functionsResource, cloudfunctions2functionsKind, c.ns, opts), &v1alpha1.CloudFunctions2FunctionList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1alpha1.CloudFunctions2FunctionList{ListMeta: obj.(*v1alpha1.CloudFunctions2FunctionList).ListMeta}
+	for _, item := range obj.(*v1alpha1.CloudFunctions2FunctionList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested cloudFunctions2Functions.
+func (c *FakeCloudFunctions2Functions) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(cloudfunctions2functionsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a cloudFunctions2Function and creates it.  Returns the server's representation of the cloudFunctions2Function, and an error, if there is any.
+func (c *FakeCloudFunctions2Functions) Create(ctx context.Context, cloudFunctions2Function *v1alpha1.CloudFunctions2Function, opts v1.CreateOptions) (result *v1alpha1.CloudFunctions2Function, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(cloudfunctions2functionsResource, c.ns, cloudFunctions2Function), &v1alpha1.CloudFunctions2Function{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudFunctions2Function), err
+}
+
+// Update takes the representation of a cloudFunctions2Function and updates it. Returns the server's representation of the cloudFunctions2Function, and an error, if there is any.
+func (c *FakeCloudFunctions2Functions) Update(ctx context.Context, cloudFunctions2Function *v1alpha1.CloudFunctions2Function, opts v1.UpdateOptions) (result *v1alpha1.CloudFunctions2Function, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(cloudfunctions2functionsResource, c.ns, cloudFunctions2Function), &v1alpha1.CloudFunctions2Function{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudFunctions2Function), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeCloudFunctions2Functions) UpdateStatus(ctx context.Context, cloudFunctions2Function *v1alpha1.CloudFunctions2Function, opts v1.UpdateOptions) (*v1alpha1.CloudFunctions2Function, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(cloudfunctions2functionsResource, "status", c.ns, cloudFunctions2Function), &v1alpha1.CloudFunctions2Function{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudFunctions2Function), err
+}
+
+// Delete takes name of the cloudFunctions2Function and deletes it. Returns an error if one occurs.
+func (c *FakeCloudFunctions2Functions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(cloudfunctions2functionsResource, c.ns, name, opts), &v1alpha1.CloudFunctions2Function{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakeCloudFunctions2Functions) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(cloudfunctions2functionsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1alpha1.CloudFunctions2FunctionList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched cloudFunctions2Function.
+func (c *FakeCloudFunctions2Functions) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudFunctions2Function, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(cloudfunctions2functionsResource, c.ns, name, pt, data, subresources...), &v1alpha1.CloudFunctions2Function{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.CloudFunctions2Function), err
 }

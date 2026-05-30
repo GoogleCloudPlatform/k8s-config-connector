@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	speechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/speech/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/speech/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // SpeechRecognizersGetter has a method to return a SpeechRecognizerInterface.
@@ -40,34 +41,158 @@ type SpeechRecognizersGetter interface {
 
 // SpeechRecognizerInterface has methods to work with SpeechRecognizer resources.
 type SpeechRecognizerInterface interface {
-	Create(ctx context.Context, speechRecognizer *speechv1beta1.SpeechRecognizer, opts v1.CreateOptions) (*speechv1beta1.SpeechRecognizer, error)
-	Update(ctx context.Context, speechRecognizer *speechv1beta1.SpeechRecognizer, opts v1.UpdateOptions) (*speechv1beta1.SpeechRecognizer, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, speechRecognizer *speechv1beta1.SpeechRecognizer, opts v1.UpdateOptions) (*speechv1beta1.SpeechRecognizer, error)
+	Create(ctx context.Context, speechRecognizer *v1beta1.SpeechRecognizer, opts v1.CreateOptions) (*v1beta1.SpeechRecognizer, error)
+	Update(ctx context.Context, speechRecognizer *v1beta1.SpeechRecognizer, opts v1.UpdateOptions) (*v1beta1.SpeechRecognizer, error)
+	UpdateStatus(ctx context.Context, speechRecognizer *v1beta1.SpeechRecognizer, opts v1.UpdateOptions) (*v1beta1.SpeechRecognizer, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*speechv1beta1.SpeechRecognizer, error)
-	List(ctx context.Context, opts v1.ListOptions) (*speechv1beta1.SpeechRecognizerList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.SpeechRecognizer, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.SpeechRecognizerList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *speechv1beta1.SpeechRecognizer, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SpeechRecognizer, err error)
 	SpeechRecognizerExpansion
 }
 
 // speechRecognizers implements SpeechRecognizerInterface
 type speechRecognizers struct {
-	*gentype.ClientWithList[*speechv1beta1.SpeechRecognizer, *speechv1beta1.SpeechRecognizerList]
+	client rest.Interface
+	ns     string
 }
 
 // newSpeechRecognizers returns a SpeechRecognizers
 func newSpeechRecognizers(c *SpeechV1beta1Client, namespace string) *speechRecognizers {
 	return &speechRecognizers{
-		gentype.NewClientWithList[*speechv1beta1.SpeechRecognizer, *speechv1beta1.SpeechRecognizerList](
-			"speechrecognizers",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *speechv1beta1.SpeechRecognizer { return &speechv1beta1.SpeechRecognizer{} },
-			func() *speechv1beta1.SpeechRecognizerList { return &speechv1beta1.SpeechRecognizerList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the speechRecognizer, and returns the corresponding speechRecognizer object, and an error if there is any.
+func (c *speechRecognizers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SpeechRecognizer, err error) {
+	result = &v1beta1.SpeechRecognizer{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("speechrecognizers").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of SpeechRecognizers that match those selectors.
+func (c *speechRecognizers) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.SpeechRecognizerList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.SpeechRecognizerList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("speechrecognizers").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested speechRecognizers.
+func (c *speechRecognizers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("speechrecognizers").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a speechRecognizer and creates it.  Returns the server's representation of the speechRecognizer, and an error, if there is any.
+func (c *speechRecognizers) Create(ctx context.Context, speechRecognizer *v1beta1.SpeechRecognizer, opts v1.CreateOptions) (result *v1beta1.SpeechRecognizer, err error) {
+	result = &v1beta1.SpeechRecognizer{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("speechrecognizers").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(speechRecognizer).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a speechRecognizer and updates it. Returns the server's representation of the speechRecognizer, and an error, if there is any.
+func (c *speechRecognizers) Update(ctx context.Context, speechRecognizer *v1beta1.SpeechRecognizer, opts v1.UpdateOptions) (result *v1beta1.SpeechRecognizer, err error) {
+	result = &v1beta1.SpeechRecognizer{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("speechrecognizers").
+		Name(speechRecognizer.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(speechRecognizer).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *speechRecognizers) UpdateStatus(ctx context.Context, speechRecognizer *v1beta1.SpeechRecognizer, opts v1.UpdateOptions) (result *v1beta1.SpeechRecognizer, err error) {
+	result = &v1beta1.SpeechRecognizer{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("speechrecognizers").
+		Name(speechRecognizer.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(speechRecognizer).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the speechRecognizer and deletes it. Returns an error if one occurs.
+func (c *speechRecognizers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("speechrecognizers").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *speechRecognizers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("speechrecognizers").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched speechRecognizer.
+func (c *speechRecognizers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.SpeechRecognizer, err error) {
+	result = &v1beta1.SpeechRecognizer{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("speechrecognizers").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

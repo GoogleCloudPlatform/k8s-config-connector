@@ -22,34 +22,123 @@
 package fake
 
 import (
+	"context"
+
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsub/v1beta1"
-	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1"
-	gentype "k8s.io/client-go/gentype"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	types "k8s.io/apimachinery/pkg/types"
+	watch "k8s.io/apimachinery/pkg/watch"
+	testing "k8s.io/client-go/testing"
 )
 
-// fakePubSubSnapshots implements PubSubSnapshotInterface
-type fakePubSubSnapshots struct {
-	*gentype.FakeClientWithList[*v1beta1.PubSubSnapshot, *v1beta1.PubSubSnapshotList]
+// FakePubSubSnapshots implements PubSubSnapshotInterface
+type FakePubSubSnapshots struct {
 	Fake *FakePubsubV1beta1
+	ns   string
 }
 
-func newFakePubSubSnapshots(fake *FakePubsubV1beta1, namespace string) pubsubv1beta1.PubSubSnapshotInterface {
-	return &fakePubSubSnapshots{
-		gentype.NewFakeClientWithList[*v1beta1.PubSubSnapshot, *v1beta1.PubSubSnapshotList](
-			fake.Fake,
-			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("pubsubsnapshots"),
-			v1beta1.SchemeGroupVersion.WithKind("PubSubSnapshot"),
-			func() *v1beta1.PubSubSnapshot { return &v1beta1.PubSubSnapshot{} },
-			func() *v1beta1.PubSubSnapshotList { return &v1beta1.PubSubSnapshotList{} },
-			func(dst, src *v1beta1.PubSubSnapshotList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.PubSubSnapshotList) []*v1beta1.PubSubSnapshot {
-				return gentype.ToPointerSlice(list.Items)
-			},
-			func(list *v1beta1.PubSubSnapshotList, items []*v1beta1.PubSubSnapshot) {
-				list.Items = gentype.FromPointerSlice(items)
-			},
-		),
-		fake,
+var pubsubsnapshotsResource = v1beta1.SchemeGroupVersion.WithResource("pubsubsnapshots")
+
+var pubsubsnapshotsKind = v1beta1.SchemeGroupVersion.WithKind("PubSubSnapshot")
+
+// Get takes name of the pubSubSnapshot, and returns the corresponding pubSubSnapshot object, and an error if there is any.
+func (c *FakePubSubSnapshots) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.PubSubSnapshot, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(pubsubsnapshotsResource, c.ns, name), &v1beta1.PubSubSnapshot{})
+
+	if obj == nil {
+		return nil, err
 	}
+	return obj.(*v1beta1.PubSubSnapshot), err
+}
+
+// List takes label and field selectors, and returns the list of PubSubSnapshots that match those selectors.
+func (c *FakePubSubSnapshots) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.PubSubSnapshotList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(pubsubsnapshotsResource, pubsubsnapshotsKind, c.ns, opts), &v1beta1.PubSubSnapshotList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.PubSubSnapshotList{ListMeta: obj.(*v1beta1.PubSubSnapshotList).ListMeta}
+	for _, item := range obj.(*v1beta1.PubSubSnapshotList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested pubSubSnapshots.
+func (c *FakePubSubSnapshots) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(pubsubsnapshotsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a pubSubSnapshot and creates it.  Returns the server's representation of the pubSubSnapshot, and an error, if there is any.
+func (c *FakePubSubSnapshots) Create(ctx context.Context, pubSubSnapshot *v1beta1.PubSubSnapshot, opts v1.CreateOptions) (result *v1beta1.PubSubSnapshot, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewCreateAction(pubsubsnapshotsResource, c.ns, pubSubSnapshot), &v1beta1.PubSubSnapshot{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PubSubSnapshot), err
+}
+
+// Update takes the representation of a pubSubSnapshot and updates it. Returns the server's representation of the pubSubSnapshot, and an error, if there is any.
+func (c *FakePubSubSnapshots) Update(ctx context.Context, pubSubSnapshot *v1beta1.PubSubSnapshot, opts v1.UpdateOptions) (result *v1beta1.PubSubSnapshot, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateAction(pubsubsnapshotsResource, c.ns, pubSubSnapshot), &v1beta1.PubSubSnapshot{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PubSubSnapshot), err
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakePubSubSnapshots) UpdateStatus(ctx context.Context, pubSubSnapshot *v1beta1.PubSubSnapshot, opts v1.UpdateOptions) (*v1beta1.PubSubSnapshot, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(pubsubsnapshotsResource, "status", c.ns, pubSubSnapshot), &v1beta1.PubSubSnapshot{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PubSubSnapshot), err
+}
+
+// Delete takes name of the pubSubSnapshot and deletes it. Returns an error if one occurs.
+func (c *FakePubSubSnapshots) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewDeleteActionWithOptions(pubsubsnapshotsResource, c.ns, name, opts), &v1beta1.PubSubSnapshot{})
+
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakePubSubSnapshots) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(pubsubsnapshotsResource, c.ns, listOpts)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.PubSubSnapshotList{})
+	return err
+}
+
+// Patch applies the patch and returns the patched pubSubSnapshot.
+func (c *FakePubSubSnapshots) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.PubSubSnapshot, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(pubsubsnapshotsResource, c.ns, name, pt, data, subresources...), &v1beta1.PubSubSnapshot{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PubSubSnapshot), err
 }

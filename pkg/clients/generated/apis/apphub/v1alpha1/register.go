@@ -65,11 +65,5 @@ var (
 		Kind:    reflect.TypeOf(AppHubDiscoveredWorkload{}).Name(),
 	}
 
-	AppHubServiceProjectAttachmentGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(AppHubServiceProjectAttachment{}).Name(),
-	}
-
 	apphubAPIVersion = SchemeGroupVersion.String()
 )

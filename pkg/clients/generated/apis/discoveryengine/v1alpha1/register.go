@@ -71,11 +71,5 @@ var (
 		Kind:    reflect.TypeOf(DiscoveryEngineEngine{}).Name(),
 	}
 
-	DiscoveryEngineIdentityMappingStoreGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DiscoveryEngineIdentityMappingStore{}).Name(),
-	}
-
 	discoveryengineAPIVersion = SchemeGroupVersion.String()
 )

@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	netappv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/netapp/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/netapp/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // NetAppBackupVaultsGetter has a method to return a NetAppBackupVaultInterface.
@@ -40,34 +41,158 @@ type NetAppBackupVaultsGetter interface {
 
 // NetAppBackupVaultInterface has methods to work with NetAppBackupVault resources.
 type NetAppBackupVaultInterface interface {
-	Create(ctx context.Context, netAppBackupVault *netappv1alpha1.NetAppBackupVault, opts v1.CreateOptions) (*netappv1alpha1.NetAppBackupVault, error)
-	Update(ctx context.Context, netAppBackupVault *netappv1alpha1.NetAppBackupVault, opts v1.UpdateOptions) (*netappv1alpha1.NetAppBackupVault, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, netAppBackupVault *netappv1alpha1.NetAppBackupVault, opts v1.UpdateOptions) (*netappv1alpha1.NetAppBackupVault, error)
+	Create(ctx context.Context, netAppBackupVault *v1alpha1.NetAppBackupVault, opts v1.CreateOptions) (*v1alpha1.NetAppBackupVault, error)
+	Update(ctx context.Context, netAppBackupVault *v1alpha1.NetAppBackupVault, opts v1.UpdateOptions) (*v1alpha1.NetAppBackupVault, error)
+	UpdateStatus(ctx context.Context, netAppBackupVault *v1alpha1.NetAppBackupVault, opts v1.UpdateOptions) (*v1alpha1.NetAppBackupVault, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*netappv1alpha1.NetAppBackupVault, error)
-	List(ctx context.Context, opts v1.ListOptions) (*netappv1alpha1.NetAppBackupVaultList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.NetAppBackupVault, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.NetAppBackupVaultList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *netappv1alpha1.NetAppBackupVault, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetAppBackupVault, err error)
 	NetAppBackupVaultExpansion
 }
 
 // netAppBackupVaults implements NetAppBackupVaultInterface
 type netAppBackupVaults struct {
-	*gentype.ClientWithList[*netappv1alpha1.NetAppBackupVault, *netappv1alpha1.NetAppBackupVaultList]
+	client rest.Interface
+	ns     string
 }
 
 // newNetAppBackupVaults returns a NetAppBackupVaults
 func newNetAppBackupVaults(c *NetappV1alpha1Client, namespace string) *netAppBackupVaults {
 	return &netAppBackupVaults{
-		gentype.NewClientWithList[*netappv1alpha1.NetAppBackupVault, *netappv1alpha1.NetAppBackupVaultList](
-			"netappbackupvaults",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *netappv1alpha1.NetAppBackupVault { return &netappv1alpha1.NetAppBackupVault{} },
-			func() *netappv1alpha1.NetAppBackupVaultList { return &netappv1alpha1.NetAppBackupVaultList{} },
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the netAppBackupVault, and returns the corresponding netAppBackupVault object, and an error if there is any.
+func (c *netAppBackupVaults) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetAppBackupVault, err error) {
+	result = &v1alpha1.NetAppBackupVault{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("netappbackupvaults").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of NetAppBackupVaults that match those selectors.
+func (c *netAppBackupVaults) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetAppBackupVaultList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.NetAppBackupVaultList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("netappbackupvaults").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested netAppBackupVaults.
+func (c *netAppBackupVaults) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("netappbackupvaults").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a netAppBackupVault and creates it.  Returns the server's representation of the netAppBackupVault, and an error, if there is any.
+func (c *netAppBackupVaults) Create(ctx context.Context, netAppBackupVault *v1alpha1.NetAppBackupVault, opts v1.CreateOptions) (result *v1alpha1.NetAppBackupVault, err error) {
+	result = &v1alpha1.NetAppBackupVault{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("netappbackupvaults").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(netAppBackupVault).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a netAppBackupVault and updates it. Returns the server's representation of the netAppBackupVault, and an error, if there is any.
+func (c *netAppBackupVaults) Update(ctx context.Context, netAppBackupVault *v1alpha1.NetAppBackupVault, opts v1.UpdateOptions) (result *v1alpha1.NetAppBackupVault, err error) {
+	result = &v1alpha1.NetAppBackupVault{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("netappbackupvaults").
+		Name(netAppBackupVault.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(netAppBackupVault).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *netAppBackupVaults) UpdateStatus(ctx context.Context, netAppBackupVault *v1alpha1.NetAppBackupVault, opts v1.UpdateOptions) (result *v1alpha1.NetAppBackupVault, err error) {
+	result = &v1alpha1.NetAppBackupVault{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("netappbackupvaults").
+		Name(netAppBackupVault.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(netAppBackupVault).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the netAppBackupVault and deletes it. Returns an error if one occurs.
+func (c *netAppBackupVaults) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("netappbackupvaults").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *netAppBackupVaults) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("netappbackupvaults").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched netAppBackupVault.
+func (c *netAppBackupVaults) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetAppBackupVault, err error) {
+	result = &v1alpha1.NetAppBackupVault{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("netappbackupvaults").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

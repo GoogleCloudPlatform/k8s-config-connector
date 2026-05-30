@@ -22,14 +22,15 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasestorage/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasestorage/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // FirebaseStorageBucketsGetter has a method to return a FirebaseStorageBucketInterface.
@@ -40,38 +41,158 @@ type FirebaseStorageBucketsGetter interface {
 
 // FirebaseStorageBucketInterface has methods to work with FirebaseStorageBucket resources.
 type FirebaseStorageBucketInterface interface {
-	Create(ctx context.Context, firebaseStorageBucket *firebasestoragev1alpha1.FirebaseStorageBucket, opts v1.CreateOptions) (*firebasestoragev1alpha1.FirebaseStorageBucket, error)
-	Update(ctx context.Context, firebaseStorageBucket *firebasestoragev1alpha1.FirebaseStorageBucket, opts v1.UpdateOptions) (*firebasestoragev1alpha1.FirebaseStorageBucket, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, firebaseStorageBucket *firebasestoragev1alpha1.FirebaseStorageBucket, opts v1.UpdateOptions) (*firebasestoragev1alpha1.FirebaseStorageBucket, error)
+	Create(ctx context.Context, firebaseStorageBucket *v1alpha1.FirebaseStorageBucket, opts v1.CreateOptions) (*v1alpha1.FirebaseStorageBucket, error)
+	Update(ctx context.Context, firebaseStorageBucket *v1alpha1.FirebaseStorageBucket, opts v1.UpdateOptions) (*v1alpha1.FirebaseStorageBucket, error)
+	UpdateStatus(ctx context.Context, firebaseStorageBucket *v1alpha1.FirebaseStorageBucket, opts v1.UpdateOptions) (*v1alpha1.FirebaseStorageBucket, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*firebasestoragev1alpha1.FirebaseStorageBucket, error)
-	List(ctx context.Context, opts v1.ListOptions) (*firebasestoragev1alpha1.FirebaseStorageBucketList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.FirebaseStorageBucket, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.FirebaseStorageBucketList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *firebasestoragev1alpha1.FirebaseStorageBucket, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.FirebaseStorageBucket, err error)
 	FirebaseStorageBucketExpansion
 }
 
 // firebaseStorageBuckets implements FirebaseStorageBucketInterface
 type firebaseStorageBuckets struct {
-	*gentype.ClientWithList[*firebasestoragev1alpha1.FirebaseStorageBucket, *firebasestoragev1alpha1.FirebaseStorageBucketList]
+	client rest.Interface
+	ns     string
 }
 
 // newFirebaseStorageBuckets returns a FirebaseStorageBuckets
 func newFirebaseStorageBuckets(c *FirebasestorageV1alpha1Client, namespace string) *firebaseStorageBuckets {
 	return &firebaseStorageBuckets{
-		gentype.NewClientWithList[*firebasestoragev1alpha1.FirebaseStorageBucket, *firebasestoragev1alpha1.FirebaseStorageBucketList](
-			"firebasestoragebuckets",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *firebasestoragev1alpha1.FirebaseStorageBucket {
-				return &firebasestoragev1alpha1.FirebaseStorageBucket{}
-			},
-			func() *firebasestoragev1alpha1.FirebaseStorageBucketList {
-				return &firebasestoragev1alpha1.FirebaseStorageBucketList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the firebaseStorageBucket, and returns the corresponding firebaseStorageBucket object, and an error if there is any.
+func (c *firebaseStorageBuckets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.FirebaseStorageBucket, err error) {
+	result = &v1alpha1.FirebaseStorageBucket{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("firebasestoragebuckets").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of FirebaseStorageBuckets that match those selectors.
+func (c *firebaseStorageBuckets) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.FirebaseStorageBucketList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1alpha1.FirebaseStorageBucketList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("firebasestoragebuckets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested firebaseStorageBuckets.
+func (c *firebaseStorageBuckets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("firebasestoragebuckets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a firebaseStorageBucket and creates it.  Returns the server's representation of the firebaseStorageBucket, and an error, if there is any.
+func (c *firebaseStorageBuckets) Create(ctx context.Context, firebaseStorageBucket *v1alpha1.FirebaseStorageBucket, opts v1.CreateOptions) (result *v1alpha1.FirebaseStorageBucket, err error) {
+	result = &v1alpha1.FirebaseStorageBucket{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("firebasestoragebuckets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(firebaseStorageBucket).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a firebaseStorageBucket and updates it. Returns the server's representation of the firebaseStorageBucket, and an error, if there is any.
+func (c *firebaseStorageBuckets) Update(ctx context.Context, firebaseStorageBucket *v1alpha1.FirebaseStorageBucket, opts v1.UpdateOptions) (result *v1alpha1.FirebaseStorageBucket, err error) {
+	result = &v1alpha1.FirebaseStorageBucket{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("firebasestoragebuckets").
+		Name(firebaseStorageBucket.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(firebaseStorageBucket).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *firebaseStorageBuckets) UpdateStatus(ctx context.Context, firebaseStorageBucket *v1alpha1.FirebaseStorageBucket, opts v1.UpdateOptions) (result *v1alpha1.FirebaseStorageBucket, err error) {
+	result = &v1alpha1.FirebaseStorageBucket{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("firebasestoragebuckets").
+		Name(firebaseStorageBucket.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(firebaseStorageBucket).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the firebaseStorageBucket and deletes it. Returns an error if one occurs.
+func (c *firebaseStorageBuckets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("firebasestoragebuckets").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *firebaseStorageBuckets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("firebasestoragebuckets").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched firebaseStorageBucket.
+func (c *firebaseStorageBuckets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.FirebaseStorageBucket, err error) {
+	result = &v1alpha1.FirebaseStorageBucket{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("firebasestoragebuckets").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

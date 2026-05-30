@@ -37,24 +37,6 @@ type AntivirusOverride struct {
 	Action *string `json:"action,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networksecurity.v1.CustomInterceptProfile
-type CustomInterceptProfile struct {
-	// Required. The target InterceptEndpointGroup.
-	//  When a firewall rule with this security profile attached matches a packet,
-	//  the packet will be intercepted to the location-local target in this group.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.CustomInterceptProfile.intercept_endpoint_group
-	InterceptEndpointGroup *string `json:"interceptEndpointGroup,omitempty"`
-}
-
-// +kcc:proto=google.cloud.networksecurity.v1.CustomMirroringProfile
-type CustomMirroringProfile struct {
-	// Required. Immutable. The target MirroringEndpointGroup.
-	//  When a mirroring rule with this security profile attached matches a packet,
-	//  a replica will be mirrored to the location-local target in this group.
-	// +kcc:proto:field=google.cloud.networksecurity.v1.CustomMirroringProfile.mirroring_endpoint_group
-	MirroringEndpointGroup *string `json:"mirroringEndpointGroup,omitempty"`
-}
-
 // +kcc:proto=google.cloud.networksecurity.v1.SeverityOverride
 type SeverityOverride struct {
 	// Required. Severity level to match.

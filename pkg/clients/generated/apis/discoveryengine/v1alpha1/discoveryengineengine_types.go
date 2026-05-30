@@ -69,21 +69,6 @@ type EngineChatEngineConfig struct {
 	// +optional
 	AgentCreationConfig *EngineAgentCreationConfig `json:"agentCreationConfig,omitempty"`
 
-	/* Optional. If the flag set to true, we allow the agent and engine are in
-	different locations, otherwise the agent and engine are required to be in
-	the same location. The flag is set to false by default.
-
-	Note that the `allow_cross_region` are one-time consumed by and
-	passed to
-	[EngineService.CreateEngine][google.cloud.discoveryengine.v1.EngineService.CreateEngine].
-	It means they cannot be retrieved using
-	[EngineService.GetEngine][google.cloud.discoveryengine.v1.EngineService.GetEngine]
-	or
-	[EngineService.ListEngines][google.cloud.discoveryengine.v1.EngineService.ListEngines]
-	API after engine creation. */
-	// +optional
-	AllowCrossRegion *bool `json:"allowCrossRegion,omitempty"`
-
 	/* The resource name of an exist Dialogflow agent to link to this Chat
 	Engine. Customers can either provide `agent_creation_config` to create
 	agent or provide an agent name that links the agent with the Chat engine.

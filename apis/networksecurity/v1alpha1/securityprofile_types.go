@@ -22,16 +22,38 @@ import (
 
 var NetworkSecuritySecurityProfileGVK = GroupVersion.WithKind("NetworkSecuritySecurityProfile")
 
+// +kcc:proto=google.cloud.networksecurity.v1.CustomInterceptProfile
+type CustomInterceptProfile struct {
+	// Required. The target InterceptEndpointGroup.
+	//  When a firewall rule with this security profile attached matches a packet,
+	//  the packet will be intercepted to the location-local target in this group.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.CustomInterceptProfile.intercept_endpoint_group
+	InterceptEndpointGroupRef *refsv1beta1.NetworkSecurityInterceptEndpointGroupRef `json:"interceptEndpointGroupRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networksecurity.v1.CustomMirroringProfile
+type CustomMirroringProfile struct {
+	// Required. Immutable. The target MirroringEndpointGroup.
+	//  When a mirroring rule with this security profile attached matches a packet,
+	//  a replica will be mirrored to the location-local target in this group.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.CustomMirroringProfile.mirroring_endpoint_group
+	MirroringEndpointGroupRef *refsv1beta1.NetworkSecurityMirroringEndpointGroupRef `json:"mirroringEndpointGroupRef,omitempty"`
+}
+
 // NetworkSecuritySecurityProfileSpec defines the desired state of NetworkSecuritySecurityProfile
 // +kcc:spec:proto=google.cloud.networksecurity.v1.SecurityProfile
 type NetworkSecuritySecurityProfileSpec struct {
 	// The project that this resource belongs to.
-	// +required
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// +kubebuilder:validation:Optional
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// The organization that this resource belongs to.
+	// +kubebuilder:validation:Optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 
 	// The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The NetworkSecuritySecurityProfile name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -46,6 +68,11 @@ type NetworkSecuritySecurityProfileSpec struct {
 	// +kubebuilder:validation:Optional
 	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.description
 	Description *string `json:"description,omitempty"`
+
+	// Optional. Labels as key value pairs
+	// +kubebuilder:validation:Optional
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.labels
+	Labels map[string]string `json:"labels,omitempty"`
 
 	// The threat prevention configuration for the SecurityProfile.
 	// +kubebuilder:validation:Optional
@@ -109,6 +136,7 @@ type NetworkSecuritySecurityProfileObservedState struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecuritysecurityprofile;gcpnetworksecuritysecurityprofiles
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

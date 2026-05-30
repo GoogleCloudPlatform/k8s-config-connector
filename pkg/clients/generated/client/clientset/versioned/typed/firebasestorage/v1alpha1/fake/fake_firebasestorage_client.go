@@ -32,7 +32,7 @@ type FakeFirebasestorageV1alpha1 struct {
 }
 
 func (c *FakeFirebasestorageV1alpha1) FirebaseStorageBuckets(namespace string) v1alpha1.FirebaseStorageBucketInterface {
-	return newFakeFirebaseStorageBuckets(c, namespace)
+	return &FakeFirebaseStorageBuckets{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -27,9 +27,14 @@ import (
 
 var _ identity.IdentityV2 = &SecurityProfileIdentity{}
 
-var securityProfileURL = gcpurls.Template[SecurityProfileIdentity](
+var securityProfileProjectURL = gcpurls.Template[SecurityProfileIdentity](
 	"networksecurity.googleapis.com",
 	"projects/{project}/locations/{location}/securityProfiles/{securityProfile}",
+)
+
+var securityProfileOrganizationURL = gcpurls.Template[SecurityProfileIdentity](
+	"networksecurity.googleapis.com",
+	"organizations/{organization}/locations/{location}/securityProfiles/{securityProfile}",
 )
 
 // SecurityProfileIdentity defines the resource reference to NetworkSecuritySecurityProfile, which "External" field
@@ -37,28 +42,53 @@ var securityProfileURL = gcpurls.Template[SecurityProfileIdentity](
 // +k8s:deepcopy-gen=false
 type SecurityProfileIdentity struct {
 	Project         string
+	Organization    string
 	Location        string
 	SecurityProfile string
 }
 
+func (i *SecurityProfileIdentity) Parent() string {
+	if i.Organization != "" {
+		return "organizations/" + i.Organization + "/locations/" + i.Location
+	}
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
+func (i *SecurityProfileIdentity) ID() string {
+	return i.SecurityProfile
+}
+
 func (i *SecurityProfileIdentity) FromExternal(ref string) error {
-	out, match, err := securityProfileURL.Parse(ref)
+	out, match, err := securityProfileProjectURL.Parse(ref)
 	if err != nil {
 		return err
 	}
-	if !match {
-		return fmt.Errorf("format of NetworkSecuritySecurityProfile external=%q was not known (use %s)", ref, securityProfileURL.CanonicalForm())
+	if match {
+		*i = *out
+		return nil
 	}
-	*i = *out
-	return nil
+
+	out, match, err = securityProfileOrganizationURL.Parse(ref)
+	if err != nil {
+		return err
+	}
+	if match {
+		*i = *out
+		return nil
+	}
+
+	return fmt.Errorf("format of NetworkSecuritySecurityProfile external=%q was not known", ref)
 }
 
 func (i *SecurityProfileIdentity) String() string {
-	return securityProfileURL.ToString(*i)
+	if i.Organization != "" {
+		return securityProfileOrganizationURL.ToString(*i)
+	}
+	return securityProfileProjectURL.ToString(*i)
 }
 
 func (i *SecurityProfileIdentity) Host() string {
-	return securityProfileURL.Host()
+	return securityProfileProjectURL.Host()
 }
 
 // GetIdentity builds a SecurityProfileIdentity from the Config Connector NetworkSecuritySecurityProfile object.
@@ -68,16 +98,34 @@ func (obj *NetworkSecuritySecurityProfile) GetIdentity(ctx context.Context, read
 
 // NewSecurityProfileIdentity builds a SecurityProfileIdentity from the Config Connector NetworkSecuritySecurityProfile object.
 func NewSecurityProfileIdentity(ctx context.Context, reader client.Reader, obj *NetworkSecuritySecurityProfile) (*SecurityProfileIdentity, error) {
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
+	var projectID, organizationID string
+	if obj.Spec.ProjectRef != nil {
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+		if err != nil {
+			return nil, err
+		}
+		projectID = projectRef.ProjectID
+		if projectID == "" {
+			return nil, fmt.Errorf("cannot resolve project")
+		}
+	} else if obj.Spec.OrganizationRef != nil {
+		organizationID = obj.Spec.OrganizationRef.External
+		if organizationID == "" {
+			return nil, fmt.Errorf("cannot resolve organization")
+		}
+	} else {
+		// Default to project resolution
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), &refsv1beta1.ProjectRef{})
+		if err != nil {
+			return nil, err
+		}
+		projectID = projectRef.ProjectID
+		if projectID == "" {
+			return nil, fmt.Errorf("cannot resolve project")
+		}
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
+
+	location := common.ValueOf(obj.Spec.Location)
 	if location == "" {
 		return nil, fmt.Errorf("cannot resolve location")
 	}
@@ -99,8 +147,11 @@ func NewSecurityProfileIdentity(ctx context.Context, reader client.Reader, obj *
 		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualIdentity.Project != projectID {
+		if projectID != "" && actualIdentity.Project != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.Project, projectID)
+		}
+		if organizationID != "" && actualIdentity.Organization != organizationID {
+			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualIdentity.Organization, organizationID)
 		}
 		if actualIdentity.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualIdentity.Location, location)
@@ -112,7 +163,15 @@ func NewSecurityProfileIdentity(ctx context.Context, reader client.Reader, obj *
 	}
 	return &SecurityProfileIdentity{
 		Project:         projectID,
+		Organization:    organizationID,
 		Location:        location,
 		SecurityProfile: resourceID,
 	}, nil
+}
+
+func (obj *NetworkSecuritySecurityProfile) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
 }

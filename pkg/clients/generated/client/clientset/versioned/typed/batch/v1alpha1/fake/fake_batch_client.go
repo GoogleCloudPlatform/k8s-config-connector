@@ -32,15 +32,11 @@ type FakeBatchV1alpha1 struct {
 }
 
 func (c *FakeBatchV1alpha1) BatchJobs(namespace string) v1alpha1.BatchJobInterface {
-	return newFakeBatchJobs(c, namespace)
+	return &FakeBatchJobs{c, namespace}
 }
 
 func (c *FakeBatchV1alpha1) BatchTasks(namespace string) v1alpha1.BatchTaskInterface {
-	return newFakeBatchTasks(c, namespace)
-}
-
-func (c *FakeBatchV1alpha1) CloudBatchResourceAllowances(namespace string) v1alpha1.CloudBatchResourceAllowanceInterface {
-	return newFakeCloudBatchResourceAllowances(c, namespace)
+	return &FakeBatchTasks{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

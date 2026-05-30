@@ -22,14 +22,15 @@
 package v1beta1
 
 import (
-	context "context"
+	"context"
+	"time"
 
-	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	gentype "k8s.io/client-go/gentype"
+	rest "k8s.io/client-go/rest"
 )
 
 // ResourceManagerPoliciesGetter has a method to return a ResourceManagerPolicyInterface.
@@ -40,38 +41,158 @@ type ResourceManagerPoliciesGetter interface {
 
 // ResourceManagerPolicyInterface has methods to work with ResourceManagerPolicy resources.
 type ResourceManagerPolicyInterface interface {
-	Create(ctx context.Context, resourceManagerPolicy *resourcemanagerv1beta1.ResourceManagerPolicy, opts v1.CreateOptions) (*resourcemanagerv1beta1.ResourceManagerPolicy, error)
-	Update(ctx context.Context, resourceManagerPolicy *resourcemanagerv1beta1.ResourceManagerPolicy, opts v1.UpdateOptions) (*resourcemanagerv1beta1.ResourceManagerPolicy, error)
-	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, resourceManagerPolicy *resourcemanagerv1beta1.ResourceManagerPolicy, opts v1.UpdateOptions) (*resourcemanagerv1beta1.ResourceManagerPolicy, error)
+	Create(ctx context.Context, resourceManagerPolicy *v1beta1.ResourceManagerPolicy, opts v1.CreateOptions) (*v1beta1.ResourceManagerPolicy, error)
+	Update(ctx context.Context, resourceManagerPolicy *v1beta1.ResourceManagerPolicy, opts v1.UpdateOptions) (*v1beta1.ResourceManagerPolicy, error)
+	UpdateStatus(ctx context.Context, resourceManagerPolicy *v1beta1.ResourceManagerPolicy, opts v1.UpdateOptions) (*v1beta1.ResourceManagerPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*resourcemanagerv1beta1.ResourceManagerPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*resourcemanagerv1beta1.ResourceManagerPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ResourceManagerPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ResourceManagerPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *resourcemanagerv1beta1.ResourceManagerPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ResourceManagerPolicy, err error)
 	ResourceManagerPolicyExpansion
 }
 
 // resourceManagerPolicies implements ResourceManagerPolicyInterface
 type resourceManagerPolicies struct {
-	*gentype.ClientWithList[*resourcemanagerv1beta1.ResourceManagerPolicy, *resourcemanagerv1beta1.ResourceManagerPolicyList]
+	client rest.Interface
+	ns     string
 }
 
 // newResourceManagerPolicies returns a ResourceManagerPolicies
 func newResourceManagerPolicies(c *ResourcemanagerV1beta1Client, namespace string) *resourceManagerPolicies {
 	return &resourceManagerPolicies{
-		gentype.NewClientWithList[*resourcemanagerv1beta1.ResourceManagerPolicy, *resourcemanagerv1beta1.ResourceManagerPolicyList](
-			"resourcemanagerpolicies",
-			c.RESTClient(),
-			scheme.ParameterCodec,
-			namespace,
-			func() *resourcemanagerv1beta1.ResourceManagerPolicy {
-				return &resourcemanagerv1beta1.ResourceManagerPolicy{}
-			},
-			func() *resourcemanagerv1beta1.ResourceManagerPolicyList {
-				return &resourcemanagerv1beta1.ResourceManagerPolicyList{}
-			},
-		),
+		client: c.RESTClient(),
+		ns:     namespace,
 	}
+}
+
+// Get takes name of the resourceManagerPolicy, and returns the corresponding resourceManagerPolicy object, and an error if there is any.
+func (c *resourceManagerPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ResourceManagerPolicy, err error) {
+	result = &v1beta1.ResourceManagerPolicy{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("resourcemanagerpolicies").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ResourceManagerPolicies that match those selectors.
+func (c *resourceManagerPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ResourceManagerPolicyList, err error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	result = &v1beta1.ResourceManagerPolicyList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("resourcemanagerpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested resourceManagerPolicies.
+func (c *resourceManagerPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+	var timeout time.Duration
+	if opts.TimeoutSeconds != nil {
+		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
+	}
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("resourcemanagerpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Watch(ctx)
+}
+
+// Create takes the representation of a resourceManagerPolicy and creates it.  Returns the server's representation of the resourceManagerPolicy, and an error, if there is any.
+func (c *resourceManagerPolicies) Create(ctx context.Context, resourceManagerPolicy *v1beta1.ResourceManagerPolicy, opts v1.CreateOptions) (result *v1beta1.ResourceManagerPolicy, err error) {
+	result = &v1beta1.ResourceManagerPolicy{}
+	err = c.client.Post().
+		Namespace(c.ns).
+		Resource("resourcemanagerpolicies").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(resourceManagerPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Update takes the representation of a resourceManagerPolicy and updates it. Returns the server's representation of the resourceManagerPolicy, and an error, if there is any.
+func (c *resourceManagerPolicies) Update(ctx context.Context, resourceManagerPolicy *v1beta1.ResourceManagerPolicy, opts v1.UpdateOptions) (result *v1beta1.ResourceManagerPolicy, err error) {
+	result = &v1beta1.ResourceManagerPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("resourcemanagerpolicies").
+		Name(resourceManagerPolicy.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(resourceManagerPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *resourceManagerPolicies) UpdateStatus(ctx context.Context, resourceManagerPolicy *v1beta1.ResourceManagerPolicy, opts v1.UpdateOptions) (result *v1beta1.ResourceManagerPolicy, err error) {
+	result = &v1beta1.ResourceManagerPolicy{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("resourcemanagerpolicies").
+		Name(resourceManagerPolicy.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(resourceManagerPolicy).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Delete takes name of the resourceManagerPolicy and deletes it. Returns an error if one occurs.
+func (c *resourceManagerPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("resourcemanagerpolicies").
+		Name(name).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *resourceManagerPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	var timeout time.Duration
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	}
+	return c.client.Delete().
+		Namespace(c.ns).
+		Resource("resourcemanagerpolicies").
+		VersionedParams(&listOpts, scheme.ParameterCodec).
+		Timeout(timeout).
+		Body(&opts).
+		Do(ctx).
+		Error()
+}
+
+// Patch applies the patch and returns the patched resourceManagerPolicy.
+func (c *resourceManagerPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ResourceManagerPolicy, err error) {
+	result = &v1beta1.ResourceManagerPolicy{}
+	err = c.client.Patch(pt).
+		Namespace(c.ns).
+		Resource("resourcemanagerpolicies").
+		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
 }

@@ -59,12 +59,6 @@ var (
 		Kind:    reflect.TypeOf(NetworkConnectivityInternalRange{}).Name(),
 	}
 
-	NetworkConnectivityRegionalEndpointGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(NetworkConnectivityRegionalEndpoint{}).Name(),
-	}
-
 	NetworkConnectivityServiceConnectionPolicyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
