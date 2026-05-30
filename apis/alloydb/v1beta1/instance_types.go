@@ -28,7 +28,7 @@ type AlloyDBInstanceSpec struct {
 
 	// The AlloyDBInstance cluster that this resource belongs to.
 	// +required
-	ClusterRef *refs.AlloyDBClusterRef `json:"clusterRef,omitempty"`
+	ClusterRef *ClusterRef `json:"clusterRef,omitempty"`
 
 	// Optional. The instanceId of the resource. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
