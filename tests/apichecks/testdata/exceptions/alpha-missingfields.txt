@@ -2610,9 +2610,6 @@
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.enabled" is not set in unstructured objects
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.monthlyBackupLimit" is not set in unstructured objects
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.weeklyBackupLimit" is not set in unstructured objects
-[missing_field] crd=netappbackupvaults.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=netappbackupvaults.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=netappbackupvaults.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipCIDRRange" is not set in unstructured objects
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.source" is not set in unstructured objects

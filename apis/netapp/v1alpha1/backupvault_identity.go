@@ -31,7 +31,7 @@ type BackupVaultIdentity struct {
 }
 
 func (i *BackupVaultIdentity) String() string {
-	return i.parent.String() + "/backupvaults/" + i.id
+	return i.parent.String() + "/backupVaults/" + i.id
 }
 
 func (i *BackupVaultIdentity) ID() string {
@@ -104,7 +104,7 @@ func NewBackupVaultIdentity(ctx context.Context, reader client.Reader, obj *NetA
 
 func ParseBackupVaultExternal(external string) (parent *BackupVaultParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupvaults" {
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || strings.ToLower(tokens[4]) != "backupvaults" {
 		return nil, "", fmt.Errorf("format of NetAppBackupVault external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupvaults/{{backupvaultID}})", external)
 	}
 	parent = &BackupVaultParent{
