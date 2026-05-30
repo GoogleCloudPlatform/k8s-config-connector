@@ -18,6 +18,7 @@ import (
 	"context"
 	"strings"
 
+	pb "cloud.google.com/go/parametermanager/apiv1/parametermanagerpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -25,7 +26,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/parametermanager/v1"
 )
 
 // Creates a new [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion].
