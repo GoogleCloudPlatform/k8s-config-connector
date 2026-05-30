@@ -34,7 +34,6 @@ func bigtableBackupFuzzer() fuzztesting.KRMFuzzer {
 		bigtablebackup.BigtableBackupObservedState_FromProto, bigtablebackup.BigtableBackupObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".source_table")
 	f.SpecFields.Insert(".expire_time")
 	f.SpecFields.Insert(".backup_type")
 	f.SpecFields.Insert(".hot_to_standard_time")
@@ -47,6 +46,7 @@ func bigtableBackupFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".encryption_info")
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".source_table")
 	f.UnimplementedFields.Insert(".encryption_info.encryption_status") // unimplemented
 	return f
 }
