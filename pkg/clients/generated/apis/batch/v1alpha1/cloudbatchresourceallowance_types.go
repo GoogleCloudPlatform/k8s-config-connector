@@ -51,7 +51,7 @@ type CloudbatchresourceallowanceLimit struct {
 type CloudbatchresourceallowanceNotifications struct {
 	/* Required. The Pub/Sub topic where notifications like the resource allowance state changes will be published. */
 	// +optional
-	PubsubTopic *string `json:"pubsubTopic,omitempty"`
+	PubsubTopicRef *v1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
 }
 
 type CloudbatchresourceallowanceSpec struct {
