@@ -278,6 +278,13 @@ func constructResourceDefinitions(crdsPath, crdFile string) []*resourceDefinitio
 		versionNames.Insert(crdVersion.Name)
 	}
 
+	var skipKinds = sets.NewString(
+		"NetworkSecurityBackendAuthenticationConfig",
+		"NetworkSecurityInterceptDeployment",
+		"NetworkSecurityInterceptEndpointGroup",
+		"NetworkSecurityUrlList",
+	)
+
 	var resources []*resourceDefinition
 	for _, versionName := range versionNames.List() {
 		// Don't generate alpha version if we have a beta
@@ -285,6 +292,10 @@ func constructResourceDefinitions(crdsPath, crdFile string) []*resourceDefinitio
 			continue
 		}
 		crdVersionDefinition := k8s.GetCRDVersionDefinition(crd, versionName)
+
+		if skipKinds.Has(crd.Spec.Names.Kind) {
+			continue
+		}
 
 		r := &resourceDefinition{}
 		r.CRD = crd

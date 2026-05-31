@@ -21,5 +21,6 @@
 // resource: NetworkSecurityInterceptDeployment:InterceptDeployment
 // resource: NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
 // resource: NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup
+// resource: NetworkSecurityUrlList:UrlList
 
 package v1alpha1

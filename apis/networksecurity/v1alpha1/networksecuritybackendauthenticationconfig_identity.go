@@ -110,3 +110,7 @@ func (obj *NetworkSecurityBackendAuthenticationConfig) GetIdentity(ctx context.C
 
 	return specIdentity, nil
 }
+
+func (obj *NetworkSecurityBackendAuthenticationConfig) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
+}

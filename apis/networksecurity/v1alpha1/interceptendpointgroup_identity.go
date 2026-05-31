@@ -104,3 +104,7 @@ func (obj *NetworkSecurityInterceptEndpointGroup) GetIdentity(ctx context.Contex
 
 	return specIdentity, nil
 }
+
+func (obj *NetworkSecurityInterceptEndpointGroup) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
+}
