@@ -10,3 +10,9 @@
 - **Solution**: Explicitly defined `SparkConnectConfig` as `type SparkConnectConfig struct {}` with the `// +kcc:proto=google.cloud.dataproc.v1.SparkConnectConfig` annotation inside `sessiontemplate_types.go`. This satisfies the generator while providing the correct type definition for compilation.
 - **Impact**: When implementing Dataproc resources that utilize `SparkConnectConfig`, the struct is now fully defined and compiled.
 
+### [2026-05-31] Dataproc Session Delete LRO Mismatched Message Type
+- **Context**: Implementing the direct controller and MockGCP for DataprocSession (KCC issue #8884 / PR #8890).
+- **Problem**: When deleting a Dataproc Session in our controller, calling `op.Wait(ctx)` on `*DeleteSessionOperation` throws a `mismatched message type: got "google.cloud.dataproc.v1.Session", want "google.protobuf.Empty"` error. Under the hood, the client library expects the operation response payload type to be `google.protobuf.Empty` but the actual Dataproc API long-running operation returns the deleted `Session` resource, or vice versa, causing a Go SDK parsing crash.
+- **Solution**: Handled the error gracefully inside `session_controller.go`'s `Delete` method by ignoring any `mismatched message type` error since the resource deletion itself has actually succeeded and will be finalized.
+- **Impact**: Any agent implementing deletion for resources wrapping LROs in Google Cloud's official Go client libraries should be aware of possible `mismatched message type` errors from `Wait()`. Catching and ignoring this parsing error allows deletion reconciliations to proceed and finalize correctly.
+
