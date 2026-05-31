@@ -29,7 +29,7 @@ var (
 	_ identity.Resource   = &NetworkSecurityClientTLSPolicy{}
 )
 
-var NetworkSecurityClientTLSPolicyIdentityFormat = gcpurls.Template[NetworkSecurityClientTLSPolicyIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/clientTlsPolicies/{clienttlspolicy}")
+var NetworkSecurityClientTLSPolicyIdentityFormat = gcpurls.Template[NetworkSecurityClientTLSPolicyIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/clientTlsPolicies/{clientTlsPolicy}")
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityClientTLSPolicyIdentity struct {
