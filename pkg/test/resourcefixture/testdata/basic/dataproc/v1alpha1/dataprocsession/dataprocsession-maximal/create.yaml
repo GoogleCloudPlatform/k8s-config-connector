@@ -1,0 +1,14 @@
+apiVersion: dataproc.cnrm.cloud.google.com/v1alpha1
+kind: DataprocSession
+metadata:
+  name: dataprocsession-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  jupyterSession:
+    kernel: PYTHON
+  labels:
+    my-label: my-value
+  runtimeConfig:
+    version: "2.2.39"

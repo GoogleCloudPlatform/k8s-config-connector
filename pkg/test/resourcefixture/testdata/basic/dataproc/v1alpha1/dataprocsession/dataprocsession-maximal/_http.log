@@ -1,0 +1,235 @@
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-maximal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "session \"projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions?%24alt=json%3Benum-encoding%3Dint&sessionId=dataprocsession-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
+
+{
+  "jupyterSession": {
+    "kernel": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "runtimeConfig": {
+    "version": "2.2.39"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Create Session",
+    "doneTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 1,
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
+    "sessionUuid": "session-uuid-dataprocsession-maximal-${uniqueId}"
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Create Session",
+    "doneTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "CREATE",
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
+    "sessionUuid": "session-uuid-dataprocsession-maximal-${uniqueId}"
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "jupyterSession": {
+      "kernel": "PYTHON"
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
+    "runtimeConfig": {
+      "version": "2.2.39"
+    },
+    "state": "ACTIVE",
+    "stateHistory": [
+      {
+        "state": "CREATING",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      },
+      {
+        "state": "ACTIVE",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      }
+    ],
+    "stateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "session-uuid-dataprocsession-maximal-${uniqueId}"
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-maximal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "jupyterSession": {
+    "kernel": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
+  "runtimeConfig": {
+    "version": "2.2.39"
+  },
+  "state": 2,
+  "stateHistory": [
+    {
+      "state": 1,
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "stateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "session-uuid-dataprocsession-maximal-${uniqueId}"
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-maximal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Delete Session",
+    "doneTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 3,
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
+    "sessionUuid": "session-uuid-dataprocsession-maximal-${uniqueId}"
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Delete Session",
+    "doneTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "DELETE",
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
+    "sessionUuid": "session-uuid-dataprocsession-maximal-${uniqueId}"
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
