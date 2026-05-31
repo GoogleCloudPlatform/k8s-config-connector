@@ -224,6 +224,10 @@ type NodegroupStartupConfig struct {
 }
 
 type DataprocNodeGroupSpec struct {
+	/* Required. The cluster that this node group belongs to. */
+	// +optional
+	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
+
 	/* Optional. Node group labels.
 
 	* Label **keys** must consist of from 1 to 63 characters and conform to
