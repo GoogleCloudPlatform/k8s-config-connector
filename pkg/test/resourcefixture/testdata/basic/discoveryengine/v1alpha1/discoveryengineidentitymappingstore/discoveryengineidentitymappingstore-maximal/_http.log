@@ -1,0 +1,105 @@
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/identityMappingStores/identitymappingstore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FidentityMappingStores%2Fidentitymappingstore-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "IdentityMappingStore projects/${projectNumber}/locations/global/identityMappingStores/identitymappingstore-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/identityMappingStores?%24alt=json%3Benum-encoding%3Dint&identityMappingStoreId=identitymappingstore-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+X-Goog-User-Project: ${projectId}
+
+{
+  "kmsKeyName": "projects/${projectId}/locations/global/keyRings/myring/cryptoKeys/mykey",
+  "name": "projects/${projectId}/locations/global/identityMappingStores/identitymappingstore-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cmekConfig": {
+    "kmsKey": "projects/${projectId}/locations/global/keyRings/myring/cryptoKeys/mykey",
+    "name": "projects/${projectNumber}/locations/global/identityMappingStores/identitymappingstore-${uniqueId}/cmekConfig"
+  },
+  "kmsKeyName": "projects/${projectId}/locations/global/keyRings/myring/cryptoKeys/mykey",
+  "name": "projects/${projectNumber}/locations/global/identityMappingStores/identitymappingstore-${uniqueId}"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/identityMappingStores/identitymappingstore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FidentityMappingStores%2Fidentitymappingstore-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cmekConfig": {
+    "kmsKey": "projects/${projectId}/locations/global/keyRings/myring/cryptoKeys/mykey",
+    "name": "projects/${projectNumber}/locations/global/identityMappingStores/identitymappingstore-${uniqueId}/cmekConfig"
+  },
+  "kmsKeyName": "projects/${projectId}/locations/global/keyRings/myring/cryptoKeys/mykey",
+  "name": "projects/${projectNumber}/locations/global/identityMappingStores/identitymappingstore-${uniqueId}"
+}
+
+---
+
+DELETE https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/identityMappingStores/identitymappingstore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FidentityMappingStores%2Fidentitymappingstore-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}"
+}
