@@ -21,12 +21,14 @@ import (
 
 var ComputeBackendBucketGVK = GroupVersion.WithKind("ComputeBackendBucket")
 
+// +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicyBypassCacheOnRequestHeaders
 type BackendBucketCdnPolicyBypassCacheOnRequestHeaders struct {
 	// The header field name to match on when bypassing cache. Values are case-insensitive.
 	// +kcc:proto:field=header_name
 	HeaderName *string `json:"headerName,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicyCacheKeyPolicy
 type BackendBucketCdnPolicyCacheKeyPolicy struct {
 	// Allows HTTP request headers (by name) to be used in the cache key.
 	// +kcc:proto:field=include_http_headers
@@ -37,6 +39,7 @@ type BackendBucketCdnPolicyCacheKeyPolicy struct {
 	QueryStringWhitelist []string `json:"queryStringWhitelist,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicyNegativeCachingPolicy
 type BackendBucketCdnPolicyNegativeCachingPolicy struct {
 	// The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501 can be specified as values, and you cannot specify a status code more than once.
 	// +kcc:proto:field=code
@@ -47,6 +50,7 @@ type BackendBucketCdnPolicyNegativeCachingPolicy struct {
 	Ttl *int `json:"ttl,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicy
 type BackendBucketCdnPolicy struct {
 	// Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings.
 	// +kcc:proto:field=bypass_cache_on_request_headers
@@ -140,6 +144,7 @@ type ComputeBackendBucketSpec struct {
 }
 
 // ComputeBackendBucketStatus defines the config connector machine state of ComputeBackendBucket
+// +kcc:status:proto=google.cloud.compute.v1.BackendBucket
 type ComputeBackendBucketStatus struct {
 	// Conditions represent the latest available observations of the
 	// object's current state.

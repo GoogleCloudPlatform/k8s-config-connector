@@ -289,7 +289,8 @@ type BackendBucket struct {
 }
 */
 
-/* unreachable type BackendBucketCDNPolicy
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendBucketCdnPolicy", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicy
 type BackendBucketCDNPolicy struct {
 	// Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings.
@@ -352,7 +353,8 @@ type BackendBucketCDNPolicyBypassCacheOnRequestHeader struct {
 }
 */
 
-/* unreachable type BackendBucketCDNPolicyCacheKeyPolicy
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendBucketCdnPolicyCacheKeyPolicy", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicyCacheKeyPolicy
 type BackendBucketCDNPolicyCacheKeyPolicy struct {
 	// Allows HTTP request headers (by name) to be used in the cache key.
@@ -365,7 +367,8 @@ type BackendBucketCDNPolicyCacheKeyPolicy struct {
 }
 */
 
-/* unreachable type BackendBucketCDNPolicyNegativeCachingPolicy
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendBucketCdnPolicyNegativeCachingPolicy", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicyNegativeCachingPolicy
 type BackendBucketCDNPolicyNegativeCachingPolicy struct {
 	// The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 302, 307, 308, 404, 405, 410, 421, 451 and 501 are can be specified as values, and you cannot specify a status code more than once.
