@@ -61,6 +61,34 @@ spec:
           spec:
             description: DataprocNodeGroupSpec defines the desired state of DataprocNodeGroup
             properties:
+              clusterRef:
+                description: Required. The cluster that this node group belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataprocCluster
+                      resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".
+                    type: string
+                  name:
+                    description: The name of a DataprocCluster resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataprocCluster resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string

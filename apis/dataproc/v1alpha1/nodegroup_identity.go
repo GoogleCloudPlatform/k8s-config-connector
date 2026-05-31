@@ -31,7 +31,7 @@ type NodeGroupIdentity struct {
 }
 
 func (i *NodeGroupIdentity) String() string {
-	return i.parent.String() + "/nodegroups/" + i.id
+	return i.parent.String() + "/nodeGroups/" + i.id
 }
 
 func (i *NodeGroupIdentity) ID() string {
@@ -44,11 +44,12 @@ func (i *NodeGroupIdentity) Parent() *NodeGroupParent {
 
 type NodeGroupParent struct {
 	ProjectID string
-	Location  string
+	Region    string
+	Cluster   string
 }
 
 func (p *NodeGroupParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/regions/" + p.Region + "/clusters/" + p.Cluster
 }
 
 // New builds a NodeGroupIdentity from the Config Connector NodeGroup object.
@@ -64,6 +65,18 @@ func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *Datapr
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
+
+	if obj.Spec.ClusterRef == nil {
+		return nil, fmt.Errorf("spec.clusterRef is required")
+	}
+	clusterExternal, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, err
+	}
+	clusterID, err := ParseClusterID(clusterExternal)
+	if err != nil {
+		return nil, err
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -85,8 +98,11 @@ func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *Datapr
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Region != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Region, location)
+		}
+		if actualParent.Cluster != clusterID {
+			return nil, fmt.Errorf("spec.clusterRef changed, expect %s, got %s", actualParent.Cluster, clusterID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,21 +112,31 @@ func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *Datapr
 	return &NodeGroupIdentity{
 		parent: &NodeGroupParent{
 			ProjectID: projectID,
-			Location:  location,
+			Region:    location,
+			Cluster:   clusterID,
 		},
 		id: resourceID,
 	}, nil
 }
 
+func ParseClusterID(external string) (string, error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "clusters" {
+		return "", fmt.Errorf("format of DataprocCluster external=%q was not known (use projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}})", external)
+	}
+	return tokens[5], nil
+}
+
 func ParseNodeGroupExternal(external string) (parent *NodeGroupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "nodegroups" {
-		return nil, "", fmt.Errorf("format of DataprocNodeGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/nodegroups/{{nodegroupID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "clusters" || tokens[6] != "nodeGroups" {
+		return nil, "", fmt.Errorf("format of DataprocNodeGroup external=%q was not known (use projects/{{projectID}}/regions/{{region}}/clusters/{{clusterID}}/nodeGroups/{{nodeGroupID}})", external)
 	}
 	parent = &NodeGroupParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
+		Region:    tokens[3],
+		Cluster:   tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }

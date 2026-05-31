@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -42,6 +43,9 @@ type DataprocNodeGroupSpec struct {
 	//  * The node group must have no more than 32 labels.
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.labels
 	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. The cluster that this node group belongs to.
+	ClusterRef *dataprocv1beta1.DataprocClusterRef `json:"clusterRef,omitempty"`
 
 	*Parent `json:",inline"`
 

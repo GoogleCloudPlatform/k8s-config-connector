@@ -738,6 +738,11 @@ func (in *DataprocNodeGroupSpec) DeepCopyInto(out *DataprocNodeGroupSpec) {
 			(*out)[key] = val
 		}
 	}
+	if in.ClusterRef != nil {
+		in, out := &in.ClusterRef, &out.ClusterRef
+		*out = new(dataprocv1beta1.DataprocClusterRef)
+		**out = **in
+	}
 	if in.Parent != nil {
 		in, out := &in.Parent, &out.Parent
 		*out = new(Parent)
