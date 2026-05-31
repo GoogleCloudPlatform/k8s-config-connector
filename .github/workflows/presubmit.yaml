@@ -58,6 +58,7 @@ jobs:
           COMMIT_CNT: ${{ github.event.pull_request.commits }}
           BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
 
+
   build-images:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
@@ -65,9 +66,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "dev/tasks/build-images"
         run: |
           dev/tasks/build-images
