@@ -24,5 +24,5 @@ UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/...  ./scripts/r
 if [ -z ${GITHUB_ACTION+x} ]; then
     go test -coverprofile cover.out -count=1 ${UNIT_TEST_PACKAGES}
 else
-    go test -json -coverprofile cover.out -count=1 ${UNIT_TEST_PACKAGES} > unittest_result.json
+    go test -v -coverprofile cover.out -count=1 ${UNIT_TEST_PACKAGES}
 fi
