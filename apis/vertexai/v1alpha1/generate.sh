@@ -31,32 +31,18 @@ go run . generate-types \
     --resource VertexAIMetadataStore:MetadataStore \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
     --resource VertexAIExampleStore:ExampleStore \
-    --resource VertexAIFeatureGroup:FeatureGroup \
-    --prune-unused-types=false
+    --resource VertexAIFeatureGroup:FeatureGroup
 
-mv ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go.v1beta1
+mv ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go ${REPO_ROOT}/apis/vertexai/v1alpha1/v1beta1_types.generated.go
 
 # Generate v1 types
 go run . generate-types \
     --service google.cloud.aiplatform.v1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
-    --resource VertexAICachedContent:CachedContent \
-    --prune-unused-types=false
+    --resource VertexAICachedContent:CachedContent
 
-mv ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go.v1
-
-# Combine them using Python script
-python3 ${REPO_ROOT}/apis/vertexai/v1alpha1/combine_types.py \
-    ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go.v1beta1 \
-    ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go.v1 \
-    ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go
-
-# Prune unreachable types from combined file
-go run . prune-types --target ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go
-
-# Clean up temp files
-rm ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go.v1beta1 ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go.v1
+mv ${REPO_ROOT}/apis/vertexai/v1alpha1/types.generated.go ${REPO_ROOT}/apis/vertexai/v1alpha1/v1_types.generated.go
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
