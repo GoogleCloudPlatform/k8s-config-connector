@@ -69,7 +69,7 @@ type DataprocBatchSpec struct {
 
 type Parent struct {
 	// Required.
-	Location string `json:"location,omitempty"`
+	Location *string `json:"location,omitempty"`
 
 	// Required.
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`

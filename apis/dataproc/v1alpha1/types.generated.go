@@ -406,6 +406,8 @@ type HiveJob struct {
 }
 */
 
+/* found existing non-generated go type "InstanceFlexibilityPolicy", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
 type InstanceFlexibilityPolicy struct {
 	// Optional. Defines how the Group selects the provisioning model to ensure
@@ -418,6 +420,9 @@ type InstanceFlexibilityPolicy struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_list
 	InstanceSelectionList []InstanceFlexibilityPolicy_InstanceSelection `json:"instanceSelectionList,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "InstanceFlexibilityPolicy_InstanceSelection", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection
 type InstanceFlexibilityPolicy_InstanceSelection struct {
@@ -433,12 +438,16 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.rank
 	Rank *int32 `json:"rank,omitempty"`
 }
+*/
 
-/* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResult
+/* found existing non-generated go type "InstanceFlexibilityPolicy_InstanceSelectionResult", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
 }
 */
+
+/* found existing non-generated go type "InstanceFlexibilityPolicy_ProvisioningModelMix", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
 type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
@@ -462,6 +471,7 @@ type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix.standard_capacity_percent_above_base
 	StandardCapacityPercentAboveBase *int32 `json:"standardCapacityPercentAboveBase,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfig struct {
@@ -1602,12 +1612,17 @@ type Batch_StateHistoryObservedState struct {
 }
 */
 
+/* found existing non-generated go type "InstanceFlexibilityPolicyObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
 type InstanceFlexibilityPolicyObservedState struct {
 	// Output only. A list of instance selection results in the group.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_results
 	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResultObservedState `json:"instanceSelectionResults,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "InstanceFlexibilityPolicy_InstanceSelectionResultObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
@@ -1619,6 +1634,7 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.vm_count
 	VMCount *int32 `json:"vmCount,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfigObservedState struct {

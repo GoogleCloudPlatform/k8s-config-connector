@@ -63,7 +63,7 @@ func NewBatchIdentity(ctx context.Context, reader client.Reader, obj *DataprocBa
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Parent.Location
+	location := common.ValueOf(obj.Spec.Parent.Location)
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

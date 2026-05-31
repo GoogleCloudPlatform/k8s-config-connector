@@ -136,9 +136,9 @@ func (a *nodeGroupAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 
 	req := &dataprocpb.CreateNodeGroupRequest{
-		Parent:      a.id.Parent().String(),
+		Parent:      fmt.Sprintf("projects/%s/regions/%s/clusters/%s", a.id.Project, a.id.Region, a.id.Cluster),
 		NodeGroup:   resource,
-		NodeGroupId: a.id.ID(),
+		NodeGroupId: a.id.NodeGroup,
 	}
 	op, err := a.gcpClient.CreateNodeGroup(ctx, req)
 	if err != nil {
@@ -249,6 +249,6 @@ func (a *nodeGroupAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 
 	u := &unstructured.Unstructured{Object: uObj}
 	u.SetGroupVersionKind(krm.DataprocNodeGroupGVK)
-	u.SetName(a.id.ID())
+	u.SetName(a.id.NodeGroup)
 	return u, nil
 }

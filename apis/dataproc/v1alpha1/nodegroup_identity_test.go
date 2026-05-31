@@ -50,29 +50,26 @@ func TestParseNodeGroupExternal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parent, resourceID, err := ParseNodeGroupExternal(tt.external)
+			id := &NodeGroupIdentity{}
+			err := id.FromExternal(tt.external)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ParseNodeGroupExternal() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NodeGroupIdentity.FromExternal() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr {
-				if parent.ProjectID != tt.wantProject {
-					t.Errorf("ParseNodeGroupExternal() ProjectID = %v, want %v", parent.ProjectID, tt.wantProject)
+				if id.Project != tt.wantProject {
+					t.Errorf("Project = %v, want %v", id.Project, tt.wantProject)
 				}
-				if parent.Region != tt.wantRegion {
-					t.Errorf("ParseNodeGroupExternal() Region = %v, want %v", parent.Region, tt.wantRegion)
+				if id.Region != tt.wantRegion {
+					t.Errorf("Region = %v, want %v", id.Region, tt.wantRegion)
 				}
-				if parent.Cluster != tt.wantCluster {
-					t.Errorf("ParseNodeGroupExternal() Cluster = %v, want %v", parent.Cluster, tt.wantCluster)
+				if id.Cluster != tt.wantCluster {
+					t.Errorf("Cluster = %v, want %v", id.Cluster, tt.wantCluster)
 				}
-				if resourceID != tt.wantID {
-					t.Errorf("ParseNodeGroupExternal() resourceID = %v, want %v", resourceID, tt.wantID)
+				if id.NodeGroup != tt.wantID {
+					t.Errorf("NodeGroup = %v, want %v", id.NodeGroup, tt.wantID)
 				}
-				identity := &NodeGroupIdentity{
-					parent: parent,
-					id:     resourceID,
-				}
-				if got := identity.String(); got != tt.external {
+				if got := id.String(); got != tt.external {
 					t.Errorf("NodeGroupIdentity.String() = %v, want %v", got, tt.external)
 				}
 			}

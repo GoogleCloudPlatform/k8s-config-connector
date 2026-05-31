@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -45,7 +45,7 @@ type DataprocNodeGroupSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. The cluster that this node group belongs to.
-	ClusterRef *dataprocv1beta1.DataprocClusterRef `json:"clusterRef,omitempty"`
+	ClusterRef *refsv1beta1.DataprocClusterRef `json:"clusterRef,omitempty"`
 
 	*Parent `json:",inline"`
 
@@ -139,6 +139,7 @@ type DataprocNodeGroupObservedState struct {
 
 // DataprocNodeGroup is the Schema for the DataprocNodeGroup API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type DataprocNodeGroup struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -158,4 +159,79 @@ type DataprocNodeGroupList struct {
 
 func init() {
 	SchemeBuilder.Register(&DataprocNodeGroup{}, &DataprocNodeGroupList{})
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
+type InstanceFlexibilityPolicyObservedState struct {
+	// Output only. A list of instance selection results in the group.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_results
+	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResultObservedState `json:"instanceSelectionResults,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
+type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
+	// Output only. Full machine-type names, e.g. "n1-standard-16".
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Output only. Number of VM provisioned with the machine_type.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.vm_count
+	VMCount *int32 `json:"vmCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
+type InstanceFlexibilityPolicy struct {
+	// Optional. Defines how the Group selects the provisioning model to ensure
+	//  required reliability.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.provisioning_model_mix
+	ProvisioningModelMix *InstanceFlexibilityPolicy_ProvisioningModelMix `json:"provisioningModelMix,omitempty"`
+
+	// Optional. List of instance selection options that the group will use when
+	//  creating new VMs.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_list
+	InstanceSelectionList []InstanceFlexibilityPolicy_InstanceSelection `json:"instanceSelectionList,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection
+type InstanceFlexibilityPolicy_InstanceSelection struct {
+	// Optional. Full machine-type names, e.g. "n1-standard-16".
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.machine_types
+	MachineTypes []string `json:"machineTypes,omitempty"`
+
+	// Optional. Preference of this instance selection. Lower number means
+	//  higher preference. Dataproc will first try to create a VM based on the
+	//  machine-type with priority rank and fallback to next rank based on
+	//  availability. Machine types and instance selections with the same
+	//  priority have the same preference.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.rank
+	Rank *int32 `json:"rank,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
+type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
+type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
+	// Optional. The base capacity that will always use Standard VMs to avoid
+	//  risk of more preemption than the minimum capacity you need. Dataproc will
+	//  create only standard VMs until it reaches standard_capacity_base, then it
+	//  will start using standard_capacity_percent_above_base to mix Spot with
+	//  Standard VMs. eg. If 15 instances are requested and
+	//  standard_capacity_base is 5, Dataproc will create 5 standard VMs and then
+	//  start mixing spot and standard VMs for remaining 10 instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix.standard_capacity_base
+	StandardCapacityBase *int32 `json:"standardCapacityBase,omitempty"`
+
+	// Optional. The percentage of target capacity that should use Standard VM.
+	//  The remaining percentage will use Spot VMs. The percentage applies only to
+	//  the capacity above standard_capacity_base. eg. If 15 instances are
+	//  requested and standard_capacity_base is 5 and
+	//  standard_capacity_percent_above_base is 30, Dataproc will create 5
+	//  standard VMs and then start mixing spot and standard VMs for remaining 10
+	//  instances. The mix will be 30% standard and 70% spot, which means 3
+	//  standard VMs and 7 spot VMs will be created. The total number of standard
+	//  VMs created will be 8 and spot VMs will be 7.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix.standard_capacity_percent_above_base
+	StandardCapacityPercentAboveBase *int32 `json:"standardCapacityPercentAboveBase,omitempty"`
 }

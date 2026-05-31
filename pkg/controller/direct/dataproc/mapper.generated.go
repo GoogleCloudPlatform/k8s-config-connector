@@ -928,6 +928,24 @@ func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_ToProto(mapCtx *direct
 	out.Rank = direct.ValueOf(in.Rank)
 	return out
 }
+func InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult{}
+	// MISSING: MachineType
+	// MISSING: VMCount
+	return out
+}
+func InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult) *pb.InstanceFlexibilityPolicy_InstanceSelectionResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceFlexibilityPolicy_InstanceSelectionResult{}
+	// MISSING: MachineType
+	// MISSING: VMCount
+	return out
+}
 func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState {
 	if in == nil {
 		return nil

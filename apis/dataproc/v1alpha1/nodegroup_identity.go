@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,126 +17,142 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var _ identity.IdentityV2 = &NodeGroupIdentity{}
+var _ identity.Resource = &DataprocNodeGroup{}
+
+func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *DataprocNodeGroup) (*NodeGroupIdentity, error) {
+	id, err := getNodeGroupIdentityFromSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		actual := &NodeGroupIdentity{}
+		if err := actual.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+		if actual.Project != id.Project {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actual.Project, id.Project)
+		}
+		if actual.Region != id.Region {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actual.Region, id.Region)
+		}
+		if actual.Cluster != id.Cluster {
+			return nil, fmt.Errorf("spec.clusterRef changed, expect %s, got %s", actual.Cluster, id.Cluster)
+		}
+		if actual.NodeGroup != id.NodeGroup {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s", id.NodeGroup, actual.NodeGroup)
+		}
+	}
+
+	return id, nil
+}
+
+func (s *DataprocNodeGroup) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return NewNodeGroupIdentity(ctx, reader, s)
+}
+
 // NodeGroupIdentity is the identity of a DataprocNodeGroup.
+// +k8s:deepcopy-gen=false
 type NodeGroupIdentity struct {
-	parent *NodeGroupParent
-	id     string
-}
-
-func (i *NodeGroupIdentity) String() string {
-	return i.parent.String() + "/nodeGroups/" + i.id
-}
-
-func (i *NodeGroupIdentity) ID() string {
-	return i.id
-}
-
-func (i *NodeGroupIdentity) Parent() *NodeGroupParent {
-	return i.parent
-}
-
-type NodeGroupParent struct {
-	ProjectID string
+	Project   string
 	Region    string
 	Cluster   string
+	NodeGroup string
 }
 
-func (p *NodeGroupParent) String() string {
-	return "projects/" + p.ProjectID + "/regions/" + p.Region + "/clusters/" + p.Cluster
+var NodeGroupIdentityFormat = gcpurls.Template[NodeGroupIdentity]("api.googleapis.com", "projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{nodeGroup}")
+
+func (i *NodeGroupIdentity) String() string {
+	return NodeGroupIdentityFormat.ToString(*i)
 }
 
-// New builds a NodeGroupIdentity from the Config Connector NodeGroup object.
-func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *DataprocNodeGroup) (*NodeGroupIdentity, error) {
+func (i *NodeGroupIdentity) FromExternal(external string) error {
+	parsed, match, err := NodeGroupIdentityFormat.Parse(external)
+	if err != nil {
+		return fmt.Errorf("format of DataprocNodeGroup external=%q was not known (use %s): %w", external, NodeGroupIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of DataprocNodeGroup external=%q was not known (use %s)", external, NodeGroupIdentityFormat.CanonicalForm())
+	}
 
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	*i = *parsed
+	return nil
+}
+
+func (i *NodeGroupIdentity) Host() string {
+	return NodeGroupIdentityFormat.Host()
+}
+
+func getNodeGroupIdentityFromSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NodeGroupIdentity, error) {
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err != nil {
+			return nil, err
+		}
+		u = &unstructured.Unstructured{Object: m}
+	}
+
+	projectID, err := v1beta1.ResolveProjectID(ctx, reader, u)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
-	if obj.Spec.ClusterRef == nil {
+	region, _, err := unstructured.NestedString(u.Object, "spec", "location")
+	if err != nil {
+		return nil, fmt.Errorf("reading spec.location: %w", err)
+	}
+	if region == "" {
+		return nil, fmt.Errorf("location must be specified")
+	}
+
+	clusterRefMap, found, err := unstructured.NestedStringMap(u.Object, "spec", "clusterRef")
+	if err != nil {
+		return nil, fmt.Errorf("reading spec.clusterRef: %w", err)
+	}
+	if !found {
 		return nil, fmt.Errorf("spec.clusterRef is required")
 	}
-	clusterExternal, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
-		return nil, err
+
+	clusterRef := &v1beta1.DataprocClusterRef{
+		External:  clusterRefMap["external"],
+		Name:      clusterRefMap["name"],
+		Namespace: clusterRefMap["namespace"],
 	}
-	clusterID, err := ParseClusterID(clusterExternal)
+	clusterExternal, err := clusterRef.NormalizedExternal(ctx, reader, u.GetNamespace())
+	if err != nil {
+		return nil, fmt.Errorf("normalizing clusterRef: %w", err)
+	}
+
+	_, _, cluster, err := v1beta1.ParseDataprocClusterExternal(clusterExternal)
 	if err != nil {
 		return nil, err
 	}
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	resourceID, err := v1beta1.GetResourceID(u)
+	if err != nil {
+		return nil, err
 	}
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseNodeGroupExternal(externalRef)
-		if err != nil {
-			return nil, err
-		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Region != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Region, location)
-		}
-		if actualParent.Cluster != clusterID {
-			return nil, fmt.Errorf("spec.clusterRef changed, expect %s, got %s", actualParent.Cluster, clusterID)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
 	return &NodeGroupIdentity{
-		parent: &NodeGroupParent{
-			ProjectID: projectID,
-			Region:    location,
-			Cluster:   clusterID,
-		},
-		id: resourceID,
+		Project:   projectID,
+		Region:    region,
+		Cluster:   cluster,
+		NodeGroup: resourceID,
 	}, nil
-}
-
-func ParseClusterID(external string) (string, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "clusters" {
-		return "", fmt.Errorf("format of DataprocCluster external=%q was not known (use projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}})", external)
-	}
-	return tokens[5], nil
-}
-
-func ParseNodeGroupExternal(external string) (parent *NodeGroupParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "clusters" || tokens[6] != "nodeGroups" {
-		return nil, "", fmt.Errorf("format of DataprocNodeGroup external=%q was not known (use projects/{{projectID}}/regions/{{region}}/clusters/{{clusterID}}/nodeGroups/{{nodeGroupID}})", external)
-	}
-	parent = &NodeGroupParent{
-		ProjectID: tokens[1],
-		Region:    tokens[3],
-		Cluster:   tokens[5],
-	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
 }

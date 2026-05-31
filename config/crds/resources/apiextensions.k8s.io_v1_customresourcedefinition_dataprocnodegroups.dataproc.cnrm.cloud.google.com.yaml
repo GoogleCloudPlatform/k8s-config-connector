@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: dataprocnodegroups.dataproc.cnrm.cloud.google.com
 spec:
@@ -260,7 +261,10 @@ spec:
                               are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base
                               is 30, Dataproc will create 5 standard VMs and then
                               start mixing spot and standard VMs for remaining 10
-                              instances. The mix will be 30% standard and 70% spot.
+                              instances. The mix will be 30% standard and 70% spot,
+                              which means 3 standard VMs and 7 spot VMs will be created.
+                              The total number of standard VMs created will be 8 and
+                              spot VMs will be 7.
                             format: int32
                             type: integer
                         type: object

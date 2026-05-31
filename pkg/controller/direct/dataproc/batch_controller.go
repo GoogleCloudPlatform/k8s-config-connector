@@ -230,7 +230,7 @@ func (a *batchAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	}
 
 	obj.Spec.ProjectRef = &v1beta1.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.Location = direct.PtrTo(a.id.Parent().Location)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

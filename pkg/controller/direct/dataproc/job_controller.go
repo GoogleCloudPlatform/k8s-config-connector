@@ -412,7 +412,7 @@ func (a *dataprocJobAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		Spec: *spec,
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.Location = direct.PtrTo(a.id.Parent().Location)
 
 	// Set the correct job type wrapper in the spec
 	switch jobType := a.actual.TypeJob.(type) {
