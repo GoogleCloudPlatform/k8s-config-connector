@@ -70,6 +70,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	mux.AddService(pb.NewNetworkSecurityClient(conn))
 	mux.AddService(pbv1.NewMirroringClient(conn))
+	mux.AddService(pbintercept.NewInterceptClient(conn))
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
