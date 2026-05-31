@@ -242,7 +242,8 @@ type AllocationSpecificSkuReservation struct {
 }
 */
 
-/* unreachable type Backend
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Backend", skipping
+
 // +kcc:proto=google.cloud.compute.v1.Backend
 type Backend struct {
 	// Specifies how to determine whether the backend of a load balancer can handle additional traffic or is fully loaded. For usage guidelines, see Connection balancing mode. Backends must use compatible balancing modes. For more information, see Supported balancing modes and target capacity settings and Restrictions and guidance for instance groups. Note: Currently, if you use the API to configure incompatible balancing modes, the configuration might be accepted even though it has no impact and is ignored. Specifically, Backend.maxUtilization is ignored when Backend.balancingMode is RATE. In the future, this incompatible combination will be rejected.
@@ -322,7 +323,8 @@ type BackendCustomMetric struct {
 }
 */
 
-/* unreachable type BackendService
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendService", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendService
 type BackendService struct {
 	// Lifetime of cookies in seconds. This setting is applicable to Application Load Balancers and Traffic Director and requires GENERATED_COOKIE or HTTP_COOKIE session affinity. If set to 0, the cookie is non-persistent and lasts only until the end of the browser session (or equivalent). The maximum allowed value is two weeks (1,209,600). Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
@@ -587,7 +589,8 @@ type BackendServiceCDNPolicy struct {
 }
 */
 
-/* unreachable type BackendServiceCDNPolicyBypassCacheOnRequestHeader
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendServiceCdnPolicyBypassCacheOnRequestHeader", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendServiceCdnPolicyBypassCacheOnRequestHeader
 type BackendServiceCDNPolicyBypassCacheOnRequestHeader struct {
 	// The header field name to match on when bypassing cache. Values are case-insensitive.
@@ -596,7 +599,8 @@ type BackendServiceCDNPolicyBypassCacheOnRequestHeader struct {
 }
 */
 
-/* unreachable type BackendServiceCDNPolicyNegativeCachingPolicy
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendServiceCdnPolicyNegativeCachingPolicy", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendServiceCdnPolicyNegativeCachingPolicy
 type BackendServiceCDNPolicyNegativeCachingPolicy struct {
 	// The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 302, 307, 308, 404, 405, 410, 421, 451 and 501 are can be specified as values, and you cannot specify a status code more than once.
@@ -717,7 +721,8 @@ type BackendServiceHTTPCookie struct {
 }
 */
 
-/* unreachable type BackendServiceIAP
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendServiceIAP", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendServiceIAP
 type BackendServiceIAP struct {
 	// Whether the serving infrastructure will authenticate and authorize all incoming requests.
@@ -749,7 +754,8 @@ type BackendServiceLocalityLoadBalancingPolicyConfig struct {
 }
 */
 
-/* unreachable type BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy
 type BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy struct {
 	// An optional, arbitrary JSON object with configuration data, understood by a locally installed custom policy implementation.
@@ -762,7 +768,8 @@ type BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy struct {
 }
 */
 
-/* unreachable type BackendServiceLocalityLoadBalancingPolicyConfigPolicy
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendServiceLocalityLoadBalancingPolicyConfigPolicy", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendServiceLocalityLoadBalancingPolicyConfigPolicy
 type BackendServiceLocalityLoadBalancingPolicyConfigPolicy struct {
 	// The name of a locality load-balancing policy. Valid values include ROUND_ROBIN and, for Java clients, LEAST_REQUEST. For information about these values, see the description of localityLbPolicy. Do not specify the same policy more than once for a backend. If you do, the configuration is rejected.
@@ -843,7 +850,8 @@ type BackendServiceUsedBy struct {
 }
 */
 
-/* unreachable type CacheKeyPolicy
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.CacheKeyPolicy", skipping
+
 // +kcc:proto=google.cloud.compute.v1.CacheKeyPolicy
 type CacheKeyPolicy struct {
 	// If true, requests to different hosts will be cached separately.
@@ -876,7 +884,8 @@ type CacheKeyPolicy struct {
 }
 */
 
-/* unreachable type CircuitBreakers
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.CircuitBreakers", skipping
+
 // +kcc:proto=google.cloud.compute.v1.CircuitBreakers
 type CircuitBreakers struct {
 	// The maximum number of connections to the backend service. If not specified, there is no limit. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
@@ -910,7 +919,8 @@ type ConnectionDraining struct {
 }
 */
 
-/* unreachable type ConsistentHashLoadBalancerSettings
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ConsistentHashLoadBalancerSettings", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ConsistentHashLoadBalancerSettings
 type ConsistentHashLoadBalancerSettings struct {
 	// Hash is based on HTTP Cookie. This field describes a HTTP cookie that will be used as the hash key for the consistent hash load balancer. If the cookie is not present, it will be generated. This field is applicable if the sessionAffinity is set to HTTP_COOKIE. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
@@ -927,7 +937,8 @@ type ConsistentHashLoadBalancerSettings struct {
 }
 */
 
-/* unreachable type ConsistentHashLoadBalancerSettingsHTTPCookie
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.ConsistentHashLoadBalancerSettingsHttpCookie", skipping
+
 // +kcc:proto=google.cloud.compute.v1.ConsistentHashLoadBalancerSettingsHttpCookie
 type ConsistentHashLoadBalancerSettingsHTTPCookie struct {
 	// Name of the cookie.
@@ -944,7 +955,8 @@ type ConsistentHashLoadBalancerSettingsHTTPCookie struct {
 }
 */
 
-/* unreachable type Duration
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Duration", skipping
+
 // +kcc:proto=google.cloud.compute.v1.Duration
 type Duration struct {
 	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
@@ -2072,7 +2084,8 @@ type NodeTemplateNodeTypeFlexibility struct {
 }
 */
 
-/* unreachable type OutlierDetection
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.OutlierDetection", skipping
+
 // +kcc:proto=google.cloud.compute.v1.OutlierDetection
 type OutlierDetection struct {
 	// The base time that a backend endpoint is ejected for. Defaults to 30000ms or 30s. After a backend endpoint is returned back to the load balancing pool, it can be ejected again in another ejection analysis. Thus, the total ejection time is equal to the base ejection time multiplied by the number of times the backend endpoint has been ejected. Defaults to 30000ms or 30s.
@@ -3112,7 +3125,8 @@ type SecurityPolicyUserDefinedField struct {
 }
 */
 
-/* unreachable type SecuritySettings
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SecuritySettings", skipping
+
 // +kcc:proto=google.cloud.compute.v1.SecuritySettings
 type SecuritySettings struct {
 	// The configuration needed to generate a signature for access to private storage buckets that support AWS's Signature Version 4 for authentication. Allowed only for INTERNET_IP_PORT and INTERNET_FQDN_PORT NEG backends.
@@ -3355,7 +3369,8 @@ type SubnetworkSecondaryRange struct {
 }
 */
 
-/* unreachable type Subsetting
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Subsetting", skipping
+
 // +kcc:proto=google.cloud.compute.v1.Subsetting
 type Subsetting struct {
 	// Check the Policy enum for the list of possible values.

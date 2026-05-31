@@ -21,6 +21,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// +kcc:proto=google.cloud.compute.v1.Backend
 type BackendServiceBackend struct {
 	// +optional
 	BalancingMode *string `json:"balancingMode,omitempty"`
@@ -66,6 +67,7 @@ type BackendServiceGroup struct {
 	NetworkEndpointGroupRef *refsv1beta1.ComputeNetworkEndpointGroupRef `json:"networkEndpointGroupRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.Duration
 type BackendServiceBaseEjectionTime struct {
 	// +optional
 	Nanos *int64 `json:"nanos,omitempty"`
@@ -73,10 +75,12 @@ type BackendServiceBaseEjectionTime struct {
 	Seconds int64 `json:"seconds"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendServiceCdnPolicyBypassCacheOnRequestHeader
 type BackendServiceBypassCacheOnRequestHeaders struct {
 	HeaderName string `json:"headerName"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.CacheKeyPolicy
 type BackendServiceCacheKeyPolicy struct {
 	// +optional
 	IncludeHost *bool `json:"includeHost,omitempty"`
@@ -139,6 +143,7 @@ type BackendServiceConnectTimeout struct {
 	Seconds int64 `json:"seconds"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.CircuitBreakers
 type BackendServiceCircuitBreakers struct {
 	// +optional
 	ConnectTimeout *BackendServiceConnectTimeout `json:"connectTimeout,omitempty"`
@@ -159,6 +164,7 @@ type BackendServiceCircuitBreakers struct {
 	MaxRetries *int64 `json:"maxRetries,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendServiceConnectionTrackingPolicy
 type BackendServiceConnectionTrackingPolicy struct {
 	// +optional
 	ConnectionPersistenceOnUnhealthyBackends *string `json:"connectionPersistenceOnUnhealthyBackends,omitempty"`
@@ -173,6 +179,7 @@ type BackendServiceConnectionTrackingPolicy struct {
 	TrackingMode *string `json:"trackingMode,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.ConsistentHashLoadBalancerSettings
 type BackendServiceConsistentHash struct {
 	// +optional
 	HttpCookie *BackendServiceHttpCookie `json:"httpCookie,omitempty"`
@@ -184,6 +191,7 @@ type BackendServiceConsistentHash struct {
 	MinimumRingSize *int64 `json:"minimumRingSize,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.ConsistentHashLoadBalancerSettingsHttpCookie
 type BackendServiceHttpCookie struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -202,6 +210,7 @@ type BackendServiceTtl struct {
 	Seconds int64 `json:"seconds"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendServiceFailoverPolicy
 type BackendServiceFailoverPolicy struct {
 	// +optional
 	DisableConnectionDrainOnFailover *bool `json:"disableConnectionDrainOnFailover,omitempty"`
@@ -234,6 +243,7 @@ type BackendServiceValueFrom struct {
 	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendServiceIAP
 type BackendServiceIap struct {
 	// +optional
 	Oauth2ClientId *string `json:"oauth2ClientId,omitempty"`
@@ -248,6 +258,7 @@ type BackendServiceIap struct {
 	Oauth2ClientSecretSha256 *string `json:"oauth2ClientSecretSha256,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy
 type BackendServiceCustomPolicy struct {
 	// +optional
 	Data *string `json:"data,omitempty"`
@@ -255,6 +266,7 @@ type BackendServiceCustomPolicy struct {
 	Name string `json:"name"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendServiceLocalityLoadBalancingPolicyConfigPolicy
 type BackendServicePolicy struct {
 	Name string `json:"name"`
 }
@@ -267,6 +279,7 @@ type BackendServiceLocalityLbPolicies struct {
 	Policy *BackendServicePolicy `json:"policy,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendServiceLogConfig
 type BackendServiceLogConfig struct {
 	// +optional
 	Enable *bool `json:"enable,omitempty"`
@@ -275,6 +288,7 @@ type BackendServiceLogConfig struct {
 	SampleRate *float64 `json:"sampleRate,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.BackendServiceCdnPolicyNegativeCachingPolicy
 type BackendServiceNegativeCachingPolicy struct {
 	// +optional
 	Code *int64 `json:"code,omitempty"`
@@ -290,6 +304,7 @@ type BackendServiceInterval struct {
 	Seconds int64 `json:"seconds"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.OutlierDetection
 type BackendServiceOutlierDetection struct {
 	// +optional
 	BaseEjectionTime *BackendServiceBaseEjectionTime `json:"baseEjectionTime,omitempty"`
@@ -325,25 +340,32 @@ type BackendServiceOutlierDetection struct {
 	SuccessRateStdevFactor *int64 `json:"successRateStdevFactor,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.SecuritySettings
 type BackendServiceSecuritySettings struct {
 	ClientTLSPolicyRef refsv1beta1.NetworkSecurityClientTLSPolicyRef `json:"clientTLSPolicyRef"`
 
 	SubjectAltNames []string `json:"subjectAltNames"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.Subsetting
 type BackendServiceSubsetting struct {
 	Policy string `json:"policy"`
 }
 
 // ComputeBackendServiceSpec defines the desired state of ComputeBackendService
+// +kcc:spec:proto=google.cloud.compute.v1.BackendService
+// +required
 type ComputeBackendServiceSpec struct {
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.affinity_cookie_ttl_sec
 	AffinityCookieTtlSec *int64 `json:"affinityCookieTtlSec,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.backends
 	Backend []BackendServiceBackend `json:"backend,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.cdn_policy
 	CdnPolicy *BackendServiceCdnPolicy `json:"cdnPolicy,omitempty"`
 
 	// +optional
@@ -353,6 +375,7 @@ type ComputeBackendServiceSpec struct {
 	CompressionMode *string `json:"compressionMode,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.connection_draining.draining_timeout_sec
 	ConnectionDrainingTimeoutSec *int64 `json:"connectionDrainingTimeoutSec,omitempty"`
 
 	// +optional
@@ -374,6 +397,7 @@ type ComputeBackendServiceSpec struct {
 	EdgeSecurityPolicyRef *refsv1beta1.ComputeSecurityPolicyRef `json:"edgeSecurityPolicyRef,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.enable_c_d_n
 	EnableCdn *bool `json:"enableCdn,omitempty"`
 
 	// +optional
@@ -383,15 +407,18 @@ type ComputeBackendServiceSpec struct {
 	HealthChecks []BackendServiceHealthChecks `json:"healthChecks,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.iap
 	Iap *BackendServiceIap `json:"iap,omitempty"`
 
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.locality_lb_policies
 	LocalityLbPolicies []BackendServiceLocalityLbPolicies `json:"localityLbPolicies,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.locality_lb_policy
 	LocalityLbPolicy *string `json:"localityLbPolicy,omitempty"`
 
 	Location string `json:"location"`
@@ -403,6 +430,7 @@ type ComputeBackendServiceSpec struct {
 	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.outlier_detection
 	OutlierDetection *BackendServiceOutlierDetection `json:"outlierDetection,omitempty"`
 
 	// +optional
@@ -412,6 +440,7 @@ type ComputeBackendServiceSpec struct {
 	Protocol *string `json:"protocol,omitempty"`
 
 	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.BackendService.name
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
@@ -434,6 +463,7 @@ type ComputeBackendServiceSpec struct {
 }
 
 // ComputeBackendServiceStatus defines the config connector machine state of ComputeBackendService
+// +kcc:status:proto=google.cloud.compute.v1.BackendService
 type ComputeBackendServiceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
