@@ -221,7 +221,8 @@ type AllocationSpecificSkuReservation struct {
 }
 */
 
-/* unreachable type BackendBucket
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendBucket", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendBucket
 type BackendBucket struct {
 	// Cloud Storage bucket name.

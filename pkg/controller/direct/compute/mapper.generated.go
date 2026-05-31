@@ -168,6 +168,54 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+func ComputeBackendBucketSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendBucketSpec{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// (near miss): "CDNPolicy" vs "CdnPolicy"
+	out.CompressionMode = in.CompressionMode
+	// MISSING: CreationTimestamp
+	out.CustomResponseHeaders = in.CustomResponseHeaders
+	out.Description = in.Description
+	out.EdgeSecurityPolicy = in.EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// (near miss): "EnableCDN" vs "EnableCdn"
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	// MISSING: SelfLink
+	// MISSING: UsedBy
+	return out
+}
+func ComputeBackendBucketSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendBucketSpec) *pb.BackendBucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucket{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// (near miss): "CDNPolicy" vs "CdnPolicy"
+	out.CompressionMode = in.CompressionMode
+	// MISSING: CreationTimestamp
+	out.CustomResponseHeaders = in.CustomResponseHeaders
+	out.Description = in.Description
+	out.EdgeSecurityPolicy = in.EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// (near miss): "EnableCDN" vs "EnableCdn"
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	// MISSING: SelfLink
+	// MISSING: UsedBy
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
