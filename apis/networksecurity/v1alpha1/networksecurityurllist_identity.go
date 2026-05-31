@@ -30,7 +30,7 @@ var (
 	_ identity.Resource   = &NetworkSecurityUrlList{}
 )
 
-var NetworkSecurityUrlListIdentityFormat = gcpurls.Template[NetworkSecurityUrlListIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/urlLists/{url_list}")
+var NetworkSecurityUrlListIdentityFormat = gcpurls.Template[NetworkSecurityUrlListIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/urlLists/{urllist}")
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityUrlListIdentity struct {
