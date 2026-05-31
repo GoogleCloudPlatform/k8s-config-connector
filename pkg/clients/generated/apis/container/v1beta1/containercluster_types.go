@@ -77,7 +77,7 @@ type ClusterAddonsConfig struct {
 	// +optional
 	GcpFilestoreCsiDriverConfig *ClusterGcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
 
-	/* The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable. */
+	/* The status of the GCS Fuse CSI driver addon, which allows the usage of GCS bucket as volumes. Defaults to disabled; set enabled = true to enable. */
 	// +optional
 	GcsFuseCsiDriverConfig *ClusterGcsFuseCsiDriverConfig `json:"gcsFuseCsiDriverConfig,omitempty"`
 
@@ -131,8 +131,7 @@ type ClusterAuthenticatorGroupsConfig struct {
 }
 
 type ClusterAutoProvisioningDefaults struct {
-	/* The Customer Managed Encryption Key used to encrypt the
-	boot disk attached to each node in the node pool. */
+	/* Immutable. The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. */
 	// +optional
 	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
 
@@ -439,7 +438,7 @@ type ClusterIdentityServiceConfig struct {
 }
 
 type ClusterIpAllocationPolicy struct {
-	/* AdditionalIpRangesConfigs is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. Each AdditionalIPRangesConfig corresponds to a single subnetwork. */
+	/* AdditionalIPRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. Each AdditionalIPRangesConfig corresponds to a single subnetwork. */
 	// +optional
 	AdditionalIpRangesConfigs []ClusterAdditionalIpRangesConfigs `json:"additionalIpRangesConfigs,omitempty"`
 
@@ -541,7 +540,7 @@ type ClusterMaintenanceExclusion struct {
 }
 
 type ClusterMaintenancePolicy struct {
-	/* Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT. */
+	/* Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM", where HH : [00-23] and MM : [00-59] GMT. */
 	// +optional
 	DailyMaintenanceWindow *ClusterDailyMaintenanceWindow `json:"dailyMaintenanceWindow,omitempty"`
 
@@ -604,7 +603,7 @@ type ClusterMasterAuthorizedNetworksConfig struct {
 	// +optional
 	CidrBlocks []ClusterCidrBlocks `json:"cidrBlocks,omitempty"`
 
-	/* Whether master is accessbile via Google Compute Engine Public IP addresses. */
+	/* Whether master is accessible via Google Compute Engine Public IP addresses. */
 	// +optional
 	GcpPublicCidrsAccessEnabled *bool `json:"gcpPublicCidrsAccessEnabled,omitempty"`
 }
@@ -751,9 +750,7 @@ type ClusterNodeConfig struct {
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Immutable. Setting this field will assign instances
-	of this pool to run on the specified node group. This is useful
-	for running workloads on sole tenant nodes. */
+	/* Immutable. Setting this field will assign instances of this pool to run on the specified node group. This is useful for running workloads on sole tenant nodes. */
 	// +optional
 	NodeGroupRef *v1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
 
@@ -876,8 +873,7 @@ type ClusterPrivateClusterConfig struct {
 	// +optional
 	PrivateEndpoint *string `json:"privateEndpoint,omitempty"`
 
-	/* Immutable. Subnetwork in cluster's network where master's endpoint
-	will be provisioned. */
+	/* Immutable. Subnetwork in cluster's network where master's endpoint will be provisioned. */
 	// +optional
 	PrivateEndpointSubnetworkRef *v1alpha1.ResourceRef `json:"privateEndpointSubnetworkRef,omitempty"`
 
@@ -918,11 +914,7 @@ type ClusterRecurringWindow struct {
 }
 
 type ClusterReleaseChannel struct {
-	/* The selected release channel. Accepted values are:
-	* UNSPECIFIED: Not set.
-	* RAPID: Weekly upgrade cadence; Early testers and developers who requires new features.
-	* REGULAR: Multiple per month upgrade cadence; Production users who need features not yet offered in the Stable channel.
-	* STABLE: Every few months upgrade cadence; Production users who need stability above all else, and for whom frequent upgrades are too risky. */
+	/* The selected release channel. Accepted values are: * UNSPECIFIED: Not set. * RAPID: Weekly upgrade cadence; Early testers and developers who requires new features. * REGULAR: Multiple per month upgrade cadence; Production users who need features not yet offered in the Stable channel. * STABLE: Every few months upgrade cadence; Production users who need stability above all else, and for whom frequent upgrades are too risky. */
 	Channel string `json:"channel"`
 }
 
@@ -1009,9 +1001,7 @@ type ClusterStandardRolloutPolicy struct {
 	// +optional
 	BatchPercentage *float64 `json:"batchPercentage,omitempty"`
 
-	/* Soak time after each batch gets drained.
-
-	A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
+	/* Soak time after each batch gets drained. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
 	// +optional
 	BatchSoakDuration *string `json:"batchSoakDuration,omitempty"`
 }
@@ -1072,8 +1062,7 @@ type ClusterWorkloadConfig struct {
 }
 
 type ClusterWorkloadIdentityConfig struct {
-	/* DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
-	Enables workload identity. */
+	/* DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field. Enables workload identity. */
 	// +optional
 	IdentityNamespace *string `json:"identityNamespace,omitempty"`
 
@@ -1133,7 +1122,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	CostManagementConfig *ClusterCostManagementConfig `json:"costManagementConfig,omitempty"`
 
-	/* Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "ALL_OBJECTS_ENCRYPTION_ENABLED"; "DECRYPTED". key_name is the name of a CloudKMS key. */
+	/* Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. */
 	// +optional
 	DatabaseEncryption *ClusterDatabaseEncryption `json:"databaseEncryption,omitempty"`
 

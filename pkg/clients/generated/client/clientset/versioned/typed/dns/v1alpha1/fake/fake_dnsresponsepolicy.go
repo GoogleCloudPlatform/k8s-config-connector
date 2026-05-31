@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDNSResponsePolicies implements DNSResponsePolicyInterface
-type FakeDNSResponsePolicies struct {
+// fakeDNSResponsePolicies implements DNSResponsePolicyInterface
+type fakeDNSResponsePolicies struct {
+	*gentype.FakeClientWithList[*v1alpha1.DNSResponsePolicy, *v1alpha1.DNSResponsePolicyList]
 	Fake *FakeDnsV1alpha1
-	ns   string
 }
 
-var dnsresponsepoliciesResource = v1alpha1.SchemeGroupVersion.WithResource("dnsresponsepolicies")
-
-var dnsresponsepoliciesKind = v1alpha1.SchemeGroupVersion.WithKind("DNSResponsePolicy")
-
-// Get takes name of the dNSResponsePolicy, and returns the corresponding dNSResponsePolicy object, and an error if there is any.
-func (c *FakeDNSResponsePolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DNSResponsePolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(dnsresponsepoliciesResource, c.ns, name), &v1alpha1.DNSResponsePolicy{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDNSResponsePolicies(fake *FakeDnsV1alpha1, namespace string) dnsv1alpha1.DNSResponsePolicyInterface {
+	return &fakeDNSResponsePolicies{
+		gentype.NewFakeClientWithList[*v1alpha1.DNSResponsePolicy, *v1alpha1.DNSResponsePolicyList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("dnsresponsepolicies"),
+			v1alpha1.SchemeGroupVersion.WithKind("DNSResponsePolicy"),
+			func() *v1alpha1.DNSResponsePolicy { return &v1alpha1.DNSResponsePolicy{} },
+			func() *v1alpha1.DNSResponsePolicyList { return &v1alpha1.DNSResponsePolicyList{} },
+			func(dst, src *v1alpha1.DNSResponsePolicyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DNSResponsePolicyList) []*v1alpha1.DNSResponsePolicy {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DNSResponsePolicyList, items []*v1alpha1.DNSResponsePolicy) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DNSResponsePolicy), err
-}
-
-// List takes label and field selectors, and returns the list of DNSResponsePolicies that match those selectors.
-func (c *FakeDNSResponsePolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DNSResponsePolicyList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(dnsresponsepoliciesResource, dnsresponsepoliciesKind, c.ns, opts), &v1alpha1.DNSResponsePolicyList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DNSResponsePolicyList{ListMeta: obj.(*v1alpha1.DNSResponsePolicyList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DNSResponsePolicyList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dNSResponsePolicies.
-func (c *FakeDNSResponsePolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(dnsresponsepoliciesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dNSResponsePolicy and creates it.  Returns the server's representation of the dNSResponsePolicy, and an error, if there is any.
-func (c *FakeDNSResponsePolicies) Create(ctx context.Context, dNSResponsePolicy *v1alpha1.DNSResponsePolicy, opts v1.CreateOptions) (result *v1alpha1.DNSResponsePolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(dnsresponsepoliciesResource, c.ns, dNSResponsePolicy), &v1alpha1.DNSResponsePolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DNSResponsePolicy), err
-}
-
-// Update takes the representation of a dNSResponsePolicy and updates it. Returns the server's representation of the dNSResponsePolicy, and an error, if there is any.
-func (c *FakeDNSResponsePolicies) Update(ctx context.Context, dNSResponsePolicy *v1alpha1.DNSResponsePolicy, opts v1.UpdateOptions) (result *v1alpha1.DNSResponsePolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(dnsresponsepoliciesResource, c.ns, dNSResponsePolicy), &v1alpha1.DNSResponsePolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DNSResponsePolicy), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDNSResponsePolicies) UpdateStatus(ctx context.Context, dNSResponsePolicy *v1alpha1.DNSResponsePolicy, opts v1.UpdateOptions) (*v1alpha1.DNSResponsePolicy, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(dnsresponsepoliciesResource, "status", c.ns, dNSResponsePolicy), &v1alpha1.DNSResponsePolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DNSResponsePolicy), err
-}
-
-// Delete takes name of the dNSResponsePolicy and deletes it. Returns an error if one occurs.
-func (c *FakeDNSResponsePolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(dnsresponsepoliciesResource, c.ns, name, opts), &v1alpha1.DNSResponsePolicy{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDNSResponsePolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(dnsresponsepoliciesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DNSResponsePolicyList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dNSResponsePolicy.
-func (c *FakeDNSResponsePolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DNSResponsePolicy, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(dnsresponsepoliciesResource, c.ns, name, pt, data, subresources...), &v1alpha1.DNSResponsePolicy{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DNSResponsePolicy), err
 }

@@ -39,11 +39,11 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type AppHubDiscoveredServiceSpec struct {
-	/* Required. The location of the application. */
+	/* Required. The location of the resource. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
-	/* Required. The host project of the application. */
+	/* Required. The host project of the resource. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 

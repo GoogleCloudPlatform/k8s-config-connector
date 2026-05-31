@@ -51,13 +51,13 @@ type SecurityprofileAntivirusOverrides struct {
 type SecurityprofileCustomInterceptProfile struct {
 	/* Required. The target InterceptEndpointGroup. When a firewall rule with this security profile attached matches a packet, the packet will be intercepted to the location-local target in this group. */
 	// +optional
-	InterceptEndpointGroup *string `json:"interceptEndpointGroup,omitempty"`
+	InterceptEndpointGroupRef *v1alpha1.ResourceRef `json:"interceptEndpointGroupRef,omitempty"`
 }
 
 type SecurityprofileCustomMirroringProfile struct {
 	/* Required. Immutable. The target MirroringEndpointGroup. When a mirroring rule with this security profile attached matches a packet, a replica will be mirrored to the location-local target in this group. */
 	// +optional
-	MirroringEndpointGroup *string `json:"mirroringEndpointGroup,omitempty"`
+	MirroringEndpointGroupRef *v1alpha1.ResourceRef `json:"mirroringEndpointGroupRef,omitempty"`
 }
 
 type SecurityprofileSeverityOverrides struct {
@@ -127,11 +127,20 @@ type NetworkSecuritySecurityProfileSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Optional. Labels as key value pairs */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
 	/* The location of this resource. */
 	Location string `json:"location"`
 
+	/* The organization that this resource belongs to. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The NetworkSecuritySecurityProfile name. If not given, the metadata.name will be used. */
 	// +optional
@@ -201,6 +210,7 @@ type NetworkSecuritySecurityProfileStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecuritysecurityprofile;gcpnetworksecuritysecurityprofiles
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

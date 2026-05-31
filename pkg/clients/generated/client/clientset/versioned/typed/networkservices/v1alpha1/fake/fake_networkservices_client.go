@@ -32,23 +32,27 @@ type FakeNetworkservicesV1alpha1 struct {
 }
 
 func (c *FakeNetworkservicesV1alpha1) NetworkServicesEdgeCacheKeysets(namespace string) v1alpha1.NetworkServicesEdgeCacheKeysetInterface {
-	return &FakeNetworkServicesEdgeCacheKeysets{c, namespace}
+	return newFakeNetworkServicesEdgeCacheKeysets(c, namespace)
 }
 
 func (c *FakeNetworkservicesV1alpha1) NetworkServicesEdgeCacheOrigins(namespace string) v1alpha1.NetworkServicesEdgeCacheOriginInterface {
-	return &FakeNetworkServicesEdgeCacheOrigins{c, namespace}
+	return newFakeNetworkServicesEdgeCacheOrigins(c, namespace)
 }
 
 func (c *FakeNetworkservicesV1alpha1) NetworkServicesEdgeCacheServices(namespace string) v1alpha1.NetworkServicesEdgeCacheServiceInterface {
-	return &FakeNetworkServicesEdgeCacheServices{c, namespace}
+	return newFakeNetworkServicesEdgeCacheServices(c, namespace)
 }
 
 func (c *FakeNetworkservicesV1alpha1) NetworkServicesLBRouteExtensions(namespace string) v1alpha1.NetworkServicesLBRouteExtensionInterface {
-	return &FakeNetworkServicesLBRouteExtensions{c, namespace}
+	return newFakeNetworkServicesLBRouteExtensions(c, namespace)
 }
 
 func (c *FakeNetworkservicesV1alpha1) NetworkServicesServiceBindings(namespace string) v1alpha1.NetworkServicesServiceBindingInterface {
-	return &FakeNetworkServicesServiceBindings{c, namespace}
+	return newFakeNetworkServicesServiceBindings(c, namespace)
+}
+
+func (c *FakeNetworkservicesV1alpha1) NetworkServicesWasmPlugins(namespace string) v1alpha1.NetworkServicesWasmPluginInterface {
+	return newFakeNetworkServicesWasmPlugins(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

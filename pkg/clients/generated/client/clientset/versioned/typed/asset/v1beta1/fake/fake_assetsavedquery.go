@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/asset/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/asset/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeAssetSavedQueries implements AssetSavedQueryInterface
-type FakeAssetSavedQueries struct {
+// fakeAssetSavedQueries implements AssetSavedQueryInterface
+type fakeAssetSavedQueries struct {
+	*gentype.FakeClientWithList[*v1beta1.AssetSavedQuery, *v1beta1.AssetSavedQueryList]
 	Fake *FakeAssetV1beta1
-	ns   string
 }
 
-var assetsavedqueriesResource = v1beta1.SchemeGroupVersion.WithResource("assetsavedqueries")
-
-var assetsavedqueriesKind = v1beta1.SchemeGroupVersion.WithKind("AssetSavedQuery")
-
-// Get takes name of the assetSavedQuery, and returns the corresponding assetSavedQuery object, and an error if there is any.
-func (c *FakeAssetSavedQueries) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.AssetSavedQuery, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(assetsavedqueriesResource, c.ns, name), &v1beta1.AssetSavedQuery{})
-
-	if obj == nil {
-		return nil, err
+func newFakeAssetSavedQueries(fake *FakeAssetV1beta1, namespace string) assetv1beta1.AssetSavedQueryInterface {
+	return &fakeAssetSavedQueries{
+		gentype.NewFakeClientWithList[*v1beta1.AssetSavedQuery, *v1beta1.AssetSavedQueryList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("assetsavedqueries"),
+			v1beta1.SchemeGroupVersion.WithKind("AssetSavedQuery"),
+			func() *v1beta1.AssetSavedQuery { return &v1beta1.AssetSavedQuery{} },
+			func() *v1beta1.AssetSavedQueryList { return &v1beta1.AssetSavedQueryList{} },
+			func(dst, src *v1beta1.AssetSavedQueryList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.AssetSavedQueryList) []*v1beta1.AssetSavedQuery {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.AssetSavedQueryList, items []*v1beta1.AssetSavedQuery) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.AssetSavedQuery), err
-}
-
-// List takes label and field selectors, and returns the list of AssetSavedQueries that match those selectors.
-func (c *FakeAssetSavedQueries) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.AssetSavedQueryList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(assetsavedqueriesResource, assetsavedqueriesKind, c.ns, opts), &v1beta1.AssetSavedQueryList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.AssetSavedQueryList{ListMeta: obj.(*v1beta1.AssetSavedQueryList).ListMeta}
-	for _, item := range obj.(*v1beta1.AssetSavedQueryList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested assetSavedQueries.
-func (c *FakeAssetSavedQueries) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(assetsavedqueriesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a assetSavedQuery and creates it.  Returns the server's representation of the assetSavedQuery, and an error, if there is any.
-func (c *FakeAssetSavedQueries) Create(ctx context.Context, assetSavedQuery *v1beta1.AssetSavedQuery, opts v1.CreateOptions) (result *v1beta1.AssetSavedQuery, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(assetsavedqueriesResource, c.ns, assetSavedQuery), &v1beta1.AssetSavedQuery{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AssetSavedQuery), err
-}
-
-// Update takes the representation of a assetSavedQuery and updates it. Returns the server's representation of the assetSavedQuery, and an error, if there is any.
-func (c *FakeAssetSavedQueries) Update(ctx context.Context, assetSavedQuery *v1beta1.AssetSavedQuery, opts v1.UpdateOptions) (result *v1beta1.AssetSavedQuery, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(assetsavedqueriesResource, c.ns, assetSavedQuery), &v1beta1.AssetSavedQuery{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AssetSavedQuery), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeAssetSavedQueries) UpdateStatus(ctx context.Context, assetSavedQuery *v1beta1.AssetSavedQuery, opts v1.UpdateOptions) (*v1beta1.AssetSavedQuery, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(assetsavedqueriesResource, "status", c.ns, assetSavedQuery), &v1beta1.AssetSavedQuery{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AssetSavedQuery), err
-}
-
-// Delete takes name of the assetSavedQuery and deletes it. Returns an error if one occurs.
-func (c *FakeAssetSavedQueries) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(assetsavedqueriesResource, c.ns, name, opts), &v1beta1.AssetSavedQuery{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeAssetSavedQueries) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(assetsavedqueriesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.AssetSavedQueryList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched assetSavedQuery.
-func (c *FakeAssetSavedQueries) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.AssetSavedQuery, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(assetsavedqueriesResource, c.ns, name, pt, data, subresources...), &v1beta1.AssetSavedQuery{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.AssetSavedQuery), err
 }

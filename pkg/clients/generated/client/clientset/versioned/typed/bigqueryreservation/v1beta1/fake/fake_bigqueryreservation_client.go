@@ -32,11 +32,11 @@ type FakeBigqueryreservationV1beta1 struct {
 }
 
 func (c *FakeBigqueryreservationV1beta1) BigQueryReservationAssignments(namespace string) v1beta1.BigQueryReservationAssignmentInterface {
-	return &FakeBigQueryReservationAssignments{c, namespace}
+	return newFakeBigQueryReservationAssignments(c, namespace)
 }
 
 func (c *FakeBigqueryreservationV1beta1) BigQueryReservationReservations(namespace string) v1beta1.BigQueryReservationReservationInterface {
-	return &FakeBigQueryReservationReservations{c, namespace}
+	return newFakeBigQueryReservationReservations(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

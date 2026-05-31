@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // ComputeOrganizationSecurityPolicyAssociationsGetter has a method to return a ComputeOrganizationSecurityPolicyAssociationInterface.
@@ -41,158 +40,38 @@ type ComputeOrganizationSecurityPolicyAssociationsGetter interface {
 
 // ComputeOrganizationSecurityPolicyAssociationInterface has methods to work with ComputeOrganizationSecurityPolicyAssociation resources.
 type ComputeOrganizationSecurityPolicyAssociationInterface interface {
-	Create(ctx context.Context, computeOrganizationSecurityPolicyAssociation *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, opts v1.CreateOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyAssociation, error)
-	Update(ctx context.Context, computeOrganizationSecurityPolicyAssociation *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, opts v1.UpdateOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyAssociation, error)
-	UpdateStatus(ctx context.Context, computeOrganizationSecurityPolicyAssociation *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, opts v1.UpdateOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyAssociation, error)
+	Create(ctx context.Context, computeOrganizationSecurityPolicyAssociation *computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, opts v1.CreateOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, error)
+	Update(ctx context.Context, computeOrganizationSecurityPolicyAssociation *computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, opts v1.UpdateOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, computeOrganizationSecurityPolicyAssociation *computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, opts v1.UpdateOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyAssociation, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.ComputeOrganizationSecurityPolicyAssociationList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, error)
+	List(ctx context.Context, opts v1.ListOptions) (*computev1alpha1.ComputeOrganizationSecurityPolicyAssociationList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, err error)
 	ComputeOrganizationSecurityPolicyAssociationExpansion
 }
 
 // computeOrganizationSecurityPolicyAssociations implements ComputeOrganizationSecurityPolicyAssociationInterface
 type computeOrganizationSecurityPolicyAssociations struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, *computev1alpha1.ComputeOrganizationSecurityPolicyAssociationList]
 }
 
 // newComputeOrganizationSecurityPolicyAssociations returns a ComputeOrganizationSecurityPolicyAssociations
 func newComputeOrganizationSecurityPolicyAssociations(c *ComputeV1alpha1Client, namespace string) *computeOrganizationSecurityPolicyAssociations {
 	return &computeOrganizationSecurityPolicyAssociations{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*computev1alpha1.ComputeOrganizationSecurityPolicyAssociation, *computev1alpha1.ComputeOrganizationSecurityPolicyAssociationList](
+			"computeorganizationsecuritypolicyassociations",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *computev1alpha1.ComputeOrganizationSecurityPolicyAssociation {
+				return &computev1alpha1.ComputeOrganizationSecurityPolicyAssociation{}
+			},
+			func() *computev1alpha1.ComputeOrganizationSecurityPolicyAssociationList {
+				return &computev1alpha1.ComputeOrganizationSecurityPolicyAssociationList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the computeOrganizationSecurityPolicyAssociation, and returns the corresponding computeOrganizationSecurityPolicyAssociation object, and an error if there is any.
-func (c *computeOrganizationSecurityPolicyAssociations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, err error) {
-	result = &v1alpha1.ComputeOrganizationSecurityPolicyAssociation{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computeorganizationsecuritypolicyassociations").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ComputeOrganizationSecurityPolicyAssociations that match those selectors.
-func (c *computeOrganizationSecurityPolicyAssociations) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyAssociationList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.ComputeOrganizationSecurityPolicyAssociationList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computeorganizationsecuritypolicyassociations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested computeOrganizationSecurityPolicyAssociations.
-func (c *computeOrganizationSecurityPolicyAssociations) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("computeorganizationsecuritypolicyassociations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a computeOrganizationSecurityPolicyAssociation and creates it.  Returns the server's representation of the computeOrganizationSecurityPolicyAssociation, and an error, if there is any.
-func (c *computeOrganizationSecurityPolicyAssociations) Create(ctx context.Context, computeOrganizationSecurityPolicyAssociation *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, opts v1.CreateOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, err error) {
-	result = &v1alpha1.ComputeOrganizationSecurityPolicyAssociation{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("computeorganizationsecuritypolicyassociations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeOrganizationSecurityPolicyAssociation).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a computeOrganizationSecurityPolicyAssociation and updates it. Returns the server's representation of the computeOrganizationSecurityPolicyAssociation, and an error, if there is any.
-func (c *computeOrganizationSecurityPolicyAssociations) Update(ctx context.Context, computeOrganizationSecurityPolicyAssociation *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, opts v1.UpdateOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, err error) {
-	result = &v1alpha1.ComputeOrganizationSecurityPolicyAssociation{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computeorganizationsecuritypolicyassociations").
-		Name(computeOrganizationSecurityPolicyAssociation.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeOrganizationSecurityPolicyAssociation).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *computeOrganizationSecurityPolicyAssociations) UpdateStatus(ctx context.Context, computeOrganizationSecurityPolicyAssociation *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, opts v1.UpdateOptions) (result *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, err error) {
-	result = &v1alpha1.ComputeOrganizationSecurityPolicyAssociation{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computeorganizationsecuritypolicyassociations").
-		Name(computeOrganizationSecurityPolicyAssociation.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeOrganizationSecurityPolicyAssociation).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the computeOrganizationSecurityPolicyAssociation and deletes it. Returns an error if one occurs.
-func (c *computeOrganizationSecurityPolicyAssociations) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computeorganizationsecuritypolicyassociations").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *computeOrganizationSecurityPolicyAssociations) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computeorganizationsecuritypolicyassociations").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched computeOrganizationSecurityPolicyAssociation.
-func (c *computeOrganizationSecurityPolicyAssociations) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeOrganizationSecurityPolicyAssociation, err error) {
-	result = &v1alpha1.ComputeOrganizationSecurityPolicyAssociation{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("computeorganizationsecuritypolicyassociations").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

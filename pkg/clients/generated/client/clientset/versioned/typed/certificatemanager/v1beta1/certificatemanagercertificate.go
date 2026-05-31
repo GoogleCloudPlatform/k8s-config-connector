@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1beta1"
+	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // CertificateManagerCertificatesGetter has a method to return a CertificateManagerCertificateInterface.
@@ -41,158 +40,38 @@ type CertificateManagerCertificatesGetter interface {
 
 // CertificateManagerCertificateInterface has methods to work with CertificateManagerCertificate resources.
 type CertificateManagerCertificateInterface interface {
-	Create(ctx context.Context, certificateManagerCertificate *v1beta1.CertificateManagerCertificate, opts v1.CreateOptions) (*v1beta1.CertificateManagerCertificate, error)
-	Update(ctx context.Context, certificateManagerCertificate *v1beta1.CertificateManagerCertificate, opts v1.UpdateOptions) (*v1beta1.CertificateManagerCertificate, error)
-	UpdateStatus(ctx context.Context, certificateManagerCertificate *v1beta1.CertificateManagerCertificate, opts v1.UpdateOptions) (*v1beta1.CertificateManagerCertificate, error)
+	Create(ctx context.Context, certificateManagerCertificate *certificatemanagerv1beta1.CertificateManagerCertificate, opts v1.CreateOptions) (*certificatemanagerv1beta1.CertificateManagerCertificate, error)
+	Update(ctx context.Context, certificateManagerCertificate *certificatemanagerv1beta1.CertificateManagerCertificate, opts v1.UpdateOptions) (*certificatemanagerv1beta1.CertificateManagerCertificate, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, certificateManagerCertificate *certificatemanagerv1beta1.CertificateManagerCertificate, opts v1.UpdateOptions) (*certificatemanagerv1beta1.CertificateManagerCertificate, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.CertificateManagerCertificate, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.CertificateManagerCertificateList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*certificatemanagerv1beta1.CertificateManagerCertificate, error)
+	List(ctx context.Context, opts v1.ListOptions) (*certificatemanagerv1beta1.CertificateManagerCertificateList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.CertificateManagerCertificate, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *certificatemanagerv1beta1.CertificateManagerCertificate, err error)
 	CertificateManagerCertificateExpansion
 }
 
 // certificateManagerCertificates implements CertificateManagerCertificateInterface
 type certificateManagerCertificates struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*certificatemanagerv1beta1.CertificateManagerCertificate, *certificatemanagerv1beta1.CertificateManagerCertificateList]
 }
 
 // newCertificateManagerCertificates returns a CertificateManagerCertificates
 func newCertificateManagerCertificates(c *CertificatemanagerV1beta1Client, namespace string) *certificateManagerCertificates {
 	return &certificateManagerCertificates{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*certificatemanagerv1beta1.CertificateManagerCertificate, *certificatemanagerv1beta1.CertificateManagerCertificateList](
+			"certificatemanagercertificates",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *certificatemanagerv1beta1.CertificateManagerCertificate {
+				return &certificatemanagerv1beta1.CertificateManagerCertificate{}
+			},
+			func() *certificatemanagerv1beta1.CertificateManagerCertificateList {
+				return &certificatemanagerv1beta1.CertificateManagerCertificateList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the certificateManagerCertificate, and returns the corresponding certificateManagerCertificate object, and an error if there is any.
-func (c *certificateManagerCertificates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.CertificateManagerCertificate, err error) {
-	result = &v1beta1.CertificateManagerCertificate{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("certificatemanagercertificates").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of CertificateManagerCertificates that match those selectors.
-func (c *certificateManagerCertificates) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.CertificateManagerCertificateList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.CertificateManagerCertificateList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("certificatemanagercertificates").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested certificateManagerCertificates.
-func (c *certificateManagerCertificates) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("certificatemanagercertificates").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a certificateManagerCertificate and creates it.  Returns the server's representation of the certificateManagerCertificate, and an error, if there is any.
-func (c *certificateManagerCertificates) Create(ctx context.Context, certificateManagerCertificate *v1beta1.CertificateManagerCertificate, opts v1.CreateOptions) (result *v1beta1.CertificateManagerCertificate, err error) {
-	result = &v1beta1.CertificateManagerCertificate{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("certificatemanagercertificates").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(certificateManagerCertificate).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a certificateManagerCertificate and updates it. Returns the server's representation of the certificateManagerCertificate, and an error, if there is any.
-func (c *certificateManagerCertificates) Update(ctx context.Context, certificateManagerCertificate *v1beta1.CertificateManagerCertificate, opts v1.UpdateOptions) (result *v1beta1.CertificateManagerCertificate, err error) {
-	result = &v1beta1.CertificateManagerCertificate{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("certificatemanagercertificates").
-		Name(certificateManagerCertificate.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(certificateManagerCertificate).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *certificateManagerCertificates) UpdateStatus(ctx context.Context, certificateManagerCertificate *v1beta1.CertificateManagerCertificate, opts v1.UpdateOptions) (result *v1beta1.CertificateManagerCertificate, err error) {
-	result = &v1beta1.CertificateManagerCertificate{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("certificatemanagercertificates").
-		Name(certificateManagerCertificate.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(certificateManagerCertificate).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the certificateManagerCertificate and deletes it. Returns an error if one occurs.
-func (c *certificateManagerCertificates) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("certificatemanagercertificates").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *certificateManagerCertificates) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("certificatemanagercertificates").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched certificateManagerCertificate.
-func (c *certificateManagerCertificates) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.CertificateManagerCertificate, err error) {
-	result = &v1beta1.CertificateManagerCertificate{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("certificatemanagercertificates").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

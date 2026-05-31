@@ -22,18 +22,20 @@
 package versioned
 
 import (
-	"fmt"
-	"net/http"
+	fmt "fmt"
+	http "net/http"
 
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
+	aistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aistreams/v1alpha1"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
 	apigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1beta1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
+	apihubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apihub/v1alpha1"
 	apikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1"
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
 	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1alpha1"
@@ -59,6 +61,7 @@ import (
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billing/v1alpha1"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
+	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1alpha1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1beta1"
@@ -96,6 +99,7 @@ import (
 	datastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastore/v1alpha1"
 	datastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1"
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1"
+	devicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
 	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1"
@@ -144,6 +148,7 @@ import (
 	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
 	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1alpha1"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1"
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1beta1"
@@ -202,12 +207,14 @@ type Interface interface {
 	AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface
 	AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface
 	AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface
+	AistreamsV1alpha1() aistreamsv1alpha1.AistreamsV1alpha1Interface
 	AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface
 	AnalyticsV1alpha1() analyticsv1alpha1.AnalyticsV1alpha1Interface
 	ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface
 	ApigatewayV1beta1() apigatewayv1beta1.ApigatewayV1beta1Interface
 	ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface
 	ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface
+	ApihubV1alpha1() apihubv1alpha1.ApihubV1alpha1Interface
 	ApikeysV1alpha1() apikeysv1alpha1.ApikeysV1alpha1Interface
 	AppengineV1alpha1() appenginev1alpha1.AppengineV1alpha1Interface
 	ApphubV1alpha1() apphubv1alpha1.ApphubV1alpha1Interface
@@ -233,6 +240,7 @@ type Interface interface {
 	BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface
 	BillingV1alpha1() billingv1alpha1.BillingV1alpha1Interface
 	BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface
+	BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Interface
 	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
 	CertificatemanagerV1alpha1() certificatemanagerv1alpha1.CertificatemanagerV1alpha1Interface
 	CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface
@@ -270,6 +278,7 @@ type Interface interface {
 	DatastoreV1alpha1() datastorev1alpha1.DatastoreV1alpha1Interface
 	DatastreamV1alpha1() datastreamv1alpha1.DatastreamV1alpha1Interface
 	DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Interface
+	DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface
 	DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1Interface
 	DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1alpha1Interface
 	DiscoveryengineV1alpha1() discoveryenginev1alpha1.DiscoveryengineV1alpha1Interface
@@ -318,6 +327,7 @@ type Interface interface {
 	NetworkconnectivityV1alpha1() networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Interface
 	NetworkconnectivityV1beta1() networkconnectivityv1beta1.NetworkconnectivityV1beta1Interface
 	NetworkmanagementV1alpha1() networkmanagementv1alpha1.NetworkmanagementV1alpha1Interface
+	NetworksecurityV1alpha1() networksecurityv1alpha1.NetworksecurityV1alpha1Interface
 	NetworksecurityV1beta1() networksecurityv1beta1.NetworksecurityV1beta1Interface
 	NetworkservicesV1alpha1() networkservicesv1alpha1.NetworkservicesV1alpha1Interface
 	NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface
@@ -374,12 +384,14 @@ type Clientset struct {
 	accesscontextmanagerV1beta1    *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
 	accesscontextmanagerV1alpha1   *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
 	aiplatformV1alpha1             *aiplatformv1alpha1.AiplatformV1alpha1Client
+	aistreamsV1alpha1              *aistreamsv1alpha1.AistreamsV1alpha1Client
 	alloydbV1beta1                 *alloydbv1beta1.AlloydbV1beta1Client
 	analyticsV1alpha1              *analyticsv1alpha1.AnalyticsV1alpha1Client
 	apigatewayV1alpha1             *apigatewayv1alpha1.ApigatewayV1alpha1Client
 	apigatewayV1beta1              *apigatewayv1beta1.ApigatewayV1beta1Client
 	apigeeV1alpha1                 *apigeev1alpha1.ApigeeV1alpha1Client
 	apigeeV1beta1                  *apigeev1beta1.ApigeeV1beta1Client
+	apihubV1alpha1                 *apihubv1alpha1.ApihubV1alpha1Client
 	apikeysV1alpha1                *apikeysv1alpha1.ApikeysV1alpha1Client
 	appengineV1alpha1              *appenginev1alpha1.AppengineV1alpha1Client
 	apphubV1alpha1                 *apphubv1alpha1.ApphubV1alpha1Client
@@ -405,6 +417,7 @@ type Clientset struct {
 	bigtableV1beta1                *bigtablev1beta1.BigtableV1beta1Client
 	billingV1alpha1                *billingv1alpha1.BillingV1alpha1Client
 	billingbudgetsV1beta1          *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
+	binaryauthorizationV1alpha1    *binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Client
 	binaryauthorizationV1beta1     *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
 	certificatemanagerV1alpha1     *certificatemanagerv1alpha1.CertificatemanagerV1alpha1Client
 	certificatemanagerV1beta1      *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
@@ -442,6 +455,7 @@ type Clientset struct {
 	datastoreV1alpha1              *datastorev1alpha1.DatastoreV1alpha1Client
 	datastreamV1alpha1             *datastreamv1alpha1.DatastreamV1alpha1Client
 	deploymentmanagerV1alpha1      *deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Client
+	devicestreamingV1alpha1        *devicestreamingv1alpha1.DevicestreamingV1alpha1Client
 	dialogflowV1alpha1             *dialogflowv1alpha1.DialogflowV1alpha1Client
 	dialogflowcxV1alpha1           *dialogflowcxv1alpha1.DialogflowcxV1alpha1Client
 	discoveryengineV1alpha1        *discoveryenginev1alpha1.DiscoveryengineV1alpha1Client
@@ -490,6 +504,7 @@ type Clientset struct {
 	networkconnectivityV1alpha1    *networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Client
 	networkconnectivityV1beta1     *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
 	networkmanagementV1alpha1      *networkmanagementv1alpha1.NetworkmanagementV1alpha1Client
+	networksecurityV1alpha1        *networksecurityv1alpha1.NetworksecurityV1alpha1Client
 	networksecurityV1beta1         *networksecurityv1beta1.NetworksecurityV1beta1Client
 	networkservicesV1alpha1        *networkservicesv1alpha1.NetworkservicesV1alpha1Client
 	networkservicesV1beta1         *networkservicesv1beta1.NetworkservicesV1beta1Client
@@ -555,6 +570,11 @@ func (c *Clientset) AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1In
 	return c.aiplatformV1alpha1
 }
 
+// AistreamsV1alpha1 retrieves the AistreamsV1alpha1Client
+func (c *Clientset) AistreamsV1alpha1() aistreamsv1alpha1.AistreamsV1alpha1Interface {
+	return c.aistreamsV1alpha1
+}
+
 // AlloydbV1beta1 retrieves the AlloydbV1beta1Client
 func (c *Clientset) AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface {
 	return c.alloydbV1beta1
@@ -583,6 +603,11 @@ func (c *Clientset) ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface {
 // ApigeeV1beta1 retrieves the ApigeeV1beta1Client
 func (c *Clientset) ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface {
 	return c.apigeeV1beta1
+}
+
+// ApihubV1alpha1 retrieves the ApihubV1alpha1Client
+func (c *Clientset) ApihubV1alpha1() apihubv1alpha1.ApihubV1alpha1Interface {
+	return c.apihubV1alpha1
 }
 
 // ApikeysV1alpha1 retrieves the ApikeysV1alpha1Client
@@ -708,6 +733,11 @@ func (c *Clientset) BillingV1alpha1() billingv1alpha1.BillingV1alpha1Interface {
 // BillingbudgetsV1beta1 retrieves the BillingbudgetsV1beta1Client
 func (c *Clientset) BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface {
 	return c.billingbudgetsV1beta1
+}
+
+// BinaryauthorizationV1alpha1 retrieves the BinaryauthorizationV1alpha1Client
+func (c *Clientset) BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Interface {
+	return c.binaryauthorizationV1alpha1
 }
 
 // BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
@@ -893,6 +923,11 @@ func (c *Clientset) DatastreamV1alpha1() datastreamv1alpha1.DatastreamV1alpha1In
 // DeploymentmanagerV1alpha1 retrieves the DeploymentmanagerV1alpha1Client
 func (c *Clientset) DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Interface {
 	return c.deploymentmanagerV1alpha1
+}
+
+// DevicestreamingV1alpha1 retrieves the DevicestreamingV1alpha1Client
+func (c *Clientset) DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface {
+	return c.devicestreamingV1alpha1
 }
 
 // DialogflowV1alpha1 retrieves the DialogflowV1alpha1Client
@@ -1133,6 +1168,11 @@ func (c *Clientset) NetworkconnectivityV1beta1() networkconnectivityv1beta1.Netw
 // NetworkmanagementV1alpha1 retrieves the NetworkmanagementV1alpha1Client
 func (c *Clientset) NetworkmanagementV1alpha1() networkmanagementv1alpha1.NetworkmanagementV1alpha1Interface {
 	return c.networkmanagementV1alpha1
+}
+
+// NetworksecurityV1alpha1 retrieves the NetworksecurityV1alpha1Client
+func (c *Clientset) NetworksecurityV1alpha1() networksecurityv1alpha1.NetworksecurityV1alpha1Interface {
+	return c.networksecurityV1alpha1
 }
 
 // NetworksecurityV1beta1 retrieves the NetworksecurityV1beta1Client
@@ -1431,6 +1471,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.aistreamsV1alpha1, err = aistreamsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.alloydbV1beta1, err = alloydbv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1452,6 +1496,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.apigeeV1beta1, err = apigeev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.apihubV1alpha1, err = apihubv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1552,6 +1600,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.billingbudgetsV1beta1, err = billingbudgetsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.binaryauthorizationV1alpha1, err = binaryauthorizationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1700,6 +1752,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.deploymentmanagerV1alpha1, err = deploymentmanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.devicestreamingV1alpha1, err = devicestreamingv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1892,6 +1948,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.networkmanagementV1alpha1, err = networkmanagementv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.networksecurityV1alpha1, err = networksecurityv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2111,12 +2171,14 @@ func New(c rest.Interface) *Clientset {
 	cs.accesscontextmanagerV1beta1 = accesscontextmanagerv1beta1.New(c)
 	cs.accesscontextmanagerV1alpha1 = accesscontextmanagerv1alpha1.New(c)
 	cs.aiplatformV1alpha1 = aiplatformv1alpha1.New(c)
+	cs.aistreamsV1alpha1 = aistreamsv1alpha1.New(c)
 	cs.alloydbV1beta1 = alloydbv1beta1.New(c)
 	cs.analyticsV1alpha1 = analyticsv1alpha1.New(c)
 	cs.apigatewayV1alpha1 = apigatewayv1alpha1.New(c)
 	cs.apigatewayV1beta1 = apigatewayv1beta1.New(c)
 	cs.apigeeV1alpha1 = apigeev1alpha1.New(c)
 	cs.apigeeV1beta1 = apigeev1beta1.New(c)
+	cs.apihubV1alpha1 = apihubv1alpha1.New(c)
 	cs.apikeysV1alpha1 = apikeysv1alpha1.New(c)
 	cs.appengineV1alpha1 = appenginev1alpha1.New(c)
 	cs.apphubV1alpha1 = apphubv1alpha1.New(c)
@@ -2142,6 +2204,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigtableV1beta1 = bigtablev1beta1.New(c)
 	cs.billingV1alpha1 = billingv1alpha1.New(c)
 	cs.billingbudgetsV1beta1 = billingbudgetsv1beta1.New(c)
+	cs.binaryauthorizationV1alpha1 = binaryauthorizationv1alpha1.New(c)
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
 	cs.certificatemanagerV1alpha1 = certificatemanagerv1alpha1.New(c)
 	cs.certificatemanagerV1beta1 = certificatemanagerv1beta1.New(c)
@@ -2179,6 +2242,7 @@ func New(c rest.Interface) *Clientset {
 	cs.datastoreV1alpha1 = datastorev1alpha1.New(c)
 	cs.datastreamV1alpha1 = datastreamv1alpha1.New(c)
 	cs.deploymentmanagerV1alpha1 = deploymentmanagerv1alpha1.New(c)
+	cs.devicestreamingV1alpha1 = devicestreamingv1alpha1.New(c)
 	cs.dialogflowV1alpha1 = dialogflowv1alpha1.New(c)
 	cs.dialogflowcxV1alpha1 = dialogflowcxv1alpha1.New(c)
 	cs.discoveryengineV1alpha1 = discoveryenginev1alpha1.New(c)
@@ -2227,6 +2291,7 @@ func New(c rest.Interface) *Clientset {
 	cs.networkconnectivityV1alpha1 = networkconnectivityv1alpha1.New(c)
 	cs.networkconnectivityV1beta1 = networkconnectivityv1beta1.New(c)
 	cs.networkmanagementV1alpha1 = networkmanagementv1alpha1.New(c)
+	cs.networksecurityV1alpha1 = networksecurityv1alpha1.New(c)
 	cs.networksecurityV1beta1 = networksecurityv1beta1.New(c)
 	cs.networkservicesV1alpha1 = networkservicesv1alpha1.New(c)
 	cs.networkservicesV1beta1 = networkservicesv1beta1.New(c)

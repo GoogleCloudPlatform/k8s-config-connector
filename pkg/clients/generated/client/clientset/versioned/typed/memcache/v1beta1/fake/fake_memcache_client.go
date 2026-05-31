@@ -32,7 +32,7 @@ type FakeMemcacheV1beta1 struct {
 }
 
 func (c *FakeMemcacheV1beta1) MemcacheInstances(namespace string) v1beta1.MemcacheInstanceInterface {
-	return &FakeMemcacheInstances{c, namespace}
+	return newFakeMemcacheInstances(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

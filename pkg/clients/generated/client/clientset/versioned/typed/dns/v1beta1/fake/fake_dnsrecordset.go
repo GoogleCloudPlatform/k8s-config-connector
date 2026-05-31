@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDNSRecordSets implements DNSRecordSetInterface
-type FakeDNSRecordSets struct {
+// fakeDNSRecordSets implements DNSRecordSetInterface
+type fakeDNSRecordSets struct {
+	*gentype.FakeClientWithList[*v1beta1.DNSRecordSet, *v1beta1.DNSRecordSetList]
 	Fake *FakeDnsV1beta1
-	ns   string
 }
 
-var dnsrecordsetsResource = v1beta1.SchemeGroupVersion.WithResource("dnsrecordsets")
-
-var dnsrecordsetsKind = v1beta1.SchemeGroupVersion.WithKind("DNSRecordSet")
-
-// Get takes name of the dNSRecordSet, and returns the corresponding dNSRecordSet object, and an error if there is any.
-func (c *FakeDNSRecordSets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DNSRecordSet, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(dnsrecordsetsResource, c.ns, name), &v1beta1.DNSRecordSet{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDNSRecordSets(fake *FakeDnsV1beta1, namespace string) dnsv1beta1.DNSRecordSetInterface {
+	return &fakeDNSRecordSets{
+		gentype.NewFakeClientWithList[*v1beta1.DNSRecordSet, *v1beta1.DNSRecordSetList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("dnsrecordsets"),
+			v1beta1.SchemeGroupVersion.WithKind("DNSRecordSet"),
+			func() *v1beta1.DNSRecordSet { return &v1beta1.DNSRecordSet{} },
+			func() *v1beta1.DNSRecordSetList { return &v1beta1.DNSRecordSetList{} },
+			func(dst, src *v1beta1.DNSRecordSetList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.DNSRecordSetList) []*v1beta1.DNSRecordSet {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.DNSRecordSetList, items []*v1beta1.DNSRecordSet) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.DNSRecordSet), err
-}
-
-// List takes label and field selectors, and returns the list of DNSRecordSets that match those selectors.
-func (c *FakeDNSRecordSets) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.DNSRecordSetList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(dnsrecordsetsResource, dnsrecordsetsKind, c.ns, opts), &v1beta1.DNSRecordSetList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.DNSRecordSetList{ListMeta: obj.(*v1beta1.DNSRecordSetList).ListMeta}
-	for _, item := range obj.(*v1beta1.DNSRecordSetList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dNSRecordSets.
-func (c *FakeDNSRecordSets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(dnsrecordsetsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dNSRecordSet and creates it.  Returns the server's representation of the dNSRecordSet, and an error, if there is any.
-func (c *FakeDNSRecordSets) Create(ctx context.Context, dNSRecordSet *v1beta1.DNSRecordSet, opts v1.CreateOptions) (result *v1beta1.DNSRecordSet, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(dnsrecordsetsResource, c.ns, dNSRecordSet), &v1beta1.DNSRecordSet{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DNSRecordSet), err
-}
-
-// Update takes the representation of a dNSRecordSet and updates it. Returns the server's representation of the dNSRecordSet, and an error, if there is any.
-func (c *FakeDNSRecordSets) Update(ctx context.Context, dNSRecordSet *v1beta1.DNSRecordSet, opts v1.UpdateOptions) (result *v1beta1.DNSRecordSet, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(dnsrecordsetsResource, c.ns, dNSRecordSet), &v1beta1.DNSRecordSet{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DNSRecordSet), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDNSRecordSets) UpdateStatus(ctx context.Context, dNSRecordSet *v1beta1.DNSRecordSet, opts v1.UpdateOptions) (*v1beta1.DNSRecordSet, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(dnsrecordsetsResource, "status", c.ns, dNSRecordSet), &v1beta1.DNSRecordSet{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DNSRecordSet), err
-}
-
-// Delete takes name of the dNSRecordSet and deletes it. Returns an error if one occurs.
-func (c *FakeDNSRecordSets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(dnsrecordsetsResource, c.ns, name, opts), &v1beta1.DNSRecordSet{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDNSRecordSets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(dnsrecordsetsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.DNSRecordSetList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dNSRecordSet.
-func (c *FakeDNSRecordSets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.DNSRecordSet, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(dnsrecordsetsResource, c.ns, name, pt, data, subresources...), &v1beta1.DNSRecordSet{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.DNSRecordSet), err
 }

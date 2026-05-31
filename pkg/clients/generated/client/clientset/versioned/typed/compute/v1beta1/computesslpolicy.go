@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // ComputeSSLPoliciesGetter has a method to return a ComputeSSLPolicyInterface.
@@ -41,158 +40,34 @@ type ComputeSSLPoliciesGetter interface {
 
 // ComputeSSLPolicyInterface has methods to work with ComputeSSLPolicy resources.
 type ComputeSSLPolicyInterface interface {
-	Create(ctx context.Context, computeSSLPolicy *v1beta1.ComputeSSLPolicy, opts v1.CreateOptions) (*v1beta1.ComputeSSLPolicy, error)
-	Update(ctx context.Context, computeSSLPolicy *v1beta1.ComputeSSLPolicy, opts v1.UpdateOptions) (*v1beta1.ComputeSSLPolicy, error)
-	UpdateStatus(ctx context.Context, computeSSLPolicy *v1beta1.ComputeSSLPolicy, opts v1.UpdateOptions) (*v1beta1.ComputeSSLPolicy, error)
+	Create(ctx context.Context, computeSSLPolicy *computev1beta1.ComputeSSLPolicy, opts v1.CreateOptions) (*computev1beta1.ComputeSSLPolicy, error)
+	Update(ctx context.Context, computeSSLPolicy *computev1beta1.ComputeSSLPolicy, opts v1.UpdateOptions) (*computev1beta1.ComputeSSLPolicy, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, computeSSLPolicy *computev1beta1.ComputeSSLPolicy, opts v1.UpdateOptions) (*computev1beta1.ComputeSSLPolicy, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.ComputeSSLPolicy, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ComputeSSLPolicyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*computev1beta1.ComputeSSLPolicy, error)
+	List(ctx context.Context, opts v1.ListOptions) (*computev1beta1.ComputeSSLPolicyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeSSLPolicy, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *computev1beta1.ComputeSSLPolicy, err error)
 	ComputeSSLPolicyExpansion
 }
 
 // computeSSLPolicies implements ComputeSSLPolicyInterface
 type computeSSLPolicies struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*computev1beta1.ComputeSSLPolicy, *computev1beta1.ComputeSSLPolicyList]
 }
 
 // newComputeSSLPolicies returns a ComputeSSLPolicies
 func newComputeSSLPolicies(c *ComputeV1beta1Client, namespace string) *computeSSLPolicies {
 	return &computeSSLPolicies{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*computev1beta1.ComputeSSLPolicy, *computev1beta1.ComputeSSLPolicyList](
+			"computesslpolicies",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *computev1beta1.ComputeSSLPolicy { return &computev1beta1.ComputeSSLPolicy{} },
+			func() *computev1beta1.ComputeSSLPolicyList { return &computev1beta1.ComputeSSLPolicyList{} },
+		),
 	}
-}
-
-// Get takes name of the computeSSLPolicy, and returns the corresponding computeSSLPolicy object, and an error if there is any.
-func (c *computeSSLPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeSSLPolicy, err error) {
-	result = &v1beta1.ComputeSSLPolicy{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computesslpolicies").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ComputeSSLPolicies that match those selectors.
-func (c *computeSSLPolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeSSLPolicyList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.ComputeSSLPolicyList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("computesslpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested computeSSLPolicies.
-func (c *computeSSLPolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("computesslpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a computeSSLPolicy and creates it.  Returns the server's representation of the computeSSLPolicy, and an error, if there is any.
-func (c *computeSSLPolicies) Create(ctx context.Context, computeSSLPolicy *v1beta1.ComputeSSLPolicy, opts v1.CreateOptions) (result *v1beta1.ComputeSSLPolicy, err error) {
-	result = &v1beta1.ComputeSSLPolicy{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("computesslpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeSSLPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a computeSSLPolicy and updates it. Returns the server's representation of the computeSSLPolicy, and an error, if there is any.
-func (c *computeSSLPolicies) Update(ctx context.Context, computeSSLPolicy *v1beta1.ComputeSSLPolicy, opts v1.UpdateOptions) (result *v1beta1.ComputeSSLPolicy, err error) {
-	result = &v1beta1.ComputeSSLPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computesslpolicies").
-		Name(computeSSLPolicy.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeSSLPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *computeSSLPolicies) UpdateStatus(ctx context.Context, computeSSLPolicy *v1beta1.ComputeSSLPolicy, opts v1.UpdateOptions) (result *v1beta1.ComputeSSLPolicy, err error) {
-	result = &v1beta1.ComputeSSLPolicy{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("computesslpolicies").
-		Name(computeSSLPolicy.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(computeSSLPolicy).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the computeSSLPolicy and deletes it. Returns an error if one occurs.
-func (c *computeSSLPolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computesslpolicies").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *computeSSLPolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("computesslpolicies").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched computeSSLPolicy.
-func (c *computeSSLPolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeSSLPolicy, err error) {
-	result = &v1beta1.ComputeSSLPolicy{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("computesslpolicies").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }
