@@ -35,20 +35,18 @@ for dir in ${MODULE_DIRS}; do
   echo "Downloading modules..."
   GOWORK=off go mod download || true
 
-  echo "Identifying direct dependencies..."
-  # List all direct dependencies (excluding indirects)
-  DEPS=$(GOWORK=off go list -m -f '{{if not .Indirect}}{{.Path}}{{end}}' all 2>/dev/null || true)
+  echo "Identifying imported packages..."
+  # List all packages that are dependencies of the current module's packages
+  # Filter out: standard library, main module, empty lines, and any local packages starting with github.com/GoogleCloudPlatform/k8s-config-connector
+  PACKAGES=$(GOWORK=off go list -f '{{if not .Standard}}{{if .Module}}{{if not .Module.Main}}{{.ImportPath}}{{end}}{{end}}{{end}}' -deps ./... 2>/dev/null | sort -u | grep -v -E "^(github.com/GoogleCloudPlatform/k8s-config-connector|$)" || true)
 
-  for dep in ${DEPS}; do
-    # Skip empty lines, the current module itself, and local submodules/references
-    if [[ -z "${dep}" || "${dep}" == "${MODULE_PATH}" || "${dep}" == github.com/GoogleCloudPlatform/k8s-config-connector* ]]; then
-      continue
-    fi
-
-    echo "  Prebuilding dependency: ${dep}"
-    # Try building with /... first, then fallback to just the package, ignore failures
-    GOWORK=off go build -o /dev/null "${dep}/..." 2>/dev/null || GOWORK=off go build -o /dev/null "${dep}" 2>/dev/null || true
-  done
+  if [[ -n "${PACKAGES}" ]]; then
+    NUM_PKGS=$(echo "${PACKAGES}" | wc -l)
+    echo "  Prebuilding ${NUM_PKGS} imported packages..."
+    echo "${PACKAGES}" | xargs GOWORK=off go build -o /dev/null 2>/dev/null || true
+  else
+    echo "  No external imported packages found."
+  fi
 
   popd > /dev/null
 done
