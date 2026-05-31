@@ -120,7 +120,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	obj.ServicesIpv4Cidr = "34.118.224.0/20"
 
-	if err := s.populateClusterDefaults(name.Project, obj); err != nil {
+	if err := s.populateClusterDefaults(name.Project, obj, true); err != nil {
 		return nil, err
 	}
 
@@ -362,7 +362,8 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
 	}
 
-	if err := s.populateClusterDefaults(name.Project, obj); err != nil {
+	if err := s.populateClusterDefaults(name.Project, obj, false); err != nil {
+
 		return nil, err
 	}
 
@@ -473,12 +474,27 @@ func (s *ClusterManagerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClus
 	})
 }
 
-func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData, obj *pb.Cluster) error {
-	if obj.NodeConfig == nil {
-		obj.NodeConfig = &pb.NodeConfig{}
+func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData, obj *pb.Cluster, isCreate bool) error {
+	hasDefaultPool := false
+	for _, np := range obj.NodePools {
+		if np.Name == "default-pool" {
+			hasDefaultPool = true
+			break
+		}
 	}
-	if err := s.populateNodeConfig(obj.NodeConfig); err != nil {
-		return err
+	if isCreate && len(obj.NodePools) == 0 {
+		hasDefaultPool = true
+	}
+
+	if hasDefaultPool {
+		if obj.NodeConfig == nil {
+			obj.NodeConfig = &pb.NodeConfig{}
+		}
+		if err := s.populateNodeConfig(obj.NodeConfig); err != nil {
+			return err
+		}
+	} else {
+		obj.NodeConfig = nil
 	}
 
 	// Populate new fields based on deprecated fields

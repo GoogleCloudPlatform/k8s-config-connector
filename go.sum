@@ -363,8 +363,8 @@ cloud.google.com/go/clouddms v1.7.3/go.mod h1:fkN2HQQNUYInAU3NQ3vRLkV2iWs8lIdmBK
 cloud.google.com/go/clouddms v1.7.4/go.mod h1:RdrVqoFG9RWI5AvZ81SxJ/xvxPdtcRhFotwdE79DieY=
 cloud.google.com/go/clouddms v1.8.8 h1:YWsmRXTyK6Ba0hm4qTBak5g1oLhryuM8rSBxHWC8iq4=
 cloud.google.com/go/clouddms v1.8.8/go.mod h1:QtCyw+a73dlkDb2q20aTAPvfaTZCepDDi6Gb1AKq0a4=
-cloud.google.com/go/cloudquotas v1.4.0 h1:BvAxucMeKH+yuvpHzK8Aw/YlNg4ud8vEMpEe57SkLXU=
-cloud.google.com/go/cloudquotas v1.4.0/go.mod h1:scJFYMJg03mDu5D7qegDL4We9lOf5VZ+ppr0oreKZ0s=
+cloud.google.com/go/cloudquotas v1.11.0 h1:/V18B5MjitIfA1Ggb3p0nLFjdZutlaUeiEnx53JVxeQ=
+cloud.google.com/go/cloudquotas v1.11.0/go.mod h1:4i/yo7jay43HyTMpYxaZwHdpAePkTEK7mAcGwRMf2tI=
 cloud.google.com/go/cloudtasks v1.5.0/go.mod h1:fD92REy1x5woxkKEkLdvavGnPJGEn8Uic9nWuLzqCpY=
 cloud.google.com/go/cloudtasks v1.6.0/go.mod h1:C6Io+sxuke9/KNRkbQpihnW93SWDU3uXt92nu85HkYI=
 cloud.google.com/go/cloudtasks v1.7.0/go.mod h1:ImsfdYWwlWNJbdgPIIGJWC+gemEGTBK/SunNQQNCAb4=
@@ -657,6 +657,8 @@ cloud.google.com/go/edgecontainer v1.1.4/go.mod h1:AvFdVuZuVGdgaE5YvlL1faAoa1ndR
 cloud.google.com/go/edgecontainer v1.1.5/go.mod h1:rgcjrba3DEDEQAidT4yuzaKWTbkTI5zAMu3yy6ZWS0M=
 cloud.google.com/go/edgecontainer v1.4.4 h1:6KTQo6Qf0iEtfPVotlG7orazEO1I93Ham0PMlkHYpdQ=
 cloud.google.com/go/edgecontainer v1.4.4/go.mod h1:yyNVHsCKtsX/0mqFdbljQw0Uo660q2dlMPaiqYiC2Tg=
+cloud.google.com/go/edgenetwork v1.8.0 h1:NqbeFQF9jB6Mwf1bGyZhAn4QrgVk+dhhciA4sj6md8I=
+cloud.google.com/go/edgenetwork v1.8.0/go.mod h1:KRH/rJAmkj/dTZj9xxuhp2NFFdN9CkgRrCk4diTEqrQ=
 cloud.google.com/go/errorreporting v0.3.0/go.mod h1:xsP2yaAp+OAW4OIm60An2bbLpqIhKXdWR/tawvl7QzU=
 cloud.google.com/go/essentialcontacts v1.3.0/go.mod h1:r+OnHa5jfj90qIfZDO/VztSFqbQan7HV75p8sA+mdGI=
 cloud.google.com/go/essentialcontacts v1.4.0/go.mod h1:8tRldvHYsmnBCHdFpvU+GL75oWiBKl80BiqlFh9tp+8=
@@ -1099,6 +1101,8 @@ cloud.google.com/go/pubsub v1.32.0/go.mod h1:f+w71I33OMyxf9VpMVcZbnG5KSUkCOUHYpF
 cloud.google.com/go/pubsub v1.33.0/go.mod h1:f+w71I33OMyxf9VpMVcZbnG5KSUkCOUHYpFd5U1GdRc=
 cloud.google.com/go/pubsub v1.34.0/go.mod h1:alj4l4rBg+N3YTFDDC+/YyFTs6JAjam2QfYsddcAW4c=
 cloud.google.com/go/pubsub v1.36.1/go.mod h1:iYjCa9EzWOoBiTdd4ps7QoMtMln5NwaZQpK1hbRfBDE=
+cloud.google.com/go/pubsub v1.50.1 h1:fzbXpPyJnSGvWXF1jabhQeXyxdbCIkXTpjXHy7xviBM=
+cloud.google.com/go/pubsub v1.50.1/go.mod h1:6YVJv3MzWJUVdvQXG081sFvS0dWQOdnV+oTo++q/xFk=
 cloud.google.com/go/pubsub/v2 v2.3.0 h1:DgAN907x+sP0nScYfBzneRiIhWoXcpCD8ZAut8WX9vs=
 cloud.google.com/go/pubsub/v2 v2.3.0/go.mod h1:O5f0KHG9zDheZAd3z5rlCRhxt2JQtB+t/IYLKK3Bpvw=
 cloud.google.com/go/pubsublite v1.5.0/go.mod h1:xapqNQ1CuLfGi23Yda/9l4bBCKz/wC3KIJ5gKcxveZg=

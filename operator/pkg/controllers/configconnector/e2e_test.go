@@ -64,16 +64,23 @@ func TestConfigConnectorE2E(t *testing.T) {
 		t.Fatalf("failed to create ConfigConnector: %v", err)
 	}
 
-	// TODO: Replace with a poll for status/observedGeneration
-	time.Sleep(15 * time.Second)
-
+	// Poll for status/observedGeneration
 	newCC := &corev1beta1.ConfigConnector{}
-	if err := c.Get(ctx, nn, newCC); err != nil {
-		t.Errorf("failed to get ConfigConnector: %v", err)
+	for i := 0; i < 180; i++ {
+		if err := c.Get(ctx, nn, newCC); err != nil {
+			t.Errorf("failed to get ConfigConnector: %v", err)
+			return
+		}
+		status := newCC.GetCommonStatus()
+		if status.Healthy && len(status.Errors) == 0 {
+			return
+		}
+		time.Sleep(1 * time.Second)
 	}
+
 	status := newCC.GetCommonStatus()
 	if got, want := status.Healthy, true; got != want {
-		t.Errorf("unexpected value for status.healthy: got '%v', want '%v'", got, want)
+		t.Errorf("unexpected value for status.healthy: got '%v', want '%v', status: %+v", got, want, status)
 	}
 	if len(status.Errors) != 0 {
 		t.Errorf("unexpected number of errors in status.errors: got %v, want 0. Got errors: %v", len(status.Errors), status.Errors)

@@ -21,6 +21,10 @@
 
 package v1alpha1
 
+type SecurityCenterBigQueryExportExpansion interface{}
+
+type SecurityCenterMuteConfigExpansion interface{}
+
 type SecurityCenterNotificationConfigExpansion interface{}
 
 type SecurityCenterSourceExpansion interface{}

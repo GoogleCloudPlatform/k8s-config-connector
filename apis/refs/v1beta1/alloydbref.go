@@ -28,88 +28,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-type AlloyDBClusterRef struct {
-	// If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
-	External string `json:"external,omitempty"`
-	// The `metadata.name` field of a `AlloyDBCluster` resource.
-	Name string `json:"name,omitempty"`
-	// The `metadata.namespace` field of a `AlloyDBCluster` resource.
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type AlloyDBCluster struct {
-	ProjectID string
-	Location  string
-	ClusterID string
-}
-
-// TODO: Remove after AlloyDBCluster is migrated to direct controller.
-func ResolveAlloyDBCluster(ctx context.Context, reader client.Reader, src client.Object, ref *AlloyDBClusterRef) (*AlloyDBCluster, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.Name == "" && ref.External == "" {
-		return nil, fmt.Errorf("must specify either name or external on AlloyDBClusterRef")
-	}
-	if ref.Name != "" && ref.External != "" {
-		return nil, fmt.Errorf("cannot specify both name and external on AlloyDBClusterRef")
-	}
-
-	// External is provided.
-	if ref.External != "" {
-		// External should be in the `projects/[projectId]/locations/[location]/clusters/[clusterId]` format.
-		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "clusters" {
-			return &AlloyDBCluster{
-				ProjectID: tokens[1],
-				Location:  tokens[3],
-				ClusterID: tokens[5],
-			}, nil
-		}
-		return nil, fmt.Errorf("format of AlloyDBClusterRef external=%q was not known (use projects/[projectId]/locations/[location]/clusters/[clusterId])", ref.External)
-
-	}
-
-	// Fetch AlloyDBCluster object to construct the external form.
-	cluster := &unstructured.Unstructured{}
-	cluster.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "alloydb.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "AlloyDBCluster",
-	})
-	nn := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if nn.Namespace == "" {
-		nn.Namespace = src.GetNamespace()
-	}
-	if err := reader.Get(ctx, nn, cluster); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced AlloyDBCluster %v not found", nn)
-		}
-		return nil, fmt.Errorf("error reading referenced AlloyDBCluster %v: %w", nn, err)
-	}
-	projectID, err := ResolveProjectID(ctx, reader, cluster)
-	if err != nil {
-		return nil, err
-	}
-	location, err := GetLocation(cluster)
-	if err != nil {
-		return nil, err
-	}
-	clusterID, err := GetResourceID(cluster)
-	if err != nil {
-		return nil, err
-	}
-	return &AlloyDBCluster{
-		ProjectID: projectID,
-		Location:  location,
-		ClusterID: clusterID,
-	}, nil
-}
-
 type AlloyDBClusterTypeRef struct {
 	// The type of instance. Possible values: ["PRIMARY", "READ_POOL", "SECONDARY"]
 	External string `json:"external,omitempty"`
@@ -165,10 +83,6 @@ func ResolveAlloyDBClusterType(ctx context.Context, reader client.Reader, src cl
 		clusterType = "PRIMARY"
 	}
 	return common.LazyPtr(clusterType), nil
-}
-
-func (c *AlloyDBCluster) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", c.ProjectID, c.Location, c.ClusterID)
 }
 
 type AlloyDBBackupRef struct {

@@ -29,6 +29,8 @@ import (
 	fakeaccesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1/fake"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
 	fakeaiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1/fake"
+	aistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aistreams/v1alpha1"
+	fakeaistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aistreams/v1alpha1/fake"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	fakealloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1/fake"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1"
@@ -169,6 +171,8 @@ import (
 	fakedatastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1/fake"
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1"
 	fakedeploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1/fake"
+	devicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1"
+	fakedevicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1/fake"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
 	fakedialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1/fake"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
@@ -265,6 +269,8 @@ import (
 	fakenetworkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1/fake"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1"
 	fakenetworkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1/fake"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1alpha1"
+	fakenetworksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1alpha1/fake"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1"
 	fakenetworksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1/fake"
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
@@ -447,6 +453,11 @@ func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.
 // AiplatformV1alpha1 retrieves the AiplatformV1alpha1Client
 func (c *Clientset) AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface {
 	return &fakeaiplatformv1alpha1.FakeAiplatformV1alpha1{Fake: &c.Fake}
+}
+
+// AistreamsV1alpha1 retrieves the AistreamsV1alpha1Client
+func (c *Clientset) AistreamsV1alpha1() aistreamsv1alpha1.AistreamsV1alpha1Interface {
+	return &fakeaistreamsv1alpha1.FakeAistreamsV1alpha1{Fake: &c.Fake}
 }
 
 // AlloydbV1beta1 retrieves the AlloydbV1beta1Client
@@ -799,6 +810,11 @@ func (c *Clientset) DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.Deploy
 	return &fakedeploymentmanagerv1alpha1.FakeDeploymentmanagerV1alpha1{Fake: &c.Fake}
 }
 
+// DevicestreamingV1alpha1 retrieves the DevicestreamingV1alpha1Client
+func (c *Clientset) DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface {
+	return &fakedevicestreamingv1alpha1.FakeDevicestreamingV1alpha1{Fake: &c.Fake}
+}
+
 // DialogflowV1alpha1 retrieves the DialogflowV1alpha1Client
 func (c *Clientset) DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1Interface {
 	return &fakedialogflowv1alpha1.FakeDialogflowV1alpha1{Fake: &c.Fake}
@@ -1037,6 +1053,11 @@ func (c *Clientset) NetworkconnectivityV1beta1() networkconnectivityv1beta1.Netw
 // NetworkmanagementV1alpha1 retrieves the NetworkmanagementV1alpha1Client
 func (c *Clientset) NetworkmanagementV1alpha1() networkmanagementv1alpha1.NetworkmanagementV1alpha1Interface {
 	return &fakenetworkmanagementv1alpha1.FakeNetworkmanagementV1alpha1{Fake: &c.Fake}
+}
+
+// NetworksecurityV1alpha1 retrieves the NetworksecurityV1alpha1Client
+func (c *Clientset) NetworksecurityV1alpha1() networksecurityv1alpha1.NetworksecurityV1alpha1Interface {
+	return &fakenetworksecurityv1alpha1.FakeNetworksecurityV1alpha1{Fake: &c.Fake}
 }
 
 // NetworksecurityV1beta1 retrieves the NetworksecurityV1beta1Client

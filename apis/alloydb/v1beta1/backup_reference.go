@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,63 +17,76 @@ package v1beta1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &BackupAccessRef{}
+var _ refs.Ref = &AlloyDBBackupRef{}
 
-// BackupAccessRef is a reference to an alloydb Backup resource.
-type BackupAccessRef struct {
-	// A reference to an externally managed Backup resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backup}}".
-	External *string `json:"external,omitempty"`
+// AlloyDBBackupRef defines the resource reference to AlloyDBBackup, which "External" field
+// holds the GCP identifier for the KRM object.
+type AlloyDBBackupRef struct {
+	// A reference to an externally managed AlloyDBBackup resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".
+	External string `json:"external,omitempty"`
 
-	// The name of a AccessLevel resource.
-	Name *string `json:"name,omitempty"`
+	// The name of a AlloyDBBackup resource.
+	Name string `json:"name,omitempty"`
 
-	// The namespace of a AccessLevel resource.
-	Namespace *string `json:"namespace,omitempty"`
+	// The namespace of a AlloyDBBackup resource.
+	Namespace string `json:"namespace,omitempty"`
 }
 
-func (r *BackupAccessRef) GetGVK() schema.GroupVersionKind {
+func init() {
+	refs.Register(&AlloyDBBackupRef{})
+}
+
+func (r *AlloyDBBackupRef) GetGVK() schema.GroupVersionKind {
 	return AlloyDBBackupGVK
 }
 
-func (r *BackupAccessRef) GetNamespacedName() types.NamespacedName {
+func (r *AlloyDBBackupRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
-		Name:      direct.ValueOf(r.Name),
-		Namespace: direct.ValueOf(r.Namespace),
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
 }
 
-func (r *BackupAccessRef) GetExternal() string {
-	return direct.ValueOf(r.External)
+func (r *AlloyDBBackupRef) GetExternal() string {
+	return r.External
 }
 
-func (r *BackupAccessRef) SetExternal(ref string) {
-	r.External = direct.LazyPtr(ref)
+func (r *AlloyDBBackupRef) SetExternal(ref string) {
+	r.External = ref
 }
 
-func (r *BackupAccessRef) ValidateExternal(ref string) error {
-	id := &BackupIdentity{}
+func (r *AlloyDBBackupRef) ValidateExternal(ref string) error {
+	id := &AlloyDBBackupIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *BackupAccessRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	fallback := func(u *unstructured.Unstructured) string {
-		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
-		if name != "" {
-			return "projects/" + name
-		}
-		return ""
+func (r *AlloyDBBackupRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &AlloyDBBackupIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	return id, nil
+}
+
+func (r *AlloyDBBackupRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromAlloyDBBackupSpec(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

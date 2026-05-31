@@ -34,3 +34,4 @@ mv ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservic
 rmdir ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/
 sed -i 's/package beyondcorp/package beyondcorpclientconnectorservice/g' ${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go
 
+

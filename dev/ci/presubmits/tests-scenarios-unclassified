@@ -22,14 +22,26 @@ function on_error() {
 }
 trap on_error ERR
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+export REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/
 
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
-export RUN_TESTS=TestE2EScript/scenarios
 export SKIP_TESTS="TestE2EScript/scenarios/acquisition|TestE2EScript/scenarios/powertool|TestE2EScript/scenarios/gkehubfeaturemembership|TestE2EScript/scenarios/iam/iampartialpolicy|TestE2EScript/scenarios/tracker/tracker-iampartialpolicy"
 export TEST_TIMEOUT=3600s
 
-echo "Running scenarios tests..."
-${REPO_ROOT}/dev/tasks/run-e2e
+echo "Prebuilding e2e tests..."
+export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
+mkdir -p ${REPO_ROOT}/.build
+time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+
+echo "Building paralleltestrunner..."
+time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner/main.go
+
+echo "Running scenarios tests in parallel..."
+${REPO_ROOT}/.build/paralleltestrunner \
+    -list-file="${REPO_ROOT}/tests/e2e/testdata/scenarios-list.txt" \
+    -j=4 \
+    -base-test="TestE2EScript/scenarios" \
+    -check-unchanged=true \
+    -- ${REPO_ROOT}/dev/tasks/run-e2e

@@ -36,6 +36,46 @@ func fixStaleExternalFormat(external string) string {
 	return external
 }
 
+// TrimComputeURIPrefix trims known GCP Compute Engine URL and URI prefixes
+// to normalize the resource path to projects/{{project}}/... format.
+// This is robust and ensures unknown values/prefixes are not silently ignored.
+func TrimComputeURIPrefix(ref string) string {
+	prefixes := []string{
+		"https://compute.googleapis.com/compute/v1/",
+		"https://compute.googleapis.com/compute/beta/",
+		"https://compute.googleapis.com/compute/v1beta1/",
+		"https://compute.googleapis.com/",
+		"https://www.googleapis.com/compute/v1/",
+		"https://www.googleapis.com/compute/beta/",
+		"https://www.googleapis.com/compute/v1beta1/",
+		"https://www.googleapis.com/",
+		"http://compute.googleapis.com/compute/v1/",
+		"http://compute.googleapis.com/compute/beta/",
+		"http://compute.googleapis.com/compute/v1beta1/",
+		"http://compute.googleapis.com/",
+		"http://www.googleapis.com/compute/v1/",
+		"http://www.googleapis.com/compute/beta/",
+		"http://www.googleapis.com/compute/v1beta1/",
+		"http://www.googleapis.com/",
+		"//compute.googleapis.com/compute/v1/",
+		"//compute.googleapis.com/compute/beta/",
+		"//compute.googleapis.com/compute/v1beta1/",
+		"//compute.googleapis.com/",
+		"//www.googleapis.com/compute/v1/",
+		"//www.googleapis.com/compute/beta/",
+		"//www.googleapis.com/compute/v1beta1/",
+		"//www.googleapis.com/",
+		"compute/v1/",
+		"compute/beta/",
+		"compute/v1beta1/",
+		"/",
+	}
+	for _, prefix := range prefixes {
+		ref = strings.TrimPrefix(ref, prefix)
+	}
+	return ref
+}
+
 type ComputeSubnetworkRef struct {
 	/* The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
@@ -293,4 +333,13 @@ func ResolveComputeFirewallPolicy(ctx context.Context, reader client.Reader, src
 	tokens := strings.Split(partialID, "/")
 	return &ComputeFirewallPolicyRef{
 		External: tokens[len(tokens)-1]}, nil
+}
+
+type ComputeForwardingRuleRef struct {
+	/* The ComputeForwardingRule selflink in the form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The name field of a ComputeForwardingRule resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a ComputeForwardingRule resource. */
+	Namespace string `json:"namespace,omitempty"`
 }

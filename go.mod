@@ -26,7 +26,7 @@ require (
 	cloud.google.com/go/certificatemanager v1.9.6
 	cloud.google.com/go/cloudbuild v1.25.0
 	cloud.google.com/go/clouddms v1.8.8
-	cloud.google.com/go/cloudquotas v1.4.0
+	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/cloudtasks v1.13.7
 	cloud.google.com/go/compute v1.54.0
 	cloud.google.com/go/configdelivery v0.1.1
@@ -61,6 +61,7 @@ require (
 	cloud.google.com/go/notebooks v1.12.7
 	cloud.google.com/go/orchestration v1.11.10
 	cloud.google.com/go/orgpolicy v1.15.1
+	cloud.google.com/go/osconfig v1.16.0
 	cloud.google.com/go/parametermanager v0.3.1
 	cloud.google.com/go/privilegedaccessmanager v0.3.1
 	cloud.google.com/go/profiler v0.4.3
@@ -145,9 +146,10 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
+	cloud.google.com/go/edgenetwork v1.8.0 // indirect
 	cloud.google.com/go/memcache v1.11.7 // indirect
 	cloud.google.com/go/modelarmor v1.0.0 // indirect
-	cloud.google.com/go/osconfig v1.16.0 // indirect
+	cloud.google.com/go/pubsub v1.50.1 // indirect
 	cloud.google.com/go/pubsublite v1.8.2 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect

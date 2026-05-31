@@ -11,6 +11,10 @@
     {
       "pattern": "^.*/.*Location$",
       "reason": "Locations are read-only metadata containers."
+    },
+    {
+      "pattern": ".*cloudasset.*/Feed$",
+      "reason": "Already implemented as hierarchical variants (ProjectFeed, FolderFeed, etc.)."
     }
   ]
 }

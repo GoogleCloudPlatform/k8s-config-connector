@@ -27,6 +27,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \
+  --resource DiscoveryEngineIdentityMappingStore:IdentityMappingStore \
   --resource DiscoveryEngineTargetSite:TargetSite
 
 go run . generate-mapper --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1

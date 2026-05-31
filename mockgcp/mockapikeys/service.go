@@ -16,15 +16,16 @@ package mockapikeys
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/apikeys/v2"
+	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
 )
 
 // MockService represents a mocked apikeys service.
@@ -57,13 +58,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterApiKeysHandler,
-		s.operations.RegisterOperationsPath("/v2/operations/{name}"),
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	return mux, nil
+	grpcMux.AddService(pb.NewApiKeysClient(conn))
+	grpcMux.AddOperationsPath("/v2/operations/{name}", conn)
+
+	return grpcMux, nil
 }

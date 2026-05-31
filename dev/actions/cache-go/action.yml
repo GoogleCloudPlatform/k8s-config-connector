@@ -1,0 +1,70 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Go Dependency Cache & Prebuilder'
+description: 'Prebuilds and caches Go dependencies to speed up subsequent parallel workflow jobs'
+inputs:
+  go-version:
+    description: 'Go version'
+    required: false
+  go-version-file:
+    description: 'Go version file'
+    required: false
+    default: 'go.mod'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Free up disk space
+      shell: bash
+      run: dev/tasks/free-disk-space-on-github-actions-runner
+
+    - name: Set up Go
+      uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+      with:
+        go-version: ${{ inputs.go-version }}
+        go-version-file: ${{ inputs.go-version-file }}
+        cache: false # We handle caching ourselves below
+
+    - name: Get Go environment variables
+      id: go-env
+      shell: bash
+      run: |
+        echo "GOCACHE=$(go env GOCACHE)" >> $GITHUB_OUTPUT
+        echo "GOMODCACHE=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
+
+    - name: Calculate dependencies hash
+      id: deps-hash
+      shell: bash
+      run: |
+        HASH=$(find . -name "go.mod" -o -name "go.sum" -not -path "*/vendor/*" | sort | xargs cat | sha256sum | head -c 64)
+        echo "hash=${HASH}" >> $GITHUB_OUTPUT
+
+    - name: Cache Go modules and build cache
+      id: cache-deps
+      uses: actions/cache@v4
+      with:
+        path: |
+          ${{ steps.go-env.outputs.GOMODCACHE }}
+          ${{ steps.go-env.outputs.GOCACHE }}
+        key: go-deps-${{ runner.os }}-${{ steps.deps-hash.outputs.hash }}
+        restore-keys: |
+          go-deps-${{ runner.os }}-
+
+    - name: Prebuild dependencies on cache miss
+      if: steps.cache-deps.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/prebuild.sh
+        ${{ github.action_path }}/prebuild.sh

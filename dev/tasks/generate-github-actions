@@ -112,9 +112,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run ${f}"
         run: |
           ./${f}
@@ -137,11 +135,21 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
+    if [[ "${name}" == "validate-untested-fields" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+EOF
+    else
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 EOF
+    fi
 
     if [[ "${name}" == "unit-tests" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
@@ -151,9 +159,7 @@ EOF
     fi
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
 EOF
 
     # TODO: We should look at the script to see if it needs gcloud
@@ -166,12 +172,27 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
+    if [[ "${name}" == "validate-untested-fields" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - name: "Run ${f}"
+        run: |
+          ./${f}
+        env:
+          COMMIT_HEAD: \${{ github.event.pull_request.head.sha }}
+          BASE_COMMIT: \${{ github.event.pull_request.base.sha }}
+          ARTIFACTS: /tmp/artifacts
+EOF
+    else
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Run ${f}"
         run: |
           ./${f}
         env:
           ARTIFACTS: /tmp/artifacts
+EOF
+    fi
+
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
         if: \${{ !cancelled() }}
@@ -232,9 +253,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/crd-equivalence-check"
         run: |
           ./dev/ci/presubmits/crd-equivalence-check
@@ -292,7 +311,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+      - uses: ./dev/actions/cache-go
         with:
           go-version: '1.26'
       - name: "Run dev/ci/experiments-ci.sh"

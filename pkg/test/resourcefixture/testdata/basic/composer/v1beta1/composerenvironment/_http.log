@@ -116,6 +116,8 @@ X-Xss-Protection: 0
         "startTime": "1970-01-01T00:00:00Z"
       },
       "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "172.31.251.0/24",
+        "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment",
         "ipAllocationPolicy": {
           "useIpAliases": true
         },
@@ -216,6 +218,8 @@ X-Xss-Protection: 0
       "startTime": "1970-01-01T00:00:00Z"
     },
     "nodeConfig": {
+      "composerInternalIpv4CidrBlock": "172.31.251.0/24",
+      "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment",
       "ipAllocationPolicy": {},
       "network": "projects/${projectId}/global/networks/default",
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
@@ -300,6 +304,8 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
       "startTime": "1970-01-01T00:00:00Z"
     },
     "nodeConfig": {
+      "composerInternalIpv4CidrBlock": "172.31.251.0/24",
+      "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment",
       "ipAllocationPolicy": {},
       "network": "projects/${projectId}/global/networks/default",
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
@@ -436,6 +442,8 @@ X-Xss-Protection: 0
         "startTime": "1970-01-01T00:00:00Z"
       },
       "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "172.31.251.0/24",
+        "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment",
         "ipAllocationPolicy": {
           "useIpAliases": true
         },
@@ -539,6 +547,8 @@ X-Xss-Protection: 0
       "startTime": "1970-01-01T00:00:00Z"
     },
     "nodeConfig": {
+      "composerInternalIpv4CidrBlock": "172.31.251.0/24",
+      "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/test-attachment",
       "ipAllocationPolicy": {},
       "network": "projects/${projectId}/global/networks/default",
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"

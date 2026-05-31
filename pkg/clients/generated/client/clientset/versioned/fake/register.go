@@ -25,6 +25,7 @@ import (
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1beta1"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/aiplatform/v1alpha1"
+	aistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/aistreams/v1alpha1"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/analytics/v1alpha1"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigateway/v1alpha1"
@@ -95,6 +96,7 @@ import (
 	datastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastore/v1alpha1"
 	datastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastream/v1alpha1"
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/deploymentmanager/v1alpha1"
+	devicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/devicestreaming/v1alpha1"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflow/v1alpha1"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
 	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/discoveryengine/v1alpha1"
@@ -143,6 +145,7 @@ import (
 	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1alpha1"
 	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1beta1"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkmanagement/v1alpha1"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1alpha1"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1beta1"
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1alpha1"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
@@ -205,6 +208,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	accesscontextmanagerv1beta1.AddToScheme,
 	accesscontextmanagerv1alpha1.AddToScheme,
 	aiplatformv1alpha1.AddToScheme,
+	aistreamsv1alpha1.AddToScheme,
 	alloydbv1beta1.AddToScheme,
 	analyticsv1alpha1.AddToScheme,
 	apigatewayv1alpha1.AddToScheme,
@@ -275,6 +279,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	datastorev1alpha1.AddToScheme,
 	datastreamv1alpha1.AddToScheme,
 	deploymentmanagerv1alpha1.AddToScheme,
+	devicestreamingv1alpha1.AddToScheme,
 	dialogflowv1alpha1.AddToScheme,
 	dialogflowcxv1alpha1.AddToScheme,
 	discoveryenginev1alpha1.AddToScheme,
@@ -323,6 +328,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	networkconnectivityv1alpha1.AddToScheme,
 	networkconnectivityv1beta1.AddToScheme,
 	networkmanagementv1alpha1.AddToScheme,
+	networksecurityv1alpha1.AddToScheme,
 	networksecurityv1beta1.AddToScheme,
 	networkservicesv1alpha1.AddToScheme,
 	networkservicesv1beta1.AddToScheme,

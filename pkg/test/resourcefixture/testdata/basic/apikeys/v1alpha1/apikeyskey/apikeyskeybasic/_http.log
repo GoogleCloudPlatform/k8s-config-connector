@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }

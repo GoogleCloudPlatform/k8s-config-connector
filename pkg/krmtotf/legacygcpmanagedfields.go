@@ -317,7 +317,7 @@ func removeFromConfigIfNotApplied(r *Resource, config map[string]interface{}, pa
 	// in the KRM camelCase format.
 	_, found, err := getLastAppliedValue(r, path...)
 	if err != nil {
-		return fmt.Errorf("error finding last applied value for disk size: %w", err)
+		return fmt.Errorf("error finding last applied value for %s: %w", path, err)
 	}
 	if !found {
 		// The value was not found in the last applied configuration. Delegate
