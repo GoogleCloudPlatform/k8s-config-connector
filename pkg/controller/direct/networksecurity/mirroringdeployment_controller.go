@@ -42,7 +42,7 @@ func (m *mirroringDeploymentModel) AdapterForObject(ctx context.Context, op *dir
 }
 
 func (m *mirroringDeploymentModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return &mirroringDeploymentAdapter{}, nil
+	return nil, nil
 }
 
 type mirroringDeploymentAdapter struct {
