@@ -47,9 +47,14 @@ func (i *TaskIdentity) Parent() *TaskParent {
 type TaskParent struct {
 	ProjectID string
 	Location  string
+	JobID     string
+	TaskGroup string
 }
 
 func (p *TaskParent) String() string {
+	if p.JobID != "" && p.TaskGroup != "" {
+		return "projects/" + p.ProjectID + "/locations/" + p.Location + "/jobs/" + p.JobID + "/taskGroups/" + p.TaskGroup
+	}
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
@@ -60,6 +65,9 @@ func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *BatchTask) 
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
+	}
+	if projectRef == nil {
+		return nil, fmt.Errorf("cannot resolve project")
 	}
 	projectID := projectRef.ProjectID
 	if projectID == "" {
@@ -77,7 +85,11 @@ func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *BatchTask) 
 	}
 
 	// Use approved External
+	var jobID, taskGroup string
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef == "" {
+		externalRef = obj.GetAnnotations()["cnrm.cloud.google.com/external-id"]
+	}
 	if externalRef != "" {
 		// Validate desired with actual
 		actualParent, actualResourceID, err := ParseTaskExternal(externalRef)
@@ -94,11 +106,15 @@ func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *BatchTask) 
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
+		jobID = actualParent.JobID
+		taskGroup = actualParent.TaskGroup
 	}
 	return &TaskIdentity{
 		parent: &TaskParent{
 			ProjectID: projectID,
 			Location:  direct.ValueOf(location),
+			JobID:     jobID,
+			TaskGroup: taskGroup,
 		},
 		id: resourceID,
 	}, nil
@@ -106,13 +122,23 @@ func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *BatchTask) 
 
 func ParseTaskExternal(external string) (parent *TaskParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "tasks" {
-		return nil, "", fmt.Errorf("format of BatchTask external=%q was not known (use projects/{{projectID}}/locations/{{location}}/tasks/{{taskID}})", external)
+	if len(tokens) == 10 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "jobs" && tokens[6] == "taskGroups" && tokens[8] == "tasks" {
+		parent = &TaskParent{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+			JobID:     tokens[5],
+			TaskGroup: tokens[7],
+		}
+		resourceID = tokens[9]
+		return parent, resourceID, nil
 	}
-	parent = &TaskParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "tasks" {
+		parent = &TaskParent{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		}
+		resourceID = tokens[5]
+		return parent, resourceID, nil
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return nil, "", fmt.Errorf("format of BatchTask external=%q was not known (use projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}/taskGroups/{{taskGroupID}}/tasks/{{taskID}})", external)
 }
