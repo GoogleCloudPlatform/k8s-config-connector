@@ -22,6 +22,7 @@ import (
 	"google.golang.org/genproto/googleapis/type/expr"
 
 	acm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -89,7 +90,9 @@ func Condition_Members_FromProto(mapCtx *direct.MapContext, in []string) []acm.M
 	for index, item := range in {
 		// TODO: determine the format of item and deserialize to Ref
 		var element acm.Member
-		element.ServiceAccountRef.External = item
+		element.ServiceAccountRef = &refs.IAMServiceAccountRef{
+			External: item,
+		}
 		/*
 			element.ServiceAccountRef.Name
 			element.ServiceAccountRef.Namespace
@@ -108,7 +111,9 @@ func Condition_Members_ToProto(mapCtx *direct.MapContext, in []acm.Member) []str
 	for index, item := range in {
 		// TODO: determine the format of item and deserialize to Ref
 		var element string
-		element = item.ServiceAccountRef.External
+		if item.ServiceAccountRef != nil {
+			element = item.ServiceAccountRef.External
+		}
 		/*
 			element.ServiceAccountRef.Name
 			element.ServiceAccountRef.Namespace
@@ -117,4 +122,20 @@ func Condition_Members_ToProto(mapCtx *direct.MapContext, in []acm.Member) []str
 		out[index] = element
 	}
 	return out
+}
+
+func AccessContextManagerAccessLevelConditionSpec_RequiredAccessLevels_FromProto(mapCtx *direct.MapContext, input []string) []acm.AccessLevelRef {
+	return Condition_RequiredAccessLevels_FromProto(mapCtx, input)
+}
+
+func AccessContextManagerAccessLevelConditionSpec_RequiredAccessLevels_ToProto(mapCtx *direct.MapContext, in []acm.AccessLevelRef) []string {
+	return Condition_RequiredAccessLevels_ToProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessLevelConditionSpec_Members_FromProto(mapCtx *direct.MapContext, in []string) []acm.Member {
+	return Condition_Members_FromProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessLevelConditionSpec_Members_ToProto(mapCtx *direct.MapContext, in []acm.Member) []string {
+	return Condition_Members_ToProto(mapCtx, in)
 }
