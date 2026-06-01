@@ -87,12 +87,12 @@ type NetworkSecurityMirroringEndpointGroupAssociationObservedState struct {
 	Locations []MirroringLocationObservedState `json:"locations,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociationLocationDetails
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation.LocationDetails
 type MirroringEndpointGroupAssociationLocationDetailsObservedState struct {
-	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociationLocationDetails.location
+	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation.LocationDetails.location
 	Location *string `json:"location,omitempty"`
 
-	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociationLocationDetails.state
+	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation.LocationDetails.state
 	State *string `json:"state,omitempty"`
 }
 

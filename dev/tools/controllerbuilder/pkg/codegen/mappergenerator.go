@@ -1281,6 +1281,11 @@ func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
+	case "cloud.google.com/go/networksecurity/apiv1/networksecuritypb":
+
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/networksecurity/v1"
+
+
 	case "cloud.google.com/go/sql/apiv1beta4/sqlpb":
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
 	}

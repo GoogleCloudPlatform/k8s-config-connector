@@ -25,6 +25,21 @@ generate-grpc-for-google-protos: tools
 		--go-grpc_opt paths=source_relative \
 		./.build/googleapis/google/cloud/sql/v1beta4/*.proto
 
+	# Fetch newer googleapis for networksecurity
+	mkdir -p .build/googleapis-newer
+	git clone https://github.com/googleapis/googleapis.git .build/googleapis-newer || (cd .build/googleapis-newer && git fetch --all && git reset --hard cdc919ff596e263f2cc55a9780d2f74633da1ced)
+
+	find .build/googleapis-newer/google/cloud/networksecurity/v1 -name "*.proto" -exec sed -i "s|option go_package = \".*\";|option go_package = \"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/networksecurity/v1;networksecuritypb\";|g" {} +
+
+	PATH=.build/bin/:$${PATH} .build/bin/protoc/bin/protoc \
+		-I ./.build/googleapis-newer \
+		--experimental_allow_proto3_optional \
+		--go_out ./generated \
+		--go_opt paths=source_relative \
+		--go-grpc_out ./generated \
+		--go-grpc_opt paths=source_relative \
+		./.build/googleapis-newer/google/cloud/networksecurity/v1/*.proto
+
 	go run -mod=readonly golang.org/x/tools/cmd/goimports@$(GOLANG_X_TOOLS_VERSION) -w generated
 
 .PHONY: tools

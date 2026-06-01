@@ -45,9 +45,4 @@ go run . generate-types \
   --resource NetworkSecurityMirroringEndpointGroupAssociation:MirroringEndpointGroupAssociation \
   --proto-source-path ${PROTO_OUT}
 
-go run . generate-mapper \
-  --service google.cloud.networksecurity.v1 \
-  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
-  --proto-source-path ${PROTO_OUT}
-
 cd ${REPO_ROOT}
