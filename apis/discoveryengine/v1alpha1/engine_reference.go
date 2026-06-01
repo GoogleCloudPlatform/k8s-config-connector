@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -97,12 +98,12 @@ func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj 
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	location := obj.Spec.Location
+	location := common.ValueOf(obj.Spec.Location)
 	if location == "" {
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
-	collectionID := obj.Spec.Collection
+	collectionID := common.ValueOf(obj.Spec.Collection)
 	if collectionID == "" {
 		return nil, fmt.Errorf("cannot resolve collection")
 	}

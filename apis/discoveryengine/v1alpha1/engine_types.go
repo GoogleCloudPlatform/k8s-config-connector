@@ -75,11 +75,11 @@ type DiscoveryEngineEngineSpec struct {
 
 	/* Immutable. Location of the resource. */
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// Immutable. The collection for the Engine.
 	// +required
-	Collection string `json:"collection"`
+	Collection *string `json:"collection"`
 
 	// Immutable.
 	// The DiscoveryEngineChatEngine name. If not given, the metadata.name will be used.
@@ -120,6 +120,7 @@ type DiscoveryEngineEngineObservedState struct {
 
 // DiscoveryEngineEngine is the Schema for the DiscoveryEngineEngine API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type DiscoveryEngineEngine struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

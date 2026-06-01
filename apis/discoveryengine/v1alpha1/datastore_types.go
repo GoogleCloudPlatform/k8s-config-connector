@@ -68,12 +68,12 @@ type DiscoveryEngineDataStoreSpec struct {
 	// Immutable. The collection for the DataStore.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Collection field is immutable"
 	// +required
-	Collection string `json:"collection"`
+	Collection *string `json:"collection"`
 
 	// Immutable. The location for the resource.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 }
 
 // DiscoveryEngineDataStoreStatus defines the config connector machine state of DiscoveryEngineDataStore
@@ -121,6 +121,7 @@ type DiscoveryEngineDataStoreObservedState struct {
 
 // DiscoveryEngineDataStore is the Schema for the DiscoveryEngineDataStore API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type DiscoveryEngineDataStore struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

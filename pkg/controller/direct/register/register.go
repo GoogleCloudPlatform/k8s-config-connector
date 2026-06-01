@@ -7,25 +7,23 @@
 //      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
-// distributed under the License.
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 package register
 
 import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aistreams"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/analytics"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub/apihubdeployment"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apphub"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/artifactregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/asset"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/assuredworkloads"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/backupdr"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquery"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryanalyticshub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake"

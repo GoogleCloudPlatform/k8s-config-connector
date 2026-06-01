@@ -176,7 +176,7 @@ func (a *sampleQuerySetAdapter) Create(ctx context.Context, createOp *directbase
 	req := &pb.CreateSampleQuerySetRequest{
 		Parent:           fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
 		SampleQuerySet:   desired,
-		SampleQuerySetId: a.id.Samplequeryset,
+		SampleQuerySetId: a.id.Sample_query_set,
 	}
 	actual, err := a.gcpClient.CreateSampleQuerySet(ctx, req)
 	if err != nil {
@@ -260,7 +260,7 @@ func (a *sampleQuerySetAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	}
 
 	u := &unstructured.Unstructured{Object: uObj}
-	u.SetName(a.id.Samplequeryset)
+	u.SetName(a.id.Sample_query_set)
 	u.SetGroupVersionKind(krm.DiscoveryEngineSampleQuerySetGVK)
 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())

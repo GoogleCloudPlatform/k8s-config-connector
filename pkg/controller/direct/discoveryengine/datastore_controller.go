@@ -248,8 +248,8 @@ func (a *dataStoreAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
-	obj.Spec.Location = a.id.Location
-	obj.Spec.Collection = a.id.Collection
+	obj.Spec.Location = direct.LazyPtr(a.id.Location)
+	obj.Spec.Collection = direct.LazyPtr(a.id.Collection)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

@@ -30,13 +30,13 @@ var (
 	_ identity.Resource   = &DiscoveryEngineSampleQuerySet{}
 )
 
-var DiscoveryEngineSampleQuerySetIdentityFormat = gcpurls.Template[DiscoveryEngineSampleQuerySetIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/sampleQuerySets/{samplequeryset}")
+var DiscoveryEngineSampleQuerySetIdentityFormat = gcpurls.Template[DiscoveryEngineSampleQuerySetIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}")
 
 // +k8s:deepcopy-gen=false
 type DiscoveryEngineSampleQuerySetIdentity struct {
 	Project        string
 	Location       string
-	Samplequeryset string
+	Sample_query_set string
 }
 
 func (i *DiscoveryEngineSampleQuerySetIdentity) String() string {
@@ -79,7 +79,7 @@ func getIdentityFromDiscoveryEngineSampleQuerySetSpec(ctx context.Context, reade
 	identity := &DiscoveryEngineSampleQuerySetIdentity{
 		Project:        projectID,
 		Location:       location,
-		Samplequeryset: resourceID,
+		Sample_query_set: resourceID,
 	}
 	return identity, nil
 }

@@ -1,0 +1,11 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineSampleQuerySet
+metadata:
+  name: samplequeryset-${uniqueId}
+  labels:
+    test-label: "true"
+spec:
+  projectRef:
+    external: ${projectId}
+  location: "global"
+  displayName: "Test Sample Query Set"

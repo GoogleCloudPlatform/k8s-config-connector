@@ -69,7 +69,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
 		"//storage.googleapis.com/projects/{}/buckets/{}":                                         true,
-		"//apihub.googleapis.com/projects/{}/locations/{}/deployments/{}":                         true,
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                       true,
 		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                  true,
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
@@ -84,10 +83,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                         true,
 		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}":                   true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":      true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}":            true,
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                  true,
 	}
-
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
 		normalized := normalizeTemplateFormat(fullURL)

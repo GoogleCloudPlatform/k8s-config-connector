@@ -83,6 +83,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
         -   Removing the `v1alpha1` directory entirely if all resources are in `v1beta1`. Or, if we generate the same resource in `v1alpha1` and `v1beta1`, we should use `// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"` in the `v1beta1` type to generate `v1alpha1` from `v1beta1`. Often this will mean we don't need a `v1alpha1` folder at all.
         -   Ensuring `v1beta1` has `// +kubebuilder:storageversion`.
     -   If the existing types files are not named `<lowercasekind>_types.go` (e.g., `cluster_types.go` instead of `workstationcluster_types.go`), rename them using `git mv` to match the expected pattern *before* running `generate.sh`. Otherwise, `controllerbuilder generate-types` will fail to find the existing types and create duplicate files.
+    -   **Multiple API Versions**: If a service has multiple API versions (e.g. `v1alpha1` and `v1beta1`) that map to the *same* proto service and cannot be consolidated (e.g. due to cross-references), `generate-mapper` must be called with `--multiversion`. Otherwise, identical mapper functions will be generated twice and cause compile errors. When using `--multiversion`, check existing handwritten controller code to ensure they call the updated multi-versioned mapper functions (e.g. `KMSImportJobSpec_v1beta1_FromProto`).
 
 5.  **Execute and Verify**:
     -   Make `generate.sh` executable: `chmod +x apis/<SERVICE>/<VERSION>/generate.sh`.
@@ -97,4 +98,5 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
 ## Troubleshooting
 
 See `notes.md` for troubleshooting uncommon edge cases.
+
 -   **Deepcopy-gen errors (`invalid slice element type: invalid type`)**: This typically happens if `generate-types` outputs a struct name with a different capitalization than what is currently manually written in the `*_types.go` file (e.g. `PSCConfig` vs `PscConfig`). To fix, rename the type and all its usages in the `*_types.go` and `pkg/controller/direct/<SERVICE>/mapper.go` files to match the generated capitalization, then run `./generate.sh` again.

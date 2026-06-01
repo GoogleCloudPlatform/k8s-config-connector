@@ -31,7 +31,7 @@ type DiscoveryEngineIdentityMappingStoreSpec struct {
 
 	// The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The DiscoveryEngineIdentityMappingStore name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -82,6 +82,7 @@ type DiscoveryEngineIdentityMappingStoreObservedState struct {
 
 // DiscoveryEngineIdentityMappingStore is the Schema for the DiscoveryEngineIdentityMappingStore API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type DiscoveryEngineIdentityMappingStore struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
