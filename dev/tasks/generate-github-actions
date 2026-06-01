@@ -119,7 +119,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -194,7 +194,7 @@ EOF
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -260,7 +260,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: \${{ !cancelled() }}
         with:
           name: artifacts-crd-equivalence-check
