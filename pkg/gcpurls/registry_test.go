@@ -77,6 +77,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                        true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":      true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                 true,
+		"//bigqueryconnection.googleapis.com/projects/{}/locations/{}/connections/{}":             true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":         true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                   true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":      true,

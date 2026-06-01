@@ -1,4 +1,29 @@
-POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: Connection projects/${projectNumber}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections?%24alt=json%3Benum-encoding%3Dint&connectionId=bigqueryconnectionconnection-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fazure-eastus2
@@ -28,15 +53,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -56,22 +81,22 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=azure.customerTenantId%2Cazure.federatedApplicationClientId
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=azure.customerTenantId%2Cazure.federatedApplicationClientId
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
 
 {
   "azure": {
     "customerTenantId": "customer-tenant-id-2222222",
     "federatedApplicationClientId": "b43eeeee-eeee-eeee-eeee-a480155501ce-001"
   },
-  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 200 OK
@@ -92,15 +117,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -120,15 +145,15 @@ X-Xss-Protection: 0
   },
   "creationTime": "123456789",
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}"
 }
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/azure-eastus2/connections/bigqueryconnectionconnection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fazure-eastus2%2Fconnections%2Fbigqueryconnectionconnection-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

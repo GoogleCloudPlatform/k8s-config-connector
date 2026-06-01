@@ -79,7 +79,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-	connectionRef, err := krm.NewBigQueryConnectionConnectionRef(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, err
 	}
 	return &Adapter{
-		id:        connectionRef,
+		id:        id.(*krm.BigQueryConnectionConnectionIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
 		reader:    reader,
@@ -161,7 +161,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *krm.BigQueryConnectionConnectionRef
+	id        *krm.BigQueryConnectionConnectionIdentity
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryConnectionConnection
 	actual    *pb.Connection
@@ -174,22 +174,18 @@ var _ directbase.Adapter = &Adapter{}
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 
-	log.V(2).Info("getting BigQueryConnectionConnection", "name", a.id.External)
+	log.V(2).Info("getting BigQueryConnectionConnection", "name", a.id.String())
 
-	_, idIsSet, err := a.id.ConnectionID()
-	if err != nil {
-		return false, err
-	}
-	if !idIsSet { // resource is not yet created
+	if a.id.Connection == "" { // resource is not yet created
 		return false, nil
 	}
-	req := &pb.GetConnectionRequest{Name: a.id.External}
+	req := &pb.GetConnectionRequest{Name: a.id.String()}
 	connectionpb, err := a.gcpClient.GetConnection(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting BigQueryConnectionConnection %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting BigQueryConnectionConnection %q: %w", a.id.String(), err)
 	}
 
 	a.actual = connectionpb
@@ -200,7 +196,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating Connection", "name", a.id.External)
+	log.V(2).Info("creating Connection", "name", a.id.String())
 
 	if err := a.normalizeReference(ctx); err != nil {
 		return err
@@ -212,30 +208,29 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return err
-	}
+	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 	req := &pb.CreateConnectionRequest{
 		Parent:     parent,
 		Connection: resource,
 	}
-	id, isIsSet, err := a.id.ConnectionID()
-	if err != nil {
-		return err
-	}
-	if isIsSet { // during "Create", this means user has specified connection ID in `spec.ResourceID` field.
+	if a.id.Connection != "" { // during "Create", this means user has specified connection ID in `spec.ResourceID` field.
 		req = &pb.CreateConnectionRequest{
 			Parent:       parent,
-			ConnectionId: id,
+			ConnectionId: a.id.Connection,
 			Connection:   resource,
 		}
 	}
 	created, err := a.gcpClient.CreateConnection(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Connection %s: %w", a.id.External, err)
+		return fmt.Errorf("creating Connection %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully created Connection", "name", created.Name)
+
+	id := &krm.BigQueryConnectionConnectionIdentity{}
+	if err := id.FromExternal(created.Name); err != nil {
+		return fmt.Errorf("parsing created connection name %q: %w", created.Name, err)
+	}
+	a.id.Connection = id.Connection
 
 	status := &krm.BigQueryConnectionConnectionStatus{}
 	status.ObservedState = BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx, created)
@@ -243,12 +238,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
-	tokens := strings.Split(created.Name, "/")
-	parent, err = a.id.Parent()
-	if err != nil {
-		return err
-	}
-	externalRef := parent + "/connections/" + tokens[5]
+	externalRef := a.id.String()
 	status.ExternalRef = &externalRef
 	return setStatus(u, status)
 }
@@ -265,7 +255,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	u := updateOp.GetUnstructured()
 
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Connection", "name", a.id.External)
+	log.V(2).Info("updating Connection", "name", a.id.String())
 
 	if err := a.normalizeReference(ctx); err != nil {
 		return err
@@ -283,7 +273,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return err
 	}
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.External)
+		log.V(2).Info("no field needs update", "name", a.id.String())
 		return nil
 	}
 
@@ -293,7 +283,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	structuredreporting.ReportDiff(ctx, report)
 
-	fqn := a.id.External
+	fqn := a.id.String()
 	req := &pb.UpdateConnectionRequest{
 		Name:       fqn,
 		Connection: connection,
@@ -322,22 +312,14 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	obj := &krm.BigQueryConnectionConnection{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(BigQueryConnectionConnectionSpec_FromProto(mapCtx, a.actual))
-	tokens := strings.Split(a.id.External, "connections/")
+	tokens := strings.Split(a.id.String(), "connections/")
 	obj.Spec.ResourceID = direct.LazyPtr(tokens[len(tokens)-1])
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent, err := a.id.Parent()
-	if err != nil {
-		return nil, fmt.Errorf("BigQueryConnectionConnection %s parent unset: %w", a.id.External, err)
-	}
-	if parent != "" {
-		tokens := strings.Split(parent, "/")
-		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
-			obj.Spec.ProjectRef = &refs.ProjectRef{Name: tokens[1]}
-			obj.Spec.Location = tokens[3]
-		}
-	}
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
+	obj.Spec.Location = a.id.Location
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -349,9 +331,9 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Connection", "name", a.id.External)
+	log.V(2).Info("deleting Connection", "name", a.id.String())
 
-	fqn := a.id.External
+	fqn := a.id.String()
 	req := &pb.DeleteConnectionRequest{Name: fqn}
 	if err := a.gcpClient.DeleteConnection(ctx, req); err != nil {
 		return false, fmt.Errorf("deleting Connection %s: %w", fqn, err)
