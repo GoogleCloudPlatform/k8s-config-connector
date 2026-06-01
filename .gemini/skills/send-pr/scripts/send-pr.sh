@@ -26,6 +26,7 @@ function usage() {
 TITLE=""
 BODY_FILE=""
 BASE="master"
+LABELS=""
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -39,6 +40,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --base)
       BASE="$2"
+      shift 2
+      ;;
+    --labels)
+      LABELS="$2"
       shift 2
       ;;
     *)
@@ -94,10 +99,18 @@ echo "Checking for existing PR..."
 if gh pr view "$BRANCH" >/dev/null 2>&1; then
   echo "PR already exists for branch $BRANCH."
   # Edit the existing PR title and body
-  gh pr edit "$BRANCH" --title "$TITLE" --body-file "$BODY_FILE"
+  if [[ -n "$LABELS" ]]; then
+    gh pr edit "$BRANCH" --title "$TITLE" --body-file "$BODY_FILE" --add-label "$LABELS"
+  else
+    gh pr edit "$BRANCH" --title "$TITLE" --body-file "$BODY_FILE"
+  fi
   echo "PR updated."
 else
   echo "Creating new PR..."
-  gh pr create --title "$TITLE" --body-file "$BODY_FILE" --base "$BASE"
+  if [[ -n "$LABELS" ]]; then
+    gh pr create --title "$TITLE" --body-file "$BODY_FILE" --base "$BASE" --label "$LABELS"
+  else
+    gh pr create --title "$TITLE" --body-file "$BODY_FILE" --base "$BASE"
+  fi
   echo "PR created successfully."
 fi
