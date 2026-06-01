@@ -49,7 +49,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-capture-pprof
@@ -68,7 +68,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-fuzz-roundtrippers
@@ -108,7 +108,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-license-lint
@@ -127,7 +127,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-run-linters
@@ -150,7 +150,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-test-mockgcp
@@ -169,7 +169,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-test-pause
@@ -189,7 +189,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-direct-iam
@@ -209,7 +209,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures
@@ -229,7 +229,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-accesscontextmanager
@@ -249,7 +249,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-aiplatform
@@ -269,7 +269,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-alloydb
@@ -289,7 +289,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-analytics
@@ -309,7 +309,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-apigateway
@@ -329,7 +329,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-apigee
@@ -349,7 +349,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-apikeys
@@ -369,7 +369,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-appengine
@@ -389,7 +389,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-apphub
@@ -409,7 +409,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-artifactregistry
@@ -429,7 +429,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-asset
@@ -449,7 +449,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-assuredworkloads
@@ -469,7 +469,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-backupdr
@@ -489,7 +489,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-batch
@@ -509,7 +509,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-beyondcorp
@@ -529,7 +529,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigquery
@@ -549,7 +549,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigqueryanalyticshub
@@ -569,7 +569,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigquerybiglake
@@ -589,7 +589,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigqueryconnection
@@ -609,7 +609,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigquerydatapolicy
@@ -629,7 +629,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigquerydatatransfer
@@ -649,7 +649,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigqueryreservation
@@ -669,7 +669,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigtable
@@ -689,7 +689,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-billing
@@ -709,7 +709,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-billingbudgets
@@ -729,7 +729,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-binaryauthorization
@@ -749,7 +749,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-certificatemanager
@@ -769,7 +769,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudasset
@@ -789,7 +789,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudbuild
@@ -809,7 +809,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-clouddeploy
@@ -829,7 +829,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-clouddms
@@ -849,7 +849,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudfunctions
@@ -869,7 +869,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudfunctions2
@@ -889,7 +889,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudidentity
@@ -909,7 +909,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudids
@@ -929,7 +929,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudiot
@@ -949,7 +949,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudquota
@@ -969,7 +969,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudscheduler
@@ -989,7 +989,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudtasks
@@ -1009,7 +1009,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-colab
@@ -1029,7 +1029,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-composer
@@ -1049,7 +1049,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-compute
@@ -1069,7 +1069,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-configcontroller
@@ -1089,7 +1089,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-configdelivery
@@ -1109,7 +1109,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-container
@@ -1129,7 +1129,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-containeranalysis
@@ -1149,7 +1149,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-containerattached
@@ -1169,7 +1169,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-datacatalog
@@ -1189,7 +1189,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dataflow
@@ -1209,7 +1209,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dataform
@@ -1229,7 +1229,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-datafusion
@@ -1249,7 +1249,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dataplex
@@ -1269,7 +1269,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dataproc
@@ -1289,7 +1289,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-datastore
@@ -1309,7 +1309,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-datastream
@@ -1329,7 +1329,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-deploymentmanager
@@ -1349,7 +1349,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dialogflow
@@ -1369,7 +1369,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dialogflowcx
@@ -1389,7 +1389,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-discoveryengine
@@ -1409,7 +1409,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dlp
@@ -1429,7 +1429,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dns
@@ -1449,7 +1449,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-documentai
@@ -1469,7 +1469,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-edgecontainer
@@ -1489,7 +1489,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-edgenetwork
@@ -1509,7 +1509,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-essentialcontacts
@@ -1529,7 +1529,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-eventarc
@@ -1549,7 +1549,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-filestore
@@ -1569,7 +1569,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-firebase
@@ -1589,7 +1589,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-firebasedatabase
@@ -1609,7 +1609,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-firebasehosting
@@ -1629,7 +1629,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-firebasestorage
@@ -1649,7 +1649,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-firestore
@@ -1669,7 +1669,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-gkebackup
@@ -1689,7 +1689,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-gkehub
@@ -1709,7 +1709,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-healthcare
@@ -1729,7 +1729,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-iam
@@ -1749,7 +1749,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-iap
@@ -1769,7 +1769,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-identityplatform
@@ -1789,7 +1789,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-kms
@@ -1809,7 +1809,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-logging
@@ -1829,7 +1829,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-managedkafka
@@ -1849,7 +1849,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-memcache
@@ -1869,7 +1869,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-memorystore
@@ -1889,7 +1889,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-metastore
@@ -1909,7 +1909,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-mlengine
@@ -1929,7 +1929,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-monitoring
@@ -1949,7 +1949,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-netapp
@@ -1969,7 +1969,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-networkconnectivity
@@ -1989,7 +1989,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-networkmanagement
@@ -2009,7 +2009,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-networksecurity
@@ -2029,7 +2029,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-networkservices
@@ -2049,7 +2049,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-notebooks
@@ -2069,7 +2069,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-orgpolicy
@@ -2089,7 +2089,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-osconfig
@@ -2109,7 +2109,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-oslogin
@@ -2129,7 +2129,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-parametermanager
@@ -2149,7 +2149,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-privateca
@@ -2169,7 +2169,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-privilegedaccessmanager
@@ -2189,7 +2189,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-pubsub
@@ -2209,7 +2209,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-pubsublite
@@ -2229,7 +2229,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-recaptchaenterprise
@@ -2249,7 +2249,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-redis
@@ -2269,7 +2269,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-resourcemanager
@@ -2289,7 +2289,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-run
@@ -2309,7 +2309,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-secretmanager
@@ -2329,7 +2329,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-securesourcemanager
@@ -2349,7 +2349,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-securitycenter
@@ -2369,7 +2369,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-servicedirectory
@@ -2389,7 +2389,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-servicenetworking
@@ -2409,7 +2409,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-serviceusage
@@ -2429,7 +2429,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-sourcerepo
@@ -2449,7 +2449,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-spanner
@@ -2469,7 +2469,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-speech
@@ -2489,7 +2489,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-sql
@@ -2509,7 +2509,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-storage
@@ -2529,7 +2529,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-storagetransfer
@@ -2549,7 +2549,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-tags
@@ -2569,7 +2569,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-tpu
@@ -2589,7 +2589,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-vertexai
@@ -2609,7 +2609,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-vmwareengine
@@ -2629,7 +2629,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-vpcaccess
@@ -2649,7 +2649,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-workflowexecutions
@@ -2669,7 +2669,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-workflows
@@ -2689,7 +2689,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-workstations
@@ -2709,7 +2709,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-alloydb
@@ -2729,7 +2729,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-apigateway
@@ -2749,7 +2749,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-apigee
@@ -2769,7 +2769,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-bigquery
@@ -2789,7 +2789,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-bigqueryconnection
@@ -2809,7 +2809,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-bigquerydatapolicy
@@ -2829,7 +2829,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-bigquerydatatransfer
@@ -2849,7 +2849,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-cloudbuild
@@ -2869,7 +2869,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-cloudidentity
@@ -2889,7 +2889,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-compute
@@ -2909,7 +2909,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-dataflow
@@ -2929,7 +2929,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-dataproc
@@ -2949,7 +2949,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-gkehub
@@ -2969,7 +2969,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-iam
@@ -2989,7 +2989,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-kms
@@ -3009,7 +3009,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-orgpolicy
@@ -3029,7 +3029,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-redis
@@ -3049,7 +3049,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-secretmanager
@@ -3069,7 +3069,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-spanner
@@ -3089,7 +3089,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-sql
@@ -3109,7 +3109,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-storage
@@ -3129,7 +3129,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-unclassified
@@ -3149,7 +3149,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-workstations
@@ -3168,7 +3168,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-gcptracker
@@ -3187,7 +3187,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-preview
@@ -3207,7 +3207,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-acquisition
@@ -3227,7 +3227,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-gkehubfeaturemembership
@@ -3247,7 +3247,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-powertool
@@ -3267,7 +3267,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-unclassified
@@ -3292,7 +3292,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-unit-tests
@@ -3311,7 +3311,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-generated-files
@@ -3334,7 +3334,7 @@ jobs:
           BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-untested-fields
