@@ -540,15 +540,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/backups/[backupId]`.
+                        description: A reference to an externally managed AlloyDBBackup
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBBackup`
-                          resource.
+                        description: The name of a AlloyDBBackup resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBBackup`
-                          resource.
+                        description: The namespace of a AlloyDBBackup resource.
                         type: string
                     type: object
                 required:
@@ -1312,15 +1311,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/backups/[backupId]`.
+                        description: A reference to an externally managed AlloyDBBackup
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBBackup`
-                          resource.
+                        description: The name of a AlloyDBBackup resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBBackup`
-                          resource.
+                        description: The namespace of a AlloyDBBackup resource.
                         type: string
                     type: object
                 required:
