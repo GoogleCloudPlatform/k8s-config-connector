@@ -1,0 +1,1 @@
+- Migrated `mockcloudtasks` to `httptogrpc`. The process was straightforward following the skill. No `RewriteError` was used in the original implementation. Used `cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb` for imports.

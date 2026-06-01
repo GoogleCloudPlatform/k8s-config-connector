@@ -15,8 +15,8 @@
 package mockcloudtasks
 
 // +tool:mockgcp-service
-// http.host: workflows.googleapis.com
-// proto.service: google.cloud.workflows.v1.Workflows
+// http.host: cloudtasks.googleapis.com
+// proto.service: google.cloud.tasks.v2.CloudTasks
 
 import (
 	"context"
@@ -25,14 +25,14 @@ import (
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/tasks/v2"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-// MockService represents a mocked workflows service.
+// MockService represents a mocked cloudtasks service.
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
@@ -62,11 +62,12 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterCloudTasksHandler,
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, fmt.Errorf("creating http mux: %w", err)
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
-	return mux, nil
+
+	grpcMux.AddService(pb.NewCloudTasksClient(conn))
+
+	return grpcMux, nil
 }
