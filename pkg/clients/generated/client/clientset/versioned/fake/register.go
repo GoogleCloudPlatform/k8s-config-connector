@@ -42,7 +42,6 @@ import (
 	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/assuredworkloads/v1alpha1"
 	backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1alpha1"
 	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1beta1"
-	batchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/batch/v1alpha1"
 	beyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/beyondcorp/v1alpha1"
 	bigqueryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquery/v1alpha1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquery/v1beta1"
@@ -225,7 +224,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	assuredworkloadsv1alpha1.AddToScheme,
 	backupdrv1alpha1.AddToScheme,
 	backupdrv1beta1.AddToScheme,
-	batchv1alpha1.AddToScheme,
 	beyondcorpv1alpha1.AddToScheme,
 	bigqueryv1alpha1.AddToScheme,
 	bigqueryv1beta1.AddToScheme,

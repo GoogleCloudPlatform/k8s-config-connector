@@ -95,6 +95,7 @@ type CloudBatchResourceAllowanceObservedState struct {
 
 // CloudBatchResourceAllowance is the Schema for the CloudBatchResourceAllowance API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type CloudBatchResourceAllowance struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
