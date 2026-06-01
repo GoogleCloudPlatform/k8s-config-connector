@@ -81,6 +81,17 @@ func (m *modelSecurityProfile) AdapterForObject(ctx context.Context, op *directb
 		return nil, fmt.Errorf("unexpected identity type: %T", idVal)
 	}
 
+	if obj.Spec.CustomInterceptProfile != nil && obj.Spec.CustomInterceptProfile.InterceptEndpointGroupRef != nil {
+		if err := obj.Spec.CustomInterceptProfile.InterceptEndpointGroupRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, fmt.Errorf("normalizing InterceptEndpointGroupRef: %w", err)
+		}
+	}
+	if obj.Spec.CustomMirroringProfile != nil && obj.Spec.CustomMirroringProfile.MirroringEndpointGroupRef != nil {
+		if err := obj.Spec.CustomMirroringProfile.MirroringEndpointGroupRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, fmt.Errorf("normalizing MirroringEndpointGroupRef: %w", err)
+		}
+	}
+
 	// Get networksecurity GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
