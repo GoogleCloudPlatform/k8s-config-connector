@@ -64,10 +64,11 @@ func (m *customClassModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewCustomClassIdentity(ctx, reader, obj)
+	idAny, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idAny.(*krm.CustomClassIdentity)
 
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -134,8 +135,8 @@ func (a *customClassAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	req := &pb.CreateCustomClassRequest{
-		Parent:        a.id.Parent().String(),
-		CustomClassId: a.id.ID(),
+		Parent:        fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+		CustomClassId: a.id.CustomClass,
 		CustomClass:   resource,
 	}
 	op, err := a.gcpClient.CreateCustomClass(ctx, req)
@@ -228,14 +229,14 @@ func (a *customClassAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.CustomClass)
 	u.SetGroupVersionKind(krm.SpeechCustomClassGVK)
 	u.Object = uObj
 	return u, nil

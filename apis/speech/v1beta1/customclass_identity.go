@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,100 +17,93 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // CustomClassIdentity is the identity of a SpeechCustomClass.
+var (
+	_ identity.IdentityV2 = &CustomClassIdentity{}
+	_ identity.Resource   = &SpeechCustomClass{}
+)
+
+var CustomClassIdentityFormat = gcpurls.Template[CustomClassIdentity]("speech.googleapis.com", "projects/{project}/locations/{location}/customClasses/{customclass}")
+
+// +k8s:deepcopy-gen=false
 type CustomClassIdentity struct {
-	parent *CustomClassParent
-	id     string
+	Project     string
+	Location    string
+	CustomClass string
 }
 
 func (i *CustomClassIdentity) String() string {
-	return i.parent.String() + "/customClasses/" + i.id
+	return CustomClassIdentityFormat.ToString(*i)
 }
 
-func (i *CustomClassIdentity) ID() string {
-	return i.id
-}
-
-func (i *CustomClassIdentity) Parent() *CustomClassParent {
-	return i.parent
-}
-
-type CustomClassParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *CustomClassParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a CustomClassIdentity from the Config Connector CustomClass object.
-func NewCustomClassIdentity(ctx context.Context, reader client.Reader, obj *SpeechCustomClass) (*CustomClassIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *CustomClassIdentity) FromExternal(ref string) error {
+	parsed, match, err := CustomClassIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of SpeechCustomClass external=%q was not known (use %s): %w", ref, CustomClassIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of SpeechCustomClass external=%q was not known (use %s)", ref, CustomClassIdentityFormat.CanonicalForm())
 	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *CustomClassIdentity) Host() string {
+	return CustomClassIdentityFormat.Host()
+}
+
+func getIdentityFromSpeechCustomClassSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CustomClassIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &CustomClassIdentity{
+		Project:     projectID,
+		Location:    location,
+		CustomClass: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *SpeechCustomClass) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromSpeechCustomClassSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseCustomClassExternal(externalRef)
-		if err != nil {
+		statusIdentity := &CustomClassIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &CustomClassIdentity{
-		parent: &CustomClassParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseCustomClassExternal(external string) (parent *CustomClassParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "customClasses" {
-		return nil, "", fmt.Errorf("format of SpeechCustomClass external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customClasses/{{customclassID}})", external)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change SpeechCustomClass identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	parent = &CustomClassParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }
