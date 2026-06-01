@@ -50,6 +50,7 @@ gen-proto-no-fixup:
 		./apis/google/cloud/dns/v1/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
+		./apis/mockgcp/cloud/edgecontainer/v1/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \

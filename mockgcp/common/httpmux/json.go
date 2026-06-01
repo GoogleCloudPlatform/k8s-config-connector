@@ -25,29 +25,29 @@ import (
 )
 
 func MarshalAsJSON(obj proto.Message) ([]byte, error) {
-	return protojson.MarshalOptions{Resolver: &protoResolver{}}.Marshal(obj)
+	return protojson.MarshalOptions{Resolver: &Resolver{}}.Marshal(obj)
 }
 
-type protoResolver struct {
+type Resolver struct {
 }
 
-var _ protoregistry.ExtensionTypeResolver = &protoResolver{}
+var _ protoregistry.ExtensionTypeResolver = &Resolver{}
 
-func (r *protoResolver) FindExtensionByName(message protoreflect.FullName) (protoreflect.ExtensionType, error) {
+func (r *Resolver) FindExtensionByName(message protoreflect.FullName) (protoreflect.ExtensionType, error) {
 	return protoregistry.GlobalTypes.FindExtensionByName(r.remapName(message))
 }
 
-func (r *protoResolver) FindExtensionByNumber(message protoreflect.FullName, field protoreflect.FieldNumber) (protoreflect.ExtensionType, error) {
+func (r *Resolver) FindExtensionByNumber(message protoreflect.FullName, field protoreflect.FieldNumber) (protoreflect.ExtensionType, error) {
 	return protoregistry.GlobalTypes.FindExtensionByNumber(r.remapName(message), field)
 }
 
-var _ protoregistry.MessageTypeResolver = &protoResolver{}
+var _ protoregistry.MessageTypeResolver = &Resolver{}
 
-func (r *protoResolver) FindMessageByName(message protoreflect.FullName) (protoreflect.MessageType, error) {
+func (r *Resolver) FindMessageByName(message protoreflect.FullName) (protoreflect.MessageType, error) {
 	return protoregistry.GlobalTypes.FindMessageByName(r.remapName(message))
 }
 
-func (r *protoResolver) FindMessageByURL(url string) (protoreflect.MessageType, error) {
+func (r *Resolver) FindMessageByURL(url string) (protoreflect.MessageType, error) {
 	// Default to trying to find the message as-is.
 	mt, err := protoregistry.GlobalTypes.FindMessageByURL(url)
 	if err == nil {
@@ -66,7 +66,7 @@ func (r *protoResolver) FindMessageByURL(url string) (protoreflect.MessageType, 
 	return nil, err
 }
 
-func (r *protoResolver) remapName(name protoreflect.FullName) protoreflect.FullName {
+func (r *Resolver) remapName(name protoreflect.FullName) protoreflect.FullName {
 	// Remap names with a prefix of "google."" to be "mockgcp.", so we can find them.
 
 	s := string(name)
