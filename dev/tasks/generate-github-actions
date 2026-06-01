@@ -165,7 +165,7 @@ EOF
     # TODO: We should look at the script to see if it needs gcloud
     if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: 'google-github-actions/setup-gcloud@v2'
+      - uses: 'google-github-actions/setup-gcloud@v3'
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
