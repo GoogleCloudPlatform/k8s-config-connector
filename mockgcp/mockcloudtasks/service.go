@@ -58,12 +58,14 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterCloudTasksServer(grpcServer, s.v1)
+	pb.RegisterProjectsLocationsQueuesServerServer(grpcServer, s.v1)
+	pb.RegisterProjectsLocationsQueuesTasksServerServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterCloudTasksHandler,
+		pb.RegisterProjectsLocationsQueuesServerHandler,
+		pb.RegisterProjectsLocationsQueuesTasksServerHandler,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("creating http mux: %w", err)
