@@ -63,8 +63,6 @@ import (
 	fakebackupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1alpha1/fake"
 	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1beta1"
 	fakebackupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1beta1/fake"
-	batchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1"
-	fakebatchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1/fake"
 	beyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1"
 	fakebeyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1/fake"
 	bigqueryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1alpha1"
@@ -538,11 +536,6 @@ func (c *Clientset) BackupdrV1alpha1() backupdrv1alpha1.BackupdrV1alpha1Interfac
 // BackupdrV1beta1 retrieves the BackupdrV1beta1Client
 func (c *Clientset) BackupdrV1beta1() backupdrv1beta1.BackupdrV1beta1Interface {
 	return &fakebackupdrv1beta1.FakeBackupdrV1beta1{Fake: &c.Fake}
-}
-
-// BatchV1alpha1 retrieves the BatchV1alpha1Client
-func (c *Clientset) BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface {
-	return &fakebatchv1alpha1.FakeBatchV1alpha1{Fake: &c.Fake}
 }
 
 // BeyondcorpV1alpha1 retrieves the BeyondcorpV1alpha1Client

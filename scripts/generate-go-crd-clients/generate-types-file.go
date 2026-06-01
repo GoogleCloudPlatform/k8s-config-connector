@@ -88,6 +88,9 @@ func main() {
 	}
 
 	for _, crdFile := range crdFiles {
+		if strings.Contains(crdFile.Name(), "batch.cnrm.cloud.google.com") {
+			continue
+		}
 		resources = append(resources, constructResourceDefinitions(crdsPath, crdFile.Name())...)
 	}
 
