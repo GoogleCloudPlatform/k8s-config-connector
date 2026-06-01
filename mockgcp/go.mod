@@ -53,7 +53,7 @@ require (
 	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
 	cloud.google.com/go/redis v1.18.3
 	cloud.google.com/go/secretmanager v1.16.0
-	cloud.google.com/go/securesourcemanager v1.4.1
+	cloud.google.com/go/securesourcemanager v1.9.0
 	cloud.google.com/go/speech v1.30.0
 	cloud.google.com/go/storage v1.59.2
 	cloud.google.com/go/vpcaccess v1.8.7
