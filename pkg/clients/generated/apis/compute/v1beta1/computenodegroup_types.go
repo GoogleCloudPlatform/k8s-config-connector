@@ -39,22 +39,15 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type NodegroupAutoscalingPolicy struct {
-	/* Immutable. Maximum size of the node group. Set to a value less than or equal
-	to 100 and greater than or equal to min-nodes. */
+	/* Immutable. Maximum size of the node group. Set to a value less than or equal to 100 and greater than or equal to min-nodes. */
 	// +optional
 	MaxNodes *int64 `json:"maxNodes,omitempty"`
 
-	/* Immutable. Minimum size of the node group. Must be less
-	than or equal to max-nodes. The default value is 0. */
+	/* Immutable. Minimum size of the node group. Must be less than or equal to max-nodes. The default value is 0. */
 	// +optional
 	MinNodes *int64 `json:"minNodes,omitempty"`
 
-	/* Immutable. The autoscaling mode. Set to one of the following:
-	- OFF: Disables the autoscaler.
-	- ON: Enables scaling in and scaling out.
-	- ONLY_SCALE_OUT: Enables only scaling out.
-	You must use this mode if your node groups are configured to
-	restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"]. */
+	/* Immutable. The autoscaling mode. Set to one of the following: - OFF: Disables the autoscaler. - ON: Enables scaling in and scaling out. - ONLY_SCALE_OUT: Enables only scaling out. You must use this mode if your node groups are configured to restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"]. */
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 }
@@ -68,8 +61,7 @@ type NodegroupProjectMap struct {
 	/* The key of this project config in the parent map. */
 	IdRef v1alpha1.ResourceRef `json:"idRef"`
 
-	/* The project id/number should be the same as the key of this project
-	config in the project map. */
+	/* The project id/number should be the same as the key of this project config in the project map. */
 	ProjectIdRef v1alpha1.ResourceRef `json:"projectIdRef"`
 }
 
@@ -83,8 +75,7 @@ type NodegroupShareSettings struct {
 }
 
 type ComputeNodeGroupSpec struct {
-	/* Immutable. If you use sole-tenant nodes for your workloads, you can use the node
-	group autoscaler to automatically manage the sizes of your node groups. */
+	/* Immutable. If you use sole-tenant nodes for your workloads, you can use the node group autoscaler to automatically manage the sizes of your node groups. */
 	// +optional
 	AutoscalingPolicy *NodegroupAutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
 

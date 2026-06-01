@@ -16,6 +16,8 @@ package v1beta1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestComputeSecurityPolicyIdentity_FromExternal(t *testing.T) {
@@ -46,6 +48,38 @@ func TestComputeSecurityPolicyIdentity_FromExternal(t *testing.T) {
 				Name:    "my-policy",
 			},
 		},
+		{
+			name: "valid regional reference",
+			ref:  "projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			want: &ComputeSecurityPolicyIdentity{
+				Project: "my-project",
+				Region:  "us-central1",
+				Name:    "my-policy",
+			},
+		},
+		{
+			name: "full regional url",
+			ref:  "https://compute.googleapis.com/projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			want: &ComputeSecurityPolicyIdentity{
+				Project: "my-project",
+				Region:  "us-central1",
+				Name:    "my-policy",
+			},
+		},
+		{
+			name: "full regional url with compute/v1",
+			ref:  "https://compute.googleapis.com/compute/v1/projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			want: &ComputeSecurityPolicyIdentity{
+				Project: "my-project",
+				Region:  "us-central1",
+				Name:    "my-policy",
+			},
+		},
+		{
+			name:    "full regional url with unknown prefix",
+			ref:     "https://compute.googleapis.com/unknown/v1/projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -57,11 +91,8 @@ func TestComputeSecurityPolicyIdentity_FromExternal(t *testing.T) {
 				return
 			}
 			if !tt.wantErr {
-				if i.Project != tt.want.Project {
-					t.Errorf("Project = %v, want %v", i.Project, tt.want.Project)
-				}
-				if i.Name != tt.want.Name {
-					t.Errorf("Name = %v, want %v", i.Name, tt.want.Name)
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})

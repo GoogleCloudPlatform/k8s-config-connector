@@ -35,12 +35,10 @@ jobs:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/crd-equivalence-check"
         run: |
           ./dev/ci/presubmits/crd-equivalence-check

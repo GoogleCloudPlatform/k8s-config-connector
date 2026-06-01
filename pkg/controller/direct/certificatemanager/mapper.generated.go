@@ -27,7 +27,7 @@ import (
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	krmcertificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -55,7 +55,7 @@ func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthoritySe
 	}
 	out := &krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig{}
 	if in.GetCaPool() != "" {
-		out.CAPoolRef = &refsv1beta1.PrivateCACAPoolRef{External: in.GetCaPool()}
+		out.CAPoolRef = &krmprivatecav1beta1.PrivateCACAPoolRef{External: in.GetCaPool()}
 	}
 	return out
 }

@@ -545,8 +545,7 @@ X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 {
   "etag": "abcdef0123A=",
   "keyProjectResolutionMode": 3,
-  "name": "folders/${folderID}/autokeyConfig",
-  "state": 1
+  "name": "folders/${folderID}/autokeyConfig"
 }
 
 200 OK

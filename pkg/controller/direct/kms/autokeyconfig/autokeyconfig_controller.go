@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	gcp "cloud.google.com/go/kms/apiv1"
@@ -162,7 +163,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	status := &krm.KMSAutokeyConfigStatus{}
-	status.ObservedState = KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = kms.KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -208,7 +210,8 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.KMSAutokeyConfig{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(KMSAutokeyConfigSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(kms.KMSAutokeyConfigSpec_FromProto(mapCtx, a.actual))
+
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -241,7 +244,8 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 		return false, fmt.Errorf("delete AutokeyConfig failed: Find() was not called or returned false")
 	}
 	mapCtx := &direct.MapContext{}
-	// make a copy of the a.actual, and disable AutokeyConfig / clear the project reference
+	// Keep only spec fields, by round-tripping through KRM.
+	// Make a copy of the a.actual, disable AutokeyConfig, and clear the project reference.
 	tempKrmAutokeyResource := AutokeyConfig_FromProto(mapCtx, a.actual)
 	tempKrmAutokeyResource.KeyProject = nil
 	disabledMode := "DISABLED"
@@ -254,7 +258,8 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted AutokeyConfig in KCC by resetting the key_project", "name", a.id)
 	status := &krm.KMSAutokeyConfigStatus{}
 	// The state in ObservedState is expected to be UNINITIALIZED as we have set the key_project to empty
-	status.ObservedState = KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = kms.KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+
 	if mapCtx.Err() != nil {
 		return false, mapCtx.Err()
 	}

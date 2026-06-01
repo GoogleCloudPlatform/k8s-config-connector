@@ -172,6 +172,8 @@ BLOCKED_KINDS=(
     "NetworkSecuritySecurityProfileGroup"
     "NetworkSecurityTlsInspectionPolicy"
     "NetworkSecurityUrlList"
+    "BinaryAuthorizationPlatformPolicy"
+    "VertexAIDeploymentResourcePool"
 )
 
 for f in config/crds/resources/*.yaml; do

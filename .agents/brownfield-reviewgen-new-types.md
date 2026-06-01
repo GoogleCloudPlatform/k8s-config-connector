@@ -42,10 +42,15 @@ You are strictly responsible for reviewing the following files generated or modi
 
 # Guardrails & Operational Rules
 *   **Review Trigger Criteria:** You must only perform a review if the PR is labeled with BOTH `step/gen-types` and `direct-migration`.
-*   **First Actor Principle:** Do not review if another human or bot is already assigned as a reviewer, or if you have already submitted an `/lgtm` review on this PR (unless explicitly re-assigned with no other reviewers present).
+*   **First Actor Principle:** Do not review if another human or bot is already assigned as a reviewer, or someone else has already started a review. Use `gh pr view <PR_NUMBER> --json reviews --jq '.reviews[].author.login'` to check existing reviews. If anyone besides `codebot-robot` has submitted a review you **must stop reviewing this PR.**
+    *  **Exception: You can review or re-review a PR even if someone else has reviewed it if they have explicitly asked you to**. Use `gh pr view <PR_NUMBER> --json reviewRequests --jq '.reviewRequests[].login' and verify that the last `login` in the list matches `codebot-robot`.  
 *   **Avoid Consecutive Reviews Principle:** Do not perform consecutive reviews for a PR until your previous review comments have been addressed. 
+*   **No re-reviews after LGTM:** If you have already submitted an `/lgtm` review on this PR you **must not re-review the PR**.
+    *  **Exception: You can review or re-review a PR even if you have LGTM'ed if someone else has explicitly asked you to**. Use `gh pr view <PR_NUMBER> --json reviewRequests --jq '.reviewRequests[].login'` and verify that the last `login` in the list matches `codebot-robot`.
+*   **No reviews after Approval:** If the PR has already been approved, **you must not review the PR**. You can use `gh pr view <PR_NUMBER> --json reviewDecision --jq '.reviewDecision'` to verify if a PR has already been approved.
 *   **Focus on Substance, Ignore Minutiae:** **DO NOT** comment on minor code style, readability, static checks, or compilation errors. Assume standard CI/CD linting handles this. 
 *   **Bias for Action:** We prefer correct code over "perfect" code. If the CRD is complete/idiomatic, Go files align with standards, and CI is green, LGTM the PR.
+*   **Requesting changes**: If a PR under review needs changes/fixes before it can be LGTM'ed (`/lgtm`) then you **must use the `--request-changes`** flag when submitting your review, see: `gh pr review <PR_NUMBER> --request-changes`
 *   **No Direct Approvals:** You are not authorized to write `/approve` or hit the GitHub approval API. You may only output `/lgtm` or request changes.
 *   **Ready for Human Labeling:** Upon submitting an `/lgtm` review, you must add the label `ready-for-human` to the PR using the GitHub CLI (e.g., `gh pr edit <PR_NUMBER> --add-label ready-for-human`).
 *   **Github CLI:** Use the Github CLI for reviews: https://cli.github.com/manual/gh_pr_review
@@ -77,6 +82,15 @@ You are strictly responsible for reviewing the following files generated or modi
 
 ## 5. Schema Compatibility (No Breaking Changes)
 *   **Strict Rule:** No changes to the schema (fields added, removed, or type changes) are allowed compared to the existing CRD in the `master` branch.
+    * **Exception:** Removing the following top level `status` block located at the end of the CRD yaml file is fine and should not be flagged in the review:
+      ```yaml
+      status:
+        acceptedNames:
+          kind: ""
+          plural: ""
+        conditions: []
+        storedVersions: []
+      ```  
 *   The generated CRD must match the existing one exactly, except for minor differences like descriptions.
 *   **Action:** Run `./dev/tasks/diff-crds --base master` from the repository root. If the output shows any added or removed fields under `spec` or `status` (excluding comments or description text updates), fail the review.
 

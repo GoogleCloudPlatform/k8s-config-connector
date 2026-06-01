@@ -18,73 +18,75 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
-	_ identity.Identity   = &GKEHubMembershipBindingIdentity{}
 	_ identity.IdentityV2 = &GKEHubMembershipBindingIdentity{}
 	_ identity.Resource   = &GKEHubMembershipBinding{}
+)
 
-	membershipbindingURL = gcpurls.Template[GKEHubMembershipBindingIdentity](
-		"gkehub.googleapis.com",
-		"projects/{projectID}/locations/{location}/memberships/{membershipID}/bindings/{membershipBindingID}",
-	)
+var GKEHubMembershipBindingIdentityFormat = gcpurls.Template[GKEHubMembershipBindingIdentity](
+	"gkehub.googleapis.com",
+	"projects/{project}/locations/{location}/memberships/{membership}/bindings/{membershipBinding}",
 )
 
 // GKEHubMembershipBindingIdentity defines the resource reference to GKEHubMembershipBinding, which "External" field
 // holds the GCP identifier for the KRM object.
 // +k8s:deepcopy-gen=false
 type GKEHubMembershipBindingIdentity struct {
-	ProjectID           string
-	Location            string
-	MembershipID        string
-	MembershipBindingID string
+	Project           string
+	Location          string
+	Membership        string
+	MembershipBinding string
 }
 
 func (i *GKEHubMembershipBindingIdentity) String() string {
-	return membershipbindingURL.ToString(*i)
+	return GKEHubMembershipBindingIdentityFormat.ToString(*i)
 }
 
-func (i *GKEHubMembershipBindingIdentity) ID() string {
-	return i.MembershipBindingID
+func (i *GKEHubMembershipBindingIdentity) Parent() string {
+	return krmv1beta1.NewGKEHubMembershipIdentity(i.Project, i.Location, i.Membership).String()
 }
 
-func (i *GKEHubMembershipBindingIdentity) Host() string {
-	return membershipbindingURL.Host()
-}
-
-func (i *GKEHubMembershipBindingIdentity) Parent() *krmv1beta1.GKEHubMembershipIdentity {
-	return krmv1beta1.NewGKEHubMembershipIdentity(i.ProjectID, i.Location, i.MembershipID)
-}
-
-func (i *GKEHubMembershipBindingIdentity) FromExternal(external string) error {
-	out, match, err := membershipbindingURL.Parse(external)
+func (i *GKEHubMembershipBindingIdentity) FromExternal(ref string) error {
+	parsed, match, err := GKEHubMembershipBindingIdentityFormat.Parse(ref)
 	if err != nil {
-		return err
+		return fmt.Errorf("format of GKEHubMembershipBinding external=%q was not known (use %s): %w", ref, GKEHubMembershipBindingIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of GKEHubMembershipBinding external=%q was not known (use %s)", external, membershipbindingURL.CanonicalForm())
+		return fmt.Errorf("format of GKEHubMembershipBinding external=%q was not known (use %s)", ref, GKEHubMembershipBindingIdentityFormat.CanonicalForm())
 	}
-	*i = *out
+
+	*i = *parsed
 	return nil
 }
 
-func NewGKEHubMembershipBindingIdentity(project, location, membershipID, membershipBindingID string) *GKEHubMembershipBindingIdentity {
-	return &GKEHubMembershipBindingIdentity{
-		ProjectID:           project,
-		Location:            location,
-		MembershipID:        membershipID,
-		MembershipBindingID: membershipBindingID,
-	}
+func (i *GKEHubMembershipBindingIdentity) Host() string {
+	return GKEHubMembershipBindingIdentityFormat.Host()
 }
 
-func (obj *GKEHubMembershipBinding) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	membershipRef, err := krmv1beta1.ResolveGKEHubMembershipRef(ctx, reader, obj, &obj.Spec.MembershipRef)
+func getIdentityFromGKEHubMembershipBindingSpec(ctx context.Context, reader client.Reader, obj client.Object) (*GKEHubMembershipBindingIdentity, error) {
+	membershipBinding := &GKEHubMembershipBinding{}
+	switch t := obj.(type) {
+	case *GKEHubMembershipBinding:
+		membershipBinding = t
+	case *unstructured.Unstructured:
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(t.Object, membershipBinding); err != nil {
+			return nil, fmt.Errorf("failed to convert unstructured to GKEHubMembershipBinding: %w", err)
+		}
+	default:
+		return nil, fmt.Errorf("expected *GKEHubMembershipBinding or *unstructured.Unstructured, got %T", obj)
+	}
+
+	membershipRef, err := krmv1beta1.ResolveGKEHubMembershipRef(ctx, reader, membershipBinding, &membershipBinding.Spec.MembershipRef)
 	if err != nil {
 		return nil, err
 	}
@@ -95,10 +97,37 @@ func (obj *GKEHubMembershipBinding) GetIdentity(ctx context.Context, reader clie
 	location := membershipRef.Location
 	membershipID := membershipRef.MembershipID
 
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(membershipBinding.Spec.ResourceID)
 	if resourceID == "" {
-		resourceID = obj.GetName()
+		resourceID = membershipBinding.GetName()
 	}
 
-	return NewGKEHubMembershipBindingIdentity(projectID, location, membershipID, resourceID), nil
+	return &GKEHubMembershipBindingIdentity{
+		Project:           projectID,
+		Location:          location,
+		Membership:        membershipID,
+		MembershipBinding: resourceID,
+	}, nil
+}
+
+func (obj *GKEHubMembershipBinding) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromGKEHubMembershipBindingSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusIdentity := &GKEHubMembershipBindingIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change GKEHubMembershipBinding identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }

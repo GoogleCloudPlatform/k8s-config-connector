@@ -78,6 +78,8 @@ cloud.google.com/go/firestore v1.22.0 h1:avooeboIq37vKXobrbPUFhFBxS/c3FqmWoX0xs8
 cloud.google.com/go/firestore v1.22.0/go.mod h1:PaM4i7i7ruALSKmlpHXXZaPObcZw0W7ie5UOPr72iTU=
 cloud.google.com/go/gkebackup v1.8.1 h1:gUgI3lZJYALZsHXE7YJOKI8bMpoAX/tF6jnNugvzT1g=
 cloud.google.com/go/gkebackup v1.8.1/go.mod h1:GAaAl+O5D9uISH5MnClUop2esQW4pDa2qe/95A4l7YQ=
+cloud.google.com/go/gkemulticloud v1.6.0 h1:m0FX9o7t7xVmSZhqzm/m8nEZn8LnC5Kh60Wg4Yx1lyQ=
+cloud.google.com/go/gkemulticloud v1.6.0/go.mod h1:bGpd4o/Z5Z/XFlaojkgdVisHRwb+fLJvUPzsmV0I9ok=
 cloud.google.com/go/iam v1.7.0 h1:JD3zh0C6LHl16aCn5Akff0+GELdp1+4hmh6ndoFLl8U=
 cloud.google.com/go/iam v1.7.0/go.mod h1:tetWZW1PD/m6vcuY2Zj/aU0eCHNPuxedbnbRTyKXvdY=
 cloud.google.com/go/iap v1.12.0 h1:Ff/R+UvFYrJ4YkqdHX4gGB2wLhqO3fHjp32D60kTe7c=
@@ -149,6 +151,8 @@ cloud.google.com/go/trace v1.11.7 h1:kDNDX8JkaAG3R2nq1lIdkb7FCSi1rCmsEtKVsty7p+U
 cloud.google.com/go/trace v1.11.7/go.mod h1:TNn9d5V3fQVf6s4SCveVMIBS2LJUqo73GACmq/Tky0s=
 cloud.google.com/go/vmwareengine v1.3.6 h1:TKvULKbk44QrIx674cnoVjcZueXhyCAm2sNAJu/S1ds=
 cloud.google.com/go/vmwareengine v1.3.6/go.mod h1:ps0rb+Skgpt9ppHYC0o5DqtJ5ld2FyS8sAqtbHH8t9s=
+cloud.google.com/go/vpcaccess v1.8.7 h1:K6siDR1T4HgSTv6sy6CAwupY7UGza6TQ1O8jtvEYoX4=
+cloud.google.com/go/vpcaccess v1.8.7/go.mod h1:9RYw5bVvk4Z51Rc8vwXT63yjEiMD/l7XyEaDyrNHgmk=
 cloud.google.com/go/workflows v1.14.3 h1:FGF6QEl3rtOSIHPOMZofWRVy3KNx26jDdgoYzJZ6ZhY=
 cloud.google.com/go/workflows v1.14.3/go.mod h1:CC9+YdVI2Kvp0L58WajHpEfKJxhrtRh3uQ0SYWcmAk4=
 cloud.google.com/go/workstations v1.1.6 h1:ANlNPquQ20uCZqZQ8qIDRYKqox+dXKmaPQzkwDnOAGI=

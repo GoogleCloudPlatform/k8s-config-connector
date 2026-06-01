@@ -21,6 +21,7 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"sync"
 	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -343,10 +344,11 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		nocache.OnlyCacheCCAndCCC(&opts)
 	}
 
-	mgr, err := manager.New(restConfig, opts)
+	rawMgr, err := manager.New(restConfig, opts)
 	if err != nil {
 		return nil, fmt.Errorf("error creating new manager: %w", err)
 	}
+	mgr := &KCCManager{Manager: rawMgr}
 	var rd controller.Deps
 	controllerConfig := &config.ControllerConfig{
 		UserProjectOverride:        cfg.UserProjectOverride,
@@ -481,15 +483,47 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 				}
 			}
 		}
-		return &leaderElectionManager{
+		leMgr := &leaderElectionManager{
 			Manager:              mgr,
 			leConfig:             leConfig,
 			mclConfig:            mclConfig,
 			exitOnLeadershipLoss: exitOnLeadershipLoss,
 			syncerInteg:          syncerInteg,
-		}, nil
+		}
+		return leMgr, nil
 	}
 	return mgr, nil
+}
+
+// KCCManager wraps a manager.Manager and tracks all added Runnables
+type KCCManager struct {
+	manager.Manager
+	runnablesMutex sync.RWMutex
+	runnables      []manager.Runnable
+}
+
+// Add appends the Runnable to the list and adds it to the underlying manager
+func (m *KCCManager) Add(r manager.Runnable) error {
+	m.runnablesMutex.Lock()
+	m.runnables = append(m.runnables, r)
+	m.runnablesMutex.Unlock()
+	return m.Manager.Add(r)
+}
+
+// GetRunnables returns a copy of all added Runnables
+func (m *KCCManager) GetRunnables() []manager.Runnable {
+	m.runnablesMutex.RLock()
+	defer m.runnablesMutex.RUnlock()
+	res := make([]manager.Runnable, len(m.runnables))
+	copy(res, m.runnables)
+	return res
+}
+
+func (m *leaderElectionManager) GetRunnables() []manager.Runnable {
+	if kcc, ok := m.Manager.(*KCCManager); ok {
+		return kcc.GetRunnables()
+	}
+	return nil
 }
 
 func addSchemes(scheme *runtime.Scheme) error {

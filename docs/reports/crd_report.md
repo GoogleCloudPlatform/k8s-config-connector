@@ -156,7 +156,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeNetworkPeeringRoutesConfig               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkPeering                           | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetwork                                  | False        | True        | False  | Terraform  | True        |
-| compute.cnrm.cloud.google.com                 | ComputeNodeGroup                                | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeNodeGroup                                | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNodeTemplate                             | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicy               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicyAssociation    | True         | False       | False  | Terraform  | False       |
@@ -390,7 +390,7 @@
 | orgpolicy.cnrm.cloud.google.com               | OrgPolicyCustomConstraint                       | True         | True        | False  | Direct     | True        |
 | orgpolicy.cnrm.cloud.google.com               | OrgPolicyPolicy                                 | True         | False       | False  | Direct     | True        |
 | osconfig.cnrm.cloud.google.com                | OSConfigGuestPolicy                             | False        | True        | False  | DCL        | False       |
-| osconfig.cnrm.cloud.google.com                | OSConfigOSPolicyAssignment                      | False        | True        | False  | DCL        | False       |
+| osconfig.cnrm.cloud.google.com                | OSConfigOSPolicyAssignment                      | False        | True        | False  | DCL        | True        |
 | osconfig.cnrm.cloud.google.com                | OSConfigPatchDeployment                         | True         | False       | False  | Terraform  | False       |
 | oslogin.cnrm.cloud.google.com                 | OSLoginSSHPublicKey                             | True         | False       | False  | Terraform  | False       |
 | parametermanager.cnrm.cloud.google.com        | ParameterManagerParameter                       | True         | False       | False  | Direct     | True        |

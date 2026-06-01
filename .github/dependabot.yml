@@ -14,18 +14,14 @@
 
 version: 2
 updates:
-  - package-ecosystem: gomod
+  - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: daily
-    ignore:
-    - dependency-name: k8s.io/*
-      # Ignore major and minor versions for dependencies updates
-      # Allow patches and security updates.
-      # We expect we will stick pick up k8s major versions via controller-runtime.
-      update-types: ["version-update:semver-major", "version-update:semver-minor"]
   - package-ecosystem: gomod
-    directory: /mockgcp
+    directories:
+      - /
+      - /mockgcp
     schedule:
       interval: daily
     ignore:
@@ -34,6 +30,9 @@ updates:
       # Allow patches and security updates.
       # We expect we will stick pick up k8s major versions via controller-runtime.
       update-types: ["version-update:semver-major", "version-update:semver-minor"]
+    groups:
+      go-dependencies:
+        group-by: dependency-name
   - package-ecosystem: docker
     directory: /
     schedule:
