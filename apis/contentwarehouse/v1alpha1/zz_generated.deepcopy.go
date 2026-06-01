@@ -121,6 +121,11 @@ func (in *ContentWarehouseSchemaSpec) DeepCopyInto(out *ContentWarehouseSchemaSp
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	if in.DisplayName != nil {
 		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)

@@ -29,7 +29,7 @@ type ContentWarehouseSchemaSpec struct {
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// Required. Name of the schema given by the user. Must be unique per project.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.display_name

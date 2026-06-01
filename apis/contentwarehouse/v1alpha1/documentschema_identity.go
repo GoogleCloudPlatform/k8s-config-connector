@@ -30,7 +30,7 @@ var (
 	_ identity.Resource   = &ContentWarehouseSchema{}
 )
 
-var ContentWarehouseSchemaIdentityFormat = gcpurls.Template[ContentWarehouseSchemaIdentity]("contentwarehouse.googleapis.com", "projects/{project}/locations/{location}/documentSchemas/{document_schema}")
+var ContentWarehouseSchemaIdentityFormat = gcpurls.Template[ContentWarehouseSchemaIdentity]("contentwarehouse.googleapis.com", "projects/{project}/locations/{location}/documentSchemas/{documentschema}")
 
 // +k8s:deepcopy-gen=false
 type ContentWarehouseSchemaIdentity struct {
