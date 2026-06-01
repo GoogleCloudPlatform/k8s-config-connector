@@ -12,9 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Image URL to use all building/pushing image targets
-IMG ?= kcc-operator:latest
+REPO_ROOT := $(shell git rev-parse --show-toplevel)
+PROJECT_ID ?= $(shell gcloud config get-value project)
+SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
+OPERATOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/operator:${SHORT_SHA}
+GKE_DISTROLESS_IMG ?= gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
+KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+
+# enable multi-versions feature for CRDs
+CRD_OPTIONS ?= "crd"
+
+# Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
+ifeq (,$(shell go env GOBIN))
+GOBIN=$(shell go env GOPATH)/bin
+else
+GOBIN=$(shell go env GOBIN)
+endif
+
+.PHONY: all
 all: manager
 
 # Run tests
@@ -27,26 +43,25 @@ test: generate fmt vet manifests
 manager: generate fmt vet
 	go build -o bin/manager cmd/manager/main.go
 
-# Run against the configured Kubernetes cluster in ~/.kube/config
-.PHONY: run
-run: generate fmt vet manifests
-	go run ./cmd/manager/main.go
+VERSION := $(shell cat ${REPO_ROOT}/version/VERSION)
+CHANNEL_MANIFEST := ${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}/crds.yaml
 
-# Install CRDs into a cluster
-.PHONY: install
-install: manifests
-	kustomize build config/crd | kubectl apply -f -
-
-# Deploy controller in the configured Kubernetes cluster in ~/.kube/config
-.PHONY: deploy
-deploy: manifests
-	cd config/manager && kustomize edit set image controller=${IMG}
-	kustomize build config/default | kubectl apply -f -
+.PHONY: ensure-channels
+ensure-channels:
+	@if [ ! -f "${CHANNEL_MANIFEST}" ]; then \
+		echo "Channel manifest not found at ${CHANNEL_MANIFEST}. Generating..."; \
+		${REPO_ROOT}/dev/tasks/generate-channels; \
+	fi
 
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.1 crd:crdVersions=v1 rbac:roleName=manager-role webhook paths="./..." output:crd:artifacts:config=config/crd/bases
+manifests: ensure-channels
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
+	@if [ -f "${CHANNEL_MANIFEST}" ]; then \
+		go run scripts/generate-image-configmap/main.go; \
+	else \
+		echo "Skipping image configmap generation as channel manifest ${CHANNEL_MANIFEST} is missing"; \
+	fi
 
 # Run go fmt against code
 .PHONY: fmt
@@ -61,4 +76,54 @@ vet:
 # Generate code
 .PHONY: generate
 generate:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.1 object:headerFile=./hack/boilerplate.go.txt paths="./..."
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 object paths="./..."
+
+# Install CRDs into a cluster
+.PHONY: install
+install: manifests
+	$(KUSTOMIZE) build config/crd | kubectl apply -f -
+
+# Uninstall CRDs from a cluster
+.PHONY: uninstall
+uninstall: manifests
+	$(KUSTOMIZE) build config/crd | kubectl delete -f -
+
+# Build the docker image
+.PHONY: docker-build
+docker-build:
+	docker build .. -f Dockerfile -t ${OPERATOR_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
+	@echo "updating kustomize image patch file for manager"
+	cp config/manager/manager_image_patch_template.yaml config/manager/manager_image_patch.yaml
+	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/manager/manager_image_patch.yaml
+	cp -f config/autopilot-manager/manager_image_patch_template.yaml config/autopilot-manager/manager_image_patch.yaml
+	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/autopilot-manager/manager_image_patch.yaml
+
+# Push the docker image
+.PHONY: docker-push
+docker-push:
+	docker push ${OPERATOR_IMG}
+
+# Deploy controller in the configured Kubernetes cluster in ~/.kube/config
+# Note: run docker-build first to generate config/manager/manager_image_patch.yaml
+.PHONY: deploy
+deploy: manifests  # docker-build, docker-push also required, but not explicit to speed up deploy
+	$(KUSTOMIZE) build config/default | kubectl apply -f -
+
+# Destroy controller in the configured Kubernetes cluster in ~/.kube/config
+.PHONY: destroy
+destroy: manifests
+	$(KUSTOMIZE) build config/default | kubectl delete -f -
+
+# Upgrade KCC core manifest
+.PHONY: upgrade-kcc
+upgrade-kcc:
+	cd ${REPO_ROOT}/operator; go run scripts/update-kcc-manifest/main.go --version=latest
+	cd ${REPO_ROOT}/operator; go run scripts/copy-dependency-manifests/main.go
+	make -C ${REPO_ROOT}/operator manifests
+
+# Upgrade KCC core manifest for local testing
+.PHONY: upgrade-kcc-local
+upgrade-kcc-local:
+	cd ${REPO_ROOT}/operator; go run scripts/update-kcc-manifest/main.go --version=local
+	cd ${REPO_ROOT}/operator; go run scripts/copy-dependency-manifests/main.go
+	make -C ${REPO_ROOT}/operator manifests
