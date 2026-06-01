@@ -7,7 +7,7 @@ toolchain go1.26.1
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
-	cloud.google.com/go/accesscontextmanager v1.9.7
+	cloud.google.com/go/accesscontextmanager v1.14.0
 	cloud.google.com/go/aiplatform v1.123.0
 	cloud.google.com/go/alloydb v1.20.0
 	cloud.google.com/go/analytics v0.30.1
@@ -110,7 +110,7 @@ require (
 	github.com/prometheus/procfs v0.16.0
 	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
 	github.com/stretchr/testify v1.11.1
 	github.com/tmccombs/hcl2json v0.6.8
@@ -132,7 +132,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.33.10
 	k8s.io/apiextensions-apiserver v0.33.10
-	k8s.io/apimachinery v0.33.10
+	k8s.io/apimachinery v0.34.2
 	k8s.io/client-go v0.33.10
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.20.4
@@ -167,7 +167,7 @@ require (
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.6.0 // indirect
-	github.com/stoewer/go-strcase v1.3.0 // indirect
+	github.com/stoewer/go-strcase v1.3.1 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.40.0 // indirect
