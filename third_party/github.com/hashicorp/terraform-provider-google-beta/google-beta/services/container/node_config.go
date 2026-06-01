@@ -1514,7 +1514,7 @@ func expandWindowsNodeConfig(v interface{}) *container.WindowsNodeConfig {
 
 func flattenWindowsNodeConfig(c *container.WindowsNodeConfig) []map[string]interface{} {
 	result := []map[string]interface{}{}
-	if c != nil {
+	if c != nil && c.OsVersion != "" {
 		result = append(result, map[string]interface{}{
 			"os_version": c.OsVersion,
 		})
