@@ -44,11 +44,11 @@ type BackendBucketCdnPolicyCacheKeyPolicy struct {
 type BackendBucketCdnPolicyNegativeCachingPolicy struct {
 	// The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501 can be specified as values, and you cannot specify a status code more than once.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketCdnPolicyNegativeCachingPolicy.code
-	Code *int32 `json:"code,omitempty"`
+	Code *int `json:"code,omitempty"`
 
 	// The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s (30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketCdnPolicyNegativeCachingPolicy.ttl
-	Ttl *int32 `json:"ttl,omitempty"`
+	Ttl *int `json:"ttl,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicy
@@ -67,15 +67,15 @@ type BackendBucketCdnPolicy struct {
 
 	// Specifies the maximum allowed TTL for cached content served by this origin.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketCdnPolicy.client_ttl
-	ClientTtl *int32 `json:"clientTtl,omitempty"`
+	ClientTtl *int `json:"clientTtl,omitempty"`
 
 	// Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age).
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketCdnPolicy.default_ttl
-	DefaultTtl *int32 `json:"defaultTtl,omitempty"`
+	DefaultTtl *int `json:"defaultTtl,omitempty"`
 
 	// Specifies the maximum allowed TTL for cached content served by this origin.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketCdnPolicy.max_ttl
-	MaxTtl *int32 `json:"maxTtl,omitempty"`
+	MaxTtl *int `json:"maxTtl,omitempty"`
 
 	// Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketCdnPolicy.negative_caching
@@ -91,17 +91,18 @@ type BackendBucketCdnPolicy struct {
 
 	// Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketCdnPolicy.serve_while_stale
-	ServeWhileStale *int32 `json:"serveWhileStale,omitempty"`
+	ServeWhileStale *int `json:"serveWhileStale,omitempty"`
 
 	// Maximum number of seconds the response to a signed URL request will be considered fresh. After this time period, the response will be revalidated before being served. When serving responses to signed URL requests, Cloud CDN will internally behave as though all responses from this backend had a "Cache-Control: public, max-age=[TTL]" header, regardless of any existing Cache-Control header. The actual headers served in responses will not be altered.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketCdnPolicy.signed_url_cache_max_age_sec
-	SignedUrlCacheMaxAgeSec *int64 `json:"signedUrlCacheMaxAgeSec,omitempty"`
+	SignedUrlCacheMaxAgeSec *int `json:"signedUrlCacheMaxAgeSec,omitempty"`
 }
 
 // ComputeBackendBucketSpec defines the desired state of ComputeBackendBucket
 // +kcc:spec:proto=google.cloud.compute.v1.BackendBucket
 type ComputeBackendBucketSpec struct {
 	// Reference to the bucket.
+	// +kcc:proto:field=google.cloud.compute.v1.BackendBucket.bucket_name
 	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef"`
 
 	// Cloud CDN configuration for this Backend Bucket.
@@ -133,13 +134,14 @@ type ComputeBackendBucketSpec struct {
 }
 
 // ComputeBackendBucketStatus defines the config connector machine state of ComputeBackendBucket
+// +kcc:status:proto=google.cloud.compute.v1.BackendBucket
 type ComputeBackendBucketStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	// Creation timestamp in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucket.creation_timestamp

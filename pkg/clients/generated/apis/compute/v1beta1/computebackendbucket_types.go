@@ -69,15 +69,15 @@ type BackendbucketCdnPolicy struct {
 
 	/* Specifies the maximum allowed TTL for cached content served by this origin. */
 	// +optional
-	ClientTtl *int32 `json:"clientTtl,omitempty"`
+	ClientTtl *int64 `json:"clientTtl,omitempty"`
 
 	/* Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age). */
 	// +optional
-	DefaultTtl *int32 `json:"defaultTtl,omitempty"`
+	DefaultTtl *int64 `json:"defaultTtl,omitempty"`
 
 	/* Specifies the maximum allowed TTL for cached content served by this origin. */
 	// +optional
-	MaxTtl *int32 `json:"maxTtl,omitempty"`
+	MaxTtl *int64 `json:"maxTtl,omitempty"`
 
 	/* Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects. */
 	// +optional
@@ -93,7 +93,7 @@ type BackendbucketCdnPolicy struct {
 
 	/* Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache. */
 	// +optional
-	ServeWhileStale *int32 `json:"serveWhileStale,omitempty"`
+	ServeWhileStale *int64 `json:"serveWhileStale,omitempty"`
 
 	/* Maximum number of seconds the response to a signed URL request will be considered fresh. After this time period, the response will be revalidated before being served. When serving responses to signed URL requests, Cloud CDN will internally behave as though all responses from this backend had a "Cache-Control: public, max-age=[TTL]" header, regardless of any existing Cache-Control header. The actual headers served in responses will not be altered. */
 	// +optional
@@ -103,11 +103,11 @@ type BackendbucketCdnPolicy struct {
 type BackendbucketNegativeCachingPolicy struct {
 	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501 can be specified as values, and you cannot specify a status code more than once. */
 	// +optional
-	Code *int32 `json:"code,omitempty"`
+	Code *int64 `json:"code,omitempty"`
 
 	/* The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s (30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
 	// +optional
-	Ttl *int32 `json:"ttl,omitempty"`
+	Ttl *int64 `json:"ttl,omitempty"`
 }
 
 type ComputeBackendBucketSpec struct {

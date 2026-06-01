@@ -168,6 +168,8 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
+
+/* found existing non-generated mapping function "BackendBucketCdnPolicy_v1beta1_FromProto", skipping
 func BackendBucketCdnPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicy) *krm.BackendBucketCdnPolicy {
 	if in == nil {
 		return nil
@@ -191,29 +193,35 @@ func BackendBucketCdnPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: SignedURLKeyNames
 	return out
 }
-func BackendBucketCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCdnPolicy) *pb.BackendBucketCdnPolicy {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "BackendBucketCdnPolicy_v1beta1_ToProto", skipping
+
+	func BackendBucketCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCdnPolicy) *pb.BackendBucketCdnPolicy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BackendBucketCdnPolicy{}
+		out.BypassCacheOnRequestHeaders = direct.Slice_ToProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendBucketCdnPolicyBypassCacheOnRequestHeaders_v1beta1_ToProto)
+		out.CacheKeyPolicy = BackendBucketCdnPolicyCacheKeyPolicy_v1beta1_ToProto(mapCtx, in.CacheKeyPolicy)
+		out.CacheMode = in.CacheMode
+		// MISSING: ClientTTL
+		// (near miss): "ClientTTL" vs "ClientTtl"
+		// MISSING: DefaultTTL
+		// (near miss): "DefaultTTL" vs "DefaultTtl"
+		// MISSING: MaxTTL
+		// (near miss): "MaxTTL" vs "MaxTtl"
+		out.NegativeCaching = in.NegativeCaching
+		out.NegativeCachingPolicy = direct.Slice_ToProto(mapCtx, in.NegativeCachingPolicy, BackendBucketCdnPolicyNegativeCachingPolicy_v1beta1_ToProto)
+		out.RequestCoalescing = in.RequestCoalescing
+		out.ServeWhileStale = in.ServeWhileStale
+		// MISSING: SignedURLCacheMaxAgeSec
+		// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
+		// MISSING: SignedURLKeyNames
+		return out
 	}
-	out := &pb.BackendBucketCdnPolicy{}
-	out.BypassCacheOnRequestHeaders = direct.Slice_ToProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendBucketCdnPolicyBypassCacheOnRequestHeaders_v1beta1_ToProto)
-	out.CacheKeyPolicy = BackendBucketCdnPolicyCacheKeyPolicy_v1beta1_ToProto(mapCtx, in.CacheKeyPolicy)
-	out.CacheMode = in.CacheMode
-	// MISSING: ClientTTL
-	// (near miss): "ClientTTL" vs "ClientTtl"
-	// MISSING: DefaultTTL
-	// (near miss): "DefaultTTL" vs "DefaultTtl"
-	// MISSING: MaxTTL
-	// (near miss): "MaxTTL" vs "MaxTtl"
-	out.NegativeCaching = in.NegativeCaching
-	out.NegativeCachingPolicy = direct.Slice_ToProto(mapCtx, in.NegativeCachingPolicy, BackendBucketCdnPolicyNegativeCachingPolicy_v1beta1_ToProto)
-	out.RequestCoalescing = in.RequestCoalescing
-	out.ServeWhileStale = in.ServeWhileStale
-	// MISSING: SignedURLCacheMaxAgeSec
-	// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
-	// MISSING: SignedURLKeyNames
-	return out
-}
+*/
 func BackendBucketCdnPolicyBypassCacheOnRequestHeaders_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader) *krm.BackendBucketCdnPolicyBypassCacheOnRequestHeaders {
 	if in == nil {
 		return nil
@@ -250,6 +258,8 @@ func BackendBucketCdnPolicyCacheKeyPolicy_v1beta1_ToProto(mapCtx *direct.MapCont
 	out.QueryStringWhitelist = in.QueryStringWhitelist
 	return out
 }
+
+/* found existing non-generated mapping function "BackendBucketCdnPolicyNegativeCachingPolicy_v1beta1_FromProto", skipping
 func BackendBucketCdnPolicyNegativeCachingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyNegativeCachingPolicy) *krm.BackendBucketCdnPolicyNegativeCachingPolicy {
 	if in == nil {
 		return nil
@@ -260,16 +270,22 @@ func BackendBucketCdnPolicyNegativeCachingPolicy_v1beta1_FromProto(mapCtx *direc
 	// (near miss): "TTL" vs "Ttl"
 	return out
 }
-func BackendBucketCdnPolicyNegativeCachingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCdnPolicyNegativeCachingPolicy) *pb.BackendBucketCdnPolicyNegativeCachingPolicy {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "BackendBucketCdnPolicyNegativeCachingPolicy_v1beta1_ToProto", skipping
+
+	func BackendBucketCdnPolicyNegativeCachingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCdnPolicyNegativeCachingPolicy) *pb.BackendBucketCdnPolicyNegativeCachingPolicy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BackendBucketCdnPolicyNegativeCachingPolicy{}
+		out.Code = in.Code
+		// MISSING: TTL
+		// (near miss): "TTL" vs "Ttl"
+		return out
 	}
-	out := &pb.BackendBucketCdnPolicyNegativeCachingPolicy{}
-	out.Code = in.Code
-	// MISSING: TTL
-	// (near miss): "TTL" vs "Ttl"
-	return out
-}
+*/
 func ComputeBackendBucketSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketSpec {
 	if in == nil {
 		return nil
@@ -315,6 +331,50 @@ func ComputeBackendBucketSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Name
 	// MISSING: Params
 	// MISSING: SelfLink
+	// MISSING: UsedBy
+	return out
+}
+func ComputeBackendBucketStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendBucketStatus{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// MISSING: CompressionMode
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomResponseHeaders
+	// MISSING: Description
+	// MISSING: EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
+	// MISSING: UsedBy
+	return out
+}
+func ComputeBackendBucketStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendBucketStatus) *pb.BackendBucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucket{}
+	// MISSING: BucketName
+	// MISSING: CDNPolicy
+	// MISSING: CompressionMode
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomResponseHeaders
+	// MISSING: Description
+	// MISSING: EdgeSecurityPolicy
+	// MISSING: EnableCDN
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LoadBalancingScheme
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
 	// MISSING: UsedBy
 	return out
 }
