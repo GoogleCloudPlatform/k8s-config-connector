@@ -60,6 +60,14 @@ func (i *AlloyDBBackupIdentity) Host() string {
 	return AlloyDBBackupIdentityFormat.Host()
 }
 
+func (i *AlloyDBBackupIdentity) ID() string {
+	return i.Backup
+}
+
+func (i *AlloyDBBackupIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func getIdentityFromAlloyDBBackupSpec(ctx context.Context, reader client.Reader, obj client.Object) (*AlloyDBBackupIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
