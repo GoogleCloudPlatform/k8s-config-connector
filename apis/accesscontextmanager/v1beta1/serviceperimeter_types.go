@@ -23,6 +23,7 @@ import (
 var AccessContextManagerServicePerimeterGVK = GroupVersion.WithKind("AccessContextManagerServicePerimeter")
 
 // AccessContextManagerServicePerimeterSpec defines the desired state of AccessContextManagerServicePerimeter
+// +kcc:spec:proto=google.identity.accesscontextmanager.v1.ServicePerimeter
 type AccessContextManagerServicePerimeterSpec struct {
 	/* The AccessContextManagerAccessPolicy this
 	AccessContextManagerServicePerimeter lives in. */
@@ -89,6 +90,7 @@ type AccessContextManagerServicePerimeterSpec struct {
 	UseExplicitDryRunSpec *bool `json:"useExplicitDryRunSpec,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig
 type AccessContextManagerServicePerimeterConfig struct {
 	/* (Optional) A list of AccessLevel resource names that allow resources within
 	the ServicePerimeter to be accessed from the internet. AccessLevels listed
@@ -133,6 +135,7 @@ type AccessContextManagerServicePerimeterConfig struct {
 	VPCAccessibleServices *AccessContextManagerServicePerimeterVPCAccessibleServices `json:"vpcAccessibleServices,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy
 type AccessContextManagerServicePerimeterEgressPolicy struct {
 	/* Defines conditions on the source of a request causing this 'EgressPolicy' to apply. */
 	// +optional
@@ -144,6 +147,7 @@ type AccessContextManagerServicePerimeterEgressPolicy struct {
 	EgressTo *AccessContextManagerServicePerimeterEgressTo `json:"egressTo,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom
 type AccessContextManagerServicePerimeterEgressFrom struct {
 	/* (Optional) A list of identities that are allowed access through this
 	EgressPolicy. Should be in the format of email address. The email
@@ -168,6 +172,7 @@ type AccessContextManagerServicePerimeterIdentity struct {
 	User *string `json:"user,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo
 type AccessContextManagerServicePerimeterEgressTo struct {
 	/* A list of external resources that are allowed to be accessed. A request
 	matches if it contains an external resource in this list (Example:
@@ -195,6 +200,7 @@ type AccessContextManagerServicePerimeterEgressResource struct {
 	ProjectRef *ServicePerimeterProjectRef `json:"projectRef,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation
 type AccessContextManagerServicePerimeterApiOperation struct {
 	/* API methods or permissions to allow. Method or permission must belong
 	to the service specified by 'serviceName' field. A single MethodSelector
@@ -210,6 +216,7 @@ type AccessContextManagerServicePerimeterApiOperation struct {
 	ServiceName *string `json:"serviceName,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.MethodSelector
 type AccessContextManagerServicePerimeterMethodSelector struct {
 	/* Value for 'method' should be a valid method name for the corresponding
 	'serviceName' in 'ApiOperation'. If '*' used as value for method,
@@ -223,6 +230,7 @@ type AccessContextManagerServicePerimeterMethodSelector struct {
 	Permission *string `json:"permission,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy
 type AccessContextManagerServicePerimeterIngressPolicy struct {
 	/* Defines the conditions on the source of a request causing this 'IngressPolicy'
 	to apply. */
@@ -235,6 +243,7 @@ type AccessContextManagerServicePerimeterIngressPolicy struct {
 	IngressTo *AccessContextManagerServicePerimeterIngressTo `json:"ingressTo,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom
 type AccessContextManagerServicePerimeterIngressFrom struct {
 	/* (Optional) A list of identities that are allowed access through this
 	ingress policy. Should be in the format of email address. The email
@@ -253,6 +262,7 @@ type AccessContextManagerServicePerimeterIngressFrom struct {
 	Sources []AccessContextManagerServicePerimeterIngressSource `json:"sources,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressSource
 type AccessContextManagerServicePerimeterIngressSource struct {
 	/* (Optional) A reference to an AccessLevel resource that is allowed to ingress the perimeter. */
 	// +optional
@@ -267,6 +277,7 @@ type AccessContextManagerServicePerimeterIngressSource struct {
 	ProjectRef *ServicePerimeterProjectRef `json:"projectRef,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressTo
 type AccessContextManagerServicePerimeterIngressTo struct {
 	/* A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom'
 	are allowed to perform in this 'ServicePerimeter'. */
@@ -299,6 +310,7 @@ type AccessContextManagerServicePerimeterResource struct {
 	ProjectRef *ServicePerimeterProjectRef `json:"projectRef,omitempty"`
 }
 
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.VpcAccessibleServices
 type AccessContextManagerServicePerimeterVPCAccessibleServices struct {
 	/* The list of APIs usable within the Service Perimeter.
 	Must be empty unless 'enableRestriction' is True. */
@@ -324,6 +336,7 @@ type ServicePerimeterProjectRef struct {
 }
 
 // AccessContextManagerServicePerimeterStatus defines the config connector machine state of AccessContextManagerServicePerimeter
+// +kcc:status:proto=google.identity.accesscontextmanager.v1.ServicePerimeter
 type AccessContextManagerServicePerimeterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
