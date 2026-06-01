@@ -28,15 +28,15 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"k8s.io/klog/v2"
 
+	"cloud.google.com/go/iam/admin/apiv1/adminpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/iam/admin/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 const ServiceAccountSuffix = ".iam.gserviceaccount.com"
 
 // Gets a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
-func (s *IAMServer) GetServiceAccount(ctx context.Context, req *pb.GetServiceAccountRequest) (*pb.ServiceAccount, error) {
+func (s *IAMServer) GetServiceAccount(ctx context.Context, req *adminpb.GetServiceAccountRequest) (*adminpb.ServiceAccount, error) {
 	name, err := s.parseServiceAccountName(ctx, req.Name)
 	if err != nil {
 		return nil, err
@@ -46,12 +46,12 @@ func (s *IAMServer) GetServiceAccount(ctx context.Context, req *pb.GetServiceAcc
 		uniqueID := name.Email
 
 		// TODO: Some sort of index on uniqueid
-		var found *pb.ServiceAccount
-		serviceAccountKind := (&pb.ServiceAccount{}).ProtoReflect().Descriptor()
+		var found *adminpb.ServiceAccount
+		serviceAccountKind := (&adminpb.ServiceAccount{}).ProtoReflect().Descriptor()
 		if err := s.storage.List(ctx, serviceAccountKind, storage.ListOptions{
 			Prefix: "projects/" + name.Project.ID + "/",
 		}, func(obj proto.Message) error {
-			sa := obj.(*pb.ServiceAccount)
+			sa := obj.(*adminpb.ServiceAccount)
 			if sa.UniqueId == uniqueID {
 				found = sa
 			}
@@ -67,7 +67,7 @@ func (s *IAMServer) GetServiceAccount(ctx context.Context, req *pb.GetServiceAcc
 		return found, nil
 	}
 
-	sa := &pb.ServiceAccount{}
+	sa := &adminpb.ServiceAccount{}
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, sa); err != nil {
 		if status.Code(err) == codes.NotFound {
@@ -85,7 +85,7 @@ func isNumber(s string) bool {
 }
 
 // Creates a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
-func (s *IAMServer) CreateServiceAccount(ctx context.Context, req *pb.CreateServiceAccountRequest) (*pb.ServiceAccount, error) {
+func (s *IAMServer) CreateServiceAccount(ctx context.Context, req *adminpb.CreateServiceAccountRequest) (*adminpb.ServiceAccount, error) {
 	accountID := req.AccountId
 	if accountID == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "AccountId is required")
@@ -133,14 +133,14 @@ func (s *IAMServer) CreateServiceAccount(ctx context.Context, req *pb.CreateServ
 	return sa, nil
 }
 
-func (s *IAMServer) DeleteServiceAccount(ctx context.Context, req *pb.DeleteServiceAccountRequest) (*emptypb.Empty, error) {
+func (s *IAMServer) DeleteServiceAccount(ctx context.Context, req *adminpb.DeleteServiceAccountRequest) (*emptypb.Empty, error) {
 	name, err := s.parseServiceAccountName(ctx, req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	deletedObj := &pb.ServiceAccount{}
+	deletedObj := &adminpb.ServiceAccount{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func (s *IAMServer) DeleteServiceAccount(ctx context.Context, req *pb.DeleteServ
 	return &emptypb.Empty{}, nil
 }
 
-func (s *IAMServer) PatchServiceAccount(ctx context.Context, req *pb.PatchServiceAccountRequest) (*pb.ServiceAccount, error) {
+func (s *IAMServer) PatchServiceAccount(ctx context.Context, req *adminpb.PatchServiceAccountRequest) (*adminpb.ServiceAccount, error) {
 	reqName := req.GetServiceAccount().GetName()
 
 	name, err := s.parseServiceAccountName(ctx, reqName)
@@ -157,13 +157,13 @@ func (s *IAMServer) PatchServiceAccount(ctx context.Context, req *pb.PatchServic
 	}
 
 	fqn := name.String()
-	sa := &pb.ServiceAccount{}
+	sa := &adminpb.ServiceAccount{}
 	if err := s.storage.Get(ctx, fqn, sa); err != nil {
 		return nil, err
 	}
 
 	// Unclear exactly what's going on here, but it seems to only return the fields we patch
-	retVal := &pb.ServiceAccount{
+	retVal := &adminpb.ServiceAccount{
 		Name: sa.Name,
 	}
 
@@ -190,14 +190,14 @@ func (s *IAMServer) PatchServiceAccount(ctx context.Context, req *pb.PatchServic
 	return retVal, nil
 }
 
-func (s *IAMServer) DisableServiceAccount(ctx context.Context, req *pb.DisableServiceAccountRequest) (*emptypb.Empty, error) {
+func (s *IAMServer) DisableServiceAccount(ctx context.Context, req *adminpb.DisableServiceAccountRequest) (*emptypb.Empty, error) {
 	name, err := s.parseServiceAccountName(ctx, req.GetName())
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	sa := &pb.ServiceAccount{}
+	sa := &adminpb.ServiceAccount{}
 	if err := s.storage.Get(ctx, fqn, sa); err != nil {
 		return nil, err
 	}
@@ -211,14 +211,14 @@ func (s *IAMServer) DisableServiceAccount(ctx context.Context, req *pb.DisableSe
 	return &emptypb.Empty{}, nil
 }
 
-func (s *IAMServer) EnableServiceAccount(ctx context.Context, req *pb.EnableServiceAccountRequest) (*emptypb.Empty, error) {
+func (s *IAMServer) EnableServiceAccount(ctx context.Context, req *adminpb.EnableServiceAccountRequest) (*emptypb.Empty, error) {
 	name, err := s.parseServiceAccountName(ctx, req.GetName())
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	sa := &pb.ServiceAccount{}
+	sa := &adminpb.ServiceAccount{}
 	if err := s.storage.Get(ctx, fqn, sa); err != nil {
 		return nil, err
 	}

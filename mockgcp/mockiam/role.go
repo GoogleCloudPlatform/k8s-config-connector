@@ -26,11 +26,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/iam/admin/v1"
+	"cloud.google.com/go/iam/admin/apiv1/adminpb"
 	"google.golang.org/protobuf/proto"
 )
 
-func (s *IAMServer) GetRole(ctx context.Context, req *pb.GetRoleRequest) (*pb.Role, error) {
+func (s *IAMServer) GetRole(ctx context.Context, req *adminpb.GetRoleRequest) (*adminpb.Role, error) {
 	name, err := s.parseRoleName(req.Name)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (s *IAMServer) GetRole(ctx context.Context, req *pb.GetRoleRequest) (*pb.Ro
 
 	fqn := name.String()
 
-	obj := &pb.Role{}
+	obj := &adminpb.Role{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "role %q not found", fqn)
@@ -49,7 +49,7 @@ func (s *IAMServer) GetRole(ctx context.Context, req *pb.GetRoleRequest) (*pb.Ro
 	return obj, nil
 }
 
-func (s *IAMServer) CreateRole(ctx context.Context, req *pb.CreateRoleRequest) (*pb.Role, error) {
+func (s *IAMServer) CreateRole(ctx context.Context, req *adminpb.CreateRoleRequest) (*adminpb.Role, error) {
 	reqName := fmt.Sprintf("%s/roles/%s", req.GetParent(), req.GetRoleId())
 	name, err := s.parseRoleName(reqName)
 	if err != nil {
@@ -69,14 +69,14 @@ func (s *IAMServer) CreateRole(ctx context.Context, req *pb.CreateRoleRequest) (
 	return obj, nil
 }
 
-func (s *IAMServer) UpdateRole(ctx context.Context, req *pb.UpdateRoleRequest) (*pb.Role, error) {
+func (s *IAMServer) UpdateRole(ctx context.Context, req *adminpb.UpdateRoleRequest) (*adminpb.Role, error) {
 	name, err := s.parseRoleName(req.GetName())
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.Role{}
+	obj := &adminpb.Role{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func (s *IAMServer) UpdateRole(ctx context.Context, req *pb.UpdateRoleRequest) (
 	return obj, nil
 }
 
-func (s *IAMServer) DeleteRole(ctx context.Context, req *pb.DeleteRoleRequest) (*pb.Role, error) {
+func (s *IAMServer) DeleteRole(ctx context.Context, req *adminpb.DeleteRoleRequest) (*adminpb.Role, error) {
 	name, err := s.parseRoleName(req.Name)
 	if err != nil {
 		return nil, err
@@ -108,7 +108,7 @@ func (s *IAMServer) DeleteRole(ctx context.Context, req *pb.DeleteRoleRequest) (
 
 	fqn := name.String()
 
-	obj := &pb.Role{}
+	obj := &adminpb.Role{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "role %q not found", fqn)
@@ -127,7 +127,7 @@ func (s *IAMServer) DeleteRole(ctx context.Context, req *pb.DeleteRoleRequest) (
 	return obj, nil
 }
 
-func (s *IAMServer) UndeleteRole(ctx context.Context, req *pb.UndeleteRoleRequest) (*pb.Role, error) {
+func (s *IAMServer) UndeleteRole(ctx context.Context, req *adminpb.UndeleteRoleRequest) (*adminpb.Role, error) {
 	name, err := s.parseRoleName(req.Name)
 	if err != nil {
 		return nil, err
@@ -135,7 +135,7 @@ func (s *IAMServer) UndeleteRole(ctx context.Context, req *pb.UndeleteRoleReques
 
 	fqn := name.String()
 
-	obj := &pb.Role{}
+	obj := &adminpb.Role{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "role %q not found", fqn)
@@ -156,9 +156,9 @@ func (s *IAMServer) UndeleteRole(ctx context.Context, req *pb.UndeleteRoleReques
 
 // QueryTestablePermissions returns all/many permissions that can be set
 // gcloud calls this endpoint, so we stub-implement it
-func (s *IAMServer) QueryTestablePermissions(ctx context.Context, req *pb.QueryTestablePermissionsRequest) (*pb.QueryTestablePermissionsResponse, error) {
-	response := &pb.QueryTestablePermissionsResponse{}
-	response.Permissions = []*pb.Permission{}
+func (s *IAMServer) QueryTestablePermissions(ctx context.Context, req *adminpb.QueryTestablePermissionsRequest) (*adminpb.QueryTestablePermissionsResponse, error) {
+	response := &adminpb.QueryTestablePermissionsResponse{}
+	response.Permissions = []*adminpb.Permission{}
 	return response, nil
 }
 
