@@ -56,6 +56,7 @@ require (
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/speech v1.30.0
 	cloud.google.com/go/storage v1.59.2
+	cloud.google.com/go/vpcaccess v1.8.7
 	cloud.google.com/go/workflows v1.14.3
 	cloud.google.com/go/workstations v1.1.6
 	github.com/GoogleCloudPlatform/k8s-config-connector v1.129.2
