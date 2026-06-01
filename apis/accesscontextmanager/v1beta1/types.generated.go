@@ -19,5 +19,6 @@
 // proto.service: google.identity.accesscontextmanager.v1
 // resource: AccessContextManagerAccessPolicy:AccessPolicy
 // resource: AccessContextManagerAccessLevel:AccessLevel
+// resource: AccessContextManagerGCPUserAccessBinding:GcpUserAccessBinding
 
 package v1beta1
