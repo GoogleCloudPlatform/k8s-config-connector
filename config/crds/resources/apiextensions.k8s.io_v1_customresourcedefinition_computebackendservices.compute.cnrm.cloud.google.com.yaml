@@ -65,12 +65,27 @@ spec:
             description: ComputeBackendServiceSpec defines the desired state of ComputeBackendService
             properties:
               affinityCookieTtlSec:
-                format: int64
+                description: |-
+                  Lifetime of cookies in seconds if session_affinity is
+                  GENERATED_COOKIE. If set to 0, the cookie is non-persistent and lasts
+                  only until the end of the browser session (or equivalent). The
+                  maximum allowed value for TTL is one day.
+
+                  When the load balancing scheme is INTERNAL, this field is not used.
                 type: integer
               backend:
                 items:
                   properties:
                     balancingMode:
+                      description: |-
+                        Specifies the balancing mode for this backend.
+
+                        For global HTTP(S) or TCP/SSL load balancing, the default is
+                        UTILIZATION. Valid values are UTILIZATION, RATE (for HTTP(S))
+                        and CONNECTION (for TCP/SSL).
+
+                        See the [Backend Services Overview](https://cloud.google.com/load-balancing/docs/backend-service#balancing-mode)
+                        for an explanation of load balancing modes. Default value: "UTILIZATION" Possible values: ["UTILIZATION", "RATE", "CONNECTION"].
                       type: string
                     capacityScaler:
                       type: number
@@ -139,17 +154,17 @@ spec:
                               type: string
                           type: object
                       type: object
+                      x-kubernetes-validations:
+                      - message: exactly one of instanceGroupRef or networkEndpointGroupRef
+                          must be specified
+                        rule: has(self.instanceGroupRef) != has(self.networkEndpointGroupRef)
                     maxConnections:
-                      format: int64
                       type: integer
                     maxConnectionsPerEndpoint:
-                      format: int64
                       type: integer
                     maxConnectionsPerInstance:
-                      format: int64
                       type: integer
                     maxRate:
-                      format: int64
                       type: integer
                     maxRatePerEndpoint:
                       type: number
@@ -164,9 +179,15 @@ spec:
               cdnPolicy:
                 properties:
                   bypassCacheOnRequestHeaders:
+                    description: Bypass the cache when the specified request headers
+                      are matched - e.g. Pragma or Authorization headers. Up to 5
+                      headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode
+                      settings.
                     items:
                       properties:
                         headerName:
+                          description: The header field name to match on when bypassing
+                            cache. Values are case-insensitive.
                           type: string
                       required:
                       - headerName
@@ -175,6 +196,8 @@ spec:
                   cacheKeyPolicy:
                     properties:
                       includeHost:
+                        description: If true requests to different hosts will be cached
+                          separately.
                         type: boolean
                       includeHttpHeaders:
                         items:
@@ -200,13 +223,10 @@ spec:
                   cacheMode:
                     type: string
                   clientTtl:
-                    format: int64
                     type: integer
                   defaultTtl:
-                    format: int64
                     type: integer
                   maxTtl:
-                    format: int64
                     type: integer
                   negativeCaching:
                     type: boolean
@@ -214,25 +234,30 @@ spec:
                     items:
                       properties:
                         code:
-                          format: int64
+                          description: The HTTP status code to define a TTL against.
+                            Only HTTP status codes 300, 301, 308, 404, 405, 410, 421,
+                            451 and 501 can be specified as values, and you cannot
+                            specify a status code more than once.
                           type: integer
                         ttl:
-                          format: int64
                           type: integer
                       type: object
                     type: array
                   serveWhileStale:
-                    format: int64
                     type: integer
                   signedUrlCacheMaxAgeSec:
-                    format: int64
                     type: integer
                 type: object
               circuitBreakers:
                 properties:
                   connectTimeout:
+                    description: The timeout for new network connections to hosts.
                     properties:
                       nanos:
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Durations less than one second are
+                          represented with a 0 seconds field and a positive nanos
+                          field. Must be from 0 to 999,999,999 inclusive.
                         format: int64
                         type: integer
                       seconds:
@@ -242,34 +267,44 @@ spec:
                     - seconds
                     type: object
                   maxConnections:
-                    format: int64
                     type: integer
                   maxPendingRequests:
-                    format: int64
                     type: integer
                   maxRequests:
-                    format: int64
                     type: integer
                   maxRequestsPerConnection:
-                    format: int64
                     type: integer
                   maxRetries:
-                    format: int64
                     type: integer
                 type: object
               compressionMode:
                 type: string
               connectionDrainingTimeoutSec:
-                format: int64
                 type: integer
               connectionTrackingPolicy:
                 properties:
                   connectionPersistenceOnUnhealthyBackends:
+                    description: |-
+                      Specifies connection persistence when backends are unhealthy.
+
+                      If set to 'DEFAULT_FOR_PROTOCOL', the existing connections persist on
+                      unhealthy backends only for connection-oriented protocols (TCP and SCTP)
+                      and only if the Tracking Mode is PER_CONNECTION (default tracking mode)
+                      or the Session Affinity is configured for 5-tuple. They do not persist
+                      for UDP.
+
+                      If set to 'NEVER_PERSIST', after a backend becomes unhealthy, the existing
+                      connections on the unhealthy backend are never persisted on the unhealthy
+                      backend. They are always diverted to newly selected healthy backends
+                      (unless all backends are unhealthy).
+
+                      If set to 'ALWAYS_PERSIST', existing connections always persist on
+                      unhealthy backends regardless of protocol and session affinity. It is
+                      generally not recommended to use this mode overriding the default. Default value: "DEFAULT_FOR_PROTOCOL" Possible values: ["DEFAULT_FOR_PROTOCOL", "NEVER_PERSIST", "ALWAYS_PERSIST"].
                     type: string
                   enableStrongAffinity:
                     type: boolean
                   idleTimeoutSec:
-                    format: int64
                     type: integer
                   trackingMode:
                     type: string
@@ -277,14 +312,59 @@ spec:
               consistentHash:
                 properties:
                   httpCookie:
+                    description: Hash is based on HTTP Cookie. This field describes
+                      a HTTP cookie that will be used as the hash key for the consistent
+                      hash load balancer. If the cookie is not present, it will be
+                      generated. This field is applicable if the sessionAffinity is
+                      set to HTTP_COOKIE.
                     properties:
                       name:
+                        description: |-
+                          The name of a locality load balancer policy to be used. The value
+                          should be one of the predefined ones as supported by localityLbPolicy,
+                          although at the moment only ROUND_ROBIN is supported.
+
+                          This field should only be populated when the customPolicy field is not
+                          used.
+
+                          Note that specifying the same policy more than once for a backend is
+                          not a valid configuration and will be rejected.
+
+                          The possible values are:
+
+                          * 'ROUND_ROBIN': This is a simple policy in which each healthy backend
+                          is selected in round robin order.
+
+                          * 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
+                          hosts and picks the host which has fewer active requests.
+
+                          * 'RING_HASH': The ring/modulo hash load balancer implements consistent
+                          hashing to backends. The algorithm has the property that the
+                          addition/removal of a host from a set of N hosts only affects
+                          1/N of the requests.
+
+                          * 'RANDOM': The load balancer selects a random healthy host.
+
+                          * 'ORIGINAL_DESTINATION': Backend host is selected based on the client
+                          connection metadata, i.e., connections are opened
+                          to the same address as the destination address of
+                          the incoming connection before the connection
+                          was redirected to the load balancer.
+
+                          * 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
+                          Maglev is not as stable as ring hash but has faster table lookup
+                          build times and host selection times. For more information about
+                          Maglev, refer to https://ai.google/research/pubs/pub44824 Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"].
                         type: string
                       path:
                         type: string
                       ttl:
                         properties:
                           nanos:
+                            description: Span of time that's a fraction of a second
+                              at nanosecond resolution. Durations less than one second
+                              are represented with a 0 seconds field and a positive
+                              nanos field. Must be from 0 to 999,999,999 inclusive.
                             format: int64
                             type: integer
                           seconds:
@@ -297,7 +377,6 @@ spec:
                   httpHeaderName:
                     type: string
                   minimumRingSize:
-                    format: int64
                     type: integer
                 type: object
               customRequestHeaders:
@@ -343,6 +422,14 @@ spec:
               failoverPolicy:
                 properties:
                   disableConnectionDrainOnFailover:
+                    description: 'On failover or failback, this field indicates whether
+                      connection drain will be honored. Setting this to true has the
+                      following effect: connections to the old active pool are not
+                      drained. Connections to the new active pool use the timeout
+                      of 10 min (currently fixed). Setting to false has the following
+                      effect: both old and new connections will have a drain timeout
+                      of 10 min. This can be set to true only if the protocol is TCP.
+                      The default is false.'
                     type: boolean
                   dropTrafficIfUnhealthy:
                     type: boolean
@@ -415,6 +502,9 @@ spec:
               iap:
                 properties:
                   oauth2ClientId:
+                    description: DEPRECATED. Although this field is still available,
+                      there is limited support. We recommend that you use `spec.iap.oauth2ClientIdRef`
+                      instead.
                     type: string
                   oauth2ClientIdRef:
                     oneOf:
@@ -448,10 +538,14 @@ spec:
                   oauth2ClientSecret:
                     properties:
                       value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
                         type: string
                       valueFrom:
                         properties:
                           secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
                             properties:
                               key:
                                 description: Key that identifies the value to be extracted.
@@ -466,17 +560,29 @@ spec:
                             type: object
                         type: object
                     type: object
+                    x-kubernetes-validations:
+                    - message: exactly one of value or valueFrom must be specified
+                      rule: has(self.value) != has(self.valueFrom)
                   oauth2ClientSecretSha256:
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: exactly one of oauth2ClientId or oauth2ClientIdRef must
+                    be specified
+                  rule: has(self.oauth2ClientId) != has(self.oauth2ClientIdRef)
               loadBalancingScheme:
                 type: string
               localityLbPolicies:
                 items:
                   properties:
                     customPolicy:
+                      description: The configuration for a custom policy implemented
+                        by the user and deployed with the client.
                       properties:
                         data:
+                          description: An optional, arbitrary JSON object with configuration
+                            data, understood by a locally installed custom policy
+                            implementation.
                           type: string
                         name:
                           type: string
@@ -486,6 +592,42 @@ spec:
                     policy:
                       properties:
                         name:
+                          description: |-
+                            The name of a locality load balancer policy to be used. The value
+                            should be one of the predefined ones as supported by localityLbPolicy,
+                            although at the moment only ROUND_ROBIN is supported.
+
+                            This field should only be populated when the customPolicy field is not
+                            used.
+
+                            Note that specifying the same policy more than once for a backend is
+                            not a valid configuration and will be rejected.
+
+                            The possible values are:
+
+                            * 'ROUND_ROBIN': This is a simple policy in which each healthy backend
+                            is selected in round robin order.
+
+                            * 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
+                            hosts and picks the host which has fewer active requests.
+
+                            * 'RING_HASH': The ring/modulo hash load balancer implements consistent
+                            hashing to backends. The algorithm has the property that the
+                            addition/removal of a host from a set of N hosts only affects
+                            1/N of the requests.
+
+                            * 'RANDOM': The load balancer selects a random healthy host.
+
+                            * 'ORIGINAL_DESTINATION': Backend host is selected based on the client
+                            connection metadata, i.e., connections are opened
+                            to the same address as the destination address of
+                            the incoming connection before the connection
+                            was redirected to the load balancer.
+
+                            * 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
+                            Maglev is not as stable as ring hash but has faster table lookup
+                            build times and host selection times. For more information about
+                            Maglev, refer to https://ai.google/research/pubs/pub44824 Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"].
                           type: string
                       required:
                       - name
@@ -499,6 +641,8 @@ spec:
               logConfig:
                 properties:
                   enable:
+                    description: Whether to enable logging for the load balancer traffic
+                      served by this backend service.
                     type: boolean
                   sampleRate:
                     type: number
@@ -533,8 +677,15 @@ spec:
               outlierDetection:
                 properties:
                   baseEjectionTime:
+                    description: The base time that a host is ejected for. The real
+                      time is equal to the base time multiplied by the number of times
+                      the host has been ejected. Defaults to 30000ms or 30s.
                     properties:
                       nanos:
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Durations less than one second are
+                          represented with a 0 seconds field and a positive nanos
+                          field. Must be from 0 to 999,999,999 inclusive.
                         format: int64
                         type: integer
                       seconds:
@@ -544,23 +695,22 @@ spec:
                     - seconds
                     type: object
                   consecutiveErrors:
-                    format: int64
                     type: integer
                   consecutiveGatewayFailure:
-                    format: int64
                     type: integer
                   enforcingConsecutiveErrors:
-                    format: int64
                     type: integer
                   enforcingConsecutiveGatewayFailure:
-                    format: int64
                     type: integer
                   enforcingSuccessRate:
-                    format: int64
                     type: integer
                   interval:
                     properties:
                       nanos:
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Durations less than one second are
+                          represented with a 0 seconds field and a positive nanos
+                          field. Must be from 0 to 999,999,999 inclusive.
                         format: int64
                         type: integer
                       seconds:
@@ -570,16 +720,12 @@ spec:
                     - seconds
                     type: object
                   maxEjectionPercent:
-                    format: int64
                     type: integer
                   successRateMinimumHosts:
-                    format: int64
                     type: integer
                   successRateRequestVolume:
-                    format: int64
                     type: integer
                   successRateStdevFactor:
-                    format: int64
                     type: integer
                 type: object
               portName:
@@ -621,6 +767,10 @@ spec:
               securitySettings:
                 properties:
                   clientTLSPolicyRef:
+                    description: ClientTlsPolicy is a resource that specifies how
+                      a client should authenticate connections to backends of a service.
+                      This resource itself does not affect configuration unless it
+                      is attached to a backend service resource.
                     oneOf:
                     - not:
                         required:
@@ -662,12 +812,13 @@ spec:
               subsetting:
                 properties:
                   policy:
+                    description: 'The algorithm used for subsetting. Possible values:
+                      ["CONSISTENT_HASH_SUBSETTING"].'
                     type: string
                 required:
                 - policy
                 type: object
               timeoutSec:
-                format: int64
                 type: integer
             required:
             - location
@@ -678,7 +829,8 @@ spec:
             properties:
               conditions:
                 description: Conditions represent the latest available observations
-                  of the object's current state.
+                  of the object's current state. Conditions represent the latest available
+                  observations of the ComputeBackendService's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -707,15 +859,19 @@ spec:
               fingerprint:
                 type: string
               generatedId:
-                format: int64
+                description: The unique identifier for the resource. This identifier
+                  is defined by the server.
                 type: integer
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
+                  the resource. ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
               selfLink:
                 type: string

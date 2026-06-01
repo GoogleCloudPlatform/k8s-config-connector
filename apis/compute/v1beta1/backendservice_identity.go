@@ -30,14 +30,14 @@ var (
 	_ identity.Resource   = &ComputeBackendService{}
 )
 
-var ComputeGlobalBackendServiceIdentityFormat = gcpurls.Template[ComputeBackendServiceIdentity]("compute.googleapis.com", "projects/{project}/global/backendServices/{backendservice}")
-var ComputeRegionalBackendServiceIdentityFormat = gcpurls.Template[ComputeBackendServiceIdentity]("compute.googleapis.com", "projects/{project}/regions/{location}/backendServices/{backendservice}")
+var ComputeGlobalBackendServiceIdentityFormat = gcpurls.Template[ComputeBackendServiceIdentity]("compute.googleapis.com", "projects/{project}/global/backendServices/{backendService}")
+var ComputeRegionalBackendServiceIdentityFormat = gcpurls.Template[ComputeBackendServiceIdentity]("compute.googleapis.com", "projects/{project}/regions/{location}/backendServices/{backendService}")
 
 // +k8s:deepcopy-gen=false
 type ComputeBackendServiceIdentity struct {
 	Project        string
 	Location       string
-	Backendservice string
+	BackendService string
 }
 
 func (i *ComputeBackendServiceIdentity) String() string {
@@ -101,7 +101,7 @@ func getIdentityFromComputeBackendServiceSpec(ctx context.Context, reader client
 	identity := &ComputeBackendServiceIdentity{
 		Project:        projectID,
 		Location:       location,
-		Backendservice: resourceID,
+		BackendService: resourceID,
 	}
 	return identity, nil
 }

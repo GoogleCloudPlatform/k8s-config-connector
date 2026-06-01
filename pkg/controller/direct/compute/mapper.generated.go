@@ -295,6 +295,58 @@ func BackendServiceCacheKeyPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	return out
 }
 
+/* found existing non-generated mapping function "BackendServiceCdnPolicy_v1beta1_FromProto", skipping
+func BackendServiceCdnPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceCdnPolicy) *krm.BackendServiceCdnPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendServiceCdnPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_FromProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendServiceBypassCacheOnRequestHeaders_v1beta1_FromProto)
+	out.CacheKeyPolicy = BackendServiceCacheKeyPolicy_v1beta1_FromProto(mapCtx, in.GetCacheKeyPolicy())
+	out.CacheMode = in.CacheMode
+	// MISSING: ClientTTL
+	// (near miss): "ClientTTL" vs "ClientTtl"
+	// MISSING: DefaultTTL
+	// (near miss): "DefaultTTL" vs "DefaultTtl"
+	// MISSING: MaxTTL
+	// (near miss): "MaxTTL" vs "MaxTtl"
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_FromProto(mapCtx, in.NegativeCachingPolicy, BackendServiceNegativeCachingPolicy_v1beta1_FromProto)
+	// MISSING: RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	// MISSING: SignedURLCacheMaxAgeSec
+	// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
+	// MISSING: SignedURLKeyNames
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "BackendServiceCdnPolicy_v1beta1_ToProto", skipping
+func BackendServiceCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceCdnPolicy) *pb.BackendServiceCdnPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceCdnPolicy{}
+	out.BypassCacheOnRequestHeaders = direct.Slice_ToProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendServiceBypassCacheOnRequestHeaders_v1beta1_ToProto)
+	out.CacheKeyPolicy = BackendServiceCacheKeyPolicy_v1beta1_ToProto(mapCtx, in.CacheKeyPolicy)
+	out.CacheMode = in.CacheMode
+	// MISSING: ClientTTL
+	// (near miss): "ClientTTL" vs "ClientTtl"
+	// MISSING: DefaultTTL
+	// (near miss): "DefaultTTL" vs "DefaultTtl"
+	// MISSING: MaxTTL
+	// (near miss): "MaxTTL" vs "MaxTtl"
+	out.NegativeCaching = in.NegativeCaching
+	out.NegativeCachingPolicy = direct.Slice_ToProto(mapCtx, in.NegativeCachingPolicy, BackendServiceNegativeCachingPolicy_v1beta1_ToProto)
+	// MISSING: RequestCoalescing
+	out.ServeWhileStale = in.ServeWhileStale
+	// MISSING: SignedURLCacheMaxAgeSec
+	// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
+	// MISSING: SignedURLKeyNames
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "BackendServiceCircuitBreakers_v1beta1_FromProto", skipping
 func BackendServiceCircuitBreakers_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CircuitBreakers) *krm.BackendServiceCircuitBreakers {
 	if in == nil {
@@ -339,21 +391,21 @@ func BackendServiceConnectionTrackingPolicy_v1beta1_FromProto(mapCtx *direct.Map
 }
 */
 
-/*
-found existing non-generated mapping function "BackendServiceConnectionTrackingPolicy_v1beta1_ToProto", skipping
-
-	func BackendServiceConnectionTrackingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceConnectionTrackingPolicy) *pb.BackendServiceConnectionTrackingPolicy {
-		if in == nil {
-			return nil
-		}
-		out := &pb.BackendServiceConnectionTrackingPolicy{}
-		out.ConnectionPersistenceOnUnhealthyBackends = in.ConnectionPersistenceOnUnhealthyBackends
-		out.EnableStrongAffinity = in.EnableStrongAffinity
-		out.IdleTimeoutSec = in.IdleTimeoutSec
-		out.TrackingMode = in.TrackingMode
-		return out
+/* found existing non-generated mapping function "BackendServiceConnectionTrackingPolicy_v1beta1_ToProto", skipping
+func BackendServiceConnectionTrackingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceConnectionTrackingPolicy) *pb.BackendServiceConnectionTrackingPolicy {
+	if in == nil {
+		return nil
 	}
+	out := &pb.BackendServiceConnectionTrackingPolicy{}
+	out.ConnectionPersistenceOnUnhealthyBackends = in.ConnectionPersistenceOnUnhealthyBackends
+	out.EnableStrongAffinity = in.EnableStrongAffinity
+	out.IdleTimeoutSec = in.IdleTimeoutSec
+	out.TrackingMode = in.TrackingMode
+	return out
+}
 */
+
+/* found existing non-generated mapping function "BackendServiceConsistentHash_v1beta1_FromProto", skipping
 func BackendServiceConsistentHash_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ConsistentHashLoadBalancerSettings) *krm.BackendServiceConsistentHash {
 	if in == nil {
 		return nil
@@ -366,6 +418,9 @@ func BackendServiceConsistentHash_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	out.MinimumRingSize = in.MinimumRingSize
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendServiceConsistentHash_v1beta1_ToProto", skipping
 func BackendServiceConsistentHash_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceConsistentHash) *pb.ConsistentHashLoadBalancerSettings {
 	if in == nil {
 		return nil
@@ -378,6 +433,7 @@ func BackendServiceConsistentHash_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	out.MinimumRingSize = in.MinimumRingSize
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "BackendServiceCustomPolicy_v1beta1_FromProto", skipping
 func BackendServiceCustomPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy) *krm.BackendServiceCustomPolicy {

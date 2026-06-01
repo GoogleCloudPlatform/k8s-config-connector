@@ -55,22 +55,22 @@ func (in *BackendServiceBackend) DeepCopyInto(out *BackendServiceBackend) {
 	in.Group.DeepCopyInto(&out.Group)
 	if in.MaxConnections != nil {
 		in, out := &in.MaxConnections, &out.MaxConnections
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MaxConnectionsPerEndpoint != nil {
 		in, out := &in.MaxConnectionsPerEndpoint, &out.MaxConnectionsPerEndpoint
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MaxConnectionsPerInstance != nil {
 		in, out := &in.MaxConnectionsPerInstance, &out.MaxConnectionsPerInstance
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MaxRate != nil {
 		in, out := &in.MaxRate, &out.MaxRate
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MaxRatePerEndpoint != nil {
@@ -205,17 +205,17 @@ func (in *BackendServiceCdnPolicy) DeepCopyInto(out *BackendServiceCdnPolicy) {
 	}
 	if in.ClientTtl != nil {
 		in, out := &in.ClientTtl, &out.ClientTtl
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.DefaultTtl != nil {
 		in, out := &in.DefaultTtl, &out.DefaultTtl
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MaxTtl != nil {
 		in, out := &in.MaxTtl, &out.MaxTtl
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.NegativeCaching != nil {
@@ -232,12 +232,12 @@ func (in *BackendServiceCdnPolicy) DeepCopyInto(out *BackendServiceCdnPolicy) {
 	}
 	if in.ServeWhileStale != nil {
 		in, out := &in.ServeWhileStale, &out.ServeWhileStale
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.SignedUrlCacheMaxAgeSec != nil {
 		in, out := &in.SignedUrlCacheMaxAgeSec, &out.SignedUrlCacheMaxAgeSec
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 }
@@ -262,27 +262,27 @@ func (in *BackendServiceCircuitBreakers) DeepCopyInto(out *BackendServiceCircuit
 	}
 	if in.MaxConnections != nil {
 		in, out := &in.MaxConnections, &out.MaxConnections
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MaxPendingRequests != nil {
 		in, out := &in.MaxPendingRequests, &out.MaxPendingRequests
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MaxRequests != nil {
 		in, out := &in.MaxRequests, &out.MaxRequests
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MaxRequestsPerConnection != nil {
 		in, out := &in.MaxRequestsPerConnection, &out.MaxRequestsPerConnection
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.MaxRetries != nil {
 		in, out := &in.MaxRetries, &out.MaxRetries
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 }
@@ -332,7 +332,7 @@ func (in *BackendServiceConnectionTrackingPolicy) DeepCopyInto(out *BackendServi
 	}
 	if in.IdleTimeoutSec != nil {
 		in, out := &in.IdleTimeoutSec, &out.IdleTimeoutSec
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.TrackingMode != nil {
@@ -367,7 +367,7 @@ func (in *BackendServiceConsistentHash) DeepCopyInto(out *BackendServiceConsiste
 	}
 	if in.MinimumRingSize != nil {
 		in, out := &in.MinimumRingSize, &out.MinimumRingSize
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 }
@@ -622,12 +622,12 @@ func (in *BackendServiceNegativeCachingPolicy) DeepCopyInto(out *BackendServiceN
 	*out = *in
 	if in.Code != nil {
 		in, out := &in.Code, &out.Code
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.Ttl != nil {
 		in, out := &in.Ttl, &out.Ttl
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 }
@@ -677,27 +677,27 @@ func (in *BackendServiceOutlierDetection) DeepCopyInto(out *BackendServiceOutlie
 	}
 	if in.ConsecutiveErrors != nil {
 		in, out := &in.ConsecutiveErrors, &out.ConsecutiveErrors
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.ConsecutiveGatewayFailure != nil {
 		in, out := &in.ConsecutiveGatewayFailure, &out.ConsecutiveGatewayFailure
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.EnforcingConsecutiveErrors != nil {
 		in, out := &in.EnforcingConsecutiveErrors, &out.EnforcingConsecutiveErrors
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.EnforcingConsecutiveGatewayFailure != nil {
 		in, out := &in.EnforcingConsecutiveGatewayFailure, &out.EnforcingConsecutiveGatewayFailure
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.EnforcingSuccessRate != nil {
 		in, out := &in.EnforcingSuccessRate, &out.EnforcingSuccessRate
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.Interval != nil {
@@ -707,22 +707,22 @@ func (in *BackendServiceOutlierDetection) DeepCopyInto(out *BackendServiceOutlie
 	}
 	if in.MaxEjectionPercent != nil {
 		in, out := &in.MaxEjectionPercent, &out.MaxEjectionPercent
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.SuccessRateMinimumHosts != nil {
 		in, out := &in.SuccessRateMinimumHosts, &out.SuccessRateMinimumHosts
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.SuccessRateRequestVolume != nil {
 		in, out := &in.SuccessRateRequestVolume, &out.SuccessRateRequestVolume
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.SuccessRateStdevFactor != nil {
 		in, out := &in.SuccessRateStdevFactor, &out.SuccessRateStdevFactor
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 }
@@ -907,7 +907,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	*out = *in
 	if in.AffinityCookieTtlSec != nil {
 		in, out := &in.AffinityCookieTtlSec, &out.AffinityCookieTtlSec
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.Backend != nil {
@@ -934,7 +934,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.ConnectionDrainingTimeoutSec != nil {
 		in, out := &in.ConnectionDrainingTimeoutSec, &out.ConnectionDrainingTimeoutSec
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.ConnectionTrackingPolicy != nil {
@@ -1063,7 +1063,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.TimeoutSec != nil {
 		in, out := &in.TimeoutSec, &out.TimeoutSec
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 }
@@ -1098,12 +1098,12 @@ func (in *ComputeBackendServiceStatus) DeepCopyInto(out *ComputeBackendServiceSt
 	}
 	if in.GeneratedId != nil {
 		in, out := &in.GeneratedId, &out.GeneratedId
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.SelfLink != nil {
