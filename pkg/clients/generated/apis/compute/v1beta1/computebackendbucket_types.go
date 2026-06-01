@@ -138,18 +138,9 @@ type ComputeBackendBucketSpec struct {
 	// +optional
 	EnableCdn *bool `json:"enableCdn,omitempty"`
 
-	/* The location of this resource. */
-	Location string `json:"location"`
-
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
-
 	/* The ComputeBackendBucket name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type BackendbucketObservedStateStatus struct {
 }
 
 type ComputeBackendBucketStatus struct {
@@ -160,17 +151,9 @@ type ComputeBackendBucketStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* A unique specifier for the ComputeBackendBucket resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *BackendbucketObservedStateStatus `json:"observedState,omitempty"`
 
 	/* Server-defined URL for the resource. */
 	// +optional

@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -102,9 +101,6 @@ type BackendBucketCdnPolicy struct {
 // ComputeBackendBucketSpec defines the desired state of ComputeBackendBucket
 // +kcc:spec:proto=google.cloud.compute.v1.BackendBucket
 type ComputeBackendBucketSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
-
 	// Reference to the bucket.
 	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef"`
 
@@ -144,9 +140,6 @@ type ComputeBackendBucketStatus struct {
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	// A unique specifier for the ComputeBackendBucket resource in GCP.
-	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Creation timestamp in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucket.creation_timestamp
