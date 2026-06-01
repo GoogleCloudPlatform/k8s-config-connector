@@ -72,7 +72,7 @@ type NodeGroupIdentity struct {
 	NodeGroup string
 }
 
-var NodeGroupIdentityFormat = gcpurls.Template[NodeGroupIdentity]("api.googleapis.com", "projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{nodeGroup}")
+var NodeGroupIdentityFormat = gcpurls.Template[NodeGroupIdentity]("dataproc.googleapis.com", "projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{nodeGroup}")
 
 func (i *NodeGroupIdentity) String() string {
 	return NodeGroupIdentityFormat.ToString(*i)
