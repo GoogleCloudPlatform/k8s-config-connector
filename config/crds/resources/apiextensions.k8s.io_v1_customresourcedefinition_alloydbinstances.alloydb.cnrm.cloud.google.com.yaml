@@ -96,14 +96,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                    description: A reference to an externally managed AlloyDBCluster
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                     type: string
                   name:
-                    description: The `metadata.name` field of a `AlloyDBCluster` resource.
+                    description: The name of a AlloyDBCluster resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `AlloyDBCluster`
-                      resource.
+                    description: The namespace of a AlloyDBCluster resource.
                     type: string
                 type: object
               connectionPoolConfig:
@@ -491,14 +491,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                    description: A reference to an externally managed AlloyDBCluster
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                     type: string
                   name:
-                    description: The `metadata.name` field of a `AlloyDBCluster` resource.
+                    description: The name of a AlloyDBCluster resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `AlloyDBCluster`
-                      resource.
+                    description: The namespace of a AlloyDBCluster resource.
                     type: string
                 type: object
               connectionPoolConfig:

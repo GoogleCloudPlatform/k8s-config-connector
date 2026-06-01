@@ -17,9 +17,10 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -31,14 +32,18 @@ var _ refs.Ref = &AccessContextManagerServicePerimeterRef{}
 // holds the GCP identifier for the KRM object.
 type AccessContextManagerServicePerimeterRef struct {
 	// A reference to an externally managed AccessContextManagerServicePerimeter resource.
-	// Should be in the format "accessPolicies/{{accessPolicyID}}/servicePerimeters/{{servicePerimeter}}".
-	External *string `json:"external,omitempty"`
+	// Should be in the format "accessPolicies/{{accessPolicyID}}/servicePerimeters/{{servicePerimeterID}}".
+	External string `json:"external,omitempty"`
 
 	// The name of a AccessContextManagerServicePerimeter resource.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 
 	// The namespace of a AccessContextManagerServicePerimeter resource.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&AccessContextManagerServicePerimeterRef{})
 }
 
 func (r *AccessContextManagerServicePerimeterRef) GetGVK() schema.GroupVersionKind {
@@ -47,17 +52,17 @@ func (r *AccessContextManagerServicePerimeterRef) GetGVK() schema.GroupVersionKi
 
 func (r *AccessContextManagerServicePerimeterRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
-		Name:      direct.ValueOf(r.Name),
-		Namespace: direct.ValueOf(r.Namespace),
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
 }
 
 func (r *AccessContextManagerServicePerimeterRef) GetExternal() string {
-	return direct.ValueOf(r.External)
+	return r.External
 }
 
 func (r *AccessContextManagerServicePerimeterRef) SetExternal(ref string) {
-	r.External = direct.LazyPtr(ref)
+	r.External = ref
 }
 
 func (r *AccessContextManagerServicePerimeterRef) ValidateExternal(ref string) error {
@@ -68,14 +73,25 @@ func (r *AccessContextManagerServicePerimeterRef) ValidateExternal(ref string) e
 	return nil
 }
 
-func (r *AccessContextManagerServicePerimeterRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	fallback := func(u *unstructured.Unstructured) string {
-		actualExternalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
-		return actualExternalRef
+func (r *AccessContextManagerServicePerimeterRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ServicePerimeterIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	return id, nil
 }
 
-func init() {
-	refs.Register(&AccessContextManagerServicePerimeterRef{})
+func (r *AccessContextManagerServicePerimeterRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		obj := &AccessContextManagerServicePerimeter{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromServicePerimeterSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

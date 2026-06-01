@@ -42,9 +42,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/capture-pprof"
         run: |
           ./dev/ci/presubmits/capture-pprof
@@ -63,9 +61,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
           ./dev/ci/presubmits/fuzz-roundtrippers
@@ -105,9 +101,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/license-lint"
         run: |
           ./dev/ci/presubmits/license-lint
@@ -126,9 +120,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/run-linters"
         run: |
           ./dev/ci/presubmits/run-linters
@@ -147,9 +139,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - uses: 'google-github-actions/setup-gcloud@v2'
         with:
           version: '546.0.0'
@@ -172,9 +162,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-pause"
         run: |
           ./dev/ci/presubmits/test-pause
@@ -194,9 +182,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-direct-iam"
         run: |
           ./dev/ci/presubmits/tests-e2e-direct-iam
@@ -216,9 +202,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures
@@ -238,9 +222,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-accesscontextmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-accesscontextmanager
@@ -260,9 +242,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-aiplatform"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-aiplatform
@@ -282,9 +262,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-alloydb"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-alloydb
@@ -304,9 +282,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-analytics"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-analytics
@@ -326,9 +302,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apigateway"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-apigateway
@@ -348,9 +322,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apigee"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-apigee
@@ -370,9 +342,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apikeys"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-apikeys
@@ -392,9 +362,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-appengine"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-appengine
@@ -414,9 +382,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apphub"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-apphub
@@ -436,9 +402,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-artifactregistry"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-artifactregistry
@@ -458,9 +422,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-asset"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-asset
@@ -480,9 +442,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-assuredworkloads"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-assuredworkloads
@@ -502,9 +462,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-backupdr"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-backupdr
@@ -524,9 +482,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-batch"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-batch
@@ -546,9 +502,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-beyondcorp"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-beyondcorp
@@ -568,9 +522,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquery"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigquery
@@ -590,9 +542,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigqueryanalyticshub"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigqueryanalyticshub
@@ -612,9 +562,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerybiglake"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigquerybiglake
@@ -634,9 +582,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigqueryconnection"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigqueryconnection
@@ -656,9 +602,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerydatapolicy"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigquerydatapolicy
@@ -678,9 +622,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerydatatransfer"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigquerydatatransfer
@@ -700,9 +642,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigqueryreservation"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigqueryreservation
@@ -722,9 +662,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigtable"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigtable
@@ -744,9 +682,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-billing"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-billing
@@ -766,9 +702,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-billingbudgets"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-billingbudgets
@@ -788,9 +722,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-binaryauthorization"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-binaryauthorization
@@ -810,9 +742,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-certificatemanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-certificatemanager
@@ -832,9 +762,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudasset"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudasset
@@ -854,9 +782,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudbuild"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudbuild
@@ -876,9 +802,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-clouddeploy"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-clouddeploy
@@ -898,9 +822,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-clouddms"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-clouddms
@@ -920,9 +842,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions
@@ -942,9 +862,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions2"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions2
@@ -964,9 +882,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudidentity"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudidentity
@@ -986,9 +902,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudids"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudids
@@ -1008,9 +922,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudiot"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudiot
@@ -1030,9 +942,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudquota"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudquota
@@ -1052,9 +962,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudscheduler"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudscheduler
@@ -1074,9 +982,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudtasks"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudtasks
@@ -1096,9 +1002,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-colab"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-colab
@@ -1118,9 +1022,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-composer"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-composer
@@ -1140,9 +1042,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-compute"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-compute
@@ -1162,9 +1062,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-configcontroller"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-configcontroller
@@ -1184,9 +1082,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-configdelivery"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-configdelivery
@@ -1206,9 +1102,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-container"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-container
@@ -1228,9 +1122,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-containeranalysis"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-containeranalysis
@@ -1250,9 +1142,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-containerattached"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-containerattached
@@ -1272,9 +1162,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datacatalog"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-datacatalog
@@ -1294,9 +1182,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataflow"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dataflow
@@ -1316,9 +1202,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataform"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dataform
@@ -1338,9 +1222,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datafusion"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-datafusion
@@ -1360,9 +1242,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataplex"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dataplex
@@ -1382,9 +1262,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataproc"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dataproc
@@ -1404,9 +1282,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datastore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-datastore
@@ -1426,9 +1302,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datastream"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-datastream
@@ -1448,9 +1322,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-deploymentmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-deploymentmanager
@@ -1470,9 +1342,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dialogflow"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dialogflow
@@ -1492,9 +1362,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dialogflowcx"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dialogflowcx
@@ -1514,9 +1382,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-discoveryengine"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-discoveryengine
@@ -1536,9 +1402,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dlp"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dlp
@@ -1558,9 +1422,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dns"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dns
@@ -1580,9 +1442,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-documentai"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-documentai
@@ -1602,9 +1462,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-edgecontainer"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-edgecontainer
@@ -1624,9 +1482,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-edgenetwork"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-edgenetwork
@@ -1646,9 +1502,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-essentialcontacts"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-essentialcontacts
@@ -1668,9 +1522,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-eventarc"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-eventarc
@@ -1690,9 +1542,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-filestore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-filestore
@@ -1712,9 +1562,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebase"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firebase
@@ -1734,9 +1582,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebasedatabase"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firebasedatabase
@@ -1756,9 +1602,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebasehosting"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firebasehosting
@@ -1778,9 +1622,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebasestorage"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firebasestorage
@@ -1800,9 +1642,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firestore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firestore
@@ -1822,9 +1662,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-gkebackup"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-gkebackup
@@ -1844,9 +1682,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-gkehub"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-gkehub
@@ -1866,9 +1702,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-healthcare"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-healthcare
@@ -1888,9 +1722,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-iam"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-iam
@@ -1910,9 +1742,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-iap"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-iap
@@ -1932,9 +1762,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-identityplatform"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-identityplatform
@@ -1954,9 +1782,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-kms"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-kms
@@ -1976,9 +1802,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-logging"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-logging
@@ -1998,9 +1822,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-managedkafka"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-managedkafka
@@ -2020,9 +1842,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-memcache"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-memcache
@@ -2042,9 +1862,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-memorystore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-memorystore
@@ -2064,9 +1882,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-metastore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-metastore
@@ -2086,9 +1902,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-mlengine"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-mlengine
@@ -2108,9 +1922,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-monitoring"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-monitoring
@@ -2130,9 +1942,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-netapp"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-netapp
@@ -2152,9 +1962,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkconnectivity"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-networkconnectivity
@@ -2174,9 +1982,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkmanagement"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-networkmanagement
@@ -2196,9 +2002,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networksecurity"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-networksecurity
@@ -2218,9 +2022,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkservices"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-networkservices
@@ -2240,9 +2042,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-notebooks"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-notebooks
@@ -2262,9 +2062,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-orgpolicy"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-orgpolicy
@@ -2284,9 +2082,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-osconfig"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-osconfig
@@ -2306,9 +2102,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-oslogin"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-oslogin
@@ -2328,9 +2122,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-parametermanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-parametermanager
@@ -2350,9 +2142,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-privateca"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-privateca
@@ -2372,9 +2162,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-privilegedaccessmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-privilegedaccessmanager
@@ -2394,9 +2182,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-pubsub"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-pubsub
@@ -2416,9 +2202,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-pubsublite"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-pubsublite
@@ -2438,9 +2222,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-recaptchaenterprise"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-recaptchaenterprise
@@ -2460,9 +2242,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-redis"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-redis
@@ -2482,9 +2262,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-resourcemanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-resourcemanager
@@ -2504,9 +2282,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-run"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-run
@@ -2526,9 +2302,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-secretmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-secretmanager
@@ -2548,9 +2322,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-securesourcemanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-securesourcemanager
@@ -2570,9 +2342,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-securitycenter"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-securitycenter
@@ -2592,9 +2362,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-servicedirectory"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-servicedirectory
@@ -2614,9 +2382,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-servicenetworking"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-servicenetworking
@@ -2636,9 +2402,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-serviceusage"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-serviceusage
@@ -2658,9 +2422,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-sourcerepo"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-sourcerepo
@@ -2680,9 +2442,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-spanner"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-spanner
@@ -2702,9 +2462,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-speech"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-speech
@@ -2724,9 +2482,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-sql"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-sql
@@ -2746,9 +2502,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-storage"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-storage
@@ -2768,9 +2522,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-storagetransfer"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-storagetransfer
@@ -2790,9 +2542,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-tags"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-tags
@@ -2812,9 +2562,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-tpu"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-tpu
@@ -2834,9 +2582,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vertexai"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-vertexai
@@ -2856,9 +2602,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vmwareengine"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-vmwareengine
@@ -2878,9 +2622,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vpcaccess"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-vpcaccess
@@ -2900,9 +2642,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workflowexecutions"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-workflowexecutions
@@ -2922,9 +2662,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workflows"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-workflows
@@ -2944,9 +2682,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workstations"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-workstations
@@ -2966,9 +2702,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-alloydb"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-alloydb
@@ -2988,9 +2722,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-apigateway"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-apigateway
@@ -3010,9 +2742,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-apigee"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-apigee
@@ -3032,9 +2762,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquery"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-bigquery
@@ -3054,9 +2782,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigqueryconnection"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-bigqueryconnection
@@ -3076,9 +2802,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquerydatapolicy"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-bigquerydatapolicy
@@ -3098,9 +2822,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquerydatatransfer"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-bigquerydatatransfer
@@ -3120,9 +2842,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-cloudbuild"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-cloudbuild
@@ -3142,9 +2862,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-cloudidentity"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-cloudidentity
@@ -3164,9 +2882,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-compute"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-compute
@@ -3186,9 +2902,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-dataflow"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-dataflow
@@ -3208,9 +2922,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-dataproc"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-dataproc
@@ -3230,9 +2942,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-gkehub"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-gkehub
@@ -3252,9 +2962,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-iam"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-iam
@@ -3274,9 +2982,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-kms"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-kms
@@ -3296,9 +3002,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-orgpolicy"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-orgpolicy
@@ -3318,9 +3022,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-redis"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-redis
@@ -3340,9 +3042,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-secretmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-secretmanager
@@ -3362,9 +3062,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-spanner"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-spanner
@@ -3384,9 +3082,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-sql"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-sql
@@ -3406,9 +3102,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-storage"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-storage
@@ -3428,9 +3122,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-unclassified"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-unclassified
@@ -3450,9 +3142,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-workstations"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-workstations
@@ -3471,9 +3161,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-gcptracker"
         run: |
           ./dev/ci/presubmits/tests-gcptracker
@@ -3492,9 +3180,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-preview"
         run: |
           ./dev/ci/presubmits/tests-preview
@@ -3510,12 +3196,11 @@ jobs:
 
   tests-scenarios-acquisition:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-scenarios-acquisition"
         run: |
           ./dev/ci/presubmits/tests-scenarios-acquisition
@@ -3531,12 +3216,11 @@ jobs:
 
   tests-scenarios-gkehubfeaturemembership:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-scenarios-gkehubfeaturemembership"
         run: |
           ./dev/ci/presubmits/tests-scenarios-gkehubfeaturemembership
@@ -3552,12 +3236,11 @@ jobs:
 
   tests-scenarios-powertool:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-scenarios-powertool"
         run: |
           ./dev/ci/presubmits/tests-scenarios-powertool
@@ -3573,12 +3256,11 @@ jobs:
 
   tests-scenarios-unclassified:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-scenarios-unclassified"
         run: |
           ./dev/ci/presubmits/tests-scenarios-unclassified
@@ -3599,9 +3281,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - uses: 'google-github-actions/setup-gcloud@v2'
         with:
           version: '546.0.0'
@@ -3624,9 +3304,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-generated-files"
         run: |
           ./dev/ci/presubmits/validate-generated-files
@@ -3637,6 +3315,29 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-generated-files
+          path: /tmp/artifacts/
+
+
+  validate-untested-fields:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/validate-untested-fields"
+        run: |
+          ./dev/ci/presubmits/validate-untested-fields
+        env:
+          COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
+          BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-validate-untested-fields
           path: /tmp/artifacts/
 
 

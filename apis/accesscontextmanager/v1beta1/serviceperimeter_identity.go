@@ -94,8 +94,10 @@ func (obj *AccessContextManagerServicePerimeter) GetIdentity(ctx context.Context
 		return nil, err
 	}
 
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
+		// Validate desired with actual
 		statusIdentity := &ServicePerimeterIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err

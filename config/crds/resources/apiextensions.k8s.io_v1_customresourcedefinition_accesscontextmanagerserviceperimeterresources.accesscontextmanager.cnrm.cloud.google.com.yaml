@@ -84,7 +84,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed AccessContextManagerServicePerimeter
-                      resource. Should be in the format "accessPolicies/{{accessPolicyID}}/servicePerimeters/{{servicePerimeter}}".
+                      resource. Should be in the format "accessPolicies/{{accessPolicyID}}/servicePerimeters/{{servicePerimeterID}}".
                     type: string
                   name:
                     description: The name of a AccessContextManagerServicePerimeter

@@ -33,6 +33,8 @@ type VpcAccessServiceClient interface {
 	// Deletes a Serverless VPC Access connector. Returns NOT_FOUND if the
 	// resource does not exist.
 	DeleteConnector(ctx context.Context, in *DeleteConnectorRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates a Serverless VPC Access connector, returns an operation.
+	UpdateConnector(ctx context.Context, in *UpdateConnectorRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type vpcAccessServiceClient struct {
@@ -79,6 +81,15 @@ func (c *vpcAccessServiceClient) DeleteConnector(ctx context.Context, in *Delete
 	return out, nil
 }
 
+func (c *vpcAccessServiceClient) UpdateConnector(ctx context.Context, in *UpdateConnectorRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.vpcaccess.v1.VpcAccessService/UpdateConnector", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VpcAccessServiceServer is the server API for VpcAccessService service.
 // All implementations must embed UnimplementedVpcAccessServiceServer
 // for forward compatibility
@@ -93,6 +104,8 @@ type VpcAccessServiceServer interface {
 	// Deletes a Serverless VPC Access connector. Returns NOT_FOUND if the
 	// resource does not exist.
 	DeleteConnector(context.Context, *DeleteConnectorRequest) (*longrunningpb.Operation, error)
+	// Updates a Serverless VPC Access connector, returns an operation.
+	UpdateConnector(context.Context, *UpdateConnectorRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedVpcAccessServiceServer()
 }
 
@@ -111,6 +124,9 @@ func (UnimplementedVpcAccessServiceServer) ListConnectors(context.Context, *List
 }
 func (UnimplementedVpcAccessServiceServer) DeleteConnector(context.Context, *DeleteConnectorRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteConnector not implemented")
+}
+func (UnimplementedVpcAccessServiceServer) UpdateConnector(context.Context, *UpdateConnectorRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateConnector not implemented")
 }
 func (UnimplementedVpcAccessServiceServer) mustEmbedUnimplementedVpcAccessServiceServer() {}
 
@@ -197,6 +213,24 @@ func _VpcAccessService_DeleteConnector_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VpcAccessService_UpdateConnector_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateConnectorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VpcAccessServiceServer).UpdateConnector(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.vpcaccess.v1.VpcAccessService/UpdateConnector",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VpcAccessServiceServer).UpdateConnector(ctx, req.(*UpdateConnectorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // VpcAccessService_ServiceDesc is the grpc.ServiceDesc for VpcAccessService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -219,6 +253,10 @@ var VpcAccessService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteConnector",
 			Handler:    _VpcAccessService_DeleteConnector_Handler,
+		},
+		{
+			MethodName: "UpdateConnector",
+			Handler:    _VpcAccessService_UpdateConnector_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

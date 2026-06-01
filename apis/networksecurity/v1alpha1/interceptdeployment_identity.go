@@ -30,7 +30,7 @@ var (
 	_ identity.Resource   = &NetworkSecurityInterceptDeployment{}
 )
 
-var NetworkSecurityInterceptDeploymentIdentityFormat = gcpurls.Template[NetworkSecurityInterceptDeploymentIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/interceptDeployments/{intercept_deployment}")
+var NetworkSecurityInterceptDeploymentIdentityFormat = gcpurls.Template[NetworkSecurityInterceptDeploymentIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/interceptDeployments/{interceptdeployment}")
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityInterceptDeploymentIdentity struct {
