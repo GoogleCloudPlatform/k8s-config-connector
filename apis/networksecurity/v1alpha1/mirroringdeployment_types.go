@@ -26,9 +26,11 @@ var NetworkSecurityMirroringDeploymentGVK = GroupVersion.WithKind("NetworkSecuri
 // +kcc:spec:proto=google.cloud.networksecurity.v1.MirroringDeployment
 type NetworkSecurityMirroringDeploymentSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
+	// +required
 	Location *string `json:"location"`
 
 	// The NetworkSecurityMirroringDeployment name. If not given, the metadata.name will be used.
