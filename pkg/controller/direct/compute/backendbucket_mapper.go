@@ -149,6 +149,7 @@ func ComputeBackendBucketSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 		return nil
 	}
 	out := &krm.ComputeBackendBucketSpec{}
+	out.ResourceID = in.Name
 	if in.BucketName != nil {
 		out.BucketRef = &krm.BackendBucketBucketRef{External: *in.BucketName}
 	}
@@ -166,6 +167,7 @@ func ComputeBackendBucketSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.BackendBucket{}
+	out.Name = in.ResourceID
 	if in.BucketRef != nil {
 		out.BucketName = direct.LazyPtr(in.BucketRef.External)
 	}

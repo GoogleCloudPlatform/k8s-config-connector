@@ -21,7 +21,7 @@ import (
 
 var ComputeBackendBucketGVK = GroupVersion.WithKind("ComputeBackendBucket")
 
-// +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicyBypassCacheOnRequestHeaders
+// +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicyBypassCacheOnRequestHeader
 type BackendBucketCdnPolicyBypassCacheOnRequestHeaders struct {
 	// The header field name to match on when bypassing cache. Values are case-insensitive.
 	// +kcc:proto:field=header_name
@@ -157,6 +157,7 @@ type ComputeBackendBucketStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
+	// +kcc:proto:field=self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 }
 

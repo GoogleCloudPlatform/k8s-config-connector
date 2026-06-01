@@ -344,7 +344,8 @@ type BackendBucketCDNPolicy struct {
 }
 */
 
-/* unreachable type BackendBucketCDNPolicyBypassCacheOnRequestHeader
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendBucketCdnPolicyBypassCacheOnRequestHeader", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendBucketCdnPolicyBypassCacheOnRequestHeader
 type BackendBucketCDNPolicyBypassCacheOnRequestHeader struct {
 	// The header field name to match on when bypassing cache. Values are case-insensitive.

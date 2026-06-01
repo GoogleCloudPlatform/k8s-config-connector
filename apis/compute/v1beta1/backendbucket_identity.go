@@ -29,13 +29,13 @@ var _ identity.Resource = &ComputeBackendBucket{}
 
 var ComputeBackendBucketIdentityFormat = gcpurls.Template[ComputeBackendBucketIdentity](
 	"compute.googleapis.com",
-	"projects/{project}/global/backendBuckets/{backendbucket}",
+	"projects/{project}/global/backendBuckets/{backendBucket}",
 )
 
 // +k8s:deepcopy-gen=false
 type ComputeBackendBucketIdentity struct {
 	Project       string
-	Backendbucket string
+	BackendBucket string
 }
 
 func (i *ComputeBackendBucketIdentity) String() string {
@@ -71,7 +71,7 @@ func getIdentityFromComputeBackendBucketSpec(ctx context.Context, reader client.
 
 	return &ComputeBackendBucketIdentity{
 		Project:       projectID,
-		Backendbucket: resourceID,
+		BackendBucket: resourceID,
 	}, nil
 }
 

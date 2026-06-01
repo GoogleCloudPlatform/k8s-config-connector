@@ -221,6 +221,28 @@ func BackendBucketCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.B
 }
 */
 
+/* found existing non-generated mapping function "BackendBucketCdnPolicyBypassCacheOnRequestHeaders_v1beta1_FromProto", skipping
+func BackendBucketCdnPolicyBypassCacheOnRequestHeaders_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader) *krm.BackendBucketCdnPolicyBypassCacheOnRequestHeaders {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendBucketCdnPolicyBypassCacheOnRequestHeaders{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "BackendBucketCdnPolicyBypassCacheOnRequestHeaders_v1beta1_ToProto", skipping
+func BackendBucketCdnPolicyBypassCacheOnRequestHeaders_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendBucketCdnPolicyBypassCacheOnRequestHeaders) *pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendBucketCdnPolicyBypassCacheOnRequestHeader{}
+	out.HeaderName = in.HeaderName
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "BackendBucketCdnPolicyCacheKeyPolicy_v1beta1_FromProto", skipping
 func BackendBucketCdnPolicyCacheKeyPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucketCdnPolicyCacheKeyPolicy) *krm.BackendBucketCdnPolicyCacheKeyPolicy {
 	if in == nil {
