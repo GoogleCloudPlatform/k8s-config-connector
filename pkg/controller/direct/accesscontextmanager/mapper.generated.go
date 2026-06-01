@@ -30,6 +30,46 @@ import (
 	typepb "google.golang.org/genproto/googleapis/identity/accesscontextmanager/type"
 )
 
+func AccessContextManagerAccessLevelConditionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.AccessContextManagerAccessLevelConditionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerAccessLevelConditionObservedState{}
+	return out
+}
+func AccessContextManagerAccessLevelConditionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessLevelConditionObservedState) *pb.Condition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Condition{}
+	return out
+}
+func AccessContextManagerAccessLevelConditionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.AccessContextManagerAccessLevelConditionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerAccessLevelConditionSpec{}
+	out.IPSubnetworks = in.IpSubnetworks
+	out.DevicePolicy = DevicePolicy_FromProto(mapCtx, in.GetDevicePolicy())
+	out.RequiredAccessLevels = AccessContextManagerAccessLevelConditionSpec_RequiredAccessLevels_FromProto(mapCtx, in.RequiredAccessLevels)
+	out.Negate = direct.LazyPtr(in.GetNegate())
+	out.Members = AccessContextManagerAccessLevelConditionSpec_Members_FromProto(mapCtx, in.Members)
+	out.Regions = in.Regions
+	return out
+}
+func AccessContextManagerAccessLevelConditionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessLevelConditionSpec) *pb.Condition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Condition{}
+	out.IpSubnetworks = in.IPSubnetworks
+	out.DevicePolicy = DevicePolicy_ToProto(mapCtx, in.DevicePolicy)
+	out.RequiredAccessLevels = AccessContextManagerAccessLevelConditionSpec_RequiredAccessLevels_ToProto(mapCtx, in.RequiredAccessLevels)
+	out.Negate = direct.ValueOf(in.Negate)
+	out.Members = AccessContextManagerAccessLevelConditionSpec_Members_ToProto(mapCtx, in.Members)
+	out.Regions = in.Regions
+	return out
+}
 func AccessContextManagerAccessLevelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *krm.AccessContextManagerAccessLevelObservedState {
 	if in == nil {
 		return nil
