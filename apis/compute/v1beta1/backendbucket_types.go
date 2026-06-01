@@ -103,10 +103,7 @@ type BackendBucketCdnPolicy struct {
 // +kcc:spec:proto=google.cloud.compute.v1.BackendBucket
 type ComputeBackendBucketSpec struct {
 	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location string `json:"location"`
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Reference to the bucket.
 	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef"`
@@ -151,9 +148,6 @@ type ComputeBackendBucketStatus struct {
 	// A unique specifier for the ComputeBackendBucket resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ComputeBackendBucketObservedState `json:"observedState,omitempty"`
-
 	// Creation timestamp in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucket.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
@@ -161,11 +155,6 @@ type ComputeBackendBucketStatus struct {
 	// Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucket.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
-}
-
-// ComputeBackendBucketObservedState is the state of the ComputeBackendBucket resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.compute.v1.BackendBucket
-type ComputeBackendBucketObservedState struct {
 }
 
 // +genclient

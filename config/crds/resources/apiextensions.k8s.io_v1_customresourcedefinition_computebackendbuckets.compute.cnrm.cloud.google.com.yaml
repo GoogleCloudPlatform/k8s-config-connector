@@ -218,9 +218,6 @@ spec:
               enableCdn:
                 description: If true, enable Cloud CDN for this BackendBucket.
                 type: boolean
-              location:
-                description: The location of this resource.
-                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -259,8 +256,6 @@ spec:
                 type: string
             required:
             - bucketRef
-            - location
-            - projectRef
             type: object
           status:
             description: ComputeBackendBucketStatus defines the config connector machine
@@ -307,10 +302,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
               selfLink:
                 description: Server-defined URL for the resource.
                 type: string

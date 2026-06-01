@@ -270,42 +270,6 @@ func BackendBucketCdnPolicyNegativeCachingPolicy_v1beta1_ToProto(mapCtx *direct.
 	// (near miss): "TTL" vs "Ttl"
 	return out
 }
-func ComputeBackendBucketObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeBackendBucketObservedState{}
-	// MISSING: BucketName
-	// MISSING: CDNPolicy
-	// MISSING: CreationTimestamp
-	// MISSING: EnableCDN
-	// MISSING: ID
-	// MISSING: Kind
-	// MISSING: LoadBalancingScheme
-	// MISSING: Name
-	// MISSING: Params
-	// MISSING: SelfLink
-	// MISSING: UsedBy
-	return out
-}
-func ComputeBackendBucketObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendBucketObservedState) *pb.BackendBucket {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackendBucket{}
-	// MISSING: BucketName
-	// MISSING: CDNPolicy
-	// MISSING: CreationTimestamp
-	// MISSING: EnableCDN
-	// MISSING: ID
-	// MISSING: Kind
-	// MISSING: LoadBalancingScheme
-	// MISSING: Name
-	// MISSING: Params
-	// MISSING: SelfLink
-	// MISSING: UsedBy
-	return out
-}
 func ComputeBackendBucketSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendBucket) *krm.ComputeBackendBucketSpec {
 	if in == nil {
 		return nil
