@@ -205,6 +205,7 @@ func (f *FuzzTest_NoProto[APIType, KRMType]) Fuzz(t *testing.T, seed int64) {
 	if diff := cmp.Diff(p1, p2); diff != "" {
 		t.Logf("p1 = %v", p1)
 		t.Logf("p2 = %v", p2)
-		t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
+		t.Errorf("roundtrip failed for KRM %T; seed=%d; diff:\n%s", krm, seed, diff)
+		t.Errorf("To reproduce this failure, you can set the master seed (if logged) or use the iteration seed by adding a temporary test case calling this fuzzer with seed %d", seed)
 	}
 }

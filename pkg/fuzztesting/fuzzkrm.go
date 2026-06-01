@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"sync"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -47,6 +48,10 @@ func RegisterFuzzer(fuzzer FuzzFn) {
 	fuzzers = append(fuzzers, fuzzer)
 }
 
+func GetFuzzerCount() int {
+	return len(fuzzers)
+}
+
 func ChooseFuzzer(n int64) FuzzFn {
 	return fuzzers[n%int64(len(fuzzers))]
 }
@@ -66,6 +71,8 @@ type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
 
 	FilterSpec   func(in ProtoT)
 	FilterStatus func(in ProtoT)
+
+	validateOnce sync.Once
 }
 
 // SpecField marks the specified fieldPath as round-tripping to/from the Spec
@@ -118,6 +125,40 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) IdentityField(fieldPath s
 	f.UnimplementedFields.Insert(fieldPath)
 }
 
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Validate(t *testing.T) {
+	f.validateOnce.Do(func() {
+		registeredPaths := f.SpecFields.Union(f.StatusFields).Union(f.UnimplementedFields)
+		md := f.ProtoType.ProtoReflect().Descriptor()
+		f.validateFields(t, md, "", registeredPaths)
+	})
+}
+
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) validateFields(t *testing.T, md protoreflect.MessageDescriptor, parentPath string, registeredPaths sets.Set[string]) {
+	if string(md.FullName()) == "google.protobuf.Timestamp" || string(md.FullName()) == "google.protobuf.Duration" {
+		return
+	}
+
+	for i := 0; i < md.Fields().Len(); i++ {
+		fd := md.Fields().Get(i)
+		path := parentPath + "." + string(fd.Name())
+
+		if registeredPaths.Has(path) {
+			continue
+		}
+
+		if fd.Kind() == protoreflect.MessageKind || fd.Kind() == protoreflect.GroupKind {
+			nextParentPath := path
+			if fd.IsList() {
+				nextParentPath += "[]"
+			}
+			f.validateFields(t, fd.Message(), nextParentPath, registeredPaths)
+			continue
+		}
+
+		t.Fatalf("Field %q is present in proto %v but not registered in the fuzzer. Please add it to SpecFields, StatusFields, or Unimplemented_NotYetTriaged.", path, md.FullName())
+	}
+}
+
 type KRMFuzzer interface {
 	FuzzSpec(t *testing.T, seed int64)
 	FuzzStatus(t *testing.T, seed int64)
@@ -141,6 +182,7 @@ func NewKRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any](
 }
 
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, seed int64) {
+	f.Validate(t)
 	fuzzer := NewFuzzTest(f.ProtoType, f.SpecFromProto, f.SpecToProto)
 	fuzzer.IgnoreFields = f.StatusFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
@@ -149,6 +191,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, se
 }
 
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, seed int64) {
+	f.Validate(t)
 	fuzzer := NewFuzzTest(f.ProtoType, f.StatusFromProto, f.StatusToProto)
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
@@ -235,7 +278,8 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	if diff := cmp.Diff(p1, p2, protocmp.Transform()); diff != "" {
 		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Logf("p2 = %v", prototext.Format(p2))
-		t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
+		t.Errorf("roundtrip failed for KRM %T; seed=%d; diff:\n%s", krm, seed, diff)
+		t.Errorf("To reproduce this failure, you can set the master seed (if logged) or use the iteration seed by adding a temporary test case calling this fuzzer with seed %d", seed)
 		diffPaths := diffFieldPaths(p1, p2)
 		for _, diffPath := range diffPaths {
 			hint := fmt.Sprintf("Add `f.Unimplemented_NotYetTriaged(%q)` to the fuzzer for the proto type %v to mark this field as not yet triaged.", diffPath, f.ProtoType.ProtoReflect().Descriptor().FullName())
