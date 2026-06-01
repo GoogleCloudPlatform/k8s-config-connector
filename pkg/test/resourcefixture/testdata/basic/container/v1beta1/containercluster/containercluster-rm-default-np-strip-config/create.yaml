@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,25 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-set -o errexit
-set -o nounset
-set -o pipefail
-
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
-go run . generate-types \
-  --service google.storage.v1 \
-  --api-version storage.cnrm.cloud.google.com/v1beta1 \
-  --resource StorageBucket:Bucket \
-  --skip-scaffold-files \
-  --include-skipped-output
-
-go run . generate-mapper \
-  --service google.storage.v1 \
-  --api-version storage.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
-
-cd ${REPO_ROOT}
-dev/tasks/generate-crds
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "true"
+    cnrm.cloud.google.com/strip-default-node-pool-config-on-update: "true"
+  name: cluster-nc-${uniqueId}
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  nodeConfig:
+    serviceAccountRef:
+      name: nodes-sa-${uniqueId}
+    tags:
+      - internal-egress
+  loggingService: none
+  monitoringService: none
