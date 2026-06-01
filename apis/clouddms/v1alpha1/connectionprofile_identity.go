@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,18 +15,19 @@
 package v1alpha1
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const (
-	ConnectionProfileIDURL = parent.ProjectAndLocationURL + "/connectionProfiles/{{connectionProfileID}}"
-)
-
+// ConnectionProfileIdentity defines the resource reference to CloudDMSConnectionProfile, which "External" field
+// holds the GCP identifier for the KRM object.
 type ConnectionProfileIdentity struct {
-	parent *parent.ProjectAndLocationParent
+	parent *ConnectionProfileParent
 	id     string
 }
 
@@ -34,22 +35,92 @@ func (i *ConnectionProfileIdentity) String() string {
 	return i.parent.String() + "/connectionProfiles/" + i.id
 }
 
-func (i *ConnectionProfileIdentity) Parent() *parent.ProjectAndLocationParent {
+func (i *ConnectionProfileIdentity) ID() string {
+	return i.id
+}
+
+func (i *ConnectionProfileIdentity) Parent() *ConnectionProfileParent {
 	return i.parent
 }
 
-func (i *ConnectionProfileIdentity) FromExternal(external string) error {
-	tokens := strings.Split(external, "/connectionProfiles/")
-	if len(tokens) != 2 {
-		return fmt.Errorf("format of ConnectionProfile external=%q was not known (use %s)", external, ConnectionProfileIDURL)
+type ConnectionProfileParent struct {
+	ProjectID string
+	Location  string
+}
+
+func (p *ConnectionProfileParent) String() string {
+	return "projects/" + p.ProjectID + "/locations/" + p.Location
+}
+
+// NewConnectionProfileIdentity builds a ConnectionProfileIdentity from the Config Connector ConnectionProfile object.
+func NewConnectionProfileIdentity(ctx context.Context, reader client.Reader, obj *CloudDMSConnectionProfile) (*ConnectionProfileIdentity, error) {
+	// Get Parent
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
 	}
-	i.parent = &parent.ProjectAndLocationParent{}
-	if err := i.parent.FromExternal(tokens[0]); err != nil {
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+	location := obj.Spec.Location
+
+	// Get desired ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	// Use approved External
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		actualParent, actualResourceID, err := ParseConnectionProfileExternal(externalRef)
+		if err != nil {
+			return nil, err
+		}
+		if actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		}
+		if actualParent.Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		}
+		if actualResourceID != resourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actualResourceID)
+		}
+	}
+	return &ConnectionProfileIdentity{
+		parent: &ConnectionProfileParent{
+			ProjectID: projectID,
+			Location:  location,
+		},
+		id: resourceID,
+	}, nil
+}
+
+func ParseConnectionProfileExternal(external string) (parent *ConnectionProfileParent, resourceID string, err error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connectionProfiles" {
+		return nil, "", fmt.Errorf("format of CloudDMSConnectionProfile external=%q was not known (use projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionProfileID}})", external)
+	}
+	parent = &ConnectionProfileParent{
+		ProjectID: tokens[1],
+		Location:  tokens[3],
+	}
+	resourceID = tokens[5]
+	return parent, resourceID, nil
+}
+
+func (i *ConnectionProfileIdentity) FromExternal(external string) error {
+	parent, resourceID, err := ParseConnectionProfileExternal(external)
+	if err != nil {
 		return err
 	}
-	i.id = tokens[1]
-	if i.id == "" {
-		return fmt.Errorf("catalogID was empty in external=%q", external)
-	}
+	i.parent = parent
+	i.id = resourceID
 	return nil
 }
