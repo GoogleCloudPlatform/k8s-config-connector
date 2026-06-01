@@ -49,7 +49,21 @@ func cloudDMSConnectionProfileFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".state")
 	f.StatusField(".error")
 
+	f.Unimplemented_NotYetTriaged(".alloydb.settings.initial_user.password_set")
+	f.Unimplemented_NotYetTriaged(".alloydb.settings.primary_instance_settings.private_ip")
+	f.Unimplemented_NotYetTriaged(".cloudsql.additional_public_ip")
+	f.Unimplemented_NotYetTriaged(".cloudsql.cloud_sql_id")
+	f.Unimplemented_NotYetTriaged(".cloudsql.private_ip")
+	f.Unimplemented_NotYetTriaged(".cloudsql.public_ip")
+	f.Unimplemented_NotYetTriaged(".cloudsql.settings.root_password_set")
 	f.Unimplemented_NotYetTriaged(".error.details")
+	f.Unimplemented_NotYetTriaged(".mysql.password_set")
+	f.Unimplemented_NotYetTriaged(".mysql.ssl.type")
+	f.Unimplemented_NotYetTriaged(".oracle.password_set")
+	f.Unimplemented_NotYetTriaged(".oracle.ssl.type")
+	f.Unimplemented_NotYetTriaged(".postgresql.network_architecture")
+	f.Unimplemented_NotYetTriaged(".postgresql.password_set")
+	f.Unimplemented_NotYetTriaged(".postgresql.ssl.type")
 
 	return f
 }
