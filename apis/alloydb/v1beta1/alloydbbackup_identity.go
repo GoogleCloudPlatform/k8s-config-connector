@@ -71,17 +71,17 @@ func (i *AlloyDBBackupIdentity) ParentString() string {
 func getIdentityFromAlloyDBBackupSpec(ctx context.Context, reader client.Reader, obj client.Object) (*AlloyDBBackupIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+		return nil, fmt.Errorf("cannot resolve project")
 	}
 
 	identity := &AlloyDBBackupIdentity{

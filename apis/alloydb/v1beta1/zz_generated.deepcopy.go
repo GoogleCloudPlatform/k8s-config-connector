@@ -1102,7 +1102,7 @@ func (in *BackupSource) DeepCopyInto(out *BackupSource) {
 	*out = *in
 	if in.BackupNameRef != nil {
 		in, out := &in.BackupNameRef, &out.BackupNameRef
-		*out = new(refsv1beta1.AlloyDBBackupRef)
+		*out = new(AlloyDBBackupRef)
 		**out = **in
 	}
 }
