@@ -32,4 +32,12 @@ type NetworkSecurityMirroringDeploymentGroupRef struct {
 	Name string `json:"name,omitempty"`
 	/* The namespace field of a NetworkSecurityMirroringDeploymentGroup resource. */
 	Namespace string `json:"namespace,omitempty"`
+type NetworkSecurityMirroringEndpointGroupRef struct {
+	/* The name field of a NetworkSecurityMirroringEndpointGroup resource. */
+	Name string `json:"name,omitempty"`
+	/* The namespace field of a NetworkSecurityMirroringEndpointGroup resource. */
+	Namespace string `json:"namespace,omitempty"`
+	/* A reference to an externally managed NetworkSecurityMirroringEndpointGroup resource.
+	Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringEndpointGroups/{{mirroringEndpointGroup}}". */
+	External string `json:"external,omitempty"`
 }

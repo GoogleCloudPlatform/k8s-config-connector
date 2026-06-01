@@ -89,14 +89,14 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed NetworkSecurityMirroringEndpointGroup
-                      resource. Should be in the format `projects/{{projectID}}/locations/{{location}}/mirroringEndpointGroups/{{mirroringEndpointGroup}}`.
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringEndpointGroups/{{mirroringEndpointGroup}}".
                     type: string
                   name:
-                    description: The `name` field of a `NetworkSecurityMirroringEndpointGroup`
+                    description: The name field of a NetworkSecurityMirroringEndpointGroup
                       resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `NetworkSecurityMirroringEndpointGroup`
+                    description: The namespace field of a NetworkSecurityMirroringEndpointGroup
                       resource.
                     type: string
                 type: object

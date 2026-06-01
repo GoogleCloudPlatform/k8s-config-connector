@@ -23,18 +23,6 @@ import (
 
 var NetworkSecurityMirroringEndpointGroupAssociationGVK = GroupVersion.WithKind("NetworkSecurityMirroringEndpointGroupAssociation")
 
-type NetworkSecurityMirroringEndpointGroupRef struct {
-	/* The `name` field of a `NetworkSecurityMirroringEndpointGroup` resource. */
-	Name string `json:"name,omitempty"`
-
-	/* The `namespace` field of a `NetworkSecurityMirroringEndpointGroup` resource. */
-	Namespace string `json:"namespace,omitempty"`
-
-	/* A reference to an externally managed NetworkSecurityMirroringEndpointGroup resource.
-	Should be in the format `projects/{{projectID}}/locations/{{location}}/mirroringEndpointGroups/{{mirroringEndpointGroup}}`. */
-	External string `json:"external,omitempty"`
-}
-
 // NetworkSecurityMirroringEndpointGroupAssociationSpec defines the desired state of NetworkSecurityMirroringEndpointGroupAssociation
 // +kcc:spec:proto=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation
 type NetworkSecurityMirroringEndpointGroupAssociationSpec struct {
@@ -54,7 +42,7 @@ type NetworkSecurityMirroringEndpointGroupAssociationSpec struct {
 
 	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation.mirroring_endpoint_group
 	// +kubebuilder:validation:Required
-	MirroringEndpointGroupRef *NetworkSecurityMirroringEndpointGroupRef `json:"mirroringEndpointGroupRef"`
+	MirroringEndpointGroupRef *refsv1beta1.NetworkSecurityMirroringEndpointGroupRef `json:"mirroringEndpointGroupRef"`
 
 	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringEndpointGroupAssociation.network
 	// +kubebuilder:validation:Required
