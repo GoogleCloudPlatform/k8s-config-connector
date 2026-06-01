@@ -117,3 +117,16 @@ Before finishing the task, the agent must run formatting and static analysis che
    ```
 3. **Verify Local Control Plane Webhooks**:
    - If envtest webhook startup fails with validation errors under new Kubernetes control plane versions, ensure `admissionReviewVersions` in `pkg/webhook/manifests.go` includes both `"v1"` and `"v1beta1"`.
+4. **Verify CRD Field Coverage Checks**:
+   - Run the API checks tests to ensure all new fields are either tested in the fixture tests or explicitly added to the exceptions list.
+   - Run the following command (setting `WRITE_GOLDEN_OUTPUT=1` will automatically regenerate the exceptions file `tests/apichecks/testdata/exceptions/missingfields.txt` if there are any updates/removals/additions):
+     - For **Beta** resources:
+       ```bash
+       WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests
+       ```
+     - For **Alpha** resources:
+       ```bash
+       WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
+       ```
+   - If the golden output gets updated, make sure to stage and commit the changes in `tests/apichecks/testdata/exceptions/`.
+
