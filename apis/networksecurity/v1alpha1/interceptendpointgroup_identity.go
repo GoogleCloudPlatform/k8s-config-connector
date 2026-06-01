@@ -30,13 +30,13 @@ var (
 	_ identity.Resource   = &NetworkSecurityInterceptEndpointGroup{}
 )
 
-var NetworkSecurityInterceptEndpointGroupIdentityFormat = gcpurls.Template[NetworkSecurityInterceptEndpointGroupIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/interceptEndpointGroups/{intercept_endpoint_group}")
+var NetworkSecurityInterceptEndpointGroupIdentityFormat = gcpurls.Template[NetworkSecurityInterceptEndpointGroupIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/interceptEndpointGroups/{interceptendpointgroup}")
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityInterceptEndpointGroupIdentity struct {
 	Project                string
 	Location               string
-	Interceptendpointgroup string `gcpurls:"intercept_endpoint_group"`
+	Interceptendpointgroup string
 }
 
 func (i *NetworkSecurityInterceptEndpointGroupIdentity) String() string {

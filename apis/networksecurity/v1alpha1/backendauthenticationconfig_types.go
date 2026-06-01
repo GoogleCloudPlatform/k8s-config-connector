@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -114,7 +114,6 @@ type NetworkSecurityBackendAuthenticationConfigObservedState struct {
 
 // NetworkSecurityBackendAuthenticationConfig is the Schema for the NetworkSecurityBackendAuthenticationConfig API
 // +k8s:openapi-gen=true
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type NetworkSecurityBackendAuthenticationConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
