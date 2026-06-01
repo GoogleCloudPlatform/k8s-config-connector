@@ -65,5 +65,11 @@ func cloudDMSConnectionProfileFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".postgresql.password_set")
 	f.Unimplemented_NotYetTriaged(".postgresql.ssl.type")
 
+	f.Unimplemented_NotYetTriaged(".cloudsql.settings.storage_auto_resize_limit")
+	f.Unimplemented_NotYetTriaged(".cloudsql.settings.data_disk_size_gb")
+	f.Unimplemented_NotYetTriaged(".cloudsql.settings.auto_storage_increase")
+	f.Unimplemented_NotYetTriaged(".cloudsql.settings.ip_config.enable_ipv4")
+	f.Unimplemented_NotYetTriaged(".cloudsql.settings.ip_config.require_ssl")
+	f.Unimplemented_NotYetTriaged(".cloudsql.settings.ip_config.allocated_ip_range")
 	return f
 }

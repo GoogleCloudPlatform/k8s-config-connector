@@ -31,6 +31,7 @@ import (
 
 type ClouddmsV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	CloudDMSConnectionProfilesGetter
 	CloudDMSConversionWorkspacesGetter
 	CloudDMSMigrationJobsGetter
 	CloudDMSPrivateConnectionsGetter
@@ -39,6 +40,10 @@ type ClouddmsV1alpha1Interface interface {
 // ClouddmsV1alpha1Client is used to interact with features provided by the clouddms.cnrm.cloud.google.com group.
 type ClouddmsV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ClouddmsV1alpha1Client) CloudDMSConnectionProfiles(namespace string) CloudDMSConnectionProfileInterface {
+	return newCloudDMSConnectionProfiles(c, namespace)
 }
 
 func (c *ClouddmsV1alpha1Client) CloudDMSConversionWorkspaces(namespace string) CloudDMSConversionWorkspaceInterface {
