@@ -186,6 +186,10 @@ func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCL
 		return a.dclValidateIAMPolicy(policy)
 	}
 
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
+
 	// TF-based resource.
 	rcs, err := getResourceConfigs(a.smLoader, resourceRef.GroupVersionKind())
 	if err != nil {
@@ -199,6 +203,11 @@ func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IA
 	if isDCLResource {
 		return a.dclValidateIAMPartialPolicy(partialPolicy)
 	}
+
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
+
 	// TF-based resource.
 	rcs, err := getResourceConfigs(a.smLoader, resourceRef.GroupVersionKind())
 	if err != nil {
@@ -212,6 +221,11 @@ func (a *iamValidatorHandler) validateIAMPolicyMember(policyMember *v1beta1.IAMP
 	if isDCLResource {
 		return a.dclValidateIAMPolicyMember(policyMember)
 	}
+
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
+
 	// TF-based resource.
 	rcs, err := getResourceConfigs(a.smLoader, resourceRef.GroupVersionKind())
 	if err != nil {

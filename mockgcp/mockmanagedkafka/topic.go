@@ -22,15 +22,73 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
+
+func (s *managedKafka) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	// For now, we only support Topics
+	if _, err := s.parseTopicName(req.GetResource()); err != nil {
+		return nil, err
+	}
+
+	fqn := req.GetResource() + "/iamPolicy"
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, fqn, policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return &iampb.Policy{
+				Version: 3,
+				Etag:    []byte("default"),
+			}, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *managedKafka) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	if _, err := s.parseTopicName(req.GetResource()); err != nil {
+		return nil, err
+	}
+
+	fqn := req.GetResource() + "/iamPolicy"
+
+	policy := req.GetPolicy()
+	policy.Etag = []byte(fmt.Sprintf("etag-%d", time.Now().UnixNano()))
+
+	oldPolicy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, fqn, oldPolicy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, fqn, policy); err != nil {
+				return nil, err
+			}
+			return policy, nil
+		}
+		return nil, err
+	}
+
+	if err := s.storage.Update(ctx, fqn, policy); err != nil {
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *managedKafka) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	return &iampb.TestIamPermissionsResponse{
+		Permissions: req.Permissions,
+	}, nil
+}
 
 func (s *managedKafka) GetTopic(ctx context.Context, req *pb.GetTopicRequest) (*pb.Topic, error) {
 	name, err := s.parseTopicName(req.Name)
@@ -83,18 +141,17 @@ func (s *managedKafka) UpdateTopic(ctx context.Context, req *pb.UpdateTopicReque
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
-	// updateMask=configs%2CpartitionCount
+	// updateMask=configs,partition_count
 	for _, path := range paths {
 		switch path {
 		case "configs":
 			obj.Configs = req.GetTopic().GetConfigs()
-		case "partitionCount":
+		case "partitionCount", "partition_count":
 			obj.PartitionCount = req.GetTopic().GetPartitionCount()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}
 	}
-
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

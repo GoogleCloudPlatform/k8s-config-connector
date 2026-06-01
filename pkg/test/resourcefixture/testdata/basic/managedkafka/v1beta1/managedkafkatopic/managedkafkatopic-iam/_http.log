@@ -408,9 +408,6 @@ GRPC /google.cloud.managedkafka.v1.ManagedKafka/CreateTopic
 {
   "parent": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
   "topic": {
-    "configs": {
-      "cleanup.policy": "compact"
-    },
     "partitionCount": 2,
     "replicationFactor": 3
   },
@@ -420,9 +417,148 @@ GRPC /google.cloud.managedkafka.v1.ManagedKafka/CreateTopic
 OK
 
 {
-  "configs": {
-    "cleanup.policy": "compact"
+  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
+  "partitionCount": 2,
+  "replicationFactor": 3
+}
+
+---
+
+GRPC /google.iam.v1.IAMPolicy/GetIamPolicy
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
   },
+  "resource": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}"
+}
+
+OK
+
+{
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+GRPC /google.iam.v1.IAMPolicy/GetIamPolicy
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  },
+  "resource": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}"
+}
+
+OK
+
+{
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+GRPC /google.iam.v1.IAMPolicy/SetIamPolicy
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-managedkafka.iam.gserviceaccount.com"
+        ],
+        "role": "roles/viewer"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "resource": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}"
+}
+
+OK
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-managedkafka.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+GRPC /google.iam.v1.IAMPolicy/GetIamPolicy
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  },
+  "resource": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}"
+}
+
+OK
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-managedkafka.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+GRPC /google.iam.v1.IAMPolicy/SetIamPolicy
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "role": "roles/viewer"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "resource": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}"
+}
+
+OK
+
+{
+  "bindings": [
+    {
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+GRPC /google.cloud.managedkafka.v1.ManagedKafka/GetTopic
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}"
+}
+
+OK
+
+{
   "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
   "partitionCount": 2,
   "replicationFactor": 3
@@ -439,80 +575,8 @@ GRPC /google.cloud.managedkafka.v1.ManagedKafka/GetTopic
 OK
 
 {
-  "configs": {
-    "cleanup.policy": "compact"
-  },
   "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
   "partitionCount": 2,
-  "replicationFactor": 3
-}
-
----
-
-GRPC /google.cloud.managedkafka.v1.ManagedKafka/UpdateTopic
-
-{
-  "topic": {
-    "configs": {
-      "cleanup.policy": "delete",
-      "min.insync.replicas": "3"
-    },
-    "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
-    "partitionCount": 3,
-    "replicationFactor": 3
-  },
-  "updateMask": "configs,partitionCount"
-}
-
-OK
-
-{
-  "configs": {
-    "cleanup.policy": "delete",
-    "min.insync.replicas": "3"
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
-  "partitionCount": 3,
-  "replicationFactor": 3
-}
-
----
-
-GRPC /google.cloud.managedkafka.v1.ManagedKafka/GetTopic
-
-{
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}"
-}
-
-OK
-
-{
-  "configs": {
-    "cleanup.policy": "delete",
-    "min.insync.replicas": "3"
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
-  "partitionCount": 3,
-  "replicationFactor": 3
-}
-
----
-
-GRPC /google.cloud.managedkafka.v1.ManagedKafka/GetTopic
-
-{
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}"
-}
-
-OK
-
-{
-  "configs": {
-    "cleanup.policy": "delete",
-    "min.insync.replicas": "3"
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
-  "partitionCount": 3,
   "replicationFactor": 3
 }
 
