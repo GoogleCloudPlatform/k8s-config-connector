@@ -477,6 +477,35 @@ spec:
                 required:
                 - enabled
                 type: object
+              controlPlaneDiskEncryptionKeyRef:
+                description: Immutable. The name of the Customer Managed Encryption
+                  Key used to encrypt the control plane's boot disk.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               controlPlaneEndpointsConfig:
                 description: Configuration for all of the cluster's control plane
                   endpoints. Currently supports only DNS endpoint configuration and
@@ -1261,6 +1290,15 @@ spec:
                   kubeletConfig:
                     description: Node kubelet configs.
                     properties:
+                      containerLogMaxFiles:
+                        description: The maximum number of container log files that
+                          can be present for a container.
+                        format: int64
+                        type: integer
+                      containerLogMaxSize:
+                        description: The maximum size of the container log file before
+                          it is rotated.
+                        type: string
                       cpuCfsQuota:
                         description: Enable CPU CFS quota enforcement for containers
                           that specify CPU limits.
@@ -1271,6 +1309,28 @@ spec:
                       cpuManagerPolicy:
                         description: Control the CPU management policy on the node.
                         type: string
+                      imageGcHighThresholdPercent:
+                        description: The percent of disk usage after which image garbage
+                          collection is always run.
+                        format: int64
+                        type: integer
+                      imageGcLowThresholdPercent:
+                        description: The percent of disk usage before which image
+                          garbage collection is never run. Lowest priority.
+                        format: int64
+                        type: integer
+                      imageMaximumGcAge:
+                        description: The maximum age for an unused image before it
+                          is garbage collected.
+                        type: string
+                      imageMinimumGcAge:
+                        description: The minimum age for an unused image before it
+                          is garbage collected.
+                        type: string
+                      maxParallelImagePulls:
+                        description: The maximum number of parallel image pulls allowed.
+                        format: int64
+                        type: integer
                       podPidsLimit:
                         description: Controls the maximum number of processes allowed
                           to run in a pod.

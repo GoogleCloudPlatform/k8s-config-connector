@@ -1259,18 +1259,18 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	out.CPUCfsQuotaPeriod = direct.LazyPtr(in.GetCpuCfsQuotaPeriod())
 	out.PodPidsLimit = direct.LazyPtr(in.GetPodPidsLimit())
 	// MISSING: InsecureKubeletReadonlyPortEnabled
-	// MISSING: ImageGcLowThresholdPercent
-	// MISSING: ImageGcHighThresholdPercent
-	// MISSING: ImageMinimumGcAge
-	// MISSING: ImageMaximumGcAge
-	// MISSING: ContainerLogMaxSize
-	// MISSING: ContainerLogMaxFiles
+	out.ImageGcLowThresholdPercent = direct.LazyPtr(in.GetImageGcLowThresholdPercent())
+	out.ImageGcHighThresholdPercent = direct.LazyPtr(in.GetImageGcHighThresholdPercent())
+	out.ImageMinimumGcAge = direct.LazyPtr(in.GetImageMinimumGcAge())
+	out.ImageMaximumGcAge = direct.LazyPtr(in.GetImageMaximumGcAge())
+	out.ContainerLogMaxSize = direct.LazyPtr(in.GetContainerLogMaxSize())
+	out.ContainerLogMaxFiles = direct.LazyPtr(in.GetContainerLogMaxFiles())
 	// MISSING: AllowedUnsafeSysctls
 	// MISSING: EvictionSoft
 	// MISSING: EvictionSoftGracePeriod
 	// MISSING: EvictionMinimumReclaim
 	// MISSING: EvictionMaxPodGracePeriodSeconds
-	// MISSING: MaxParallelImagePulls
+	out.MaxParallelImagePulls = direct.LazyPtr(in.GetMaxParallelImagePulls())
 	// MISSING: SingleProcessOomKill
 	return out
 }
@@ -1291,18 +1291,18 @@ found existing non-generated mapping function "KubeletConfig_ToProto", skipping
 		out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
 		out.PodPidsLimit = direct.ValueOf(in.PodPidsLimit)
 		// MISSING: InsecureKubeletReadonlyPortEnabled
-		// MISSING: ImageGcLowThresholdPercent
-		// MISSING: ImageGcHighThresholdPercent
-		// MISSING: ImageMinimumGcAge
-		// MISSING: ImageMaximumGcAge
-		// MISSING: ContainerLogMaxSize
-		// MISSING: ContainerLogMaxFiles
+		out.ImageGcLowThresholdPercent = direct.ValueOf(in.ImageGcLowThresholdPercent)
+		out.ImageGcHighThresholdPercent = direct.ValueOf(in.ImageGcHighThresholdPercent)
+		out.ImageMinimumGcAge = direct.ValueOf(in.ImageMinimumGcAge)
+		out.ImageMaximumGcAge = direct.ValueOf(in.ImageMaximumGcAge)
+		out.ContainerLogMaxSize = direct.ValueOf(in.ContainerLogMaxSize)
+		out.ContainerLogMaxFiles = direct.ValueOf(in.ContainerLogMaxFiles)
 		// MISSING: AllowedUnsafeSysctls
 		// MISSING: EvictionSoft
 		// MISSING: EvictionSoftGracePeriod
 		// MISSING: EvictionMinimumReclaim
 		// MISSING: EvictionMaxPodGracePeriodSeconds
-		// MISSING: MaxParallelImagePulls
+		out.MaxParallelImagePulls = direct.ValueOf(in.MaxParallelImagePulls)
 		// MISSING: SingleProcessOomKill
 		return out
 	}

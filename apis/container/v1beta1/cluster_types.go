@@ -617,6 +617,14 @@ type KalmConfig struct {
 
 // +kcc:proto=google.container.v1.NodeKubeletConfig
 type KubeletConfig struct {
+	/* The maximum number of container log files that can be present for a container. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.container_log_max_files
+	ContainerLogMaxFiles *int64 `json:"containerLogMaxFiles,omitempty"`
+
+	/* The maximum size of the container log file before it is rotated. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.container_log_max_size
+	ContainerLogMaxSize *string `json:"containerLogMaxSize,omitempty"`
+
 	/* Enable CPU CFS quota enforcement for containers that specify CPU limits. */
 	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.cpu_cfs_quota
 	CPUCfsQuota *bool `json:"cpuCfsQuota,omitempty"`
@@ -629,6 +637,26 @@ type KubeletConfig struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.cpu_manager_policy
 	CPUManagerPolicy *string `json:"cpuManagerPolicy,omitempty"`
+
+	/* The percent of disk usage after which image garbage collection is always run. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_gc_high_threshold_percent
+	ImageGcHighThresholdPercent *int64 `json:"imageGcHighThresholdPercent,omitempty"`
+
+	/* The percent of disk usage before which image garbage collection is never run. Lowest priority. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_gc_low_threshold_percent
+	ImageGcLowThresholdPercent *int64 `json:"imageGcLowThresholdPercent,omitempty"`
+
+	/* The maximum age for an unused image before it is garbage collected. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_maximum_gc_age
+	ImageMaximumGcAge *string `json:"imageMaximumGcAge,omitempty"`
+
+	/* The minimum age for an unused image before it is garbage collected. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_minimum_gc_age
+	ImageMinimumGcAge *string `json:"imageMinimumGcAge,omitempty"`
+
+	/* The maximum number of parallel image pulls allowed. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.max_parallel_image_pulls
+	MaxParallelImagePulls *int64 `json:"maxParallelImagePulls,omitempty"`
 
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.pod_pids_limit
@@ -1338,6 +1366,10 @@ type ContainerClusterSpec struct {
 	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after cluster creation without deleting and recreating the entire cluster. */
 	// +kcc:proto:field=google.container.v1.Cluster.confidential_nodes
 	ConfidentialNodes *ConfidentialNodes `json:"confidentialNodes,omitempty"`
+
+	/* Immutable. The name of the Customer Managed Encryption Key used to encrypt the control plane's boot disk. */
+	// +optional
+	ControlPlaneDiskEncryptionKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"controlPlaneDiskEncryptionKeyRef,omitempty"`
 
 	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
 	// +kcc:proto:field=google.container.v1.Cluster.control_plane_endpoints_config

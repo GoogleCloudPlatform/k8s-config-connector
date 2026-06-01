@@ -251,6 +251,31 @@ spec:
 		t.Fatalf("StorageBucket CRD not established: %v", err)
 	}
 
+	t.Logf("Waiting for validating webhook to be ready")
+	var webhookErr error
+	for i := 0; i < 20; i++ {
+		webhookErr = runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=condition=Available", "deployment/cnrm-validating-webhook", "--timeout=1m")
+		if webhookErr == nil {
+			break
+		}
+		t.Logf("validating webhook not ready yet (attempt %d): %v", i+1, webhookErr)
+		time.Sleep(10 * time.Second)
+	}
+	if webhookErr != nil {
+		t.Fatalf("validating webhook failing to become ready: %v", webhookErr)
+	}
+
+	// Wait for endpoints to be ready
+	t.Logf("Waiting for validating webhook endpoints to be ready")
+	for i := 0; i < 10; i++ {
+		err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=jsonpath={.subsets[0].addresses[0].ip}", "endpoints/cnrm-validating-webhook", "--timeout=1m")
+		if err == nil {
+			break
+		}
+		t.Logf("webhook endpoints not ready yet (attempt %d): %v", i+1, err)
+		time.Sleep(10 * time.Second)
+	}
+
 	t.Logf("Creating namespace and StorageBucket")
 	ns := "config-control"
 	if err := runCommand(ctx, t, root, "kubectl", "create", "ns", ns); err != nil && !strings.Contains(err.Error(), "already exists") {
@@ -277,10 +302,20 @@ spec:
   uniformBucketLevelAccess: true
 `, ns, ns)
 
-	applyBucket := exec.CommandContext(ctx, "kubectl", "apply", "-f", "-")
-	applyBucket.Stdin = strings.NewReader(bucketManifest)
-	if output, err := applyBucket.CombinedOutput(); err != nil {
-		t.Fatalf("failed to apply StorageBucket: %v\nOutput: %s", err, string(output))
+	var applyOutput []byte
+	var applyErr error
+	for i := 0; i < 20; i++ {
+		applyBucket := exec.CommandContext(ctx, "kubectl", "apply", "-f", "-")
+		applyBucket.Stdin = strings.NewReader(bucketManifest)
+		applyOutput, applyErr = applyBucket.CombinedOutput()
+		if applyErr == nil {
+			break
+		}
+		t.Logf("failed to apply StorageBucket (attempt %d): %v\nOutput: %s", i+1, applyErr, string(applyOutput))
+		time.Sleep(10 * time.Second)
+	}
+	if applyErr != nil {
+		t.Fatalf("failed to apply StorageBucket after retries: %v\nOutput: %s", applyErr, string(applyOutput))
 	}
 
 	t.Logf("Waiting for StorageBucket reconciliation (expected to fail with permission error)")
