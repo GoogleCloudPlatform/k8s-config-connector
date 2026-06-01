@@ -29,7 +29,8 @@ package v1beta1
 // +kcc:proto=google.cloud.kms.v1.AutokeyConfig
 type AutokeyConfig struct {
 	// Identifier. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-	//  resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+	//  resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig` or
+	//  `projects/{PROJECT_NUMBER}/autokeyConfig`.
 	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.name
 	Name *string `json:"name,omitempty"`
 
@@ -53,6 +54,12 @@ type AutokeyConfig struct {
 	//  ABORTED error on a mismatched etag.
 	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.etag
 	Etag *string `json:"etag,omitempty"`
+
+	// Optional. KeyProjectResolutionMode for the AutokeyConfig.
+	//  Valid values are `DEDICATED_KEY_PROJECT`, `RESOURCE_PROJECT`, or
+	//  `DISABLED`.
+	// +kcc:proto:field=google.cloud.kms.v1.AutokeyConfig.key_project_resolution_mode
+	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
 }
 */
 
@@ -74,6 +81,16 @@ type ImportJob struct {
 	//  into.
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.protection_level
 	ProtectionLevel *string `json:"protectionLevel,omitempty"`
+
+	// Immutable. The resource name of the backend environment where the key
+	//  material for the wrapping key resides and where all related cryptographic
+	//  operations are performed. Currently, this field is only populated for keys
+	//  stored in HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may
+	//  apply to additional [ProtectionLevels][google.cloud.kms.v1.ProtectionLevel]
+	//  in the future. Supported resources:
+	//  * `"projects/* /locations/* /singleTenantHsmInstances/*"`
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.crypto_key_backend
+	CryptoKeyBackend *string `json:"cryptoKeyBackend,omitempty"`
 }
 */
 
