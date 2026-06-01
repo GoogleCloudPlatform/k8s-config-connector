@@ -433,7 +433,6 @@
 [missing_field] crd=computebackendbuckets.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.compressionMode" is not set in unstructured objects
 [missing_field] crd=computebackendbuckets.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.customResponseHeaders[]" is not set in unstructured objects
 [missing_field] crd=computebackendbuckets.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.edgeSecurityPolicy" is not set in unstructured objects
-[missing_field] crd=computebackendbuckets.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.affinityCookieTtlSec" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].capacityScaler" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].description" is not set in unstructured objects
