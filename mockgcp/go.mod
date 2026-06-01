@@ -14,13 +14,18 @@ require (
 	cloud.google.com/go/alloydb v1.20.0
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
+	cloud.google.com/go/apikeys v1.2.7
 	cloud.google.com/go/apphub v0.4.0
+	cloud.google.com/go/artifactregistry v1.20.0
+	cloud.google.com/go/asset v1.22.1
+	cloud.google.com/go/backupdr v1.6.0
 	cloud.google.com/go/batch v1.14.0
 	cloud.google.com/go/bigquery v1.74.0
 	cloud.google.com/go/bigtable v1.42.0
 	cloud.google.com/go/billing v1.21.0
 	cloud.google.com/go/certificatemanager v1.9.6
 	cloud.google.com/go/clouddms v1.8.8
+	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/compute v1.54.0
 	cloud.google.com/go/dataplex v1.28.0
 	cloud.google.com/go/dataproc/v2 v2.19.0
@@ -28,6 +33,7 @@ require (
 	cloud.google.com/go/deploy v1.27.3
 	cloud.google.com/go/discoveryengine v1.22.0
 	cloud.google.com/go/edgecontainer v1.4.4
+	cloud.google.com/go/edgenetwork v1.8.0
 	cloud.google.com/go/essentialcontacts v1.7.7
 	cloud.google.com/go/eventarc v1.18.0
 	cloud.google.com/go/firestore v1.22.0
@@ -37,7 +43,7 @@ require (
 	cloud.google.com/go/kms v1.26.0
 	cloud.google.com/go/logging v1.13.2
 	cloud.google.com/go/longrunning v0.9.0
-	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/managedkafka v1.0.0
 	cloud.google.com/go/memcache v1.11.7
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/modelarmor v1.0.0
@@ -48,7 +54,8 @@ require (
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.12.7
 	cloud.google.com/go/orgpolicy v1.15.1
-	cloud.google.com/go/osconfig v1.16.0
+	cloud.google.com/go/parametermanager v0.3.1
+	cloud.google.com/go/pubsub v1.50.1
 	cloud.google.com/go/pubsublite v1.8.2
 	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
 	cloud.google.com/go/redis v1.18.3
@@ -56,6 +63,7 @@ require (
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/speech v1.30.0
 	cloud.google.com/go/storage v1.59.2
+	cloud.google.com/go/vmwareengine v1.3.6
 	cloud.google.com/go/vpcaccess v1.8.7
 	cloud.google.com/go/workflows v1.14.3
 	cloud.google.com/go/workstations v1.1.6
@@ -84,6 +92,8 @@ require (
 	cloud.google.com/go/auth v0.18.2 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
+	cloud.google.com/go/osconfig v1.16.0 // indirect
+	cloud.google.com/go/pubsub/v2 v2.3.0 // indirect
 	cloud.google.com/go/resourcemanager v1.10.7 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0 // indirect
