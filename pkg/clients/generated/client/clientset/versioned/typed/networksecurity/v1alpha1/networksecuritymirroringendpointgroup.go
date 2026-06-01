@@ -22,15 +22,14 @@
 package v1alpha1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1alpha1"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // NetworkSecurityMirroringEndpointGroupsGetter has a method to return a NetworkSecurityMirroringEndpointGroupInterface.
@@ -41,158 +40,38 @@ type NetworkSecurityMirroringEndpointGroupsGetter interface {
 
 // NetworkSecurityMirroringEndpointGroupInterface has methods to work with NetworkSecurityMirroringEndpointGroup resources.
 type NetworkSecurityMirroringEndpointGroupInterface interface {
-	Create(ctx context.Context, networkSecurityMirroringEndpointGroup *v1alpha1.NetworkSecurityMirroringEndpointGroup, opts v1.CreateOptions) (*v1alpha1.NetworkSecurityMirroringEndpointGroup, error)
-	Update(ctx context.Context, networkSecurityMirroringEndpointGroup *v1alpha1.NetworkSecurityMirroringEndpointGroup, opts v1.UpdateOptions) (*v1alpha1.NetworkSecurityMirroringEndpointGroup, error)
-	UpdateStatus(ctx context.Context, networkSecurityMirroringEndpointGroup *v1alpha1.NetworkSecurityMirroringEndpointGroup, opts v1.UpdateOptions) (*v1alpha1.NetworkSecurityMirroringEndpointGroup, error)
+	Create(ctx context.Context, networkSecurityMirroringEndpointGroup *networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, opts v1.CreateOptions) (*networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, error)
+	Update(ctx context.Context, networkSecurityMirroringEndpointGroup *networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, opts v1.UpdateOptions) (*networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, networkSecurityMirroringEndpointGroup *networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, opts v1.UpdateOptions) (*networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.NetworkSecurityMirroringEndpointGroup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.NetworkSecurityMirroringEndpointGroupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkSecurityMirroringEndpointGroup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, err error)
 	NetworkSecurityMirroringEndpointGroupExpansion
 }
 
 // networkSecurityMirroringEndpointGroups implements NetworkSecurityMirroringEndpointGroupInterface
 type networkSecurityMirroringEndpointGroups struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, *networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupList]
 }
 
 // newNetworkSecurityMirroringEndpointGroups returns a NetworkSecurityMirroringEndpointGroups
 func newNetworkSecurityMirroringEndpointGroups(c *NetworksecurityV1alpha1Client, namespace string) *networkSecurityMirroringEndpointGroups {
 	return &networkSecurityMirroringEndpointGroups{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup, *networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupList](
+			"networksecuritymirroringendpointgroups",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup {
+				return &networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroup{}
+			},
+			func() *networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupList {
+				return &networksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupList{}
+			},
+		),
 	}
-}
-
-// Get takes name of the networkSecurityMirroringEndpointGroup, and returns the corresponding networkSecurityMirroringEndpointGroup object, and an error if there is any.
-func (c *networkSecurityMirroringEndpointGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkSecurityMirroringEndpointGroup, err error) {
-	result = &v1alpha1.NetworkSecurityMirroringEndpointGroup{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("networksecuritymirroringendpointgroups").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of NetworkSecurityMirroringEndpointGroups that match those selectors.
-func (c *networkSecurityMirroringEndpointGroups) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NetworkSecurityMirroringEndpointGroupList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.NetworkSecurityMirroringEndpointGroupList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("networksecuritymirroringendpointgroups").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested networkSecurityMirroringEndpointGroups.
-func (c *networkSecurityMirroringEndpointGroups) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("networksecuritymirroringendpointgroups").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a networkSecurityMirroringEndpointGroup and creates it.  Returns the server's representation of the networkSecurityMirroringEndpointGroup, and an error, if there is any.
-func (c *networkSecurityMirroringEndpointGroups) Create(ctx context.Context, networkSecurityMirroringEndpointGroup *v1alpha1.NetworkSecurityMirroringEndpointGroup, opts v1.CreateOptions) (result *v1alpha1.NetworkSecurityMirroringEndpointGroup, err error) {
-	result = &v1alpha1.NetworkSecurityMirroringEndpointGroup{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("networksecuritymirroringendpointgroups").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(networkSecurityMirroringEndpointGroup).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a networkSecurityMirroringEndpointGroup and updates it. Returns the server's representation of the networkSecurityMirroringEndpointGroup, and an error, if there is any.
-func (c *networkSecurityMirroringEndpointGroups) Update(ctx context.Context, networkSecurityMirroringEndpointGroup *v1alpha1.NetworkSecurityMirroringEndpointGroup, opts v1.UpdateOptions) (result *v1alpha1.NetworkSecurityMirroringEndpointGroup, err error) {
-	result = &v1alpha1.NetworkSecurityMirroringEndpointGroup{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("networksecuritymirroringendpointgroups").
-		Name(networkSecurityMirroringEndpointGroup.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(networkSecurityMirroringEndpointGroup).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *networkSecurityMirroringEndpointGroups) UpdateStatus(ctx context.Context, networkSecurityMirroringEndpointGroup *v1alpha1.NetworkSecurityMirroringEndpointGroup, opts v1.UpdateOptions) (result *v1alpha1.NetworkSecurityMirroringEndpointGroup, err error) {
-	result = &v1alpha1.NetworkSecurityMirroringEndpointGroup{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("networksecuritymirroringendpointgroups").
-		Name(networkSecurityMirroringEndpointGroup.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(networkSecurityMirroringEndpointGroup).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the networkSecurityMirroringEndpointGroup and deletes it. Returns an error if one occurs.
-func (c *networkSecurityMirroringEndpointGroups) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("networksecuritymirroringendpointgroups").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *networkSecurityMirroringEndpointGroups) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("networksecuritymirroringendpointgroups").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched networkSecurityMirroringEndpointGroup.
-func (c *networkSecurityMirroringEndpointGroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NetworkSecurityMirroringEndpointGroup, err error) {
-	result = &v1alpha1.NetworkSecurityMirroringEndpointGroup{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("networksecuritymirroringendpointgroups").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }
