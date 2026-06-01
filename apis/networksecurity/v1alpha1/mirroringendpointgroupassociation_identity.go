@@ -30,13 +30,13 @@ var (
 	_ identity.Resource   = &NetworkSecurityMirroringEndpointGroupAssociation{}
 )
 
-var MirroringEndpointGroupAssociationIdentityFormat = gcpurls.Template[MirroringEndpointGroupAssociationIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/mirroringEndpointGroupAssociations/{mirroringEndpointGroupAssociation}")
+var MirroringEndpointGroupAssociationIdentityFormat = gcpurls.Template[MirroringEndpointGroupAssociationIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/mirroringEndpointGroupAssociations/{mirroring_endpoint_group_association}")
 
 // +k8s:deepcopy-gen=false
 type MirroringEndpointGroupAssociationIdentity struct {
 	Project                           string
 	Location                          string
-	MirroringEndpointGroupAssociation string
+	MirroringEndpointGroupAssociation string `gcpurls:"mirroring_endpoint_group_association"`
 }
 
 func (i *MirroringEndpointGroupAssociationIdentity) String() string {
