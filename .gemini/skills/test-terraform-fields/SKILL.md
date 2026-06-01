@@ -3,28 +3,31 @@ name: test-terraform-fields
 description: Guides through validating, testing, generating golden files (HTTP logs and KRM objects), running tests against mockgcp or real GCP, and aligning mock behavior.
 ---
 
-# KCC Test Terraform Fields
+# KCC Test Terraform Fields (Agentic-Friendly Guide)
 
 This skill guides an automated agent or developer through testing, validating, and generating golden test assets (HTTP logs and KRM object configurations) when adding or modifying fields on Config Connector resources. It covers running tests against real GCP, recording the baseline behavior, running against MockGCP, and resolving mock discrepancies.
+
+---
 
 ## 1. Structure of Resource Fixture Tests
 
 KCC uses a golden file testing strategy for end-to-end (E2E) validation. The tests are defined under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
 
-A complete test fixture contains:
-- `create.yaml`: The primary KRM resource definition (what gets created first).
-- `dependencies.yaml` (optional): Resources that the primary resource depends on.
-- `update.yaml` (optional): Updates applied to the primary resource after initial creation.
-- `_http.log`: Golden HTTP request/response traffic log generated during E2E reconciliation.
-- `_generated_object_[testname].golden.yaml`: Golden file representing the final KRM object status/spec in the Kube API server.
-- `_generated_export_[testname].golden` (optional): Golden exported KRM representation.
+A complete test fixture directory contains:
+- **`create.yaml`**: The primary KRM resource definition (what gets created first). Ensure the resource has unique labels/names.
+- **`dependencies.yaml` (optional)**: Supporting resources (e.g. IAM policies, networks, service accounts) that the primary resource depends on.
+- **`update.yaml` (optional)**: The KRM resource definition with updates applied after initial creation.
+- **`_http.log`**: Golden HTTP/gRPC request/response traffic log generated during E2E reconciliation.
+- **`_generated_object_[testname].golden.yaml`**: Golden file representing the final KRM object status/spec in the Kube API server.
+- **`_generated_export_[testname].golden` (optional)**: Golden exported KRM representation.
 
 ---
 
 ## 2. Setting Up Test Cases
 
-1. Add or update the fields you want to test in the KRM YAML files under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
-2. Ensure any referenced resources or dependent credentials exist in `dependencies.yaml`.
+1. **Create Directory**: Create the directory `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
+2. **Define KRM files**: Add `create.yaml`, and optionally `dependencies.yaml` and `update.yaml`.
+3. **Verify Yaml Validation**: Ensure YAML files are valid Kubernetes manifests. Avoid any hardcoded project IDs or dynamic IDs (use placeholders if necessary, but KCC test runner resolves them).
 
 ---
 
@@ -32,22 +35,18 @@ A complete test fixture contains:
 
 To establish a baseline, run the tests against real GCP to produce golden logs.
 
-1. **Ensure GCP Credentials**: Ensure your local terminal environment is authenticated with a real GCP project (e.g., `gcloud auth application-default login`).
-2. **Run record-gcp**:
-   Use `hack/record-gcp` to run the test and write the golden outputs:
-   ```bash
-   hack/record-gcp <testname>
-   ```
-   *Alternative Go command:*
-   ```bash
-   E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]
-   ```
+1. **GCP Project & Credentials Check**:
+   - Ensure the terminal is authenticated (e.g. `gcloud auth application-default login`).
+   - KCC uses the Kubernetes namespace as the GCP project name by default. Ensure the test namespace maps to an active GCP project or is configured with appropriate annotations.
+2. **Run E2E Recorder**:
+   - Run `hack/record-gcp <testname>`.
+   - If the script fails, verify you have the permissions to create the resources in the GCP project.
 3. **Commit the Baseline**:
-   Commit the generated `_http.log` and `_generated_object_*.yaml` files before running against MockGCP to establish a clean git diff base:
-   ```bash
-   git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
-   git commit -m "Establish clean GCP golden logs for <testname>"
-   ```
+   - Stage and commit the generated `_http.log` and `_generated_object_*.yaml` files to establish a clean git diff base:
+     ```bash
+     git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
+     git commit -m "Establish clean GCP golden logs for <testname>"
+     ```
 
 ---
 
@@ -55,63 +54,66 @@ To establish a baseline, run the tests against real GCP to produce golden logs.
 
 To verify the mock implementation matches real GCP behavior:
 
-1. **Run compare-mock**:
-   Use `hack/compare-mock` to execute the tests against mockgcp:
-   ```bash
-   hack/compare-mock <testname>
-   ```
-   *Alternative Go command:*
-   ```bash
-   E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]
-   ```
-2. **Review Differences**:
-   Run `git diff` to see discrepancies between MockGCP behavior and real GCP:
-   ```bash
-   git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
-   ```
+1. **Run Mock Test**:
+   - Run `hack/compare-mock <testname>`.
+   - The test will execute using the MockGCP control plane.
+2. **Check for Differences**:
+   - Check if the command fails or if `git status` shows modifications to the golden files.
+   - Run `git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
 
 ---
 
-## 5. Aligning MockGCP with Real GCP
+## 5. Aligning MockGCP with Real GCP (Troubleshooting & Alignment)
 
-If the mock test fails or produces a diff against the baseline golden logs:
+If the mock test fails or produces a diff against the baseline golden logs, apply the following strategies:
 
-1. **Verify Mock Service Registration**:
-   - Ensure the proto for the service is in the `Makefile` and Go files are generated using `make`.
-   - Ensure the mock service is registered in `mockgcp/mock_http_roundtrip.go` and its handlers are correctly set up.
+### A. Enum Mismatch (e.g., Short vs. Proto Enum Names)
+- **Problem**: GCP REST API returns short enum values (e.g., `"OS_2022"`), but MockGCP protobuf definition expects full enum values (e.g., `"OS_VERSION_LTSC2022"`).
+- **Solution**: Intercept the request and response bodies in the mock HTTP Mux (`mockgcp/mock<service>/service.go`) to translate these names.
+- **Example in `mockgcp/mockcontainer/service.go`**:
+  ```go
+  // Intercept Request Body: OS_2022 -> OS_VERSION_LTSC2022
+  if r.Body != nil {
+      bodyBytes, err := io.ReadAll(r.Body)
+      if err == nil {
+          bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2022"`), []byte(`"OS_VERSION_LTSC2022"`))
+          r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+          r.ContentLength = int64(len(bodyBytes))
+      }
+  }
+  ```
 
-2. **Handle Output-Only/Server-Generated Fields**:
-   - If fields are generated by real GCP (e.g., project numbers, resource IDs, server-generated names, URLs), implement that logic in `mockgcp/mock<service>/<resource>.go` under `populate<Resource>Defaults` or the CRUD handlers.
-   - Match the exact generation patterns (prefix, trimming, hashing) found in the real `_http.log`.
+### B. Output-Only or Server-Generated Fields
+- **Problem**: Fields generated by real GCP (e.g. project numbers, server-assigned IDs, URLs) differ in the mock response.
+- **Solution**: Implement default value generation in the mock service CRUD handlers (`mockgcp/mock<service>/<resource>.go`). Ensure values match patterns expected by KCC (e.g., `projects/<project-id>/locations/<location>/...`).
 
-3. **Normalize Volatile Fields**:
-   - If values like timestamps, etags, dynamic IP addresses, or UUIDs are random, they must be normalized.
-   - Implement normalization rules in `mockgcp/mock<service>/normalize.go` using `Previsit`.
-   - **CRITICAL**: The `Previsit` method runs globally. To avoid corrupting golden files of unrelated services, **always scope the normalization rule to the specific service domain**:
-     ```go
-     func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-         if !strings.Contains(event.URL(), "myservice.googleapis.com") {
-             return
-         }
-         // Apply replacements here...
-     }
-     ```
-
-4. **Iterate**:
-   - Make small, incremental changes to the mock or normalizer.
-   - Re-run `hack/compare-mock <testname>`.
-   - Inspect `git diff` until there are no differences.
+### C. Normalizing Volatile Fields (timestamps, UUIDs, IPs)
+- **Problem**: Dynamic values change on every execution.
+- **Solution**: Add normalization rules in `mockgcp/mock<service>/normalize.go`.
+- **CRITICAL**: The `Previsit` normalizer runs globally. To prevent corrupting golden files of unrelated services, **always scope the normalization rule to the specific service domain**:
+  ```go
+  func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+      if !strings.Contains(event.URL(), "myservice.googleapis.com") {
+          return
+      }
+      // Apply replacements here...
+      // e.g. replacements.Replace(uuidRegex, "uuid-placeholder")
+  }
+  ```
 
 ---
 
-## 6. Formatting and Linting
+## 6. Pre-Submit Checks
 
-Before finalizing:
-1. Run formatting:
+Before finishing the task, the agent must run formatting and static analysis checks:
+
+1. **Formatting**:
    ```bash
    make fmt
    ```
-2. Run standard compilers and vet tools:
+2. **Go Vet**:
    ```bash
    go vet ./...
    ```
+3. **Verify Local Control Plane Webhooks**:
+   - If envtest webhook startup fails with validation errors under new Kubernetes control plane versions, ensure `admissionReviewVersions` in `pkg/webhook/manifests.go` includes both `"v1"` and `"v1beta1"`.
