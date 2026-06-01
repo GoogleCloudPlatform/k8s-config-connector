@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,14 +18,72 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.aiplatform.v1beta1
 // resource: VertexAIFeaturestore:Featurestore
+// resource: VertexAIReasoningEngine:ReasoningEngine
 // resource: VertexAIMetadataStore:MetadataStore
-// resource: VertexAIDataLabelingJob:DataLabelingJob
 // resource: VertexAIDeploymentResourcePool:DeploymentResourcePool
 // resource: VertexAIExampleStore:ExampleStore
+// resource: VertexAIDataLabelingJob:DataLabelingJob
 
 package v1alpha1
 
-import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+// +kcc:proto=google.cloud.aiplatform.v1.ActiveLearningConfig
+type ActiveLearningConfig struct {
+	// Max number of human labeled DataItems.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_count
+	MaxDataItemCount *int64 `json:"maxDataItemCount,omitempty"`
+
+	// Max percent of total DataItems for human labeling.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_percentage
+	MaxDataItemPercentage *int32 `json:"maxDataItemPercentage,omitempty"`
+
+	// Active learning data sampling config. For every active learning labeling
+	//  iteration, it will select a batch of data based on the sampling strategy.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.sample_config
+	SampleConfig *SampleConfig `json:"sampleConfig,omitempty"`
+
+	// CMLE training config. For every active learning labeling iteration, system
+	//  will train a machine learning model on CMLE. The trained model will be used
+	//  by data sampling algorithm to select DataItems.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.training_config
+	TrainingConfig *TrainingConfig `json:"trainingConfig,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec
 type AutoscalingMetricSpec struct {
@@ -130,6 +188,19 @@ type DedicatedResources struct {
 	FlexStart *FlexStart `json:"flexStart,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
+type ExampleStoreConfig struct {
+	// Required. The embedding model to be used for vector embedding.
+	//  Immutable.
+	//  Supported models:
+	//  * "textembedding-gecko@003"
+	//  * "text-embedding-004"
+	//  * "text-embedding-005"
+	//  * "text-multilingual-embedding-002"
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
+	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig
 type Featurestore_OnlineServingConfig struct {
 	// The number of nodes for the online store. The number of nodes doesn't
@@ -177,6 +248,15 @@ type FlexStart struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FlexStart.max_runtime_duration
 	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
 }
+
+/* unreachable type ListValue
+// +kcc:proto=google.protobuf.ListValue
+type ListValue struct {
+	// Repeated field of dynamically typed values.
+	// +kcc:proto:field=google.protobuf.ListValue.values
+	Values []Value `json:"values,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
 type MachineSpec struct {
@@ -254,6 +334,27 @@ type MetadataStore_MetadataStoreState struct {
 	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
 }
 
+// +kcc:proto=google.type.Money
+type Money struct {
+	// The three-letter currency code defined in ISO 4217.
+	// +kcc:proto:field=google.type.Money.currency_code
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+
+	// The whole units of the amount.
+	//  For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
+	// +kcc:proto:field=google.type.Money.units
+	Units *int64 `json:"units,omitempty"`
+
+	// Number of nano (10^-9) units of the amount.
+	//  The value must be between -999,999,999 and +999,999,999 inclusive.
+	//  If `units` is positive, `nanos` must be positive or zero.
+	//  If `units` is zero, `nanos` can be positive, zero, or negative.
+	//  If `units` is negative, `nanos` must be negative or zero.
+	//  For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	// +kcc:proto:field=google.type.Money.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
 type ReservationAffinity struct {
 	// Required. Specifies the reservation affinity type.
@@ -273,28 +374,6 @@ type ReservationAffinity struct {
 	Values []string `json:"values,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.ActiveLearningConfig
-type ActiveLearningConfig struct {
-	// Max number of human labeled DataItems.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_count
-	MaxDataItemCount *int64 `json:"maxDataItemCount,omitempty"`
-
-	// Max percent of total DataItems for human labeling.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.max_data_item_percentage
-	MaxDataItemPercentage *int32 `json:"maxDataItemPercentage,omitempty"`
-
-	// Active learning data sampling config. For every active learning labeling
-	//  iteration, it will select a batch of data based on the sampling strategy.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.sample_config
-	SampleConfig *SampleConfig `json:"sampleConfig,omitempty"`
-
-	// CMLE training config. For every active learning labeling iteration, system
-	//  will train a machine learning model on CMLE. The trained model will be used
-	//  by data sampling algorithm to select DataItems.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ActiveLearningConfig.training_config
-	TrainingConfig *TrainingConfig `json:"trainingConfig,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.SampleConfig
 type SampleConfig struct {
 	// The percentage of data needed to be labeled in the first batch.
@@ -312,6 +391,26 @@ type SampleConfig struct {
 	SampleStrategy *string `json:"sampleStrategy,omitempty"`
 }
 
+// +kcc:proto=google.rpc.Status
+type Status struct {
+	// The status code, which should be an enum value of
+	//  [google.rpc.Code][google.rpc.Code].
+	// +kcc:proto:field=google.rpc.Status.code
+	Code *int32 `json:"code,omitempty"`
+
+	// A developer-facing error message, which should be in English. Any
+	//  user-facing error message should be localized and sent in the
+	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+	//  by the client.
+	// +kcc:proto:field=google.rpc.Status.message
+	Message *string `json:"message,omitempty"`
+
+	// A list of messages that carry the error details.  There is a common set of
+	//  message types for APIs to use.
+	// +kcc:proto:field=google.rpc.Status.details
+	Details []Any `json:"details,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.TrainingConfig
 type TrainingConfig struct {
 	// The timeout hours for the CMLE training job, expressed in milli hours
@@ -320,50 +419,7 @@ type TrainingConfig struct {
 	TimeoutTrainingMilliHours *int64 `json:"timeoutTrainingMilliHours,omitempty"`
 }
 
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
-
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
-}
-
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
-}
-
+/* unreachable type Value
 // +kcc:proto=google.protobuf.Value
 type Value struct {
 	// Represents a null value.
@@ -390,89 +446,4 @@ type Value struct {
 	// +kcc:proto:field=google.protobuf.Value.list_value
 	ListValue *ListValue `json:"listValue,omitempty"`
 }
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
-}
-
-// +kcc:proto=google.type.Money
-type Money struct {
-	// The three-letter currency code defined in ISO 4217.
-	// +kcc:proto:field=google.type.Money.currency_code
-	CurrencyCode *string `json:"currencyCode,omitempty"`
-
-	// The whole units of the amount.
-	//  For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
-	// +kcc:proto:field=google.type.Money.units
-	Units *int64 `json:"units,omitempty"`
-
-	// Number of nano (10^-9) units of the amount.
-	//  The value must be between -999,999,999 and +999,999,999 inclusive.
-	//  If `units` is positive, `nanos` must be positive or zero.
-	//  If `units` is zero, `nanos` can be positive, zero, or negative.
-	//  If `units` is negative, `nanos` must be negative or zero.
-	//  For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
-	// +kcc:proto:field=google.type.Money.nanos
-	Nanos *int32 `json:"nanos,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStore
-type ExampleStore struct {
-	// Identifier. The resource name of the ExampleStore. This is a unique
-	//  identifier. Format:
-	//  projects/{project}/locations/{location}/exampleStores/{example_store}
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. Display name of the ExampleStore.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. Description of the ExampleStore.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. Example Store config.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.example_store_config
-	ExampleStoreConfig *ExampleStoreConfig `json:"exampleStoreConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
-type ExampleStoreConfig struct {
-	// Required. The embedding model to be used for vector embedding.
-	//  Immutable.
-	//  Supported models:
-	//  * "textembedding-gecko@003"
-	//  * "text-embedding-004"
-	//  * "text-embedding-005"
-	//  * "text-multilingual-embedding-002"
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
-	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ExampleStore
-type ExampleStoreObservedState struct {
-	// Output only. Timestamp when this ExampleStore was created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Timestamp when this ExampleStore was most recently updated.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStore.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
+*/

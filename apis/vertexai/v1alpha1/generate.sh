@@ -28,6 +28,7 @@ go run . generate-types \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAIFeaturestore:Featurestore \
+    --resource VertexAIReasoningEngine:ReasoningEngine \
     --resource VertexAIMetadataStore:MetadataStore \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
     --resource VertexAIExampleStore:ExampleStore
