@@ -22,8 +22,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -225,7 +225,7 @@ func populateUserDefaults(obj *pb.User) {
 		}
 	}
 
-	if obj.IamStatus == nil {
-		obj.IamStatus = PtrTo("IAM_STATUS_UNSPECIFIED")
-	}
+	// if obj.IamStatus == nil {
+	// 	obj.IamStatus = PtrTo("IAM_STATUS_UNSPECIFIED")
+	// }
 }

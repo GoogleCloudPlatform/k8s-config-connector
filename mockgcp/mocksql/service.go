@@ -17,16 +17,15 @@ package mocksql
 import (
 	"context"
 	"net/http"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
 )
 
 func init() {
@@ -66,29 +65,15 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterSqlDatabasesServiceHandler,
-		pb.RegisterSqlInstancesServiceHandler,
-		pb.RegisterSqlUsersServiceHandler,
-		pb.RegisterSqlOperationsServiceHandler)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			for errIdx := range error.Errors {
-				if strings.HasPrefix(error.Errors[errIdx].Message, "databaseInstance") {
-					error.Errors[errIdx].Message = "The Cloud SQL instance does not exist."
-					error.Errors[errIdx].Reason = "instanceDoesNotExist"
-				}
-			}
-			if strings.HasPrefix(error.Message, "databaseInstance") {
-				error.Message = "The Cloud SQL instance does not exist."
-				error.Status = ""
-			}
-		}
-	}
+	grpcMux.AddService(pb.NewSqlDatabasesServiceClient(conn), httptogrpc.EmitUnpopulated())
+	grpcMux.AddService(pb.NewSqlInstancesServiceClient(conn), httptogrpc.EmitUnpopulated())
+	grpcMux.AddService(pb.NewSqlUsersServiceClient(conn), httptogrpc.EmitUnpopulated())
+	grpcMux.AddService(pb.NewSqlOperationsServiceClient(conn), httptogrpc.EmitUnpopulated())
 
-	return mux, nil
+	return grpcMux, nil
 }
