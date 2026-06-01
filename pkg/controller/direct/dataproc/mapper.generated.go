@@ -30,24 +30,29 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+/* found existing non-generated mapping function "AcceleratorConfig_v1alpha1_FromProto", skipping
 func AcceleratorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krmdataprocv1alpha1.AcceleratorConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krmdataprocv1alpha1.AcceleratorConfig{}
-	out.AcceleratorTypeURI = direct.LazyPtr(in.GetAcceleratorTypeUri())
+	// MISSING: AcceleratorTypeURI
 	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "AcceleratorConfig_v1alpha1_ToProto", skipping
 func AcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.AcceleratorConfig) *pb.AcceleratorConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AcceleratorConfig{}
-	out.AcceleratorTypeUri = direct.ValueOf(in.AcceleratorTypeURI)
+	// MISSING: AcceleratorTypeURI
 	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "AutotuningConfig_v1alpha1_FromProto", skipping
 func AutotuningConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutotuningConfig) *krmdataprocv1alpha1.AutotuningConfig {
@@ -996,20 +1001,20 @@ func InstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx *direct.MapCo
 }
 */
 
-/*
-found existing non-generated mapping function "InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto", skipping
-
-	func InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
-		if in == nil {
-			return nil
-		}
-		out := &pb.InstanceGroupAutoscalingPolicyConfig{}
-		out.MinInstances = direct.ValueOf(in.MinInstances)
-		out.MaxInstances = direct.ValueOf(in.MaxInstances)
-		out.Weight = direct.ValueOf(in.Weight)
-		return out
+/* found existing non-generated mapping function "InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto", skipping
+func InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstanceGroupAutoscalingPolicyConfig) *pb.InstanceGroupAutoscalingPolicyConfig {
+	if in == nil {
+		return nil
 	}
+	out := &pb.InstanceGroupAutoscalingPolicyConfig{}
+	out.MinInstances = direct.ValueOf(in.MinInstances)
+	out.MaxInstances = direct.ValueOf(in.MaxInstances)
+	out.Weight = direct.ValueOf(in.Weight)
+	return out
+}
 */
+
+/* found existing non-generated mapping function "InstanceGroupConfig_v1alpha1_FromProto", skipping
 func InstanceGroupConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krmdataprocv1alpha1.InstanceGroupConfig {
 	if in == nil {
 		return nil
@@ -1018,8 +1023,8 @@ func InstanceGroupConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	out.NumInstances = direct.LazyPtr(in.GetNumInstances())
 	// MISSING: InstanceNames
 	// MISSING: InstanceReferences
-	out.ImageURI = direct.LazyPtr(in.GetImageUri())
-	out.MachineTypeURI = direct.LazyPtr(in.GetMachineTypeUri())
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
 	out.DiskConfig = DiskConfig_v1alpha1_FromProto(mapCtx, in.GetDiskConfig())
 	// MISSING: IsPreemptible
 	out.Preemptibility = direct.Enum_FromProto(mapCtx, in.GetPreemptibility())
@@ -1031,6 +1036,9 @@ func InstanceGroupConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	out.StartupConfig = StartupConfig_v1alpha1_FromProto(mapCtx, in.GetStartupConfig())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "InstanceGroupConfig_v1alpha1_ToProto", skipping
 func InstanceGroupConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceGroupConfig) *pb.InstanceGroupConfig {
 	if in == nil {
 		return nil
@@ -1039,8 +1047,8 @@ func InstanceGroupConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdata
 	out.NumInstances = direct.ValueOf(in.NumInstances)
 	// MISSING: InstanceNames
 	// MISSING: InstanceReferences
-	out.ImageUri = direct.ValueOf(in.ImageURI)
-	out.MachineTypeUri = direct.ValueOf(in.MachineTypeURI)
+	// MISSING: ImageURI
+	// MISSING: MachineTypeURI
 	out.DiskConfig = DiskConfig_v1alpha1_ToProto(mapCtx, in.DiskConfig)
 	// MISSING: IsPreemptible
 	out.Preemptibility = direct.Enum_ToProto[pb.InstanceGroupConfig_Preemptibility](mapCtx, in.Preemptibility)
@@ -1052,6 +1060,9 @@ func InstanceGroupConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdata
 	out.StartupConfig = StartupConfig_v1alpha1_ToProto(mapCtx, in.StartupConfig)
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "InstanceGroupConfigObservedState_v1alpha1_FromProto", skipping
 func InstanceGroupConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupConfig) *krmdataprocv1alpha1.InstanceGroupConfigObservedState {
 	if in == nil {
 		return nil
@@ -1065,7 +1076,7 @@ func InstanceGroupConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapConte
 	// MISSING: DiskConfig
 	out.IsPreemptible = direct.LazyPtr(in.GetIsPreemptible())
 	// MISSING: Preemptibility
-	out.ManagedGroupConfig = ManagedGroupConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetManagedGroupConfig())
+	out.ManagedGroupConfig = ManagedGroupConfig_v1alpha1_FromProto(mapCtx, in.GetManagedGroupConfig())
 	// MISSING: Accelerators
 	// MISSING: MinCPUPlatform
 	// MISSING: MinNumInstances
@@ -1073,6 +1084,9 @@ func InstanceGroupConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapConte
 	// MISSING: StartupConfig
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "InstanceGroupConfigObservedState_v1alpha1_ToProto", skipping
 func InstanceGroupConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceGroupConfigObservedState) *pb.InstanceGroupConfig {
 	if in == nil {
 		return nil
@@ -1086,7 +1100,7 @@ func InstanceGroupConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	// MISSING: DiskConfig
 	out.IsPreemptible = direct.ValueOf(in.IsPreemptible)
 	// MISSING: Preemptibility
-	out.ManagedGroupConfig = ManagedGroupConfigObservedState_v1alpha1_ToProto(mapCtx, in.ManagedGroupConfig)
+	out.ManagedGroupConfig = ManagedGroupConfig_v1alpha1_ToProto(mapCtx, in.ManagedGroupConfig)
 	// MISSING: Accelerators
 	// MISSING: MinCPUPlatform
 	// MISSING: MinNumInstances
@@ -1094,6 +1108,9 @@ func InstanceGroupConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	// MISSING: StartupConfig
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "InstanceReference_v1alpha1_FromProto", skipping
 func InstanceReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceReference) *krmdataprocv1alpha1.InstanceReference {
 	if in == nil {
 		return nil
@@ -1102,9 +1119,12 @@ func InstanceReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Inst
 	out.InstanceName = direct.LazyPtr(in.GetInstanceName())
 	out.InstanceID = direct.LazyPtr(in.GetInstanceId())
 	out.PublicKey = direct.LazyPtr(in.GetPublicKey())
-	out.PublicEciesKey = direct.LazyPtr(in.GetPublicEciesKey())
+	// MISSING: PublicEciesKey
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "InstanceReference_v1alpha1_ToProto", skipping
 func InstanceReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceReference) *pb.InstanceReference {
 	if in == nil {
 		return nil
@@ -1113,9 +1133,10 @@ func InstanceReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatapr
 	out.InstanceName = direct.ValueOf(in.InstanceName)
 	out.InstanceId = direct.ValueOf(in.InstanceID)
 	out.PublicKey = direct.ValueOf(in.PublicKey)
-	out.PublicEciesKey = direct.ValueOf(in.PublicEciesKey)
+	// MISSING: PublicEciesKey
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "JobPlacement_v1alpha1_FromProto", skipping
 func JobPlacement_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krmdataprocv1alpha1.JobPlacement {
@@ -1304,38 +1325,42 @@ func LoggingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LoggingC
 }
 */
 
-/*
-found existing non-generated mapping function "LoggingConfig_v1alpha1_ToProto", skipping
-
-	func LoggingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.LoggingConfig) *pb.LoggingConfig {
-		if in == nil {
-			return nil
-		}
-		out := &pb.LoggingConfig{}
-		// MISSING: DriverLogLevels
-		return out
-	}
-*/
-func ManagedGroupConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfigObservedState {
+/* found existing non-generated mapping function "LoggingConfig_v1alpha1_ToProto", skipping
+func LoggingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.LoggingConfig) *pb.LoggingConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmdataprocv1alpha1.ManagedGroupConfigObservedState{}
-	out.InstanceTemplateName = direct.LazyPtr(in.GetInstanceTemplateName())
-	out.InstanceGroupManagerName = direct.LazyPtr(in.GetInstanceGroupManagerName())
-	out.InstanceGroupManagerURI = direct.LazyPtr(in.GetInstanceGroupManagerUri())
+	out := &pb.LoggingConfig{}
+	// MISSING: DriverLogLevels
 	return out
 }
-func ManagedGroupConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ManagedGroupConfigObservedState) *pb.ManagedGroupConfig {
+*/
+
+/* found existing non-generated mapping function "ManagedGroupConfig_v1alpha1_FromProto", skipping
+func ManagedGroupConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.ManagedGroupConfig{}
+	out.InstanceTemplateName = direct.LazyPtr(in.GetInstanceTemplateName())
+	out.InstanceGroupManagerName = direct.LazyPtr(in.GetInstanceGroupManagerName())
+	// MISSING: InstanceGroupManagerURI
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ManagedGroupConfig_v1alpha1_ToProto", skipping
+func ManagedGroupConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ManagedGroupConfig) *pb.ManagedGroupConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ManagedGroupConfig{}
 	out.InstanceTemplateName = direct.ValueOf(in.InstanceTemplateName)
 	out.InstanceGroupManagerName = direct.ValueOf(in.InstanceGroupManagerName)
-	out.InstanceGroupManagerUri = direct.ValueOf(in.InstanceGroupManagerURI)
+	// MISSING: InstanceGroupManagerURI
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "PeripheralsConfig_v1alpha1_FromProto", skipping
 func PeripheralsConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PeripheralsConfig) *krmdataprocv1alpha1.PeripheralsConfig {

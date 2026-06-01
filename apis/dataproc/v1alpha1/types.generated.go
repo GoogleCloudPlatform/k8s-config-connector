@@ -25,6 +25,8 @@
 
 package v1alpha1
 
+/* found existing non-generated go type "AcceleratorConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.AcceleratorConfig
 type AcceleratorConfig struct {
 	// Full URL, partial URI, or short name of the accelerator type resource to
@@ -50,6 +52,7 @@ type AcceleratorConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.AcceleratorConfig.accelerator_count
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 }
+*/
 
 /* unreachable type AuthenticationConfig
 // +kcc:proto=google.cloud.dataproc.v1.AuthenticationConfig
@@ -473,6 +476,8 @@ type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
 }
 */
 
+/* found existing non-generated go type "InstanceGroupConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfig struct {
 	// Optional. The number of VM instances in the instance group.
@@ -573,6 +578,9 @@ type InstanceGroupConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.startup_config
 	StartupConfig *StartupConfig `json:"startupConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "InstanceReference", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceReference
 type InstanceReference struct {
@@ -592,6 +600,7 @@ type InstanceReference struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.public_ecies_key
 	PublicEciesKey *string `json:"publicEciesKey,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Job", skipping
 
@@ -769,7 +778,8 @@ type LoggingConfig struct {
 }
 */
 
-/* unreachable type ManagedGroupConfig
+/* found existing non-generated go type "ManagedGroupConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfig struct {
 }
@@ -1400,6 +1410,8 @@ type SparkSQLJob struct {
 }
 */
 
+/* found existing non-generated go type "StartupConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.StartupConfig
 type StartupConfig struct {
 	// Optional. The config setting to enable cluster creation/ updation to be
@@ -1411,6 +1423,7 @@ type StartupConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.StartupConfig.required_registration_fraction
 	RequiredRegistrationFraction *float64 `json:"requiredRegistrationFraction,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "TrinoJob", skipping
 
@@ -1636,6 +1649,8 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 }
 */
 
+/* found existing non-generated go type "InstanceGroupConfigObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfigObservedState struct {
 	// Output only. The list of instance names. Dataproc derives the names
@@ -1663,6 +1678,7 @@ type InstanceGroupConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.instance_flexibility_policy
 	InstanceFlexibilityPolicy *InstanceFlexibilityPolicyObservedState `json:"instanceFlexibilityPolicy,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Job", skipping
 
@@ -1751,6 +1767,8 @@ type JobStatusObservedState struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ManagedGroupConfig", skipping
+
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfigObservedState struct {
 	// Output only. The name of the Instance Template used for the Managed
@@ -1767,6 +1785,7 @@ type ManagedGroupConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ManagedGroupConfig.instance_group_manager_uri
 	InstanceGroupManagerURI *string `json:"instanceGroupManagerURI,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroup", skipping
 
