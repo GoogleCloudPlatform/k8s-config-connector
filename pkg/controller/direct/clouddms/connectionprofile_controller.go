@@ -65,6 +65,65 @@ func (m *modelConnectionProfile) AdapterForObject(ctx context.Context, op *direc
 	}
 	id := idObj.(*krm.CloudDMSConnectionProfileIdentity)
 
+	if obj.Spec.Mysql != nil && obj.Spec.Mysql.CloudSQLInstanceRef != nil {
+		if err := obj.Spec.Mysql.CloudSQLInstanceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, err
+		}
+	}
+	if obj.Spec.Postgresql != nil {
+		if obj.Spec.Postgresql.CloudSQLInstanceRef != nil {
+			if err := obj.Spec.Postgresql.CloudSQLInstanceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
+		}
+		if obj.Spec.Postgresql.PrivateServiceConnectConnectivity != nil && obj.Spec.Postgresql.PrivateServiceConnectConnectivity.ServiceAttachmentRef != nil {
+			if err := obj.Spec.Postgresql.PrivateServiceConnectConnectivity.ServiceAttachmentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
+		}
+	}
+	if obj.Spec.Alloydb != nil {
+		if obj.Spec.Alloydb.ClusterRef != nil {
+			if err := obj.Spec.Alloydb.ClusterRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
+		}
+		if obj.Spec.Alloydb.Settings != nil {
+			if obj.Spec.Alloydb.Settings.VPCNetworkRef != nil {
+				if err := obj.Spec.Alloydb.Settings.VPCNetworkRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+					return nil, err
+				}
+			}
+			if obj.Spec.Alloydb.Settings.EncryptionConfig != nil && obj.Spec.Alloydb.Settings.EncryptionConfig.KMSKeyRef != nil {
+				if err := obj.Spec.Alloydb.Settings.EncryptionConfig.KMSKeyRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+					return nil, err
+				}
+			}
+		}
+	}
+	if obj.Spec.Cloudsql != nil && obj.Spec.Cloudsql.Settings != nil {
+		if obj.Spec.Cloudsql.Settings.SourceRef != nil {
+			if err := obj.Spec.Cloudsql.Settings.SourceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
+		}
+		if obj.Spec.Cloudsql.Settings.KMSKeyRef != nil {
+			if err := obj.Spec.Cloudsql.Settings.KMSKeyRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
+		}
+		if obj.Spec.Cloudsql.Settings.IPConfig != nil && obj.Spec.Cloudsql.Settings.IPConfig.PrivateNetworkRef != nil {
+			if err := obj.Spec.Cloudsql.Settings.IPConfig.PrivateNetworkRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
+		}
+	}
+	if obj.Spec.Oracle != nil && obj.Spec.Oracle.PrivateConnectivity != nil && obj.Spec.Oracle.PrivateConnectivity.PrivateConnectionRef != nil {
+		if err := obj.Spec.Oracle.PrivateConnectivity.PrivateConnectionRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, err
+		}
+	}
+
 	// Get clouddms GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {

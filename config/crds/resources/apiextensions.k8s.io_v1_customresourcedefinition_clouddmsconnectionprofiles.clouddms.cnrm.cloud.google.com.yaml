@@ -814,6 +814,7 @@ spec:
                   metadata.name will be used.
                 type: string
             required:
+            - location
             - projectRef
             type: object
           status:

@@ -423,3 +423,41 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+func (r *ComputeServiceAttachmentRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeServiceAttachment",
+	}
+}
+
+func (r *ComputeServiceAttachmentRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *ComputeServiceAttachmentRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ComputeServiceAttachmentRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *ComputeServiceAttachmentRef) ValidateExternal(ref string) error {
+	// Let's assume it's valid if it's set
+	return nil
+}
+
+func (r *ComputeServiceAttachmentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r == nil {
+		return nil
+	}
+	if r.Name == "" && r.External == "" {
+		return fmt.Errorf("must specify either name or external on ComputeServiceAttachmentRef")
+	}
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external")
+	}
+	return ResolveComputeServiceAttachment(ctx, reader, defaultNamespace, r)
+}

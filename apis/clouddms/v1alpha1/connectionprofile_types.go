@@ -29,10 +29,12 @@ import (
 // +kcc:spec:proto=google.cloud.clouddms.v1.ConnectionProfile
 type CloudDMSConnectionProfileSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location *string `json:"location,omitempty"`
+	// +required
+	Location *string `json:"location"`
 
 	// The CloudDMSConnectionProfile name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

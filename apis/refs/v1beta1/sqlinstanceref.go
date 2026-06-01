@@ -152,3 +152,44 @@ func ResolveSQLInstanceID(ctx context.Context, reader client.Reader, obj *unstru
 
 	return "", fmt.Errorf("cannot find instance id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
 }
+
+func (r *SQLInstanceRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{
+		Group:   "sql.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SQLInstance",
+	}
+}
+
+func (r *SQLInstanceRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *SQLInstanceRef) GetExternal() string {
+	return r.External
+}
+
+func (r *SQLInstanceRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *SQLInstanceRef) ValidateExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" {
+		return nil
+	}
+	return fmt.Errorf("format of sqlinstance external=%q was not known (use projects/<projectId>/locations/<Location>/instances/<instanceName>)", ref)
+}
+
+func (r *SQLInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r == nil {
+		return nil
+	}
+	if r.Name == "" && r.External == "" {
+		return fmt.Errorf("must specify either name or external on instanceRef")
+	}
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external")
+	}
+	return Normalize(ctx, reader, r, defaultNamespace)
+}

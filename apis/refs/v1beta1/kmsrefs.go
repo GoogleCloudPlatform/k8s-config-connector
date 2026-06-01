@@ -101,3 +101,47 @@ func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, src clien
 	ref.External = selfLink
 	return ref, nil
 }
+
+func (r *KMSCryptoKeyRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{
+		Group:   "kms.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "KMSCryptoKey",
+	}
+}
+
+func (r *KMSCryptoKeyRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *KMSCryptoKeyRef) GetExternal() string {
+	return r.External
+}
+
+func (r *KMSCryptoKeyRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *KMSCryptoKeyRef) ValidateExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" && tokens[6] == "cryptoKeys" {
+		return nil
+	}
+	return fmt.Errorf("format of KMSCryptoKeyRef external=%q was not known (use projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key])", ref)
+}
+
+func (r *KMSCryptoKeyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r == nil {
+		return nil
+	}
+	if r.Name == "" && r.External == "" {
+		return fmt.Errorf("must specify either name or external on KMSCryptoKeyRef")
+	}
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external")
+	}
+	return NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		return selfLink
+	})
+}
