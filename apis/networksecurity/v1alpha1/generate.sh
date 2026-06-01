@@ -47,4 +47,15 @@ go run . generate-types \
   --resource NetworkSecurityMirroringDeploymentGroup:MirroringDeploymentGroup \
   --proto-source-path ${PROTO_OUT}
 
+go run . generate-mapper \
+  --multiversion \
+  --service google.cloud.networksecurity.v1 \
+  --service google.cloud.networksecurity.v1beta1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+  --proto-source-path ${PROTO_OUT}
+
 cd ${REPO_ROOT}
+
+# Fix the import for missing v1 protos in the Go SDK
+sed -i 's|"cloud.google.com/go/networksecurity/apiv1/networksecuritypb"|"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networksecurity/v1"|g' ${REPO_ROOT}/pkg/controller/direct/networksecurity/mapper.generated.go || true
+
