@@ -31,7 +31,7 @@ var _ refs.Ref = &NetworkSecurityBackendAuthenticationConfigRef{}
 // holds the GCP identifier for the KRM object.
 type NetworkSecurityBackendAuthenticationConfigRef struct {
 	// A reference to an externally managed NetworkSecurityBackendAuthenticationConfig resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backendAuthenticationConfigs/{{backendAuthenticationConfigID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backendAuthenticationConfigs/{{backend_authentication_config}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a NetworkSecurityBackendAuthenticationConfig resource.

@@ -29,7 +29,7 @@ type NetworkSecurityInterceptEndpointGroupSpec struct {
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The NetworkSecurityInterceptEndpointGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -160,6 +160,7 @@ type InterceptEndpointGroup_AssociationDetailsObservedState struct {
 
 // NetworkSecurityInterceptEndpointGroup is the Schema for the NetworkSecurityInterceptEndpointGroup API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type NetworkSecurityInterceptEndpointGroup struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

@@ -38,71 +38,26 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type NetworkSecurityBackendAuthenticationConfigSpec struct {
-	/* Optional. A reference to a certificatemanager.googleapis.com.Certificate
-	resource. This is a relative resource path following the form
-	"projects/{project}/locations/{location}/certificates/{certificate}".
-
-	Used by a BackendService to negotiate mTLS when the backend connection uses
-	TLS and the backend requests a client certificate. Must have a CLIENT_AUTH
-	scope. */
-	// +optional
-	ClientCertificateRef *v1alpha1.ResourceRef `json:"clientCertificateRef,omitempty"`
-
-	/* Optional. Free-text description of the resource. */
-	// +optional
-	Description *string `json:"description,omitempty"`
-
-	/* Set of label tags associated with the resource. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
+type NetworkSecurityMirroringDeploymentGroupSpec struct {
 	/* The location of this resource. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The NetworkSecurityBackendAuthenticationConfig name. If not given, the metadata.name will be used. */
+	/* The NetworkSecurityMirroringDeploymentGroup name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* Optional. A reference to a TrustConfig resource from the
-	certificatemanager.googleapis.com namespace. This is a relative resource
-	path following the form
-	"projects/{project}/locations/{location}/trustConfigs/{trust_config}".
-
-	A BackendService uses the chain of trust represented by this TrustConfig,
-	if specified, to validate the server certificates presented by the backend.
-	Required unless wellKnownRoots is set to PUBLIC_ROOTS. */
-	// +optional
-	TrustConfigRef *v1alpha1.ResourceRef `json:"trustConfigRef,omitempty"`
-
-	/* Well known roots to use for server certificate validation. */
-	// +optional
-	WellKnownRoots *string `json:"wellKnownRoots,omitempty"`
 }
 
-type BackendauthenticationconfigObservedStateStatus struct {
-	/* Output only. The timestamp when the resource was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
-
-	/* Output only. Etag of the resource. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
-
-	/* Output only. The timestamp when the resource was updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+type MirroringdeploymentgroupObservedStateStatus struct {
 }
 
-type NetworkSecurityBackendAuthenticationConfigStatus struct {
+type NetworkSecurityMirroringDeploymentGroupStatus struct {
 	/* Conditions represent the latest available observations of the
-	   NetworkSecurityBackendAuthenticationConfig's current state. */
+	   NetworkSecurityMirroringDeploymentGroup's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the NetworkSecurityBackendAuthenticationConfig resource in GCP. */
+	/* A unique specifier for the NetworkSecurityMirroringDeploymentGroup resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -112,12 +67,12 @@ type NetworkSecurityBackendAuthenticationConfigStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *BackendauthenticationconfigObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *MirroringdeploymentgroupObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecuritybackendauthenticationconfig;gcpnetworksecuritybackendauthenticationconfigs
+// +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecuritymirroringdeploymentgroup;gcpnetworksecuritymirroringdeploymentgroups
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
@@ -127,25 +82,25 @@ type NetworkSecurityBackendAuthenticationConfigStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// NetworkSecurityBackendAuthenticationConfig is the Schema for the networksecurity API
+// NetworkSecurityMirroringDeploymentGroup is the Schema for the networksecurity API
 // +k8s:openapi-gen=true
-type NetworkSecurityBackendAuthenticationConfig struct {
+type NetworkSecurityMirroringDeploymentGroup struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   NetworkSecurityBackendAuthenticationConfigSpec   `json:"spec,omitempty"`
-	Status NetworkSecurityBackendAuthenticationConfigStatus `json:"status,omitempty"`
+	Spec   NetworkSecurityMirroringDeploymentGroupSpec   `json:"spec,omitempty"`
+	Status NetworkSecurityMirroringDeploymentGroupStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// NetworkSecurityBackendAuthenticationConfigList contains a list of NetworkSecurityBackendAuthenticationConfig
-type NetworkSecurityBackendAuthenticationConfigList struct {
+// NetworkSecurityMirroringDeploymentGroupList contains a list of NetworkSecurityMirroringDeploymentGroup
+type NetworkSecurityMirroringDeploymentGroupList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []NetworkSecurityBackendAuthenticationConfig `json:"items"`
+	Items           []NetworkSecurityMirroringDeploymentGroup `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&NetworkSecurityBackendAuthenticationConfig{}, &NetworkSecurityBackendAuthenticationConfigList{})
+	SchemeBuilder.Register(&NetworkSecurityMirroringDeploymentGroup{}, &NetworkSecurityMirroringDeploymentGroupList{})
 }

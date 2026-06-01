@@ -110,6 +110,7 @@ type NetworkSecurityMirroringDeploymentObservedState struct {
 
 // NetworkSecurityMirroringDeployment is the Schema for the NetworkSecurityMirroringDeployment API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type NetworkSecurityMirroringDeployment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

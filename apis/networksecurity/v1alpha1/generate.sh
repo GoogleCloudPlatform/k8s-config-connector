@@ -40,9 +40,11 @@ go run . generate-types \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig \
   --resource NetworkSecurityInterceptDeployment:InterceptDeployment \
+  --resource NetworkSecurityInterceptDeploymentGroup:InterceptDeploymentGroup \
   --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup \
   --resource NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup \
   --resource NetworkSecurityMirroringDeployment:MirroringDeployment \
+  --resource NetworkSecurityMirroringDeploymentGroup:MirroringDeploymentGroup \
   --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}

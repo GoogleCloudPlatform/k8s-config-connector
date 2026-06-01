@@ -33,8 +33,10 @@ type NetworksecurityV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	NetworkSecurityBackendAuthenticationConfigsGetter
 	NetworkSecurityInterceptDeploymentsGetter
+	NetworkSecurityInterceptDeploymentGroupsGetter
 	NetworkSecurityInterceptEndpointGroupsGetter
 	NetworkSecurityMirroringDeploymentsGetter
+	NetworkSecurityMirroringDeploymentGroupsGetter
 	NetworkSecurityMirroringEndpointGroupsGetter
 }
 
@@ -51,12 +53,20 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeployments(name
 	return newNetworkSecurityInterceptDeployments(c, namespace)
 }
 
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeploymentGroups(namespace string) NetworkSecurityInterceptDeploymentGroupInterface {
+	return newNetworkSecurityInterceptDeploymentGroups(c, namespace)
+}
+
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptEndpointGroups(namespace string) NetworkSecurityInterceptEndpointGroupInterface {
 	return newNetworkSecurityInterceptEndpointGroups(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringDeployments(namespace string) NetworkSecurityMirroringDeploymentInterface {
 	return newNetworkSecurityMirroringDeployments(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringDeploymentGroups(namespace string) NetworkSecurityMirroringDeploymentGroupInterface {
+	return newNetworkSecurityMirroringDeploymentGroups(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringEndpointGroups(namespace string) NetworkSecurityMirroringEndpointGroupInterface {

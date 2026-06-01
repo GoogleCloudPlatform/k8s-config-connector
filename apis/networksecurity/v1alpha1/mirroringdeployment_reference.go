@@ -30,7 +30,7 @@ var _ refs.Ref = &NetworkSecurityMirroringDeploymentRef{}
 // holds the GCP identifier for the KRM object.
 type NetworkSecurityMirroringDeploymentRef struct {
 	// A reference to an externally managed NetworkSecurityMirroringDeployment resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringDeployments/{{mirroringdeployment}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringDeployments/{{mirroring_deployment}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a NetworkSecurityMirroringDeployment resource.
