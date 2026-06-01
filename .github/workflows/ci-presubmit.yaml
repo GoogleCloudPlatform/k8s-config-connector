@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/capture-pprof"
         run: |
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Free up disk space
@@ -98,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: ./dev/actions/cache-go
@@ -119,7 +119,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/run-linters"
         run: |
@@ -138,7 +138,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - uses: 'google-github-actions/setup-gcloud@v2'
         with:
@@ -161,7 +161,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-pause"
         run: |
@@ -181,7 +181,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-direct-iam"
         run: |
@@ -201,7 +201,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures"
         run: |
@@ -221,7 +221,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-accesscontextmanager"
         run: |
@@ -241,7 +241,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-aiplatform"
         run: |
@@ -261,7 +261,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-alloydb"
         run: |
@@ -281,7 +281,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-analytics"
         run: |
@@ -301,7 +301,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apigateway"
         run: |
@@ -321,7 +321,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apigee"
         run: |
@@ -341,7 +341,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apikeys"
         run: |
@@ -361,7 +361,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-appengine"
         run: |
@@ -381,7 +381,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apphub"
         run: |
@@ -401,7 +401,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-artifactregistry"
         run: |
@@ -421,7 +421,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-asset"
         run: |
@@ -441,7 +441,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-assuredworkloads"
         run: |
@@ -461,7 +461,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-backupdr"
         run: |
@@ -481,7 +481,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-batch"
         run: |
@@ -501,7 +501,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-beyondcorp"
         run: |
@@ -521,7 +521,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquery"
         run: |
@@ -541,7 +541,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigqueryanalyticshub"
         run: |
@@ -561,7 +561,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerybiglake"
         run: |
@@ -581,7 +581,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigqueryconnection"
         run: |
@@ -601,7 +601,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerydatapolicy"
         run: |
@@ -621,7 +621,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerydatatransfer"
         run: |
@@ -641,7 +641,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigqueryreservation"
         run: |
@@ -661,7 +661,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigtable"
         run: |
@@ -681,7 +681,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-billing"
         run: |
@@ -701,7 +701,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-billingbudgets"
         run: |
@@ -721,7 +721,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-binaryauthorization"
         run: |
@@ -741,7 +741,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-certificatemanager"
         run: |
@@ -761,7 +761,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudasset"
         run: |
@@ -781,7 +781,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudbuild"
         run: |
@@ -801,7 +801,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-clouddeploy"
         run: |
@@ -821,7 +821,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-clouddms"
         run: |
@@ -841,7 +841,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions"
         run: |
@@ -861,7 +861,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions2"
         run: |
@@ -881,7 +881,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudidentity"
         run: |
@@ -901,7 +901,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudids"
         run: |
@@ -921,7 +921,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudiot"
         run: |
@@ -941,7 +941,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudquota"
         run: |
@@ -961,7 +961,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudscheduler"
         run: |
@@ -981,7 +981,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudtasks"
         run: |
@@ -1001,7 +1001,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-colab"
         run: |
@@ -1021,7 +1021,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-composer"
         run: |
@@ -1041,7 +1041,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-compute"
         run: |
@@ -1061,7 +1061,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-configcontroller"
         run: |
@@ -1081,7 +1081,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-configdelivery"
         run: |
@@ -1101,7 +1101,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-container"
         run: |
@@ -1121,7 +1121,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-containeranalysis"
         run: |
@@ -1141,7 +1141,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-containerattached"
         run: |
@@ -1161,7 +1161,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datacatalog"
         run: |
@@ -1181,7 +1181,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataflow"
         run: |
@@ -1201,7 +1201,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataform"
         run: |
@@ -1221,7 +1221,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datafusion"
         run: |
@@ -1241,7 +1241,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataplex"
         run: |
@@ -1261,7 +1261,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataproc"
         run: |
@@ -1281,7 +1281,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datastore"
         run: |
@@ -1301,7 +1301,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datastream"
         run: |
@@ -1321,7 +1321,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-deploymentmanager"
         run: |
@@ -1341,7 +1341,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dialogflow"
         run: |
@@ -1361,7 +1361,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dialogflowcx"
         run: |
@@ -1381,7 +1381,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-discoveryengine"
         run: |
@@ -1401,7 +1401,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dlp"
         run: |
@@ -1421,7 +1421,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dns"
         run: |
@@ -1441,7 +1441,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-documentai"
         run: |
@@ -1461,7 +1461,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-edgecontainer"
         run: |
@@ -1481,7 +1481,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-edgenetwork"
         run: |
@@ -1501,7 +1501,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-essentialcontacts"
         run: |
@@ -1521,7 +1521,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-eventarc"
         run: |
@@ -1541,7 +1541,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-filestore"
         run: |
@@ -1561,7 +1561,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebase"
         run: |
@@ -1581,7 +1581,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebasedatabase"
         run: |
@@ -1601,7 +1601,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebasehosting"
         run: |
@@ -1621,7 +1621,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebasestorage"
         run: |
@@ -1641,7 +1641,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firestore"
         run: |
@@ -1661,7 +1661,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-gkebackup"
         run: |
@@ -1681,7 +1681,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-gkehub"
         run: |
@@ -1701,7 +1701,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-healthcare"
         run: |
@@ -1721,7 +1721,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-iam"
         run: |
@@ -1741,7 +1741,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-iap"
         run: |
@@ -1761,7 +1761,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-identityplatform"
         run: |
@@ -1781,7 +1781,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-kms"
         run: |
@@ -1801,7 +1801,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-logging"
         run: |
@@ -1821,7 +1821,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-managedkafka"
         run: |
@@ -1841,7 +1841,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-memcache"
         run: |
@@ -1861,7 +1861,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-memorystore"
         run: |
@@ -1881,7 +1881,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-metastore"
         run: |
@@ -1901,7 +1901,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-mlengine"
         run: |
@@ -1921,7 +1921,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-monitoring"
         run: |
@@ -1941,7 +1941,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-netapp"
         run: |
@@ -1961,7 +1961,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkconnectivity"
         run: |
@@ -1981,7 +1981,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkmanagement"
         run: |
@@ -2001,7 +2001,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networksecurity"
         run: |
@@ -2021,7 +2021,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkservices"
         run: |
@@ -2041,7 +2041,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-notebooks"
         run: |
@@ -2061,7 +2061,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-orgpolicy"
         run: |
@@ -2081,7 +2081,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-osconfig"
         run: |
@@ -2101,7 +2101,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-oslogin"
         run: |
@@ -2121,7 +2121,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-parametermanager"
         run: |
@@ -2141,7 +2141,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-privateca"
         run: |
@@ -2161,7 +2161,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-privilegedaccessmanager"
         run: |
@@ -2181,7 +2181,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-pubsub"
         run: |
@@ -2201,7 +2201,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-pubsublite"
         run: |
@@ -2221,7 +2221,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-recaptchaenterprise"
         run: |
@@ -2241,7 +2241,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-redis"
         run: |
@@ -2261,7 +2261,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-resourcemanager"
         run: |
@@ -2281,7 +2281,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-run"
         run: |
@@ -2301,7 +2301,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-secretmanager"
         run: |
@@ -2321,7 +2321,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-securesourcemanager"
         run: |
@@ -2341,7 +2341,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-securitycenter"
         run: |
@@ -2361,7 +2361,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-servicedirectory"
         run: |
@@ -2381,7 +2381,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-servicenetworking"
         run: |
@@ -2401,7 +2401,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-serviceusage"
         run: |
@@ -2421,7 +2421,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-sourcerepo"
         run: |
@@ -2441,7 +2441,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-spanner"
         run: |
@@ -2461,7 +2461,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-speech"
         run: |
@@ -2481,7 +2481,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-sql"
         run: |
@@ -2501,7 +2501,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-storage"
         run: |
@@ -2521,7 +2521,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-storagetransfer"
         run: |
@@ -2541,7 +2541,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-tags"
         run: |
@@ -2561,7 +2561,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-tpu"
         run: |
@@ -2581,7 +2581,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vertexai"
         run: |
@@ -2601,7 +2601,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vmwareengine"
         run: |
@@ -2621,7 +2621,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vpcaccess"
         run: |
@@ -2641,7 +2641,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workflowexecutions"
         run: |
@@ -2661,7 +2661,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workflows"
         run: |
@@ -2681,7 +2681,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workstations"
         run: |
@@ -2701,7 +2701,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-alloydb"
         run: |
@@ -2721,7 +2721,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-apigateway"
         run: |
@@ -2741,7 +2741,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-apigee"
         run: |
@@ -2761,7 +2761,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquery"
         run: |
@@ -2781,7 +2781,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigqueryconnection"
         run: |
@@ -2801,7 +2801,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquerydatapolicy"
         run: |
@@ -2821,7 +2821,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquerydatatransfer"
         run: |
@@ -2841,7 +2841,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-cloudbuild"
         run: |
@@ -2861,7 +2861,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-cloudidentity"
         run: |
@@ -2881,7 +2881,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-compute"
         run: |
@@ -2901,7 +2901,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-dataflow"
         run: |
@@ -2921,7 +2921,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-dataproc"
         run: |
@@ -2941,7 +2941,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-gkehub"
         run: |
@@ -2961,7 +2961,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-iam"
         run: |
@@ -2981,7 +2981,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-kms"
         run: |
@@ -3001,7 +3001,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-orgpolicy"
         run: |
@@ -3021,7 +3021,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-redis"
         run: |
@@ -3041,7 +3041,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-secretmanager"
         run: |
@@ -3061,7 +3061,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-spanner"
         run: |
@@ -3081,7 +3081,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-sql"
         run: |
@@ -3101,7 +3101,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-storage"
         run: |
@@ -3121,7 +3121,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-unclassified"
         run: |
@@ -3141,7 +3141,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-samples-workstations"
         run: |
@@ -3160,7 +3160,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-gcptracker"
         run: |
@@ -3179,7 +3179,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-preview"
         run: |
@@ -3199,7 +3199,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-scenarios-acquisition"
         run: |
@@ -3219,7 +3219,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-scenarios-gkehubfeaturemembership"
         run: |
@@ -3239,7 +3239,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-scenarios-powertool"
         run: |
@@ -3259,7 +3259,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-scenarios-unclassified"
         run: |
@@ -3278,7 +3278,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
       - uses: ./dev/actions/cache-go
@@ -3303,7 +3303,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-generated-files"
         run: |
@@ -3322,7 +3322,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: ./dev/actions/cache-go
