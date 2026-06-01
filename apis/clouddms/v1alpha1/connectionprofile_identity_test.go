@@ -9,7 +9,6 @@
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the Bullseye compiler or other tools.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
@@ -19,7 +18,7 @@ import (
 	"testing"
 )
 
-func TestConnectionProfileIdentity_FromExternal(t *testing.T) {
+func TestCloudDMSConnectionProfileIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name         string
 		ref          string
@@ -44,22 +43,22 @@ func TestConnectionProfileIdentity_FromExternal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &ConnectionProfileIdentity{}
+			i := &CloudDMSConnectionProfileIdentity{}
 			if err := i.FromExternal(tt.ref); (err != nil) != tt.wantErr {
-				t.Errorf("ConnectionProfileIdentity.FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("CloudDMSConnectionProfileIdentity.FromExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
 			if !tt.wantErr {
-				if i.parent.ProjectID != tt.wantProject {
-					t.Errorf("ConnectionProfileIdentity.FromExternal() ProjectID = %v, want %v", i.parent.ProjectID, tt.wantProject)
+				if i.Project != tt.wantProject {
+					t.Errorf("CloudDMSConnectionProfileIdentity.FromExternal() Project = %v, want %v", i.Project, tt.wantProject)
 				}
-				if i.parent.Location != tt.wantLocation {
-					t.Errorf("ConnectionProfileIdentity.FromExternal() Location = %v, want %v", i.parent.Location, tt.wantLocation)
+				if i.Location != tt.wantLocation {
+					t.Errorf("CloudDMSConnectionProfileIdentity.FromExternal() Location = %v, want %v", i.Location, tt.wantLocation)
 				}
-				if i.id != tt.wantID {
-					t.Errorf("ConnectionProfileIdentity.FromExternal() ID = %v, want %v", i.id, tt.wantID)
+				if i.ConnectionProfile != tt.wantID {
+					t.Errorf("CloudDMSConnectionProfileIdentity.FromExternal() ConnectionProfile = %v, want %v", i.ConnectionProfile, tt.wantID)
 				}
 				if got := i.String(); got != tt.ref {
-					t.Errorf("ConnectionProfileIdentity.String() = %v, want %v", got, tt.ref)
+					t.Errorf("CloudDMSConnectionProfileIdentity.String() = %v, want %v", got, tt.ref)
 				}
 			}
 		})

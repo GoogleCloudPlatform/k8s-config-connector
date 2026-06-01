@@ -17,110 +17,97 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ConnectionProfileIdentity defines the resource reference to CloudDMSConnectionProfile, which "External" field
-// holds the GCP identifier for the KRM object.
-type ConnectionProfileIdentity struct {
-	parent *ConnectionProfileParent
-	id     string
+var (
+	_ identity.IdentityV2 = &CloudDMSConnectionProfileIdentity{}
+	_ identity.Resource   = &CloudDMSConnectionProfile{}
+)
+
+var CloudDMSConnectionProfileIdentityFormat = gcpurls.Template[CloudDMSConnectionProfileIdentity]("datamigration.googleapis.com", "projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}")
+
+// +k8s:deepcopy-gen=false
+type CloudDMSConnectionProfileIdentity struct {
+	Project           string
+	Location          string
+	ConnectionProfile string
 }
 
-func (i *ConnectionProfileIdentity) String() string {
-	return i.parent.String() + "/connectionProfiles/" + i.id
+func (i *CloudDMSConnectionProfileIdentity) String() string {
+	return CloudDMSConnectionProfileIdentityFormat.ToString(*i)
 }
 
-func (i *ConnectionProfileIdentity) ID() string {
-	return i.id
-}
-
-func (i *ConnectionProfileIdentity) Parent() *ConnectionProfileParent {
-	return i.parent
-}
-
-type ConnectionProfileParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *ConnectionProfileParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// NewConnectionProfileIdentity builds a ConnectionProfileIdentity from the Config Connector ConnectionProfile object.
-func NewConnectionProfileIdentity(ctx context.Context, reader client.Reader, obj *CloudDMSConnectionProfile) (*ConnectionProfileIdentity, error) {
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *CloudDMSConnectionProfileIdentity) FromExternal(ref string) error {
+	parsed, match, err := CloudDMSConnectionProfileIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of CloudDMSConnectionProfile external=%q was not known (use %s): %w", ref, CloudDMSConnectionProfileIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of CloudDMSConnectionProfile external=%q was not known (use %s)", ref, CloudDMSConnectionProfileIdentityFormat.CanonicalForm())
 	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *CloudDMSConnectionProfileIdentity) Host() string {
+	return CloudDMSConnectionProfileIdentityFormat.Host()
+}
+
+func getIdentityFromCloudDMSConnectionProfileSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CloudDMSConnectionProfileIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &CloudDMSConnectionProfileIdentity{
+		Project:           projectID,
+		Location:          location,
+		ConnectionProfile: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *CloudDMSConnectionProfile) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromCloudDMSConnectionProfileSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseConnectionProfileExternal(externalRef)
-		if err != nil {
+		statusIdentity := &CloudDMSConnectionProfileIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change CloudDMSConnectionProfile identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-	return &ConnectionProfileIdentity{
-		parent: &ConnectionProfileParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
+
+	return specIdentity, nil
 }
 
-func ParseConnectionProfileExternal(external string) (parent *ConnectionProfileParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connectionProfiles" {
-		return nil, "", fmt.Errorf("format of CloudDMSConnectionProfile external=%q was not known (use projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionProfileID}})", external)
-	}
-	parent = &ConnectionProfileParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
-}
-
-func (i *ConnectionProfileIdentity) FromExternal(external string) error {
-	parent, resourceID, err := ParseConnectionProfileExternal(external)
-	if err != nil {
-		return err
-	}
-	i.parent = parent
-	i.id = resourceID
-	return nil
+// ExternalIdentifier implements identity.Resource
+func (obj *CloudDMSConnectionProfile) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
 }

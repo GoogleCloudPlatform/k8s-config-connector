@@ -59,10 +59,11 @@ func (m *modelConnectionProfile) AdapterForObject(ctx context.Context, op *direc
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewConnectionProfileIdentity(ctx, reader, obj)
+	idObj, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idObj.(*krm.CloudDMSConnectionProfileIdentity)
 
 	// Get clouddms GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
@@ -86,7 +87,7 @@ func (m *modelConnectionProfile) AdapterForURL(ctx context.Context, url string) 
 }
 
 type ConnectionProfileAdapter struct {
-	id        *krm.ConnectionProfileIdentity
+	id        *krm.CloudDMSConnectionProfileIdentity
 	gcpClient *gcp.DataMigrationClient
 	desired   *krm.CloudDMSConnectionProfile
 	actual    *pb.ConnectionProfile
@@ -126,8 +127,8 @@ func (a *ConnectionProfileAdapter) Create(ctx context.Context, createOp *directb
 	resource.Name = a.id.String()
 
 	req := &pb.CreateConnectionProfileRequest{
-		Parent:              a.id.Parent().String(),
-		ConnectionProfileId: a.id.ID(),
+		Parent:              "projects/" + a.id.Project + "/locations/" + a.id.Location,
+		ConnectionProfileId: a.id.ConnectionProfile,
 		ConnectionProfile:   resource,
 	}
 	op, err := a.gcpClient.CreateConnectionProfile(ctx, req)
@@ -226,8 +227,8 @@ func (a *ConnectionProfileAdapter) Export(ctx context.Context) (*unstructured.Un
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = direct.LazyPtr(a.id.Location)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
