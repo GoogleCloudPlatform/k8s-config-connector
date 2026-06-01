@@ -76,8 +76,8 @@ spec:
                   be at most 200 bytes long when encoded in UTF-8.'
                 type: string
               parentPolicyTagRef:
-                description: PolicyTagRef defines the resource reference to DataCatalogPolicyTag,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: DataCatalogPolicyTagRef is a reference to a DataCatalogPolicyTag
+                  resource.
                 oneOf:
                 - not:
                     required:
@@ -95,7 +95,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed DataCatalogPolicyTag
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policyTags/{{policytagID}}".
+                      resource. Should be in the format "projects/{project}/locations/{location}/taxonomies/{taxonomy}/policyTags/{policyTag}".
                     type: string
                   name:
                     description: The name of a DataCatalogPolicyTag resource.

@@ -543,7 +543,7 @@ func DataCatalogPolicyTagSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	if in.GetParentPolicyTag() != "" {
-		out.ParentPolicyTagRef = &krm.PolicyTagRef{External: in.GetParentPolicyTag()}
+		out.ParentPolicyTagRef = &krm.DataCatalogPolicyTagRef{External: in.GetParentPolicyTag()}
 	}
 	// MISSING: ChildPolicyTags
 	return out
