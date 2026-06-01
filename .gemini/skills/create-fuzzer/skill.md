@@ -43,7 +43,28 @@ This skill guides an automated agent through the process of implementing a round
      - **Not Yet Triaged/Unimplemented Fields:** Call `f.Unimplemented_NotYetTriaged(".field_name")` or other unimplemented helpers for fields that are not yet implemented by KCC.
    - **CRITICAL - Helper Wrappers Only**: Always use the wrapper helper functions (such as `f.SpecField()`, `f.StatusField()`, `f.Unimplemented_Identity()`) instead of directly manipulating the fields sets via `.Insert()` (e.g. do NOT use `f.SpecFields.Insert()`, `f.StatusFields.Insert()`, or `f.UnimplementedFields.Insert()`). This maintains clean api patterns and safety checks.
 
-5. **Verify with Fuzzer Tests**
+5. **Handling NoProto or Synthetic Resources**
+   - If the resource does not map directly to a single GCP protobuf message (e.g., if it is synthetic or represents sub-resources modeled as fields/slices on another resource), you must use a **NoProto Fuzzer**:
+     - **Define a Synthetic API Type:** Create a Go struct representing the API representation (e.g., `AccessContextManagerServicePerimeterResourceAPI`).
+     - **Implement NoProto Mappers:** Implement `_FromAPI` and `_ToAPI` functions for both Spec and Status to/from your synthetic API type.
+     - **Register and Configure the Fuzzer:** Use `fuzztesting.RegisterKRMFuzzer_NoProto` and `fuzztesting.NewKRMTypedFuzzer_NoProto` in `init()`:
+        ```go
+        func init() {
+            fuzztesting.RegisterKRMFuzzer_NoProto(fuzzResource())
+        }
+
+        func fuzzResource() fuzztesting.KRMFuzzer_NoProto {
+            f := fuzztesting.NewKRMTypedFuzzer_NoProto(&ResourceAPI{},
+                ResourceSpec_FromAPI, ResourceSpec_ToAPI,
+                ResourceStatus_FromAPI, ResourceStatus_ToAPI,
+            )
+            f.SpecField(".SomeField")
+            return f
+        }
+        ```
+     - **Register the Package:** Make sure the direct controller package is imported in `pkg/controller/direct/register/register.go` to ensure its `init()` function runs during fuzz testing.
+
+6. **Verify with Fuzzer Tests**
    - Ensure the package is registered centrally by adding an import of the package in `pkg/controller/direct/register/register.go`.
    - **Do NOT** create a separate test file (e.g. `<resource>_fuzzer_test.go`) for the fuzzer. All fuzzers are registered and executed centrally.
    - Run the fuzz tests quickly to verify your implementation:
