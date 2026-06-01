@@ -34,9 +34,9 @@ var NetworkSecurityInterceptEndpointGroupIdentityFormat = gcpurls.Template[Netwo
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityInterceptEndpointGroupIdentity struct {
-	Project                string
-	Location               string
-	Interceptendpointgroup string
+	Project                string `match:"project"`
+	Location               string `match:"location"`
+	Interceptendpointgroup string `match:"interceptendpointgroup"`
 }
 
 func (i *NetworkSecurityInterceptEndpointGroupIdentity) String() string {

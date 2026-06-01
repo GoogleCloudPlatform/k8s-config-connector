@@ -34,9 +34,9 @@ var NetworkSecurityInterceptDeploymentIdentityFormat = gcpurls.Template[NetworkS
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityInterceptDeploymentIdentity struct {
-	Project             string
-	Location            string
-	InterceptDeployment string
+	Project             string `match:"project"`
+	Location            string `match:"location"`
+	InterceptDeployment string `match:"interceptdeployment"`
 }
 
 func (i *NetworkSecurityInterceptDeploymentIdentity) String() string {

@@ -34,9 +34,9 @@ var NetworkSecurityBackendAuthenticationConfigIdentityFormat = gcpurls.Template[
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityBackendAuthenticationConfigIdentity struct {
-	Project                     string
-	Location                    string
-	BackendAuthenticationConfig string
+	Project                     string `match:"project"`
+	Location                    string `match:"location"`
+	BackendAuthenticationConfig string `match:"backendauthenticationconfig"`
 }
 
 func (i *NetworkSecurityBackendAuthenticationConfigIdentity) String() string {

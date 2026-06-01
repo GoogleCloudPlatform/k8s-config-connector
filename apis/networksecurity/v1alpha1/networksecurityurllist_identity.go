@@ -36,7 +36,7 @@ var NetworkSecurityUrlListIdentityFormat = gcpurls.Template[NetworkSecurityUrlLi
 type NetworkSecurityUrlListIdentity struct {
 	Project  string `match:"project"`
 	Location string `match:"location"`
-	UrlList  string `match:"url_list"`
+	UrlList  string `match:"urllist"`
 }
 
 func (i *NetworkSecurityUrlListIdentity) String() string {
