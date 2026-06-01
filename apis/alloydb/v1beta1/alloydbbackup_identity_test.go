@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@ package v1beta1
 
 import (
 	"testing"
-
-	"github.com/google/go-cmp/cmp"
 )
 
 func TestAlloyDBBackupIdentity_FromExternal(t *testing.T) {
@@ -61,8 +59,14 @@ func TestAlloyDBBackupIdentity_FromExternal(t *testing.T) {
 				return
 			}
 			if !tt.wantErr {
-				if diff := cmp.Diff(tt.want, i); diff != "" {
-					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
+				if i.Project != tt.want.Project {
+					t.Errorf("Project = %v, want %v", i.Project, tt.want.Project)
+				}
+				if i.Location != tt.want.Location {
+					t.Errorf("Location = %v, want %v", i.Location, tt.want.Location)
+				}
+				if i.Backup != tt.want.Backup {
+					t.Errorf("Backup = %v, want %v", i.Backup, tt.want.Backup)
 				}
 			}
 		})
