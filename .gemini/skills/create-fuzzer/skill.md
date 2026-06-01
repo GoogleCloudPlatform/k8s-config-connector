@@ -42,7 +42,9 @@ This skill guides an automated agent through the process of implementing a round
      - **Not Yet Triaged/Unimplemented Fields:** Call `f.Unimplemented_NotYetTriaged(".field_name")` or other unimplemented helpers for fields that are not yet implemented by KCC.
 
 5. **Verify with Fuzzer Tests**
-   - Run the fuzz tests quickly using:
+   - Ensure the package is registered centrally by adding an import of the package in `pkg/controller/direct/register/register.go`.
+   - **Do NOT** create a separate test file (e.g. `<resource>_fuzzer_test.go`) for the fuzzer. All fuzzers are registered and executed centrally.
+   - Run the fuzz tests quickly to verify your implementation:
      ```bash
      go test -count=1 -v ./pkg/fuzztesting/fuzztests/
      ```

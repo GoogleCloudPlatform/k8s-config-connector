@@ -24,5 +24,5 @@ This journal documents the specific details and learnings from creating and regi
    - Registered the `accesscontextmanager` package in `pkg/controller/direct/register/register.go` to ensure its fuzzer runs in the generic fuzz tests.
 
 ## Validation & Verification
-- Created a deterministic unit test in `pkg/controller/direct/accesscontextmanager/accesscontextmanageraccesspolicy_fuzzer_test.go` to fuzz 1000 iterations over both Spec and Status round-trips.
-- Running `go test -count=1 -v ./pkg/controller/direct/accesscontextmanager/` successfully passes.
+- Validated via central fuzzing engine.
+- Running `go test -count=1 -v ./pkg/fuzztesting/fuzztests/` successfully passes. No resource-specific test file was created, keeping aligned with KCC testing patterns.
