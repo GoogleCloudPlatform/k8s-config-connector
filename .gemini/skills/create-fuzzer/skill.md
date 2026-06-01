@@ -33,6 +33,7 @@ This skill guides an automated agent through the process of implementing a round
      - The Spec ToProto mapper
      - The Status ObservedState FromProto mapper
      - The Status ObservedState ToProto mapper
+   - Ensure the direct package is registered in `pkg/controller/direct/register/register.go` by adding an anonymous import in alphabetical order (e.g., `_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/<service>"`), otherwise its `init()` function will not be executed by the fuzz test suite.
 
 4. **Map Fuzzed Proto Fields**
    - Tell the fuzzer how fields map between Spec and Status in the proto:
