@@ -340,7 +340,7 @@ oneOf:
     - required: [folderRef]
     - required: [organizationRef]
 `
-		} else if kind == "LoggingLogView" && fieldPath == ".spec" {
+		} else if (kind == "LoggingLogView" || kind == "LoggingLogBucket") && fieldPath == ".spec" {
 			ruleYAML = `
 oneOf:
 - required: [billingAccountRef]
