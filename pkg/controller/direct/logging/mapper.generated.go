@@ -85,3 +85,27 @@ func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec)
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func LoggingLogViewSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogView) *krm.LoggingLogViewSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogViewSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	return out
+}
+func LoggingLogViewSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogViewSpec) *pb.LogView {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogView{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Filter = direct.ValueOf(in.Filter)
+	return out
+}

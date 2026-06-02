@@ -281,6 +281,7 @@ ensure:
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
 ready-pr: lint lint-custom manifests generate-go-client ensure fmt
+	python3 dev/tasks/generate_static_config.py
 
 # Should run all needed commands to prepare a release.
 .PHONY: release-check
