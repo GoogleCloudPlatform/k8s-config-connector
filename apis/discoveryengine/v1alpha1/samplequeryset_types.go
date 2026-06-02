@@ -26,6 +26,7 @@ var DiscoveryEngineSampleQuerySetGVK = GroupVersion.WithKind("DiscoveryEngineSam
 // +kcc:spec:proto=google.cloud.discoveryengine.v1.SampleQuerySet
 type DiscoveryEngineSampleQuerySetSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// Immutable. The location of this resource.
