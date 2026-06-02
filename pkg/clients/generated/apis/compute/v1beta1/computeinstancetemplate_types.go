@@ -331,8 +331,6 @@ type ComputeInstanceTemplateSpec struct {
 	// +optional
 	InstanceDescription *string `json:"instanceDescription,omitempty"`
 
-	Location string `json:"location"`
-
 	MachineType string `json:"machineType"`
 
 	// +optional
@@ -352,9 +350,6 @@ type ComputeInstanceTemplateSpec struct {
 
 	// +optional
 	NetworkPerformanceConfig *InstancetemplateNetworkPerformanceConfig `json:"networkPerformanceConfig,omitempty"`
-
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	// +optional
 	Region *string `json:"region,omitempty"`

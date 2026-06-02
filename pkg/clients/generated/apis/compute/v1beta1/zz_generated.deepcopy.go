@@ -4373,7 +4373,6 @@ func (in *ComputeInstanceTemplateSpec) DeepCopyInto(out *ComputeInstanceTemplate
 		*out = new(InstancetemplateNetworkPerformanceConfig)
 		**out = **in
 	}
-	out.ProjectRef = in.ProjectRef
 	if in.Region != nil {
 		in, out := &in.Region, &out.Region
 		*out = new(string)
