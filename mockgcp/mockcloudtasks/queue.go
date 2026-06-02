@@ -30,6 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/tasks/v2"
 )
@@ -235,6 +236,57 @@ func (s *MockService) parseQueueName(name string) (*queueName, error) {
 		return name, nil
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func (s *cloudTasks) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseQueueName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, fqn+"/iamPolicy", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return &iampb.Policy{
+				Etag: []byte("ACAB"),
+			}, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *cloudTasks) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseQueueName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String() + "/iamPolicy"
+
+	policy := proto.Clone(req.Policy).(*iampb.Policy)
+	policy.Etag = []byte("ACAB") // TODO: real etag
+
+	if err := s.storage.Update(ctx, fqn, policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, fqn, policy); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	return policy, nil
+}
+
+func (s *cloudTasks) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	return &iampb.TestIamPermissionsResponse{
+		Permissions: req.Permissions,
+	}, nil
 }
 
 // parseQueueParent parses a string into a queueParent.
