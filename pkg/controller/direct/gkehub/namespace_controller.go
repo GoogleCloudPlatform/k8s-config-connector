@@ -134,8 +134,8 @@ func (a *gkeHubNamespaceAdapter) Create(ctx context.Context, createOp *directbas
 		return mapCtx.Err()
 	}
 
-	parent := a.id.Parent().String()
-	op, err := a.hubClient.namespaceClientV1.Create(parent, desired).ScopeNamespaceId(a.id.ID()).Context(ctx).Do()
+	parent := krm.NewGKEHubScopeIdentity(a.id.Project, a.id.Location, a.id.Scope).String()
+	op, err := a.hubClient.namespaceClientV1.Create(parent, desired).ScopeNamespaceId(a.id.Namespace).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating GKEHubNamespace %q: %w", a.id.String(), err)
 	}
