@@ -24,8 +24,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
 var OrganizationGVK = schema.GroupVersionKind{
@@ -86,16 +84,6 @@ func (r *OrganizationRef) Normalize(ctx context.Context, reader client.Reader, d
 		return fmt.Errorf("must specify 'external' in 'organizationRef'")
 	}
 	return r.ValidateExternal(r.External)
-}
-
-// AsOrganizationRef converts a generic ResourceRef into a OrganizationRef.
-func AsOrganizationRef(in *deprecatedrefs.ResourceRef) *OrganizationRef {
-	if in == nil {
-		return nil
-	}
-	return &OrganizationRef{
-		External: in.External,
-	}
 }
 
 type OrganizationIdentity struct {

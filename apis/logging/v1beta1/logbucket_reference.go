@@ -42,6 +42,10 @@ type LoggingLogBucketRef struct {
 
 	// The namespace of a LoggingLogBucket resource.
 	Namespace string `json:"namespace,omitempty"`
+
+	// The kind of the LoggingLogBucket resource; optional but must be `LoggingLogBucket` if provided.
+	// +optional
+	Kind string `json:"kind,omitempty"`
 }
 
 func (r *LoggingLogBucketRef) GetGVK() schema.GroupVersionKind {
@@ -72,6 +76,11 @@ func (r *LoggingLogBucketRef) ValidateExternal(ref string) error {
 }
 
 func (r *LoggingLogBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.Kind != "" {
+		if r.Kind != LoggingLogBucketGVK.Kind {
+			return fmt.Errorf("kind is optional on loggingLogBucketRef reference, but must be %q if provided", LoggingLogBucketGVK.Kind)
+		}
+	}
 	if r.GetExternal() != "" {
 		return r.ValidateExternal(r.GetExternal())
 	}

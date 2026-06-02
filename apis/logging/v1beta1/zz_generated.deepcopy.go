@@ -22,7 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -349,7 +348,7 @@ func (in *LoggingLogMetricSpec) DeepCopyInto(out *LoggingLogMetricSpec) {
 	*out = *in
 	if in.LoggingLogBucketRef != nil {
 		in, out := &in.LoggingLogBucketRef, &out.LoggingLogBucketRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(LoggingLogBucketRef)
 		**out = **in
 	}
 	if in.BucketOptions != nil {

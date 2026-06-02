@@ -89,6 +89,10 @@ spec:
                     description: A reference to an externally managed LoggingLogBucket
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
                     type: string
+                  kind:
+                    description: The kind of the LoggingLogBucket resource; optional
+                      but must be `LoggingLogBucket` if provided.
+                    type: string
                   name:
                     description: The name of a LoggingLogBucket resource.
                     type: string
@@ -242,6 +246,10 @@ spec:
                   external:
                     description: A reference to an externally managed LoggingLogBucket
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
+                    type: string
+                  kind:
+                    description: The kind of the LoggingLogBucket resource; optional
+                      but must be `LoggingLogBucket` if provided.
                     type: string
                   name:
                     description: The name of a LoggingLogBucket resource.
