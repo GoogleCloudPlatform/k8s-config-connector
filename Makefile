@@ -52,7 +52,8 @@ all: test manager operator config-connector
 # Run tests
 .PHONY: test
 test: generate fmt vet manifests
-	./scripts/unit-test.sh
+	dev/ci/presubmits/unit-tests
+	dev/ci/presubmits/unit-tests-operator
 
 # Build config-connector binary
 .PHONY: config-connector
