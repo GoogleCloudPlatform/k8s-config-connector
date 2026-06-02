@@ -15,66 +15,19 @@
 package v1beta1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var LoggingLogViewGVK = GroupVersion.WithKind("LoggingLogView")
 
-type LoggingLogViewBillingAccountRef struct {
-	// The 'name' field of a billing account, when not managed by Config Connector.
-	// +optional
-	External string `json:"external,omitempty"`
-	// The 'name' field of a 'BillingAccount' resource.
-	// +optional
-	Name string `json:"name,omitempty"`
-	// The 'namespace' field of a 'BillingAccount' resource.
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type LoggingLogViewFolderRef struct {
-	// The 'name' field of a folder, when not managed by Config Connector.
-	// +optional
-	External string `json:"external,omitempty"`
-	// The 'name' field of a 'Folder' resource.
-	// +optional
-	Name string `json:"name,omitempty"`
-	// The 'namespace' field of a 'Folder' resource.
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type LoggingLogViewOrganizationRef struct {
-	// The 'name' field of an organization, when not managed by Config Connector.
-	// +optional
-	External string `json:"external,omitempty"`
-	// The 'name' field of an 'Organization' resource.
-	// +optional
-	Name string `json:"name,omitempty"`
-	// The 'namespace' field of an 'Organization' resource.
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type LoggingLogViewProjectRef struct {
-	// The 'name' field of a project, when not managed by Config Connector.
-	// +optional
-	External string `json:"external,omitempty"`
-	// The 'name' field of a 'Project' resource.
-	// +optional
-	Name string `json:"name,omitempty"`
-	// The 'namespace' field of a 'Project' resource.
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
 // LoggingLogViewSpec defines the desired state of LoggingLogView
 // +kcc:spec:proto=google.logging.v2.LogView
 type LoggingLogViewSpec struct {
 	/* Immutable. The BillingAccount that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
 	// +optional
-	BillingAccountRef *LoggingLogViewBillingAccountRef `json:"billingAccountRef,omitempty"`
+	BillingAccountRef *refs.BillingAccountRef `json:"billingAccountRef,omitempty"`
 
 	/* Immutable. */
 	BucketRef LoggingLogBucketRef `json:"bucketRef"`
@@ -89,7 +42,7 @@ type LoggingLogViewSpec struct {
 
 	/* Immutable. The Folder that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
 	// +optional
-	FolderRef *LoggingLogViewFolderRef `json:"folderRef,omitempty"`
+	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
 
 	/* Immutable. The location of the resource. The supported locations are: global, us-central1, us-east1, us-west1, asia-east1, europe-west1. */
 	// +optional
@@ -97,11 +50,11 @@ type LoggingLogViewSpec struct {
 
 	/* Immutable. The Organization that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
 	// +optional
-	OrganizationRef *LoggingLogViewOrganizationRef `json:"organizationRef,omitempty"`
+	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
 	// +optional
-	ProjectRef *LoggingLogViewProjectRef `json:"projectRef,omitempty"`
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
