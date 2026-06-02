@@ -472,20 +472,20 @@ func BackendServiceFailoverPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, i
 }
 */
 
-/*
-found existing non-generated mapping function "BackendServiceFailoverPolicy_v1beta1_ToProto", skipping
-
-	func BackendServiceFailoverPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceFailoverPolicy) *pb.BackendServiceFailoverPolicy {
-		if in == nil {
-			return nil
-		}
-		out := &pb.BackendServiceFailoverPolicy{}
-		out.DisableConnectionDrainOnFailover = in.DisableConnectionDrainOnFailover
-		out.DropTrafficIfUnhealthy = in.DropTrafficIfUnhealthy
-		out.FailoverRatio = in.FailoverRatio
-		return out
+/* found existing non-generated mapping function "BackendServiceFailoverPolicy_v1beta1_ToProto", skipping
+func BackendServiceFailoverPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceFailoverPolicy) *pb.BackendServiceFailoverPolicy {
+	if in == nil {
+		return nil
 	}
+	out := &pb.BackendServiceFailoverPolicy{}
+	out.DisableConnectionDrainOnFailover = in.DisableConnectionDrainOnFailover
+	out.DropTrafficIfUnhealthy = in.DropTrafficIfUnhealthy
+	out.FailoverRatio = in.FailoverRatio
+	return out
+}
 */
+
+/* found existing non-generated mapping function "BackendServiceHttpCookie_v1beta1_FromProto", skipping
 func BackendServiceHttpCookie_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ConsistentHashLoadBalancerSettingsHttpCookie) *krm.BackendServiceHttpCookie {
 	if in == nil {
 		return nil
@@ -497,6 +497,9 @@ func BackendServiceHttpCookie_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	// (near miss): "TTL" vs "Ttl"
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendServiceHttpCookie_v1beta1_ToProto", skipping
 func BackendServiceHttpCookie_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceHttpCookie) *pb.ConsistentHashLoadBalancerSettingsHttpCookie {
 	if in == nil {
 		return nil
@@ -508,6 +511,9 @@ func BackendServiceHttpCookie_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	// (near miss): "TTL" vs "Ttl"
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendServiceIap_v1beta1_FromProto", skipping
 func BackendServiceIap_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceIAP) *krm.BackendServiceIap {
 	if in == nil {
 		return nil
@@ -522,6 +528,9 @@ func BackendServiceIap_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Backe
 	// (near miss): "OAUTH2ClientSecretSha256" vs "Oauth2ClientSecretSha256"
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BackendServiceIap_v1beta1_ToProto", skipping
 func BackendServiceIap_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceIap) *pb.BackendServiceIAP {
 	if in == nil {
 		return nil
@@ -536,6 +545,7 @@ func BackendServiceIap_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Backen
 	// (near miss): "OAUTH2ClientSecretSha256" vs "Oauth2ClientSecretSha256"
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "BackendServiceLogConfig_v1beta1_FromProto", skipping
 func BackendServiceLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceLogConfig) *krm.BackendServiceLogConfig {
@@ -775,75 +785,75 @@ func ComputeBackendServiceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeBackendServiceSpec_v1beta1_ToProto", skipping
-
-	func ComputeBackendServiceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendServiceSpec) *pb.BackendService {
-		if in == nil {
-			return nil
-		}
-		out := &pb.BackendService{}
-		// MISSING: AffinityCookieTTLSec
-		// (near miss): "AffinityCookieTTLSec" vs "AffinityCookieTtlSec"
-		// MISSING: Backends
-		// MISSING: CDNPolicy
-		// (near miss): "CDNPolicy" vs "CdnPolicy"
-		out.CircuitBreakers = BackendServiceCircuitBreakers_v1beta1_ToProto(mapCtx, in.CircuitBreakers)
-		out.CompressionMode = in.CompressionMode
-		// MISSING: ConnectionDraining
-		out.ConnectionTrackingPolicy = BackendServiceConnectionTrackingPolicy_v1beta1_ToProto(mapCtx, in.ConnectionTrackingPolicy)
-		out.ConsistentHash = BackendServiceConsistentHash_v1beta1_ToProto(mapCtx, in.ConsistentHash)
-		// MISSING: CreationTimestamp
-		// MISSING: CustomMetrics
-		out.CustomRequestHeaders = in.CustomRequestHeaders
-		out.CustomResponseHeaders = in.CustomResponseHeaders
-		out.Description = in.Description
-		if in.EdgeSecurityPolicyRef != nil {
-			out.EdgeSecurityPolicy = &in.EdgeSecurityPolicyRef.External
-		}
-		// MISSING: EnableCDN
-		// (near miss): "EnableCDN" vs "EnableCdn"
-		// MISSING: ExternalManagedMigrationState
-		// MISSING: ExternalManagedMigrationTestingPercentage
-		out.FailoverPolicy = BackendServiceFailoverPolicy_v1beta1_ToProto(mapCtx, in.FailoverPolicy)
-		// MISSING: Fingerprint
-		// MISSING: HaPolicy
-		out.HealthChecks = ComputeBackendServiceSpec_HealthChecks_ToProto(mapCtx, in.HealthChecks)
-		// MISSING: IAP
-		// (near miss): "IAP" vs "Iap"
-		// MISSING: ID
-		// MISSING: IPAddressSelectionPolicy
-		// MISSING: Kind
-		out.LoadBalancingScheme = in.LoadBalancingScheme
-		out.LocalityLbPolicies = direct.Slice_ToProto(mapCtx, in.LocalityLbPolicies, BackendServiceLocalityLbPolicies_v1beta1_ToProto)
-		out.LocalityLbPolicy = in.LocalityLbPolicy
-		out.LogConfig = BackendServiceLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
-		// MISSING: MaxStreamDuration
-		// MISSING: Metadatas
-		// MISSING: Name
-		if in.NetworkRef != nil {
-			out.Network = &in.NetworkRef.External
-		}
-		out.OutlierDetection = BackendServiceOutlierDetection_v1beta1_ToProto(mapCtx, in.OutlierDetection)
-		// MISSING: Params
-		// MISSING: Port
-		out.PortName = in.PortName
-		out.Protocol = in.Protocol
-		// MISSING: Region
-		out.SecurityPolicy = in.SecurityPolicy
-		out.SecuritySettings = BackendServiceSecuritySettings_v1beta1_ToProto(mapCtx, in.SecuritySettings)
-		// MISSING: SelfLink
-		// MISSING: ServiceBindings
-		// MISSING: ServiceLbPolicy
-		out.SessionAffinity = in.SessionAffinity
-		// MISSING: StrongSessionAffinityCookie
-		out.Subsetting = BackendServiceSubsetting_v1beta1_ToProto(mapCtx, in.Subsetting)
-		out.TimeoutSec = in.TimeoutSec
-		// MISSING: TLSSettings
-		// MISSING: UsedBy
-		return out
+/* found existing non-generated mapping function "ComputeBackendServiceSpec_v1beta1_ToProto", skipping
+func ComputeBackendServiceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendServiceSpec) *pb.BackendService {
+	if in == nil {
+		return nil
 	}
+	out := &pb.BackendService{}
+	// MISSING: AffinityCookieTTLSec
+	// (near miss): "AffinityCookieTTLSec" vs "AffinityCookieTtlSec"
+	// MISSING: Backends
+	// MISSING: CDNPolicy
+	// (near miss): "CDNPolicy" vs "CdnPolicy"
+	out.CircuitBreakers = BackendServiceCircuitBreakers_v1beta1_ToProto(mapCtx, in.CircuitBreakers)
+	out.CompressionMode = in.CompressionMode
+	// MISSING: ConnectionDraining
+	out.ConnectionTrackingPolicy = BackendServiceConnectionTrackingPolicy_v1beta1_ToProto(mapCtx, in.ConnectionTrackingPolicy)
+	out.ConsistentHash = BackendServiceConsistentHash_v1beta1_ToProto(mapCtx, in.ConsistentHash)
+	// MISSING: CreationTimestamp
+	// MISSING: CustomMetrics
+	out.CustomRequestHeaders = in.CustomRequestHeaders
+	out.CustomResponseHeaders = in.CustomResponseHeaders
+	out.Description = in.Description
+	if in.EdgeSecurityPolicyRef != nil {
+		out.EdgeSecurityPolicy = &in.EdgeSecurityPolicyRef.External
+	}
+	// MISSING: EnableCDN
+	// (near miss): "EnableCDN" vs "EnableCdn"
+	// MISSING: ExternalManagedMigrationState
+	// MISSING: ExternalManagedMigrationTestingPercentage
+	out.FailoverPolicy = BackendServiceFailoverPolicy_v1beta1_ToProto(mapCtx, in.FailoverPolicy)
+	// MISSING: Fingerprint
+	// MISSING: HaPolicy
+	out.HealthChecks = ComputeBackendServiceSpec_HealthChecks_ToProto(mapCtx, in.HealthChecks)
+	// MISSING: IAP
+	// (near miss): "IAP" vs "Iap"
+	// MISSING: ID
+	// MISSING: IPAddressSelectionPolicy
+	// MISSING: Kind
+	out.LoadBalancingScheme = in.LoadBalancingScheme
+	out.LocalityLbPolicies = direct.Slice_ToProto(mapCtx, in.LocalityLbPolicies, BackendServiceLocalityLbPolicies_v1beta1_ToProto)
+	out.LocalityLbPolicy = in.LocalityLbPolicy
+	out.LogConfig = BackendServiceLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	// MISSING: MaxStreamDuration
+	// MISSING: Metadatas
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.OutlierDetection = BackendServiceOutlierDetection_v1beta1_ToProto(mapCtx, in.OutlierDetection)
+	// MISSING: Params
+	// MISSING: Port
+	out.PortName = in.PortName
+	out.Protocol = in.Protocol
+	// MISSING: Region
+	out.SecurityPolicy = in.SecurityPolicy
+	out.SecuritySettings = BackendServiceSecuritySettings_v1beta1_ToProto(mapCtx, in.SecuritySettings)
+	// MISSING: SelfLink
+	// MISSING: ServiceBindings
+	// MISSING: ServiceLbPolicy
+	out.SessionAffinity = in.SessionAffinity
+	// MISSING: StrongSessionAffinityCookie
+	out.Subsetting = BackendServiceSubsetting_v1beta1_ToProto(mapCtx, in.Subsetting)
+	out.TimeoutSec = in.TimeoutSec
+	// MISSING: TLSSettings
+	// MISSING: UsedBy
+	return out
+}
 */
+
+/* found existing non-generated mapping function "ComputeBackendServiceStatus_v1beta1_FromProto", skipping
 func ComputeBackendServiceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendService) *krm.ComputeBackendServiceStatus {
 	if in == nil {
 		return nil
@@ -901,6 +911,9 @@ func ComputeBackendServiceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: UsedBy
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeBackendServiceStatus_v1beta1_ToProto", skipping
 func ComputeBackendServiceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendServiceStatus) *pb.BackendService {
 	if in == nil {
 		return nil
@@ -958,6 +971,7 @@ func ComputeBackendServiceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: UsedBy
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {

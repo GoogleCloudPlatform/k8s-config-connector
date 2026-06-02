@@ -1099,14 +1099,10 @@ type ComputeBackendServiceStatus struct {
 	Fingerprint *string `json:"fingerprint,omitempty"`
 
 	// +optional
-	// +kcc:proto:field=google.cloud.compute.v1.BackendService.id
-	// +kcc:proto:field=google.cloud.compute.v1.BackendService.id
-	// +kcc:proto:field=google.cloud.compute.v1.BackendService.id
 	// The unique identifier for the resource. This identifier is defined by the server.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendService.id
 	GeneratedId *int `json:"generatedId,omitempty"`
 
-	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 

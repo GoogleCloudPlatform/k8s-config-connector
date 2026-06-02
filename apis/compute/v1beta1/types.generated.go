@@ -535,7 +535,8 @@ type BackendService struct {
 }
 */
 
-/* unreachable type BackendServiceCDNPolicy
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendServiceCdnPolicy", skipping
+
 // +kcc:proto=google.cloud.compute.v1.BackendServiceCdnPolicy
 type BackendServiceCDNPolicy struct {
 	// Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings.

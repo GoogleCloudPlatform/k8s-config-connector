@@ -625,7 +625,6 @@ func ComputeBackendServiceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.ComputeBackendServiceSpec{}
-	// MISSING: AffinityCookieTTLSec
 
 	if in.AffinityCookieTtlSec != nil {
 		v := int(*in.AffinityCookieTtlSec)
@@ -636,66 +635,40 @@ func ComputeBackendServiceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out.EnableCdn = in.EnableCDN
 	out.Iap = BackendServiceIap_v1beta1_FromProto(mapCtx, in.GetIap())
 	out.ResourceID = in.Name
-	// (near miss): "AffinityCookieTTLSec" vs "AffinityCookieTtlSec"
-	// MISSING: Backends
-	// MISSING: CDNPolicy
-	// (near miss): "CDNPolicy" vs "CdnPolicy"
 	out.CircuitBreakers = BackendServiceCircuitBreakers_v1beta1_FromProto(mapCtx, in.GetCircuitBreakers())
 	out.CompressionMode = in.CompressionMode
-	// MISSING: ConnectionDraining
+	if in.ConnectionDraining != nil && in.ConnectionDraining.DrainingTimeoutSec != nil {
+		v := int(*in.ConnectionDraining.DrainingTimeoutSec)
+		out.ConnectionDrainingTimeoutSec = &v
+	}
 	out.ConnectionTrackingPolicy = BackendServiceConnectionTrackingPolicy_v1beta1_FromProto(mapCtx, in.GetConnectionTrackingPolicy())
 	out.ConsistentHash = BackendServiceConsistentHash_v1beta1_FromProto(mapCtx, in.GetConsistentHash())
-	// MISSING: CreationTimestamp
-	// MISSING: CustomMetrics
 	out.CustomRequestHeaders = in.CustomRequestHeaders
 	out.CustomResponseHeaders = in.CustomResponseHeaders
 	out.Description = in.Description
 	if in.GetEdgeSecurityPolicy() != "" {
 		out.EdgeSecurityPolicyRef = &refsv1beta1.ComputeSecurityPolicyRef{External: in.GetEdgeSecurityPolicy()}
 	}
-	// MISSING: EnableCDN
-	// (near miss): "EnableCDN" vs "EnableCdn"
-	// MISSING: ExternalManagedMigrationState
-	// MISSING: ExternalManagedMigrationTestingPercentage
 	out.FailoverPolicy = BackendServiceFailoverPolicy_v1beta1_FromProto(mapCtx, in.GetFailoverPolicy())
-	// MISSING: Fingerprint
-	// MISSING: HaPolicy
 	out.HealthChecks = ComputeBackendServiceSpec_HealthChecks_FromProto(mapCtx, in.HealthChecks)
-	// MISSING: IAP
-	// (near miss): "IAP" vs "Iap"
-	// MISSING: ID
-	// MISSING: IPAddressSelectionPolicy
-	// MISSING: Kind
 	out.LoadBalancingScheme = in.LoadBalancingScheme
 	out.LocalityLbPolicies = direct.Slice_FromProto(mapCtx, in.LocalityLbPolicies, BackendServiceLocalityLbPolicies_v1beta1_FromProto)
 	out.LocalityLbPolicy = in.LocalityLbPolicy
 	out.LogConfig = BackendServiceLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
-	// MISSING: MaxStreamDuration
-	// MISSING: Metadatas
-	// MISSING: Name
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.OutlierDetection = BackendServiceOutlierDetection_v1beta1_FromProto(mapCtx, in.GetOutlierDetection())
-	// MISSING: Params
-	// MISSING: Port
 	out.PortName = in.PortName
 	out.Protocol = in.Protocol
-	// MISSING: Region
 	out.SecurityPolicy = in.SecurityPolicy
 	out.SecuritySettings = BackendServiceSecuritySettings_v1beta1_FromProto(mapCtx, in.GetSecuritySettings())
-	// MISSING: SelfLink
-	// MISSING: ServiceBindings
-	// MISSING: ServiceLbPolicy
 	out.SessionAffinity = in.SessionAffinity
-	// MISSING: StrongSessionAffinityCookie
 	out.Subsetting = BackendServiceSubsetting_v1beta1_FromProto(mapCtx, in.GetSubsetting())
 	if in.TimeoutSec != nil {
 		v := int(*in.TimeoutSec)
 		out.TimeoutSec = &v
 	}
-	// MISSING: TLSSettings
-	// MISSING: UsedBy
 	return out
 }
 
@@ -704,7 +677,6 @@ func ComputeBackendServiceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.BackendService{}
-	// MISSING: AffinityCookieTTLSec
 
 	if in.AffinityCookieTtlSec != nil {
 		v := int32(*in.AffinityCookieTtlSec)
@@ -717,66 +689,42 @@ func ComputeBackendServiceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	if in.ResourceID != nil {
 		out.Name = in.ResourceID
 	}
-	// (near miss): "AffinityCookieTTLSec" vs "AffinityCookieTtlSec"
-	// MISSING: Backends
-	// MISSING: CDNPolicy
-	// (near miss): "CDNPolicy" vs "CdnPolicy"
 	out.CircuitBreakers = BackendServiceCircuitBreakers_v1beta1_ToProto(mapCtx, in.CircuitBreakers)
 	out.CompressionMode = in.CompressionMode
-	// MISSING: ConnectionDraining
+	if in.ConnectionDrainingTimeoutSec != nil {
+		v := int32(*in.ConnectionDrainingTimeoutSec)
+		out.ConnectionDraining = &pb.ConnectionDraining{
+			DrainingTimeoutSec: &v,
+		}
+	}
 	out.ConnectionTrackingPolicy = BackendServiceConnectionTrackingPolicy_v1beta1_ToProto(mapCtx, in.ConnectionTrackingPolicy)
 	out.ConsistentHash = BackendServiceConsistentHash_v1beta1_ToProto(mapCtx, in.ConsistentHash)
-	// MISSING: CreationTimestamp
-	// MISSING: CustomMetrics
 	out.CustomRequestHeaders = in.CustomRequestHeaders
 	out.CustomResponseHeaders = in.CustomResponseHeaders
 	out.Description = in.Description
 	if in.EdgeSecurityPolicyRef != nil {
 		out.EdgeSecurityPolicy = &in.EdgeSecurityPolicyRef.External
 	}
-	// MISSING: EnableCDN
-	// (near miss): "EnableCDN" vs "EnableCdn"
-	// MISSING: ExternalManagedMigrationState
-	// MISSING: ExternalManagedMigrationTestingPercentage
 	out.FailoverPolicy = BackendServiceFailoverPolicy_v1beta1_ToProto(mapCtx, in.FailoverPolicy)
-	// MISSING: Fingerprint
-	// MISSING: HaPolicy
 	out.HealthChecks = ComputeBackendServiceSpec_HealthChecks_ToProto(mapCtx, in.HealthChecks)
-	// MISSING: IAP
-	// (near miss): "IAP" vs "Iap"
-	// MISSING: ID
-	// MISSING: IPAddressSelectionPolicy
-	// MISSING: Kind
 	out.LoadBalancingScheme = in.LoadBalancingScheme
 	out.LocalityLbPolicies = direct.Slice_ToProto(mapCtx, in.LocalityLbPolicies, BackendServiceLocalityLbPolicies_v1beta1_ToProto)
 	out.LocalityLbPolicy = in.LocalityLbPolicy
 	out.LogConfig = BackendServiceLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
-	// MISSING: MaxStreamDuration
-	// MISSING: Metadatas
-	// MISSING: Name
 	if in.NetworkRef != nil {
 		out.Network = &in.NetworkRef.External
 	}
 	out.OutlierDetection = BackendServiceOutlierDetection_v1beta1_ToProto(mapCtx, in.OutlierDetection)
-	// MISSING: Params
-	// MISSING: Port
 	out.PortName = in.PortName
 	out.Protocol = in.Protocol
-	// MISSING: Region
 	out.SecurityPolicy = in.SecurityPolicy
 	out.SecuritySettings = BackendServiceSecuritySettings_v1beta1_ToProto(mapCtx, in.SecuritySettings)
-	// MISSING: SelfLink
-	// MISSING: ServiceBindings
-	// MISSING: ServiceLbPolicy
 	out.SessionAffinity = in.SessionAffinity
-	// MISSING: StrongSessionAffinityCookie
 	out.Subsetting = BackendServiceSubsetting_v1beta1_ToProto(mapCtx, in.Subsetting)
 	if in.TimeoutSec != nil {
 		v := int32(*in.TimeoutSec)
 		out.TimeoutSec = &v
 	}
-	// MISSING: TLSSettings
-	// MISSING: UsedBy
 	return out
 }
 
@@ -788,22 +736,28 @@ func BackendServiceCdnPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb
 	out.BypassCacheOnRequestHeaders = direct.Slice_FromProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendServiceBypassCacheOnRequestHeaders_v1beta1_FromProto)
 	out.CacheKeyPolicy = BackendServiceCacheKeyPolicy_v1beta1_FromProto(mapCtx, in.GetCacheKeyPolicy())
 	out.CacheMode = in.CacheMode
-	// MISSING: ClientTTL
-	// (near miss): "ClientTTL" vs "ClientTtl"
-	// MISSING: DefaultTTL
-	// (near miss): "DefaultTTL" vs "DefaultTtl"
-	// MISSING: MaxTTL
-	// (near miss): "MaxTTL" vs "MaxTtl"
+	if in.ClientTtl != nil {
+		v := int(*in.ClientTtl)
+		out.ClientTtl = &v
+	}
+	if in.DefaultTtl != nil {
+		v := int(*in.DefaultTtl)
+		out.DefaultTtl = &v
+	}
+	if in.MaxTtl != nil {
+		v := int(*in.MaxTtl)
+		out.MaxTtl = &v
+	}
+	if in.SignedUrlCacheMaxAgeSec != nil {
+		v := int(*in.SignedUrlCacheMaxAgeSec)
+		out.SignedUrlCacheMaxAgeSec = &v
+	}
 	out.NegativeCaching = in.NegativeCaching
 	out.NegativeCachingPolicy = direct.Slice_FromProto(mapCtx, in.NegativeCachingPolicy, BackendServiceNegativeCachingPolicy_v1beta1_FromProto)
-	// MISSING: RequestCoalescing
 	if in.ServeWhileStale != nil {
 		v := int(*in.ServeWhileStale)
 		out.ServeWhileStale = &v
 	}
-	// MISSING: SignedURLCacheMaxAgeSec
-	// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
-	// MISSING: SignedURLKeyNames
 	return out
 }
 func BackendServiceCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceCdnPolicy) *pb.BackendServiceCdnPolicy {
@@ -814,22 +768,28 @@ func BackendServiceCdnPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.BypassCacheOnRequestHeaders = direct.Slice_ToProto(mapCtx, in.BypassCacheOnRequestHeaders, BackendServiceBypassCacheOnRequestHeaders_v1beta1_ToProto)
 	out.CacheKeyPolicy = BackendServiceCacheKeyPolicy_v1beta1_ToProto(mapCtx, in.CacheKeyPolicy)
 	out.CacheMode = in.CacheMode
-	// MISSING: ClientTTL
-	// (near miss): "ClientTTL" vs "ClientTtl"
-	// MISSING: DefaultTTL
-	// (near miss): "DefaultTTL" vs "DefaultTtl"
-	// MISSING: MaxTTL
-	// (near miss): "MaxTTL" vs "MaxTtl"
+	if in.ClientTtl != nil {
+		v := int32(*in.ClientTtl)
+		out.ClientTtl = &v
+	}
+	if in.DefaultTtl != nil {
+		v := int32(*in.DefaultTtl)
+		out.DefaultTtl = &v
+	}
+	if in.MaxTtl != nil {
+		v := int32(*in.MaxTtl)
+		out.MaxTtl = &v
+	}
+	if in.SignedUrlCacheMaxAgeSec != nil {
+		v := int64(*in.SignedUrlCacheMaxAgeSec)
+		out.SignedUrlCacheMaxAgeSec = &v
+	}
 	out.NegativeCaching = in.NegativeCaching
 	out.NegativeCachingPolicy = direct.Slice_ToProto(mapCtx, in.NegativeCachingPolicy, BackendServiceNegativeCachingPolicy_v1beta1_ToProto)
-	// MISSING: RequestCoalescing
 	if in.ServeWhileStale != nil {
 		v := int32(*in.ServeWhileStale)
 		out.ServeWhileStale = &v
 	}
-	// MISSING: SignedURLCacheMaxAgeSec
-	// (near miss): "SignedURLCacheMaxAgeSec" vs "SignedUrlCacheMaxAgeSec"
-	// MISSING: SignedURLKeyNames
 	return out
 }
 func BackendServiceConsistentHash_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ConsistentHashLoadBalancerSettings) *krm.BackendServiceConsistentHash {
@@ -837,14 +797,12 @@ func BackendServiceConsistentHash_v1beta1_FromProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &krm.BackendServiceConsistentHash{}
-	// MISSING: HTTPCookie
-	// (near miss): "HTTPCookie" vs "HttpCookie"
-	// MISSING: HTTPHeaderName
-	// (near miss): "HTTPHeaderName" vs "HttpHeaderName"
 	if in.MinimumRingSize != nil {
 		v := int(*in.MinimumRingSize)
 		out.MinimumRingSize = &v
 	}
+	out.HttpCookie = BackendServiceHttpCookie_v1beta1_FromProto(mapCtx, in.GetHttpCookie())
+	out.HttpHeaderName = in.HttpHeaderName
 	return out
 }
 func BackendServiceConsistentHash_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceConsistentHash) *pb.ConsistentHashLoadBalancerSettings {
@@ -852,13 +810,108 @@ func BackendServiceConsistentHash_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &pb.ConsistentHashLoadBalancerSettings{}
-	// MISSING: HTTPCookie
-	// (near miss): "HTTPCookie" vs "HttpCookie"
-	// MISSING: HTTPHeaderName
-	// (near miss): "HTTPHeaderName" vs "HttpHeaderName"
 	if in.MinimumRingSize != nil {
 		v := int64(*in.MinimumRingSize)
 		out.MinimumRingSize = &v
 	}
+	out.HttpCookie = BackendServiceHttpCookie_v1beta1_ToProto(mapCtx, in.HttpCookie)
+	out.HttpHeaderName = in.HttpHeaderName
+	return out
+}
+
+func BackendServiceHttpCookie_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ConsistentHashLoadBalancerSettingsHttpCookie) *krm.BackendServiceHttpCookie {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendServiceHttpCookie{}
+	out.Name = in.Name
+	out.Path = in.Path
+	if in.GetTtl() != nil {
+		out.Ttl = &krm.BackendServiceTtl{}
+		if in.GetTtl().Nanos != nil {
+			vNanos := int64(*in.GetTtl().Nanos)
+			out.Ttl.Nanos = &vNanos
+		}
+		if in.GetTtl().Seconds != nil {
+			out.Ttl.Seconds = *in.GetTtl().Seconds
+		}
+	}
+	return out
+}
+
+func BackendServiceHttpCookie_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceHttpCookie) *pb.ConsistentHashLoadBalancerSettingsHttpCookie {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConsistentHashLoadBalancerSettingsHttpCookie{}
+	out.Name = in.Name
+	out.Path = in.Path
+	if in.Ttl != nil {
+		out.Ttl = &pb.Duration{}
+		if in.Ttl.Nanos != nil {
+			vNanos := int32(*in.Ttl.Nanos)
+			out.Ttl.Nanos = &vNanos
+		}
+		vSecs := in.Ttl.Seconds
+		out.Ttl.Seconds = &vSecs
+	}
+	return out
+}
+
+func BackendServiceIap_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendServiceIAP) *krm.BackendServiceIap {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackendServiceIap{}
+	out.Oauth2ClientId = in.Oauth2ClientId
+	// Oauth2ClientIdRef is not retrieved from proto, as it's a Kubernetes-only ref field
+	out.Oauth2ClientSecretSha256 = in.Oauth2ClientSecretSha256
+	return out
+}
+
+func BackendServiceIap_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackendServiceIap) *pb.BackendServiceIAP {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendServiceIAP{}
+	if in.Oauth2ClientIdRef != nil {
+		out.Oauth2ClientId = &in.Oauth2ClientIdRef.External
+	} else {
+		out.Oauth2ClientId = in.Oauth2ClientId
+	}
+	if in.Oauth2ClientSecret != nil {
+		out.Oauth2ClientSecret = in.Oauth2ClientSecret.Value
+	}
+	out.Oauth2ClientSecretSha256 = in.Oauth2ClientSecretSha256
+	return out
+}
+
+func ComputeBackendServiceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackendService) *krm.ComputeBackendServiceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeBackendServiceStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Fingerprint = in.Fingerprint
+	if in.Id != nil {
+		v := int(*in.Id)
+		out.GeneratedId = &v
+	}
+	out.SelfLink = in.SelfLink
+	return out
+}
+
+func ComputeBackendServiceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeBackendServiceStatus) *pb.BackendService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackendService{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Fingerprint = in.Fingerprint
+	if in.GeneratedId != nil {
+		v := uint64(*in.GeneratedId)
+		out.Id = &v
+	}
+	out.SelfLink = in.SelfLink
 	return out
 }
