@@ -1,11 +1,3 @@
-[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.allowedDeviceManagementLevels[]" is not set in unstructured objects
-[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.allowedEncryptionStatuses[]" is not set in unstructured objects
-[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.osConstraints[].minimumVersion" is not set in unstructured objects
-[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.osConstraints[].osType" is not set in unstructured objects
-[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireAdminApproval" is not set in unstructured objects
-[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireCorpOwned" is not set in unstructured objects
-[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireScreenLock" is not set in unstructured objects
-[missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requiredAccessLevels[]" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModelSource.genieSource.baseModelURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModelSource.modelGardenSource.publicModelName" is not set in unstructured objects
