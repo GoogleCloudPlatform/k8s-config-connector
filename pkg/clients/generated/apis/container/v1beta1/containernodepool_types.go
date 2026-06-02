@@ -399,6 +399,10 @@ type NodepoolNodeConfig struct {
 	// +optional
 	Taint []NodepoolTaint `json:"taint,omitempty"`
 
+	/* Immutable. Parameters that can be configured on Windows nodes. */
+	// +optional
+	WindowsNodeConfig *NodepoolWindowsNodeConfig `json:"windowsNodeConfig,omitempty"`
+
 	/* The workload metadata configuration for this node. */
 	// +optional
 	WorkloadMetadataConfig *NodepoolWorkloadMetadataConfig `json:"workloadMetadataConfig,omitempty"`
@@ -495,6 +499,12 @@ type NodepoolUpgradeSettings struct {
 	/* Update strategy for the given nodepool. */
 	// +optional
 	Strategy *string `json:"strategy,omitempty"`
+}
+
+type NodepoolWindowsNodeConfig struct {
+	/* Immutable. os_version specifies the Windows Server release version to be used on the node. */
+	// +optional
+	OsVersion *string `json:"osVersion,omitempty"`
 }
 
 type NodepoolWorkloadMetadataConfig struct {
