@@ -26,3 +26,5 @@ type NetworkSecurityBackendAuthenticationConfigExpansion interface{}
 type NetworkSecurityInterceptDeploymentExpansion interface{}
 
 type NetworkSecurityInterceptEndpointGroupExpansion interface{}
+
+type NetworkSecurityMirroringEndpointGroupExpansion interface{}

@@ -20,5 +20,6 @@
 // resource: NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig
 // resource: NetworkSecurityInterceptDeployment:InterceptDeployment
 // resource: NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
+// resource: NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup
 
 package v1alpha1
