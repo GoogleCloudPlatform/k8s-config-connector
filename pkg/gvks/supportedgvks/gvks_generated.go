@@ -2042,15 +2042,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		SupportsIAM: false,
 	},
 	{
-		Group:   "logging.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "LoggingLogView",
-	}: {
-		Terraform:   false,
-		DCL:         true,
-		SupportsIAM: false,
-	},
-	{
 		Group:   "memcache.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "MemcacheInstance",

@@ -18,6 +18,7 @@
 // krm.version: v1beta1
 // proto.service: google.logging.v2
 // resource: LoggingLink:Link
+// resource: LoggingLogView:LogView
 
 package v1beta1
 

@@ -27,7 +27,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.logging.v2 \
     --api-version "logging.cnrm.cloud.google.com/v1beta1" \
-    --resource LoggingLink:Link
+    --resource LoggingLink:Link \
+    --resource LoggingLogView:LogView
 
 go run . generate-mapper \
     --service google.logging.v2 \
