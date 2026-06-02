@@ -33,13 +33,13 @@ func loggingLogViewFuzzer() fuzztesting.KRMFuzzer {
 		LoggingLogViewStatus_FromProto, LoggingLogViewStatus_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".filter")
+	f.SpecField(".description")
+	f.SpecField(".filter")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
 
-	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_Identity(".name")
 
 	return f
 }
