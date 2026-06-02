@@ -90,6 +90,11 @@ KCC dynamically generates the CRD directly from the Terraform schema:
      make manifests
      ```
    - Run `git diff config/crds/resources/` to verify that the new field is properly generated in the CRD schema.
+3. **Update Go Client**:
+   - Run:
+     ```bash
+     make generate-go-client
+     ```
 
 ### Case B: The resource HAS Go types in `apis/`
 If a `<kind>_types.go` file exists under `apis/<service>/<version>/`:

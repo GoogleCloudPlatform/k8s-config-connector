@@ -111,12 +111,14 @@ If the mock test fails or produces a diff against the baseline golden logs, appl
 
 ## 6. Pre-Submit Checks
 
-Before finishing the task, the agent must run formatting and static analysis checks:
+Before finishing the task, the agent must run formatting, generation, and static analysis checks to avoid CI failures:
 
-1. **Formatting**:
-   ```bash
-   make fmt
-   ```
+1. **Prepare PR and Regenerate Code**:
+   - Run `make ready-pr` to ensure all manifests, Go client types, and code formatting are up to date:
+     ```bash
+     make ready-pr
+     ```
+   - Verify if any generated files under `pkg/clients/generated/` or `config/crds/` are modified using `git status` or `git diff`. If there are modifications, make sure to stage and commit them.
 2. **Go Vet**:
    ```bash
    go vet ./...
