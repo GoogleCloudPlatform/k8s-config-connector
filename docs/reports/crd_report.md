@@ -371,6 +371,7 @@
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityClientTLSPolicy                  | False        | True        | False  | DCL        | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityInterceptDeployment              | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityInterceptEndpointGroup           | True         | False       | False  | Direct     | True        |
+| networksecurity.cnrm.cloud.google.com         | NetworkSecurityMirroringDeployment              | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityMirroringEndpointGroup           | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityServerTLSPolicy                  | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheKeyset                  | True         | False       | False  | Terraform  | False       |

@@ -41,7 +41,7 @@ go run . generate-types \
   --resource NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig \
   --resource NetworkSecurityInterceptDeployment:InterceptDeployment \
   --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup \
-  --resource NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup \
+  --resource NetworkSecurityMirroringDeployment:MirroringDeployment \
   --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}

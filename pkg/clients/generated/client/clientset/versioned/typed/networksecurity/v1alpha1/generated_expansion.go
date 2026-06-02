@@ -27,4 +27,6 @@ type NetworkSecurityInterceptDeploymentExpansion interface{}
 
 type NetworkSecurityInterceptEndpointGroupExpansion interface{}
 
+type NetworkSecurityMirroringDeploymentExpansion interface{}
+
 type NetworkSecurityMirroringEndpointGroupExpansion interface{}

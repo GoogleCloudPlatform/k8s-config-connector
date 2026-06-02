@@ -34,6 +34,7 @@ type NetworksecurityV1alpha1Interface interface {
 	NetworkSecurityBackendAuthenticationConfigsGetter
 	NetworkSecurityInterceptDeploymentsGetter
 	NetworkSecurityInterceptEndpointGroupsGetter
+	NetworkSecurityMirroringDeploymentsGetter
 	NetworkSecurityMirroringEndpointGroupsGetter
 }
 
@@ -52,6 +53,10 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeployments(name
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptEndpointGroups(namespace string) NetworkSecurityInterceptEndpointGroupInterface {
 	return newNetworkSecurityInterceptEndpointGroups(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringDeployments(namespace string) NetworkSecurityMirroringDeploymentInterface {
+	return newNetworkSecurityMirroringDeployments(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringEndpointGroups(namespace string) NetworkSecurityMirroringEndpointGroupInterface {
