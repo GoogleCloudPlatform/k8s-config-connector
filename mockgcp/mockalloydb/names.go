@@ -133,3 +133,38 @@ func (s *MockService) parseUserName(name string) (*userName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type backupName struct {
+	Project    *projects.ProjectData
+	Location   string
+	BackupName string
+}
+
+func (n *backupName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/backups/" + n.BackupName
+}
+
+func (n *backupName) ProjectAndLocation() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location
+}
+
+func (s *MockService) parseBackupName(name string) (*backupName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "backups" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &backupName{
+			Project:    project,
+			Location:   tokens[3],
+			BackupName: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
