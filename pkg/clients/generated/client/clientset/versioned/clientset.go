@@ -45,6 +45,7 @@ import (
 	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/assuredworkloads/v1alpha1"
 	backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1alpha1"
 	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1beta1"
+	batchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1"
 	beyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1"
 	bigqueryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1alpha1"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1"
@@ -223,6 +224,7 @@ type Interface interface {
 	AssuredworkloadsV1alpha1() assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Interface
 	BackupdrV1alpha1() backupdrv1alpha1.BackupdrV1alpha1Interface
 	BackupdrV1beta1() backupdrv1beta1.BackupdrV1beta1Interface
+	BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface
 	BeyondcorpV1alpha1() beyondcorpv1alpha1.BeyondcorpV1alpha1Interface
 	BigqueryV1alpha1() bigqueryv1alpha1.BigqueryV1alpha1Interface
 	BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface
@@ -399,6 +401,7 @@ type Clientset struct {
 	assuredworkloadsV1alpha1       *assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Client
 	backupdrV1alpha1               *backupdrv1alpha1.BackupdrV1alpha1Client
 	backupdrV1beta1                *backupdrv1beta1.BackupdrV1beta1Client
+	batchV1alpha1                  *batchv1alpha1.BatchV1alpha1Client
 	beyondcorpV1alpha1             *beyondcorpv1alpha1.BeyondcorpV1alpha1Client
 	bigqueryV1alpha1               *bigqueryv1alpha1.BigqueryV1alpha1Client
 	bigqueryV1beta1                *bigqueryv1beta1.BigqueryV1beta1Client
@@ -650,6 +653,11 @@ func (c *Clientset) BackupdrV1alpha1() backupdrv1alpha1.BackupdrV1alpha1Interfac
 // BackupdrV1beta1 retrieves the BackupdrV1beta1Client
 func (c *Clientset) BackupdrV1beta1() backupdrv1beta1.BackupdrV1beta1Interface {
 	return c.backupdrV1beta1
+}
+
+// BatchV1alpha1 retrieves the BatchV1alpha1Client
+func (c *Clientset) BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface {
+	return c.batchV1alpha1
 }
 
 // BeyondcorpV1alpha1 retrieves the BeyondcorpV1alpha1Client
@@ -1531,6 +1539,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.batchV1alpha1, err = batchv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.beyondcorpV1alpha1, err = beyondcorpv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2176,6 +2188,7 @@ func New(c rest.Interface) *Clientset {
 	cs.assuredworkloadsV1alpha1 = assuredworkloadsv1alpha1.New(c)
 	cs.backupdrV1alpha1 = backupdrv1alpha1.New(c)
 	cs.backupdrV1beta1 = backupdrv1beta1.New(c)
+	cs.batchV1alpha1 = batchv1alpha1.New(c)
 	cs.beyondcorpV1alpha1 = beyondcorpv1alpha1.New(c)
 	cs.bigqueryV1alpha1 = bigqueryv1alpha1.New(c)
 	cs.bigqueryV1beta1 = bigqueryv1beta1.New(c)
