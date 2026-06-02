@@ -34,8 +34,8 @@ var DiscoveryEngineSampleQuerySetIdentityFormat = gcpurls.Template[DiscoveryEngi
 
 // +k8s:deepcopy-gen=false
 type DiscoveryEngineSampleQuerySetIdentity struct {
-	Project        string
-	Location       string
+	Project          string
+	Location         string
 	Sample_query_set string
 }
 
@@ -77,8 +77,8 @@ func getIdentityFromDiscoveryEngineSampleQuerySetSpec(ctx context.Context, reade
 	}
 
 	identity := &DiscoveryEngineSampleQuerySetIdentity{
-		Project:        projectID,
-		Location:       location,
+		Project:          projectID,
+		Location:         location,
 		Sample_query_set: resourceID,
 	}
 	return identity, nil
