@@ -80,13 +80,11 @@ func (m *modelEndpoint) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if obj.Spec.InstanceRef == nil {
-		return nil, fmt.Errorf("spec.instanceRef is required")
-	}
-	err := obj.Spec.InstanceRef.Normalize(ctx, reader, obj.GetNamespace())
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.MemorystoreInstanceEndpointIdentity)
 
 	// Get memorystore and compute GCP client
 	gcpClient, cmpClient, err := m.client(ctx)
@@ -94,7 +92,7 @@ func (m *modelEndpoint) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 	return &EndpointAdapter{
-		id:        obj.Spec.InstanceRef.GetExternal(),
+		id:        id,
 		gcpClient: gcpClient,
 		cmpClient: cmpClient,
 		reader:    reader,
@@ -122,7 +120,7 @@ func (m *modelEndpoint) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type EndpointAdapter struct {
-	id        string
+	id        *krm.MemorystoreInstanceEndpointIdentity
 	gcpClient *gcp.Client
 	cmpClient *gcpcompute.ForwardingRulesClient
 	reader    client.Reader
@@ -138,15 +136,15 @@ var _ directbase.Adapter = &EndpointAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *EndpointAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting Endpoint", "name", a.id)
+	log.V(2).Info("getting Endpoint", "name", a.id.String())
 
-	req := &pb.GetInstanceRequest{Name: a.id}
+	req := &pb.GetInstanceRequest{Name: a.id.String()}
 	instancepb, err := a.gcpClient.GetInstance(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting Instance %q: %w", a.id, err)
+		return false, fmt.Errorf("getting Instance %q: %w", a.id.String(), err)
 	}
 
 	a.actual = instancepb
@@ -163,7 +161,7 @@ func (a *EndpointAdapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *EndpointAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating user created instance endoints", "name", a.id)
+	log.V(2).Info("creating user created instance endoints", "name", a.id.String())
 
 	if err := resolveEndpointReferences(ctx, a.reader, a.desired); err != nil {
 		return err
@@ -186,7 +184,7 @@ func (a *EndpointAdapter) Create(ctx context.Context, createOp *directbase.Creat
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *EndpointAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating user created instance endoints", "name", a.id)
+	log.V(2).Info("updating user created instance endoints", "name", a.id.String())
 
 	if err := resolveEndpointReferences(ctx, a.reader, a.desired); err != nil {
 		return err
@@ -215,7 +213,7 @@ func (a *EndpointAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *EndpointAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting user created instance endoints", "name", a.id)
+	log.V(2).Info("deleting user created instance endoints", "name", a.id.String())
 
 	if _, err := a.updateConnections(ctx, nil, deleteOp.GetUnstructured()); err != nil {
 		return false, err
@@ -303,11 +301,11 @@ func (a *EndpointAdapter) updateConnections(ctx context.Context, userCreated []k
 	}
 	op, err := a.gcpClient.UpdateInstance(ctx, updateReq)
 	if err != nil {
-		return nil, fmt.Errorf("updating instance %s: %w", a.id, err)
+		return nil, fmt.Errorf("updating instance %s: %w", a.id.String(), err)
 	}
 	actual, err := op.Wait(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("instance %s waiting update: %w", a.id, err)
+		return nil, fmt.Errorf("instance %s waiting update: %w", a.id.String(), err)
 	}
 	return actual, nil
 }
