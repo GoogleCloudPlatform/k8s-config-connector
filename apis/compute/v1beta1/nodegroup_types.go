@@ -140,6 +140,10 @@ type ComputeNodeGroupStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* A unique specifier for the ComputeNodeGroup resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	// +kcc:proto:field=google.cloud.compute.v1.NodeGroup.creation_timestamp

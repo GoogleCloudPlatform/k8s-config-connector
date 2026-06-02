@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -43,7 +44,9 @@ func (i *ComputeNodeGroupIdentity) String() string {
 }
 
 func (i *ComputeNodeGroupIdentity) FromExternal(ref string) error {
-	parsed, match, err := ComputeNodeGroupIdentityFormat.Parse(ref)
+	focused := apirefs.TrimComputeURIPrefix(ref)
+
+	parsed, match, err := ComputeNodeGroupIdentityFormat.Parse(focused)
 	if err != nil {
 		return fmt.Errorf("format of ComputeNodeGroup external=%q was not known (use %s): %w", ref, ComputeNodeGroupIdentityFormat.CanonicalForm(), err)
 	}
@@ -89,4 +92,31 @@ func getIdentityFromComputeNodeGroupSpec(ctx context.Context, reader client.Read
 		NodeGroup: resourceID,
 	}
 	return identity, nil
+}
+
+func (obj *ComputeNodeGroup) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromComputeNodeGroupSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	if obj.Status.ExternalRef != nil && *obj.Status.ExternalRef != "" {
+		statusIdentity := &ComputeNodeGroupIdentity{}
+		if err := statusIdentity.FromExternal(*obj.Status.ExternalRef); err != nil {
+			return nil, err
+		}
+		if statusIdentity.Project != specIdentity.Project {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", statusIdentity.Project, specIdentity.Project)
+		}
+		if statusIdentity.Zone != specIdentity.Zone {
+			return nil, fmt.Errorf("spec.zone changed, expect %s, got %s", statusIdentity.Zone, specIdentity.Zone)
+		}
+		if statusIdentity.NodeGroup != specIdentity.NodeGroup {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				specIdentity.NodeGroup, statusIdentity.NodeGroup)
+		}
+	}
+
+	return specIdentity, nil
 }

@@ -75,6 +75,11 @@ func (s *NodeGroupsV1) Patch(ctx context.Context, req *pb.PatchNodeGroupRequest)
 
 	fqn := name.String()
 	obj := &pb.NodeGroup{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	proto.Merge(obj, req.GetNodeGroupResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

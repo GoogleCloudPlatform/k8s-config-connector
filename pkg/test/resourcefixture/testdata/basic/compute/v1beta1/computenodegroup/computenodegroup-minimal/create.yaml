@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeGroup
+metadata:
+  name: computenodegroup-${uniqueId}
+spec:
+  nodeTemplateRef:
+    name: dep-${uniqueId}
+  size: 1
+  zone: us-central1-a
