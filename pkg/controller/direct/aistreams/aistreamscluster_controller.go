@@ -84,6 +84,9 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err != nil {
 		return nil, err
 	}
+	// We use DialGRPC directly because there is no official high-level Go client library
+	// generated for the aistreams service. DialGRPC requires an explicit endpoint since
+	// it does not have a default endpoint built-in.
 	opts = append(opts, option.WithEndpoint("aistreams.googleapis.com:443"))
 	conn, err := transport.DialGRPC(ctx, opts...)
 	if err != nil {
