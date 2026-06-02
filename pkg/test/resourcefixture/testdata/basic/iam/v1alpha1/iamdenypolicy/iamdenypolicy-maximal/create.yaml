@@ -11,6 +11,8 @@ spec:
       denyRule:
         deniedPermissions:
           - "iam.googleapis.com/roles.list"
+        exceptionPermissions:
+          - "iam.googleapis.com/roles.get"
         deniedPrincipals:
           - "principalSet://goog/public:all"
         exceptionPrincipals:

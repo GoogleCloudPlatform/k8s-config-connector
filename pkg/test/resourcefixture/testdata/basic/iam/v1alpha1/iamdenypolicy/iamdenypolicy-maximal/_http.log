@@ -46,6 +46,9 @@ X-Goog-Request-Params: parent=policies%2Fcloudresourcemanager.googleapis.com%252
         "deniedPrincipals": [
           "principalSet://goog/public:all"
         ],
+        "exceptionPermissions": [
+          "iam.googleapis.com/roles.get"
+        ],
         "exceptionPrincipals": [
           "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
         ]
@@ -87,6 +90,9 @@ X-Xss-Protection: 0
           ],
           "deniedPrincipals": [
             "principalSet://goog/public:all"
+          ],
+          "exceptionPermissions": [
+            "iam.googleapis.com/roles.get"
           ],
           "exceptionPrincipals": [
             "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
@@ -132,6 +138,9 @@ X-Xss-Protection: 0
         "deniedPrincipals": [
           "principalSet://goog/public:all"
         ],
+        "exceptionPermissions": [
+          "iam.googleapis.com/roles.get"
+        ],
         "exceptionPrincipals": [
           "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
         ]
@@ -145,15 +154,17 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PUT https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: policy.name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
+X-Goog-Request-Params: policy.name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "My Updated Deny Policy",
   "etag": "abcdef0123A=",
-  "name": "policies/cloudresourcemanager.googleapis.com%2Fprojects%2F${projectId}/denypolicies/iamdenypolicy-${uniqueId}",
+  "kind": "DenyPolicy",
+  "name": "policies/cloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/denypolicies/iamdenypolicy-${uniqueId}",
   "rules": [
     {
       "denyRule": {
@@ -162,11 +173,19 @@ X-Goog-Request-Params: policy.name=policies%2Fcloudresourcemanager.googleapis.co
         ],
         "deniedPrincipals": [
           "principalSet://goog/public:all"
+        ],
+        "exceptionPermissions": [
+          "iam.googleapis.com/roles.list"
+        ],
+        "exceptionPrincipals": [
+          "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
         ]
       },
       "description": "Deny roles.get"
     }
-  ]
+  ],
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 200 OK
@@ -201,6 +220,12 @@ X-Xss-Protection: 0
           ],
           "deniedPrincipals": [
             "principalSet://goog/public:all"
+          ],
+          "exceptionPermissions": [
+            "iam.googleapis.com/roles.list"
+          ],
+          "exceptionPrincipals": [
+            "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
           ]
         },
         "description": "Deny roles.get"
@@ -242,6 +267,12 @@ X-Xss-Protection: 0
         ],
         "deniedPrincipals": [
           "principalSet://goog/public:all"
+        ],
+        "exceptionPermissions": [
+          "iam.googleapis.com/roles.list"
+        ],
+        "exceptionPrincipals": [
+          "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
         ]
       },
       "description": "Deny roles.get"
@@ -291,6 +322,12 @@ X-Xss-Protection: 0
           ],
           "deniedPrincipals": [
             "principalSet://goog/public:all"
+          ],
+          "exceptionPermissions": [
+            "iam.googleapis.com/roles.list"
+          ],
+          "exceptionPrincipals": [
+            "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
           ]
         },
         "description": "Deny roles.get"

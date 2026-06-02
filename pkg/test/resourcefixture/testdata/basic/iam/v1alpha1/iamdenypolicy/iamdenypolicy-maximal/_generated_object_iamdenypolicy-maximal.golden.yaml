@@ -19,6 +19,10 @@ spec:
       - iam.googleapis.com/roles.get
       deniedPrincipals:
       - principalSet://goog/public:all
+      exceptionPermissions:
+      - iam.googleapis.com/roles.list
+      exceptionPrincipals:
+      - principalSet://goog/cloudIdentityCustomerId/C01Abc35
     description: Deny roles.get
 status:
   conditions:

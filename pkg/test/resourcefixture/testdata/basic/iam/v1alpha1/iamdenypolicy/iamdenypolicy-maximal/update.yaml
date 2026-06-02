@@ -11,5 +11,9 @@ spec:
       denyRule:
         deniedPermissions:
           - "iam.googleapis.com/roles.get"
+        exceptionPermissions:
+          - "iam.googleapis.com/roles.list"
         deniedPrincipals:
           - "principalSet://goog/public:all"
+        exceptionPrincipals:
+          - "principalSet://goog/cloudIdentityCustomerId/C01Abc35"

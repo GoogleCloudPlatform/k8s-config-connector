@@ -21,12 +21,33 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestIAMDenyPolicyIdentity(t *testing.T) {
 	ctx := context.Background()
-	reader := fake.NewClientBuilder().Build()
+
+	projectObj := &unstructured.Unstructured{}
+	projectObj.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "resourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "Project",
+	})
+	projectObj.SetName("my-project-name")
+	projectObj.SetNamespace("my-namespace")
+	unstructured.SetNestedField(projectObj.Object, "my-project-name", "spec", "resourceID")
+
+	scheme := runtime.NewScheme()
+	scheme.AddKnownTypeWithName(schema.GroupVersionKind{
+		Group:   "resourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ProjectList",
+	}, &unstructured.UnstructuredList{})
+
+	reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(projectObj).Build()
 
 	tests := []struct {
 		name        string
@@ -58,7 +79,7 @@ func TestIAMDenyPolicyIdentity(t *testing.T) {
 				},
 				Spec: IAMDenyPolicySpec{
 					FolderRef: &refs.FolderRef{
-						External: "123456",
+						External: "folders/123456",
 					},
 				},
 			},
@@ -73,7 +94,7 @@ func TestIAMDenyPolicyIdentity(t *testing.T) {
 				},
 				Spec: IAMDenyPolicySpec{
 					OrganizationRef: &refs.OrganizationRef{
-						External: "789012",
+						External: "organizations/789012",
 					},
 				},
 			},

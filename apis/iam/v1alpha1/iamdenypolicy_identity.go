@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -70,23 +71,29 @@ func getIdentityFromIAMDenyPolicySpec(ctx context.Context, reader client.Reader,
 
 	var attachmentPoint string
 	if obj.Spec.ProjectRef != nil {
-		projectID := obj.Spec.ProjectRef.External
-		if projectID == "" {
-			projectID = obj.Spec.ProjectRef.Name
-		}
-		if projectID == "" && obj.Spec.ProjectRef.Namespace == "" {
+		var projectID string
+		if obj.Spec.ProjectRef.External == "" && obj.Spec.ProjectRef.Name == "" {
 			projectID = obj.GetNamespace()
+		} else {
+			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+			if err != nil {
+				return nil, err
+			}
+			projectID = project.ProjectID
 		}
 		attachmentPoint = url.PathEscape("cloudresourcemanager.googleapis.com/projects/" + projectID)
 	} else if obj.Spec.FolderRef != nil {
-		folderID := obj.Spec.FolderRef.External
-		if folderID == "" {
-			folderID = obj.Spec.FolderRef.Name
+		folder, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+		if err != nil {
+			return nil, err
 		}
-		attachmentPoint = url.PathEscape("cloudresourcemanager.googleapis.com/folders/" + folderID)
+		attachmentPoint = url.PathEscape("cloudresourcemanager.googleapis.com/folders/" + folder.FolderID)
 	} else if obj.Spec.OrganizationRef != nil {
-		orgID := obj.Spec.OrganizationRef.External
-		attachmentPoint = url.PathEscape("cloudresourcemanager.googleapis.com/organizations/" + orgID)
+		org, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
+		if err != nil {
+			return nil, err
+		}
+		attachmentPoint = url.PathEscape("cloudresourcemanager.googleapis.com/organizations/" + org.OrganizationID)
 	} else {
 		return nil, fmt.Errorf("one of projectRef, folderRef, or organizationRef must be set")
 	}
