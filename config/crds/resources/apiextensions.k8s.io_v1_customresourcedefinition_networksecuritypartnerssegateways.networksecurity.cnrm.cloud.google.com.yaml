@@ -220,7 +220,7 @@ spec:
                     description: Output only. ASN of SSE BGP
                     format: int32
                     type: integer
-                  sseBGPIps:
+                  sseBGPIPs:
                     description: Output only. IP of SSE BGP
                     items:
                       type: string

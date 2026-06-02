@@ -115,7 +115,7 @@ type NetworkSecurityPartnerSSEGatewayObservedState struct {
 
 	// Output only. IP of SSE BGP
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_bgp_ips
-	SSEBGPIps []string `json:"sseBGPIps,omitempty"`
+	SSEBGPIPs []string `json:"sseBGPIPs,omitempty"`
 
 	// Output only. ASN of SSE BGP
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.sse_bgp_asn
