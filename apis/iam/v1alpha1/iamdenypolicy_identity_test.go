@@ -38,7 +38,9 @@ func TestIAMDenyPolicyIdentity(t *testing.T) {
 	})
 	projectObj.SetName("my-project-name")
 	projectObj.SetNamespace("my-namespace")
-	unstructured.SetNestedField(projectObj.Object, "my-project-name", "spec", "resourceID")
+	if err := unstructured.SetNestedField(projectObj.Object, "my-project-name", "spec", "resourceID"); err != nil {
+		t.Fatalf("failed to set nested field: %v", err)
+	}
 
 	scheme := runtime.NewScheme()
 	scheme.AddKnownTypeWithName(schema.GroupVersionKind{
