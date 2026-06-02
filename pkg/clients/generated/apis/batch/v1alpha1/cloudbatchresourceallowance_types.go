@@ -51,7 +51,7 @@ type CloudbatchresourceallowanceLimit struct {
 type CloudbatchresourceallowanceNotifications struct {
 	/* Required. The Pub/Sub topic where notifications like the resource allowance state changes will be published. */
 	// +optional
-	PubsubTopic *string `json:"pubsubTopic,omitempty"`
+	PubsubTopicRef *v1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
 }
 
 type CloudbatchresourceallowanceSpec struct {
@@ -190,6 +190,7 @@ type CloudBatchResourceAllowanceStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudbatchresourceallowance;gcpcloudbatchresourceallowances
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
