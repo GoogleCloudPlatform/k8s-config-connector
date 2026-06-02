@@ -15,81 +15,153 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ identity.Identity = &LogBucketIdentity{}
+var (
+	_ identity.IdentityV2 = &LogBucketIdentity{}
+	_ identity.Resource   = &LoggingLogBucket{}
+)
 
-// LogBucketIdentity defines the resource reference to LoggingLogBucketIdentity, which "External" field
-// holds the GCP identifier for the KRM object.
+var (
+	ProjectLogBucketIdentityFormat        = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "projects/{project}/locations/{location}/buckets/{bucket}")
+	FolderLogBucketIdentityFormat         = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "folders/{folder}/locations/{location}/buckets/{bucket}")
+	OrganizationLogBucketIdentityFormat   = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "organizations/{organization}/locations/{location}/buckets/{bucket}")
+	BillingAccountLogBucketIdentityFormat = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "billingAccounts/{billingAccount}/locations/{location}/buckets/{bucket}")
+	AccessPolicyLogBucketIdentityFormat   = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "accessPolicies/{accessPolicy}/locations/{location}/buckets/{bucket}")
+)
+
+// +k8s:deepcopy-gen=false
 type LogBucketIdentity struct {
-	parent *parent.ProjectAndLocationParent
-	id     string
+	Project        string
+	Folder         string
+	Organization   string
+	BillingAccount string
+	AccessPolicy   string
+	Location       string
+	Bucket         string
 }
 
 func (i *LogBucketIdentity) String() string {
-	return i.parent.String() + "/buckets/" + i.id
+	if i.Project != "" {
+		return ProjectLogBucketIdentityFormat.ToString(*i)
+	}
+	if i.Folder != "" {
+		return FolderLogBucketIdentityFormat.ToString(*i)
+	}
+	if i.Organization != "" {
+		return OrganizationLogBucketIdentityFormat.ToString(*i)
+	}
+	if i.BillingAccount != "" {
+		return BillingAccountLogBucketIdentityFormat.ToString(*i)
+	}
+	if i.AccessPolicy != "" {
+		return AccessPolicyLogBucketIdentityFormat.ToString(*i)
+	}
+	return ""
 }
 
 func (i *LogBucketIdentity) ID() string {
-	return i.id
+	return i.Bucket
 }
-
-func (i *LogBucketIdentity) Parent() *parent.ProjectAndLocationParent { return i.parent }
 
 func (i *LogBucketIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/buckets/")
-	if len(tokens) != 2 {
-		return fmt.Errorf("format of LoggingLogBucket external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}})", ref)
+	if parsed, match, _ := ProjectLogBucketIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-	i.parent = &parent.ProjectAndLocationParent{}
-	if err := i.parent.FromExternal(tokens[0]); err != nil {
-		return err
+	if parsed, match, _ := FolderLogBucketIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-	i.id = tokens[1]
-	if i.id == "" {
-		return fmt.Errorf("bucketID was empty in external=%q", ref)
+	if parsed, match, _ := OrganizationLogBucketIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-	return nil
+	if parsed, match, _ := BillingAccountLogBucketIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	if parsed, match, _ := AccessPolicyLogBucketIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	return fmt.Errorf("format of LoggingLogBucket external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}})", ref)
 }
 
-// var _ identity.Resource = &LoggingLogBucket{}
+func (i *LogBucketIdentity) Host() string {
+	return "logging.googleapis.com"
+}
 
-// func (obj *LoggingLogBucket) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-// 	bucket := &LogBucketIdentity{}
-// 	bucket.parent = &parent.ProjectAndLocationParent{}
+func getIdentityFromLoggingLogBucketSpec(ctx context.Context, reader client.Reader, obj *LoggingLogBucket) (*LogBucketIdentity, error) {
+	// Get user-configured ID
+	resourceID, err := refsv1beta1.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
 
-// 	// Resolve user-configured Parent
-// 	project, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	bucket.parent.ProjectID = project.ProjectID
-// 	bucket.parent.Location = obj.Spec.Location
+	identity := &LogBucketIdentity{
+		Bucket:   resourceID,
+		Location: obj.Spec.Location,
+	}
 
-// 	// Get user-configured ID
-// 	bucket.id = common.ValueOf(obj.Spec.ResourceID)
-// 	if bucket.id == "" {
-// 		bucket.id = obj.GetName()
-// 	}
-// 	if bucket.id == "" {
-// 		return nil, fmt.Errorf("cannot resolve resource ID")
-// 	}
+	// Resolve parent references
+	if obj.Spec.ProjectRef != nil {
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve project: %w", err)
+		}
+		identity.Project = projectID
+	} else if obj.Spec.FolderRef != nil {
+		folderRef := &refsv1beta1.FolderRef{
+			External:  obj.Spec.FolderRef.External,
+			Name:      obj.Spec.FolderRef.Name,
+			Namespace: obj.Spec.FolderRef.Namespace,
+		}
+		folder, err := refsv1beta1.ResolveFolder(ctx, reader, obj, folderRef)
+		if err != nil {
+			return nil, fmt.Errorf("resolving spec.folderRef: %w", err)
+		}
+		identity.Folder = folder.FolderID
+	} else if obj.Spec.OrganizationRef != nil {
+		orgRef := &refsv1beta1.OrganizationRef{
+			External: obj.Spec.OrganizationRef.External,
+		}
+		org, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, orgRef)
+		if err != nil {
+			return nil, fmt.Errorf("resolving spec.organizationRef: %w", err)
+		}
+		identity.Organization = org.OrganizationID
+	} else if obj.Spec.BillingAccountRef != nil {
+		billingRef := obj.Spec.BillingAccountRef
+		if billingRef.External == "" {
+			return nil, fmt.Errorf("billingAccountRef only supports external reference")
+		}
+		billingIdentity := billingRef.External
+		if billingTokens := strings.Split(billingIdentity, "/"); len(billingTokens) == 2 && billingTokens[0] == "billingAccounts" {
+			identity.BillingAccount = billingTokens[1]
+		} else {
+			identity.BillingAccount = billingIdentity
+		}
+	} else {
+		// Fallback to project ID from namespace
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve project: %w", err)
+		}
+		identity.Project = projectID
+	}
 
-// 	// Validate against the ID stored in status.externalRef, if any
-// 	externalRef := common.ValueOf(obj.Status.Name)
-// 	if externalRef != "" {
-// 		statusIdentity := &LogBucketIdentity{}
-// 		if err := statusIdentity.FromExternal(externalRef); err != nil {
-// 			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
-// 		}
-// 		if statusIdentity.String() != bucket.String() {
-// 			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, bucket.String())
-// 		}
-// 	}
-// 	return bucket, nil
-// }
+	return identity, nil
+}
+
+func (obj *LoggingLogBucket) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return getIdentityFromLoggingLogBucketSpec(ctx, reader, obj)
+}
