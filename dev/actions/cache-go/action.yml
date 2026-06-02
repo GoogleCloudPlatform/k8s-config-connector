@@ -51,6 +51,10 @@ runs:
         HASH=$(find . -name "go.mod" -o -name "go.sum" -not -path "*/vendor/*" | sort | xargs cat | sha256sum | head -c 64)
         echo "hash=${HASH}" >> $GITHUB_OUTPUT
 
+    # We intentionally do not use 'restore-keys' here. When dependencies or code change,
+    # restoring a previous cache can cause old/removed dependency versions and dead build
+    # artifacts to accumulate in GOMODCACHE and GOCACHE indefinitely, leading to massive cache bloat.
+    # By omitting 'restore-keys', we cleanly rebuild from scratch on a cache miss, keeping the cache minimal.
     - name: Cache Go modules and build cache
       id: cache-deps
       uses: actions/cache@v4
@@ -58,9 +62,8 @@ runs:
         path: |
           ${{ steps.go-env.outputs.GOMODCACHE }}
           ${{ steps.go-env.outputs.GOCACHE }}
-        key: go-deps-${{ runner.os }}-${{ steps.deps-hash.outputs.hash }}
-        restore-keys: |
-          go-deps-${{ runner.os }}-
+          ~/.local/share/kubebuilder-envtest
+        key: go-deps-v7-${{ runner.os }}-${{ steps.deps-hash.outputs.hash }}
 
     - name: Prebuild dependencies on cache miss
       if: steps.cache-deps.outputs.cache-hit != 'true'
