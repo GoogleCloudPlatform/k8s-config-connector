@@ -112,31 +112,13 @@ func getIdentityFromLoggingLogViewSpec(ctx context.Context, reader client.Reader
 	}
 
 	identity := &LoggingLogViewIdentity{
-		Bucket: bucketIdentity.ID(),
-		View:   resourceID,
-	}
-
-	// Set parent identifier fields from the parsed bucket parent
-	// We extract location from the bucket identity parent as well
-	if bucketIdentity.Parent() != nil {
-		identity.Location = bucketIdentity.Parent().Location
-		identity.Project = bucketIdentity.Parent().ProjectID
-	} else {
-		// Just in case it's not a ProjectAndLocationParent, parse manually from external URL of the bucket
-		// which could start with projects/, folders/, organizations/, or billingAccounts/.
-		// But in KCC, LogBucketIdentity currently only implements ProjectAndLocationParent.
-		// Let's support other parent types if they ever arise.
-		bucketURL := bucketRef.GetExternal()
-		parsedBucketIdentity := &LoggingLogViewIdentity{}
-		// We can parse with a suffix /views/dummy to extract parent parts from the bucket URL
-		dummyURL := bucketURL + "/views/dummy"
-		if err := parsedBucketIdentity.FromExternal(dummyURL); err == nil {
-			identity.Project = parsedBucketIdentity.Project
-			identity.Folder = parsedBucketIdentity.Folder
-			identity.Organization = parsedBucketIdentity.Organization
-			identity.BillingAccount = parsedBucketIdentity.BillingAccount
-			identity.Location = parsedBucketIdentity.Location
-		}
+		Project:        bucketIdentity.Project,
+		Folder:         bucketIdentity.Folder,
+		Organization:   bucketIdentity.Organization,
+		BillingAccount: bucketIdentity.BillingAccount,
+		Location:       bucketIdentity.Location,
+		Bucket:         bucketIdentity.Bucket,
+		View:           resourceID,
 	}
 
 	return identity, nil
