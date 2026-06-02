@@ -80,7 +80,7 @@ type ApiApiTechnicalRequirements struct {
 	StringValues *ApiStringValues `json:"stringValues,omitempty"`
 }
 
-type ApiAttributes struct {
+type ApiAttributeRefs struct {
 	/* Reference to the attribute. */
 	AttributeRef v1alpha1.ResourceRef `json:"attributeRef"`
 
@@ -168,7 +168,7 @@ type APIHubAPISpec struct {
 
 	/* Optional. The list of user defined attributes associated with the API resource. The key is the attribute name. It will be of the format: `projects/{project}/locations/{location}/attributes/{attribute}`. */
 	// +optional
-	Attributes []ApiAttributes `json:"attributes,omitempty"`
+	AttributeRefs []ApiAttributeRefs `json:"attributeRefs,omitempty"`
 
 	/* Optional. The business unit owning the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-business-unit` */
 	// +optional
