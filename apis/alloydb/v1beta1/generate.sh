@@ -33,17 +33,7 @@ go run . generate-types \
 
 go run . generate-mapper --service google.cloud.alloydb.v1beta --api-version alloydb.cnrm.cloud.google.com/v1beta1
 
-go run . generate-mapper \
-  --service google.cloud.alloydb.v1beta \
-  --api-version alloydb.cnrm.cloud.google.com/v1beta1 \
-  --output-dir ${REPO_ROOT}/pkg/controller/direct/alloydb/alloydbbackup
-
-mv ${REPO_ROOT}/pkg/controller/direct/alloydb/alloydbbackup/alloydb/mapper.generated.go ${REPO_ROOT}/pkg/controller/direct/alloydb/alloydbbackup/mapper.generated.go
-rmdir ${REPO_ROOT}/pkg/controller/direct/alloydb/alloydbbackup/alloydb/
-sed -i 's/package alloydb/package alloydbbackup/g' ${REPO_ROOT}/pkg/controller/direct/alloydb/alloydbbackup/mapper.generated.go
-
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/alloydb/
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/alloydb/alloydbbackup/

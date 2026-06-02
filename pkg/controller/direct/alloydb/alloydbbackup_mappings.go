@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package alloydbbackup
+package alloydb
 
 import (
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"

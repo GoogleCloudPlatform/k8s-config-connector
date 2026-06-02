@@ -15,7 +15,7 @@
 // +tool:fuzz-gen
 // proto.message: google.cloud.alloydb.v1beta.Backup
 
-package alloydbbackup
+package alloydb
 
 import (
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
