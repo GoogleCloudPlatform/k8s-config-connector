@@ -96,15 +96,6 @@ type MirroringEndpointGroupAssociationLocationDetailsObservedState struct {
 	State *string `json:"state,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1.MirroringLocation
-type MirroringLocationObservedState struct {
-	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringLocation.location
-	Location *string `json:"location,omitempty"`
-
-	// +kcc:proto:field=google.cloud.networksecurity.v1.MirroringLocation.state
-	State *string `json:"state,omitempty"`
-}
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecuritymirroringendpointgroupassociation;gcpnetworksecuritymirroringendpointgroupassociations

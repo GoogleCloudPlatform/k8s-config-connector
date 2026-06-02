@@ -66,9 +66,11 @@ type MirroringendpointgroupassociationLocationsDetailsStatus struct {
 }
 
 type MirroringendpointgroupassociationLocationsStatus struct {
+	/* Output only. The cloud location, e.g. "us-central1-a" or "asia-south1". */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
+	/* Output only. The current state of the association in this location. */
 	// +optional
 	State *string `json:"state,omitempty"`
 }

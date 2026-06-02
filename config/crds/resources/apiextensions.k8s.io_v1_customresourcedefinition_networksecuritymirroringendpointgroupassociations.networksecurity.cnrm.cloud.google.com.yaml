@@ -222,8 +222,12 @@ spec:
                     items:
                       properties:
                         location:
+                          description: Output only. The cloud location, e.g. "us-central1-a"
+                            or "asia-south1".
                           type: string
                         state:
+                          description: Output only. The current state of the association
+                            in this location.
                           type: string
                       type: object
                     type: array
