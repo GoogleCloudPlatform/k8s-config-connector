@@ -92,7 +92,7 @@ type APIHubAPISpec struct {
 	//  `projects/{project}/locations/{location}/attributes/{attribute}`.
 	// +kcc:proto:field=google.cloud.apihub.v1.Api.attributes
 	// +kubebuilder:validation:Optional
-	Attributes []APIHubAPIAttribute `json:"attributes,omitempty"`
+	AttributeRefs []APIHubAPIAttribute `json:"attributeRefs,omitempty"`
 
 	// Optional. The API requirements of the API.
 	// +kcc:proto:field=google.cloud.apihub.v1.Api.api_requirements

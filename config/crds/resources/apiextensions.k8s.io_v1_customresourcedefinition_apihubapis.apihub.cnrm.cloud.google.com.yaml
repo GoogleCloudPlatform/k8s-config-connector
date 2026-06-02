@@ -283,7 +283,7 @@ spec:
                         type: array
                     type: object
                 type: object
-              attributes:
+              attributeRefs:
                 description: 'Optional. The list of user defined attributes associated
                   with the API resource. The key is the attribute name. It will be
                   of the format: `projects/{project}/locations/{location}/attributes/{attribute}`.'

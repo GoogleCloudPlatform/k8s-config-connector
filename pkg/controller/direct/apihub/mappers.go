@@ -128,13 +128,13 @@ func APIHubAPISpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIHubA
 	}
 
 	if in.GetAttributes() != nil {
-		out.Attributes = make([]krm.APIHubAPIAttribute, 0, len(in.GetAttributes()))
+		out.AttributeRefs = make([]krm.APIHubAPIAttribute, 0, len(in.GetAttributes()))
 		for k, v := range in.GetAttributes() {
 			attr := krm.APIHubAPIAttribute{
 				AttributeRef: &krm.APIHubAttributeRef{External: k},
 				Values:       AttributeValues_FromProto(mapCtx, v),
 			}
-			out.Attributes = append(out.Attributes, attr)
+			out.AttributeRefs = append(out.AttributeRefs, attr)
 		}
 	}
 	out.APIRequirements = AttributeValues_FromProto(mapCtx, in.GetApiRequirements())
@@ -164,9 +164,9 @@ func APIHubAPISpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAPISpec) *pb
 		out.SelectedVersion = in.SelectedVersionRef.External
 	}
 
-	if in.Attributes != nil {
+	if in.AttributeRefs != nil {
 		out.Attributes = make(map[string]*pb.AttributeValues)
-		for _, attr := range in.Attributes {
+		for _, attr := range in.AttributeRefs {
 			if attr.AttributeRef != nil {
 				out.Attributes[attr.AttributeRef.External] = AttributeValues_ToProto(mapCtx, attr.Values)
 			}

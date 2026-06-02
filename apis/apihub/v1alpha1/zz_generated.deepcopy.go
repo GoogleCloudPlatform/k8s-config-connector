@@ -213,8 +213,8 @@ func (in *APIHubAPISpec) DeepCopyInto(out *APIHubAPISpec) {
 		*out = new(APIHubVersionRef)
 		**out = **in
 	}
-	if in.Attributes != nil {
-		in, out := &in.Attributes, &out.Attributes
+	if in.AttributeRefs != nil {
+		in, out := &in.AttributeRefs, &out.AttributeRefs
 		*out = make([]APIHubAPIAttribute, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
