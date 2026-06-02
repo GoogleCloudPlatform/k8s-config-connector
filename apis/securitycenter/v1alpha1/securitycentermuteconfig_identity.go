@@ -65,16 +65,22 @@ func getIdentityFromSecurityCenterMuteConfigSpec(ctx context.Context, reader cli
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	org, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve organization: %w", err)
+	var organizationID string
+	if obj.Spec.OrganizationRef != nil {
+		org, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve organization: %w", err)
+		}
+		if org != nil {
+			organizationID = org.OrganizationID
+		}
 	}
-	if org == nil || org.OrganizationID == "" {
+	if organizationID == "" {
 		return nil, fmt.Errorf("cannot resolve organization ID")
 	}
 
 	identity := &SecurityCenterMuteConfigIdentity{
-		Organization: org.OrganizationID,
+		Organization: organizationID,
 		MuteConfig:   resourceID,
 	}
 	return identity, nil

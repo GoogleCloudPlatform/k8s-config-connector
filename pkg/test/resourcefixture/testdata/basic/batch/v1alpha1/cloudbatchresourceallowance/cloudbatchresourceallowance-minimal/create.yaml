@@ -1,0 +1,13 @@
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: CloudBatchResourceAllowance
+metadata:
+  name: batchallow-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  usageResourceAllowance:
+    spec:
+      type: "cpu-core-hour"
+      limit:
+        limit: 100

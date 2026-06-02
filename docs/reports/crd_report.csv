@@ -335,7 +335,7 @@ logging.cnrm.cloud.google.com,LoggingLogBucket,False,True,False,DCL,False
 logging.cnrm.cloud.google.com,LoggingLogExclusion,False,True,False,DCL,False
 logging.cnrm.cloud.google.com,LoggingLogMetric,False,True,False,Direct,True
 logging.cnrm.cloud.google.com,LoggingLogSink,False,True,False,Terraform,False
-logging.cnrm.cloud.google.com,LoggingLogView,False,True,False,DCL,False
+logging.cnrm.cloud.google.com,LoggingLogView,False,True,False,DCL,True
 managedkafka.cnrm.cloud.google.com,ManagedKafkaCluster,True,True,False,Direct,True
 managedkafka.cnrm.cloud.google.com,ManagedKafkaConsumerGroup,True,False,False,Direct,True
 managedkafka.cnrm.cloud.google.com,ManagedKafkaTopic,True,True,False,Direct,True
@@ -368,6 +368,7 @@ networksecurity.cnrm.cloud.google.com,NetworkSecurityBackendAuthenticationConfig
 networksecurity.cnrm.cloud.google.com,NetworkSecurityClientTLSPolicy,False,True,False,DCL,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityInterceptDeployment,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityInterceptEndpointGroup,True,False,False,Direct,True
+networksecurity.cnrm.cloud.google.com,NetworkSecurityMirroringEndpointGroup,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityServerTLSPolicy,False,True,False,DCL,False
 networkservices.cnrm.cloud.google.com,NetworkServicesEdgeCacheKeyset,True,False,False,Terraform,False
 networkservices.cnrm.cloud.google.com,NetworkServicesEdgeCacheOrigin,True,False,False,Terraform,False
