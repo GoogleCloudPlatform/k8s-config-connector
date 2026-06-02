@@ -40,6 +40,7 @@ To establish a baseline, run the tests against real GCP to produce golden logs.
    - KCC uses the Kubernetes namespace as the GCP project name by default. Ensure the test namespace maps to an active GCP project or is configured with appropriate annotations.
 2. **Run E2E Recorder**:
    - Run `hack/record-gcp <testname>`.
+     - **Example:** `hack/record-gcp tests-e2e-sql`
    - If the script fails, verify you have the permissions to create the resources in the GCP project.
 3. **Commit the Baseline**:
    - Stage and commit the generated `_http.log` and `_generated_object_*.yaml` files to establish a clean git diff base:
@@ -55,7 +56,8 @@ To establish a baseline, run the tests against real GCP to produce golden logs.
 To verify the mock implementation matches real GCP behavior:
 
 1. **Run Mock Test**:
-   - Run `hack/compare-mock <testname>`.
+   - Run `hack/compare-mock <testname>`. 
+     - **Example:** `hack/compare-mock tests-e2e-sql`
    - The test will execute using the MockGCP control plane.
 2. **Check for Differences**:
    - Check if the command fails or if `git status` shows modifications to the golden files.
