@@ -22,7 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -60,28 +59,20 @@ func (i *SecurityCenterMuteConfigIdentity) Host() string {
 	return SecurityCenterMuteConfigIdentityFormat.Host()
 }
 
-func getIdentityFromSecurityCenterMuteConfigSpec(ctx context.Context, reader client.Reader, obj client.Object) (*SecurityCenterMuteConfigIdentity, error) {
+func getIdentityFromSecurityCenterMuteConfigSpec(ctx context.Context, reader client.Reader, obj *SecurityCenterMuteConfig) (*SecurityCenterMuteConfigIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
 	var organizationID string
-	if u, ok := obj.(*unstructured.Unstructured); ok {
-		orgID, err := refs.ResolveOrganizationID(ctx, reader, u)
+	if obj.Spec.OrganizationRef != nil {
+		org, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
 		if err != nil {
 			return nil, fmt.Errorf("cannot resolve organization: %w", err)
 		}
-		organizationID = orgID
-	} else if typed, ok := obj.(*SecurityCenterMuteConfig); ok {
-		if typed.Spec.OrganizationRef != nil {
-			org, err := refs.ResolveOrganization(ctx, reader, typed, typed.Spec.OrganizationRef)
-			if err != nil {
-				return nil, fmt.Errorf("cannot resolve organization: %w", err)
-			}
-			if org != nil {
-				organizationID = org.OrganizationID
-			}
+		if org != nil {
+			organizationID = org.OrganizationID
 		}
 	}
 	if organizationID == "" {

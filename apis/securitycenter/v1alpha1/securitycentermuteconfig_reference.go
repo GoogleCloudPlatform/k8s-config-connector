@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -83,7 +84,11 @@ func (r *SecurityCenterMuteConfigRef) ParseExternalToIdentity() (identity.Identi
 
 func (r *SecurityCenterMuteConfigRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
-		id, err := getIdentityFromSecurityCenterMuteConfigSpec(ctx, reader, u)
+		typed, err := common.ToStructuredType[*SecurityCenterMuteConfig](u)
+		if err != nil {
+			return ""
+		}
+		id, err := getIdentityFromSecurityCenterMuteConfigSpec(ctx, reader, typed)
 		if err != nil {
 			return ""
 		}
