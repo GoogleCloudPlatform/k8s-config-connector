@@ -775,8 +775,7 @@ type Any struct {
 	//
 	//  Note: this functionality is not currently available in the official
 	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com. As of May 2023, there are no widely used type server
-	//  implementations and no plans to implement one.
+	//  type.googleapis.com.
 	//
 	//  Schemes other than `http`, `https` (or the empty scheme) might be
 	//  used with implementation specific semantics.
@@ -839,10 +838,6 @@ type API struct {
 	// The source syntax of the service.
 	// +kcc:proto:field=google.protobuf.Api.syntax
 	Syntax *string `json:"syntax,omitempty"`
-
-	// The source edition string, only valid when syntax is SYNTAX_EDITIONS.
-	// +kcc:proto:field=google.protobuf.Api.edition
-	Edition *string `json:"edition,omitempty"`
 }
 */
 
@@ -874,18 +869,8 @@ type Method struct {
 	Options []Option `json:"options,omitempty"`
 
 	// The source syntax of this method.
-	//
-	//  This field should be ignored, instead the syntax should be inherited from
-	//  Api. This is similar to Field and EnumValue.
 	// +kcc:proto:field=google.protobuf.Method.syntax
 	Syntax *string `json:"syntax,omitempty"`
-
-	// The source edition string, only valid when syntax is SYNTAX_EDITIONS.
-	//
-	//  This field should be ignored, instead the edition should be inherited from
-	//  Api. This is similar to Field and EnumValue.
-	// +kcc:proto:field=google.protobuf.Method.edition
-	Edition *string `json:"edition,omitempty"`
 }
 */
 
