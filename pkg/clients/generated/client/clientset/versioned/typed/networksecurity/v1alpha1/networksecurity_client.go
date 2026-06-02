@@ -36,7 +36,6 @@ type NetworksecurityV1alpha1Interface interface {
 	NetworkSecurityInterceptEndpointGroupsGetter
 	NetworkSecurityMirroringDeploymentsGetter
 	NetworkSecurityMirroringEndpointGroupsGetter
-	NetworkSecuritySecurityProfileGroupsGetter
 }
 
 // NetworksecurityV1alpha1Client is used to interact with features provided by the networksecurity.cnrm.cloud.google.com group.
@@ -62,10 +61,6 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringDeployments(name
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringEndpointGroups(namespace string) NetworkSecurityMirroringEndpointGroupInterface {
 	return newNetworkSecurityMirroringEndpointGroups(c, namespace)
-}
-
-func (c *NetworksecurityV1alpha1Client) NetworkSecuritySecurityProfileGroups(namespace string) NetworkSecuritySecurityProfileGroupInterface {
-	return newNetworkSecuritySecurityProfileGroups(c, namespace)
 }
 
 // NewForConfig creates a new NetworksecurityV1alpha1Client for the given config.

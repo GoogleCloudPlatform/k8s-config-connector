@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -85,34 +86,71 @@ func (i *NetworkSecuritySecurityProfileGroupIdentity) ParentString() string {
 	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
 }
 
-func getIdentityFromNetworkSecuritySecurityProfileGroupSpec(ctx context.Context, reader client.Reader, obj *NetworkSecuritySecurityProfileGroup) (*NetworkSecuritySecurityProfileGroupIdentity, error) {
-	if obj.Spec.ProjectRef == nil && obj.Spec.OrganizationRef == nil {
-		return nil, fmt.Errorf("one of projectRef or organizationRef must be set")
-	}
-	if obj.Spec.ProjectRef != nil && obj.Spec.OrganizationRef != nil {
-		return nil, fmt.Errorf("only one of projectRef or organizationRef can be set")
-	}
-
+func getIdentityFromNetworkSecuritySecurityProfileGroupSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkSecuritySecurityProfileGroupIdentity, error) {
 	var projectID, organizationID string
+	var location string
 
-	if obj.Spec.ProjectRef != nil {
-		projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-		if err != nil {
-			return nil, err
+	if typed, ok := obj.(*NetworkSecuritySecurityProfileGroup); ok {
+		if typed.Spec.ProjectRef == nil && typed.Spec.OrganizationRef == nil {
+			return nil, fmt.Errorf("one of projectRef or organizationRef must be set")
 		}
-		projectID = projectRef.ProjectID
-		if projectID == "" {
-			return nil, fmt.Errorf("cannot resolve project")
+		if typed.Spec.ProjectRef != nil && typed.Spec.OrganizationRef != nil {
+			return nil, fmt.Errorf("only one of projectRef or organizationRef can be set")
 		}
-	} else if obj.Spec.OrganizationRef != nil {
-		organizationRef, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
-		if err != nil {
-			return nil, err
+
+		if typed.Spec.ProjectRef != nil {
+			projectRef, err := refs.ResolveProject(ctx, reader, typed.GetNamespace(), typed.Spec.ProjectRef)
+			if err != nil {
+				return nil, err
+			}
+			projectID = projectRef.ProjectID
+			if projectID == "" {
+				return nil, fmt.Errorf("cannot resolve project")
+			}
+		} else if typed.Spec.OrganizationRef != nil {
+			organizationRef, err := refs.ResolveOrganization(ctx, reader, typed, typed.Spec.OrganizationRef)
+			if err != nil {
+				return nil, err
+			}
+			organizationID = organizationRef.OrganizationID
+			if organizationID == "" {
+				return nil, fmt.Errorf("cannot resolve organization")
+			}
 		}
-		organizationID = organizationRef.OrganizationID
-		if organizationID == "" {
-			return nil, fmt.Errorf("cannot resolve organization")
+		location = common.ValueOf(typed.Spec.Location)
+	} else if u, ok := obj.(*unstructured.Unstructured); ok {
+		hasProjectRef, _, _ := unstructured.NestedFieldNoCopy(u.Object, "spec", "projectRef")
+		hasOrganizationRef, _, _ := unstructured.NestedFieldNoCopy(u.Object, "spec", "organizationRef")
+
+		if hasProjectRef == nil && hasOrganizationRef == nil {
+			return nil, fmt.Errorf("one of projectRef or organizationRef must be set")
 		}
+		if hasProjectRef != nil && hasOrganizationRef != nil {
+			return nil, fmt.Errorf("only one of projectRef or organizationRef can be set")
+		}
+
+		if hasProjectRef != nil {
+			var err error
+			projectID, err = refs.ResolveProjectID(ctx, reader, u)
+			if err != nil {
+				return nil, err
+			}
+			if projectID == "" {
+				return nil, fmt.Errorf("cannot resolve project")
+			}
+		} else if hasOrganizationRef != nil {
+			var err error
+			organizationID, err = refs.ResolveOrganizationID(ctx, reader, u)
+			if err != nil {
+				return nil, err
+			}
+			if organizationID == "" {
+				return nil, fmt.Errorf("cannot resolve organization")
+			}
+		}
+		location, _, _ = unstructured.NestedString(u.Object, "spec", "location")
+	} else {
+		return nil, fmt.Errorf("unexpected type %T", obj)
 	}
 
 	resourceID, err := refs.GetResourceID(obj)
@@ -123,7 +161,7 @@ func getIdentityFromNetworkSecuritySecurityProfileGroupSpec(ctx context.Context,
 	return &NetworkSecuritySecurityProfileGroupIdentity{
 		Project:              projectID,
 		Organization:         organizationID,
-		Location:             common.ValueOf(obj.Spec.Location),
+		Location:             location,
 		SecurityProfileGroup: resourceID,
 	}, nil
 }
@@ -149,4 +187,9 @@ func (obj *NetworkSecuritySecurityProfileGroup) GetIdentity(ctx context.Context,
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier implements the identity.ExternalIdentifier interface.
+func (obj *NetworkSecuritySecurityProfileGroup) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
 }

@@ -51,10 +51,6 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringEndpointGroups(nam
 	return newFakeNetworkSecurityMirroringEndpointGroups(c, namespace)
 }
 
-func (c *FakeNetworksecurityV1alpha1) NetworkSecuritySecurityProfileGroups(namespace string) v1alpha1.NetworkSecuritySecurityProfileGroupInterface {
-	return newFakeNetworkSecuritySecurityProfileGroups(c, namespace)
-}
-
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeNetworksecurityV1alpha1) RESTClient() rest.Interface {
