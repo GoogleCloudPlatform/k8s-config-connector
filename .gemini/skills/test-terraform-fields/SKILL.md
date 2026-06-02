@@ -60,6 +60,12 @@ To verify the mock implementation matches real GCP behavior:
 2. **Check for Differences**:
    - Check if the command fails or if `git status` shows modifications to the golden files.
    - Run `git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
+3. **Commit the Baseline Updates**:
+   - If there are any differences (such as `selfLink` removal or minor formatting alignment), stage and commit these updates:
+     ```bash
+     git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
+     git commit -m "Update golden logs for <testname> after mock comparison"
+     ```
 
 ---
 
@@ -129,4 +135,10 @@ Before finishing the task, the agent must run formatting and static analysis che
        WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
        ```
    - If the golden output gets updated, make sure to stage and commit the changes in `tests/apichecks/testdata/exceptions/`.
+5. **Run CI/CD Group Presubmit Tests Locally**:
+   - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<group>` matching the resource's group (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly before proposing a PR:
+     ```bash
+     dev/ci/presubmits/tests-e2e-fixtures-<group>
+     ```
+
 

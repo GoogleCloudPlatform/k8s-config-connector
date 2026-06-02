@@ -55,12 +55,10 @@ If the field or bug fix is not yet present in the vendored copy of TPG Beta unde
      ```bash
      go vet ./third_party/github.com/hashicorp/terraform-provider-google-beta/...
      ```
-5. **Commit Provider Changes Separately (Repository Rule)**:
-   - Run `git status` and verify only files under `third_party/` are modified.
-   - Stage and commit the third-party changes in a **dedicated, separate git commit** before editing other KCC configurations:
+5. **Stage Provider Changes**:
+   - Stage the modified third-party files. You can commit them together with KCC changes as the repository no longer enforces subtree change isolation:
      ```bash
      git add third_party/
-     git commit -m "Patch vendored Terraform provider: add support for <field_name> on <resource>"
      ```
 
 ---
