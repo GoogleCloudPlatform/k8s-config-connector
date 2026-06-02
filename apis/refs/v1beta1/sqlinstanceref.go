@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -153,43 +154,72 @@ func ResolveSQLInstanceID(ctx context.Context, reader client.Reader, obj *unstru
 	return "", fmt.Errorf("cannot find instance id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
 }
 
-func (r *SQLInstanceRef) GetGVK() schema.GroupVersionKind {
-	return schema.GroupVersionKind{
+func (r *SQLInstanceRef) NormalizedExternal(ctx context.Context, reader client.Reader, defaultNamespace string) (string, error) {
+	if r == nil {
+		return "", nil
+	}
+	if r.Name == "" && r.External == "" {
+		return "", fmt.Errorf("must specify either name or external on instanceRef")
+	}
+	if r.External != "" && r.Name != "" {
+		return "", fmt.Errorf("cannot specify both name and external")
+	}
+
+	if r.External != "" {
+		// CloudDMS format validation
+		tokens := strings.Split(r.External, "/")
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" {
+			return r.External, nil
+		}
+		return "", fmt.Errorf("format of sqlinstance external=%q was not known (use projects/<projectId>/locations/<Location>/instances/<instanceName>)", r.External)
+	}
+
+	// resolve from Name
+	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{
 		Group:   "sql.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "SQLInstance",
+	})
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return "", fmt.Errorf("reading referenced %s %s: %w", u.GroupVersionKind(), key, err)
 	}
-}
 
-func (r *SQLInstanceRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-}
-
-func (r *SQLInstanceRef) GetExternal() string {
-	return r.External
-}
-
-func (r *SQLInstanceRef) SetExternal(ref string) {
-	r.External = ref
-}
-
-func (r *SQLInstanceRef) ValidateExternal(ref string) error {
-	tokens := strings.Split(ref, "/")
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" {
-		return nil
+	// Get external from status.externalRef.
+	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	return fmt.Errorf("format of sqlinstance external=%q was not known (use projects/<projectId>/locations/<Location>/instances/<instanceName>)", ref)
-}
+	if externalRef == "" {
+		// CloudSQL controller doesn't use status.externalRef, it uses spec.resourceID or name
+		// But for CloudDMS, the format required is projects/.../locations/.../instances/...
+		// which is exactly what ResolveSQLInstanceRef returns in the struct!
+		// Wait, let's just use ResolveSQLInstanceRef!
+		instance, err := ResolveSQLInstanceRef(ctx, reader, &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"metadata": map[string]interface{}{
+					"namespace": defaultNamespace,
+				},
+			},
+		}, r)
+		if err != nil {
+			return "", err
+		}
+		externalRef = instance.String()
+	}
 
-func (r *SQLInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r == nil {
-		return nil
-	}
-	if r.Name == "" && r.External == "" {
-		return fmt.Errorf("must specify either name or external on instanceRef")
-	}
-	if r.External != "" && r.Name != "" {
-		return fmt.Errorf("cannot specify both name and external")
-	}
-	return Normalize(ctx, reader, r, defaultNamespace)
+	r.External = externalRef
+	// clear name to avoid "cannot specify both" on next reconcile
+	r.Name = ""
+	r.Namespace = ""
+
+	return r.External, nil
 }

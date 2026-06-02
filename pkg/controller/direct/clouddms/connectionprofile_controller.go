@@ -66,13 +66,13 @@ func (m *modelConnectionProfile) AdapterForObject(ctx context.Context, op *direc
 	id := idObj.(*krm.CloudDMSConnectionProfileIdentity)
 
 	if obj.Spec.Mysql != nil && obj.Spec.Mysql.CloudSQLInstanceRef != nil {
-		if err := obj.Spec.Mysql.CloudSQLInstanceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		if _, err := obj.Spec.Mysql.CloudSQLInstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 			return nil, err
 		}
 	}
 	if obj.Spec.Postgresql != nil {
 		if obj.Spec.Postgresql.CloudSQLInstanceRef != nil {
-			if err := obj.Spec.Postgresql.CloudSQLInstanceRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			if _, err := obj.Spec.Postgresql.CloudSQLInstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 				return nil, err
 			}
 		}
