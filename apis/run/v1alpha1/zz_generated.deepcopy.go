@@ -135,8 +135,8 @@ func (in *CloudRunInstanceObservedState) DeepCopyInto(out *CloudRunInstanceObser
 		*out = new(int64)
 		**out = **in
 	}
-	if in.LogUri != nil {
-		in, out := &in.LogUri, &out.LogUri
+	if in.LogURI != nil {
+		in, out := &in.LogURI, &out.LogURI
 		*out = new(string)
 		**out = **in
 	}
@@ -295,8 +295,8 @@ func (in *CloudRunInstanceSpec) DeepCopyInto(out *CloudRunInstanceSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.InvokerIamDisabled != nil {
-		in, out := &in.InvokerIamDisabled, &out.InvokerIamDisabled
+	if in.InvokerIAMDisabled != nil {
+		in, out := &in.InvokerIAMDisabled, &out.InvokerIAMDisabled
 		*out = new(bool)
 		**out = **in
 	}
@@ -1075,8 +1075,8 @@ func (in *InstanceVolume) DeepCopyInto(out *InstanceVolume) {
 		*out = new(InstanceSecretVolumeSource)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.InstanceCloudSQLInstance != nil {
-		in, out := &in.InstanceCloudSQLInstance, &out.InstanceCloudSQLInstance
+	if in.CloudSQLInstance != nil {
+		in, out := &in.CloudSQLInstance, &out.CloudSQLInstance
 		*out = new(InstanceCloudSQLInstance)
 		(*in).DeepCopyInto(*out)
 	}

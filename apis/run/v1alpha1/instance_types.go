@@ -50,7 +50,7 @@ type CloudRunInstanceSpec struct {
 	NodeSelector                  *InstanceNodeSelector             `json:"nodeSelector,omitempty"`
 	GpuZonalRedundancyDisabled    *bool                             `json:"gpuZonalRedundancyDisabled,omitempty"`
 	Ingress                       *string                           `json:"ingress,omitempty"`
-	InvokerIamDisabled            *bool                             `json:"invokerIamDisabled,omitempty"`
+	InvokerIAMDisabled            *bool                             `json:"invokerIAMDisabled,omitempty"`
 	IapEnabled                    *bool                             `json:"iapEnabled,omitempty"`
 }
 
@@ -65,7 +65,7 @@ type CloudRunInstanceObservedState struct {
 	Creator            *string                   `json:"creator,omitempty"`
 	LastModifier       *string                   `json:"lastModifier,omitempty"`
 	ObservedGeneration *int64                    `json:"observedGeneration,omitempty"`
-	LogUri             *string                   `json:"logUri,omitempty"`
+	LogURI             *string                   `json:"logURI,omitempty"`
 	TerminalCondition  *InstanceCondition        `json:"terminalCondition,omitempty"`
 	ContainerStatuses  []InstanceContainerStatus `json:"containerStatuses,omitempty"`
 	SatisfiesPzs       *bool                     `json:"satisfiesPzs,omitempty"`
@@ -247,7 +247,7 @@ type InstanceVolume struct {
 	//  mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run for
 	//  more information on how to connect Cloud SQL and Cloud Run.
 	// +kcc:proto:field=google.cloud.run.v2.Volume.cloud_sql_instance
-	InstanceCloudSQLInstance *InstanceCloudSQLInstance `json:"cloudSqlInstance,omitempty"`
+	CloudSQLInstance *InstanceCloudSQLInstance `json:"cloudSQLInstance,omitempty"`
 
 	// Ephemeral storage used as a shared volume.
 	// +kcc:proto:field=google.cloud.run.v2.Volume.empty_dir

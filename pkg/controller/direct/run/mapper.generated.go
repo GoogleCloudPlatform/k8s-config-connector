@@ -64,136 +64,6 @@ func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool)
 	}
 	return &pb.BinaryAuthorization_UseDefault{UseDefault: *in}
 }
-func CloudRunInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmrunv1alpha1.CloudRunInstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmrunv1alpha1.CloudRunInstanceObservedState{}
-	// MISSING: Name
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.Generation = direct.LazyPtr(in.GetGeneration())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	out.Creator = direct.LazyPtr(in.GetCreator())
-	out.LastModifier = direct.LazyPtr(in.GetLastModifier())
-	// MISSING: VPCAccess
-	// MISSING: InvokerIAMDisabled
-	// MISSING: IAPEnabled
-	out.ObservedGeneration = direct.LazyPtr(in.GetObservedGeneration())
-	// MISSING: LogURI
-	// (near miss): "LogURI" vs "LogUri"
-	out.TerminalCondition = InstanceCondition_FromProto(mapCtx, in.GetTerminalCondition())
-	// MISSING: Conditions
-	out.ContainerStatuses = direct.Slice_FromProto(mapCtx, in.ContainerStatuses, InstanceContainerStatus_FromProto)
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.Urls = in.Urls
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	return out
-}
-func CloudRunInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.CloudRunInstanceObservedState) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	out.Uid = direct.ValueOf(in.Uid)
-	out.Generation = direct.ValueOf(in.Generation)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	out.Creator = direct.ValueOf(in.Creator)
-	out.LastModifier = direct.ValueOf(in.LastModifier)
-	// MISSING: VPCAccess
-	// MISSING: InvokerIAMDisabled
-	// MISSING: IAPEnabled
-	out.ObservedGeneration = direct.ValueOf(in.ObservedGeneration)
-	// MISSING: LogURI
-	// (near miss): "LogURI" vs "LogUri"
-	out.TerminalCondition = InstanceCondition_ToProto(mapCtx, in.TerminalCondition)
-	// MISSING: Conditions
-	out.ContainerStatuses = direct.Slice_ToProto(mapCtx, in.ContainerStatuses, InstanceContainerStatus_ToProto)
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.Urls = in.Urls
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.Etag = direct.ValueOf(in.Etag)
-	return out
-}
-func CloudRunInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmrunv1alpha1.CloudRunInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmrunv1alpha1.CloudRunInstanceSpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	out.Annotations = in.Annotations
-	out.Client = direct.LazyPtr(in.GetClient())
-	out.ClientVersion = direct.LazyPtr(in.GetClientVersion())
-	out.LaunchStage = direct.Enum_FromProto(mapCtx, in.GetLaunchStage())
-	out.BinaryAuthorization = InstanceBinaryAuthorization_FromProto(mapCtx, in.GetBinaryAuthorization())
-	// MISSING: VPCAccess
-	// (near miss): "VPCAccess" vs "VpcAccess"
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
-	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, InstanceContainer_FromProto)
-	out.Volumes = direct.Slice_FromProto(mapCtx, in.Volumes, InstanceVolume_FromProto)
-	if in.GetEncryptionKey() != "" {
-		out.EncryptionKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
-	}
-	out.EncryptionKeyRevocationAction = direct.Enum_FromProto(mapCtx, in.GetEncryptionKeyRevocationAction())
-	out.EncryptionKeyShutdownDuration = direct.StringDuration_FromProto(mapCtx, in.GetEncryptionKeyShutdownDuration())
-	out.NodeSelector = InstanceNodeSelector_FromProto(mapCtx, in.GetNodeSelector())
-	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
-	out.Ingress = direct.Enum_FromProto(mapCtx, in.GetIngress())
-	// MISSING: InvokerIAMDisabled
-	// (near miss): "InvokerIAMDisabled" vs "InvokerIamDisabled"
-	// MISSING: IAPEnabled
-	// (near miss): "IAPEnabled" vs "IapEnabled"
-	// MISSING: LogURI
-	// MISSING: Conditions
-	return out
-}
-func CloudRunInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.CloudRunInstanceSpec) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.Annotations = in.Annotations
-	out.Client = direct.ValueOf(in.Client)
-	out.ClientVersion = direct.ValueOf(in.ClientVersion)
-	out.LaunchStage = direct.Enum_ToProto[apipb.LaunchStage](mapCtx, in.LaunchStage)
-	out.BinaryAuthorization = InstanceBinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
-	// MISSING: VPCAccess
-	// (near miss): "VPCAccess" vs "VpcAccess"
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	out.Containers = direct.Slice_ToProto(mapCtx, in.Containers, InstanceContainer_ToProto)
-	out.Volumes = direct.Slice_ToProto(mapCtx, in.Volumes, InstanceVolume_ToProto)
-	if in.EncryptionKeyRef != nil {
-		out.EncryptionKey = in.EncryptionKeyRef.External
-	}
-	out.EncryptionKeyRevocationAction = direct.Enum_ToProto[pb.EncryptionKeyRevocationAction](mapCtx, in.EncryptionKeyRevocationAction)
-	out.EncryptionKeyShutdownDuration = direct.StringDuration_ToProto(mapCtx, in.EncryptionKeyShutdownDuration)
-	out.NodeSelector = InstanceNodeSelector_ToProto(mapCtx, in.NodeSelector)
-	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
-	out.Ingress = direct.Enum_ToProto[pb.IngressTraffic](mapCtx, in.Ingress)
-	// MISSING: InvokerIAMDisabled
-	// (near miss): "InvokerIAMDisabled" vs "InvokerIamDisabled"
-	// MISSING: IAPEnabled
-	// (near miss): "IAPEnabled" vs "IapEnabled"
-	// MISSING: LogURI
-	// MISSING: Conditions
-	return out
-}
 func CloudSQLInstance_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlInstance) *krm.CloudSQLInstance {
 	if in == nil {
 		return nil
@@ -283,7 +153,6 @@ func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Conta
 	out := &krm.Container{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Image = direct.LazyPtr(in.GetImage())
-	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
@@ -293,7 +162,6 @@ func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Conta
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.LivenessProbe = Probe_FromProto(mapCtx, in.GetLivenessProbe())
 	out.StartupProbe = Probe_FromProto(mapCtx, in.GetStartupProbe())
-	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -306,7 +174,6 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	out := &pb.Container{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Image = direct.ValueOf(in.Image)
-	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
@@ -316,7 +183,6 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.LivenessProbe = Probe_ToProto(mapCtx, in.LivenessProbe)
 	out.StartupProbe = Probe_ToProto(mapCtx, in.StartupProbe)
-	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -633,7 +499,6 @@ func InstanceContainer_FromProto(mapCtx *direct.MapContext, in *pb.Container) *k
 	out := &krmrunv1alpha1.InstanceContainer{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Image = direct.LazyPtr(in.GetImage())
-	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_FromProto(mapCtx, in.Env, InstanceEnvVar_FromProto)
@@ -643,7 +508,6 @@ func InstanceContainer_FromProto(mapCtx *direct.MapContext, in *pb.Container) *k
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.LivenessProbe = InstanceProbe_FromProto(mapCtx, in.GetLivenessProbe())
 	out.StartupProbe = InstanceProbe_FromProto(mapCtx, in.GetStartupProbe())
-	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -656,7 +520,6 @@ func InstanceContainer_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.Ins
 	out := &pb.Container{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Image = direct.ValueOf(in.Image)
-	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, InstanceEnvVar_ToProto)
@@ -666,7 +529,6 @@ func InstanceContainer_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.Ins
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.LivenessProbe = InstanceProbe_ToProto(mapCtx, in.LivenessProbe)
 	out.StartupProbe = InstanceProbe_ToProto(mapCtx, in.StartupProbe)
-	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -688,24 +550,6 @@ func InstanceContainerPort_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1
 	out := &pb.ContainerPort{}
 	out.Name = direct.ValueOf(in.Name)
 	out.ContainerPort = direct.ValueOf(in.ContainerPort)
-	return out
-}
-func InstanceContainerStatus_FromProto(mapCtx *direct.MapContext, in *pb.ContainerStatus) *krmrunv1alpha1.InstanceContainerStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krmrunv1alpha1.InstanceContainerStatus{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.ImageDigest = direct.LazyPtr(in.GetImageDigest())
-	return out
-}
-func InstanceContainerStatus_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.InstanceContainerStatus) *pb.ContainerStatus {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContainerStatus{}
-	out.Name = direct.ValueOf(in.Name)
-	out.ImageDigest = direct.ValueOf(in.ImageDigest)
 	return out
 }
 func InstanceEmptyDirVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.EmptyDirVolumeSource) *krmrunv1alpha1.InstanceEmptyDirVolumeSource {
@@ -1091,7 +935,7 @@ func InstanceVolume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krmrunv
 	out := &krmrunv1alpha1.InstanceVolume{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Secret = InstanceSecretVolumeSource_FromProto(mapCtx, in.GetSecret())
-	// MISSING: CloudSQLInstance
+	out.CloudSQLInstance = InstanceCloudSQLInstance_FromProto(mapCtx, in.GetCloudSqlInstance())
 	out.EmptyDir = InstanceEmptyDirVolumeSource_FromProto(mapCtx, in.GetEmptyDir())
 	out.Nfs = InstanceNfsVolumeSource_FromProto(mapCtx, in.GetNfs())
 	out.GCS = InstanceGCSVolumeSource_FromProto(mapCtx, in.GetGcs())
@@ -1106,7 +950,9 @@ func InstanceVolume_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.Instan
 	if oneof := InstanceSecretVolumeSource_ToProto(mapCtx, in.Secret); oneof != nil {
 		out.VolumeType = &pb.Volume_Secret{Secret: oneof}
 	}
-	// MISSING: CloudSQLInstance
+	if oneof := InstanceCloudSQLInstance_ToProto(mapCtx, in.CloudSQLInstance); oneof != nil {
+		out.VolumeType = &pb.Volume_CloudSqlInstance{CloudSqlInstance: oneof}
+	}
 	if oneof := InstanceEmptyDirVolumeSource_ToProto(mapCtx, in.EmptyDir); oneof != nil {
 		out.VolumeType = &pb.Volume_EmptyDir{EmptyDir: oneof}
 	}
@@ -1125,7 +971,6 @@ func InstanceVolumeMount_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount
 	out := &krmrunv1alpha1.InstanceVolumeMount{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
-	// MISSING: SubPath
 	return out
 }
 func InstanceVolumeMount_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.InstanceVolumeMount) *pb.VolumeMount {
@@ -1135,7 +980,6 @@ func InstanceVolumeMount_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.I
 	out := &pb.VolumeMount{}
 	out.Name = direct.ValueOf(in.Name)
 	out.MountPath = direct.ValueOf(in.MountPath)
-	// MISSING: SubPath
 	return out
 }
 func NfsVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.NFSVolumeSource) *krm.NfsVolumeSource {
@@ -1513,7 +1357,6 @@ func VolumeMount_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount) *krm.V
 	out := &krm.VolumeMount{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
-	out.SubPath = direct.LazyPtr(in.GetSubPath())
 	return out
 }
 func VolumeMount_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMount) *pb.VolumeMount {
@@ -1523,6 +1366,5 @@ func VolumeMount_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMount) *pb.Vol
 	out := &pb.VolumeMount{}
 	out.Name = direct.ValueOf(in.Name)
 	out.MountPath = direct.ValueOf(in.MountPath)
-	out.SubPath = direct.ValueOf(in.SubPath)
 	return out
 }

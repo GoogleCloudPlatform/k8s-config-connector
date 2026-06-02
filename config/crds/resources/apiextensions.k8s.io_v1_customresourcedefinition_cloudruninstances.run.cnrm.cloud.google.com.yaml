@@ -456,7 +456,7 @@ spec:
                 type: boolean
               ingress:
                 type: string
-              invokerIamDisabled:
+              invokerIAMDisabled:
                 type: boolean
               labels:
                 additionalProperties:
@@ -534,7 +534,7 @@ spec:
               volumes:
                 items:
                   properties:
-                    cloudSqlInstance:
+                    cloudSQLInstance:
                       description: For Cloud SQL volumes, contains the specific instances
                         that should be mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run
                         for more information on how to connect Cloud SQL and Cloud
@@ -966,7 +966,7 @@ spec:
                     type: integer
                   lastModifier:
                     type: string
-                  logUri:
+                  logURI:
                     type: string
                   observedGeneration:
                     format: int64

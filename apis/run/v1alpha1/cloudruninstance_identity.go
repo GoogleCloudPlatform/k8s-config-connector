@@ -35,9 +35,9 @@ var cloudRunInstanceURL = gcpurls.Template[CloudRunInstanceIdentity](
 // CloudRunInstanceIdentity defines the resource reference to CloudRunInstance.
 // +k8s:deepcopy-gen=false
 type CloudRunInstanceIdentity struct {
-	project  string
-	location string
-	instance string
+	Project  string
+	Location string
+	Instance string
 }
 
 func (i *CloudRunInstanceIdentity) FromExternal(ref string) error {
@@ -99,20 +99,20 @@ func BuildCloudRunInstanceIdentity(ctx context.Context, reader client.Reader, ob
 		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualIdentity.project != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.project, projectID)
+		if actualIdentity.Project != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.Project, projectID)
 		}
-		if actualIdentity.location != *location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualIdentity.location, *location)
+		if actualIdentity.Location != *location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualIdentity.Location, *location)
 		}
-		if actualIdentity.instance != resourceID {
+		if actualIdentity.Instance != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualIdentity.instance)
+				resourceID, actualIdentity.Instance)
 		}
 	}
 	return &CloudRunInstanceIdentity{
-		project:  projectID,
-		location: *location,
-		instance: resourceID,
+		Project:  projectID,
+		Location: *location,
+		Instance: resourceID,
 	}, nil
 }

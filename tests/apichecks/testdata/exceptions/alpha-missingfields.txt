@@ -753,12 +753,12 @@
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.gpuZonalRedundancyDisabled" is not set in unstructured objects
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.iapEnabled" is not set in unstructured objects
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.ingress" is not set in unstructured objects
-[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.invokerIamDisabled" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.invokerIAMDisabled" is not set in unstructured objects
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.launchStage" is not set in unstructured objects
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeSelector.accelerator" is not set in unstructured objects
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].cloudSqlInstance.instanceRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].cloudSQLInstance.instanceRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].emptyDir.medium" is not set in unstructured objects
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].emptyDir.sizeLimit" is not set in unstructured objects
 [missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].gcs.bucketRef" is not set; neither 'external' nor 'name' are set
