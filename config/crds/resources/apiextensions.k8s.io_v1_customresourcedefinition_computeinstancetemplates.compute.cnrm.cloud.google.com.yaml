@@ -395,8 +395,6 @@ spec:
                 type: array
               instanceDescription:
                 type: string
-              location:
-                type: string
               machineType:
                 type: string
               metadata:
@@ -760,9 +758,7 @@ spec:
                 type: array
             required:
             - disk
-            - location
             - machineType
-            - projectRef
             type: object
           status:
             description: ComputeInstanceTemplateStatus defines the config connector

@@ -21,7 +21,8 @@
 [refs] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" should be a reference
 [refs] crd=computefirewallpolicyrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetResources[].external" should be a reference
 [refs] crd=computeinstances.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccount" should be a reference
-[refs] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkInterface[].networkAttachment" should be a reference
+[refs] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.disk[].resourcePolicies[].external" should be a reference
+[refs] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.resourcePolicies[].external" should be a reference
 [refs] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccount" should be a reference
 [refs] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.machineImageEncryptionKey.kmsKeyServiceAccount" should be a reference
 [refs] crd=computeorganizationsecuritypolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference

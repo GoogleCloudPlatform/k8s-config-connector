@@ -190,7 +190,6 @@ type ComputeInstanceTemplateSpec struct {
 	EnableDisplay              *bool                                       `json:"enableDisplay,omitempty"`
 	GuestAccelerator           []InstanceTemplateGuestAccelerator          `json:"guestAccelerator,omitempty"`
 	InstanceDescription        *string                                     `json:"instanceDescription,omitempty"`
-	Location                   string                                      `json:"location"`
 	MachineType                string                                      `json:"machineType"`
 	Metadata                   []InstanceTemplateMetadata                  `json:"metadata,omitempty"`
 	MetadataStartupScript      *string                                     `json:"metadataStartupScript,omitempty"`
@@ -198,7 +197,7 @@ type ComputeInstanceTemplateSpec struct {
 	NamePrefix                 *string                                     `json:"namePrefix,omitempty"`
 	NetworkInterface           []InstanceTemplateNetworkInterface          `json:"networkInterface,omitempty"`
 	NetworkPerformanceConfig   *InstanceTemplateNetworkPerformanceConfig   `json:"networkPerformanceConfig,omitempty"`
-	ProjectRef                 *refsv1beta1.ProjectRef                     `json:"projectRef"`
+	ProjectRef                 *refsv1beta1.ProjectRef                     `json:"projectRef,omitempty"`
 	Region                     *string                                     `json:"region,omitempty"`
 	ReservationAffinity        *InstanceTemplateReservationAffinity        `json:"reservationAffinity,omitempty"`
 	ResourceID                 *string                                     `json:"resourceID,omitempty"`
