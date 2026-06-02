@@ -56,7 +56,7 @@ require (
 	cloud.google.com/go/monitoring v1.24.3
 	cloud.google.com/go/netapp v1.12.0
 	cloud.google.com/go/networkmanagement v1.23.0
-	cloud.google.com/go/networksecurity v0.15.0
+	cloud.google.com/go/networksecurity v0.16.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.12.7
 	cloud.google.com/go/orchestration v1.11.10

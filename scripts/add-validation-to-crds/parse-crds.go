@@ -340,6 +340,14 @@ oneOf:
     - required: [folderRef]
     - required: [organizationRef]
 `
+		} else if kind == "LoggingLogView" && fieldPath == ".spec" {
+			ruleYAML = `
+oneOf:
+- required: [billingAccountRef]
+- required: [folderRef]
+- required: [organizationRef]
+- required: [projectRef]
+`
 		} else if signature == "external,kind,name,namespace" {
 			ruleYAML = refRuleWithKind
 			// kind is optional for projectRef (and maybe in future other well-known ref types)

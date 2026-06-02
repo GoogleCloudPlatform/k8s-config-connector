@@ -151,7 +151,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
-    if [[ "${name}" == "unit-tests" ]]; then
+    if [[ "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
@@ -163,7 +163,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
 
     # TODO: We should look at the script to see if it needs gcloud
-    if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" ]]; then
+    if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: 'google-github-actions/setup-gcloud@v3'
         with:

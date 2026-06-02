@@ -58,57 +58,6 @@ gen-proto-no-fixup:
 		./apis/mockgcp/storage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/annotation*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/data_item.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/dataset*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/encryption_spec.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/api_auth.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/artifact.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/lineage_subgraph.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/content.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/context.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/execution.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/event.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/metadata*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/model*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/deploy*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/env_var.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/evaluated_annotation.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/job_state.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/publisher_model.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/io.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/operation.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/saved_query.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/tensorboard*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/user_action_reference.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/entity_type.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/feature.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/feature_monitor.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/feature_selector.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/featurestore*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/feature_monitoring_stats.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/types.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule_service.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_service.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_service.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_software_config.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_execution_job.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/network_spec.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_idle_shutdown_config.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_euc_config.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime_template_ref.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/openapi.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/training_pipeline.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_job.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_state.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/service_networking.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/tool.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/ui_pipeline_spec.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_failure_policy.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/value.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/vertex_rag_data.proto \
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
@@ -168,7 +117,6 @@ generate-grpc-for-google-protos:
 		--grpc-gateway_opt paths=source_relative \
 		--grpc-gateway_opt standalone=true \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
-		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
 		./third_party/googleapis/google/storage/control/v2/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
