@@ -710,6 +710,74 @@
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.logLevel" is not set in unstructured objects
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.registry" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.binaryAuthorization.breakglassJustification" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.binaryAuthorization.useDefault" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.client" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientVersion" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].args[]" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].command[]" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].dependsOn[]" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].env[].name" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].env[].value" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].env[].valueSource.secretKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].env[].valueSource.secretKeyRef.secretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].env[].valueSource.secretKeyRef.versionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].livenessProbe.failureThreshold" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].livenessProbe.httpGet.httpHeaders[].name" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].livenessProbe.httpGet.httpHeaders[].value" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].livenessProbe.httpGet.path" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].livenessProbe.httpGet.port" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].livenessProbe.initialDelaySeconds" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].livenessProbe.periodSeconds" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].livenessProbe.tcpSocket.port" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].livenessProbe.timeoutSeconds" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].ports[].containerPort" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].ports[].name" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].resources.limits" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].startupProbe.failureThreshold" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].startupProbe.httpGet.httpHeaders[].name" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].startupProbe.httpGet.httpHeaders[].value" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].startupProbe.httpGet.path" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].startupProbe.httpGet.port" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].startupProbe.initialDelaySeconds" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].startupProbe.periodSeconds" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].startupProbe.tcpSocket.port" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].startupProbe.timeoutSeconds" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].volumeMounts[].mountPath" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].volumeMounts[].name" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.containers[].workingDir" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionKeyRevocationAction" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionKeyShutdownDuration" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.gpuZonalRedundancyDisabled" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.iapEnabled" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.ingress" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.invokerIamDisabled" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.launchStage" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeSelector.accelerator" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].cloudSqlInstance.instanceRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].emptyDir.medium" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].emptyDir.sizeLimit" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].gcs.bucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].gcs.mountOptions[]" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].gcs.readOnly" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].name" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].nfs.path" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].nfs.readOnly" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].nfs.server" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].secret.defaultMode" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].secret.items[].mode" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].secret.items[].path" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].secret.items[].versionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumes[].secret.secretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcAccess.connectorRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcAccess.egress" is not set in unstructured objects
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcAccess.networkInterfaces[].networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcAccess.networkInterfaces[].subnetworkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcAccess.networkInterfaces[].tags[]" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkTags[]" is not set in unstructured objects
