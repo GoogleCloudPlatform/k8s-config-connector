@@ -138,9 +138,9 @@ Before finishing the task, the agent must run formatting, generation, and static
        ```
    - If the golden output gets updated, make sure to stage and commit the changes in `tests/apichecks/testdata/exceptions/`.
 5. **Run CI/CD Group Presubmit Tests Locally**:
-   - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<group>` matching the resource's group (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly before proposing a PR:
+   - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<service_name>` matching the resource's service name (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly before proposing a PR:
      ```bash
-     dev/ci/presubmits/tests-e2e-fixtures-<group>
+     dev/ci/presubmits/tests-e2e-fixtures-<service_name>
      ```
 
 
