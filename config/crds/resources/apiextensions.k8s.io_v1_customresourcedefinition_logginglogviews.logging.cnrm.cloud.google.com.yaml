@@ -7,6 +7,7 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
@@ -61,6 +62,15 @@ spec:
             type: object
           spec:
             description: LoggingLogViewSpec defines the desired state of LoggingLogView
+            oneOf:
+            - required:
+              - billingAccountRef
+            - required:
+              - folderRef
+            - required:
+              - organizationRef
+            - required:
+              - projectRef
             properties:
               billingAccountRef:
                 description: Immutable. The BillingAccount that this resource belongs

@@ -35,6 +35,7 @@ When defining the KRM Go type in `<kind>_types.go`, you must ensure it matches t
 - **Match Signatures for automatic validation**: The schema builder `scripts/add-validation-to-crds` automatically adds OpenAPI `oneOf` blocks depending on field signatures.
   - If a custom reference type has fields `external`, `name`, and `namespace`, its signature is `"external,name,namespace"`, which triggers the generator to automatically append the `oneOf` reference constraint block.
 - **Match Field Formats**: Ensure date/time strings have `// +kubebuilder:validation:Format=date-time` to match original formats.
+- **Keep Legacy Reconciler Labels**: You must retain existing labels such as `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"` (or `tf2crd=true` for Terraform-based resources) on the struct definition in `<kind>_types.go`. Removing these labels will prevent the corresponding legacy controllers from being registered correctly for the resource during the transition phase.
 - **Validation**: No new fields should be introduced under status (e.g. do not add `observedState` or `externalRef` yet if they weren't in the original CRD).
 
 ### 3. Verification & Acceptance Criteria
