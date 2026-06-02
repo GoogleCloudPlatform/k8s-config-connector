@@ -39,20 +39,12 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptDeployments(namesp
 	return newFakeNetworkSecurityInterceptDeployments(c, namespace)
 }
 
-func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptDeploymentGroups(namespace string) v1alpha1.NetworkSecurityInterceptDeploymentGroupInterface {
-	return newFakeNetworkSecurityInterceptDeploymentGroups(c, namespace)
-}
-
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptEndpointGroups(namespace string) v1alpha1.NetworkSecurityInterceptEndpointGroupInterface {
 	return newFakeNetworkSecurityInterceptEndpointGroups(c, namespace)
 }
 
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringDeployments(namespace string) v1alpha1.NetworkSecurityMirroringDeploymentInterface {
 	return newFakeNetworkSecurityMirroringDeployments(c, namespace)
-}
-
-func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringDeploymentGroups(namespace string) v1alpha1.NetworkSecurityMirroringDeploymentGroupInterface {
-	return newFakeNetworkSecurityMirroringDeploymentGroups(c, namespace)
 }
 
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringEndpointGroups(namespace string) v1alpha1.NetworkSecurityMirroringEndpointGroupInterface {
