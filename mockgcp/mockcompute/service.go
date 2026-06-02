@@ -104,6 +104,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSslCertificatesServer(grpcServer, &GlobalSSLCertificatesV1{MockService: s})
 	pb.RegisterRegionSslCertificatesServer(grpcServer, &RegionalSSLCertificatesV1{MockService: s})
 	pb.RegisterSslPoliciesServer(grpcServer, &GlobalSslPolicyV1{MockService: s})
+	pb.RegisterSecurityPoliciesServer(grpcServer, &GlobalSecurityPoliciesV1{MockService: s})
+	pb.RegisterRegionSecurityPoliciesServer(grpcServer, &RegionalSecurityPoliciesV1{MockService: s})
 	pb.RegisterTargetSslProxiesServer(grpcServer, &TargetSslProxyV1{MockService: s})
 	pb.RegisterTargetTcpProxiesServer(grpcServer, &GlobalTargetTcpProxyV1{MockService: s})
 	pb.RegisterRegionTargetTcpProxiesServer(grpcServer, &RegionalTargetTcpProxyV1{MockService: s})
@@ -205,6 +207,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterSslPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterSecurityPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionSecurityPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterTargetSslProxiesHandler(ctx, mux.ServeMux, conn); err != nil {

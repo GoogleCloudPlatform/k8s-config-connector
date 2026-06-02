@@ -1,0 +1,29 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  name: computesecuritypolicy-${uniqueId}
+spec:
+  description: "Maximal Security Policy"
+  type: "CLOUD_ARMOR"
+  adaptiveProtectionConfig:
+    layer7DdosDefenseConfig:
+      enable: true
+      ruleVisibility: "STANDARD"
+  advancedOptionsConfig:
+    logLevel: "VERBOSE"
+    jsonParsing: "STANDARD"
+    userIpRequestHeaders:
+      - "X-Client-IP"
+  recaptchaOptionsConfig:
+    redirectSiteKeyRef:
+      external: "recaptcha-site-key-dummy"
+  rule:
+    - action: "allow"
+      description: "Default allow rule"
+      preview: false
+      priority: 2147483647
+      match:
+        versionedExpr: "SRC_IPS_V1"
+        config:
+          srcIpRanges:
+            - "*"
