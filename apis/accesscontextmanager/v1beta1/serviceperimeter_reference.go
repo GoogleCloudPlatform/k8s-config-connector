@@ -20,6 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -82,7 +83,11 @@ func (r *AccessContextManagerServicePerimeterRef) ParseExternalToIdentity() (ide
 
 func (r *AccessContextManagerServicePerimeterRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromAccessContextManagerServicePerimeterSpec(ctx, reader, u)
+		obj := &AccessContextManagerServicePerimeter{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromServicePerimeterSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}

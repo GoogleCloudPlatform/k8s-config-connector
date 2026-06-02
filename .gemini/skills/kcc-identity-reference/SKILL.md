@@ -68,3 +68,8 @@ Create or update the file to match the canonical example. Key requirements:
 ### Step 5: Verify
 
 Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.
+
+#### Troubleshooting & Tips:
+* **Name Collisions:** If your top-level KRM type/Kind name matches an existing nested struct in `<resource>_types.go`, Go compilation will fail with a redeclared symbol error. To resolve this, rename the nested struct to `<Kind>Nested` or similar, update all its references inside the file, and then run `generate.sh` to regenerate `zz_generated.deepcopy.go`.
+* **Virtual/Non-Protobuf Resources:** If a resource was created by Terraform (e.g. to manage list elements or nested maps as a standalone resource) and doesn't map to a standard protobuf definition, write its types, references, and identity templates manually. Be sure to add its normalized template to `ignoredTemplates` in `pkg/gcpurls/registry_test.go` to bypass the CAI metadata checks.
+

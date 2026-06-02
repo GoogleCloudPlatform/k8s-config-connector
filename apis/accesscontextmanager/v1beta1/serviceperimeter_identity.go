@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -59,34 +58,28 @@ func (i *ServicePerimeterIdentity) Host() string {
 	return ServicePerimeterIdentityFormat.Host()
 }
 
-func getIdentityFromAccessContextManagerServicePerimeterSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ServicePerimeterIdentity, error) {
-	u, ok := obj.(*AccessContextManagerServicePerimeter)
-	if !ok {
-		return nil, fmt.Errorf("object is not a AccessContextManagerServicePerimeter")
-	}
-
-	resourceID := common.ValueOf(u.Spec.ResourceID)
+func getIdentityFromServicePerimeterSpec(ctx context.Context, reader client.Reader, obj *AccessContextManagerServicePerimeter) (*ServicePerimeterIdentity, error) {
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
-		resourceID = u.GetName()
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	if u.Spec.AccessPolicyRef == nil {
+	if obj.Spec.AccessPolicyRef == nil {
 		return nil, fmt.Errorf("spec.accessPolicyRef is required")
 	}
 
-	accessPolicyExternal, err := u.Spec.AccessPolicyRef.NormalizedExternal(ctx, reader, u.GetNamespace())
+	accessPolicyExternal, err := obj.Spec.AccessPolicyRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve accessPolicyRef: %w", err)
 	}
 
-	// accessPolicyExternal should be in format "accessPolicies/{{accessPolicyID}}"
-	// We need to extract the ID.
-	accessPolicyExternal = strings.TrimPrefix(accessPolicyExternal, "/")
-	tokens := strings.Split(accessPolicyExternal, "/")
-	if len(tokens) != 2 || (tokens[0] != "accessPolicies" && tokens[0] != "accesspolicys") {
-		return nil, fmt.Errorf("format of AccessContextManagerAccessPolicy external=%q was not known", accessPolicyExternal)
+	accessPolicyID, err := ParseAccessPolicyExternal(accessPolicyExternal)
+	if err != nil {
+		return nil, fmt.Errorf("cannot parse accessPolicyRef external: %w", err)
 	}
-	accessPolicyID := tokens[1]
 
 	identity := &ServicePerimeterIdentity{
 		AccessPolicy:     accessPolicyID,
@@ -96,7 +89,7 @@ func getIdentityFromAccessContextManagerServicePerimeterSpec(ctx context.Context
 }
 
 func (obj *AccessContextManagerServicePerimeter) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromAccessContextManagerServicePerimeterSpec(ctx, reader, obj)
+	specIdentity, err := getIdentityFromServicePerimeterSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
