@@ -38,64 +38,39 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type DiscoveryEngineIdentityMappingStoreSpec struct {
-	/* Input only. The KMS key to be used to protect this Identity Mapping Store
-	at creation time.
-
-	Must be set for requests that need to comply with CMEK Org Policy
-	protections.
-
-	If this field is set and processed successfully, the Identity Mapping Store
-	will be protected by the KMS key, as indicated in the cmek_config field. */
+type DiscoveryEngineSampleQuerySetSpec struct {
+	/* The description of the [SampleQuerySet][google.cloud.discoveryengine.v1.SampleQuerySet]. */
 	// +optional
-	KmsKeyName *string `json:"kmsKeyName,omitempty"`
+	Description *string `json:"description,omitempty"`
 
-	/* The location of this resource. */
+	/* Required. The sample query set display name.
+
+	This field must be a UTF-8 encoded string with a length limit of 128
+	characters. */
+	DisplayName string `json:"displayName"`
+
+	/* Immutable. The location of this resource. */
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The DiscoveryEngineIdentityMappingStore name. If not given, the metadata.name will be used. */
+	/* The DiscoveryEngineSampleQuerySet name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type IdentitymappingstoreCmekConfigStatus struct {
-	/* KMS key resource name which will be used to encrypt resources `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`. */
+type SamplequerysetObservedStateStatus struct {
+	/* Output only. Timestamp the [SampleQuerySet][google.cloud.discoveryengine.v1.SampleQuerySet] was created at. */
 	// +optional
-	KmsKey *string `json:"kmsKey,omitempty"`
-
-	/* KMS key version resource name which will be used to encrypt resources `<kms_key>/cryptoKeyVersions/{keyVersion}`. */
-	// +optional
-	KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
-
-	/* Required. The name of the CmekConfig of the form `projects/{project}/locations/{location}/cmekConfig` or `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
-	/* Optional. Single-regional CMEKs that are required for some VAIS features. */
-	// +optional
-	SingleRegionKeys []IdentitymappingstoreSingleRegionKeysStatus `json:"singleRegionKeys,omitempty"`
+	CreateTime *string `json:"createTime,omitempty"`
 }
 
-type IdentitymappingstoreObservedStateStatus struct {
-	/* Output only. CMEK-related information for the Identity Mapping Store. */
-	// +optional
-	CmekConfig *IdentitymappingstoreCmekConfigStatus `json:"cmekConfig,omitempty"`
-}
-
-type IdentitymappingstoreSingleRegionKeysStatus struct {
-	/* Required. Single-regional kms key resource name which will be used to encrypt resources `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`. */
-	// +optional
-	KmsKey *string `json:"kmsKey,omitempty"`
-}
-
-type DiscoveryEngineIdentityMappingStoreStatus struct {
+type DiscoveryEngineSampleQuerySetStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DiscoveryEngineIdentityMappingStore's current state. */
+	   DiscoveryEngineSampleQuerySet's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DiscoveryEngineIdentityMappingStore resource in GCP. */
+	/* A unique specifier for the DiscoveryEngineSampleQuerySet resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -105,12 +80,12 @@ type DiscoveryEngineIdentityMappingStoreStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *IdentitymappingstoreObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *SamplequerysetObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdiscoveryengineidentitymappingstore;gcpdiscoveryengineidentitymappingstores
+// +kubebuilder:resource:categories=gcp,shortName=gcpdiscoveryenginesamplequeryset;gcpdiscoveryenginesamplequerysets
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
@@ -120,25 +95,25 @@ type DiscoveryEngineIdentityMappingStoreStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// DiscoveryEngineIdentityMappingStore is the Schema for the discoveryengine API
+// DiscoveryEngineSampleQuerySet is the Schema for the discoveryengine API
 // +k8s:openapi-gen=true
-type DiscoveryEngineIdentityMappingStore struct {
+type DiscoveryEngineSampleQuerySet struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DiscoveryEngineIdentityMappingStoreSpec   `json:"spec,omitempty"`
-	Status DiscoveryEngineIdentityMappingStoreStatus `json:"status,omitempty"`
+	Spec   DiscoveryEngineSampleQuerySetSpec   `json:"spec,omitempty"`
+	Status DiscoveryEngineSampleQuerySetStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// DiscoveryEngineIdentityMappingStoreList contains a list of DiscoveryEngineIdentityMappingStore
-type DiscoveryEngineIdentityMappingStoreList struct {
+// DiscoveryEngineSampleQuerySetList contains a list of DiscoveryEngineSampleQuerySet
+type DiscoveryEngineSampleQuerySetList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DiscoveryEngineIdentityMappingStore `json:"items"`
+	Items           []DiscoveryEngineSampleQuerySet `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&DiscoveryEngineIdentityMappingStore{}, &DiscoveryEngineIdentityMappingStoreList{})
+	SchemeBuilder.Register(&DiscoveryEngineSampleQuerySet{}, &DiscoveryEngineSampleQuerySetList{})
 }
