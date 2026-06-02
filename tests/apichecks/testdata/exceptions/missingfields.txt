@@ -766,7 +766,6 @@
 [missing_field] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkInterface[].stackType" is not set in unstructured objects
 [missing_field] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkInterface[].subnetworkProject" is not set in unstructured objects
 [missing_field] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkPerformanceConfig.totalEgressBandwidthTier" is not set in unstructured objects
-[missing_field] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationAffinity.specificReservation.key" is not set in unstructured objects
 [missing_field] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationAffinity.specificReservation.values[]" is not set in unstructured objects
 [missing_field] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationAffinity.type" is not set in unstructured objects

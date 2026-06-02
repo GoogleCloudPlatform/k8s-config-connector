@@ -197,7 +197,6 @@ type ComputeInstanceTemplateSpec struct {
 	NamePrefix                 *string                                     `json:"namePrefix,omitempty"`
 	NetworkInterface           []InstanceTemplateNetworkInterface          `json:"networkInterface,omitempty"`
 	NetworkPerformanceConfig   *InstanceTemplateNetworkPerformanceConfig   `json:"networkPerformanceConfig,omitempty"`
-	ProjectRef                 *refsv1beta1.ProjectRef                     `json:"projectRef,omitempty"`
 	Region                     *string                                     `json:"region,omitempty"`
 	ReservationAffinity        *InstanceTemplateReservationAffinity        `json:"reservationAffinity,omitempty"`
 	ResourceID                 *string                                     `json:"resourceID,omitempty"`
