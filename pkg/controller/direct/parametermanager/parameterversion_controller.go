@@ -83,9 +83,8 @@ func (m *modelParameterVersion) AdapterForObject(ctx context.Context, op *direct
 		return nil, err
 	}
 
-	parameter := id.(*krm.ParameterVersionIdentity).Parent()
-
-	location := parameter.Parent().Location
+	typedID := id.(*krm.ParameterManagerParameterVersionIdentity)
+	location := typedID.Location
 
 	// Get parmetermanager GCP client
 	gcpClient, err := m.client(ctx, location)
@@ -93,7 +92,7 @@ func (m *modelParameterVersion) AdapterForObject(ctx context.Context, op *direct
 		return nil, err
 	}
 	return &ParameterVersionAdapter{
-		id:        id.(*krm.ParameterVersionIdentity),
+		id:        typedID,
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -105,7 +104,7 @@ func (m *modelParameterVersion) AdapterForURL(ctx context.Context, url string) (
 }
 
 type ParameterVersionAdapter struct {
-	id        *krm.ParameterVersionIdentity
+	id        *krm.ParameterManagerParameterVersionIdentity
 	gcpClient *gcp.Client
 	desired   *krm.ParameterManagerParameterVersion
 	actual    *parametermanagerpb.ParameterVersion
@@ -146,10 +145,11 @@ func (a *ParameterVersionAdapter) Create(ctx context.Context, createOp *directba
 		return mapCtx.Err()
 	}
 
+	parentName := fmt.Sprintf("projects/%s/locations/%s/parameters/%s", a.id.Project, a.id.Location, a.id.Parameter)
 	req := &parametermanagerpb.CreateParameterVersionRequest{
-		Parent:             a.id.Parent().String(),
+		Parent:             parentName,
 		ParameterVersion:   resource,
-		ParameterVersionId: a.id.ID(),
+		ParameterVersionId: a.id.Version,
 	}
 	created, err := a.gcpClient.CreateParameterVersion(ctx, req)
 	if err != nil {
@@ -243,19 +243,20 @@ func (a *ParameterVersionAdapter) Export(ctx context.Context) (*unstructured.Uns
 		return nil, mapCtx.Err()
 	}
 	externalRef := a.actual.GetName()
-	var id *krm.ParameterVersionIdentity
+	id := &krm.ParameterManagerParameterVersionIdentity{}
 	if err := id.FromExternal(externalRef); err != nil {
 		return nil, fmt.Errorf("parsing external ref %q: %w", externalRef, err)
 	}
 
-	obj.Spec.ParameterRef = &krm.ParameterRef{External: id.Parent().String()}
-	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
+	parentRef := fmt.Sprintf("projects/%s/locations/%s/parameters/%s", id.Project, id.Location, id.Parameter)
+	obj.Spec.ParameterRef = &krm.ParameterRef{External: parentRef}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Version)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.Version)
 	u.SetGroupVersionKind(krm.ParameterManagerParameterVersionGVK)
 
 	u.Object = uObj
