@@ -28,6 +28,75 @@ type BigQueryDataset struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.logging.v2.Link", skipping
+
+// +kcc:proto=google.logging.v2.Link
+type Link struct {
+	// The resource name of the link. The name can have up to 100 characters.
+	//  A valid link id (at the end of the link name) must only have alphanumeric
+	//  characters and underscores within it.
+	//
+	//      "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+	//      "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+	//      "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+	//      "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+	//
+	//  For example:
+	//
+	//    `projects/my-project/locations/global/buckets/my-bucket/links/my_link
+	// +kcc:proto:field=google.logging.v2.Link.name
+	Name *string `json:"name,omitempty"`
+
+	// Describes this link.
+	//
+	//  The maximum length of the description is 8000 characters.
+	// +kcc:proto:field=google.logging.v2.Link.description
+	Description *string `json:"description,omitempty"`
+
+	// The information of a BigQuery Dataset. When a link is created, a BigQuery
+	//  dataset is created along with it, in the same project as the LogBucket it's
+	//  linked to. This dataset will also have BigQuery Views corresponding to the
+	//  LogViews in the bucket.
+	// +kcc:proto:field=google.logging.v2.Link.bigquery_dataset
+	BigqueryDataset *BigQueryDataset `json:"bigqueryDataset,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.logging.v2.LogView", skipping
+
+// +kcc:proto=google.logging.v2.LogView
+type LogView struct {
+	// The resource name of the view.
+	//
+	//  For example:
+	//
+	//    `projects/my-project/locations/global/buckets/my-bucket/views/my-view`
+	// +kcc:proto:field=google.logging.v2.LogView.name
+	Name *string `json:"name,omitempty"`
+
+	// Describes this view.
+	// +kcc:proto:field=google.logging.v2.LogView.description
+	Description *string `json:"description,omitempty"`
+
+	// Filter that restricts which log entries in a bucket are visible in this
+	//  view.
+	//
+	//  Filters are restricted to be a logical AND of ==/!= of any of the
+	//  following:
+	//
+	//    - originating project/folder/organization/billing account.
+	//    - resource type
+	//    - log id
+	//
+	//  For example:
+	//
+	//    SOURCE("projects/myproject") AND resource.type = "gce_instance"
+	//                                 AND LOG_ID("stdout")
+	// +kcc:proto:field=google.logging.v2.LogView.filter
+	Filter *string `json:"filter,omitempty"`
+}
+*/
+
 // +kcc:observedstate:proto=google.logging.v2.BigQueryDataset
 type BigQueryDatasetObservedState struct {
 	// Output only. The full resource name of the BigQuery dataset. The DATASET_ID
@@ -40,3 +109,38 @@ type BigQueryDatasetObservedState struct {
 	// +kcc:proto:field=google.logging.v2.BigQueryDataset.dataset_id
 	DatasetID *string `json:"datasetID,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.logging.v2.Link", skipping
+
+// +kcc:observedstate:proto=google.logging.v2.Link
+type LinkObservedState struct {
+	// Output only. The creation timestamp of the link.
+	// +kcc:proto:field=google.logging.v2.Link.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The resource lifecycle state.
+	// +kcc:proto:field=google.logging.v2.Link.lifecycle_state
+	LifecycleState *string `json:"lifecycleState,omitempty"`
+
+	// The information of a BigQuery Dataset. When a link is created, a BigQuery
+	//  dataset is created along with it, in the same project as the LogBucket it's
+	//  linked to. This dataset will also have BigQuery Views corresponding to the
+	//  LogViews in the bucket.
+	// +kcc:proto:field=google.logging.v2.Link.bigquery_dataset
+	BigqueryDataset *BigQueryDatasetObservedState `json:"bigqueryDataset,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.logging.v2.LogView", skipping
+
+// +kcc:observedstate:proto=google.logging.v2.LogView
+type LogViewObservedState struct {
+	// Output only. The creation timestamp of the view.
+	// +kcc:proto:field=google.logging.v2.LogView.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last update timestamp of the view.
+	// +kcc:proto:field=google.logging.v2.LogView.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/

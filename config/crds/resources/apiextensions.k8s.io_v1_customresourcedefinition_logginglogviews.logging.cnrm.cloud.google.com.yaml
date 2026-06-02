@@ -82,16 +82,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: The 'name' field of a billing account, when not managed
+                      by Config Connector.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The 'name' field of a 'BillingAccount' resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The 'namespace' field of a 'BillingAccount' resource.
                     type: string
                 type: object
               bucketRef:
@@ -153,17 +151,13 @@ spec:
                 properties:
                   external:
                     description: The 'name' field of a folder, when not managed by
-                      Config Connector. This field must be set when 'name' field is
-                      not set.
+                      Config Connector.
                     type: string
                   name:
-                    description: The 'name' field of a 'Folder' resource. This field
-                      must be set when 'external' field is not set.
+                    description: The 'name' field of a 'Folder' resource.
                     type: string
                   namespace:
-                    description: The 'namespace' field of a 'Folder' resource. If
-                      unset, the namespace is defaulted to the namespace of the referencer
-                      resource.
+                    description: The 'namespace' field of a 'Folder' resource.
                     type: string
                 type: object
               location:
@@ -175,13 +169,31 @@ spec:
                 description: Immutable. The Organization that this resource belongs
                   to. Only one of [billingAccountRef, folderRef, organizationRef,
                   projectRef] may be specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
                     description: The 'name' field of an organization, when not managed
                       by Config Connector.
                     type: string
-                required:
-                - external
+                  name:
+                    description: The 'name' field of an 'Organization' resource.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of an 'Organization' resource.
+                    type: string
                 type: object
               projectRef:
                 description: Immutable. The Project that this resource belongs to.
@@ -203,18 +215,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: The 'name' field of a project, when not managed by
+                      Config Connector.
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The 'name' field of a 'Project' resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The 'namespace' field of a 'Project' resource.
                     type: string
                 type: object
               resourceID:
@@ -257,6 +265,7 @@ spec:
                 type: array
               createTime:
                 description: Output only. The creation timestamp of the view.
+                format: date-time
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -268,6 +277,7 @@ spec:
                 type: integer
               updateTime:
                 description: Output only. The last update timestamp of the view.
+                format: date-time
                 type: string
             type: object
         required:
