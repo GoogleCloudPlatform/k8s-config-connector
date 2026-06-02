@@ -28,8 +28,23 @@ spec:
         name: dataprocautoscalingpolicy-${uniqueId}
     gceClusterConfig:
       internalIPOnly: false
+      serviceAccountScopes:
+        - "https://www.googleapis.com/auth/cloud-platform"
+      tags:
+        - "tag-one"
+      shieldedInstanceConfig:
+        enableSecureBoot: true
+        enableVtpm: true
+        enableIntegrityMonitoring: true
     masterConfig:
       diskConfig:
         bootDiskType: pd-standard
+        bootDiskSizeGb: 1000
       machineType: "n2-standard-2"
       numInstances: 1
+    workerConfig:
+      diskConfig:
+        bootDiskType: pd-standard
+        bootDiskSizeGb: 1000
+      machineType: "n2-standard-4"
+      numInstances: 2

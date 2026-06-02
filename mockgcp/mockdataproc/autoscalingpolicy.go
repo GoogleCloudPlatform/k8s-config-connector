@@ -93,7 +93,11 @@ func (s *autoscalingPolicyServiceServer) DeleteAutoscalingPolicy(ctx context.Con
 }
 
 func (s *autoscalingPolicyServiceServer) UpdateAutoscalingPolicy(ctx context.Context, req *pb.UpdateAutoscalingPolicyRequest) (*pb.AutoscalingPolicy, error) {
-	name, err := s.parseAutoscalingPolicyName(req.Policy.Id)
+	policyName := req.Policy.Name
+	if policyName == "" {
+		policyName = req.Policy.Id
+	}
+	name, err := s.parseAutoscalingPolicyName(policyName)
 	if err != nil {
 		return nil, err
 	}
@@ -176,11 +180,11 @@ func (n *autoscalingPolicyName) String() string {
 }
 
 // parseAutoscalingPolicyName parses a string into an AutoscalingPolicyName.
-// The expected form is `projects/*/regions/*/autoscalingPolicies/*`.
+// The expected form is `projects/*/regions/*/autoscalingPolicies/*` or `projects/*/locations/*/autoscalingPolicies/*`.
 func (s *MockService) parseAutoscalingPolicyName(name string) (*autoscalingPolicyName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "autoscalingPolicies" {
+	if len(tokens) == 6 && tokens[0] == "projects" && (tokens[2] == "regions" || tokens[2] == "locations") && tokens[4] == "autoscalingPolicies" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
