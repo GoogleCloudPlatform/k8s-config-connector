@@ -233,3 +233,35 @@ func (e *ImmutableFieldsMutationError) Error() string {
 func NewImmutableFieldsMutationError(immutableFields []string) *ImmutableFieldsMutationError {
 	return &ImmutableFieldsMutationError{immutableFields}
 }
+
+type ManualStepNotCompletedError struct {
+	resourceGVK schema.GroupVersionKind
+	resource    types.NamespacedName
+	message     string
+}
+
+func (e *ManualStepNotCompletedError) Error() string {
+	return fmt.Sprintf("manual step(s) for resource %v %v is not completed: %s", e.resourceGVK.Kind, e.resource, e.message)
+}
+
+func NewManualStepNotCompletedError(resourceGVK schema.GroupVersionKind, resource types.NamespacedName, message string) *ManualStepNotCompletedError {
+	return &ManualStepNotCompletedError{resourceGVK, resource, message}
+}
+
+func NewManualStepNotCompletedErrorForResource(r *Resource, message string) *ManualStepNotCompletedError {
+	return &ManualStepNotCompletedError{
+		r.GroupVersionKind(),
+		types.NamespacedName{Namespace: r.GetNamespace(), Name: r.GetName()},
+		message,
+	}
+}
+
+func AsManualStepNotCompletedError(err error) (unwrappedErr *ManualStepNotCompletedError, ok bool) {
+	ok = errors.As(err, &unwrappedErr)
+	return unwrappedErr, ok
+}
+
+func IsManualStepNotCompletedError(err error) bool {
+	_, ok := AsManualStepNotCompletedError(err)
+	return ok
+}
