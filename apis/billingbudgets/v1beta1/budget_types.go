@@ -1,0 +1,200 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var BillingBudgetsBudgetGVK = GroupVersion.WithKind("BillingBudgetsBudget")
+
+// BillingBudgetsBudgetSpec defines the desired state of BillingBudgetsBudget
+// +kcc:spec:proto=google.cloud.billing.budgets.v1.Budget
+type BillingBudgetsBudgetSpec struct {
+	// The BillingBudgetsBudget name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Immutable.
+	BillingAccountRef *refs.BillingAccountRef `json:"billingAccountRef"`
+
+	// User data for display name in UI. The name must be less than or equal to 60 characters.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. Budgeted amount.
+	Amount BudgetAmount `json:"amount"`
+
+	// Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget's time period, as well as other filters.
+	BudgetFilter *BudgetFilter `json:"budgetFilter,omitempty"`
+
+	// Optional. Rules that trigger alerts (notifications of thresholds being crossed) when spend exceeds the specified percentages of the budget.
+	ThresholdRules []BudgetThresholdRule `json:"thresholdRules,omitempty"`
+
+	// Optional. Rules to apply to notifications sent based on budget spend and thresholds.
+	AllUpdatesRule *AllUpdatesRule `json:"allUpdatesRule,omitempty"`
+}
+
+// +kcc:proto=google.cloud.billing.budgets.v1.BudgetAmount
+type BudgetAmount struct {
+	// Use the last period's actual spend as the budget for the present period. LastPeriodAmount can only be set when the budget's time period is a .
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	LastPeriodAmount *BudgetLastPeriodAmount `json:"lastPeriodAmount,omitempty"`
+
+	// A specified amount to use as the budget. `currency_code` is optional. If specified when creating a budget, it must match the currency of the billing account. If specified when updating a budget, it must match the currency_code of the existing budget. The `currency_code` is provided on output.
+	SpecifiedAmount *BudgetSpecifiedAmount `json:"specifiedAmount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.billing.budgets.v1.LastPeriodAmount
+type BudgetLastPeriodAmount struct {
+}
+
+// +kcc:proto=google.type.Money
+type BudgetSpecifiedAmount struct {
+	// Immutable. The three-letter currency code defined in ISO 4217.
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+
+	// Number of nano (10^-9) units of the amount. The value must be between -999,999,999 and +999,999,999 inclusive. If `units` is positive, `nanos` must be positive or zero. If `units` is zero, `nanos` can be positive, zero, or negative. If `units` is negative, `nanos` must be negative or zero. For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	Nanos *int64 `json:"nanos,omitempty"`
+
+	// The whole units of the amount. For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
+	Units *int64 `json:"units,omitempty"`
+}
+
+// +kcc:proto=google.cloud.billing.budgets.v1.Filter
+type BudgetFilter struct {
+	// Optional. Specifies to track usage for recurring calendar period. For example, assume that CalendarPeriod.QUARTER is set. The budget will track usage from April 1 to June 30, when the current calendar month is April, May, June. After that, it will track usage from July 1 to September 30 when the current calendar month is July, August, September, so on. Possible values: CALENDAR_PERIOD_UNSPECIFIED, MONTH, QUARTER, YEAR
+	CalendarPeriod *string `json:"calendarPeriod,omitempty"`
+
+	// Optional. If Filter.credit_types_treatment is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be subtracted from gross cost to determine the spend for threshold calculations. See a list of acceptable credit type values. If Filter.credit_types_treatment is not INCLUDE_SPECIFIED_CREDITS, this field must be empty.
+	CreditTypes []string `json:"creditTypes,omitempty"`
+
+	// Optional. If not set, default behavior is `INCLUDE_ALL_CREDITS`.
+	CreditTypesTreatment *string `json:"creditTypesTreatment,omitempty"`
+
+	// Optional. Specifies to track usage from any start date (required) to any end date (optional). This time period is static, it does not recur.
+	CustomPeriod *BudgetCustomPeriod `json:"customPeriod,omitempty"`
+
+	// Optional. A single label and value pair specifying that usage from only this set of labeled resources should be included in the budget. Currently, multiple entries or multiple values per entry are not allowed. If omitted, the report will include all labeled and unlabeled usage.
+	Labels map[string]FilterLabels `json:"labels,omitempty"`
+
+	Projects []refsv1beta1.ProjectRef `json:"projects,omitempty"`
+
+	// Optional. A set of services of the form `services/{service_id}`, specifying that usage from only this set of services should be included in the budget. If omitted, the report will include usage for all the services. The service names are available through the Catalog API: https://cloud.google.com/billing/v1/how-tos/catalog-api.
+	Services []string `json:"services,omitempty"`
+
+	Subaccounts []refs.BillingAccountRef `json:"subaccounts,omitempty"`
+}
+
+type FilterLabels struct {
+	// Immutable. The values of the label
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.billing.budgets.v1.CustomPeriod
+type BudgetCustomPeriod struct {
+	// Immutable. Optional. The end date of the time period. Budgets with elapsed end date won't be processed. If unset, specifies to track all usage incurred since the start_date.
+	EndDate *BudgetDate `json:"endDate,omitempty"`
+
+	// Immutable. Required. The start date must be after January 1, 2017.
+	StartDate BudgetDate `json:"startDate"`
+}
+
+// +kcc:proto=google.type.Date
+type BudgetDate struct {
+	// Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.
+	Day *int64 `json:"day,omitempty"`
+
+	// Immutable. Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day.
+	Month *int64 `json:"month,omitempty"`
+
+	// Immutable. Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year.
+	Year *int64 `json:"year,omitempty"`
+}
+
+// +kcc:proto=google.cloud.billing.budgets.v1.ThresholdRule
+type BudgetThresholdRule struct {
+	// Optional. The type of basis used to determine if spend has passed the threshold. Behavior defaults to CURRENT_SPEND if not set. Possible values: BASIS_UNSPECIFIED, CURRENT_SPEND, FORECASTED_SPEND
+	SpendBasis *string `json:"spendBasis,omitempty"`
+
+	// Required. Send an alert when this threshold is exceeded. This is a 1.0-based percentage, so 0.5 = 50%. Validation: non-negative number.
+	ThresholdPercent float64 `json:"thresholdPercent"`
+}
+
+// +kcc:proto=google.cloud.billing.budgets.v1.NotificationsRule
+type AllUpdatesRule struct {
+	// Optional. When set to true, disables default notifications sent when a threshold is exceeded. Default notifications are sent to those with Billing Account Administrator and Billing Account User IAM roles for the target account.
+	DisableDefaultIamRecipients *bool `json:"disableDefaultIamRecipients,omitempty"`
+
+	MonitoringNotificationChannels []monitoringv1beta1.MonitoringNotificationChannelRef `json:"monitoringNotificationChannels,omitempty"`
+
+	PubsubTopicRef *pubsubv1beta1.PubSubTopicRef `json:"pubsubTopicRef,omitempty"`
+
+	// Optional. Required when NotificationsRule.pubsub_topic is set. The schema version of the notification sent to NotificationsRule.pubsub_topic. Only "1.0" is accepted. It represents the JSON schema as defined in https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.
+	SchemaVersion *string `json:"schemaVersion,omitempty"`
+}
+
+// BillingBudgetsBudgetStatus defines the config connector machine state of BillingBudgetsBudget
+type BillingBudgetsBudgetStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// Optional. Etag to validate that the object is unchanged for a read-modify-write operation. An empty etag will cause an update to overwrite other changes.
+	Etag *string `json:"etag,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbillingbudgetsbudget;gcpbillingbudgetsbudgets
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// BillingBudgetsBudget is the Schema for the BillingBudgetsBudget API
+// +k8s:openapi-gen=true
+type BillingBudgetsBudget struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   BillingBudgetsBudgetSpec   `json:"spec,omitempty"`
+	Status BillingBudgetsBudgetStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// BillingBudgetsBudgetList contains a list of BillingBudgetsBudget
+type BillingBudgetsBudgetList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []BillingBudgetsBudget `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&BillingBudgetsBudget{}, &BillingBudgetsBudgetList{})
+}
