@@ -31,7 +31,7 @@ func init() {
 func computeSecurityPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer[*pb.SecurityPolicy, krm.ComputeSecurityPolicySpec, krm.ComputeSecurityPolicyStatus](&pb.SecurityPolicy{},
 		ComputeSecurityPolicySpec_v1beta1_FromProto, ComputeSecurityPolicySpec_v1beta1_ToProto,
-		nil, nil,
+		ComputeSecurityPolicyStatus_v1beta1_FromProto, ComputeSecurityPolicyStatus_v1beta1_ToProto,
 	)
 
 	// Spec fields
@@ -59,6 +59,14 @@ func computeSecurityPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".region")
 	f.Unimplemented_NotYetTriaged(".short_name")
 	f.Unimplemented_NotYetTriaged(".user_defined_fields")
+	f.Unimplemented_NotYetTriaged(".advanced_options_config.request_body_inspection_size")
+	f.Unimplemented_NotYetTriaged(".rules[].kind")
+	f.Unimplemented_NotYetTriaged(".rules[].match.expr_options")
+	f.Unimplemented_NotYetTriaged(".rules[].network_match")
+	f.Unimplemented_NotYetTriaged(".adaptive_protection_config.layer7_ddos_defense_config.threshold_configs")
+	f.Unimplemented_NotYetTriaged(".rules[].match.expr.description")
+	f.Unimplemented_NotYetTriaged(".rules[].match.expr.location")
+	f.Unimplemented_NotYetTriaged(".rules[].match.expr.title")
 
 	return f
 }

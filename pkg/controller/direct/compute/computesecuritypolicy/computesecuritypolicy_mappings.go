@@ -458,3 +458,23 @@ func ComputeSecurityPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out.Type = in.Type
 	return out
 }
+
+func ComputeSecurityPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSecurityPolicyStatus{}
+	out.Fingerprint = direct.LazyPtr(in.GetFingerprint())
+	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
+	return out
+}
+
+func ComputeSecurityPolicyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSecurityPolicyStatus) *pb.SecurityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicy{}
+	out.Fingerprint = in.Fingerprint
+	out.SelfLink = in.SelfLink
+	return out
+}

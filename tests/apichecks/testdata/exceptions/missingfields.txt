@@ -896,12 +896,6 @@
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.adaptiveProtectionConfig.autoDeployConfig.impactedBaselineThreshold" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.adaptiveProtectionConfig.autoDeployConfig.loadThreshold" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.advancedOptionsConfig.jsonCustomConfig.contentTypes[]" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.advancedOptionsConfig.jsonParsing" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.advancedOptionsConfig.logLevel" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.advancedOptionsConfig.userIpRequestHeaders[]" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.recaptchaOptionsConfig.redirectSiteKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].description" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].headerAction.requestHeadersToAdds[].headerName" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].headerAction.requestHeadersToAdds[].headerValue" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].match.expr.expression" is not set in unstructured objects
@@ -930,7 +924,6 @@
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.rateLimitThreshold.intervalSec" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].redirectOptions.target" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].redirectOptions.type" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=computeserviceattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.consumerRejectLists[].external" is not set in unstructured objects
 [missing_field] crd=computeserviceattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.consumerRejectLists[].namespace" is not set in unstructured objects
 [missing_field] crd=computeserviceattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.natSubnets[].external" is not set in unstructured objects
