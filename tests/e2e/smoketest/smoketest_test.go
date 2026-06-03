@@ -243,6 +243,18 @@ spec:
 		t.Fatalf("failed to apply ConfigConnector: %v\nOutput: %s", err, string(output))
 	}
 
+	t.Logf("Waiting for webhook deployment to be created and available")
+	var waitErr error
+	for i := 0; i < 60; i++ {
+		if waitErr = runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=condition=Available", "deployment/cnrm-webhook-manager", "--timeout=5s"); waitErr == nil {
+			break
+		}
+		time.Sleep(2 * time.Second)
+	}
+	if waitErr != nil {
+		t.Fatalf("webhook failed to become ready: %v", waitErr)
+	}
+
 	t.Logf("Waiting for StorageBucket CRD")
 	if err := runCommand(ctx, t, root, "kubectl", "wait", "--for=create", "crd/storagebuckets.storage.cnrm.cloud.google.com", "--timeout=5m"); err != nil {
 		t.Fatalf("StorageBucket CRD not created: %v", err)
