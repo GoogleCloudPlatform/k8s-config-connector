@@ -29,7 +29,8 @@ go run . generate-mapper \
 ### 2. Standards for Strict Schema Compatibility
 When defining the KRM Go type in `<kind>_types.go`, you must ensure it matches the original CRD schema exactly:
 
-- **Run diff-crds**: Run `dev/tasks/diff-crds` frequently to identify any schema changes or deviations between the baseline CRD and the generated one.
+- **Do Not Change the Schema**: You must **not change the schema** when the type already exists. Description changes are OK, but adding/removing/renaming fields (such as adding `projectRef` if the baseline CRD did not have it) is strictly forbidden.
+- **Run diff-crds**: Run `dev/tasks/diff-crds` frequently and carefully to check for any schema changes or deviations between the baseline CRD and the generated one. Ensure that `dev/tasks/diff-crds` output is completely empty (except for description changes) before proceeding.
 - **Reference Hand-coding & Manual Edits**: If there are schema mismatches, you must manually copy, edit, or hand-code types (e.g. to change or remove fields) until the schemas match perfectly.
 - **Hand-code custom reference types**: If a resource reference structure (like `ProjectRef`, `FolderRef`, `OrganizationRef`, or `BillingAccountRef`) in the baseline CRD lacks a `kind` field or retains specific fields (like `name`/`namespace` in `OrganizationRef`), you **must hand-code custom reference types** locally in `<kind>_types.go` or import the clean, kindless reference types from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs` (e.g. `refs.ProjectRef`).
 - **Match Signatures for automatic validation**: The schema builder `scripts/add-validation-to-crds` automatically adds OpenAPI `oneOf` blocks depending on field signatures.
