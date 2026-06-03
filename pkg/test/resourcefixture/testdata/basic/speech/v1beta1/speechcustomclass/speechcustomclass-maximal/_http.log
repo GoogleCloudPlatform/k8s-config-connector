@@ -149,7 +149,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://speech.googleapis.com/v2/projects/${projectId}/locations/global/customClasses/speechcustomclass-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Citems%2Cannotations
+PATCH https://speech.googleapis.com/v2/projects/${projectId}/locations/global/customClasses/speechcustomclass-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CdisplayName%2Citems
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: custom_class.name=projects%2F${projectId}%2Flocations%2Fglobal%2FcustomClasses%2Fspeechcustomclass-maximal-${uniqueId}
@@ -208,7 +208,7 @@ X-Xss-Protection: 0
         ],
         "name": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-maximal-${uniqueId}"
       },
-      "updateMask": "displayName,items,annotations"
+      "updateMask": "annotations,displayName,items"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
