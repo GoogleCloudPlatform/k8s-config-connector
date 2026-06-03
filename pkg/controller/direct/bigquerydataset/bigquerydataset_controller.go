@@ -29,6 +29,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	bigquery "cloud.google.com/go/bigquery"
+	"cloud.google.com/go/iam/apiv1/iampb"
+	raw "google.golang.org/api/bigquery/v2"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -70,6 +72,19 @@ func (m *model) service(ctx context.Context, projectID string) (*bigquery.Client
 	return gcpService, err
 }
 
+func (m *model) rawService(ctx context.Context) (*raw.Service, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	gcpService, err := raw.NewService(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building raw BigQuery client: %w", err)
+	}
+	return gcpService, err
+}
+
 func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -94,9 +109,14 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err != nil {
 		return nil, err
 	}
+	rawService, err := m.rawService(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &Adapter{
 		id:         id,
 		gcpService: gcpService,
+		rawService: rawService,
 		desired:    obj,
 		reader:     reader,
 	}, nil
@@ -110,6 +130,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 type Adapter struct {
 	id         *krm.DatasetIdentity
 	gcpService *bigquery.Client
+	rawService *raw.Service
 	desired    *krm.BigQueryDataset
 	actual     *bigquery.DatasetMetadata
 	reader     client.Reader
@@ -349,4 +370,143 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted Dataset", "name", a.id.Dataset)
 
 	return true, nil
+}
+
+var bigqueryAccessPrimitiveToRoleMap = map[string]string{
+	"OWNER":  "roles/bigquery.dataOwner",
+	"WRITER": "roles/bigquery.dataEditor",
+	"READER": "roles/bigquery.dataViewer",
+}
+
+var roleToBigqueryAccessPrimitiveMap = map[string]string{
+	"roles/bigquery.dataOwner":  "OWNER",
+	"roles/bigquery.dataEditor": "WRITER",
+	"roles/bigquery.dataViewer": "READER",
+}
+
+func (a *Adapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	dataset, err := a.rawService.Datasets.Get(a.id.Project, a.id.Dataset).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("getting dataset %q: %w", a.id.String(), err)
+	}
+
+	roleToBinding := make(map[string]*iampb.Binding)
+
+	for _, access := range dataset.Access {
+		if access.Role == "" {
+			continue
+		}
+
+		role := access.Role
+		if iamRole, ok := bigqueryAccessPrimitiveToRoleMap[role]; ok {
+			role = iamRole
+		}
+
+		var member string
+		if access.GroupByEmail != "" {
+			member = "group:" + access.GroupByEmail
+		} else if access.Domain != "" {
+			member = "domain:" + access.Domain
+		} else if access.SpecialGroup != "" {
+			member = access.SpecialGroup
+		} else if access.IamMember != "" {
+			member = access.IamMember
+		} else if access.UserByEmail != "" {
+			if strings.Contains(access.UserByEmail, "gserviceaccount") {
+				member = "serviceAccount:" + access.UserByEmail
+			} else {
+				member = "user:" + access.UserByEmail
+			}
+		} else {
+			// view, dataset, routine
+			continue
+		}
+
+		binding, ok := roleToBinding[role]
+		if !ok {
+			binding = &iampb.Binding{Role: role, Members: []string{}}
+			roleToBinding[role] = binding
+		}
+		binding.Members = append(binding.Members, member)
+	}
+
+	bindings := make([]*iampb.Binding, 0, len(roleToBinding))
+	for _, b := range roleToBinding {
+		bindings = append(bindings, b)
+	}
+
+	return &iampb.Policy{
+		Bindings: bindings,
+		Etag:     []byte(dataset.Etag),
+	}, nil
+}
+
+func (a *Adapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	dataset, err := a.rawService.Datasets.Get(a.id.Project, a.id.Dataset).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("getting dataset %q: %w", a.id.String(), err)
+	}
+
+	var newAccess []*raw.DatasetAccess
+	for _, access := range dataset.Access {
+		if access.View != nil || access.Routine != nil || access.Dataset != nil {
+			newAccess = append(newAccess, access)
+		}
+	}
+
+	for _, binding := range policy.Bindings {
+		if binding.Condition != nil {
+			return nil, fmt.Errorf("IAM conditions not allowed on BigQuery Dataset IAM")
+		}
+
+		role := binding.Role
+		if legacyRole, ok := roleToBigqueryAccessPrimitiveMap[role]; ok {
+			role = legacyRole
+		}
+
+		for _, member := range binding.Members {
+			if strings.HasPrefix(member, "deleted:") {
+				continue
+			}
+
+			access := &raw.DatasetAccess{
+				Role: role,
+			}
+
+			pieces := strings.SplitN(member, ":", 2)
+			if len(pieces) > 1 {
+				switch pieces[0] {
+				case "group":
+					access.GroupByEmail = pieces[1]
+				case "domain":
+					access.Domain = pieces[1]
+				case "user":
+					access.UserByEmail = pieces[1]
+				case "serviceAccount":
+					access.UserByEmail = pieces[1]
+				default:
+					return nil, fmt.Errorf("failed to parse BigQuery Dataset IAM member type: %s", member)
+				}
+			} else {
+				if member == "projectOwners" || member == "projectReaders" || member == "projectWriters" || member == "allAuthenticatedUsers" {
+					access.SpecialGroup = member
+				} else {
+					access.IamMember = member
+				}
+			}
+			newAccess = append(newAccess, access)
+		}
+	}
+
+	req := &raw.Dataset{
+		Access: newAccess,
+		Etag:   string(policy.Etag),
+	}
+	// Note: Patch with Etag enforces optimistic concurrency.
+	_, err = a.rawService.Datasets.Patch(a.id.Project, a.id.Dataset, req).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy (patching dataset access) for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
 }
