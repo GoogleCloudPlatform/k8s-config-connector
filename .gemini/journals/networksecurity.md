@@ -24,3 +24,13 @@
 - **Problem**: `NetworkSecuritySecurityProfile` contains two references to endpoint groups (`mirroringEndpointGroup` and `interceptEndpointGroup`), which did not have pre-existing reference structs in `apis/refs/v1beta1/networksecurityrefs.go`.
 - **Solution**: Defined `NetworkSecurityMirroringEndpointGroupRef` and `NetworkSecurityInterceptEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go` to provide structured validation for endpoint group references, and used them in `CustomMirroringProfile` and `CustomInterceptProfile` respectively.
 - **Impact**: Enables strict validation and clean reference resolution for endpoint group fields within a SecurityProfile definition.
+
+### [2026-06-03] Implementing MirroringEndpointGroupAssociation types, identity, and references
+- **Context**: Implementing types for `NetworkSecurityMirroringEndpointGroupAssociation` (Issue #8733).
+- **Problem**: The resource `NetworkSecurityMirroringEndpointGroupAssociation` represents a leaf association in networksecurity. It requires referencing `NetworkSecurityMirroringEndpointGroup` via `MirroringEndpointGroupRef` and `ComputeNetwork` via `NetworkRef`, but `NetworkSecurityMirroringEndpointGroupRef` did not exist in `apis/refs/v1beta1/networksecurityrefs.go`.
+- **Solution**:
+  1. Added `NetworkSecurityMirroringEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go`.
+  2. Implemented `NetworkSecurityMirroringEndpointGroupAssociation` spec and status types in `apis/networksecurity/v1alpha1/mirroringendpointgroupassociation_types.go`, correctly typing reference fields and scalar pointers.
+  3. Implemented identity and reference resolution for `NetworkSecurityMirroringEndpointGroupAssociation` following KRM V2 standards.
+  4. Regenerated CRDs, client-go code, and deepcopy implementations, ensuring perfect compliance with prerequisites validation.
+- **Impact**: Enables future controllers to reconcile `NetworkSecurityMirroringEndpointGroupAssociation` correctly.
