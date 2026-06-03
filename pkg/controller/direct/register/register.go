@@ -83,6 +83,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networksecurity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networksecurity/mirroringendpointgroup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkservices"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkservices/wasmplugin"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/notebooks"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/orgpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/parametermanager"

@@ -123,6 +123,9 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "Metadata") {
 			return "", false
 		}
+		if strings.HasPrefix(fullName, "google.cloud.networkservices.v1.WasmPlugin") {
+			return "", false
+		}
 		matchedService := false
 		for _, serviceName := range o.ServiceNames {
 			if strings.HasPrefix(fullName, serviceName+".") {

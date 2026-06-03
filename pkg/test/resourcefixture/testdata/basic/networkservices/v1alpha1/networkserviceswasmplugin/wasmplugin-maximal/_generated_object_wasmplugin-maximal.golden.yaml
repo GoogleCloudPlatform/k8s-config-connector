@@ -1,0 +1,42 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesWasmPlugin
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: wasmplugin-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Maximal WasmPlugin Updated
+  location: global
+  logConfig:
+    enable: true
+    minLogLevel: DEBUG
+    sampleRate: 0.8
+  mainVersionID: v2
+  projectRef:
+    external: ${projectId}
+  versions:
+    v1:
+      description: Version 1
+      imageURI: us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v1
+      pluginConfigData: some-config-data
+    v2:
+      description: Version 2
+      imageURI: us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v2
+      pluginConfigData: some-config-data-v2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

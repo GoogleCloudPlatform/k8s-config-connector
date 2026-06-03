@@ -16,7 +16,7 @@
 // proto.message: google.cloud.networkservices.v1.WasmPlugin
 // api.group: networkservices.cnrm.cloud.google.com
 
-package networkservices
+package wasmplugin
 
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
@@ -33,9 +33,9 @@ func wasmPluginFuzzer() fuzztesting.KRMFuzzer {
 		NetworkServicesWasmPluginObservedState_FromProto, NetworkServicesWasmPluginObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".projectRef")
-	f.SpecFields.Insert(".location")
-	f.SpecFields.Insert(".resourceID")
+	f.SpecField(".projectRef")
+	f.SpecField(".location")
+	f.SpecField(".resourceID")
 
 	f.IdentityField(".name")
 
