@@ -127,6 +127,8 @@ import (
 	fakecloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1/fake"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	fakecloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1/fake"
+	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1"
+	fakecloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1/fake"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
 	fakecloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1/fake"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
@@ -698,6 +700,11 @@ func (c *Clientset) CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Inter
 // CloudschedulerV1beta1 retrieves the CloudschedulerV1beta1Client
 func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface {
 	return &fakecloudschedulerv1beta1.FakeCloudschedulerV1beta1{Fake: &c.Fake}
+}
+
+// CloudsecuritycomplianceV1alpha1 retrieves the CloudsecuritycomplianceV1alpha1Client
+func (c *Clientset) CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface {
+	return &fakecloudsecuritycompliancev1alpha1.FakeCloudsecuritycomplianceV1alpha1{Fake: &c.Fake}
 }
 
 // CloudtasksV1alpha1 retrieves the CloudtasksV1alpha1Client
