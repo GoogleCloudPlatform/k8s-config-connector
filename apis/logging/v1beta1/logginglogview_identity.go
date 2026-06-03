@@ -63,6 +63,18 @@ func (i *LoggingLogViewIdentity) String() string {
 	return ""
 }
 
+func (i *LoggingLogViewIdentity) ParentString() string {
+	bucketIdentity := &LogBucketIdentity{
+		Project:        i.Project,
+		Folder:         i.Folder,
+		Organization:   i.Organization,
+		BillingAccount: i.BillingAccount,
+		Location:       i.Location,
+		Bucket:         i.Bucket,
+	}
+	return bucketIdentity.String()
+}
+
 func (i *LoggingLogViewIdentity) FromExternal(ref string) error {
 	if parsed, match, _ := ProjectLogViewIdentityFormat.Parse(ref); match {
 		*i = *parsed

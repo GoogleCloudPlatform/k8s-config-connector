@@ -1,0 +1,84 @@
+82c82
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+84c84,85
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+---
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}%2Fviews%2Flogginglogview-${uniqueId}
+106c107
+< POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views?alt=json&viewId=logginglogview-${uniqueId}
+---
+> POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views?%24alt=json%3Benum-encoding%3Dint&viewId=logginglogview-${uniqueId}
+108c109,110
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+---
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}
+136c138
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+138c140,141
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+---
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}%2Fviews%2Flogginglogview-${uniqueId}
+160c163
+< PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json&updateMask=description%2Cfilter
+---
+> PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cfilter
+162c165,166
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+---
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}%2Fviews%2Flogginglogview-${uniqueId}
+166c170,171
+<   "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\""
+---
+>   "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\"",
+>   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}"
+189c194
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+191c196,197
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+---
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}%2Fviews%2Flogginglogview-${uniqueId}
+213c219
+< DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+---
+> DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+215c221,222
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+---
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}%2Fviews%2Flogginglogview-${uniqueId}
+228,251d234
+< 
+< ---
+< 
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+< Content-Type: application/json
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "View logginglogview-${uniqueId} does not exist",
+<     "status": "NOT_FOUND"
+<   }
+< }

@@ -24,6 +24,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/logging/apiv2"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
@@ -50,13 +52,12 @@ type modelLoggingLogView struct {
 }
 
 func (m *modelLoggingLogView) client(ctx context.Context) (*gcp.ConfigClient, error) {
-	// Use the VCR-aware HTTP client
-	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
-		return nil, fmt.Errorf("building authenticated HTTP client: %w", err)
+		return nil, err
 	}
-
-	gcpClient, err := gcp.NewConfigRESTClient(ctx, option.WithHTTPClient(httpClient))
+	gcpClient, err := gcp.NewConfigRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Logging Config client: %w", err)
 	}
@@ -71,6 +72,10 @@ func (m *modelLoggingLogView) AdapterForObject(ctx context.Context, op *directba
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -80,10 +85,18 @@ func (m *modelLoggingLogView) AdapterForObject(ctx context.Context, op *directba
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desiredPb := LoggingLogViewSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desiredPb.Name = id.String()
+
 	return &LoggingLogViewAdapter{
 		id:        id.(*krm.LoggingLogViewIdentity),
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desiredPb,
 	}, nil
 }
 
@@ -95,7 +108,7 @@ func (m *modelLoggingLogView) AdapterForURL(ctx context.Context, url string) (di
 type LoggingLogViewAdapter struct {
 	id        *krm.LoggingLogViewIdentity
 	gcpClient *gcp.ConfigClient
-	desired   *krm.LoggingLogView
+	desired   *loggingpb.LogView
 	actual    *loggingpb.LogView
 }
 
@@ -106,7 +119,7 @@ func (a *LoggingLogViewAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting LoggingLogView", "name", a.id)
 
 	req := &loggingpb.GetViewRequest{Name: a.id.String()}
-	viewpb, err := a.gcpClient.GetView(ctx, req)
+	actual, err := a.gcpClient.GetView(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -114,45 +127,21 @@ func (a *LoggingLogViewAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting LoggingLogView %q: %w", a.id, err)
 	}
 
-	a.actual = viewpb
+	a.actual = actual
 	return true, nil
 }
 
 func (a *LoggingLogViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating LoggingLogView", "u", u)
+	fqn := a.id.String()
+	log.V(2).Info("creating LoggingLogView", "id", fqn)
 
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := LoggingLogViewSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	bucketIdentity := &krm.LogBucketIdentity{
-		Project:        a.id.Project,
-		Folder:         a.id.Folder,
-		Organization:   a.id.Organization,
-		BillingAccount: a.id.BillingAccount,
-		Location:       a.id.Location,
-		Bucket:         a.id.Bucket,
-	}
-	parent := bucketIdentity.String()
-
-	resourceID := direct.ValueOf(desired.Spec.ResourceID)
-	if resourceID == "" {
-		log.V(2).Info("ResourceID is not set, will use metadata.name")
-		resourceID = desired.Name
-	} else {
-		log.V(2).Info("ResourceID is set, will use")
-		resourceID = *desired.Spec.ResourceID
-	}
+	parent := a.id.ParentString()
+	resourceID := a.id.View
 
 	req := &loggingpb.CreateViewRequest{
 		Parent: parent,
-		View:   resource,
+		View:   a.desired,
 		ViewId: resourceID,
 	}
 	created, err := a.gcpClient.CreateView(ctx, req)
@@ -161,54 +150,46 @@ func (a *LoggingLogViewAdapter) Create(ctx context.Context, createOp *directbase
 	}
 	log.V(2).Info("successfully created LogView", "name", a.id)
 
-	status := LoggingLogViewStatus_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return createOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *LoggingLogViewAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating LoggingLogView", "name", a.id.String())
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := LoggingLogViewSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	desiredPb.Name = a.id.String()
-
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	diffs, updateMask, err := compareView(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.String())
-		return nil
+
+	latest := a.actual
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+
+		req := &loggingpb.UpdateViewRequest{
+			Name:       a.id.String(),
+			View:       a.desired,
+			UpdateMask: updateMask,
+		}
+
+		updated, err := a.gcpClient.UpdateView(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating LoggingLogView %s: %w", a.id.String(), err)
+		}
+		latest = updated
 	}
 
-	updateMask := &fieldmaskpb.FieldMask{}
-	for path := range paths {
-		updateMask.Paths = append(updateMask.Paths, path)
-	}
+	return a.updateStatus(ctx, updateOp, latest)
+}
 
-	req := &loggingpb.UpdateViewRequest{
-		Name:       a.id.String(),
-		View:       desiredPb,
-		UpdateMask: updateMask,
-	}
-
-	updated, err := a.gcpClient.UpdateView(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating LoggingLogView %s: %w", a.id.String(), err)
-	}
-
-	status := LoggingLogViewStatus_FromProto(mapCtx, updated)
+func (a *LoggingLogViewAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *loggingpb.LogView) error {
+	mapCtx := &direct.MapContext{}
+	status := LoggingLogViewStatus_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 func (a *LoggingLogViewAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -224,6 +205,12 @@ func (a *LoggingLogViewAdapter) Export(ctx context.Context) (*unstructured.Unstr
 		return nil, mapCtx.Err()
 	}
 
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u.Object = uObj
 	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.LoggingLogViewGVK)
 	return u, nil
@@ -244,4 +231,26 @@ func (a *LoggingLogViewAdapter) Delete(ctx context.Context, deleteOp *directbase
 	}
 	log.V(2).Info("successfully deleted LogView", "name", a.id)
 	return true, nil
+}
+
+func compareView(ctx context.Context, actual, desired *loggingpb.LogView) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	var maskedActual *loggingpb.LogView
+	{
+		// A "trick" to only compare spec fields - round trip via the spec
+		mapCtx := &direct.MapContext{}
+		spec := LoggingLogViewSpec_FromProto(mapCtx, actual)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
+		maskedActual = LoggingLogViewSpec_ToProto(mapCtx, spec)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
+	}
+	maskedActual.Name = desired.Name
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
 }
