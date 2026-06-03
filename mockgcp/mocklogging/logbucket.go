@@ -201,7 +201,7 @@ func (s *configServiceV2) UpdateBucket(ctx context.Context, req *pb.UpdateBucket
 		switch path {
 		case "description":
 			updated.Description = req.GetBucket().GetDescription()
-		case "retentionDays":
+		case "retentionDays", "retention_days":
 			updated.RetentionDays = req.GetBucket().GetRetentionDays()
 		// case "labels":
 		// 	updated.Labels = req.GetDnsAuthorization().GetLabels()

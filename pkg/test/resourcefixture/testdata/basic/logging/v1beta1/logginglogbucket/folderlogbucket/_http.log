@@ -126,9 +126,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
+GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fbuckets%2F_Default
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -142,16 +143,17 @@ X-Xss-Protection: 0
 
 {
   "description": "Default bucket",
-  "lifecycleState": "ACTIVE",
+  "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 30
 }
 
 ---
 
-PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
+PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CretentionDays
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fbuckets%2F_Default
 
 {
   "retentionDays": 15
@@ -168,8 +170,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Default bucket",
-  "lifecycleState": "ACTIVE",
+  "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 15,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -177,9 +178,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
+GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fbuckets%2F_Default
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -192,8 +194,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Default bucket",
-  "lifecycleState": "ACTIVE",
+  "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 15,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -201,9 +202,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
+PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CretentionDays
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fbuckets%2F_Default
 
 {
   "retentionDays": 10
@@ -220,8 +222,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Default bucket",
-  "lifecycleState": "ACTIVE",
+  "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 10,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -229,9 +230,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
+GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fbuckets%2F_Default
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -244,12 +246,30 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Default bucket",
-  "lifecycleState": "ACTIVE",
+  "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 10,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
+
+---
+
+DELETE https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fbuckets%2F_Default
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
 
 ---
 
