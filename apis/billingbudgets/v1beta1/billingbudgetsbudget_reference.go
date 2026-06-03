@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -82,7 +83,11 @@ func (r *BillingBudgetsBudgetRef) ParseExternalToIdentity() (identity.Identity, 
 
 func (r *BillingBudgetsBudgetRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromBillingBudgetsBudgetSpec(ctx, reader, u)
+		budget, err := common.ToStructuredType[*BillingBudgetsBudget](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromBillingBudgetsBudgetSpec(ctx, reader, budget)
 		if err != nil {
 			return ""
 		}

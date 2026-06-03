@@ -19,7 +19,6 @@ import (
 	"fmt"
 
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -60,12 +59,7 @@ func (i *BillingBudgetsBudgetIdentity) Host() string {
 	return BillingBudgetsBudgetIdentityFormat.Host()
 }
 
-func getIdentityFromBillingBudgetsBudgetSpec(ctx context.Context, reader client.Reader, obj client.Object) (*BillingBudgetsBudgetIdentity, error) {
-	budget, err := common.ToStructuredType[*BillingBudgetsBudget](obj)
-	if err != nil {
-		return nil, err
-	}
-
+func getIdentityFromBillingBudgetsBudgetSpec(ctx context.Context, reader client.Reader, budget *BillingBudgetsBudget) (*BillingBudgetsBudgetIdentity, error) {
 	resourceID, err := refsv1beta1.GetResourceID(budget)
 	if err != nil {
 		return nil, err
