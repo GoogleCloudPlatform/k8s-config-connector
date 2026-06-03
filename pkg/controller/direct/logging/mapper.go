@@ -60,6 +60,17 @@ func LoggingLogBucketStatus_FromProto(mapCtx *direct.MapContext, in *pb.LogBucke
 	return out
 }
 
+func LoggingLogBucketStatus_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogBucketStatus) *pb.LogBucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogBucket{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LifecycleState = direct.Enum_ToProto[pb.LifecycleState](mapCtx, in.LifecycleState)
+	return out
+}
+
 func LoggingLogViewStatus_FromProto(mapCtx *direct.MapContext, in *pb.LogView) *krm.LoggingLogViewStatus {
 	if in == nil {
 		return nil
