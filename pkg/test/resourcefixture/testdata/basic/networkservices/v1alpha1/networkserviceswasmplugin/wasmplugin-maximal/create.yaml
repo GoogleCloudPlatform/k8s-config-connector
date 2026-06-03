@@ -1,0 +1,19 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesWasmPlugin
+metadata:
+  name: wasmplugin-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  description: "Maximal WasmPlugin"
+  logConfig:
+    enable: true
+    minLogLevel: "INFO"
+    sampleRate: 0.5
+  versions:
+    v1:
+      description: "Version 1"
+      imageURI: "us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v1"
+      pluginConfigData: "some-config-data"
+  mainVersionID: "v1"

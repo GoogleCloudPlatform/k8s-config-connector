@@ -1,0 +1,497 @@
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FwasmPlugins%2Fwasmplugin-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins?%24alt=json%3Benum-encoding%3Dint&wasmPluginId=wasmplugin-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "description": "Maximal WasmPlugin",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "logConfig": {
+    "enable": true,
+    "minLogLevel": 3,
+    "sampleRate": 0.5
+  },
+  "mainVersionId": "v1",
+  "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+  "versions": {
+    "v1": {
+      "description": "Version 1",
+      "imageUri": "us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v1",
+      "pluginConfigData": "c29tZS1jb25maWctZGF0YQ=="
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.WasmPlugin",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal WasmPlugin",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "logConfig": {
+      "enable": true,
+      "minLogLevel": "INFO",
+      "sampleRate": 0.5
+    },
+    "mainVersionId": "v1",
+    "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FwasmPlugins%2Fwasmplugin-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal WasmPlugin",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "logConfig": {
+    "enable": true,
+    "minLogLevel": 3,
+    "sampleRate": 0.5
+  },
+  "mainVersionId": "v1",
+  "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}/versions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "wasmPluginVersions": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "Version 1",
+      "imageDigest": "sha256:abcdef1234567890",
+      "imageUri": "us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v1",
+      "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}/versions/v1",
+      "pluginConfigData": "c29tZS1jb25maWctZGF0YQ==",
+      "pluginConfigDigest": "sha256:config1234567890",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2ClogConfig%2CmainVersionId%2Cversions
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: wasm_plugin.name=projects%2F${projectId}%2Flocations%2Fglobal%2FwasmPlugins%2Fwasmplugin-max-${uniqueId}
+
+{
+  "description": "Maximal WasmPlugin Updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "logConfig": {
+    "enable": true,
+    "minLogLevel": 2,
+    "sampleRate": 0.8
+  },
+  "mainVersionId": "v2",
+  "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+  "versions": {
+    "v1": {
+      "description": "Version 1",
+      "imageUri": "us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v1",
+      "pluginConfigData": "c29tZS1jb25maWctZGF0YQ=="
+    },
+    "v2": {
+      "description": "Version 2",
+      "imageUri": "us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v2",
+      "pluginConfigData": "c29tZS1jb25maWctZGF0YS12Mg=="
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.WasmPlugin",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal WasmPlugin Updated",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "logConfig": {
+      "enable": true,
+      "minLogLevel": "DEBUG",
+      "sampleRate": 0.8
+    },
+    "mainVersionId": "v2",
+    "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FwasmPlugins%2Fwasmplugin-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal WasmPlugin Updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "logConfig": {
+    "enable": true,
+    "minLogLevel": 2,
+    "sampleRate": 0.8
+  },
+  "mainVersionId": "v2",
+  "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}/versions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "wasmPluginVersions": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "Version 1",
+      "imageDigest": "sha256:abcdef1234567890",
+      "imageUri": "us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v1",
+      "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}/versions/v1",
+      "pluginConfigData": "c29tZS1jb25maWctZGF0YQ==",
+      "pluginConfigDigest": "sha256:config1234567890",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "Version 2",
+      "imageDigest": "sha256:abcdef1234567890",
+      "imageUri": "us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v2",
+      "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}/versions/v2",
+      "pluginConfigData": "c29tZS1jb25maWctZGF0YS12Mg==",
+      "pluginConfigDigest": "sha256:config1234567890",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FwasmPlugins%2Fwasmplugin-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal WasmPlugin Updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "logConfig": {
+    "enable": true,
+    "minLogLevel": 2,
+    "sampleRate": 0.8
+  },
+  "mainVersionId": "v2",
+  "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}/versions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "wasmPluginVersions": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "Version 1",
+      "imageDigest": "sha256:abcdef1234567890",
+      "imageUri": "us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v1",
+      "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}/versions/v1",
+      "pluginConfigData": "c29tZS1jb25maWctZGF0YQ==",
+      "pluginConfigDigest": "sha256:config1234567890",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "Version 2",
+      "imageDigest": "sha256:abcdef1234567890",
+      "imageUri": "us-docker.pkg.dev/${projectId}/repository-${uniqueId}/image-${uniqueId}:v2",
+      "name": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}/versions/v2",
+      "pluginConfigData": "c29tZS1jb25maWctZGF0YS12Mg==",
+      "pluginConfigDigest": "sha256:config1234567890",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FwasmPlugins%2Fwasmplugin-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/wasmPlugins/wasmplugin-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

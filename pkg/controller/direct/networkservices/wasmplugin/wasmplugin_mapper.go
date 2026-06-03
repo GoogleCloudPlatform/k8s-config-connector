@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package networkservices
+package wasmplugin
 
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
@@ -79,6 +79,46 @@ func NetworkServicesWasmPluginObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.UsedBy = direct.Slice_ToProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_ToProto)
+	return out
+}
+
+func WasmPlugin_LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_LogConfig) *krm.WasmPlugin_LogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WasmPlugin_LogConfig{}
+	out.Enable = direct.LazyPtr(in.GetEnable())
+	out.MinLogLevel = direct.Enum_FromProto(mapCtx, in.GetMinLogLevel())
+	out.SampleRate = direct.LazyPtr(in.GetSampleRate())
+	return out
+}
+
+func WasmPlugin_LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_LogConfig) *pb.WasmPlugin_LogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WasmPlugin_LogConfig{}
+	out.Enable = direct.ValueOf(in.Enable)
+	out.MinLogLevel = direct.Enum_ToProto[pb.WasmPlugin_LogConfig_LogLevel](mapCtx, in.MinLogLevel)
+	out.SampleRate = direct.ValueOf(in.SampleRate)
+	return out
+}
+
+func WasmPlugin_UsedByObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_UsedBy) *krm.WasmPlugin_UsedByObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WasmPlugin_UsedByObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+
+func WasmPlugin_UsedByObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_UsedByObservedState) *pb.WasmPlugin_UsedBy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WasmPlugin_UsedBy{}
+	out.Name = direct.ValueOf(in.Name)
 	return out
 }
 
