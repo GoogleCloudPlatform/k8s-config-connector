@@ -403,7 +403,7 @@ resourcemanager.cnrm.cloud.google.com,Project,False,True,False,Terraform,True
 pubsublite.cnrm.cloud.google.com,PubSubLiteReservation,False,True,False,Terraform,False
 pubsublite.cnrm.cloud.google.com,PubSubLiteSubscription,True,False,False,Terraform,False
 pubsublite.cnrm.cloud.google.com,PubSubLiteTopic,True,False,False,Terraform,False
-pubsub.cnrm.cloud.google.com,PubSubSchema,False,True,False,Terraform,False
+pubsub.cnrm.cloud.google.com,PubSubSchema,False,True,False,Terraform,True
 pubsub.cnrm.cloud.google.com,PubSubSnapshot,True,True,False,Direct,True
 pubsub.cnrm.cloud.google.com,PubSubSubscription,False,True,False,Terraform,False
 pubsub.cnrm.cloud.google.com,PubSubTopic,False,True,False,Terraform,False

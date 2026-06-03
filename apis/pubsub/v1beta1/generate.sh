@@ -26,8 +26,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.pubsub.v1 \
     --api-version pubsub.cnrm.cloud.google.com/v1beta1 \
-    --resource PubSubSnapshot:Snapshot
+    --include-skipped-output \
+    --resource PubSubSnapshot:Snapshot \
+    --resource PubSubSchema:Schema
 
 go run . generate-mapper \
     --service google.pubsub.v1 \
-    --api-version pubsub.cnrm.cloud.google.com/v1beta1
+    --api-version pubsub.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output
