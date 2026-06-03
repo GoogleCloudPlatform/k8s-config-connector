@@ -86,12 +86,13 @@ func (m *taskModel) AdapterForObject(ctx context.Context, op *directbase.Adapter
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewTaskIdentity(ctx, reader, obj)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.TaskIdentity)
 
-	gcpClient, err := m.Client(ctx, id.Parent().ProjectID)
+	gcpClient, err := m.Client(ctx, id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -117,10 +118,6 @@ var _ directbase.Adapter = &taskAdapter{}
 func (a *taskAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.Info("getting batch task", "name", a.id)
-
-	if a.id.Parent().JobID == "" || a.id.Parent().TaskGroup == "" {
-		return false, fmt.Errorf("JobID and TaskGroup are required to fetch a BatchTask from GCP. Please specify the full 10-token path in the external identifier")
-	}
 
 	req := &batchpb.GetTaskRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetTask(ctx, req)
@@ -172,7 +169,7 @@ func (a *taskAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.Task)
 	u.SetGroupVersionKind(krm.BatchTaskGVK)
 
 	u.Object = uObj

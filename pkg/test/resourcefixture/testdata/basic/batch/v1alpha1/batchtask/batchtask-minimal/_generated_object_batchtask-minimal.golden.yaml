@@ -12,10 +12,13 @@ metadata:
   name: batchtask-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  jobRef:
+    name: batchjob-${uniqueId}
   location: us-west2
   projectRef:
     external: ${projectId}
   resourceID: "0"
+  taskGroup: group0
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

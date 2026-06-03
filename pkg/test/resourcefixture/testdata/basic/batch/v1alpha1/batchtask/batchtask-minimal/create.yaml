@@ -8,4 +8,7 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-west2
+  jobRef:
+    name: batchjob-${uniqueId}
+  taskGroup: group0
   resourceID: "0"

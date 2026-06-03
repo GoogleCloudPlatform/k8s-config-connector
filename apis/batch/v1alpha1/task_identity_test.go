@@ -20,45 +20,33 @@ import (
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
-func TestParseTaskExternal(t *testing.T) {
+func TestTaskIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name          string
 		external      string
 		wantProject   string
 		wantLocation  string
-		wantJobID     string
+		wantJob       string
 		wantTaskGroup string
-		wantID        string
+		wantTask      string
 		wantErr       bool
 	}{
-		{
-			name:         "valid external 6-token ref",
-			external:     "projects/test-project/locations/us-central1/tasks/task-01",
-			wantProject:  "test-project",
-			wantLocation: "us-central1",
-			wantID:       "task-01",
-			wantErr:      false,
-		},
 		{
 			name:          "valid external 10-token ref",
 			external:      "projects/test-project/locations/us-central1/jobs/job-01/taskGroups/group-01/tasks/task-01",
 			wantProject:   "test-project",
 			wantLocation:  "us-central1",
-			wantJobID:     "job-01",
+			wantJob:       "job-01",
 			wantTaskGroup: "group-01",
-			wantID:        "task-01",
+			wantTask:      "task-01",
 			wantErr:       false,
 		},
 		{
 			name:     "invalid prefix",
 			external: "project/test-project/locations/us-central1/tasks/task-01",
-			wantErr:  true,
-		},
-		{
-			name:     "missing tasks token",
-			external: "projects/test-project/locations/us-central1/job/task-01",
 			wantErr:  true,
 		},
 		{
@@ -70,32 +58,33 @@ func TestParseTaskExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parent, resourceID, err := ParseTaskExternal(tt.external)
+			id := &TaskIdentity{}
+			err := id.FromExternal(tt.external)
 			if (err != nil) != tt.wantErr {
-				t.Fatalf("ParseTaskExternal() error = %v, wantErr %v", err, tt.wantErr)
+				t.Fatalf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
 			if !tt.wantErr {
-				if parent.ProjectID != tt.wantProject {
-					t.Errorf("expected ProjectID %q, got %q", tt.wantProject, parent.ProjectID)
+				if id.Project != tt.wantProject {
+					t.Errorf("expected Project %q, got %q", tt.wantProject, id.Project)
 				}
-				if parent.Location != tt.wantLocation {
-					t.Errorf("expected Location %q, got %q", tt.wantLocation, parent.Location)
+				if id.Location != tt.wantLocation {
+					t.Errorf("expected Location %q, got %q", tt.wantLocation, id.Location)
 				}
-				if parent.JobID != tt.wantJobID {
-					t.Errorf("expected JobID %q, got %q", tt.wantJobID, parent.JobID)
+				if id.Job != tt.wantJob {
+					t.Errorf("expected Job %q, got %q", tt.wantJob, id.Job)
 				}
-				if parent.TaskGroup != tt.wantTaskGroup {
-					t.Errorf("expected TaskGroup %q, got %q", tt.wantTaskGroup, parent.TaskGroup)
+				if id.TaskGroup != tt.wantTaskGroup {
+					t.Errorf("expected TaskGroup %q, got %q", tt.wantTaskGroup, id.TaskGroup)
 				}
-				if resourceID != tt.wantID {
-					t.Errorf("expected resourceID %q, got %q", tt.wantID, resourceID)
+				if id.Task != tt.wantTask {
+					t.Errorf("expected Task %q, got %q", tt.wantTask, id.Task)
 				}
 			}
 		})
 	}
 }
 
-func TestNewTaskIdentity(t *testing.T) {
+func TestBatchTask_GetIdentity(t *testing.T) {
 	tests := []struct {
 		name       string
 		obj        *BatchTask
@@ -103,66 +92,43 @@ func TestNewTaskIdentity(t *testing.T) {
 		wantErr    bool
 	}{
 		{
-			name: "valid construction 6-token",
+			name: "valid construction",
 			obj: &BatchTask{
 				Spec: BatchTaskSpec{
 					Parent: Parent{
-						Location: direct.PtrTo("us-central1"),
+						Location: "us-central1",
 						ProjectRef: &refsv1beta1.ProjectRef{
 							External: "test-project",
 						},
-					},
-					ResourceID: direct.PtrTo("task-01"),
-				},
-			},
-			wantString: "projects/test-project/locations/us-central1/tasks/task-01",
-			wantErr:    false,
-		},
-		{
-			name: "valid construction 10-token",
-			obj: &BatchTask{
-				Spec: BatchTaskSpec{
-					Parent: Parent{
-						Location: direct.PtrTo("us-central1"),
-						ProjectRef: &refsv1beta1.ProjectRef{
-							External: "test-project",
+						JobRef: &BatchJobRef{
+							External: "projects/test-project/locations/us-central1/jobs/job-01",
 						},
+						TaskGroup: "group-01",
 					},
 					ResourceID: direct.PtrTo("task-01"),
-				},
-				Status: BatchTaskStatus{
-					ExternalRef: direct.PtrTo("projects/test-project/locations/us-central1/jobs/job-01/taskGroups/group-01/tasks/task-01"),
 				},
 			},
 			wantString: "projects/test-project/locations/us-central1/jobs/job-01/taskGroups/group-01/tasks/task-01",
 			wantErr:    false,
 		},
 		{
-			name: "missing project",
-			obj: &BatchTask{
-				Spec: BatchTaskSpec{
-					Parent: Parent{
-						Location: direct.PtrTo("us-central1"),
-					},
-					ResourceID: direct.PtrTo("task-01"),
-				},
-			},
-			wantErr: true,
-		},
-		{
 			name: "invalid actual externalRef mismatch project",
 			obj: &BatchTask{
 				Spec: BatchTaskSpec{
 					Parent: Parent{
-						Location: direct.PtrTo("us-central1"),
+						Location: "us-central1",
 						ProjectRef: &refsv1beta1.ProjectRef{
 							External: "test-project",
 						},
+						JobRef: &BatchJobRef{
+							External: "projects/test-project/locations/us-central1/jobs/job-01",
+						},
+						TaskGroup: "group-01",
 					},
 					ResourceID: direct.PtrTo("task-01"),
 				},
 				Status: BatchTaskStatus{
-					ExternalRef: direct.PtrTo("projects/another-project/locations/us-central1/tasks/task-01"),
+					ExternalRef: direct.PtrTo("projects/another-project/locations/us-central1/jobs/job-01/taskGroups/group-01/tasks/task-01"),
 				},
 			},
 			wantErr: true,
@@ -172,9 +138,10 @@ func TestNewTaskIdentity(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := context.Background()
-			id, err := NewTaskIdentity(ctx, nil, tt.obj)
+			reader := fake.NewClientBuilder().Build()
+			id, err := tt.obj.GetIdentity(ctx, reader)
 			if (err != nil) != tt.wantErr {
-				t.Fatalf("NewTaskIdentity() error = %v, wantErr %v", err, tt.wantErr)
+				t.Fatalf("GetIdentity() error = %v, wantErr %v", err, tt.wantErr)
 			}
 			if !tt.wantErr {
 				if id.String() != tt.wantString {

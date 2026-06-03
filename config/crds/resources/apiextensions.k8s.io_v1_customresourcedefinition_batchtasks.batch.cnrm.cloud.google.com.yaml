@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: batchtasks.batch.cnrm.cloud.google.com
 spec:
@@ -61,9 +62,36 @@ spec:
           spec:
             description: BatchTaskSpec defines the desired state of BatchTask
             properties:
+              jobRef:
+                description: Immutable. The Batch Job that this task belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'External represents a fully-qualified GCP resource
+                      name. Format: projects/{{project}}/locations/{{location}}/jobs/{{value}}'
+                    type: string
+                  name:
+                    description: Name represents the name of the GCP resource.
+                    type: string
+                  namespace:
+                    description: Namespace represents the namespace of the GCP resource.
+                    type: string
+                type: object
               location:
-                description: Immutable. The location where the alloydb cluster should
-                  reside.
+                description: Immutable. The location of the Batch Task.
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -101,9 +129,14 @@ spec:
                 description: The BatchTask name. If not given, the metadata.name will
                   be used.
                 type: string
+              taskGroup:
+                description: Immutable. The Task Group that this task belongs to.
+                type: string
             required:
+            - jobRef
             - location
             - projectRef
+            - taskGroup
             type: object
           status:
             description: BatchTaskStatus defines the config connector machine state
