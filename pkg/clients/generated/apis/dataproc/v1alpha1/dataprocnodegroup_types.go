@@ -43,24 +43,9 @@ type NodegroupAccelerators struct {
 	// +optional
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 
-	/* Full URL, partial URI, or short name of the accelerator type resource to
-	expose to this instance. See
-	[Compute Engine
-	AcceleratorTypes](https://cloud.google.com/compute/docs/reference/v1/acceleratorTypes).
-
-	Examples:
-
-	* `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
-	* `projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
-	* `nvidia-tesla-t4`
-
-	**Auto Zone Exception**: If you are using the Dataproc
-	[Auto Zone
-	Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
-	feature, you must use the short name of the accelerator type
-	resource, for example, `nvidia-tesla-t4`. */
+	/* Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. */
 	// +optional
-	AcceleratorTypeURI *string `json:"acceleratorTypeURI,omitempty"`
+	AcceleratorTypeRef *v1alpha1.ResourceRef `json:"acceleratorTypeRef,omitempty"`
 }
 
 type NodegroupDiskConfig struct {
@@ -126,79 +111,31 @@ type NodegroupNodeGroupConfig struct {
 	// +optional
 	DiskConfig *NodegroupDiskConfig `json:"diskConfig,omitempty"`
 
-	/* Optional. The Compute Engine image resource used for cluster instances.
-
-	The URI can represent an image or image family.
-
-	Image examples:
-
-	* `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/[image-id]`
-	* `projects/[project_id]/global/images/[image-id]`
-	* `image-id`
-
-	Image family examples. Dataproc will use the most recent
-	image from the family:
-
-	* `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/family/[custom-image-family-name]`
-	* `projects/[project_id]/global/images/family/[custom-image-family-name]`
-
-	If the URI is unspecified, it will be inferred from
-	`SoftwareConfig.image_version` or the system default. */
+	/* Optional. The Compute Engine image resource used for cluster instances. */
 	// +optional
-	ImageURI *string `json:"imageURI,omitempty"`
+	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
 	/* Optional. Instance flexibility Policy allowing a mixture of VM shapes and provisioning models. */
 	// +optional
 	InstanceFlexibilityPolicy *NodegroupInstanceFlexibilityPolicy `json:"instanceFlexibilityPolicy,omitempty"`
 
-	/* Optional. The Compute Engine machine type used for cluster instances.
-
-	A full URL, partial URI, or short name are valid. Examples:
-
-	* `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
-	* `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
-	* `n1-standard-2`
-
-	**Auto Zone Exception**: If you are using the Dataproc
-	[Auto Zone
-	Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
-	feature, you must use the short name of the machine type
-	resource, for example, `n1-standard-2`. */
+	/* Optional. The Compute Engine machine type used for cluster instances. */
 	// +optional
-	MachineTypeURI *string `json:"machineTypeURI,omitempty"`
+	MachineTypeRef *v1alpha1.ResourceRef `json:"machineTypeRef,omitempty"`
 
-	/* Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu). */
+	/* Optional. Specifies the minimum cpu platform for the Instance Group. */
 	// +optional
 	MinCPUPlatform *string `json:"minCPUPlatform,omitempty"`
 
-	/* Optional. The minimum number of primary worker instances to create.
-	If `min_num_instances` is set, cluster creation will succeed if
-	the number of primary workers created is at least equal to the
-	`min_num_instances` number.
-
-	Example: Cluster creation request with `num_instances` = `5` and
-	`min_num_instances` = `3`:
-
-	*  If 4 VMs are created and 1 instance fails,
-	the failed VM is deleted. The cluster is
-	resized to 4 instances and placed in a `RUNNING` state.
-	*  If 2 instances are created and 3 instances fail,
-	the cluster in placed in an `ERROR` state. The failed VMs
-	are not deleted. */
+	/* Optional. The minimum number of primary worker instances to create. */
 	// +optional
 	MinNumInstances *int32 `json:"minNumInstances,omitempty"`
 
-	/* Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**. */
+	/* Optional. The number of VM instances in the instance group. */
 	// +optional
 	NumInstances *int32 `json:"numInstances,omitempty"`
 
-	/* Optional. Specifies the preemptibility of the instance group.
-
-	The default value for master and worker groups is
-	`NON_PREEMPTIBLE`. This default cannot be changed.
-
-	The default value for secondary instances is
-	`PREEMPTIBLE`. */
+	/* Optional. Specifies the preemptibility of the instance group. */
 	// +optional
 	Preemptibility *string `json:"preemptibility,omitempty"`
 
@@ -218,7 +155,7 @@ type NodegroupProvisioningModelMix struct {
 }
 
 type NodegroupStartupConfig struct {
-	/* Optional. The config setting to enable cluster creation/ updation to be successful only after required_registration_fraction of instances are up and running. This configuration is applicable to only secondary workers for now. The cluster will fail if required_registration_fraction of instances are not available. This will include instance creation, agent registration, and service registration (if enabled). */
+	/* Optional. The longest duration that directory required by older OS release will be present. */
 	// +optional
 	RequiredRegistrationFraction *float64 `json:"requiredRegistrationFraction,omitempty"`
 }
@@ -269,17 +206,13 @@ type NodegroupInstanceFlexibilityPolicyStatus struct {
 type NodegroupInstanceReferencesStatus struct {
 	/* The unique identifier of the Compute Engine instance. */
 	// +optional
-	InstanceID *string `json:"instanceID,omitempty"`
+	InstanceId *string `json:"instanceId,omitempty"`
 
 	/* The user-friendly name of the Compute Engine instance. */
 	// +optional
 	InstanceName *string `json:"instanceName,omitempty"`
 
-	/* The public ECIES key used for sharing data with this instance. */
-	// +optional
-	PublicEciesKey *string `json:"publicEciesKey,omitempty"`
-
-	/* The public RSA key used for sharing data with this instance. */
+	/* The public key used for sharing data with this instance. */
 	// +optional
 	PublicKey *string `json:"publicKey,omitempty"`
 }
@@ -298,10 +231,6 @@ type NodegroupManagedGroupConfigStatus struct {
 	/* Output only. The name of the Instance Group Manager for this group. */
 	// +optional
 	InstanceGroupManagerName *string `json:"instanceGroupManagerName,omitempty"`
-
-	/* Output only. The partial URI to the instance group manager for this group. E.g. projects/my-project/regions/us-central1/instanceGroupManagers/my-igm. */
-	// +optional
-	InstanceGroupManagerURI *string `json:"instanceGroupManagerURI,omitempty"`
 
 	/* Output only. The name of the Instance Template used for the Managed Instance Group. */
 	// +optional

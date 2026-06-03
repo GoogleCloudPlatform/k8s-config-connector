@@ -408,6 +408,7 @@
 [acronyms] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".status.config.masterConfig.instanceReferences[].instanceId" should be ".status.config.masterConfig.instanceReferences[].instanceID"
 [acronyms] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".status.config.secondaryWorkerConfig.instanceReferences[].instanceId" should be ".status.config.secondaryWorkerConfig.instanceReferences[].instanceID"
 [acronyms] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".status.config.workerConfig.instanceReferences[].instanceId" should be ".status.config.workerConfig.instanceReferences[].instanceID"
+[acronyms] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.nodeGroupConfig.instanceReferences[].instanceId" should be ".status.observedState.nodeGroupConfig.instanceReferences[].instanceID"
 [acronyms] crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.jobs[].hadoopJob.archiveUris" should be ".spec.jobs[].hadoopJob.archiveURIs"
 [acronyms] crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.jobs[].hadoopJob.fileUris" should be ".spec.jobs[].hadoopJob.fileURIs"
 [acronyms] crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.jobs[].hadoopJob.jarFileUris" should be ".spec.jobs[].hadoopJob.jarFileURIs"
