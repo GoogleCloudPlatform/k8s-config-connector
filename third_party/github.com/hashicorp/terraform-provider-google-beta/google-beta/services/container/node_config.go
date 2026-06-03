@@ -669,7 +669,6 @@ func schemaNodeConfig() *schema.Schema {
 				"windows_node_config": {
 					Type:        schema.TypeList,
 					Optional:    true,
-					ForceNew:    true,
 					MaxItems:    1,
 					Description: `Parameters that can be configured on Windows nodes.`,
 					Elem: &schema.Resource{
@@ -677,7 +676,6 @@ func schemaNodeConfig() *schema.Schema {
 							"os_version": {
 								Type:        schema.TypeString,
 								Optional:    true,
-								ForceNew:    true,
 								Description: `os_version specifies the Windows Server release version to be used on the node.`,
 							},
 						},

@@ -18,9 +18,15 @@ Before modifying any files, identify the targets in both the local repository an
    - Identify the specific resource schema or resource definition files (e.g., `resource_container_node_pool.go` or `node_config.go`).
 2. **Locate the Upstream Canonical Files**:
    - Find the corresponding file in the [canonical HashiCorp TPG Beta repository](https://github.com/hashicorp/terraform-provider-google-beta/tree/main/google-beta/services/).
-   - **Agentic Tip**: Use the `read_url_content` tool with the **raw GitHub URL** to fetch the upstream file content directly into your context.
+   - **Agentic Tip (Small Files)**: Use the `read_url_content` tool with the **raw GitHub URL** to fetch the upstream file content directly:
      - **Format**: `https://raw.githubusercontent.com/hashicorp/terraform-provider-google-beta/main/google-beta/services/<service>/<filename>`
      - **Example**: `https://raw.githubusercontent.com/hashicorp/terraform-provider-google-beta/main/google-beta/services/container/node_config.go`
+   - **Agentic Tip (Large Files / Truncation Avoidance)**: If the raw file is large (e.g. over 30KB), `read_url_content` might truncate it. Instead, download the raw file using `curl` to a local workspace scratch folder (e.g., `.gemini/scratch/`) using `run_command`:
+     ```bash
+     mkdir -p .gemini/scratch
+     curl -s -o .gemini/scratch/<filename> https://raw.githubusercontent.com/hashicorp/terraform-provider-google-beta/main/google-beta/services/<service>/<filename>
+     ```
+     You can then use filesystem tools (`view_file`, `grep_search`) to safely read/search the downloaded copy. Remember to run `rm -rf .gemini/scratch/` once done.
 3. **Determine the Target Task**:
    - Are you backporting a newly added field/block?
    - Are you enabling in-place updates for a field that recently became mutable at the GCP API level?
@@ -81,9 +87,24 @@ If the GKE/GCP API has evolved to support in-place updates for a field that KCC 
 
 Every time you update the vendored provider code, you **MUST** verify that it compiles successfully inside the KCC workspace:
 
-1. **Run Compiler Checks**:
-   ```bash
-   go vet ./third_party/github.com/hashicorp/terraform-provider-google-beta/...
-   ```
-2. **Proceed to CRD Generation**:
+1. **Uncomment TPG Beta in Workspace**:
+   - Open `go.work` in the root of the repository.
+   - Uncomment the TPG Beta provider module line:
+     ```go
+     // Change this:
+     //	./third_party/github.com/hashicorp/terraform-provider-google-beta
+     // To this:
+     	./third_party/github.com/hashicorp/terraform-provider-google-beta
+     ```
+2. **Run Compiler Checks**:
+   - Run `go vet` from the repository root, scoped to the specific GKE/GCP service package you modified. This ensures all workspace-level dependencies compile correctly:
+     ```bash
+     go vet ./third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/<service>/...
+     ```
+3. **Clean Up Workspace changes**:
+   - Revert the `go.work` modification before staging your commit:
+     ```bash
+     git restore go.work
+     ```
+4. **Proceed to CRD Generation**:
    - Once the schema compiles, proceed to [.gemini/skills/update-terraform-fields/SKILL.md](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/update-terraform-fields/SKILL.md) to regenerate the CRD manifests and Go clients, verifying that your schema modifications translate correctly to KRM.

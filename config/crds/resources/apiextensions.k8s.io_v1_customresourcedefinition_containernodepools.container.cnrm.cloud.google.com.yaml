@@ -762,12 +762,11 @@ spec:
                       type: object
                     type: array
                   windowsNodeConfig:
-                    description: Immutable. Parameters that can be configured on Windows
-                      nodes.
+                    description: Parameters that can be configured on Windows nodes.
                     properties:
                       osVersion:
-                        description: Immutable. os_version specifies the Windows Server
-                          release version to be used on the node.
+                        description: os_version specifies the Windows Server release
+                          version to be used on the node.
                         type: string
                     type: object
                   workloadMetadataConfig:
