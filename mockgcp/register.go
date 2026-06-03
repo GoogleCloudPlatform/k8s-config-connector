@@ -23,6 +23,8 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockasset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbackupdr"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquery"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryanalyticshub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigtable"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbillingbudgets"

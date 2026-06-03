@@ -29,6 +29,7 @@ import (
 
 	gcp "cloud.google.com/go/bigquery/analyticshub/apiv1"
 	bigqueryanalyticshubpb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -122,6 +123,37 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 	a.actual = dataexchangepb
 	return true, nil
+}
+
+func (a *Adapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting IAM policy", "name", a.id.String())
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *Adapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("setting IAM policy", "name", a.id.String())
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {

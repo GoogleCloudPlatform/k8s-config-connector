@@ -118,13 +118,10 @@ func AllDirectGVKs() map[schema.GroupVersionKind]bool {
 
 // IsIAMDirect returns true if this resource uses the direct-reconciliation model for IAM.
 func IsIAMDirect(groupKind schema.GroupKind) bool {
-	registration := singleton.registrations[groupKind]
-	if registration == nil {
-		return false
-	}
-
 	// TODO: Move to registration somehow?
 	switch groupKind {
+	case schema.GroupKind{Group: "bigqueryanalyticshub.cnrm.cloud.google.com", Kind: "BigQueryAnalyticsHubDataExchange"}:
+		return true
 	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
 		return true
 	}
