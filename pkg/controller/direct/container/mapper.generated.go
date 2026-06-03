@@ -546,7 +546,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	out := &krm.ContainerClusterSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.InitialNodeCount = direct.LazyPtr(int(in.GetInitialNodeCount()))
+	out.InitialNodeCount = direct.LazyPtr(in.GetInitialNodeCount())
 	out.NodeConfig = NodeConfig_FromProto(mapCtx, in.GetNodeConfig())
 	out.MasterAuth = MasterAuth_FromProto(mapCtx, in.GetMasterAuth())
 	out.LoggingService = direct.LazyPtr(in.GetLoggingService())
@@ -641,7 +641,7 @@ found existing non-generated mapping function "ContainerClusterSpec_ToProto", sk
 		out := &pb.Cluster{}
 		// MISSING: Name
 		out.Description = direct.ValueOf(in.Description)
-		out.InitialNodeCount = int32(direct.ValueOf(in.InitialNodeCount))
+		out.InitialNodeCount = direct.ValueOf(in.InitialNodeCount)
 		out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
 		out.MasterAuth = MasterAuth_ToProto(mapCtx, in.MasterAuth)
 		out.LoggingService = direct.ValueOf(in.LoggingService)
@@ -970,8 +970,8 @@ func EphemeralStorageLocalSsdConfig_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.EphemeralStorageLocalSsdConfig{}
-	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
-	out.DataCacheCount = direct.LazyPtr(int(in.GetDataCacheCount()))
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
+	out.DataCacheCount = direct.LazyPtr(in.GetDataCacheCount())
 	return out
 }
 */
@@ -984,8 +984,8 @@ found existing non-generated mapping function "EphemeralStorageLocalSsdConfig_To
 			return nil
 		}
 		out := &pb.EphemeralStorageLocalSsdConfig{}
-		out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
-		out.DataCacheCount = int32(direct.ValueOf(in.DataCacheCount))
+		out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+		out.DataCacheCount = direct.ValueOf(in.DataCacheCount)
 		return out
 	}
 */
@@ -1225,7 +1225,7 @@ func IdentityServiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.IdentitySe
 }
 
 /* found existing non-generated mapping function "K8SBetaAPIConfig_FromProto", skipping
-func K8SBetaAPIConfig_FromProto(mapCtx *direct.MapContext, in *pb.K8SBetaAPIConfig) *krm.K8SBetaAPIConfig {
+func K8SBetaAPIConfig_FromProto(mapCtx *direct.MapContext, in *pb.K8sBetaAPIConfig) *krm.K8SBetaAPIConfig {
 	if in == nil {
 		return nil
 	}
@@ -1236,11 +1236,11 @@ func K8SBetaAPIConfig_FromProto(mapCtx *direct.MapContext, in *pb.K8SBetaAPIConf
 */
 
 /* found existing non-generated mapping function "K8SBetaAPIConfig_ToProto", skipping
-func K8SBetaAPIConfig_ToProto(mapCtx *direct.MapContext, in *krm.K8SBetaAPIConfig) *pb.K8SBetaAPIConfig {
+func K8SBetaAPIConfig_ToProto(mapCtx *direct.MapContext, in *krm.K8SBetaAPIConfig) *pb.K8sBetaAPIConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.K8SBetaAPIConfig{}
+	out := &pb.K8sBetaAPIConfig{}
 	out.EnabledApis = in.EnabledApis
 	return out
 }
@@ -1257,7 +1257,7 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	// MISSING: MemoryManager
 	out.CPUCfsQuota = direct.BoolValue_FromProto(mapCtx, in.GetCpuCfsQuota())
 	out.CPUCfsQuotaPeriod = direct.LazyPtr(in.GetCpuCfsQuotaPeriod())
-	out.PodPidsLimit = direct.LazyPtr(int(in.GetPodPidsLimit()))
+	out.PodPidsLimit = direct.LazyPtr(in.GetPodPidsLimit())
 	// MISSING: InsecureKubeletReadonlyPortEnabled
 	// MISSING: ImageGcLowThresholdPercent
 	// MISSING: ImageGcHighThresholdPercent
@@ -1289,7 +1289,7 @@ found existing non-generated mapping function "KubeletConfig_ToProto", skipping
 		// MISSING: MemoryManager
 		out.CpuCfsQuota = direct.BoolValue_ToProto(mapCtx, in.CPUCfsQuota)
 		out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
-		out.PodPidsLimit = int64(direct.ValueOf(in.PodPidsLimit))
+		out.PodPidsLimit = direct.ValueOf(in.PodPidsLimit)
 		// MISSING: InsecureKubeletReadonlyPortEnabled
 		// MISSING: ImageGcLowThresholdPercent
 		// MISSING: ImageGcHighThresholdPercent
@@ -1452,7 +1452,7 @@ func MasterAuth_FromProto(mapCtx *direct.MapContext, in *pb.MasterAuth) *krm.Mas
 	}
 	out := &krm.MasterAuth{}
 	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = MasterAuth_Password_FromProto(mapCtx, in.GetPassword())
+	out.Password = direct.LazyPtr(in.GetPassword())
 	// MISSING: ClientCertificateConfig
 	out.ClusterCACertificate = direct.LazyPtr(in.GetClusterCaCertificate())
 	out.ClientCertificate = direct.LazyPtr(in.GetClientCertificate())
@@ -1635,7 +1635,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out.Metadata = in.Metadata
 	out.ImageType = direct.LazyPtr(in.GetImageType())
 	out.Labels = in.Labels
-	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
 	out.Tags = in.Tags
 	out.Preemptible = direct.LazyPtr(in.GetPreemptible())
 	// MISSING: Accelerators
@@ -1697,7 +1697,7 @@ found existing non-generated mapping function "NodeConfig_ToProto", skipping
 		out.Metadata = in.Metadata
 		out.ImageType = direct.ValueOf(in.ImageType)
 		out.Labels = in.Labels
-		out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
+		out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
 		out.Tags = in.Tags
 		out.Preemptible = direct.ValueOf(in.Preemptible)
 		// MISSING: Accelerators
@@ -2058,8 +2058,8 @@ func ResourceLimits_FromProto(mapCtx *direct.MapContext, in *pb.ResourceLimit) *
 	}
 	out := &krm.ResourceLimits{}
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
-	out.Minimum = direct.LazyPtr(int(in.GetMinimum()))
-	out.Maximum = direct.LazyPtr(int(in.GetMaximum()))
+	out.Minimum = direct.LazyPtr(in.GetMinimum())
+	out.Maximum = direct.LazyPtr(in.GetMaximum())
 	return out
 }
 */
@@ -2073,8 +2073,8 @@ found existing non-generated mapping function "ResourceLimits_ToProto", skipping
 		}
 		out := &pb.ResourceLimit{}
 		out.ResourceType = direct.ValueOf(in.ResourceType)
-		out.Minimum = int64(direct.ValueOf(in.Minimum))
-		out.Maximum = int64(direct.ValueOf(in.Maximum))
+		out.Minimum = direct.ValueOf(in.Minimum)
+		out.Maximum = direct.ValueOf(in.Maximum)
 		return out
 	}
 */
