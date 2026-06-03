@@ -16,21 +16,21 @@ package analytics
 
 import (
 	pb "cloud.google.com/go/analytics/admin/apiv1alpha/adminpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AnalyticsAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.Account) *v1alpha1.AnalyticsAccountSpec {
+func AnalyticsAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountSpec {
 	if in == nil {
 		return nil
 	}
-	out := &v1alpha1.AnalyticsAccountSpec{}
+	out := &krm.AnalyticsAccountSpec{}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.RegionCode = direct.LazyPtr(in.GetRegionCode())
 	return out
 }
 
-func AnalyticsAccountSpec_ToProto(mapCtx *direct.MapContext, in *v1alpha1.AnalyticsAccountSpec) *pb.Account {
+func AnalyticsAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAccountSpec) *pb.Account {
 	if in == nil {
 		return nil
 	}
@@ -40,11 +40,11 @@ func AnalyticsAccountSpec_ToProto(mapCtx *direct.MapContext, in *v1alpha1.Analyt
 	return out
 }
 
-func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *v1alpha1.AnalyticsAccountObservedState {
+func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &v1alpha1.AnalyticsAccountObservedState{}
+	out := &krm.AnalyticsAccountObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Deleted = direct.LazyPtr(in.GetDeleted())
@@ -52,7 +52,7 @@ func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.A
 	return out
 }
 
-func AnalyticsAccountObservedState_ToProto(mapCtx *direct.MapContext, in *v1alpha1.AnalyticsAccountObservedState) *pb.Account {
+func AnalyticsAccountObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAccountObservedState) *pb.Account {
 	if in == nil {
 		return nil
 	}
@@ -65,11 +65,11 @@ func AnalyticsAccountObservedState_ToProto(mapCtx *direct.MapContext, in *v1alph
 	return out
 }
 
-func AnalyticsAccountObservedState_FromAccountTicketID(mapCtx *direct.MapContext, in string) *v1alpha1.AnalyticsAccountObservedState {
+func AnalyticsAccountObservedState_FromAccountTicketID(mapCtx *direct.MapContext, in string) *krm.AnalyticsAccountObservedState {
 	if in == "" {
 		return nil
 	}
-	out := &v1alpha1.AnalyticsAccountObservedState{}
+	out := &krm.AnalyticsAccountObservedState{}
 	out.AccountTicketID = direct.LazyPtr(in)
 	return out
 }

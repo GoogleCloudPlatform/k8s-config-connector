@@ -68,6 +68,9 @@ spec:
                 description: Redirect URI where the user will be sent after accepting
                   Terms of Service.
                 type: string
+                x-kubernetes-validations:
+                - message: RedirectURI field is immutable
+                  rule: self == oldSelf
               regionCode:
                 description: Country of business. Must be a Unicode CLDR region code.
                 type: string

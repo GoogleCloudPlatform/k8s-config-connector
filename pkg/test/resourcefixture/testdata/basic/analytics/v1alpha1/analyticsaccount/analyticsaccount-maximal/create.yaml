@@ -1,0 +1,8 @@
+apiVersion: analytics.cnrm.cloud.google.com/v1alpha1
+kind: AnalyticsAccount
+metadata:
+  name: analyticsaccount-${uniqueId}
+spec:
+  displayName: "Test Account ${uniqueId}"
+  regionCode: "US"
+  redirectURI: "https://example.com/redirect"

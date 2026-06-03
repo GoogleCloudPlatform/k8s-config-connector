@@ -43,6 +43,7 @@ type AnalyticsAccountSpec struct {
 
 	// Redirect URI where the user will be sent after accepting Terms of Service.
 	// +kcc:proto:field=google.analytics.admin.v1beta.ProvisionAccountTicketRequest.redirect_uri
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="RedirectURI field is immutable"
 	// +required
 	RedirectURI *string `json:"redirectURI,omitempty"`
 }

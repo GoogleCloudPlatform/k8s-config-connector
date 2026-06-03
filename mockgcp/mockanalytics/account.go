@@ -106,8 +106,10 @@ func (s *analyticsAdminServer) UpdateAccount(ctx context.Context, req *pb.Update
 
 	for _, path := range paths {
 		switch path {
-		case "display_name":
+		case "display_name", "displayName":
 			updated.DisplayName = req.GetAccount().GetDisplayName()
+		case "region_code", "regionCode":
+			updated.RegionCode = req.GetAccount().GetRegionCode()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -129,7 +131,7 @@ func (s *analyticsAdminServer) ProvisionAccountTicket(ctx context.Context, req *
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+	if err := s.storage.Create(ctx, obj.Name, obj); err != nil {
 		return nil, err
 	}
 	return &pb.ProvisionAccountTicketResponse{AccountTicketId: "ASDFGHJKL123456"}, nil
