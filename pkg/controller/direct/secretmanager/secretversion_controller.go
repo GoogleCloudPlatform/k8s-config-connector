@@ -17,9 +17,11 @@ package secretmanager
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"encoding/base64"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/secretmanager/apiv1"
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
@@ -89,8 +91,25 @@ func (m *modelSecretVersion) AdapterForObject(ctx context.Context, op *directbas
 }
 
 func (m *modelSecretVersion) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	// Format is projects/PROJECT_ID/secrets/SECRET_ID/versions/VERSION_ID
+	if !strings.HasPrefix(url, "projects/") {
+		return nil, nil
+	}
+
+	id, err := krm.ParseSecretVersionExternal(url)
+	if err != nil {
+		return nil, nil // Not a valid SecretVersion URL
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &SecretVersionAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type SecretVersionAdapter struct {
@@ -102,6 +121,7 @@ type SecretVersionAdapter struct {
 }
 
 var _ directbase.Adapter = &SecretVersionAdapter{}
+var _ direct.IAMAdapter = &SecretVersionAdapter{}
 
 func (a *SecretVersionAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -320,4 +340,37 @@ func updateLegacyFields(status *krm.SecretManagerSecretVersionStatus) error {
 	version := id.ID()
 	status.Version = &version
 	return nil
+}
+
+func (a *SecretVersionAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if !a.id.HasKnownID() {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *SecretVersionAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if !a.id.HasKnownID() {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }

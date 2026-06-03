@@ -25,7 +25,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/klog/v2"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
@@ -195,6 +197,49 @@ func (s *SecretsV1) DeleteSecret(ctx context.Context, req *pb.DeleteSecretReques
 	// TODO: Delete secret versions?
 
 	return &emptypb.Empty{}, nil
+}
+
+func (s *SecretsV1) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("GetIamPolicy", "resource", req.Resource)
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, "iam-policy:"+req.Resource, policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return &iampb.Policy{
+				Etag: []byte("ACAB"),
+			}, nil
+		}
+		return nil, err
+	}
+	return policy, nil
+}
+
+func (s *SecretsV1) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("SetIamPolicy", "resource", req.Resource)
+
+	policy := req.Policy
+	policy.Etag = []byte("ACAB")
+	if err := s.storage.Update(ctx, "iam-policy:"+req.Resource, policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, "iam-policy:"+req.Resource, policy); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	}
+	return policy, nil
+}
+
+func (s *SecretsV1) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("TestIamPermissions", "resource", req.Resource)
+
+	return &iampb.TestIamPermissionsResponse{
+		Permissions: req.Permissions,
+	}, nil
 }
 
 type secretName struct {
