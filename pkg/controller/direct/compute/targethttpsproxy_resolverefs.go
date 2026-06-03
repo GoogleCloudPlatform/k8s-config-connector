@@ -23,51 +23,39 @@ import (
 
 func resolveTargetHTTPSProxyRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeTargetHTTPSProxy) error {
 	if obj.Spec.UrlMapRef != nil {
-		external, err := obj.Spec.UrlMapRef.NormalizedExternal(ctx, reader, obj.Namespace)
-		if err != nil {
+		if err := obj.Spec.UrlMapRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.UrlMapRef.External = external
 	}
 
 	if obj.Spec.SslPolicyRef != nil {
-		external, err := obj.Spec.SslPolicyRef.NormalizedExternal(ctx, reader, obj.Namespace)
-		if err != nil {
+		if err := obj.Spec.SslPolicyRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.SslPolicyRef.External = external
 	}
 
 	if obj.Spec.CertificateMapRef != nil {
-		external, err := obj.Spec.CertificateMapRef.NormalizedExternal(ctx, reader, obj.Namespace)
-		if err != nil {
+		if err := obj.Spec.CertificateMapRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.CertificateMapRef.External = external
 	}
 
 	if obj.Spec.ServerTlsPolicyRef != nil {
-		external, err := obj.Spec.ServerTlsPolicyRef.NormalizedExternal(ctx, reader, obj.Namespace)
-		if err != nil {
+		if err := obj.Spec.ServerTlsPolicyRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.ServerTlsPolicyRef.External = external
 	}
 
 	for i := range obj.Spec.SslCertificates {
-		external, err := obj.Spec.SslCertificates[i].NormalizedExternal(ctx, reader, obj.Namespace)
-		if err != nil {
+		if err := obj.Spec.SslCertificates[i].Normalize(ctx, reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.SslCertificates[i].External = external
 	}
 
 	for i := range obj.Spec.CertificateManagerCertificates {
-		external, err := obj.Spec.CertificateManagerCertificates[i].NormalizedExternal(ctx, reader, obj.Namespace)
-		if err != nil {
+		if err := obj.Spec.CertificateManagerCertificates[i].Normalize(ctx, reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.CertificateManagerCertificates[i].External = external
 	}
 
 	return nil
