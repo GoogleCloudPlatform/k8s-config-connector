@@ -19,10 +19,10 @@ import (
 	"fmt"
 
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -61,53 +61,33 @@ func (i *BillingBudgetsBudgetIdentity) Host() string {
 }
 
 func getIdentityFromBillingBudgetsBudgetSpec(ctx context.Context, reader client.Reader, obj client.Object) (*BillingBudgetsBudgetIdentity, error) {
-	resourceID, err := refsv1beta1.GetResourceID(obj)
+	budget, err := common.ToStructuredType[*BillingBudgetsBudget](obj)
 	if err != nil {
 		return nil, err
 	}
 
-	var billingAccount string
-	u, ok := obj.(*unstructured.Unstructured)
-	if ok {
-		external, _, _ := unstructured.NestedString(u.Object, "spec", "billingAccountRef", "external")
-		name, _, _ := unstructured.NestedString(u.Object, "spec", "billingAccountRef", "name")
-		namespace, _, _ := unstructured.NestedString(u.Object, "spec", "billingAccountRef", "namespace")
-
-		billingRef := &billingv1alpha1.BillingAccountRef{
-			External:  external,
-			Name:      name,
-			Namespace: namespace,
-		}
-		if err := billingRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, fmt.Errorf("resolving spec.billingAccountRef: %w", err)
-		}
-		billingIdentity := &billingv1alpha1.BillingAccountIdentity{}
-		if err := billingIdentity.FromExternal(billingRef.External); err != nil {
-			return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
-		}
-		billingAccount = billingIdentity.BillingAccountID
-	} else {
-		budget, ok := obj.(*BillingBudgetsBudget)
-		if !ok {
-			return nil, fmt.Errorf("expected *BillingBudgetsBudget, got %T", obj)
-		}
-		if budget.Spec.BillingAccountRef == nil {
-			return nil, fmt.Errorf("spec.billingAccountRef is required")
-		}
-		billingRef := &billingv1alpha1.BillingAccountRef{
-			External:  budget.Spec.BillingAccountRef.External,
-			Name:      budget.Spec.BillingAccountRef.Name,
-			Namespace: budget.Spec.BillingAccountRef.Namespace,
-		}
-		if err := billingRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, fmt.Errorf("resolving spec.billingAccountRef: %w", err)
-		}
-		billingIdentity := &billingv1alpha1.BillingAccountIdentity{}
-		if err := billingIdentity.FromExternal(billingRef.External); err != nil {
-			return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
-		}
-		billingAccount = billingIdentity.BillingAccountID
+	resourceID, err := refsv1beta1.GetResourceID(budget)
+	if err != nil {
+		return nil, err
 	}
+
+	if budget.Spec.BillingAccountRef == nil {
+		return nil, fmt.Errorf("spec.billingAccountRef is required")
+	}
+
+	billingRef := &billingv1alpha1.BillingAccountRef{
+		External:  budget.Spec.BillingAccountRef.External,
+		Name:      budget.Spec.BillingAccountRef.Name,
+		Namespace: budget.Spec.BillingAccountRef.Namespace,
+	}
+	if err := billingRef.Normalize(ctx, reader, budget.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.billingAccountRef: %w", err)
+	}
+	billingIdentity := &billingv1alpha1.BillingAccountIdentity{}
+	if err := billingIdentity.FromExternal(billingRef.External); err != nil {
+		return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
+	}
+	billingAccount := billingIdentity.BillingAccountID
 
 	identity := &BillingBudgetsBudgetIdentity{
 		BillingAccount: billingAccount,
