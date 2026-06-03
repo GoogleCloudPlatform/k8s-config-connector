@@ -977,6 +977,10 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 		".status.observedState.pscConnections[].network",
 	)
 
+	if u.GetKind() == "DataflowFlexTemplateJob" {
+		linkPaths.Insert(".status.externalRef")
+	}
+
 	visitor := objectWalker{}
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
