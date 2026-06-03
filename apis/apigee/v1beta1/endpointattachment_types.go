@@ -89,6 +89,7 @@ type ApigeeEndpointAttachmentObservedState struct {
 
 // ApigeeEndpointAttachment is the Schema for the ApigeeEndpointAttachment API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type ApigeeEndpointAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
