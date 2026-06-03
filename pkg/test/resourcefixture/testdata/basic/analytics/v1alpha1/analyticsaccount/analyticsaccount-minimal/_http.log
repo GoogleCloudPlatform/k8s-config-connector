@@ -1,8 +1,9 @@
-GET https://analyticsadmin.googleapis.com/v1alpha/accounts?%24alt=json%3Benum-encoding%3Dint
+GET https://analyticsadmin.googleapis.com/v1alpha/accounts/analyticsaccount-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=accounts%2Fanalyticsaccount-${uniqueId}
 
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -12,7 +13,13 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{}
+{
+  "error": {
+    "code": 404,
+    "message": "accounts/analyticsaccount-${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
+}
 
 ---
 
