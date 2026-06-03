@@ -734,6 +734,11 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
 
+					if options.ForceDirectController || options.FallbackToOldController {
+						events.RemoveHTTPRequestHeader("User-Agent")
+						events.RemoveHTTPRequestHeader("X-Goog-Request-Params")
+					}
+
 					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
 					if options.TestPause {
 						assertNoRequest(t, got, normalizers...)
