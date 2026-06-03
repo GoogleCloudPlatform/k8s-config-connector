@@ -3,4 +3,4 @@
 # This file holds the pinned SHAs for our APIs
 # It is generated using dev/tasks/update-gcp-dependencies
 #
-https://github.com/googleapis/googleapis 5481332007e57ad3d9cb81e83ff6bf9c449476b6
+https://github.com/googleapis/googleapis 1765b559c42386788ff0c6412491277b4791107a

@@ -105,6 +105,8 @@ spec:
                               type: string
                             parameterValue:
                               description: Required. The value of the parameter.
+                              type: object
+                              x-kubernetes-preserve-unknown-fields: true
                           type: object
                         stringListValue:
                           description: Optional. A repeated string.
@@ -136,26 +138,171 @@ spec:
                     subParameters:
                       description: Optional. The parameter specification for `oneOf`
                         attributes.
-                      items: {}
+                      items:
+                        properties:
+                          defaultValue:
+                            description: Optional. The default value of the parameter.
+                            properties:
+                              boolValue:
+                                description: Optional. A boolean value.
+                                type: boolean
+                              numberValue:
+                                description: Optional. A double value.
+                                type: number
+                              oneofValue:
+                                description: Optional. Sub-parameter values.
+                                properties:
+                                  name:
+                                    description: Required. The name or key of the
+                                      parameter.
+                                    type: string
+                                  parameterValue:
+                                    description: Required. The value of the parameter.
+                                    type: object
+                                    x-kubernetes-preserve-unknown-fields: true
+                                type: object
+                              stringListValue:
+                                description: Optional. A repeated string.
+                                properties:
+                                  values:
+                                    description: Required. The strings in the list.
+                                    items:
+                                      type: string
+                                    type: array
+                                type: object
+                              stringValue:
+                                description: Optional. A string value.
+                                type: string
+                            type: object
+                          description:
+                            description: Optional. The description of the parameter.
+                              The maximum length is 2000 characters.
+                            type: string
+                          displayName:
+                            description: Optional. The friendly name of the parameter.
+                              The maximum length is 200 characters.
+                            type: string
+                          isRequired:
+                            description: Required. Whether the parameter is required.
+                            type: boolean
+                          name:
+                            description: Required. The name of the parameter.
+                            type: string
+                          substitutionRules:
+                            description: Optional. The list of parameter substitutions.
+                            items:
+                              properties:
+                                attributeSubstitutionRule:
+                                  description: Attribute substitution rule.
+                                  properties:
+                                    attribute:
+                                      description: 'Fully qualified proto attribute
+                                        path (in dot notation). Example: rules[0].cel_expression.resource_types_values'
+                                      type: string
+                                  type: object
+                                placeholderSubstitutionRule:
+                                  description: Placeholder substitution rule.
+                                  properties:
+                                    attribute:
+                                      description: Fully qualified proto attribute
+                                        path (e.g., dot notation)
+                                      type: string
+                                  type: object
+                              type: object
+                            type: array
+                          validation:
+                            description: Optional. The permitted set of values for
+                              the parameter.
+                            properties:
+                              allowedValues:
+                                description: Allowed set of values for the parameter.
+                                properties:
+                                  values:
+                                    description: Required. List of allowed values
+                                      for the parameter.
+                                    items:
+                                      properties:
+                                        boolValue:
+                                          description: Optional. A boolean value.
+                                          type: boolean
+                                        numberValue:
+                                          description: Optional. A double value.
+                                          type: number
+                                        oneofValue:
+                                          description: Optional. Sub-parameter values.
+                                          properties:
+                                            name:
+                                              description: Required. The name or key
+                                                of the parameter.
+                                              type: string
+                                            parameterValue:
+                                              description: Required. The value of
+                                                the parameter.
+                                              type: object
+                                              x-kubernetes-preserve-unknown-fields: true
+                                          type: object
+                                        stringListValue:
+                                          description: Optional. A repeated string.
+                                          properties:
+                                            values:
+                                              description: Required. The strings in
+                                                the list.
+                                              items:
+                                                type: string
+                                              type: array
+                                          type: object
+                                        stringValue:
+                                          description: Optional. A string value.
+                                          type: string
+                                      type: object
+                                    type: array
+                                type: object
+                              intRange:
+                                description: Allowed range for numeric parameters.
+                                properties:
+                                  max:
+                                    description: Required. Maximum allowed value for
+                                      the numeric parameter (inclusive).
+                                    format: int64
+                                    type: integer
+                                  min:
+                                    description: Required. Minimum allowed value for
+                                      the numeric parameter (inclusive).
+                                    format: int64
+                                    type: integer
+                                type: object
+                              regexpPattern:
+                                description: Regular expression for string parameters.
+                                properties:
+                                  pattern:
+                                    description: Required. Regex Pattern to match
+                                      the value(s) of parameter.
+                                    type: string
+                                type: object
+                            type: object
+                          valueType:
+                            description: Required. The parameter value type.
+                            type: string
+                        type: object
                       type: array
                     substitutionRules:
                       description: Optional. The list of parameter substitutions.
                       items:
                         properties:
                           attributeSubstitutionRule:
-                            description: The attribute substitution rule.
+                            description: Attribute substitution rule.
                             properties:
                               attribute:
-                                description: 'The fully qualified proto attribute
-                                  path, in dot notation. For example: `rules[0].cel_expression.resource_types_values`'
+                                description: 'Fully qualified proto attribute path
+                                  (in dot notation). Example: rules[0].cel_expression.resource_types_values'
                                 type: string
                             type: object
                           placeholderSubstitutionRule:
-                            description: The placeholder substitution rule.
+                            description: Placeholder substitution rule.
                             properties:
                               attribute:
-                                description: The fully qualified proto attribute path,
-                                  in dot notation.
+                                description: Fully qualified proto attribute path
+                                  (e.g., dot notation)
                                 type: string
                             type: object
                         type: object
@@ -164,11 +311,11 @@ spec:
                       description: Optional. The permitted set of values for the parameter.
                       properties:
                         allowedValues:
-                          description: The permitted set of values for the parameter.
+                          description: Allowed set of values for the parameter.
                           properties:
                             values:
-                              description: Required. The list of allowed values for
-                                the parameter.
+                              description: Required. List of allowed values for the
+                                parameter.
                               items:
                                 properties:
                                   boolValue:
@@ -186,6 +333,8 @@ spec:
                                         type: string
                                       parameterValue:
                                         description: Required. The value of the parameter.
+                                        type: object
+                                        x-kubernetes-preserve-unknown-fields: true
                                     type: object
                                   stringListValue:
                                     description: Optional. A repeated string.
@@ -204,25 +353,25 @@ spec:
                               type: array
                           type: object
                         intRange:
-                          description: The permitted range for numeric parameters.
+                          description: Allowed range for numeric parameters.
                           properties:
                             max:
-                              description: Required. The maximum permitted value for
-                                the numeric parameter (inclusive).
+                              description: Required. Maximum allowed value for the
+                                numeric parameter (inclusive).
                               format: int64
                               type: integer
                             min:
-                              description: Required. The minimum permitted value for
-                                the numeric parameter (inclusive).
+                              description: Required. Minimum allowed value for the
+                                numeric parameter (inclusive).
                               format: int64
                               type: integer
                           type: object
                         regexpPattern:
-                          description: The regular expression for string parameters.
+                          description: Regular expression for string parameters.
                           properties:
                             pattern:
-                              description: Required. The regex pattern to match the
-                                values of the parameter with.
+                              description: Required. Regex Pattern to match the value(s)
+                                of parameter.
                               type: string
                           type: object
                       type: object
@@ -277,18 +426,16 @@ spec:
                 items:
                   properties:
                     celExpression:
-                      description: The rule's logic expression in Common Expression
-                        Language (CEL).
+                      description: Logic expression in CEL language.
                       properties:
                         expression:
-                          description: Required. The logical expression in CEL. The
-                            maximum length of the condition is 1000 characters. For
-                            more information, see [CEL expression](https://cloud.google.com/security-command-center/docs/compliance-manager-write-cel-expressions).
+                          description: Required. Logic expression in CEL language.
+                            The max length of the condition is 1000 characters.
                           type: string
                         resourceTypesValues:
                           description: 'The resource instance types on which this
-                            expression is defined. The format is `<SERVICE_NAME>/<type>`.
-                            For example: `compute.googleapis.com/Instance`'
+                            expression is defined. Format will be of the form : `<canonical
+                            service name>/<type>` Example: `compute.googleapis.com/Instance`.'
                           properties:
                             values:
                               description: Required. The strings in the list.
@@ -298,12 +445,11 @@ spec:
                           type: object
                       type: object
                     description:
-                      description: Optional. The rule description. The maximum length
-                        is 2000 characters.
+                      description: Optional. Description of the Rule. The maximum
+                        length is 2000 characters.
                       type: string
                     ruleActionTypes:
-                      description: Required. The functionality that's enabled by the
-                        rule.
+                      description: Required. The functionality enabled by the Rule.
                       items:
                         type: string
                       type: array

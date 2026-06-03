@@ -128,3 +128,117 @@ type CloudSecurityComplianceCloudControlList struct {
 func init() {
 	SchemeBuilder.Register(&CloudSecurityComplianceCloudControl{}, &CloudSecurityComplianceCloudControlList{})
 }
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.ParamValue
+type ParamValue struct {
+	// Optional. A string value.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Optional. A boolean value.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// Optional. A repeated string.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.string_list_value
+	StringListValue *StringList `json:"stringListValue,omitempty"`
+
+	// Optional. A double value.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.number_value
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	// Optional. Sub-parameter values.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParamValue.oneof_value
+	OneofValue *Parameter `json:"oneofValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.Parameter
+type Parameter struct {
+	// Required. The name or key of the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Parameter.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The value of the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Parameter.parameter_value
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Type=object
+	ParameterValue *ParamValue `json:"parameterValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.ParameterSpec
+type ParameterSpec struct {
+	// Required. The name of the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The friendly name of the parameter. The maximum length is 200
+	//  characters.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The description of the parameter. The maximum length is 2000
+	//  characters.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Whether the parameter is required.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// Required. The parameter value type.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.value_type
+	ValueType *string `json:"valueType,omitempty"`
+
+	// Optional. The default value of the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.default_value
+	DefaultValue *ParamValue `json:"defaultValue,omitempty"`
+
+	// Optional. The list of parameter substitutions.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.substitution_rules
+	SubstitutionRules []ParameterSubstitutionRule `json:"substitutionRules,omitempty"`
+
+	// Optional. The parameter specification for `oneOf` attributes.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.sub_parameters
+	SubParameters []SubParameterSpec `json:"subParameters,omitempty"`
+
+	// Optional. The permitted set of values for the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.validation
+	Validation *Validation `json:"validation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.ParameterSpec
+type SubParameterSpec struct {
+	// Required. The name of the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The friendly name of the parameter. The maximum length is 200
+	//  characters.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The description of the parameter. The maximum length is 2000
+	//  characters.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Whether the parameter is required.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// Required. The parameter value type.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.value_type
+	ValueType *string `json:"valueType,omitempty"`
+
+	// Optional. The default value of the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.default_value
+	DefaultValue *ParamValue `json:"defaultValue,omitempty"`
+
+	// Optional. The list of parameter substitutions.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.substitution_rules
+	SubstitutionRules []ParameterSubstitutionRule `json:"substitutionRules,omitempty"`
+
+	// Optional. The permitted set of values for the parameter.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.validation
+	Validation *Validation `json:"validation,omitempty"`
+}
