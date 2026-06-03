@@ -26,6 +26,7 @@ import (
 
 	dataproc "cloud.google.com/go/dataproc/v2/apiv1"
 	dataprocpb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -242,4 +243,35 @@ func (a *batchAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
 	return u, nil
+}
+
+func (a *batchAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting iam policy", "name", a.id)
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *batchAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("setting iam policy", "name", a.id)
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
