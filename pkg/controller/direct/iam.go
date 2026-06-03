@@ -21,6 +21,7 @@ import (
 	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	exprpb "google.golang.org/genproto/googleapis/type/expr"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -186,4 +187,105 @@ func DeleteIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1be
 
 	log.Info("updated iam policy to remove member", "updatedPolicy", newPolicy, "member", removeMember)
 	return nil
+}
+
+// GetIAMPolicy returns the actual IAMPolicy for the referenced resource.
+func GetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy, err := iamAdapter.GetIAMPolicy(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec.ResourceReference = want.Spec.ResourceReference
+
+	for _, binding := range policy.Bindings {
+		actualBinding := v1beta1.IAMPolicyBinding{
+			Role: binding.Role,
+		}
+		for _, member := range binding.Members {
+			actualBinding.Members = append(actualBinding.Members, v1beta1.Member(member))
+		}
+		if binding.Condition != nil {
+			actualBinding.Condition = &v1beta1.IAMCondition{
+				Title:       binding.Condition.Title,
+				Description: binding.Condition.Description,
+				Expression:  binding.Condition.Expression,
+			}
+		}
+		actual.Spec.Bindings = append(actual.Spec.Bindings, actualBinding)
+	}
+	actual.Spec.Etag = string(policy.Etag)
+	return actual, nil
+}
+
+// SetIAMPolicy will update the IAM policy for the referenced resource
+func SetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy := &iampb.Policy{
+		Etag: []byte(want.Spec.Etag),
+	}
+
+	for _, binding := range want.Spec.Bindings {
+		b := &iampb.Binding{
+			Role: binding.Role,
+		}
+		for _, member := range binding.Members {
+			b.Members = append(b.Members, string(member))
+		}
+		if binding.Condition != nil {
+			b.Condition = &exprpb.Expr{
+				Title:       binding.Condition.Title,
+				Description: binding.Condition.Description,
+				Expression:  binding.Condition.Expression,
+			}
+		}
+		policy.Bindings = append(policy.Bindings, b)
+	}
+
+	newPolicy, err := iamAdapter.SetIAMPolicy(ctx, policy)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec.ResourceReference = want.Spec.ResourceReference
+
+	for _, binding := range newPolicy.Bindings {
+		actualBinding := v1beta1.IAMPolicyBinding{
+			Role: binding.Role,
+		}
+		for _, member := range binding.Members {
+			actualBinding.Members = append(actualBinding.Members, v1beta1.Member(member))
+		}
+		if binding.Condition != nil {
+			actualBinding.Condition = &v1beta1.IAMCondition{
+				Title:       binding.Condition.Title,
+				Description: binding.Condition.Description,
+				Expression:  binding.Condition.Expression,
+			}
+		}
+		actual.Spec.Bindings = append(actual.Spec.Bindings, actualBinding)
+	}
+	actual.Spec.Etag = string(newPolicy.Etag)
+	return actual, nil
 }
