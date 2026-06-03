@@ -67,6 +67,7 @@ import (
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1beta1"
+	cesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/ces/v1alpha1"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	clouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1alpha1"
@@ -255,6 +256,7 @@ type Interface interface {
 	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
 	CertificatemanagerV1alpha1() certificatemanagerv1alpha1.CertificatemanagerV1alpha1Interface
 	CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface
+	CesV1alpha1() cesv1alpha1.CesV1alpha1Interface
 	CloudassetV1alpha1() cloudassetv1alpha1.CloudassetV1alpha1Interface
 	CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface
 	ClouddeployV1alpha1() clouddeployv1alpha1.ClouddeployV1alpha1Interface
@@ -441,6 +443,7 @@ type Clientset struct {
 	binaryauthorizationV1beta1      *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
 	certificatemanagerV1alpha1      *certificatemanagerv1alpha1.CertificatemanagerV1alpha1Client
 	certificatemanagerV1beta1       *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
+	cesV1alpha1                     *cesv1alpha1.CesV1alpha1Client
 	cloudassetV1alpha1              *cloudassetv1alpha1.CloudassetV1alpha1Client
 	cloudbuildV1beta1               *cloudbuildv1beta1.CloudbuildV1beta1Client
 	clouddeployV1alpha1             *clouddeployv1alpha1.ClouddeployV1alpha1Client
@@ -790,6 +793,11 @@ func (c *Clientset) CertificatemanagerV1alpha1() certificatemanagerv1alpha1.Cert
 // CertificatemanagerV1beta1 retrieves the CertificatemanagerV1beta1Client
 func (c *Clientset) CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface {
 	return c.certificatemanagerV1beta1
+}
+
+// CesV1alpha1 retrieves the CesV1alpha1Client
+func (c *Clientset) CesV1alpha1() cesv1alpha1.CesV1alpha1Interface {
+	return c.cesV1alpha1
 }
 
 // CloudassetV1alpha1 retrieves the CloudassetV1alpha1Client
@@ -1699,6 +1707,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.cesV1alpha1, err = cesv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudassetV1alpha1, err = cloudassetv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2318,6 +2330,7 @@ func New(c rest.Interface) *Clientset {
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
 	cs.certificatemanagerV1alpha1 = certificatemanagerv1alpha1.New(c)
 	cs.certificatemanagerV1beta1 = certificatemanagerv1beta1.New(c)
+	cs.cesV1alpha1 = cesv1alpha1.New(c)
 	cs.cloudassetV1alpha1 = cloudassetv1alpha1.New(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.New(c)
 	cs.clouddeployV1alpha1 = clouddeployv1alpha1.New(c)

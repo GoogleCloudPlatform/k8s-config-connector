@@ -65,6 +65,12 @@ fi
 # Reset to the desired version
 git reset --hard ${GOOGLEAPI_VERSION}
 
+# Checkout the ces folder from origin/master if it doesn't exist in this SHA
+if [ ! -d "google/cloud/ces" ]; then
+    echo "Checking out google/cloud/ces/v1beta from origin/master"
+    git checkout origin/master -- google/cloud/ces/v1beta
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
@@ -104,6 +110,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/bigtable/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/bigquery/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/cloud/ces/v1beta/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*/*.proto \

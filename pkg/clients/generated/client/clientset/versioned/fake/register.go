@@ -64,6 +64,7 @@ import (
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1beta1"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1beta1"
+	cesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/ces/v1alpha1"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudasset/v1alpha1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudbuild/v1beta1"
 	clouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/clouddeploy/v1alpha1"
@@ -256,6 +257,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	binaryauthorizationv1beta1.AddToScheme,
 	certificatemanagerv1alpha1.AddToScheme,
 	certificatemanagerv1beta1.AddToScheme,
+	cesv1alpha1.AddToScheme,
 	cloudassetv1alpha1.AddToScheme,
 	cloudbuildv1beta1.AddToScheme,
 	clouddeployv1alpha1.AddToScheme,

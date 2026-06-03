@@ -328,6 +328,8 @@ cloud.google.com/go/certificatemanager v1.7.4/go.mod h1:FHAylPe/6IIKuaRmHbjbdLhG
 cloud.google.com/go/certificatemanager v1.7.5/go.mod h1:uX+v7kWqy0Y3NG/ZhNvffh0kuqkKZIXdvlZRO7z0VtM=
 cloud.google.com/go/certificatemanager v1.9.6 h1:v5X8X+THKrS9OFZb6k0GRDP1WQxLXTdMko7OInBliw4=
 cloud.google.com/go/certificatemanager v1.9.6/go.mod h1:vWogV874jKZkSRDFCMM3r7wqybv8WXs3XhyNff6o/Zo=
+cloud.google.com/go/ces v1.0.0 h1:jmwyCu/L58us5q4s9Ay19Pw2YE4MtmZiBynC5v4XdpI=
+cloud.google.com/go/ces v1.0.0/go.mod h1:8mVTdlYgKcVhV6H341zFHQSw0IyTrIuvUtPEvknvHLo=
 cloud.google.com/go/channel v1.8.0/go.mod h1:W5SwCXDJsq/rg3tn3oG0LOxpAo6IMxNa09ngphpSlnk=
 cloud.google.com/go/channel v1.9.0/go.mod h1:jcu05W0my9Vx4mt3/rEHpfxc9eKi9XwsdDL8yBMbKUk=
 cloud.google.com/go/channel v1.11.0/go.mod h1:IdtI0uWGqhEeatSB62VOoJ8FSUhJ9/+iGkJVqp74CGE=
