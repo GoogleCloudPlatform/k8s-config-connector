@@ -66,6 +66,7 @@ bigquery.cnrm.cloud.google.com,BigQueryDatasetAccess,True,False,False,Terraform,
 bigquery.cnrm.cloud.google.com,BigQueryDataset,False,True,False,Terraform,True
 bigquerydatatransfer.cnrm.cloud.google.com,BigQueryDataTransferConfig,True,True,False,Direct,True
 bigquery.cnrm.cloud.google.com,BigQueryJob,False,True,False,Terraform,False
+bigquerymigration.cnrm.cloud.google.com,BigQueryMigrationMigrationWorkflow,True,False,False,Direct,True
 bigqueryreservation.cnrm.cloud.google.com,BigQueryReservationAssignment,True,True,False,Direct,True
 bigqueryreservation.cnrm.cloud.google.com,BigQueryReservationCapacityCommitment,True,False,False,Terraform,False
 bigqueryreservation.cnrm.cloud.google.com,BigQueryReservationReservation,True,True,False,Direct,True
