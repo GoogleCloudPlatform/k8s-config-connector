@@ -1,0 +1,11 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: documentaiprocessor-${uniqueId}-iam
+spec:
+  resourceRef:
+    apiVersion: documentai.cnrm.cloud.google.com/v1alpha1
+    kind: DocumentAIProcessor
+    name: documentaiprocessor-${uniqueId}
+  role: roles/viewer
+  member: "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"

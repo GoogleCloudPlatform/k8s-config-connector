@@ -20,8 +20,6 @@ import (
 	"strings"
 	"time"
 
-	"google.golang.org/protobuf/proto"
-
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 
 	"google.golang.org/grpc/codes"
@@ -48,15 +46,18 @@ func (s *DocumentProcessorV1) GetProcessor(ctx context.Context, req *pb.GetProce
 }
 
 func (s *DocumentProcessorV1) CreateProcessor(ctx context.Context, req *pb.CreateProcessorRequest) (*pb.Processor, error) {
-	name, err := s.ParseProcessorName(req.GetProcessor().GetName())
+	resourceName := req.GetProcessor().GetName()
+	if resourceName == "" {
+		resourceName = fmt.Sprintf("%s/processors/%s", req.GetParent(), "mock-processor")
+	}
+	name, err := s.ParseProcessorName(resourceName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	processorVersion := proto.CloneOf(req.GetProcessor())
-	processorVersion.Name = fqn
+	req.Processor.Name = fqn
 	now := time.Now()
 	req.Processor.CreateTime = timestamppb.New(now)
 	req.Processor.State = pb.Processor_ENABLED

@@ -1,0 +1,17 @@
+apiVersion: documentai.cnrm.cloud.google.com/v1alpha1
+kind: DocumentAIProcessor
+metadata:
+  name: documentaiprocessor-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us
+  displayName: test-processor-${uniqueId}
+  type: OCR_PROCESSOR
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: sa-${uniqueId}
+spec:
+  displayName: Service Account for IAM Test

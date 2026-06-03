@@ -33,6 +33,9 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+
+	iam "cloud.google.com/go/iam/apiv1"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 )
 
 func init() {
@@ -84,6 +87,7 @@ func (m *modelProcessor) AdapterForObject(ctx context.Context, op *directbase.Ad
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   obj,
+		config:    m.config,
 	}, nil
 }
 
@@ -97,6 +101,7 @@ type ProcessorAdapter struct {
 	gcpClient *gcp.DocumentProcessorClient
 	desired   *krm.DocumentAIProcessor
 	actual    *pb.Processor
+	config    config.ControllerConfig
 }
 
 var _ directbase.Adapter = &ProcessorAdapter{}
@@ -268,4 +273,63 @@ func (a *ProcessorAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	}
 	log.V(2).Info("successfully deleted Processor", "name", a.id)
 	return true, nil
+}
+
+func (a *ProcessorAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+
+	opts, err := a.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("https://documentai.googleapis.com"))
+
+	iamClient, err := iam.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building iam client: %w", err)
+	}
+	defer iamClient.Close()
+
+	policy, err := iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *ProcessorAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+
+	opts, err := a.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("https://documentai.googleapis.com"))
+
+	iamClient, err := iam.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building iam client: %w", err)
+	}
+	defer iamClient.Close()
+
+	newPolicy, err := iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
