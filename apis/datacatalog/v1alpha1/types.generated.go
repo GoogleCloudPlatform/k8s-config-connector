@@ -1233,9 +1233,23 @@ type BigQueryTableSpecObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.datacatalog.v1.DataSource
 type DataSourceObservedState struct {
+	// Service that physically stores the data.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.service
+	Service *string `json:"service,omitempty"`
+
+	// Full name of a resource as defined by the service. For example:
+	//
+	//  `//bigquery.googleapis.com/projects/{PROJECT_ID}/locations/{LOCATION}/datasets/{DATASET_ID}/tables/{TABLE_ID}`
+	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.resource
+	Resource *string `json:"resource,omitempty"`
+
 	// Output only. Data Catalog entry name, if applicable.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.source_entry
 	SourceEntry *string `json:"sourceEntry,omitempty"`
+
+	// Detailed properties of the underlying storage.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.storage_properties
+	StorageProperties *StorageProperties `json:"storageProperties,omitempty"`
 }
 */
 
@@ -1333,6 +1347,10 @@ type FeatureOnlineStoreSpecObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.datacatalog.v1.GcsFileSpec
 type GCSFileSpecObservedState struct {
+	// Required. Full file path. Example: `gs://bucket_name/a/b.txt`.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.GcsFileSpec.file_path
+	FilePath *string `json:"filePath,omitempty"`
+
 	// Output only. Creation, modification, and expiration timestamps of a Cloud
 	//  Storage file.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.GcsFileSpec.gcs_timestamps
@@ -1353,6 +1371,20 @@ type GCSFilesetSpecObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.datacatalog.v1.SystemTimestamps
 type SystemTimestampsObservedState struct {
+	// Creation timestamp of the resource within the given system.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Timestamp of the last modification of the resource or its metadata within
+	//  a given system.
+	//
+	//  Note: Depending on the source system, not every modification updates this
+	//  timestamp.
+	//  For example, BigQuery timestamps every metadata modification but not data
+	//  or permission changes.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
 	// Output only. Expiration timestamp of the resource within the given system.
 	//
 	//  Currently only applicable to BigQuery resources.

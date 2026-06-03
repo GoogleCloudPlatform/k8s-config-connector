@@ -609,6 +609,11 @@ type CrossClusterReplicationConfig_MembershipObservedState struct {
 /* unreachable type CrossClusterReplicationConfig_RemoteClusterObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster
 type CrossClusterReplicationConfig_RemoteClusterObservedState struct {
+	// The full resource path of the remote cluster in
+	//  the format: projects/<project>/locations/<region>/clusters/<cluster-id>
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster.cluster
+	Cluster *string `json:"cluster,omitempty"`
+
 	// Output only. The unique identifier of the remote cluster.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster.uid
 	Uid *string `json:"uid,omitempty"`

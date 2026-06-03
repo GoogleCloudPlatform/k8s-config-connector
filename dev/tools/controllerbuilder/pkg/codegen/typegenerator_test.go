@@ -101,7 +101,7 @@ func TestIdentifyOutputs(t *testing.T) {
 	g := &TypeGenerator{}
 
 	outputDeps := make(map[string]*OutputMessageDetails)
-	hasOutputs := g.identifyOutputs(rootMsg, make(map[string]string), outputDeps)
+	hasOutputs := g.identifyOutputs(rootMsg, make(map[string]string), outputDeps, false)
 
 	if !hasOutputs {
 		t.Errorf("expected RootMessage to have outputs")

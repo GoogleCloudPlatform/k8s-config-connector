@@ -102,26 +102,63 @@ func (g *TypeGenerator) visitMessage(message protoreflect.MessageDescriptor) err
 	g.visitedMessages = append(g.visitedMessages, msgs...)
 
 	outputDeps := make(map[string]*OutputMessageDetails)
-	g.identifyOutputs(message, make(map[string]string), outputDeps)
+	g.identifyOutputs(message, make(map[string]string), outputDeps, false)
 
+	needsObservedStateCache := make(map[string]bool)
 	for fqn, details := range outputDeps {
-		g.outputMessages = append(g.outputMessages, details)
-		g.observedStateMessages.Insert(fqn)
+		if g.needsObservedState(details.Message, needsObservedStateCache) {
+			g.outputMessages = append(g.outputMessages, details)
+			g.observedStateMessages.Insert(fqn)
+		}
 	}
 
 	return nil
+}
+
+// needsObservedState determines if a message requires a separate ObservedState struct.
+// If the regular Go struct and the ObservedState version are identical, we fall back
+// to using the regular Go struct to reduce redundancy.
+func (g *TypeGenerator) needsObservedState(msg protoreflect.MessageDescriptor, seen map[string]bool) bool {
+	fqn := string(msg.FullName())
+	if val, ok := seen[fqn]; ok {
+		return val
+	}
+	seen[fqn] = false // Assume false for recursion
+
+	for i := 0; i < msg.Fields().Len(); i++ {
+		f := msg.Fields().Get(i)
+		if IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY) {
+			seen[fqn] = true
+			return true
+		}
+		if f.Kind() == protoreflect.MessageKind && !f.IsMap() {
+			if _, ok := protoMessagesNotMappedToGoStruct[string(f.Message().FullName())]; ok {
+				continue
+			}
+			if g.needsObservedState(f.Message(), seen) {
+				seen[fqn] = true
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // identifyOutputs recursively identifies all messages in the proto tree that contain any output-only content.
 // A message contains output-only content if:
 // 1. It has a field explicitly marked as OUTPUT_ONLY.
 // 2. It has a nested message field that itself contains output-only fields.
-func (g *TypeGenerator) identifyOutputs(msg protoreflect.MessageDescriptor, seen map[string]string, outputDeps map[string]*OutputMessageDetails) bool {
+// 3. It is reached via a parent field marked as OUTPUT_ONLY.
+func (g *TypeGenerator) identifyOutputs(msg protoreflect.MessageDescriptor, seen map[string]string, outputDeps map[string]*OutputMessageDetails, forceAll bool) bool {
 	fqn := string(msg.FullName())
-	if state, ok := seen[fqn]; ok {
+	seenKey := fqn
+	if forceAll {
+		seenKey += "|forced"
+	}
+	if state, ok := seen[seenKey]; ok {
 		return state == "has_outputs"
 	}
-	seen[fqn] = "visiting"
+	seen[seenKey] = "visiting"
 
 	details := &OutputMessageDetails{Message: msg}
 	hasOutputs := false
@@ -132,28 +169,26 @@ func (g *TypeGenerator) identifyOutputs(msg protoreflect.MessageDescriptor, seen
 
 		if isPrimitive(f) {
 			// Primitive fields are only included if explicitly marked OUTPUT_ONLY.
-			if isOut {
+			if isOut || forceAll {
 				details.OutputFields = append(details.OutputFields, f)
 				hasOutputs = true
 			}
 		} else {
 			// Message fields are included if they are OUTPUT_ONLY OR if the target message has outputs.
-			childHasOutputs := g.identifyOutputs(f.Message(), seen, outputDeps)
-			if isOut || childHasOutputs {
+			childHasOutputs := g.identifyOutputs(f.Message(), seen, outputDeps, forceAll || isOut)
+			if isOut || childHasOutputs || forceAll {
 				details.OutputFields = append(details.OutputFields, f)
-				if isOut || childHasOutputs {
-					hasOutputs = true
-				}
+				hasOutputs = true
 			}
 		}
 	}
 
 	if hasOutputs {
 		outputDeps[fqn] = details
-		seen[fqn] = "has_outputs"
+		seen[seenKey] = "has_outputs"
 		return true
 	}
-	seen[fqn] = "no_outputs"
+	seen[seenKey] = "no_outputs"
 	return false
 }
 

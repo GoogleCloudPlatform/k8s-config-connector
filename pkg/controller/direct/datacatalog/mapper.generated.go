@@ -1016,7 +1016,7 @@ func GCSFileSpecObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krmdatacatalogv1alpha1.GCSFileSpecObservedState{}
-	// MISSING: FilePath
+	out.FilePath = direct.LazyPtr(in.GetFilePath())
 	out.GCSTimestamps = SystemTimestampsObservedState_v1alpha1_FromProto(mapCtx, in.GetGcsTimestamps())
 	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
 	return out
@@ -1026,7 +1026,7 @@ func GCSFileSpecObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.GcsFileSpec{}
-	// MISSING: FilePath
+	out.FilePath = direct.ValueOf(in.FilePath)
 	out.GcsTimestamps = SystemTimestampsObservedState_v1alpha1_ToProto(mapCtx, in.GCSTimestamps)
 	out.SizeBytes = direct.ValueOf(in.SizeBytes)
 	return out
@@ -1402,8 +1402,8 @@ func SystemTimestampsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krmdatacatalogv1alpha1.SystemTimestampsObservedState{}
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	return out
 }
@@ -1412,8 +1412,8 @@ func SystemTimestampsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.SystemTimestamps{}
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	return out
 }
