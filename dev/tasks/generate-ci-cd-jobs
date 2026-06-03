@@ -34,6 +34,11 @@ for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk
 
   short=$(echo ${group} | sed s@.cnrm.cloud.google.com@@g)
 
+  if [[ "${short}" == "cloudsecuritycompliance" ]]; then
+    echo "Skipping cloudsecuritycompliance (CI not needed for this step)"
+    continue
+  fi
+
   extra_services=""
   case ${short} in
     "memorystore") extra_services="memorystore.googleapis.com" ;;
