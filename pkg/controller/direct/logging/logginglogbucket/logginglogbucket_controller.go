@@ -131,6 +131,9 @@ func (a *LoggingLogBucketAdapter) Create(ctx context.Context, createOp *directba
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if err := ResolveLoggingLogBucketRefs(ctx, a.reader, desired); err != nil {
+		return err
+	}
 	resource := LoggingLogBucketSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -164,13 +167,24 @@ func (a *LoggingLogBucketAdapter) Update(ctx context.Context, updateOp *directba
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if err := ResolveLoggingLogBucketRefs(ctx, a.reader, desired); err != nil {
+		return err
+	}
 	resource := LoggingLogBucketSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: []string{"description", "retention_days"},
+		Paths: []string{
+			"description",
+			"retention_days",
+			"locked",
+			"analytics_enabled",
+			"restricted_fields",
+			"index_configs",
+			"cmek_settings",
+		},
 	}
 
 	req := &loggingpb.UpdateBucketRequest{

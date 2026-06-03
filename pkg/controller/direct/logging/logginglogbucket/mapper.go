@@ -17,6 +17,7 @@ package logginglogbucket
 import (
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -32,6 +33,27 @@ func LoggingLogBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogBucket)
 	}
 	out.Locked = direct.LazyPtr(in.GetLocked())
 	out.EnableAnalytics = direct.LazyPtr(in.GetAnalyticsEnabled())
+
+	if len(in.GetRestrictedFields()) > 0 {
+		out.RestrictedFields = in.GetRestrictedFields()
+	}
+
+	if len(in.GetIndexConfigs()) > 0 {
+		out.IndexConfigs = make([]krm.LogBucketIndexConfig, len(in.GetIndexConfigs()))
+		for i, v := range in.GetIndexConfigs() {
+			out.IndexConfigs[i] = krm.LogBucketIndexConfig{
+				FieldPath: direct.LazyPtr(v.GetFieldPath()),
+				Type:      direct.Enum_FromProto(mapCtx, v.GetType()),
+			}
+		}
+	}
+
+	if in.GetCmekSettings() != nil && in.GetCmekSettings().GetKmsKeyName() != "" {
+		out.CmekSettings = &krm.LogBucketCmekSettings{
+			KmsKeyRef: &refsv1beta1.KMSCryptoKeyRef{External: in.GetCmekSettings().GetKmsKeyName()},
+		}
+	}
+
 	return out
 }
 
@@ -46,6 +68,27 @@ func LoggingLogBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogB
 	}
 	out.Locked = direct.ValueOf(in.Locked)
 	out.AnalyticsEnabled = direct.ValueOf(in.EnableAnalytics)
+
+	if len(in.RestrictedFields) > 0 {
+		out.RestrictedFields = in.RestrictedFields
+	}
+
+	if len(in.IndexConfigs) > 0 {
+		out.IndexConfigs = make([]*pb.IndexConfig, len(in.IndexConfigs))
+		for i, v := range in.IndexConfigs {
+			out.IndexConfigs[i] = &pb.IndexConfig{
+				FieldPath: direct.ValueOf(v.FieldPath),
+				Type:      direct.Enum_ToProto[pb.IndexType](mapCtx, v.Type),
+			}
+		}
+	}
+
+	if in.CmekSettings != nil && in.CmekSettings.KmsKeyRef != nil {
+		out.CmekSettings = &pb.CmekSettings{
+			KmsKeyName: in.CmekSettings.KmsKeyRef.External,
+		}
+	}
+
 	return out
 }
 

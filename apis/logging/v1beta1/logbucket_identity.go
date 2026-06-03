@@ -108,8 +108,11 @@ func getIdentityFromLoggingLogBucketSpec(ctx context.Context, reader client.Read
 	}
 
 	identity := &LogBucketIdentity{
-		Bucket:   resourceID,
-		Location: obj.Spec.Location,
+		Bucket: resourceID,
+	}
+
+	if obj.Spec.Location != nil {
+		identity.Location = *obj.Spec.Location
 	}
 
 	// Resolve parent references

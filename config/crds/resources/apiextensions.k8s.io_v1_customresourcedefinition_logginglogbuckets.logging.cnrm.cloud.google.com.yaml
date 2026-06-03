@@ -101,6 +101,43 @@ spec:
                     description: The 'namespace' field of a 'BillingAccount' resource.
                     type: string
                 type: object
+              cmekSettings:
+                description: The CMEK settings of the log bucket. If present, new
+                  log entries written to this log bucket are encrypted using the CMEK
+                  key provided in this configuration. If a log bucket has CMEK settings,
+                  the CMEK settings cannot be disabled later by updating the log bucket.
+                  Changing the KMS key is allowed.
+                properties:
+                  kmsKeyRef:
+                    description: 'The resource name for the configured Cloud KMS key.
+                      KMS key name format: "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]"'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
+                type: object
               description:
                 description: Describes this bucket.
                 type: string
@@ -139,6 +176,23 @@ spec:
                     description: The 'namespace' field of a 'Folder' resource.
                     type: string
                 type: object
+              indexConfigs:
+                description: A list of indexed fields and related configuration data.
+                items:
+                  properties:
+                    fieldPath:
+                      description: The LogEntry field path to index. Note that some
+                        paths are automatically indexed, and other paths are not eligible
+                        for indexing. See indexing documentation for details.
+                      type: string
+                    type:
+                      description: The type of data in this index.
+                      type: string
+                  required:
+                  - fieldPath
+                  - type
+                  type: object
+                type: array
               location:
                 description: 'Immutable. The location of the resource. The supported
                   locations are: global, us-central1, us-east1, us-west1, asia-east1,
@@ -214,6 +268,15 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              restrictedFields:
+                description: 'Log entry field paths that are denied access in this
+                  bucket. The following fields and their children are eligible: textPayload,
+                  jsonPayload, protoPayload, httpRequest, labels, sourceLocation.
+                  Restricting a repeated field will restrict all values. Adding a
+                  parent will block all child fields. (e.g. foo.bar will block foo.bar.baz)'
+                items:
+                  type: string
+                type: array
               retentionDays:
                 description: Logs will be retained by default for this amount of time,
                   after which they will automatically be deleted. The minimum retention

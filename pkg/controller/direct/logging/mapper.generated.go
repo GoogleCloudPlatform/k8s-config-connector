@@ -100,9 +100,9 @@ func LoggingLogBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogBucket)
 	out.Locked = direct.LazyPtr(in.GetLocked())
 	// MISSING: LifecycleState
 	// MISSING: AnalyticsEnabled
-	// MISSING: RestrictedFields
-	// MISSING: IndexConfigs
-	// MISSING: CmekSettings
+	out.RestrictedFields = in.RestrictedFields
+	out.IndexConfigs = direct.Slice_FromProto(mapCtx, in.IndexConfigs, LogBucketIndexConfig_FromProto)
+	out.CmekSettings = LogBucketCmekSettings_FromProto(mapCtx, in.GetCmekSettings())
 	return out
 }
 */
@@ -121,9 +121,9 @@ func LoggingLogBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogB
 	out.Locked = direct.ValueOf(in.Locked)
 	// MISSING: LifecycleState
 	// MISSING: AnalyticsEnabled
-	// MISSING: RestrictedFields
-	// MISSING: IndexConfigs
-	// MISSING: CmekSettings
+	out.RestrictedFields = in.RestrictedFields
+	out.IndexConfigs = direct.Slice_ToProto(mapCtx, in.IndexConfigs, LogBucketIndexConfig_ToProto)
+	out.CmekSettings = LogBucketCmekSettings_ToProto(mapCtx, in.CmekSettings)
 	return out
 }
 */

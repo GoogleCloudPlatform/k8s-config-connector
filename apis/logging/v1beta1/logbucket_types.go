@@ -16,9 +16,47 @@ package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+type LogBucketIndexConfig struct {
+	/* The LogEntry field path to index. Note that some paths are automatically indexed, and other paths are not eligible for indexing. See indexing documentation for details. */
+	// +required
+	FieldPath *string `json:"fieldPath"`
+
+	/* The type of data in this index. */
+	// +required
+	Type *string `json:"type"`
+}
+
+type LogBucketIndexConfigStatus struct {
+	/* Output only. The timestamp when the index was last modified. This is used to return the timestamp, and will be ignored if supplied during update. */
+	// +optional
+	// +kubebuilder:validation:Format=date-time
+	CreateTime *string `json:"createTime,omitempty"`
+}
+
+type LogBucketCmekSettings struct {
+	/* The resource name for the configured Cloud KMS key. KMS key name format: "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]" */
+	// +optional
+	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
+
+type LogBucketCmekSettingsStatus struct {
+	/* Output only. The CryptoKeyVersion resource name for the configured Cloud KMS key. */
+	// +optional
+	KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+
+	/* Output only. The resource name of the CMEK settings. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Output only. The service account that will be used by the Log Router to access your Cloud KMS key. */
+	// +optional
+	ServiceAccountId *string `json:"serviceAccountId,omitempty"`
+}
 
 // LoggingLogBucketSpec defines the desired state of LoggingLogBucket
 // +kcc:spec:proto=google.logging.v2.LogBucket
@@ -26,6 +64,10 @@ type LoggingLogBucketSpec struct {
 	/* Immutable. The BillingAccount that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
 	// +optional
 	BillingAccountRef *refs.BillingAccountRef `json:"billingAccountRef,omitempty"`
+
+	/* The CMEK settings of the log bucket. If present, new log entries written to this log bucket are encrypted using the CMEK key provided in this configuration. If a log bucket has CMEK settings, the CMEK settings cannot be disabled later by updating the log bucket. Changing the KMS key is allowed. */
+	// +optional
+	CmekSettings *LogBucketCmekSettings `json:"cmekSettings,omitempty"`
 
 	/* Describes this bucket. */
 	// +optional
@@ -41,8 +83,13 @@ type LoggingLogBucketSpec struct {
 	// +optional
 	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
 
+	/* A list of indexed fields and related configuration data. */
+	// +optional
+	IndexConfigs []LogBucketIndexConfig `json:"indexConfigs,omitempty"`
+
 	/* Immutable. The location of the resource. The supported locations are: global, us-central1, us-east1, us-west1, asia-east1, europe-west1. */
-	Location string `json:"location"`
+	// +required
+	Location *string `json:"location"`
 
 	/* Whether the bucket has been locked. The retention period on a locked bucket may not be changed. Locked buckets may only be deleted if they are empty. */
 	// +optional
@@ -60,6 +107,10 @@ type LoggingLogBucketSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Log entry field paths that are denied access in this bucket. The following fields and their children are eligible: textPayload, jsonPayload, protoPayload, httpRequest, labels, sourceLocation. Restricting a repeated field will restrict all values. Adding a parent will block all child fields. (e.g. foo.bar will block foo.bar.baz) */
+	// +optional
+	RestrictedFields []string `json:"restrictedFields,omitempty"`
 
 	/* Logs will be retained by default for this amount of time, after which they will automatically be deleted. The minimum retention period is 1 day. If this value is set to zero at bucket creation time, the default time of 30 days will be used. */
 	// +optional
