@@ -27,6 +27,8 @@ import (
 	"strings"
 	"time"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
+	networkconnectivity "cloud.google.com/go/networkconnectivity/apiv1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	api "google.golang.org/api/networkconnectivity/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -86,8 +88,13 @@ func (m *internalRangeModel) AdapterForObject(ctx context.Context, op *directbas
 	if err != nil {
 		return nil, err
 	}
+	hubClient, err := gcpClient.newHubClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &internalRangeAdapter{
 		gcpClient: client,
+		hubClient: hubClient,
 		id:        id,
 		desired:   obj,
 	}, nil
@@ -100,12 +107,14 @@ func (m *internalRangeModel) AdapterForURL(ctx context.Context, url string) (dir
 
 type internalRangeAdapter struct {
 	gcpClient *api.Service
+	hubClient *networkconnectivity.HubClient
 	id        *krm.InternalRangeIdentity
 	desired   *krm.NetworkConnectivityInternalRange
 	actual    *pb.InternalRange
 }
 
 var _ directbase.Adapter = &internalRangeAdapter{}
+var _ direct.IAMAdapter = &internalRangeAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
@@ -317,4 +326,38 @@ func (a *internalRangeAdapter) waitForOperation(ctx context.Context, op *api.Goo
 
 		time.Sleep(2 * time.Second)
 	}
+}
+
+func (a *internalRangeAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("id is nil")
+	}
+	fqn := fmt.Sprintf("projects/%s/locations/%s/internalRanges/%s", a.id.Project, a.id.Location, a.id.InternalRange)
+	req := &iampb.GetIamPolicyRequest{
+		Resource: fqn,
+		Options: &iampb.GetPolicyOptions{
+			RequestedPolicyVersion: 3,
+		},
+	}
+	policy, err := a.hubClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", fqn, err)
+	}
+	return policy, nil
+}
+
+func (a *internalRangeAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("id is nil")
+	}
+	fqn := fmt.Sprintf("projects/%s/locations/%s/internalRanges/%s", a.id.Project, a.id.Location, a.id.InternalRange)
+	req := &iampb.SetIamPolicyRequest{
+		Resource: fqn,
+		Policy:   policy,
+	}
+	newPolicy, err := a.hubClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", fqn, err)
+	}
+	return newPolicy, nil
 }
