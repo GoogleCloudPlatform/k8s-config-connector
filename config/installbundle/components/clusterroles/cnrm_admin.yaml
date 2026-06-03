@@ -1352,6 +1352,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - securitycentermanagement.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - servicedirectory.cnrm.cloud.google.com
   resources:
   - '*'

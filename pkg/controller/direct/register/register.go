@@ -89,6 +89,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/secretmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securesourcemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securitycenter/bigqueryexport"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securitycentermanagement"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/servicenetworking"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/serviceusage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/spanner"
