@@ -26,6 +26,8 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
+	exprpb "google.golang.org/genproto/googleapis/type/expr"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -101,6 +103,7 @@ type NetworkAttachmentAdapter struct {
 }
 
 var _ directbase.Adapter = &NetworkAttachmentAdapter{}
+var _ direct.IAMAdapter = &NetworkAttachmentAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
@@ -349,4 +352,103 @@ func (a *NetworkAttachmentAdapter) resolveDependencies(ctx context.Context, read
 		obj.Spec.ProducerAcceptLists = projects
 	}
 	return nil
+}
+
+func (a *NetworkAttachmentAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id.ID() == "" {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &computepb.GetIamPolicyNetworkAttachmentRequest{
+		Project:  a.id.Parent().ProjectID,
+		Region:   a.id.Parent().Location,
+		Resource: a.id.ID(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id, err)
+	}
+
+	return computePolicyToIAM(policy), nil
+}
+
+func (a *NetworkAttachmentAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id.ID() == "" {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &computepb.SetIamPolicyNetworkAttachmentRequest{
+		Project: a.id.Parent().ProjectID,
+		Region:  a.id.Parent().Location,
+		RegionSetPolicyRequestResource: &computepb.RegionSetPolicyRequest{
+			Policy: iamPolicyToCompute(policy),
+		},
+		Resource: a.id.ID(),
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id, err)
+	}
+
+	return computePolicyToIAM(newPolicy), nil
+}
+
+func computePolicyToIAM(policy *computepb.Policy) *iampb.Policy {
+	if policy == nil {
+		return nil
+	}
+	out := &iampb.Policy{
+		Version: policy.GetVersion(),
+		Etag:    []byte(policy.GetEtag()),
+	}
+	for _, b := range policy.Bindings {
+		out.Bindings = append(out.Bindings, &iampb.Binding{
+			Role:      b.GetRole(),
+			Members:   b.Members,
+			Condition: computeExprToIAM(b.Condition),
+		})
+	}
+	return out
+}
+
+func iamPolicyToCompute(policy *iampb.Policy) *computepb.Policy {
+	if policy == nil {
+		return nil
+	}
+	out := &computepb.Policy{
+		Version: direct.LazyPtr(policy.Version),
+		Etag:    direct.LazyPtr(string(policy.Etag)),
+	}
+	for _, b := range policy.Bindings {
+		out.Bindings = append(out.Bindings, &computepb.Binding{
+			Role:      direct.LazyPtr(b.Role),
+			Members:   b.Members,
+			Condition: iamExprToCompute(b.Condition),
+		})
+	}
+	return out
+}
+
+func computeExprToIAM(expr *computepb.Expr) *exprpb.Expr {
+	if expr == nil {
+		return nil
+	}
+	return &exprpb.Expr{
+		Expression:  expr.GetExpression(),
+		Title:       expr.GetTitle(),
+		Description: expr.GetDescription(),
+		Location:    expr.GetLocation(),
+	}
+}
+
+func iamExprToCompute(expr *exprpb.Expr) *computepb.Expr {
+	if expr == nil {
+		return nil
+	}
+	return &computepb.Expr{
+		Expression:  direct.LazyPtr(expr.Expression),
+		Title:       direct.LazyPtr(expr.Title),
+		Description: direct.LazyPtr(expr.Description),
+		Location:    direct.LazyPtr(expr.Location),
+	}
 }

@@ -152,6 +152,53 @@ func (s *networkAttachmentsV1) Delete(ctx context.Context, req *pb.DeleteNetwork
 	})
 }
 
+func (s *networkAttachmentsV1) GetIamPolicy(ctx context.Context, req *pb.GetIamPolicyNetworkAttachmentRequest) (*pb.Policy, error) {
+	reqName := fmt.Sprintf("projects/%s/regions/%s/networkAttachments/%s", req.GetProject(), req.GetRegion(), req.GetResource())
+	name, err := s.parseNetworkAttachmentName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	policy := &pb.Policy{}
+	if err := s.storage.Get(ctx, fqn+"/iam", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return &pb.Policy{
+				Etag: PtrTo("ACAB"),
+			}, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *networkAttachmentsV1) SetIamPolicy(ctx context.Context, req *pb.SetIamPolicyNetworkAttachmentRequest) (*pb.Policy, error) {
+	reqName := fmt.Sprintf("projects/%s/regions/%s/networkAttachments/%s", req.GetProject(), req.GetRegion(), req.GetResource())
+	name, err := s.parseNetworkAttachmentName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	policy := req.GetRegionSetPolicyRequestResource().GetPolicy()
+	policy.Etag = PtrTo("BACA")
+
+	if err := s.storage.Update(ctx, fqn+"/iam", policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, fqn+"/iam", policy); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	return policy, nil
+}
+
 type networkAttachmentName struct {
 	Project             string
 	Region              string
