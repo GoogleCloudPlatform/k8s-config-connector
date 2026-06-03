@@ -21,6 +21,7 @@ import (
 	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	exprpb "google.golang.org/genproto/googleapis/type/expr"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -28,6 +29,120 @@ import (
 type IAMAdapter interface {
 	GetIAMPolicy(ctx context.Context) (*iampb.Policy, error)
 	SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error)
+}
+
+func GetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy, err := iamAdapter.GetIAMPolicy(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec.ResourceReference = want.Spec.ResourceReference
+	actual.Spec.Bindings = protoToKCCBindings(policy.Bindings)
+	actual.Spec.Etag = string(policy.Etag)
+
+	return actual, nil
+}
+
+func SetIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return nil, fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return nil, fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy := kccToProtoPolicy(&want.Spec)
+	newPolicy, err := iamAdapter.SetIAMPolicy(ctx, policy)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy: %w", err)
+	}
+
+	actual := &v1beta1.IAMPolicy{}
+	actual.ObjectMeta = want.ObjectMeta
+	actual.Spec.ResourceReference = want.Spec.ResourceReference
+	actual.Spec.Bindings = protoToKCCBindings(newPolicy.Bindings)
+	actual.Spec.Etag = string(newPolicy.Etag)
+
+	return actual, nil
+}
+
+func DeleteIAMPolicy(ctx context.Context, reader client.Reader, want *v1beta1.IAMPolicy) error {
+	adapter, err := registry.AdapterForReference(ctx, reader, want.GetNamespace(), want.Spec.ResourceReference)
+	if err != nil {
+		return fmt.Errorf("building adapter: %w", err)
+	}
+	iamAdapter, ok := adapter.(IAMAdapter)
+	if !ok {
+		return fmt.Errorf("adapter does not implement IAMAdapter")
+	}
+
+	policy := &iampb.Policy{
+		Etag: []byte(want.Spec.Etag),
+	}
+	_, err = iamAdapter.SetIAMPolicy(ctx, policy)
+	if err != nil {
+		return fmt.Errorf("deleting IAM policy (setting empty): %w", err)
+	}
+
+	return nil
+}
+
+func protoToKCCBindings(protoBindings []*iampb.Binding) []v1beta1.IAMPolicyBinding {
+	var kccBindings []v1beta1.IAMPolicyBinding
+	for _, b := range protoBindings {
+		binding := v1beta1.IAMPolicyBinding{
+			Role: b.Role,
+		}
+		for _, m := range b.Members {
+			binding.Members = append(binding.Members, v1beta1.Member(m))
+		}
+		if b.Condition != nil {
+			binding.Condition = &v1beta1.IAMCondition{
+				Title:       b.Condition.Title,
+				Description: b.Condition.Description,
+				Expression:  b.Condition.Expression,
+			}
+		}
+		kccBindings = append(kccBindings, binding)
+	}
+	return kccBindings
+}
+
+func kccToProtoPolicy(spec *v1beta1.IAMPolicySpec) *iampb.Policy {
+	policy := &iampb.Policy{
+		Etag: []byte(spec.Etag),
+	}
+	for _, b := range spec.Bindings {
+		binding := &iampb.Binding{
+			Role: b.Role,
+		}
+		for _, m := range b.Members {
+			binding.Members = append(binding.Members, string(m))
+		}
+		if b.Condition != nil {
+			binding.Condition = &exprpb.Expr{
+				Title:       b.Condition.Title,
+				Description: b.Condition.Description,
+				Expression:  b.Condition.Expression,
+			}
+		}
+		policy.Bindings = append(policy.Bindings, binding)
+	}
+	return policy
 }
 
 // GetIAMPolicyMember returns the actual IAMPolicyMember for the specified member and referenced resource.
