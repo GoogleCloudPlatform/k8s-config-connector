@@ -58,7 +58,7 @@ type BudgetAllUpdatesRule struct {
 type BudgetAmount struct {
 	/* Use the last period's actual spend as the budget for the present period. LastPeriodAmount can only be set when the budget's time period is a . */
 	// +optional
-	LastPeriodAmount apiextensionsv1.JSON `json:"lastPeriodAmount,omitempty"`
+	LastPeriodAmount *BudgetLastPeriodAmount `json:"lastPeriodAmount,omitempty"`
 
 	/* A specified amount to use as the budget. `currency_code` is optional. If specified when creating a budget, it must match the currency of the billing account. If specified when updating a budget, it must match the currency_code of the existing budget. The `currency_code` is provided on output. */
 	// +optional
@@ -87,7 +87,7 @@ type BudgetBudgetFilter struct {
 	Labels map[string]BudgetLabels `json:"labels,omitempty"`
 
 	// +optional
-	Projects []BudgetProjects `json:"projects,omitempty"`
+	Projects []v1alpha1.ResourceRef `json:"projects,omitempty"`
 
 	/* Optional. A set of services of the form `services/{service_id}`, specifying that usage from only this set of services should be included in the budget. If omitted, the report will include usage for all the services. The service names are available through the Catalog API: https://cloud.google.com/billing/v1/how-tos/catalog-api. */
 	// +optional
@@ -126,22 +126,7 @@ type BudgetLabels struct {
 	Values []string `json:"values,omitempty"`
 }
 
-type BudgetProjects struct {
-	/* The `projectID` field of a project, when not managed by Config Connector. */
-	// +optional
-	External *string `json:"external,omitempty"`
-
-	/* The kind of the Project resource; optional but must be `Project` if provided. */
-	// +optional
-	Kind *string `json:"kind,omitempty"`
-
-	/* The `name` field of a `Project` resource. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
-	/* The `namespace` field of a `Project` resource. */
-	// +optional
-	Namespace *string `json:"namespace,omitempty"`
+type BudgetLastPeriodAmount struct {
 }
 
 type BudgetSpecifiedAmount struct {

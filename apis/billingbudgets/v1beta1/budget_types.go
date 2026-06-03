@@ -18,7 +18,6 @@ import (
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -53,8 +52,6 @@ type BillingBudgetsBudgetSpec struct {
 // +kcc:proto=google.cloud.billing.budgets.v1.BudgetAmount
 type BudgetAmount struct {
 	// Use the last period's actual spend as the budget for the present period. LastPeriodAmount can only be set when the budget's time period is a .
-	// +kubebuilder:pruning:PreserveUnknownFields
-	// +kubebuilder:validation:Schemaless
 	LastPeriodAmount *BudgetLastPeriodAmount `json:"lastPeriodAmount,omitempty"`
 
 	// A specified amount to use as the budget. `currency_code` is optional. If specified when creating a budget, it must match the currency of the billing account. If specified when updating a budget, it must match the currency_code of the existing budget. The `currency_code` is provided on output.
@@ -94,7 +91,7 @@ type BudgetFilter struct {
 	// Optional. A single label and value pair specifying that usage from only this set of labeled resources should be included in the budget. Currently, multiple entries or multiple values per entry are not allowed. If omitted, the report will include all labeled and unlabeled usage.
 	Labels map[string]FilterLabels `json:"labels,omitempty"`
 
-	Projects []refsv1beta1.ProjectRef `json:"projects,omitempty"`
+	Projects []refs.ProjectRef `json:"projects,omitempty"`
 
 	// Optional. A set of services of the form `services/{service_id}`, specifying that usage from only this set of services should be included in the budget. If omitted, the report will include usage for all the services. The service names are available through the Catalog API: https://cloud.google.com/billing/v1/how-tos/catalog-api.
 	Services []string `json:"services,omitempty"`

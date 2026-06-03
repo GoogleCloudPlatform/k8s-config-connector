@@ -19,7 +19,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billingbudgets/v1beta1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	gdate "google.golang.org/genproto/googleapis/type/date"
 	money "google.golang.org/genproto/googleapis/type/money"
@@ -42,15 +41,15 @@ func AllUpdatesRule_MonitoringNotificationChannels_ToProto(mapCtx *direct.MapCon
 	return out
 }
 
-func BudgetFilter_Projects_FromProto(mapCtx *direct.MapContext, in []string) []refsv1beta1.ProjectRef {
-	out := make([]refsv1beta1.ProjectRef, len(in))
+func BudgetFilter_Projects_FromProto(mapCtx *direct.MapContext, in []string) []refs.ProjectRef {
+	out := make([]refs.ProjectRef, len(in))
 	for i, v := range in {
-		out[i] = refsv1beta1.ProjectRef{External: v}
+		out[i] = refs.ProjectRef{External: v}
 	}
 	return out
 }
 
-func BudgetFilter_Projects_ToProto(mapCtx *direct.MapContext, in []refsv1beta1.ProjectRef) []string {
+func BudgetFilter_Projects_ToProto(mapCtx *direct.MapContext, in []refs.ProjectRef) []string {
 	out := make([]string, len(in))
 	for i, v := range in {
 		out[i] = v.External
@@ -74,7 +73,7 @@ func BudgetFilter_Subaccounts_ToProto(mapCtx *direct.MapContext, in []refs.Billi
 	return out
 }
 
-func BudgetSpecifiedAmount_FromProto(mapCtx *direct.MapContext, in *money.Money) *krm.BudgetSpecifiedAmount {
+func BudgetSpecifiedAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *money.Money) *krm.BudgetSpecifiedAmount {
 	if in == nil {
 		return nil
 	}
@@ -87,7 +86,7 @@ func BudgetSpecifiedAmount_FromProto(mapCtx *direct.MapContext, in *money.Money)
 	return out
 }
 
-func BudgetSpecifiedAmount_ToProto(mapCtx *direct.MapContext, in *krm.BudgetSpecifiedAmount) *money.Money {
+func BudgetSpecifiedAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetSpecifiedAmount) *money.Money {
 	if in == nil {
 		return nil
 	}
@@ -98,7 +97,7 @@ func BudgetSpecifiedAmount_ToProto(mapCtx *direct.MapContext, in *krm.BudgetSpec
 	return out
 }
 
-func BudgetDate_FromProto(mapCtx *direct.MapContext, in *gdate.Date) *krm.BudgetDate {
+func BudgetDate_v1beta1_FromProto(mapCtx *direct.MapContext, in *gdate.Date) *krm.BudgetDate {
 	if in == nil {
 		return nil
 	}
@@ -112,7 +111,7 @@ func BudgetDate_FromProto(mapCtx *direct.MapContext, in *gdate.Date) *krm.Budget
 	return out
 }
 
-func BudgetDate_ToProto(mapCtx *direct.MapContext, in *krm.BudgetDate) *gdate.Date {
+func BudgetDate_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetDate) *gdate.Date {
 	if in == nil {
 		return nil
 	}
@@ -153,50 +152,50 @@ func BudgetFilter_Labels_ToProto(mapCtx *direct.MapContext, in map[string]krm.Fi
 	return out
 }
 
-func BudgetAmount_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmount) krm.BudgetAmount {
+func BudgetAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmount) krm.BudgetAmount {
 	if in == nil {
 		return krm.BudgetAmount{}
 	}
 	out := krm.BudgetAmount{}
-	out.SpecifiedAmount = BudgetSpecifiedAmount_FromProto(mapCtx, in.GetSpecifiedAmount())
-	out.LastPeriodAmount = BudgetLastPeriodAmount_FromProto(mapCtx, in.GetLastPeriodAmount())
+	out.SpecifiedAmount = BudgetSpecifiedAmount_v1beta1_FromProto(mapCtx, in.GetSpecifiedAmount())
+	out.LastPeriodAmount = BudgetLastPeriodAmount_v1beta1_FromProto(mapCtx, in.GetLastPeriodAmount())
 	return out
 }
 
-func BudgetAmount_ToProto(mapCtx *direct.MapContext, in krm.BudgetAmount) *pb.BudgetAmount {
+func BudgetAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in krm.BudgetAmount) *pb.BudgetAmount {
 	out := &pb.BudgetAmount{}
-	if oneof := BudgetSpecifiedAmount_ToProto(mapCtx, in.SpecifiedAmount); oneof != nil {
+	if oneof := BudgetSpecifiedAmount_v1beta1_ToProto(mapCtx, in.SpecifiedAmount); oneof != nil {
 		out.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{SpecifiedAmount: oneof}
 	}
-	if oneof := BudgetLastPeriodAmount_ToProto(mapCtx, in.LastPeriodAmount); oneof != nil {
+	if oneof := BudgetLastPeriodAmount_v1beta1_ToProto(mapCtx, in.LastPeriodAmount); oneof != nil {
 		out.BudgetAmount = &pb.BudgetAmount_LastPeriodAmount{LastPeriodAmount: oneof}
 	}
 	return out
 }
 
-func BudgetCustomPeriod_FromProto(mapCtx *direct.MapContext, in *pb.CustomPeriod) *krm.BudgetCustomPeriod {
+func BudgetCustomPeriod_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomPeriod) *krm.BudgetCustomPeriod {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BudgetCustomPeriod{}
 	if in.GetStartDate() != nil {
-		out.StartDate = *BudgetDate_FromProto(mapCtx, in.GetStartDate())
+		out.StartDate = *BudgetDate_v1beta1_FromProto(mapCtx, in.GetStartDate())
 	}
-	out.EndDate = BudgetDate_FromProto(mapCtx, in.GetEndDate())
+	out.EndDate = BudgetDate_v1beta1_FromProto(mapCtx, in.GetEndDate())
 	return out
 }
 
-func BudgetCustomPeriod_ToProto(mapCtx *direct.MapContext, in *krm.BudgetCustomPeriod) *pb.CustomPeriod {
+func BudgetCustomPeriod_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetCustomPeriod) *pb.CustomPeriod {
 	if in == nil {
 		return nil
 	}
 	out := &pb.CustomPeriod{}
-	out.StartDate = BudgetDate_ToProto(mapCtx, &in.StartDate)
-	out.EndDate = BudgetDate_ToProto(mapCtx, in.EndDate)
+	out.StartDate = BudgetDate_v1beta1_ToProto(mapCtx, &in.StartDate)
+	out.EndDate = BudgetDate_v1beta1_ToProto(mapCtx, in.EndDate)
 	return out
 }
 
-func BudgetThresholdRule_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRule) *krm.BudgetThresholdRule {
+func BudgetThresholdRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRule) *krm.BudgetThresholdRule {
 	if in == nil {
 		return nil
 	}
@@ -206,7 +205,7 @@ func BudgetThresholdRule_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRu
 	return out
 }
 
-func BudgetThresholdRule_ToProto(mapCtx *direct.MapContext, in *krm.BudgetThresholdRule) *pb.ThresholdRule {
+func BudgetThresholdRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetThresholdRule) *pb.ThresholdRule {
 	if in == nil {
 		return nil
 	}
@@ -214,4 +213,47 @@ func BudgetThresholdRule_ToProto(mapCtx *direct.MapContext, in *krm.BudgetThresh
 	out.ThresholdPercent = in.ThresholdPercent
 	out.SpendBasis = direct.Enum_ToProto[pb.ThresholdRule_Basis](mapCtx, in.SpendBasis)
 	return out
+}
+
+func BudgetFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *krm.BudgetFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BudgetFilter{}
+	out.Projects = BudgetFilter_Projects_FromProto(mapCtx, in.Projects)
+	out.CreditTypes = in.CreditTypes
+	out.CreditTypesTreatment = direct.Enum_FromProto(mapCtx, in.GetCreditTypesTreatment())
+	out.Services = in.Services
+	out.Subaccounts = BudgetFilter_Subaccounts_FromProto(mapCtx, in.Subaccounts)
+	out.Labels = BudgetFilter_Labels_FromProto(mapCtx, in.Labels)
+	out.CalendarPeriod = direct.Enum_FromProto(mapCtx, in.GetCalendarPeriod())
+	out.CustomPeriod = BudgetCustomPeriod_v1beta1_FromProto(mapCtx, in.GetCustomPeriod())
+	return out
+}
+
+func BudgetFilter_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetFilter) *pb.Filter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Filter{}
+	out.Projects = BudgetFilter_Projects_ToProto(mapCtx, in.Projects)
+	out.CreditTypes = in.CreditTypes
+	out.CreditTypesTreatment = direct.Enum_ToProto[pb.Filter_CreditTypesTreatment](mapCtx, in.CreditTypesTreatment)
+	out.Services = in.Services
+	out.Subaccounts = BudgetFilter_Subaccounts_ToProto(mapCtx, in.Subaccounts)
+	out.Labels = BudgetFilter_Labels_ToProto(mapCtx, in.Labels)
+	if oneof := BudgetFilter_CalendarPeriod_ToProto(mapCtx, in.CalendarPeriod); oneof != nil {
+		out.UsagePeriod = oneof
+	}
+	if oneof := BudgetCustomPeriod_v1beta1_ToProto(mapCtx, in.CustomPeriod); oneof != nil {
+		out.UsagePeriod = &pb.Filter_CustomPeriod{CustomPeriod: oneof}
+	}
+	return out
+}
+
+func BudgetFilter_CalendarPeriod_ToProto(mapCtx *direct.MapContext, in *string) *pb.Filter_CalendarPeriod {
+	if in == nil {
+		return nil
+	}
+	return &pb.Filter_CalendarPeriod{CalendarPeriod: direct.Enum_ToProto[pb.CalendarPeriod](mapCtx, in)}
 }

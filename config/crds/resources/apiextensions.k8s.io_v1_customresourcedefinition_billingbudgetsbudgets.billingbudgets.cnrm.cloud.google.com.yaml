@@ -152,7 +152,7 @@ spec:
                     description: Use the last period's actual spend as the budget
                       for the present period. LastPeriodAmount can only be set when
                       the budget's time period is a .
-                    x-kubernetes-preserve-unknown-fields: true
+                    type: object
                   specifiedAmount:
                     description: A specified amount to use as the budget. `currency_code`
                       is optional. If specified when creating a budget, it must match
@@ -307,7 +307,8 @@ spec:
                     type: object
                   projects:
                     items:
-                      description: The Project that this resource belongs to.
+                      description: ProjectRef is a clean resource reference to a GCP
+                        Project that does not include the kind field.
                       oneOf:
                       - not:
                           required:
@@ -326,10 +327,6 @@ spec:
                         external:
                           description: The `projectID` field of a project, when not
                             managed by Config Connector.
-                          type: string
-                        kind:
-                          description: The kind of the Project resource; optional
-                            but must be `Project` if provided.
                           type: string
                         name:
                           description: The `name` field of a `Project` resource.

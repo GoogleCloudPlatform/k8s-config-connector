@@ -33,6 +33,7 @@ go run . generate-types \
 go run . generate-mapper \
     --service google.cloud.billing.budgets.v1 \
     --api-version "billingbudgets.cnrm.cloud.google.com/v1beta1" \
+    --multiversion \
     --include-skipped-output
 
 cd ${REPO_ROOT}

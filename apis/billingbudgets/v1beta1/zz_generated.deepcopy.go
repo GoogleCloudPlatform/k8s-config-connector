@@ -22,7 +22,6 @@ import (
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -307,7 +306,7 @@ func (in *BudgetFilter) DeepCopyInto(out *BudgetFilter) {
 	}
 	if in.Projects != nil {
 		in, out := &in.Projects, &out.Projects
-		*out = make([]refsv1beta1.ProjectRef, len(*in))
+		*out = make([]refs.ProjectRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Services != nil {
