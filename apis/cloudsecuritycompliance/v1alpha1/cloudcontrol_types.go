@@ -23,11 +23,11 @@ import (
 // CloudSecurityComplianceCloudControlSpec defines the desired state of CloudSecurityComplianceCloudControl
 // +kcc:spec:proto=google.cloud.cloudsecuritycompliance.v1.CloudControl
 type CloudSecurityComplianceCloudControlSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// The organization that this resource belongs to.
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The CloudSecurityComplianceCloudControl name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -108,6 +108,7 @@ type CloudSecurityComplianceCloudControlObservedState struct {
 
 // CloudSecurityComplianceCloudControl is the Schema for the CloudSecurityComplianceCloudControl API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 type CloudSecurityComplianceCloudControl struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

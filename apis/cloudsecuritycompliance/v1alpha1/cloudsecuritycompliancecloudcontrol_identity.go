@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -30,11 +31,11 @@ var (
 	_ identity.Resource   = &CloudSecurityComplianceCloudControl{}
 )
 
-var CloudSecurityComplianceCloudControlIdentityFormat = gcpurls.Template[CloudSecurityComplianceCloudControlIdentity]("cloudsecuritycompliance.googleapis.com", "projects/{project}/locations/{location}/cloudControls/{cloudcontrol}")
+var CloudSecurityComplianceCloudControlIdentityFormat = gcpurls.Template[CloudSecurityComplianceCloudControlIdentity]("cloudsecuritycompliance.googleapis.com", "organizations/{organization}/locations/{location}/cloudControls/{cloudcontrol}")
 
 // +k8s:deepcopy-gen=false
 type CloudSecurityComplianceCloudControlIdentity struct {
-	Project      string
+	Organization string
 	Location     string
 	CloudControl string
 }
@@ -71,17 +72,32 @@ func getIdentityFromCloudSecurityComplianceCloudControlSpec(ctx context.Context,
 		return nil, fmt.Errorf("cannot resolve location: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	organizationID, err := resolveOrganizationID(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+		return nil, fmt.Errorf("cannot resolve organization: %w", err)
 	}
 
 	identity := &CloudSecurityComplianceCloudControlIdentity{
-		Project:      projectID,
+		Organization: organizationID,
 		Location:     location,
 		CloudControl: resourceID,
 	}
 	return identity, nil
+}
+
+func resolveOrganizationID(ctx context.Context, reader client.Reader, obj client.Object) (string, error) {
+	if cc, ok := obj.(*CloudSecurityComplianceCloudControl); ok {
+		if cc.Spec.OrganizationRef != nil {
+			org, err := refs.ResolveOrganization(ctx, reader, obj, cc.Spec.OrganizationRef)
+			if err != nil {
+				return "", err
+			}
+			return org.OrganizationID, nil
+		}
+	} else if u, ok := obj.(*unstructured.Unstructured); ok {
+		return refs.ResolveOrganizationID(ctx, reader, u)
+	}
+	return "", fmt.Errorf("organizationRef is required")
 }
 
 func (obj *CloudSecurityComplianceCloudControl) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

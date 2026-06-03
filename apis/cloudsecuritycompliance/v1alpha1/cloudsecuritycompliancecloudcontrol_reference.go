@@ -37,7 +37,7 @@ var _ refs.Ref = &CloudSecurityComplianceCloudControlRef{}
 // holds the GCP identifier for the KRM object.
 type CloudSecurityComplianceCloudControlRef struct {
 	// A reference to an externally managed CloudSecurityComplianceCloudControl resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".
+	// Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a CloudSecurityComplianceCloudControl resource.

@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: cloudsecuritycompliancecloudcontrols.cloudsecuritycompliance.cnrm.cloud.google.com
 spec:
@@ -83,6 +84,16 @@ spec:
               location:
                 description: The location of this resource.
                 type: string
+              organizationRef:
+                description: The organization that this resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
               parameterSpec:
                 description: Optional. The parameter specifications for the cloud
                   control.
@@ -380,38 +391,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               remediationSteps:
                 description: Optional. The remediation steps for the cloud control
                   findings. The maximum length is 400 characters.
@@ -472,7 +451,7 @@ spec:
                 type: array
             required:
             - location
-            - projectRef
+            - organizationRef
             type: object
           status:
             description: CloudSecurityComplianceCloudControlStatus defines the config
