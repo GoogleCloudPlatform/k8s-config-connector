@@ -288,7 +288,9 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateBackup
 
 {
   "backup": {
+    "backupType": "HOT",
     "expireTime": "2028-05-30T12:00:00Z",
+    "hotToStandardTime": "2028-04-30T12:00:00Z",
     "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
   },
   "backupId": "bigtablebackup-${uniqueId}",
@@ -328,12 +330,13 @@ OK
   "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}/locations/us-east1-c/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Backup",
-    "backupType": "STANDARD",
+    "backupType": "HOT",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "endTime": "2024-04-01T12:34:56.123456Z",
     "expireTime": "2024-04-01T12:34:56.123456Z",
+    "hotToStandardTime": "2028-04-30T12:00:00Z",
     "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
     "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
     "startTime": "2024-04-01T12:34:56.123456Z",
@@ -352,12 +355,13 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
 OK
 
 {
-  "backupType": "STANDARD",
+  "backupType": "HOT",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "endTime": "2024-04-01T12:34:56.123456Z",
   "expireTime": "2024-04-01T12:34:56.123456Z",
+  "hotToStandardTime": "2028-04-30T12:00:00Z",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
   "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -375,12 +379,13 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
 OK
 
 {
-  "backupType": "STANDARD",
+  "backupType": "HOT",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "endTime": "2024-04-01T12:34:56.123456Z",
   "expireTime": "2024-04-01T12:34:56.123456Z",
+  "hotToStandardTime": "2028-04-30T12:00:00Z",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
   "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -402,12 +407,41 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/UpdateBackup
 OK
 
 {
-  "backupType": "STANDARD",
+  "backupType": "HOT",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "endTime": "2024-04-01T12:34:56.123456Z",
   "expireTime": "2024-04-01T12:34:56.123456Z",
+  "hotToStandardTime": "2028-04-30T12:00:00Z",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
+  "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "READY"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/UpdateBackup
+
+{
+  "backup": {
+    "hotToStandardTime": "2028-05-30T12:00:00Z",
+    "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}"
+  },
+  "updateMask": "hotToStandardTime"
+}
+
+OK
+
+{
+  "backupType": "HOT",
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "hotToStandardTime": "2028-05-30T12:00:00Z",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
   "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -425,12 +459,13 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
 OK
 
 {
-  "backupType": "STANDARD",
+  "backupType": "HOT",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "endTime": "2024-04-01T12:34:56.123456Z",
   "expireTime": "2024-04-01T12:34:56.123456Z",
+  "hotToStandardTime": "2028-05-30T12:00:00Z",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
   "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -448,12 +483,13 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
 OK
 
 {
-  "backupType": "STANDARD",
+  "backupType": "HOT",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "endTime": "2024-04-01T12:34:56.123456Z",
   "expireTime": "2024-04-01T12:34:56.123456Z",
+  "hotToStandardTime": "2028-05-30T12:00:00Z",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
   "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -471,12 +507,13 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
 OK
 
 {
-  "backupType": "STANDARD",
+  "backupType": "HOT",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "endTime": "2024-04-01T12:34:56.123456Z",
   "expireTime": "2024-04-01T12:34:56.123456Z",
+  "hotToStandardTime": "2028-05-30T12:00:00Z",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
   "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
   "startTime": "2024-04-01T12:34:56.123456Z",

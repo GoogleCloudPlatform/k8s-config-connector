@@ -23,12 +23,16 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigtable"
 	adminpb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -193,34 +197,60 @@ func (a *BigtableBackupAdapter) Update(ctx context.Context, updateOp *directbase
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BigtableBackup", "name", a.id)
 
-	if a.desired.Spec.ExpireTime != nil {
+	mapCtx := &direct.MapContext{}
+	desiredPb := BigtableBackupSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	actualPb := convertBackupInfoToProto(a.actual)
+
+	paths, report, err := common.CompareProtoMessageStructuredDiff(desiredPb, actualPb, func(fieldName protoreflect.Name, a, b proto.Message) (bool, error) {
+		if fieldName != "expire_time" && fieldName != "hot_to_standard_time" {
+			return false, nil
+		}
+		return common.BasicDiff(fieldName, a, b)
+	})
+	if err != nil {
+		return err
+	}
+
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		return nil
+	}
+
+	report.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, report)
+
+	updateOp.RecordUpdatingEvent()
+
+	if paths.Has("expire_time") {
 		desiredExpireTime, err := time.Parse(time.RFC3339, *a.desired.Spec.ExpireTime)
 		if err != nil {
 			return fmt.Errorf("parsing spec.expireTime: %w", err)
 		}
-		if !desiredExpireTime.Equal(a.actual.ExpireTime) {
-			err = a.gcpClient.UpdateBackup(ctx, a.id.Cluster, a.id.Backup, desiredExpireTime)
-			if err != nil {
-				return fmt.Errorf("updating BigtableBackup expireTime %s: %w", a.id, err)
-			}
+		err = a.gcpClient.UpdateBackup(ctx, a.id.Cluster, a.id.Backup, desiredExpireTime)
+		if err != nil {
+			return fmt.Errorf("updating BigtableBackup expireTime %s: %w", a.id, err)
 		}
 	}
 
-	if a.desired.Spec.HotToStandardTime != nil {
-		desiredHotTime, err := time.Parse(time.RFC3339, *a.desired.Spec.HotToStandardTime)
-		if err != nil {
-			return fmt.Errorf("parsing spec.hotToStandardTime: %w", err)
-		}
-		if a.actual.HotToStandardTime == nil || !desiredHotTime.Equal(*a.actual.HotToStandardTime) {
+	if paths.Has("hot_to_standard_time") {
+		if a.desired.Spec.HotToStandardTime != nil {
+			desiredHotTime, err := time.Parse(time.RFC3339, *a.desired.Spec.HotToStandardTime)
+			if err != nil {
+				return fmt.Errorf("parsing spec.hotToStandardTime: %w", err)
+			}
 			err = a.gcpClient.UpdateBackupHotToStandardTime(ctx, a.id.Cluster, a.id.Backup, desiredHotTime)
 			if err != nil {
 				return fmt.Errorf("updating BigtableBackup hotToStandardTime %s: %w", a.id, err)
 			}
-		}
-	} else if a.actual.HotToStandardTime != nil {
-		err := a.gcpClient.UpdateBackupRemoveHotToStandardTime(ctx, a.id.Cluster, a.id.Backup)
-		if err != nil {
-			return fmt.Errorf("removing BigtableBackup hotToStandardTime %s: %w", a.id, err)
+		} else {
+			err := a.gcpClient.UpdateBackupRemoveHotToStandardTime(ctx, a.id.Cluster, a.id.Backup)
+			if err != nil {
+				return fmt.Errorf("removing BigtableBackup hotToStandardTime %s: %w", a.id, err)
+			}
 		}
 	}
 

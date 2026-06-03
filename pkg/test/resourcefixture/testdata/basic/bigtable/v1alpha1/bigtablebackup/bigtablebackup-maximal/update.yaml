@@ -22,4 +22,5 @@ spec:
   sourceTableRef:
     name: bigtabletable-dep-${uniqueId}
   expireTime: "2028-06-30T12:00:00Z"
-  backupType: STANDARD
+  backupType: HOT
+  hotToStandardTime: "2028-05-30T12:00:00Z"
