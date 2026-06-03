@@ -17,45 +17,53 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var AccessPolicyIdentityFormat = gcpurls.Template[AccessPolicyIdentity]("accesscontextmanager.googleapis.com", "accessPolicies/{accessPolicy}")
+
 // AccessPolicyIdentity defines the resource reference to AccessContextManagerAccessPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type AccessPolicyIdentity struct {
-	resourceID string
-	title      string
+	AccessPolicy string
 }
 
 func (i *AccessPolicyIdentity) String() string {
-	// return "projects/" + i.ProjectID + "/accesspolicys/" + i.resourceID
-	return "/accesspolicys/" + i.resourceID
+	return AccessPolicyIdentityFormat.ToString(*i)
+}
+
+func (i *AccessPolicyIdentity) FromExternal(ref string) error {
+	parsed, match, err := AccessPolicyIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of AccessPolicy external=%q was not known (use %s): %w", ref, AccessPolicyIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of AccessPolicy external=%q was not known (use %s)", ref, AccessPolicyIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
 func (i *AccessPolicyIdentity) ResourceID() string {
-	return i.resourceID
-}
-
-func (i *AccessPolicyIdentity) Title() string {
-	return i.title
+	return i.AccessPolicy
 }
 
 // New builds a AccessPolicyIdentity from the Config Connector AccessPolicy object.
 func NewAccessPolicyIdentity(ctx context.Context, reader client.Reader, obj *AccessContextManagerAccessPolicy) (*AccessPolicyIdentity, error) {
 	return &AccessPolicyIdentity{
-		resourceID: *obj.Spec.ResourceID,
-		title:      *obj.Spec.Title,
+		AccessPolicy: common.ValueOf(obj.Spec.ResourceID),
 	}, nil
 }
 
 func ParseAccessPolicyExternal(external string) (resourceID string, err error) {
-	// pattern: "accessPolicies/{access_policy}"
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 2 || tokens[0] != "accesspolicys" {
-		return "", fmt.Errorf("format of AccessContextManagerAccessPolicy external=%q was not known (use accessPolicies/{{access_policy}})", external)
+	var i AccessPolicyIdentity
+	if err := i.FromExternal(external); err != nil {
+		return "", err
 	}
-	resourceID = tokens[1]
-	return resourceID, nil
+	return i.AccessPolicy, nil
 }
