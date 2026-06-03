@@ -1,0 +1,17 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: parameter-dep-${uniqueId}
+spec:
+  displayName: ExampleGSA
+  resourceID: parameter-dep-${uniqueId}
+---
+apiVersion: parametermanager.cnrm.cloud.google.com/v1alpha1
+kind: ParameterManagerParameter
+metadata:
+  name: parameter-${uniqueId}
+spec:
+
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1

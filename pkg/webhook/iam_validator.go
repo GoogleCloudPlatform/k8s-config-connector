@@ -98,7 +98,7 @@ func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) a
 		}
 		refResourceGVK := auditConfig.Spec.ResourceReference.GroupVersionKind()
 		isDCLResource := metadata.IsDCLBasedResourceKind(refResourceGVK, a.serviceMetadataLoader)
-		if isDCLResource {
+		if isDCLResource || registry.IsIAMDirect(refResourceGVK.GroupKind()) {
 			return admission.Errored(http.StatusForbidden,
 				fmt.Errorf("object of GroupVersionKind %v does not have IAM Audit Config support", obj.GroupVersionKind()))
 		}
@@ -185,6 +185,12 @@ func (a *iamValidatorHandler) validateIAMPolicy(policy *v1beta1.IAMPolicy, isDCL
 	if isDCLResource {
 		return a.dclValidateIAMPolicy(policy)
 	}
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		if len(policy.Spec.AuditConfigs) > 0 {
+			return admission.Errored(http.StatusForbidden, fmt.Errorf("GroupVersionKind %v does not support IAM Audit Configs", resourceRef.GroupVersionKind()))
+		}
+		return allowedResponse
+	}
 
 	// TF-based resource.
 	rcs, err := getResourceConfigs(a.smLoader, resourceRef.GroupVersionKind())
@@ -199,6 +205,9 @@ func (a *iamValidatorHandler) validateIAMPartialPolicy(partialPolicy *v1beta1.IA
 	if isDCLResource {
 		return a.dclValidateIAMPartialPolicy(partialPolicy)
 	}
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		return allowedResponse
+	}
 	// TF-based resource.
 	rcs, err := getResourceConfigs(a.smLoader, resourceRef.GroupVersionKind())
 	if err != nil {
@@ -211,6 +220,14 @@ func (a *iamValidatorHandler) validateIAMPolicyMember(policyMember *v1beta1.IAMP
 	resourceRef := policyMember.Spec.ResourceReference
 	if isDCLResource {
 		return a.dclValidateIAMPolicyMember(policyMember)
+	}
+	if registry.IsIAMDirect(resourceRef.GroupVersionKind().GroupKind()) {
+		// TODO (b/228226694): IAMPolicyMember does not currently support conditions.
+		if doesIAMPolicyMemberHaveCondition(policyMember) {
+			return admission.Errored(http.StatusForbidden,
+				fmt.Errorf("GroupVersionKind %v does not support IAM Conditions in IAM Policy Member", resourceRef.GroupVersionKind()))
+		}
+		return allowedResponse
 	}
 	// TF-based resource.
 	rcs, err := getResourceConfigs(a.smLoader, resourceRef.GroupVersionKind())

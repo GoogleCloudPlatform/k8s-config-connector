@@ -27,6 +27,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
+	iam "cloud.google.com/go/iam/apiv1"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/parametermanager/apiv1"
 	parametermanagerpb "cloud.google.com/go/parametermanager/apiv1/parametermanagerpb"
 	"google.golang.org/api/option"
@@ -109,6 +111,7 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, op *directbase.Ad
 		gcpClient: gcpClient,
 		desired:   obj,
 		reader:    reader,
+		model:     m,
 	}, nil
 }
 
@@ -123,9 +126,72 @@ type ParameterAdapter struct {
 	reader    client.Reader
 	desired   *krm.ParameterManagerParameter
 	actual    *parametermanagerpb.Parameter
+	model     *modelParameter
 }
 
 var _ directbase.Adapter = &ParameterAdapter{}
+var _ direct.IAMAdapter = &ParameterAdapter{}
+
+// GetIAMPolicy returns the IAM policy for the resource.
+func (a *ParameterAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	location := a.id.Parent().Location
+	iamClient, err := a.model.newIAMClient(ctx, location)
+	if err != nil {
+		return nil, err
+	}
+	defer iamClient.Close()
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+// SetIAMPolicy sets the IAM policy for the resource.
+func (a *ParameterAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	location := a.id.Parent().Location
+	iamClient, err := a.model.newIAMClient(ctx, location)
+	if err != nil {
+		return nil, err
+	}
+	defer iamClient.Close()
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	updatedPolicy, err := iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id.String(), err)
+	}
+
+	return updatedPolicy, nil
+}
+
+func (m *modelParameter) newIAMClient(ctx context.Context, location string) (*iam.IamPolicyClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	// Add regional endpoint if region is specified
+	if location != "" && location != "global" {
+		endpoint := fmt.Sprintf("parametermanager.%s.rep.googleapis.com:443", location)
+		opts = append(opts, option.WithEndpoint(endpoint))
+	}
+
+	iamClient, err := iam.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building IAM policy client: %w", err)
+	}
+	return iamClient, err
+}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
