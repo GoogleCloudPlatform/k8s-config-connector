@@ -27,13 +27,11 @@ func TestCloudDeployDeployPolicyIdentity_FromExternal(t *testing.T) {
 	}{
 		{
 			name: "valid reference",
-			ref:  "projects/my-project/locations/us-central1/deploypolicys/my-policy",
+			ref:  "projects/my-project/locations/us-central1/deployPolicies/my-policy",
 			want: &DeployPolicyIdentity{
-				parent: &DeployPolicyParent{
-					ProjectID: "my-project",
-					Location:  "us-central1",
-				},
-				id: "my-policy",
+				Project:      "my-project",
+				Location:     "us-central1",
+				DeployPolicy: "my-policy",
 			},
 		},
 		{
@@ -42,8 +40,8 @@ func TestCloudDeployDeployPolicyIdentity_FromExternal(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name:    "invalid reference prefix",
-			ref:     "projects/my-project/locations/us-central1/deployPolicies/my-policy",
+			name:    "invalid reference segment (deploypolicys)",
+			ref:     "projects/my-project/locations/us-central1/deploypolicys/my-policy",
 			wantErr: true,
 		},
 	}
@@ -57,14 +55,14 @@ func TestCloudDeployDeployPolicyIdentity_FromExternal(t *testing.T) {
 				return
 			}
 			if !tt.wantErr {
-				if i.parent.ProjectID != tt.want.parent.ProjectID {
-					t.Errorf("ProjectID = %v, want %v", i.parent.ProjectID, tt.want.parent.ProjectID)
+				if i.Project != tt.want.Project {
+					t.Errorf("Project = %v, want %v", i.Project, tt.want.Project)
 				}
-				if i.parent.Location != tt.want.parent.Location {
-					t.Errorf("Location = %v, want %v", i.parent.Location, tt.want.parent.Location)
+				if i.Location != tt.want.Location {
+					t.Errorf("Location = %v, want %v", i.Location, tt.want.Location)
 				}
-				if i.id != tt.want.id {
-					t.Errorf("id = %v, want %v", i.id, tt.want.id)
+				if i.DeployPolicy != tt.want.DeployPolicy {
+					t.Errorf("DeployPolicy = %v, want %v", i.DeployPolicy, tt.want.DeployPolicy)
 				}
 				if i.Host() != "clouddeploy.googleapis.com" {
 					t.Errorf("Host() = %v, want %v", i.Host(), "clouddeploy.googleapis.com")

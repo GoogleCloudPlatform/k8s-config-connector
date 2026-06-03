@@ -17,7 +17,6 @@ package clouddeploydeploypolicy
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -135,7 +134,7 @@ var _ directbase.Adapter = &Adapter{}
 // Return a non-nil error requeues the requests.
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	gcpName := strings.Replace(a.id.String(), "/deploypolicys/", "/deployPolicies/", 1)
+	gcpName := a.id.String()
 	log.V(2).Info("getting DeployPolicy", "name", gcpName)
 
 	req := &clouddeploypb.GetDeployPolicyRequest{Name: gcpName}
@@ -154,7 +153,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	gcpName := strings.Replace(a.id.String(), "/deploypolicys/", "/deployPolicies/", 1)
+	gcpName := a.id.String()
 	log.V(2).Info("creating DeployPolicy", "name", gcpName)
 
 	if err := a.resolveReferences(ctx); err != nil {
@@ -164,9 +163,9 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	req := &clouddeploypb.CreateDeployPolicyRequest{
-		Parent:         a.id.Parent().String(),
+		Parent:         fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
 		DeployPolicy:   a.desiredPb,
-		DeployPolicyId: a.id.ID(),
+		DeployPolicyId: a.id.DeployPolicy,
 	}
 	op, err := a.gcpClient.CreateDeployPolicy(ctx, req)
 	if err != nil {
@@ -190,7 +189,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	gcpName := strings.Replace(a.id.String(), "/deploypolicys/", "/deployPolicies/", 1)
+	gcpName := a.id.String()
 	log.V(2).Info("updating DeployPolicy", "name", gcpName)
 
 	if err := a.resolveReferences(ctx); err != nil {
@@ -264,15 +263,15 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(k8s.ValueToDNSSubdomainName(a.id.ID()))
+	u.SetName(k8s.ValueToDNSSubdomainName(a.id.DeployPolicy))
 	u.SetGroupVersionKind(krm.DeployDeployPolicyGVK)
 
 	u.Object = uObj
@@ -282,7 +281,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	gcpName := strings.Replace(a.id.String(), "/deploypolicys/", "/deployPolicies/", 1)
+	gcpName := a.id.String()
 	log.V(2).Info("deleting DeployPolicy", "name", gcpName)
 
 	req := &clouddeploypb.DeleteDeployPolicyRequest{Name: gcpName}
