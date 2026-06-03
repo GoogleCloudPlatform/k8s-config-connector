@@ -86,6 +86,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                     true,
 		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                           true,
 		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}":                     true,
+		"//batch.googleapis.com/projects/{}/locations/{}/jobs/{}/taskGroups/{}/tasks/{}":            true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":        true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":  true,
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                    true,
