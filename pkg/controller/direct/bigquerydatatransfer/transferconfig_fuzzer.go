@@ -29,8 +29,8 @@ func init() {
 
 func dataTransferConfigFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.TransferConfig{},
-		BigQueryDataTransferConfigSpec_FromProto, BigQueryDataTransferConfigSpec_ToProto,
-		BigQueryDataTransferConfigObservedState_FromProto, BigQueryDataTransferConfigObservedState_ToProto,
+		BigQueryDataTransferConfigSpec_v1beta1_FromProto, BigQueryDataTransferConfigSpec_v1beta1_ToProto,
+		BigQueryDataTransferConfigObservedState_v1beta1_FromProto, BigQueryDataTransferConfigObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".destination_dataset_id")

@@ -26,7 +26,7 @@ import (
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
-func BigQueryDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigQueryDataTransferConfigObservedState {
+func BigQueryDataTransferConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigQueryDataTransferConfigObservedState {
 	if in == nil {
 		return nil
 	}
@@ -36,12 +36,12 @@ func BigQueryDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext
 	out.NextRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRunTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.DatasetRegion = direct.LazyPtr(in.GetDatasetRegion())
-	out.OwnerInfo = UserInfo_FromProto(mapCtx, in.GetOwnerInfo())
+	out.OwnerInfo = UserInfo_v1beta1_FromProto(mapCtx, in.GetOwnerInfo())
 	out.UserID = direct.LazyPtr(in.GetUserId())
-	out.Error = Status_FromProto(mapCtx, in.GetError())
+	out.Error = Status_v1beta1_FromProto(mapCtx, in.GetError())
 	return out
 }
-func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataTransferConfigObservedState) *pb.TransferConfig {
+func BigQueryDataTransferConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataTransferConfigObservedState) *pb.TransferConfig {
 	if in == nil {
 		return nil
 	}
@@ -51,12 +51,12 @@ func BigQueryDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.NextRunTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRunTime)
 	out.State = direct.Enum_ToProto[pb.TransferState](mapCtx, in.State)
 	out.DatasetRegion = direct.ValueOf(in.DatasetRegion)
-	out.OwnerInfo = UserInfo_ToProto(mapCtx, in.OwnerInfo)
+	out.OwnerInfo = UserInfo_v1beta1_ToProto(mapCtx, in.OwnerInfo)
 	out.UserId = direct.ValueOf(in.UserID)
-	out.Error = Status_ToProto(mapCtx, in.Error)
+	out.Error = Status_v1beta1_ToProto(mapCtx, in.Error)
 	return out
 }
-func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigQueryDataTransferConfigSpec {
+func BigQueryDataTransferConfigSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigQueryDataTransferConfigSpec {
 	if in == nil {
 		return nil
 	}
@@ -66,20 +66,20 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
-	out.Params = Params_FromProto(mapCtx, in.GetParams())
+	out.Params = Params_v1beta1_FromProto(mapCtx, in.GetParams())
 	out.Schedule = direct.LazyPtr(in.GetSchedule())
-	out.ScheduleOptions = ScheduleOptions_FromProto(mapCtx, in.GetScheduleOptions())
+	out.ScheduleOptions = ScheduleOptions_v1beta1_FromProto(mapCtx, in.GetScheduleOptions())
 	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	if in.GetNotificationPubsubTopic() != "" {
 		out.PubSubTopicRef = &pubsubv1beta1.PubSubTopicRef{External: in.GetNotificationPubsubTopic()}
 	}
-	out.EmailPreferences = EmailPreferences_FromProto(mapCtx, in.GetEmailPreferences())
-	out.EncryptionConfiguration = EncryptionConfiguration_FromProto(mapCtx, in.GetEncryptionConfiguration())
-	out.ScheduleOptionsV2 = ScheduleOptionsV2_FromProto(mapCtx, in.GetScheduleOptionsV2())
+	out.EmailPreferences = EmailPreferences_v1beta1_FromProto(mapCtx, in.GetEmailPreferences())
+	out.EncryptionConfiguration = EncryptionConfiguration_v1beta1_FromProto(mapCtx, in.GetEncryptionConfiguration())
+	out.ScheduleOptionsV2 = ScheduleOptionsV2_v1beta1_FromProto(mapCtx, in.GetScheduleOptionsV2())
 	return out
 }
-func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataTransferConfigSpec) *pb.TransferConfig {
+func BigQueryDataTransferConfigSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataTransferConfigSpec) *pb.TransferConfig {
 	if in == nil {
 		return nil
 	}
@@ -89,20 +89,20 @@ func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.B
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.DataSourceId = direct.ValueOf(in.DataSourceID)
-	out.Params = Params_ToProto(mapCtx, in.Params)
+	out.Params = Params_v1beta1_ToProto(mapCtx, in.Params)
 	out.Schedule = direct.ValueOf(in.Schedule)
-	out.ScheduleOptions = ScheduleOptions_ToProto(mapCtx, in.ScheduleOptions)
+	out.ScheduleOptions = ScheduleOptions_v1beta1_ToProto(mapCtx, in.ScheduleOptions)
 	out.DataRefreshWindowDays = direct.ValueOf(in.DataRefreshWindowDays)
 	out.Disabled = direct.ValueOf(in.Disabled)
 	if in.PubSubTopicRef != nil {
 		out.NotificationPubsubTopic = in.PubSubTopicRef.External
 	}
-	out.EmailPreferences = EmailPreferences_ToProto(mapCtx, in.EmailPreferences)
-	out.EncryptionConfiguration = EncryptionConfiguration_ToProto(mapCtx, in.EncryptionConfiguration)
-	out.ScheduleOptionsV2 = ScheduleOptionsV2_ToProto(mapCtx, in.ScheduleOptionsV2)
+	out.EmailPreferences = EmailPreferences_v1beta1_ToProto(mapCtx, in.EmailPreferences)
+	out.EncryptionConfiguration = EncryptionConfiguration_v1beta1_ToProto(mapCtx, in.EncryptionConfiguration)
+	out.ScheduleOptionsV2 = ScheduleOptionsV2_v1beta1_ToProto(mapCtx, in.ScheduleOptionsV2)
 	return out
 }
-func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfiguration) *krm.EncryptionConfiguration {
+func EncryptionConfiguration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfiguration) *krm.EncryptionConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -112,7 +112,7 @@ func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Encrypt
 	}
 	return out
 }
-func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfiguration) *pb.EncryptionConfiguration {
+func EncryptionConfiguration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfiguration) *pb.EncryptionConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -122,7 +122,7 @@ func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.Encrypti
 	}
 	return out
 }
-func Params_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string]string {
+func Params_v1beta1_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string]string {
 	if in == nil {
 		return nil
 	}
@@ -137,7 +137,7 @@ func Params_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string
 	}
 	return out
 }
-func Params_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.Struct {
+func Params_v1beta1_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.Struct {
 	if in == nil {
 		return nil
 	}
@@ -150,7 +150,7 @@ func Params_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.S
 	}
 	return out
 }
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
+func Status_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
 	if in == nil {
 		return nil
 	}
@@ -161,7 +161,7 @@ func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status 
 	// out.Details
 	return out
 }
-func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
+func Status_v1beta1_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
 	if in == nil {
 		return nil
 	}
@@ -172,7 +172,7 @@ func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Statu
 	// out.Details
 	return out
 }
-func EventDrivenSchedule_FromProto(mapCtx *direct.MapContext, in *pb.EventDrivenSchedule) *krm.EventDrivenSchedule {
+func EventDrivenSchedule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EventDrivenSchedule) *krm.EventDrivenSchedule {
 	if in == nil {
 		return nil
 	}
@@ -182,7 +182,7 @@ func EventDrivenSchedule_FromProto(mapCtx *direct.MapContext, in *pb.EventDriven
 	}
 	return out
 }
-func EventDrivenSchedule_ToProto(mapCtx *direct.MapContext, in *krm.EventDrivenSchedule) *pb.EventDrivenSchedule {
+func EventDrivenSchedule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.EventDrivenSchedule) *pb.EventDrivenSchedule {
 	if in == nil {
 		return nil
 	}

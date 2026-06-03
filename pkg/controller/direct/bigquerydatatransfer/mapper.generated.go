@@ -30,123 +30,97 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BigQueryDataTransferTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigObservedState {
+func BigQueryDataTransferTransferConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigObservedState{}
 	// MISSING: Name
-	// MISSING: DestinationDatasetID
-	// MISSING: DisplayName
-	// MISSING: DataSourceID
-	// MISSING: Params
-	// MISSING: Schedule
-	// MISSING: ScheduleOptions
-	// MISSING: ScheduleOptionsV2
-	// MISSING: DataRefreshWindowDays
-	// MISSING: Disabled
-	// MISSING: UpdateTime
-	// MISSING: NextRunTime
-	// MISSING: State
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.NextRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRunTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: UserID
-	// MISSING: DatasetRegion
-	// MISSING: NotificationPubsubTopic
-	// MISSING: EmailPreferences
-	// MISSING: OwnerInfo
-	// MISSING: EncryptionConfiguration
+	out.DatasetRegion = direct.LazyPtr(in.GetDatasetRegion())
+	out.OwnerInfo = UserInfo_v1alpha1_FromProto(mapCtx, in.GetOwnerInfo())
 	// MISSING: Error
 	return out
 }
-func BigQueryDataTransferTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigObservedState) *pb.TransferConfig {
+func BigQueryDataTransferTransferConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigObservedState) *pb.TransferConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.TransferConfig{}
 	// MISSING: Name
-	// MISSING: DestinationDatasetID
-	// MISSING: DisplayName
-	// MISSING: DataSourceID
-	// MISSING: Params
-	// MISSING: Schedule
-	// MISSING: ScheduleOptions
-	// MISSING: ScheduleOptionsV2
-	// MISSING: DataRefreshWindowDays
-	// MISSING: Disabled
-	// MISSING: UpdateTime
-	// MISSING: NextRunTime
-	// MISSING: State
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.NextRunTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRunTime)
+	out.State = direct.Enum_ToProto[pb.TransferState](mapCtx, in.State)
 	// MISSING: UserID
-	// MISSING: DatasetRegion
-	// MISSING: NotificationPubsubTopic
-	// MISSING: EmailPreferences
-	// MISSING: OwnerInfo
-	// MISSING: EncryptionConfiguration
+	out.DatasetRegion = direct.ValueOf(in.DatasetRegion)
+	out.OwnerInfo = UserInfo_v1alpha1_ToProto(mapCtx, in.OwnerInfo)
 	// MISSING: Error
 	return out
 }
-func BigQueryDataTransferTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigSpec {
+func BigQueryDataTransferTransferConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigSpec{}
 	// MISSING: Name
-	// MISSING: DestinationDatasetID
-	// MISSING: DisplayName
-	// MISSING: DataSourceID
-	// MISSING: Params
-	// MISSING: Schedule
-	// MISSING: ScheduleOptions
-	// MISSING: ScheduleOptionsV2
-	// MISSING: DataRefreshWindowDays
-	// MISSING: Disabled
-	// MISSING: UpdateTime
-	// MISSING: NextRunTime
-	// MISSING: State
+	out.DestinationDatasetID = direct.LazyPtr(in.GetDestinationDatasetId())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
+	out.Params = direct.Struct_FromProto(mapCtx, in.GetParams())
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	out.ScheduleOptions = ScheduleOptions_v1alpha1_FromProto(mapCtx, in.GetScheduleOptions())
+	out.ScheduleOptionsV2 = ScheduleOptionsV2_v1alpha1_FromProto(mapCtx, in.GetScheduleOptionsV2())
+	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	// MISSING: UserID
-	// MISSING: DatasetRegion
-	// MISSING: NotificationPubsubTopic
-	// MISSING: EmailPreferences
-	// MISSING: OwnerInfo
-	// MISSING: EncryptionConfiguration
+	out.NotificationPubsubTopic = direct.LazyPtr(in.GetNotificationPubsubTopic())
+	out.EmailPreferences = EmailPreferences_v1alpha1_FromProto(mapCtx, in.GetEmailPreferences())
+	out.EncryptionConfiguration = EncryptionConfiguration_v1alpha1_FromProto(mapCtx, in.GetEncryptionConfiguration())
 	// MISSING: Error
 	return out
 }
-func BigQueryDataTransferTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigSpec) *pb.TransferConfig {
+func BigQueryDataTransferTransferConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigSpec) *pb.TransferConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.TransferConfig{}
 	// MISSING: Name
-	// MISSING: DestinationDatasetID
-	// MISSING: DisplayName
-	// MISSING: DataSourceID
-	// MISSING: Params
-	// MISSING: Schedule
-	// MISSING: ScheduleOptions
-	// MISSING: ScheduleOptionsV2
-	// MISSING: DataRefreshWindowDays
-	// MISSING: Disabled
-	// MISSING: UpdateTime
-	// MISSING: NextRunTime
-	// MISSING: State
+	if oneof := BigQueryDataTransferTransferConfigSpec_DestinationDatasetId_ToProto(mapCtx, in.DestinationDatasetID); oneof != nil {
+		out.Destination = oneof
+	}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.DataSourceId = direct.ValueOf(in.DataSourceID)
+	out.Params = direct.Struct_ToProto(mapCtx, in.Params)
+	out.Schedule = direct.ValueOf(in.Schedule)
+	out.ScheduleOptions = ScheduleOptions_v1alpha1_ToProto(mapCtx, in.ScheduleOptions)
+	out.ScheduleOptionsV2 = ScheduleOptionsV2_v1alpha1_ToProto(mapCtx, in.ScheduleOptionsV2)
+	out.DataRefreshWindowDays = direct.ValueOf(in.DataRefreshWindowDays)
+	out.Disabled = direct.ValueOf(in.Disabled)
 	// MISSING: UserID
-	// MISSING: DatasetRegion
-	// MISSING: NotificationPubsubTopic
-	// MISSING: EmailPreferences
-	// MISSING: OwnerInfo
-	// MISSING: EncryptionConfiguration
+	out.NotificationPubsubTopic = direct.ValueOf(in.NotificationPubsubTopic)
+	out.EmailPreferences = EmailPreferences_v1alpha1_ToProto(mapCtx, in.EmailPreferences)
+	out.EncryptionConfiguration = EncryptionConfiguration_v1alpha1_ToProto(mapCtx, in.EncryptionConfiguration)
 	// MISSING: Error
 	return out
 }
-func EmailPreferences_FromProto(mapCtx *direct.MapContext, in *pb.EmailPreferences) *krm.EmailPreferences {
+func BigQueryDataTransferTransferConfigSpec_DestinationDatasetId_ToProto(mapCtx *direct.MapContext, in *string) *pb.TransferConfig_DestinationDatasetId {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EmailPreferences{}
+	return &pb.TransferConfig_DestinationDatasetId{DestinationDatasetId: *in}
+}
+func EmailPreferences_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EmailPreferences) *krmbigquerydatatransferv1alpha1.EmailPreferences {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.EmailPreferences{}
 	out.EnableFailureEmail = direct.LazyPtr(in.GetEnableFailureEmail())
 	return out
 }
-func EmailPreferences_ToProto(mapCtx *direct.MapContext, in *krm.EmailPreferences) *pb.EmailPreferences {
+func EmailPreferences_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.EmailPreferences) *pb.EmailPreferences {
 	if in == nil {
 		return nil
 	}
@@ -154,31 +128,93 @@ func EmailPreferences_ToProto(mapCtx *direct.MapContext, in *krm.EmailPreference
 	out.EnableFailureEmail = direct.ValueOf(in.EnableFailureEmail)
 	return out
 }
-func ManualSchedule_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krm.ManualSchedule {
+func EmailPreferences_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EmailPreferences) *krm.EmailPreferences {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ManualSchedule{}
+	out := &krm.EmailPreferences{}
+	out.EnableFailureEmail = direct.LazyPtr(in.GetEnableFailureEmail())
 	return out
 }
-func ManualSchedule_ToProto(mapCtx *direct.MapContext, in *krm.ManualSchedule) *pb.ManualSchedule {
+func EmailPreferences_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.EmailPreferences) *pb.EmailPreferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EmailPreferences{}
+	out.EnableFailureEmail = direct.ValueOf(in.EnableFailureEmail)
+	return out
+}
+func EncryptionConfiguration_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfiguration) *krmbigquerydatatransferv1alpha1.EncryptionConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.EncryptionConfiguration{}
+	out.KMSKeyName = direct.StringValue_FromProto(mapCtx, in.GetKmsKeyName())
+	return out
+}
+func EncryptionConfiguration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.EncryptionConfiguration) *pb.EncryptionConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfiguration{}
+	out.KmsKeyName = direct.StringValue_ToProto(mapCtx, in.KMSKeyName)
+	return out
+}
+func EventDrivenSchedule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EventDrivenSchedule) *krmbigquerydatatransferv1alpha1.EventDrivenSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.EventDrivenSchedule{}
+	out.PubsubSubscription = direct.LazyPtr(in.GetPubsubSubscription())
+	return out
+}
+func EventDrivenSchedule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.EventDrivenSchedule) *pb.EventDrivenSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventDrivenSchedule{}
+	out.PubsubSubscription = direct.ValueOf(in.PubsubSubscription)
+	return out
+}
+func ManualSchedule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krmbigquerydatatransferv1alpha1.ManualSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.ManualSchedule{}
+	return out
+}
+func ManualSchedule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.ManualSchedule) *pb.ManualSchedule {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ManualSchedule{}
 	return out
 }
-func ScheduleOptions_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptions) *krm.ScheduleOptions {
+func ManualSchedule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krm.ManualSchedule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ScheduleOptions{}
+	out := &krm.ManualSchedule{}
+	return out
+}
+func ManualSchedule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ManualSchedule) *pb.ManualSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManualSchedule{}
+	return out
+}
+func ScheduleOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptions) *krmbigquerydatatransferv1alpha1.ScheduleOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.ScheduleOptions{}
 	out.DisableAutoScheduling = direct.LazyPtr(in.GetDisableAutoScheduling())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
-func ScheduleOptions_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptions) *pb.ScheduleOptions {
+func ScheduleOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.ScheduleOptions) *pb.ScheduleOptions {
 	if in == nil {
 		return nil
 	}
@@ -188,43 +224,89 @@ func ScheduleOptions_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptions)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func ScheduleOptionsV2_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptionsV2) *krm.ScheduleOptionsV2 {
+func ScheduleOptions_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptions) *krm.ScheduleOptions {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ScheduleOptionsV2{}
-	out.TimeBasedSchedule = TimeBasedSchedule_FromProto(mapCtx, in.GetTimeBasedSchedule())
-	out.ManualSchedule = ManualSchedule_FromProto(mapCtx, in.GetManualSchedule())
-	out.EventDrivenSchedule = EventDrivenSchedule_FromProto(mapCtx, in.GetEventDrivenSchedule())
+	out := &krm.ScheduleOptions{}
+	out.DisableAutoScheduling = direct.LazyPtr(in.GetDisableAutoScheduling())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
-func ScheduleOptionsV2_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptionsV2) *pb.ScheduleOptionsV2 {
+func ScheduleOptions_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptions) *pb.ScheduleOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScheduleOptions{}
+	out.DisableAutoScheduling = direct.ValueOf(in.DisableAutoScheduling)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func ScheduleOptionsV2_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptionsV2) *krmbigquerydatatransferv1alpha1.ScheduleOptionsV2 {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.ScheduleOptionsV2{}
+	out.TimeBasedSchedule = TimeBasedSchedule_v1alpha1_FromProto(mapCtx, in.GetTimeBasedSchedule())
+	out.ManualSchedule = ManualSchedule_v1alpha1_FromProto(mapCtx, in.GetManualSchedule())
+	out.EventDrivenSchedule = EventDrivenSchedule_v1alpha1_FromProto(mapCtx, in.GetEventDrivenSchedule())
+	return out
+}
+func ScheduleOptionsV2_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.ScheduleOptionsV2) *pb.ScheduleOptionsV2 {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ScheduleOptionsV2{}
-	if oneof := TimeBasedSchedule_ToProto(mapCtx, in.TimeBasedSchedule); oneof != nil {
+	if oneof := TimeBasedSchedule_v1alpha1_ToProto(mapCtx, in.TimeBasedSchedule); oneof != nil {
 		out.Schedule = &pb.ScheduleOptionsV2_TimeBasedSchedule{TimeBasedSchedule: oneof}
 	}
-	if oneof := ManualSchedule_ToProto(mapCtx, in.ManualSchedule); oneof != nil {
+	if oneof := ManualSchedule_v1alpha1_ToProto(mapCtx, in.ManualSchedule); oneof != nil {
 		out.Schedule = &pb.ScheduleOptionsV2_ManualSchedule{ManualSchedule: oneof}
 	}
-	if oneof := EventDrivenSchedule_ToProto(mapCtx, in.EventDrivenSchedule); oneof != nil {
+	if oneof := EventDrivenSchedule_v1alpha1_ToProto(mapCtx, in.EventDrivenSchedule); oneof != nil {
 		out.Schedule = &pb.ScheduleOptionsV2_EventDrivenSchedule{EventDrivenSchedule: oneof}
 	}
 	return out
 }
-func TimeBasedSchedule_FromProto(mapCtx *direct.MapContext, in *pb.TimeBasedSchedule) *krm.TimeBasedSchedule {
+func ScheduleOptionsV2_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptionsV2) *krm.ScheduleOptionsV2 {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TimeBasedSchedule{}
+	out := &krm.ScheduleOptionsV2{}
+	out.TimeBasedSchedule = TimeBasedSchedule_v1beta1_FromProto(mapCtx, in.GetTimeBasedSchedule())
+	out.ManualSchedule = ManualSchedule_v1beta1_FromProto(mapCtx, in.GetManualSchedule())
+	out.EventDrivenSchedule = EventDrivenSchedule_v1beta1_FromProto(mapCtx, in.GetEventDrivenSchedule())
+	return out
+}
+func ScheduleOptionsV2_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptionsV2) *pb.ScheduleOptionsV2 {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScheduleOptionsV2{}
+	if oneof := TimeBasedSchedule_v1beta1_ToProto(mapCtx, in.TimeBasedSchedule); oneof != nil {
+		out.Schedule = &pb.ScheduleOptionsV2_TimeBasedSchedule{TimeBasedSchedule: oneof}
+	}
+	if oneof := ManualSchedule_v1beta1_ToProto(mapCtx, in.ManualSchedule); oneof != nil {
+		out.Schedule = &pb.ScheduleOptionsV2_ManualSchedule{ManualSchedule: oneof}
+	}
+	if oneof := EventDrivenSchedule_v1beta1_ToProto(mapCtx, in.EventDrivenSchedule); oneof != nil {
+		out.Schedule = &pb.ScheduleOptionsV2_EventDrivenSchedule{EventDrivenSchedule: oneof}
+	}
+	return out
+}
+func TimeBasedSchedule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TimeBasedSchedule) *krmbigquerydatatransferv1alpha1.TimeBasedSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.TimeBasedSchedule{}
 	out.Schedule = direct.LazyPtr(in.GetSchedule())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
-func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSchedule) *pb.TimeBasedSchedule {
+func TimeBasedSchedule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.TimeBasedSchedule) *pb.TimeBasedSchedule {
 	if in == nil {
 		return nil
 	}
@@ -234,7 +316,43 @@ func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSched
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func UserInfo_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfo {
+func TimeBasedSchedule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TimeBasedSchedule) *krm.TimeBasedSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeBasedSchedule{}
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func TimeBasedSchedule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSchedule) *pb.TimeBasedSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimeBasedSchedule{}
+	out.Schedule = direct.ValueOf(in.Schedule)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func UserInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krmbigquerydatatransferv1alpha1.UserInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.UserInfo{}
+	out.Email = in.Email
+	return out
+}
+func UserInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.UserInfo) *pb.UserInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UserInfo{}
+	out.Email = in.Email
+	return out
+}
+func UserInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfo {
 	if in == nil {
 		return nil
 	}
@@ -242,7 +360,7 @@ func UserInfo_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInf
 	out.Email = in.Email
 	return out
 }
-func UserInfo_ToProto(mapCtx *direct.MapContext, in *krm.UserInfo) *pb.UserInfo {
+func UserInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UserInfo) *pb.UserInfo {
 	if in == nil {
 		return nil
 	}

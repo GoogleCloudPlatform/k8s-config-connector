@@ -64,9 +64,68 @@ spec:
             description: BigQueryDataTransferTransferConfigSpec defines the desired
               state of BigQueryDataTransferTransferConfig
             properties:
+              dataRefreshWindowDays:
+                description: The number of days to look back to automatically refresh
+                  the data. For example, if `data_refresh_window_days = 10`, then
+                  every day BigQuery reingests data for [today-10, today-1], rather
+                  than ingesting data for just [today-1]. Only valid if the data source
+                  supports the feature. Set the value to 0 to use the default value.
+                format: int32
+                type: integer
+              dataSourceID:
+                description: 'Data source ID. This cannot be changed once data transfer
+                  is created. The full list of available data source IDs can be returned
+                  through an API call: https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list'
+                type: string
+              destinationDatasetID:
+                description: The BigQuery target dataset id.
+                type: string
+              disabled:
+                description: Is this config disabled. When set to true, no runs will
+                  be scheduled for this transfer config.
+                type: boolean
+              displayName:
+                description: User specified display name for the data transfer.
+                type: string
+              emailPreferences:
+                description: Email notifications will be sent according to these preferences
+                  to the email address of the user who owns this transfer config.
+                properties:
+                  enableFailureEmail:
+                    description: If true, email notifications will be sent on transfer
+                      run failures.
+                    type: boolean
+                type: object
+              encryptionConfiguration:
+                description: The encryption configuration part. Currently, it is only
+                  used for the optional KMS key name. The BigQuery service account
+                  of your project must be granted permissions to use the key. Read
+                  methods will return the key name applied in effect. Write methods
+                  will apply the key if it is present, or otherwise try to apply project
+                  default keys if it is absent.
+                properties:
+                  kmsKeyName:
+                    description: The name of the KMS key used for encrypting BigQuery
+                      data.
+                    type: string
+                type: object
               location:
                 description: The location of this resource.
                 type: string
+              notificationPubsubTopic:
+                description: |-
+                  Pub/Sub topic where notifications will be sent after transfer runs
+                  associated with this transfer config finish.
+
+                  The format for specifying a pubsub topic is:
+                  `projects/{project_id}/topics/{topic_id}`
+                type: string
+              params:
+                description: 'Parameters specific to each data source. For more information
+                  see the bq tab in the ''Setting up a data transfer'' section for
+                  each data source. For example the parameters for Cloud Storage transfers
+                  are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq'
+                x-kubernetes-preserve-unknown-fields: true
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -103,6 +162,101 @@ spec:
                 description: The BigQueryDataTransferTransferConfig name. If not given,
                   the metadata.name will be used.
                 type: string
+              schedule:
+                description: |-
+                  Data transfer schedule.
+                  If the data source does not support a custom schedule, this should be
+                  empty. If it is empty, the default value for the data source will be used.
+                  The specified times are in UTC.
+                  Examples of valid format:
+                  `1st,3rd monday of month 15:30`,
+                  `every wed,fri of jan,jun 13:15`, and
+                  `first sunday of quarter 00:00`.
+                  See more explanation about the format here:
+                  https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
+
+                  NOTE: The minimum interval time between recurring transfers depends on the
+                  data source; refer to the documentation for your data source.
+                type: string
+              scheduleOptions:
+                description: Options customizing the data transfer schedule.
+                properties:
+                  disableAutoScheduling:
+                    description: If true, automatic scheduling of data transfer runs
+                      for this configuration will be disabled. The runs can be started
+                      on ad-hoc basis using StartManualTransferRuns API. When automatic
+                      scheduling is disabled, the TransferConfig.schedule field will
+                      be ignored.
+                    type: boolean
+                  endTime:
+                    description: Defines time to stop scheduling transfer runs. A
+                      transfer run cannot be scheduled at or after the end time. The
+                      end time can be changed at any moment. The time when a data
+                      transfer can be triggered manually is not limited by this option.
+                    type: string
+                  startTime:
+                    description: Specifies time to start scheduling transfer runs.
+                      The first run will be scheduled at or after the start time according
+                      to a recurrence pattern defined in the schedule string. The
+                      start time can be changed at any moment. The time when a data
+                      transfer can be triggered manually is not limited by this option.
+                    type: string
+                type: object
+              scheduleOptionsV2:
+                description: Options customizing different types of data transfer
+                  schedule. This field replaces "schedule" and "schedule_options"
+                  fields. ScheduleOptionsV2 cannot be used together with ScheduleOptions/Schedule.
+                properties:
+                  eventDrivenSchedule:
+                    description: Event driven transfer schedule options. If set, the
+                      transfer will be scheduled upon events arrial.
+                    properties:
+                      pubsubSubscription:
+                        description: 'Pub/Sub subscription name used to receive events.
+                          Only Google Cloud Storage data source support this option.
+                          Format: projects/{project}/subscriptions/{subscription}'
+                        type: string
+                    type: object
+                  manualSchedule:
+                    description: Manual transfer schedule. If set, the transfer run
+                      will not be auto-scheduled by the system, unless the client
+                      invokes StartManualTransferRuns.  This is equivalent to disable_auto_scheduling
+                      = true.
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                  timeBasedSchedule:
+                    description: Time based transfer schedule options. This is the
+                      default schedule option.
+                    properties:
+                      endTime:
+                        description: Defines time to stop scheduling transfer runs.
+                          A transfer run cannot be scheduled at or after the end time.
+                          The end time can be changed at any moment.
+                        type: string
+                      schedule:
+                        description: |-
+                          Data transfer schedule.
+                           If the data source does not support a custom schedule, this should be
+                           empty. If it is empty, the default value for the data source will be used.
+                           The specified times are in UTC.
+                           Examples of valid format:
+                           `1st,3rd monday of month 15:30`,
+                           `every wed,fri of jan,jun 13:15`, and
+                           `first sunday of quarter 00:00`.
+                           See more explanation about the format here:
+                           https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
+
+                           NOTE: The minimum interval time between recurring transfers depends on the
+                           data source; refer to the documentation for your data source.
+                        type: string
+                      startTime:
+                        description: Specifies time to start scheduling transfer runs.
+                          The first run will be scheduled at or after the start time
+                          according to a recurrence pattern defined in the schedule
+                          string. The start time can be changed at any moment.
+                        type: string
+                    type: object
+                type: object
             required:
             - location
             - projectRef
@@ -152,6 +306,32 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  datasetRegion:
+                    description: Output only. Region in which BigQuery dataset is
+                      located.
+                    type: string
+                  nextRunTime:
+                    description: Output only. Next time when data transfer will run.
+                    type: string
+                  ownerInfo:
+                    description: Output only. Information about the user whose credentials
+                      are used to transfer data. Populated only for `transferConfigs.get`
+                      requests. In case the user information is not available, this
+                      field will not be populated.
+                    properties:
+                      email:
+                        description: E-mail address of the user.
+                        type: string
+                    type: object
+                  state:
+                    description: Output only. State of the most recently updated transfer
+                      run.
+                    type: string
+                  updateTime:
+                    description: Output only. Data transfer modification time. Ignored
+                      by server on input.
+                    type: string
                 type: object
             type: object
         required:

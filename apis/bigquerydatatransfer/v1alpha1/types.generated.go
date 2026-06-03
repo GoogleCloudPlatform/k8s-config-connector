@@ -21,25 +21,20 @@
 
 package v1alpha1
 
-/* unreachable type EmailPreferences
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EmailPreferences
 type EmailPreferences struct {
 	// If true, email notifications will be sent on transfer run failures.
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.EmailPreferences.enable_failure_email
 	EnableFailureEmail *bool `json:"enableFailureEmail,omitempty"`
 }
-*/
 
-/* unreachable type EncryptionConfiguration
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration
 type EncryptionConfiguration struct {
 	// The name of the KMS key used for encrypting BigQuery data.
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration.kms_key_name
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 }
-*/
 
-/* unreachable type EventDrivenSchedule
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule
 type EventDrivenSchedule struct {
 	// Pub/Sub subscription name used to receive events.
@@ -48,15 +43,14 @@ type EventDrivenSchedule struct {
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule.pubsub_subscription
 	PubsubSubscription *string `json:"pubsubSubscription,omitempty"`
 }
-*/
 
-/* unreachable type ManualSchedule
+/* found existing non-generated go type "ManualSchedule", skipping
+
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.ManualSchedule
 type ManualSchedule struct {
 }
 */
 
-/* unreachable type ScheduleOptions
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.ScheduleOptions
 type ScheduleOptions struct {
 	// If true, automatic scheduling of data transfer runs for this configuration
@@ -81,9 +75,7 @@ type ScheduleOptions struct {
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.ScheduleOptions.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
-*/
 
-/* unreachable type ScheduleOptionsV2
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.ScheduleOptionsV2
 type ScheduleOptionsV2 struct {
 	// Time based transfer schedule options. This is the default schedule
@@ -103,9 +95,7 @@ type ScheduleOptionsV2 struct {
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.ScheduleOptionsV2.event_driven_schedule
 	EventDrivenSchedule *EventDrivenSchedule `json:"eventDrivenSchedule,omitempty"`
 }
-*/
 
-/* unreachable type TimeBasedSchedule
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.TimeBasedSchedule
 type TimeBasedSchedule struct {
 	// Data transfer schedule.
@@ -137,7 +127,6 @@ type TimeBasedSchedule struct {
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TimeBasedSchedule.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.datatransfer.v1.TransferConfig", skipping
 
@@ -241,14 +230,12 @@ type TransferConfig struct {
 }
 */
 
-/* unreachable type UserInfo
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.UserInfo
 type UserInfo struct {
 	// E-mail address of the user.
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.UserInfo.email
 	Email *string `json:"email,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.datatransfer.v1.TransferConfig", skipping
 

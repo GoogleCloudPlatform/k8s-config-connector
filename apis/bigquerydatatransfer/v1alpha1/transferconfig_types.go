@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -34,6 +35,88 @@ type BigQueryDataTransferTransferConfigSpec struct {
 
 	// The BigQueryDataTransferTransferConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// The BigQuery target dataset id.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.destination_dataset_id
+	DestinationDatasetID *string `json:"destinationDatasetID,omitempty"`
+
+	// User specified display name for the data transfer.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Data source ID. This cannot be changed once data transfer is created. The
+	// full list of available data source IDs can be returned through an API call:
+	// https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.data_source_id
+	DataSourceID *string `json:"dataSourceID,omitempty"`
+
+	// Parameters specific to each data source. For more information see the
+	// bq tab in the 'Setting up a data transfer' section for each data source.
+	// For example the parameters for Cloud Storage transfers are listed here:
+	// https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.params
+	Params *apiextensionsv1.JSON `json:"params,omitempty"`
+
+	// Data transfer schedule.
+	// If the data source does not support a custom schedule, this should be
+	// empty. If it is empty, the default value for the data source will be used.
+	// The specified times are in UTC.
+	// Examples of valid format:
+	// `1st,3rd monday of month 15:30`,
+	// `every wed,fri of jan,jun 13:15`, and
+	// `first sunday of quarter 00:00`.
+	// See more explanation about the format here:
+	// https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
+	//
+	// NOTE: The minimum interval time between recurring transfers depends on the
+	// data source; refer to the documentation for your data source.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.schedule
+	Schedule *string `json:"schedule,omitempty"`
+
+	// Options customizing the data transfer schedule.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.schedule_options
+	ScheduleOptions *ScheduleOptions `json:"scheduleOptions,omitempty"`
+
+	// Options customizing different types of data transfer schedule.
+	// This field replaces "schedule" and "schedule_options" fields.
+	// ScheduleOptionsV2 cannot be used together with ScheduleOptions/Schedule.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.schedule_options_v2
+	ScheduleOptionsV2 *ScheduleOptionsV2 `json:"scheduleOptionsV2,omitempty"`
+
+	// The number of days to look back to automatically refresh the data.
+	// For example, if `data_refresh_window_days = 10`, then every day
+	// BigQuery reingests data for [today-10, today-1], rather than ingesting data
+	// for just [today-1].
+	// Only valid if the data source supports the feature. Set the value to 0
+	// to use the default value.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.data_refresh_window_days
+	DataRefreshWindowDays *int32 `json:"dataRefreshWindowDays,omitempty"`
+
+	// Is this config disabled. When set to true, no runs will be scheduled for
+	// this transfer config.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+
+	// Pub/Sub topic where notifications will be sent after transfer runs
+	// associated with this transfer config finish.
+	//
+	// The format for specifying a pubsub topic is:
+	// `projects/{project_id}/topics/{topic_id}`
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.notification_pubsub_topic
+	NotificationPubsubTopic *string `json:"notificationPubsubTopic,omitempty"`
+
+	// Email notifications will be sent according to these preferences
+	// to the email address of the user who owns this transfer config.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.email_preferences
+	EmailPreferences *EmailPreferences `json:"emailPreferences,omitempty"`
+
+	// The encryption configuration part. Currently, it is only used for the
+	// optional KMS key name. The BigQuery service account of your project must be
+	// granted permissions to use the key. Read methods will return the key name
+	// applied in effect. Write methods will apply the key if it is present, or
+	// otherwise try to apply project default keys if it is absent.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.encryption_configuration
+	EncryptionConfiguration *EncryptionConfiguration `json:"encryptionConfiguration,omitempty"`
 }
 
 // BigQueryDataTransferTransferConfigStatus defines the config connector machine state of BigQueryDataTransferTransferConfig
@@ -55,6 +138,27 @@ type BigQueryDataTransferTransferConfigStatus struct {
 // BigQueryDataTransferTransferConfigObservedState is the state of the BigQueryDataTransferTransferConfig resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
 type BigQueryDataTransferTransferConfigObservedState struct {
+	// Output only. Data transfer modification time. Ignored by server on input.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Next time when data transfer will run.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.next_run_time
+	NextRunTime *string `json:"nextRunTime,omitempty"`
+
+	// Output only. State of the most recently updated transfer run.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Region in which BigQuery dataset is located.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.dataset_region
+	DatasetRegion *string `json:"datasetRegion,omitempty"`
+
+	// Output only. Information about the user whose credentials are used to
+	// transfer data. Populated only for `transferConfigs.get` requests. In case
+	// the user information is not available, this field will not be populated.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.owner_info
+	OwnerInfo *UserInfo `json:"ownerInfo,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -89,4 +193,9 @@ type BigQueryDataTransferTransferConfigList struct {
 
 func init() {
 	SchemeBuilder.Register(&BigQueryDataTransferTransferConfig{}, &BigQueryDataTransferTransferConfigList{})
+}
+
+// +kcc:proto=google.cloud.bigquery.datatransfer.v1.ManualSchedule
+// +kubebuilder:pruning:PreserveUnknownFields
+type ManualSchedule struct {
 }
