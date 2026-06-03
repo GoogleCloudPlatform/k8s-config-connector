@@ -781,6 +781,8 @@
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentType" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservationMode" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservationName" is not set in unstructured objects
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.shareSettings.projectMap[].keyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.shareSettings.projectMap[].value.projectIDRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.guestAccelerators[].acceleratorCount" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.guestAccelerators[].acceleratorType" is not set in unstructured objects
 [missing_field] crd=computefuturereservations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.specificSkuProperties.instanceProperties.locationHint" is not set in unstructured objects

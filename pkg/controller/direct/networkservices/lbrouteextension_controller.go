@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	gcp "cloud.google.com/go/networkservices/apiv1"
 	networkservicespb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 	"google.golang.org/api/option"
@@ -366,4 +367,35 @@ func (a *LBRouteExtensionAdapter) Delete(ctx context.Context, deleteOp *directba
 		return false, fmt.Errorf("waiting delete LBRouteExtension %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *LBRouteExtensionAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting IAM policy", "name", a.id)
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id, err)
+	}
+
+	return policy, nil
+}
+
+func (a *LBRouteExtensionAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("setting IAM policy", "name", a.id)
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id, err)
+	}
+
+	return newPolicy, nil
 }
