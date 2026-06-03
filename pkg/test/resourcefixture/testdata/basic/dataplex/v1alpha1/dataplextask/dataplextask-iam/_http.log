@@ -1,0 +1,508 @@
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/CreateLake
+
+{
+  "lake": {
+    "description": "Lake for IAM test",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "lakeId": "dataplexlake-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.Lake",
+    "assetStatus": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Lake for IAM test",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "metastore": {},
+    "metastoreStatus": {
+      "state": "NONE",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}",
+    "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetTask
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/CreateTask
+
+{
+  "parent": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}",
+  "task": {
+    "description": "Task for IAM test",
+    "executionSpec": {
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "spark": {
+      "pythonScriptFile": "gs://dataproc-examples/pyspark/hello-world/hello-world.py"
+    },
+    "triggerSpec": {
+      "type": "ON_DEMAND"
+    }
+  },
+  "taskId": "dataplextask-iam-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.Task",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Task for IAM test",
+    "executionSpec": {
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+    },
+    "executionStatus": {},
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}",
+    "spark": {
+      "pythonScriptFile": "gs://dataproc-examples/pyspark/hello-world/hello-world.py"
+    },
+    "state": "ACTIVE",
+    "triggerSpec": {
+      "type": "ON_DEMAND"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.ContentService/GetIamPolicy
+
+{
+  "resource": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.ContentService/GetIamPolicy
+
+{
+  "resource": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.ContentService/SetIamPolicy
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/viewer"
+      }
+    ]
+  },
+  "resource": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}"
+}
+
+OK
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.ContentService/GetIamPolicy
+
+{
+  "resource": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}"
+}
+
+OK
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.ContentService/SetIamPolicy
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "role": "roles/viewer"
+      }
+    ]
+  },
+  "resource": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}"
+}
+
+OK
+
+{
+  "bindings": [
+    {
+      "role": "roles/viewer"
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetTask
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Task for IAM test",
+  "executionSpec": {
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+  },
+  "executionStatus": {
+    "latestJob": {
+      "name": "projects/${projectNumber}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}/jobs/0123456789abcdef",
+      "trigger": "TASK_CONFIG",
+      "uid": "0123456789abcdef"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}",
+  "spark": {
+    "pythonScriptFile": "gs://dataproc-examples/pyspark/hello-world/hello-world.py"
+  },
+  "state": "ACTIVE",
+  "triggerSpec": {
+    "type": "ON_DEMAND"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetTask
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Task for IAM test",
+  "executionSpec": {
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+  },
+  "executionStatus": {
+    "latestJob": {
+      "name": "projects/${projectNumber}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}/jobs/0123456789abcdef",
+      "trigger": "TASK_CONFIG",
+      "uid": "0123456789abcdef"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}",
+  "spark": {
+    "pythonScriptFile": "gs://dataproc-examples/pyspark/hello-world/hello-world.py"
+  },
+  "state": "ACTIVE",
+  "triggerSpec": {
+    "type": "ON_DEMAND"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/DeleteTask
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-iam-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}"
+}
+
+OK
+
+{
+  "assetStatus": {
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Lake for IAM test",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metastore": {},
+  "metastoreStatus": {
+    "state": "NONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}",
+  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+  "state": "ACTIVE",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}"
+}
+
+OK
+
+{
+  "assetStatus": {
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Lake for IAM test",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metastore": {},
+  "metastoreStatus": {
+    "state": "NONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}",
+  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+  "state": "ACTIVE",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/DeleteLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

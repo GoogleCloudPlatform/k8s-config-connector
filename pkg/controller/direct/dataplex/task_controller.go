@@ -30,6 +30,7 @@ import (
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	"cloud.google.com/go/iam/apiv1/iampb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -105,6 +106,12 @@ func (m *taskModel) AdapterForObject(ctx context.Context, op *directbase.Adapter
 	}
 	taskAdapter.gcpClient = taskClient
 
+	contentClient, err := gcpClient.contentClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	taskAdapter.contentClient = contentClient
+
 	return taskAdapter, nil
 }
 
@@ -114,14 +121,16 @@ func (m *taskModel) AdapterForURL(ctx context.Context, url string) (directbase.A
 }
 
 type taskAdapter struct {
-	gcpClient *gcp.Client
-	id        *krm.TaskIdentity
-	desired   *pb.Task
-	actual    *pb.Task
-	reader    client.Reader
+	gcpClient     *gcp.Client
+	contentClient *gcp.ContentClient
+	id            *krm.TaskIdentity
+	desired       *pb.Task
+	actual        *pb.Task
+	reader        client.Reader
 }
 
 var _ directbase.Adapter = &taskAdapter{}
+var _ direct.IAMAdapter = &taskAdapter{}
 
 func (a *taskAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -322,4 +331,37 @@ func (a *taskAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOpe
 	}
 	log.Info("successfully deleted dataplex task", "name", a.id)
 	return true, nil
+}
+
+func (a *taskAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.contentClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *taskAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.contentClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }

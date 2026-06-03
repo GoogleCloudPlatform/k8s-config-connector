@@ -48,6 +48,7 @@ type MockService struct {
 type DataplexService struct {
 	*MockService
 	pb.UnimplementedDataplexServiceServer
+	pb.UnimplementedContentServiceServer
 }
 
 // New creates a MockService.
@@ -69,6 +70,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
 	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
+	pb.RegisterContentServiceServer(grpcServer, s.dataplexService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -79,6 +81,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	grpcMux.AddService(pb.NewDataplexServiceClient(conn))
 	grpcMux.AddService(pb.NewCatalogServiceClient(conn))
+	grpcMux.AddService(pb.NewContentServiceClient(conn))
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return grpcMux, nil
