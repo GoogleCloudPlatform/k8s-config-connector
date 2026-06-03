@@ -96,15 +96,16 @@ type IAPSettingsStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	// NOTYET: there is no output only field
-	// ObservedState *IAPSettingsObservedState `json:"observedState,omitempty"`
+	ObservedState *IAPSettingsObservedState `json:"observedState,omitempty"`
 }
 
 // IAPSettingsObservedState is the state of the IAPSettings resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.iap.v1.IapSettings
-// NOTYET: there is no output only field
-// type IAPSettingsObservedState struct {
-// }
+type IAPSettingsObservedState struct {
+	// Optional. Top level wrapper for all access related setting in IAP
+	// +kcc:proto:field=google.cloud.iap.v1.IapSettings.access_settings
+	AccessSettings *AccessSettingsObservedState `json:"accessSettings,omitempty"`
+}
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -118,6 +119,7 @@ type IAPSettingsStatus struct {
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 // +kubebuilder:storageversion
 
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // IAPSettings is the Schema for the IAPSettings API
 // +k8s:openapi-gen=true
 type IAPSettings struct {
