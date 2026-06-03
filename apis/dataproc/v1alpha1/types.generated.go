@@ -433,9 +433,11 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 	Rank *int32 `json:"rank,omitempty"`
 }
 
+/* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResult
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
 }
+*/
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
 type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
@@ -756,9 +758,11 @@ type LoggingConfig struct {
 }
 */
 
+/* unreachable type ManagedGroupConfig
 // +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfig struct {
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroup", skipping
 
@@ -1510,7 +1514,7 @@ type BatchObservedState struct {
 
 	// Output only. Runtime information about batch execution.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.runtime_info
-	RuntimeInfo *RuntimeInfo `json:"runtimeInfo,omitempty"`
+	RuntimeInfo *RuntimeInfoObservedState `json:"runtimeInfo,omitempty"`
 
 	// Output only. The state of the batch.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state
@@ -1535,7 +1539,7 @@ type BatchObservedState struct {
 
 	// Output only. Historical state information for the batch.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_history
-	StateHistory []Batch_StateHistory `json:"stateHistory,omitempty"`
+	StateHistory []Batch_StateHistoryObservedState `json:"stateHistory,omitempty"`
 }
 */
 
@@ -1561,10 +1565,9 @@ type Batch_StateHistoryObservedState struct {
 type InstanceFlexibilityPolicyObservedState struct {
 	// Output only. A list of instance selection results in the group.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_results
-	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResult `json:"instanceSelectionResults,omitempty"`
+	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResultObservedState `json:"instanceSelectionResults,omitempty"`
 }
 
-/* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// Output only. Full machine-type names, e.g. "n1-standard-16".
@@ -1575,7 +1578,6 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.vm_count
 	VMCount *int32 `json:"vmCount,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfigObservedState struct {
@@ -1597,7 +1599,7 @@ type InstanceGroupConfigObservedState struct {
 	//  Manager that manages this group.
 	//  This is only used for preemptible instance groups.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.managed_group_config
-	ManagedGroupConfig *ManagedGroupConfig `json:"managedGroupConfig,omitempty"`
+	ManagedGroupConfig *ManagedGroupConfigObservedState `json:"managedGroupConfig,omitempty"`
 
 	// Optional. Instance flexibility Policy allowing a mixture of VM shapes and
 	//  provisioning models.
@@ -1618,11 +1620,11 @@ type JobObservedState struct {
 	//  status information might be contained in the <code>type_job</code>
 	//  and <code>yarn_applications</code> fields.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.status
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatusObservedState `json:"status,omitempty"`
 
 	// Output only. The previous job status.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.status_history
-	StatusHistory []JobStatus `json:"statusHistory,omitempty"`
+	StatusHistory []JobStatusObservedState `json:"statusHistory,omitempty"`
 
 	// Output only. The collection of YARN applications spun up by this job.
 	//
@@ -1692,7 +1694,6 @@ type JobStatusObservedState struct {
 }
 */
 
-/* unreachable type ManagedGroupConfigObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfigObservedState struct {
 	// Output only. The name of the Instance Template used for the Managed
@@ -1709,7 +1710,6 @@ type ManagedGroupConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ManagedGroupConfig.instance_group_manager_uri
 	InstanceGroupManagerURI *string `json:"instanceGroupManagerURI,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroup", skipping
 
@@ -1774,7 +1774,7 @@ type SessionObservedState struct {
 
 	// Output only. Runtime information about session execution.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.runtime_info
-	RuntimeInfo *RuntimeInfo `json:"runtimeInfo,omitempty"`
+	RuntimeInfo *RuntimeInfoObservedState `json:"runtimeInfo,omitempty"`
 
 	// Output only. A state of the session.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.state
@@ -1795,7 +1795,7 @@ type SessionObservedState struct {
 
 	// Output only. Historical state information for the session.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.state_history
-	StateHistory []Session_SessionStateHistory `json:"stateHistory,omitempty"`
+	StateHistory []Session_SessionStateHistoryObservedState `json:"stateHistory,omitempty"`
 }
 */
 
