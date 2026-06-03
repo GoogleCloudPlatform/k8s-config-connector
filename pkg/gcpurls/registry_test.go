@@ -86,6 +86,10 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                    true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
 		"//iam.googleapis.com/policies/{}/denypolicies/{}":                                          true,
+		"//logging.googleapis.com/projects/{}/exclusions/{}":                                        true,
+		"//logging.googleapis.com/folders/{}/exclusions/{}":                                         true,
+		"//logging.googleapis.com/organizations/{}/exclusions/{}":                                   true,
+		"//logging.googleapis.com/billingAccounts/{}/exclusions/{}":                                 true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
