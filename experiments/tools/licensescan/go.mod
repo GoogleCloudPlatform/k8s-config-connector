@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/tools/lic
 
 go 1.26
 
-toolchain go1.26.1
+toolchain go1.26.4
 
 require (
 	github.com/spf13/cobra v1.8.1
