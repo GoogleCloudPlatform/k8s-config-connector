@@ -61,6 +61,10 @@ func (i *CustomClassIdentity) Host() string {
 	return CustomClassIdentityFormat.Host()
 }
 
+func (i *CustomClassIdentity) ExternalIdentifier() *string {
+	return &i.CustomClass
+}
+
 func getIdentityFromSpeechCustomClassSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CustomClassIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

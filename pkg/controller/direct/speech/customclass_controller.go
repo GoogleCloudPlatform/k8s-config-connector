@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,13 +23,13 @@ package speech
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	gcp "cloud.google.com/go/speech/apiv2"
 	pb "cloud.google.com/go/speech/apiv2/speechpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -37,6 +37,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -169,24 +170,13 @@ func (a *customClassAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return mapCtx.Err()
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-
-	paths := []string{}
-	if a.desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
-		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
-		paths = append(paths, "display_name")
-	}
-	if !reflect.DeepEqual(resource.Items, a.actual.Items) {
-		report.AddField("items", a.actual.Items, resource.Items)
-		paths = append(paths, "items")
-	}
-	if !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
-		report.AddField("annotations", a.actual.Annotations, resource.Annotations)
-		paths = append(paths, "annotations")
+	paths, report, err := common.CompareProtoMessageStructuredDiff(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
 
 	var updated *pb.CustomClass
-	if len(paths) == 0 {
+	if paths.Len() == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
@@ -194,7 +184,7 @@ func (a *customClassAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateCustomClassRequest{
 			CustomClass: resource,
-			UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
+			UpdateMask:  &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 		}
 		op, err := a.gcpClient.UpdateCustomClass(ctx, req)
 		if err != nil {
