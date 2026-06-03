@@ -107,3 +107,141 @@ func APIHubDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubDeplo
 	out.Environment = APIHubAttributeValueRef_ToProto(mapCtx, in.EnvironmentRef)
 	return out
 }
+
+func APIHubAPISpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIHubAPISpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubAPISpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
+	out.Owner = Owner_FromProto(mapCtx, in.GetOwner())
+
+	out.TargetUserRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetTargetUser())
+	out.TeamRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetTeam())
+	out.BusinessUnitRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetBusinessUnit())
+	out.MaturityLevelRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetMaturityLevel())
+	out.APIStyleRef = APIHubAttributeValueRef_FromProto(mapCtx, in.GetApiStyle())
+	if in.GetSelectedVersion() != "" {
+		out.SelectedVersionRef = &krm.APIHubVersionRef{External: in.GetSelectedVersion()}
+	}
+
+	if in.GetAttributes() != nil {
+		out.AttributeRefs = make([]krm.APIHubAPIAttribute, 0, len(in.GetAttributes()))
+		for k, v := range in.GetAttributes() {
+			attr := krm.APIHubAPIAttribute{
+				AttributeRef: &krm.APIHubAttributeRef{External: k},
+				Values:       AttributeValues_FromProto(mapCtx, v),
+			}
+			out.AttributeRefs = append(out.AttributeRefs, attr)
+		}
+	}
+	out.APIRequirements = AttributeValues_FromProto(mapCtx, in.GetApiRequirements())
+	out.APIFunctionalRequirements = AttributeValues_FromProto(mapCtx, in.GetApiFunctionalRequirements())
+	out.APITechnicalRequirements = AttributeValues_FromProto(mapCtx, in.GetApiTechnicalRequirements())
+	out.Fingerprint = direct.LazyPtr(in.GetFingerprint())
+
+	return out
+}
+
+func APIHubAPISpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAPISpec) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
+	out.Owner = Owner_ToProto(mapCtx, in.Owner)
+
+	out.TargetUser = APIHubAttributeValueRef_ToProto(mapCtx, in.TargetUserRef)
+	out.Team = APIHubAttributeValueRef_ToProto(mapCtx, in.TeamRef)
+	out.BusinessUnit = APIHubAttributeValueRef_ToProto(mapCtx, in.BusinessUnitRef)
+	out.MaturityLevel = APIHubAttributeValueRef_ToProto(mapCtx, in.MaturityLevelRef)
+	out.ApiStyle = APIHubAttributeValueRef_ToProto(mapCtx, in.APIStyleRef)
+	if in.SelectedVersionRef != nil {
+		out.SelectedVersion = in.SelectedVersionRef.External
+	}
+
+	if in.AttributeRefs != nil {
+		out.Attributes = make(map[string]*pb.AttributeValues)
+		for _, attr := range in.AttributeRefs {
+			if attr.AttributeRef != nil {
+				out.Attributes[attr.AttributeRef.External] = AttributeValues_ToProto(mapCtx, attr.Values)
+			}
+		}
+	}
+	out.ApiRequirements = AttributeValues_ToProto(mapCtx, in.APIRequirements)
+	out.ApiFunctionalRequirements = AttributeValues_ToProto(mapCtx, in.APIFunctionalRequirements)
+	out.ApiTechnicalRequirements = AttributeValues_ToProto(mapCtx, in.APITechnicalRequirements)
+	out.Fingerprint = direct.ValueOf(in.Fingerprint)
+
+	return out
+}
+
+func SourceMetadataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SourceMetadata) *krm.SourceMetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceMetadataObservedState{}
+	if in.SourceType != pb.SourceMetadata_SOURCE_TYPE_UNSPECIFIED {
+		out.SourceType = direct.LazyPtr(in.SourceType.String())
+	}
+	out.OriginalResourceID = direct.LazyPtr(in.GetOriginalResourceId())
+	out.OriginalResourceCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetOriginalResourceCreateTime())
+	out.OriginalResourceUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetOriginalResourceUpdateTime())
+	return out
+}
+
+func SourceMetadataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SourceMetadataObservedState) *pb.SourceMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceMetadata{}
+	if in.SourceType != nil {
+		out.SourceType = pb.SourceMetadata_SourceType(pb.SourceMetadata_SourceType_value[direct.ValueOf(in.SourceType)])
+	}
+	out.OriginalResourceId = direct.ValueOf(in.OriginalResourceID)
+	out.OriginalResourceCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.OriginalResourceCreateTime)
+	out.OriginalResourceUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.OriginalResourceUpdateTime)
+	return out
+}
+
+func APIHubAPIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIHubAPIObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubAPIObservedState{}
+	out.Versions = in.Versions
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	if len(in.GetSourceMetadata()) > 0 {
+		out.SourceMetadata = make([]krm.SourceMetadataObservedState, len(in.GetSourceMetadata()))
+		for i, sm := range in.GetSourceMetadata() {
+			if sm == nil {
+				continue
+			}
+			out.SourceMetadata[i] = *SourceMetadataObservedState_FromProto(mapCtx, sm)
+		}
+	}
+	return out
+}
+
+func APIHubAPIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAPIObservedState) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	out.Versions = in.Versions
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	if len(in.SourceMetadata) > 0 {
+		out.SourceMetadata = make([]*pb.SourceMetadata, len(in.SourceMetadata))
+		for i, sm := range in.SourceMetadata {
+			val := sm
+			out.SourceMetadata[i] = SourceMetadataObservedState_ToProto(mapCtx, &val)
+		}
+	}
+	return out
+}

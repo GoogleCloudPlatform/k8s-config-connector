@@ -151,3 +151,21 @@ func Documentation_ToProto(mapCtx *direct.MapContext, in *krm.Documentation) *pb
 	out.ExternalUri = direct.ValueOf(in.ExternalURI)
 	return out
 }
+func Owner_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Owner{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Email = direct.LazyPtr(in.GetEmail())
+	return out
+}
+func Owner_ToProto(mapCtx *direct.MapContext, in *krm.Owner) *pb.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Owner{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Email = direct.ValueOf(in.Email)
+	return out
+}
