@@ -275,6 +275,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-aistreams:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-aistreams"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-aistreams
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-aistreams
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-alloydb:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -355,6 +375,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-apihub:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apihub"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-apihub
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-apihub
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-apikeys:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -412,6 +452,26 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-apphub
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-appoptimize:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-appoptimize"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-appoptimize
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-appoptimize
           path: /tmp/artifacts/
 
 
@@ -1392,6 +1452,26 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-deploymentmanager
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-devicestreaming:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-devicestreaming"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-devicestreaming
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-devicestreaming
           path: /tmp/artifacts/
 
 
