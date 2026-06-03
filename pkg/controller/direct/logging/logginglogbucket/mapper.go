@@ -54,6 +54,7 @@ func LoggingLogBucketStatus_FromProto(mapCtx *direct.MapContext, in *pb.LogBucke
 		return nil
 	}
 	out := &krm.LoggingLogBucketStatus{}
+	out.ExternalRef = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifecycleState())

@@ -2017,15 +2017,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "logging.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "LoggingLogBucket",
-	}: {
-		Terraform:   false,
-		DCL:         true,
-		SupportsIAM: false,
-	},
-	{
-		Group:   "logging.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "LoggingLogExclusion",
 	}: {
 		Terraform:   false,

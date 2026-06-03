@@ -73,6 +73,10 @@ type LoggingLogBucketStatus struct {
 	   LoggingLogBucket's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
+	/* A fully qualified name of the resource, typically in the form `projects/{{project}}/locations/{{location}}/buckets/{{bucket}}`. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* Output only. The creation timestamp of the bucket. This is not set for any of the default buckets. */
 	// +optional
 	// +kubebuilder:validation:Format=date-time
@@ -95,7 +99,6 @@ type LoggingLogBucketStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcplogginglogbucket;gcplogginglogbuckets
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"

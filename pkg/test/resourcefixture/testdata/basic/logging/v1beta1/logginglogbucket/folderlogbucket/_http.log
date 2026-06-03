@@ -1,3 +1,55 @@
+GET https://logging.googleapis.com/v2/folders/folder-${uniqueId}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2Ffolder-${uniqueId}%2Flocations%2Fglobal%2Fbuckets%2F_Default
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Default bucket",
+  "lifecycleState": 1,
+  "name": "folders/folder-${uniqueId}/locations/global/buckets/_Default",
+  "retentionDays": 30
+}
+
+---
+
+PATCH https://logging.googleapis.com/v2/folders/folder-${uniqueId}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CretentionDays
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2Ffolder-${uniqueId}%2Flocations%2Fglobal%2Fbuckets%2F_Default
+
+{
+  "retentionDays": 15
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "lifecycleState": 1,
+  "name": "folders/folder-${uniqueId}/locations/global/buckets/_Default",
+  "retentionDays": 15,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dfolders%2F${folderID}+AND+displayName%3D%22Bucket+${uniqueId}%22
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -146,58 +198,6 @@ X-Xss-Protection: 0
   "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 30
-}
-
----
-
-PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CretentionDays
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fbuckets%2F_Default
-
-{
-  "retentionDays": 15
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "lifecycleState": 1,
-  "name": "folders/${folderID}/locations/global/buckets/_Default",
-  "retentionDays": 15,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2Fbuckets%2F_Default
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "lifecycleState": 1,
-  "name": "folders/${folderID}/locations/global/buckets/_Default",
-  "retentionDays": 15,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

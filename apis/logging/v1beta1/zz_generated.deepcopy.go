@@ -376,6 +376,11 @@ func (in *LoggingLogBucketStatus) DeepCopyInto(out *LoggingLogBucketStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.CreateTime != nil {
 		in, out := &in.CreateTime, &out.CreateTime
 		*out = new(string)
