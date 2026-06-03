@@ -181,6 +181,9 @@ func (c *IAMClient) DeletePolicyMember(ctx context.Context, policyMember *v1beta
 }
 
 func (c *IAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	if registry.IsIAMDirect(policy.Spec.ResourceReference.GroupVersionKind().GroupKind()) {
+		return direct.SetIAMPolicy(ctx, c.kubeClient, policy)
+	}
 	if c.isDCLBasedIAMResource(policy) {
 		return c.DCLIAMClient.SetPolicy(ctx, policy)
 	}
@@ -188,6 +191,9 @@ func (c *IAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*
 }
 
 func (c *IAMClient) GetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	if registry.IsIAMDirect(policy.Spec.ResourceReference.GroupVersionKind().GroupKind()) {
+		return direct.GetIAMPolicy(ctx, c.kubeClient, policy)
+	}
 	if c.isDCLBasedIAMResource(policy) {
 		return c.DCLIAMClient.GetPolicy(ctx, policy)
 	}
@@ -195,6 +201,14 @@ func (c *IAMClient) GetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*
 }
 
 func (c *IAMClient) DeletePolicy(ctx context.Context, policy *v1beta1.IAMPolicy) error {
+	if registry.IsIAMDirect(policy.Spec.ResourceReference.GroupVersionKind().GroupKind()) {
+		// For IAMPolicy, delete means setting an empty policy
+		emptyPolicy := policy.DeepCopy()
+		emptyPolicy.Spec.Bindings = nil
+		emptyPolicy.Spec.AuditConfigs = nil
+		_, err := direct.SetIAMPolicy(ctx, c.kubeClient, emptyPolicy)
+		return err
+	}
 	if c.isDCLBasedIAMResource(policy) {
 		return c.DCLIAMClient.DeletePolicy(ctx, policy)
 	}
