@@ -25,10 +25,119 @@ package bigquerydatatransfer
 
 import (
 	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
+	krmbigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func BigQueryDataTransferTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigObservedState{}
+	// MISSING: Name
+	// MISSING: DestinationDatasetID
+	// MISSING: DisplayName
+	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: DatasetRegion
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	// MISSING: OwnerInfo
+	// MISSING: EncryptionConfiguration
+	// MISSING: Error
+	return out
+}
+func BigQueryDataTransferTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigObservedState) *pb.TransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransferConfig{}
+	// MISSING: Name
+	// MISSING: DestinationDatasetID
+	// MISSING: DisplayName
+	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: DatasetRegion
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	// MISSING: OwnerInfo
+	// MISSING: EncryptionConfiguration
+	// MISSING: Error
+	return out
+}
+func BigQueryDataTransferTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigSpec{}
+	// MISSING: Name
+	// MISSING: DestinationDatasetID
+	// MISSING: DisplayName
+	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: DatasetRegion
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	// MISSING: OwnerInfo
+	// MISSING: EncryptionConfiguration
+	// MISSING: Error
+	return out
+}
+func BigQueryDataTransferTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.BigQueryDataTransferTransferConfigSpec) *pb.TransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransferConfig{}
+	// MISSING: Name
+	// MISSING: DestinationDatasetID
+	// MISSING: DisplayName
+	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: DatasetRegion
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	// MISSING: OwnerInfo
+	// MISSING: EncryptionConfiguration
+	// MISSING: Error
+	return out
+}
 func EmailPreferences_FromProto(mapCtx *direct.MapContext, in *pb.EmailPreferences) *krm.EmailPreferences {
 	if in == nil {
 		return nil
