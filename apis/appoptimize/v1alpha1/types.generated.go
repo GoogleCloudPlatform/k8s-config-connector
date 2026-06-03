@@ -21,31 +21,20 @@
 
 package v1alpha1
 
-/* unreachable type Report
-// +kcc:proto=google.cloud.appoptimize.v1beta.Report
-type Report struct {
+/* unreachable type Scope
+// +kcc:proto=google.cloud.appoptimize.v1beta.Scope
+type Scope struct {
+	// Required. A Google Cloud Platform project to fetch data from.
+	//
+	//  Format: `"projects/{project}"`.
+	// +kcc:proto:field=google.cloud.appoptimize.v1beta.Scope.project
+	Project *string `json:"project,omitempty"`
 
-	// +kcc:proto:field=google.cloud.appoptimize.v1beta.Report.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// +kcc:proto:field=google.cloud.appoptimize.v1beta.Report.description
-	Description *string `json:"description,omitempty"`
-
-	// +kcc:proto:field=google.cloud.appoptimize.v1beta.Report.etag
-	Etag *string `json:"etag,omitempty"`
-}
-*/
-
-/* unreachable type ReportObservedState
-// +kcc:observedstate:proto=google.cloud.appoptimize.v1beta.Report
-type ReportObservedState struct {
-	// +kcc:proto:field=google.cloud.appoptimize.v1beta.Report.name
-	Name *string `json:"name,omitempty"`
-
-	// +kcc:proto:field=google.cloud.appoptimize.v1beta.Report.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// +kcc:proto:field=google.cloud.appoptimize.v1beta.Report.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
+	// Required. An App Hub Application to fetch data from.
+	//
+	//  Format:
+	//  `"projects/{project}/locations/{location}/applications/{application}"`.
+	// +kcc:proto:field=google.cloud.appoptimize.v1beta.Scope.application
+	Application *string `json:"application,omitempty"`
 }
 */
