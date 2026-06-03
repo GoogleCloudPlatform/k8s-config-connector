@@ -1,0 +1,33 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineDataStoreTargetSite
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: targetsite-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  dataStoreRef:
+    name: datastore-${uniqueId}
+  exactMatch: true
+  providedURIPattern: example-${uniqueId}.com
+  type: EXCLUDE
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/1780450824484668193
+  observedGeneration: 2
+  observedState:
+    generatedURIPattern: example-${uniqueId}.com/*
+    indexingStatus: SUCCEEDED
+    rootDomainURI: example-${uniqueId}.com
+    siteVerificationInfo:
+      siteVerificationState: VERIFIED
+    updateTime: "1970-01-01T00:00:00Z"

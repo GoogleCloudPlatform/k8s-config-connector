@@ -15,13 +15,50 @@
 package mockdiscoveryengine
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
-func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "discoveryengine.googleapis.com") {
+		return
+	}
+
+	visitor.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".metadata.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
-func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+func (s *MockService) Previsit(event mockgcpregistry.Event, visitor mockgcpregistry.NormalizingVisitor) {
+	if name, ok := event.GetResponseStringValue(".name"); ok {
+		tokens := strings.Split(name, "/")
+		if len(tokens) == 11 && tokens[8] == "siteSearchEngine" && tokens[9] == "targetSites" {
+			targetSiteID := tokens[10]
+			visitor.ReplaceStringValue(targetSiteID, "1780450824484668193")
+		}
+	}
+	if name, ok := event.GetResponseStringValue(".response.name"); ok {
+		tokens := strings.Split(name, "/")
+		if len(tokens) == 11 && tokens[8] == "siteSearchEngine" && tokens[9] == "targetSites" {
+			targetSiteID := tokens[10]
+			visitor.ReplaceStringValue(targetSiteID, "1780450824484668193")
+		}
+	}
+	url := event.URL()
+	tokens := strings.Split(url, "/")
+	for i, t := range tokens {
+		if t == "targetSites" && i+1 < len(tokens) {
+			targetSiteID := strings.Split(tokens[i+1], "?")[0]
+			targetSiteID = strings.Split(targetSiteID, "%2F")[0]
+			if targetSiteID != "" {
+				visitor.ReplaceStringValue(targetSiteID, "1780450824484668193")
+			}
+		}
+	}
 }
