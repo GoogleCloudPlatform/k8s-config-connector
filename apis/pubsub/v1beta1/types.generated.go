@@ -18,5 +18,6 @@
 // krm.version: v1beta1
 // proto.service: google.pubsub.v1
 // resource: PubSubSnapshot:Snapshot
+// resource: PubSubSchema:Schema
 
 package v1beta1

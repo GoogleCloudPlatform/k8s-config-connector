@@ -29,6 +29,30 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func PubSubSchemaSpec_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.PubSubSchemaSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PubSubSchemaSpec{}
+	// MISSING: Name
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Definition = direct.LazyPtr(in.GetDefinition())
+	// MISSING: RevisionID
+	// MISSING: RevisionCreateTime
+	return out
+}
+func PubSubSchemaSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSchemaSpec) *pb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema{}
+	// MISSING: Name
+	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
+	out.Definition = direct.ValueOf(in.Definition)
+	// MISSING: RevisionID
+	// MISSING: RevisionCreateTime
+	return out
+}
 func PubSubSnapshotObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.PubSubSnapshotObservedState {
 	if in == nil {
 		return nil
