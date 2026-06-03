@@ -23,8 +23,10 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	apiv1 "cloud.google.com/go/firestore/apiv1/admin"
 	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
@@ -90,7 +92,8 @@ func (m *firestoreBackupScheduleModel) AdapterForURL(ctx context.Context, url st
 
 	id := &krm.FirestoreBackupScheduleIdentity{}
 	if err := id.FromExternal(url); err != nil {
-		// Not recognized
+		log := klog.FromContext(ctx)
+		log.V(2).Info("unrecognized external URL", "url", url, "error", err)
 		return nil, nil
 	}
 
@@ -177,15 +180,30 @@ func (a *firestoreBackupScheduleAdapter) Update(ctx context.Context, updateOp *d
 	resource := proto.Clone(a.desired).(*pb.BackupSchedule)
 	resource.Name = fqn
 
-	var paths []string
-	if !proto.Equal(a.desired.Retention, a.actual.Retention) {
-		paths = append(paths, "retention")
-	}
-	if !proto.Equal(a.desired.GetDailyRecurrence(), a.actual.GetDailyRecurrence()) || !proto.Equal(a.desired.GetWeeklyRecurrence(), a.actual.GetWeeklyRecurrence()) {
-		paths = append(paths, "recurrence")
+	paths, report, err := common.CompareProtoMessageStructuredDiff(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
 
-	if len(paths) == 0 {
+	var updatePaths []string
+	hasRetention := false
+	hasRecurrence := false
+	for path := range paths {
+		if strings.HasPrefix(path, "retention") {
+			hasRetention = true
+		}
+		if strings.HasPrefix(path, "daily_recurrence") || strings.HasPrefix(path, "weekly_recurrence") {
+			hasRecurrence = true
+		}
+	}
+	if hasRetention {
+		updatePaths = append(updatePaths, "retention")
+	}
+	if hasRecurrence {
+		updatePaths = append(updatePaths, "recurrence")
+	}
+
+	if len(updatePaths) == 0 {
 		mapCtx := &direct.MapContext{}
 		status := &krm.FirestoreBackupScheduleStatus{}
 		status.ObservedState = FirestoreBackupScheduleObservedState_v1alpha1_FromProto(mapCtx, a.actual)
@@ -196,10 +214,13 @@ func (a *firestoreBackupScheduleAdapter) Update(ctx context.Context, updateOp *d
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
+	report.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, report)
+
 	req := &pb.UpdateBackupScheduleRequest{
 		BackupSchedule: resource,
 		UpdateMask: &fieldmaskpb.FieldMask{
-			Paths: paths,
+			Paths: updatePaths,
 		},
 	}
 
