@@ -15,6 +15,7 @@
 package httptogrpc
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -224,6 +225,7 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 			if len(body) != 0 {
 				unmarshalOptions := protojson.UnmarshalOptions{
 					DiscardUnknown: true,
+					Resolver:       &protoResolver{},
 				}
 
 				dest := protoMessage
@@ -276,6 +278,10 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 				k = string(protoKey)
 
 				if err := setProtoField(protoMessage, k, values); err != nil {
+					if errors.Is(err, errFieldNotFound) {
+						klog.V(2).Infof("ignoring unknown url-query field %q", k)
+						continue
+					}
 					klog.Errorf("failed to set url-query field %q: %v", k, err)
 					call.SendErrorResponse(status.Errorf(codes.InvalidArgument, "invalid value for query-param %q", k))
 					return
@@ -311,6 +317,8 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 	call.SendResponse(response, responseOptions)
 }
 
+var errFieldNotFound = errors.New("field not found")
+
 // setProtoField sets the specified proto field; this is normally used for request parameters
 func setProtoField(protoMessage protoreflect.ProtoMessage, k string, values []string) error {
 	tokens := strings.Split(k, ".")
@@ -320,7 +328,7 @@ func setProtoField(protoMessage protoreflect.ProtoMessage, k string, values []st
 		token := tokens[i]
 		fd := curr.Descriptor().Fields().ByTextName(token)
 		if fd == nil {
-			return fmt.Errorf("value field %q not found in %v", k, curr.Descriptor().FullName())
+			return fmt.Errorf("value field %q not found in %v: %w", k, curr.Descriptor().FullName(), errFieldNotFound)
 		}
 		curr = curr.Mutable(fd).Message()
 	}
@@ -329,7 +337,7 @@ func setProtoField(protoMessage protoreflect.ProtoMessage, k string, values []st
 		tail := tokens[len(tokens)-1]
 		fd := curr.Descriptor().Fields().ByTextName(tail)
 		if fd == nil {
-			return fmt.Errorf("value field %q not found in %v", k, curr.Descriptor().FullName())
+			return fmt.Errorf("value field %q not found in %v: %w", k, curr.Descriptor().FullName(), errFieldNotFound)
 		}
 		switch fd.Kind() {
 		case protoreflect.StringKind:
