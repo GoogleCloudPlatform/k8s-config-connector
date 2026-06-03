@@ -593,25 +593,6 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Fmy-bucket-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -677,6 +658,51 @@ X-Xss-Protection: 0
 
 DELETE https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Fmy-bucket-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A sample log bucket",
+  "lifecycleState": 1,
+  "name": "projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Fmy-bucket-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

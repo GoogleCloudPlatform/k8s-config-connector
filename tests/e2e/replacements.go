@@ -139,7 +139,7 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	case "firewallPolicies":
 		return "${firewallPolicyID}"
 	case "folders":
-		return "${folderID}"
+		return "${folderId}"
 	case "memberships":
 		return "${membershipID}"
 	case "sslCertificates":
@@ -222,7 +222,7 @@ func ParseGCPLink(link string) (*GCPLink, error) {
 		}
 
 		// Advance by 2 tokens, unless this is one of the special-case GCP resources
-		if id == "global" {
+		if id == "global" && kind != "locations" {
 			tokens = tokens[:n-1]
 			ret.PathItems = append(ret.PathItems, PathItem{Resource: "", Name: "global"})
 		} else {

@@ -47,7 +47,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	findLinksInKRMObject(t, replacements, u)
 
 	if folderID != "" {
-		replacements.PathIDs[folderID] = "${folderID}"
+		replacements.PathIDs[folderID] = "${folderId}"
 	}
 
 	annotations := u.GetAnnotations()
@@ -433,7 +433,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 			id := tokens[len(tokens)-1]
 
 			// Remove any "verbs" we might be picking up by mistake
-			// e.g. https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}:move?alt=json&prettyPrint=false
+			// e.g. https://cloudresourcemanager.googleapis.com/v3/folders/${folderId}:move?alt=json&prettyPrint=false
 			if strings.Contains(id, ":") {
 				id = strings.Split(id, ":")[0]
 			}
@@ -975,6 +975,7 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 	linkPaths := sets.New(
 		".status.observedState.pscConnections[].forwardingRule",
 		".status.observedState.pscConnections[].network",
+		".status.externalRef",
 	)
 
 	visitor := objectWalker{}
@@ -1002,7 +1003,7 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 			}
 			if strings.HasPrefix(s, "serviceAccount:service-folder-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
 				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-folder-"), "@gcp-sa-logging.iam.gserviceaccount.com")
-				replacement.PathIDs[id] = "${folderID}"
+				replacement.PathIDs[id] = "${folderId}"
 			}
 		}
 		return s
@@ -1022,7 +1023,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 		normalizer.Replacements.PathIDs[organizationID] = "${organizationID}"
 	}
 	if folderID != "" {
-		normalizer.Replacements.PathIDs[folderID] = "${folderID}"
+		normalizer.Replacements.PathIDs[folderID] = "${folderId}"
 	}
 	if uniqueID != "" {
 		normalizer.Replacements.PathIDs[uniqueID] = "${uniqueId}"
