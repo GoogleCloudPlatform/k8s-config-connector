@@ -1,0 +1,13 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: backupdr-iam-${uniqueId}
+spec:
+  resourceRef:
+    apiVersion: backupdr.cnrm.cloud.google.com/v1beta1
+    kind: BackupDRBackupVault
+    name: backupdr-iam-${uniqueId}
+  role: roles/backupdr.backupVaultViewer
+  memberFrom:
+    serviceAccountRef:
+      name: backupdr-dep-${uniqueId}
