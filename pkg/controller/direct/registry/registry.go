@@ -127,6 +127,8 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 	switch groupKind {
 	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
 		return true
+	case schema.GroupKind{Group: "spanner.cnrm.cloud.google.com", Kind: "SpannerInstanceConfig"}:
+		return true
 	}
 	return false
 }
@@ -153,6 +155,8 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 		// case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
 		// 	// https://cloud.google.com/run/docs/reference/iam/roles
 		// 	return true, nil
+	case schema.GroupKind{Group: "spanner.cnrm.cloud.google.com", Kind: "SpannerInstanceConfig"}:
+		return true, nil
 	}
 
 	klog.Warningf("groupKind %v is not recognized as a direct kind for SupportsIAM check", groupKind)
