@@ -1,0 +1,29 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "3600"
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  labels:
+    cnrm-test: "true"
+  name: iampolicymember-alloydbcluster-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  member: serviceAccount:${projectId}.svc.id.goog[${uniqueId}/${uniqueId}]
+  resourceRef:
+    apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+    kind: AlloyDBCluster
+    name: alloydbcluster-${uniqueId}
+  role: roles/alloydb.admin
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 0
