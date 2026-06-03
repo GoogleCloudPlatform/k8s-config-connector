@@ -328,7 +328,7 @@ func setup(ctx context.Context, t *testing.T) {
 	// Wait for all controllers to register and their caches to sync before starting any tests
 	cacheSyncCtx, cacheSyncCancel := context.WithTimeout(ctx, 2*time.Minute)
 	defer cacheSyncCancel()
-	if err := WaitUntilControllersAreRegistered(cacheSyncCtx, t, mgr); err != nil {
+	if err := WaitUntilControllersAreRegistered(cacheSyncCtx, t, mgr, nil); err != nil {
 		logging.Fatal(fmt.Errorf("error waiting for controllers to register and cache to sync: %w", err), "error starting manager")
 	}
 }
