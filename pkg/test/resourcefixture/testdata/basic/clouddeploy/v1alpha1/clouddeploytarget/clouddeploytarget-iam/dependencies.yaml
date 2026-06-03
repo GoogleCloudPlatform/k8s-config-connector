@@ -1,0 +1,18 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+kind: CloudDeployTarget
+metadata:
+  name: clouddeploytarget-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "Target for IAM test"
+  run:
+    location: projects/${projectId}/locations/us-central1
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: sa-${uniqueId}
+spec:
+  displayName: Service Account for IAM test

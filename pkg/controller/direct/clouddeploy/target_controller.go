@@ -32,6 +32,7 @@ import (
 
 	gcp "cloud.google.com/go/deploy/apiv1"
 	clouddeploypb "cloud.google.com/go/deploy/apiv1/deploypb"
+	"cloud.google.com/go/iam/apiv1/iampb"
 
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
@@ -184,6 +185,7 @@ func (a *TargetAdapter) resolveReferences(ctx context.Context) error {
 }
 
 var _ directbase.Adapter = &TargetAdapter{}
+var _ direct.IAMAdapter = &TargetAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
@@ -387,4 +389,27 @@ func (a *TargetAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	}
 	log.V(2).Info("successfully deleted Target", "name", a.id.String())
 	return true, nil
+}
+
+func (a *TargetAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id.String(), err)
+	}
+	return policy, nil
+}
+
+func (a *TargetAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id.String(), err)
+	}
+	return newPolicy, nil
 }

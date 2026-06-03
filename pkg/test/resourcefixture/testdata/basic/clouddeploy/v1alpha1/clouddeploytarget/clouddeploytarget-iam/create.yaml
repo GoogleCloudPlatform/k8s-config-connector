@@ -1,0 +1,11 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-${uniqueId}
+spec:
+  member: serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  role: roles/clouddeploy.viewer
+  resourceRef:
+    apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+    kind: CloudDeployTarget
+    name: clouddeploytarget-${uniqueId}
