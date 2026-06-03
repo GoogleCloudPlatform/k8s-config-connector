@@ -18,75 +18,81 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
-	_ identity.Identity   = &GKEHubNamespaceIdentity{}
 	_ identity.IdentityV2 = &GKEHubNamespaceIdentity{}
 	_ identity.Resource   = &GKEHubNamespace{}
+)
 
-	namespaceURL = gcpurls.Template[GKEHubNamespaceIdentity](
-		"gkehub.googleapis.com",
-		"projects/{projectID}/locations/{location}/scopes/{scopeID}/namespaces/{namespaceID}",
-	)
+var GKEHubNamespaceIdentityFormat = gcpurls.Template[GKEHubNamespaceIdentity](
+	"gkehub.googleapis.com",
+	"projects/{project}/locations/{location}/scopes/{scope}/namespaces/{namespace}",
 )
 
 // GKEHubNamespaceIdentity defines the resource reference to GKEHubNamespace, which "External" field
 // holds the GCP identifier for the KRM object.
 // +k8s:deepcopy-gen=false
 type GKEHubNamespaceIdentity struct {
-	ProjectID   string
-	Location    string
-	ScopeID     string
-	NamespaceID string
+	Project   string
+	Location  string
+	Scope     string
+	Namespace string
 }
 
 func (i *GKEHubNamespaceIdentity) String() string {
-	return namespaceURL.ToString(*i)
-}
-
-func (i *GKEHubNamespaceIdentity) ID() string {
-	return i.NamespaceID
+	return GKEHubNamespaceIdentityFormat.ToString(*i)
 }
 
 func (i *GKEHubNamespaceIdentity) Host() string {
-	return namespaceURL.Host()
+	return GKEHubNamespaceIdentityFormat.Host()
 }
 
-func (i *GKEHubNamespaceIdentity) Parent() *GKEHubScopeIdentity {
-	return NewGKEHubScopeIdentity(i.ProjectID, i.Location, i.ScopeID)
-}
-
-func (i *GKEHubNamespaceIdentity) FromExternal(external string) error {
-	out, match, err := namespaceURL.Parse(external)
+func (i *GKEHubNamespaceIdentity) FromExternal(ref string) error {
+	parsed, match, err := GKEHubNamespaceIdentityFormat.Parse(ref)
 	if err != nil {
-		return err
+		return fmt.Errorf("format of GKEHubNamespace external=%q was not known (use %s): %w", ref, GKEHubNamespaceIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of GKEHubNamespace external=%q was not known (use %s)", external, namespaceURL.CanonicalForm())
+		return fmt.Errorf("format of GKEHubNamespace external=%q was not known (use %s)", ref, GKEHubNamespaceIdentityFormat.CanonicalForm())
 	}
-	*i = *out
+	*i = *parsed
 	return nil
 }
 
-func NewGKEHubNamespaceIdentity(project, location, scopeID, namespaceID string) *GKEHubNamespaceIdentity {
+func NewGKEHubNamespaceIdentity(project, location, scope, namespace string) *GKEHubNamespaceIdentity {
 	return &GKEHubNamespaceIdentity{
-		ProjectID:   project,
-		Location:    location,
-		ScopeID:     scopeID,
-		NamespaceID: namespaceID,
+		Project:   project,
+		Location:  location,
+		Scope:     scope,
+		Namespace: namespace,
 	}
 }
 
-func (obj *GKEHubNamespace) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	if obj.Spec.ScopeRef == nil {
+func getIdentityFromGKEHubNamespaceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*GKEHubNamespaceIdentity, error) {
+	gkeHubNamespace := &GKEHubNamespace{}
+	switch t := obj.(type) {
+	case *GKEHubNamespace:
+		gkeHubNamespace = t
+	case *unstructured.Unstructured:
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(t.Object, gkeHubNamespace); err != nil {
+			return nil, fmt.Errorf("failed to convert unstructured to GKEHubNamespace: %w", err)
+		}
+	default:
+		return nil, fmt.Errorf("expected *GKEHubNamespace or *unstructured.Unstructured, got %T", obj)
+	}
+
+	if gkeHubNamespace.Spec.ScopeRef == nil {
 		return nil, fmt.Errorf("spec.scopeRef is required")
 	}
-	scopeRef, err := ResolveGKEHubScopeRef(ctx, reader, obj, obj.Spec.ScopeRef)
+	scopeRef, err := ResolveGKEHubScopeRef(ctx, reader, gkeHubNamespace, gkeHubNamespace.Spec.ScopeRef)
 	if err != nil {
 		return nil, err
 	}
@@ -106,13 +112,35 @@ func (obj *GKEHubNamespace) GetIdentity(ctx context.Context, reader client.Reade
 		return nil, fmt.Errorf("could not derive scopeID from scopeRef")
 	}
 
-	namespaceID := direct.ValueOf(obj.Spec.NamespaceID)
+	namespaceID := direct.ValueOf(gkeHubNamespace.Spec.NamespaceID)
 	if namespaceID == "" {
-		namespaceID = direct.ValueOf(obj.Spec.ResourceID)
+		namespaceID = direct.ValueOf(gkeHubNamespace.Spec.ResourceID)
 	}
 	if namespaceID == "" {
-		namespaceID = obj.GetName()
+		namespaceID = gkeHubNamespace.GetName()
 	}
 
 	return NewGKEHubNamespaceIdentity(projectID, location, scopeID, namespaceID), nil
+}
+
+func (obj *GKEHubNamespace) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromGKEHubNamespaceSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusIdentity := &GKEHubNamespaceIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change GKEHubNamespace identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }
