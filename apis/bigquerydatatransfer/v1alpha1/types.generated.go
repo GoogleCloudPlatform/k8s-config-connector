@@ -35,6 +35,8 @@ type EncryptionConfiguration struct {
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 }
 
+/* found existing non-generated go type "EventDrivenSchedule", skipping
+
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule
 type EventDrivenSchedule struct {
 	// Pub/Sub subscription name used to receive events.
@@ -43,6 +45,7 @@ type EventDrivenSchedule struct {
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule.pubsub_subscription
 	PubsubSubscription *string `json:"pubsubSubscription,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "ManualSchedule", skipping
 

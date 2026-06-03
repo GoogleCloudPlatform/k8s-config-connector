@@ -112,14 +112,39 @@ spec:
               location:
                 description: The location of this resource.
                 type: string
-              notificationPubsubTopic:
+              notificationPubsubTopicRef:
                 description: |-
                   Pub/Sub topic where notifications will be sent after transfer runs
                   associated with this transfer config finish.
 
                   The format for specifying a pubsub topic is:
                   `projects/{project_id}/topics/{topic_id}`
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed PubSubTopic
+                      resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
+                    type: string
+                  name:
+                    description: The name of a PubSubTopic resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a PubSubTopic resource.
+                    type: string
+                type: object
               params:
                 description: 'Parameters specific to each data source. For more information
                   see the bq tab in the ''Setting up a data transfer'' section for
@@ -211,11 +236,36 @@ spec:
                     description: Event driven transfer schedule options. If set, the
                       transfer will be scheduled upon events arrial.
                     properties:
-                      pubsubSubscription:
+                      pubsubSubscriptionRef:
                         description: 'Pub/Sub subscription name used to receive events.
                           Only Google Cloud Storage data source support this option.
                           Format: projects/{project}/subscriptions/{subscription}'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed PubSubSubscription
+                              resource. Should be in the format "projects/{{projectID}}/subscriptions/{{subscriptionID}}".
+                            type: string
+                          name:
+                            description: The name of a PubSubSubscription resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a PubSubSubscription resource.
+                            type: string
+                        type: object
                     type: object
                   manualSchedule:
                     description: Manual transfer schedule. If set, the transfer run

@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -103,7 +104,7 @@ type BigQueryDataTransferTransferConfigSpec struct {
 	// The format for specifying a pubsub topic is:
 	// `projects/{project_id}/topics/{topic_id}`
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.notification_pubsub_topic
-	NotificationPubsubTopic *string `json:"notificationPubsubTopic,omitempty"`
+	NotificationPubsubTopicRef *pubsubv1beta1.PubSubTopicRef `json:"notificationPubsubTopicRef,omitempty"`
 
 	// Email notifications will be sent according to these preferences
 	// to the email address of the user who owns this transfer config.
@@ -198,4 +199,13 @@ func init() {
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.ManualSchedule
 // +kubebuilder:pruning:PreserveUnknownFields
 type ManualSchedule struct {
+}
+
+// +kcc:proto=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule
+type EventDrivenSchedule struct {
+	// Pub/Sub subscription name used to receive events.
+	// Only Google Cloud Storage data source support this option.
+	// Format: projects/{project}/subscriptions/{subscription}
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule.pubsub_subscription
+	PubsubSubscriptionRef *pubsubv1beta1.PubSubSubscriptionRef `json:"pubsubSubscriptionRef,omitempty"`
 }

@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
 	krmbigquerydatatransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
+	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -76,7 +77,9 @@ func BigQueryDataTransferTransferConfigSpec_v1alpha1_FromProto(mapCtx *direct.Ma
 	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	// MISSING: UserID
-	out.NotificationPubsubTopic = direct.LazyPtr(in.GetNotificationPubsubTopic())
+	if in.GetNotificationPubsubTopic() != "" {
+		out.NotificationPubsubTopicRef = &krmpubsubv1beta1.PubSubTopicRef{External: in.GetNotificationPubsubTopic()}
+	}
 	out.EmailPreferences = EmailPreferences_v1alpha1_FromProto(mapCtx, in.GetEmailPreferences())
 	out.EncryptionConfiguration = EncryptionConfiguration_v1alpha1_FromProto(mapCtx, in.GetEncryptionConfiguration())
 	// MISSING: Error
@@ -100,7 +103,9 @@ func BigQueryDataTransferTransferConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.DataRefreshWindowDays = direct.ValueOf(in.DataRefreshWindowDays)
 	out.Disabled = direct.ValueOf(in.Disabled)
 	// MISSING: UserID
-	out.NotificationPubsubTopic = direct.ValueOf(in.NotificationPubsubTopic)
+	if in.NotificationPubsubTopicRef != nil {
+		out.NotificationPubsubTopic = in.NotificationPubsubTopicRef.External
+	}
 	out.EmailPreferences = EmailPreferences_v1alpha1_ToProto(mapCtx, in.EmailPreferences)
 	out.EncryptionConfiguration = EncryptionConfiguration_v1alpha1_ToProto(mapCtx, in.EncryptionConfiguration)
 	// MISSING: Error
@@ -165,7 +170,9 @@ func EventDrivenSchedule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Ev
 		return nil
 	}
 	out := &krmbigquerydatatransferv1alpha1.EventDrivenSchedule{}
-	out.PubsubSubscription = direct.LazyPtr(in.GetPubsubSubscription())
+	if in.GetPubsubSubscription() != "" {
+		out.PubsubSubscriptionRef = &krmpubsubv1beta1.PubSubSubscriptionRef{External: in.GetPubsubSubscription()}
+	}
 	return out
 }
 func EventDrivenSchedule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigquerydatatransferv1alpha1.EventDrivenSchedule) *pb.EventDrivenSchedule {
@@ -173,7 +180,9 @@ func EventDrivenSchedule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigq
 		return nil
 	}
 	out := &pb.EventDrivenSchedule{}
-	out.PubsubSubscription = direct.ValueOf(in.PubsubSubscription)
+	if in.PubsubSubscriptionRef != nil {
+		out.PubsubSubscription = in.PubsubSubscriptionRef.External
+	}
 	return out
 }
 func ManualSchedule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krmbigquerydatatransferv1alpha1.ManualSchedule {
