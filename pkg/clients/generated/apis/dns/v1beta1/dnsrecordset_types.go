@@ -63,8 +63,13 @@ type RecordsetGeo struct {
 }
 
 type RecordsetHealthCheckedTargets struct {
+	/* The Internet IP addresses to be health checked. */
+	// +optional
+	ExternalEndpoints []string `json:"externalEndpoints,omitempty"`
+
 	/* The list of internal load balancers to health check. */
-	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers"`
+	// +optional
+	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers,omitempty"`
 }
 
 type RecordsetInternalLoadBalancers struct {
@@ -88,8 +93,13 @@ type RecordsetInternalLoadBalancers struct {
 }
 
 type RecordsetPrimary struct {
+	/* The Internet IP addresses to be health checked. */
+	// +optional
+	ExternalEndpoints []string `json:"externalEndpoints,omitempty"`
+
 	/* The list of internal load balancers to health check. */
-	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers"`
+	// +optional
+	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers,omitempty"`
 }
 
 type RecordsetPrimaryBackup struct {
@@ -116,6 +126,9 @@ type RecordsetRoutingPolicy struct {
 	/* The configuration for Geo location based routing policy. */
 	// +optional
 	Geo []RecordsetGeo `json:"geo,omitempty"`
+
+	// +optional
+	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 
 	/* The configuration for a primary-backup policy with global to regional failover. Queries are responded to with the global primary targets, but if none of the primary targets are healthy, then we fallback to a regional failover policy. */
 	// +optional

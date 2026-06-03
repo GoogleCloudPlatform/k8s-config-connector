@@ -15,27 +15,25 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: default
+  name: network-${uniqueId}
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: "${projectId}"
-    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
-  description: Default network for the project
+  description: A test network for dns E2E
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
-  name: default
+  name: subnet-${uniqueId}
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: "${projectId}"
-    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   ipCidrRange: 10.128.0.0/20
   region: us-central1
   networkRef:
-    name: default
+    name: network-${uniqueId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
@@ -50,7 +48,7 @@ spec:
   ipVersion: IPV4
   purpose: SHARED_LOADBALANCER_VIP
   subnetworkRef:
-    name: default
+    name: subnet-${uniqueId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck
@@ -74,7 +72,7 @@ metadata:
 spec:
   zone: us-central1-a
   networkRef:
-    name: default
+    name: network-${uniqueId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
@@ -113,9 +111,9 @@ spec:
   ipProtocol: "TCP"
   location: us-central1
   networkRef:
-    name: default
+    name: network-${uniqueId}
   subnetworkRef:
-    name: default
+    name: subnet-${uniqueId}
   ports:
     - '80'
   allowGlobalAccess: true
@@ -133,4 +131,4 @@ spec:
   privateVisibilityConfig:
     networks:
       - networkRef:
-          name: default
+          name: network-${uniqueId}

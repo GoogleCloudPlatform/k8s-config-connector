@@ -15,6 +15,7 @@
 package mockdns
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -41,6 +42,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.ReplacePath(".zoneContext.newValue.creationTime", mockgcpregistry.PlaceholderTimestamp)
 		replacements.ReplacePath(".zoneContext.oldValue.creationTime", mockgcpregistry.PlaceholderTimestamp)
 	}
+
+	// DNS Change
+	{
+		replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".changes[].startTime", mockgcpregistry.PlaceholderTimestamp)
+	}
 }
 
 func isDNSAPI(url string) bool {
@@ -48,6 +55,40 @@ func isDNSAPI(url string) bool {
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	u := event.URL()
+	// Extract changeId from URL path (e.g., .../changes/<changeId>)
+	var changeId string
+	if strings.Contains(u, "/changes/") {
+		tokens := strings.Split(strings.Split(u, "?")[0], "/")
+		for i, token := range tokens {
+			if token == "changes" && i+1 < len(tokens) {
+				tokenVal := tokens[i+1]
+				if tokenVal != "" && tokenVal != "000000000000000000000" {
+					changeId = tokenVal
+				}
+			}
+		}
+	}
+
+	if changeId != "" {
+		replacements.TransformString("{url}", func(s string) string {
+			re := regexp.MustCompile(`/changes/` + regexp.QuoteMeta(changeId) + `([/?:]|$)`)
+			return re.ReplaceAllString(s, `/changes/${changeId}$1`)
+		})
+		replacements.TransformString(".id", func(s string) string {
+			if s == changeId {
+				return "${changeId}"
+			}
+			return s
+		})
+		replacements.TransformString(".changes[].id", func(s string) string {
+			if s == changeId {
+				return "${changeId}"
+			}
+			return s
+		})
+	}
+
 	kind := ""
 
 	event.VisitResponseStringValues(func(path string, value string) {
@@ -61,7 +102,42 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		event.VisitResponseStringValues(func(path string, value string) {
 			switch path {
 			case ".id":
-				replacements.ReplaceStringValue(value, "${managedZoneId}")
+				if value != "000000000000000000000" {
+					replacements.ReplaceStringValue(value, "${managedZoneId}")
+				}
+			}
+		})
+	}
+
+	if kind == "dns#change" {
+		event.VisitResponseStringValues(func(path string, value string) {
+			switch path {
+			case ".id":
+				if value != "000000000000000000000" {
+					changeId = value
+					replacements.TransformString(".id", func(s string) string {
+						if s == changeId {
+							return "${changeId}"
+						}
+						return s
+					})
+				}
+			}
+		})
+	}
+
+	if kind == "dns#changesListResponse" {
+		event.VisitResponseStringValues(func(path string, value string) {
+			if strings.HasSuffix(path, ".id") {
+				if value != "000000000000000000000" {
+					changeId = value
+					replacements.TransformString(".changes[].id", func(s string) string {
+						if s == changeId {
+							return "${changeId}"
+						}
+						return s
+					})
+				}
 			}
 		})
 	}

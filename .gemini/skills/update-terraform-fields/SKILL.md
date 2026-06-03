@@ -154,3 +154,8 @@ Once definitions are updated, the agent must verify correctness of the field usi
      ```
 2. **Proceed to Test Skill**:
    - Refer to [.gemini/skills/test-terraform-fields/SKILL.md](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/test-terraform-fields/SKILL.md) to set up E2E tests, record golden files, check against MockGCP, and run linters.
+
+3. **Field Ownership Conflicts with `oneOf`**:
+   - **Gotcha**: Some legacy resources are exempted from Server-Side Apply (SSA) for object creation in [ratcheting.go](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/tests/e2e/ratcheting.go). During fixture tests, the object is created using a legacy `Create` call, but updates are always applied via `Apply` (SSA). If your update switches between choices in a `oneOf` field (e.g., from `rrdatas` to `rrdatasRefs`), the legacy field is not owned by the SSA field manager and remains in the live object. This triggers a validation failure: `"spec" must validate one and only one schema (oneOf). Found 2 valid alternatives`.
+   - **Solution**: Enable Server-Side Apply for the resource by removing it from the exempted list in [ratcheting.go](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/tests/e2e/ratcheting.go). This ensures both creation and updates use SSA, and unreferenced fields under a `oneOf` choice are correctly cleaned up.
+
