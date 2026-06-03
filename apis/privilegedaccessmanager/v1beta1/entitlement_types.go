@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -48,6 +48,7 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 	// +required
 	Location *string `json:"location"`
 
+	// Immutable.
 	// The PrivilegedAccessManagerEntitlement name. If not given, the
 	// 'metadata.name' will be used.
 	// +optional
@@ -75,11 +76,11 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 	// Required. The manner in which the requester should provide a justification
 	// for requesting access.
 	// +required
-	RequesterJustificationConfig *RequesterJustificationConfig `json:"requesterJustificationConfig,omitempty"`
+	RequesterJustificationConfig *Entitlement_RequesterJustificationConfig `json:"requesterJustificationConfig,omitempty"`
 
 	// Optional. Additional email addresses to be notified based on actions taken.
 	// +optional
-	AdditionalNotificationTargets *AdditionalNotificationTargets `json:"additionalNotificationTargets,omitempty"`
+	AdditionalNotificationTargets *Entitlement_AdditionalNotificationTargets `json:"additionalNotificationTargets,omitempty"`
 }
 
 // PrivilegedAccessManagerEntitlementStatus defines the config connector machine
@@ -107,7 +108,7 @@ type PrivilegedAccessManagerEntitlementStatus struct {
 
 // PrivilegedAccessManagerEntitlementSpec defines the desired state of
 // PrivilegedAccessManagerEntitlement.
-// +kcc:observedstate:proto=google.privilegedaccessmanager.v1.Entitlement
+// +kcc:observedstate:proto=google.cloud.privilegedaccessmanager.v1.Entitlement
 type PrivilegedAccessManagerEntitlementObservedState struct {
 	// Output only. Create time stamp.
 	// +optional
@@ -137,6 +138,7 @@ type PrivilegedAccessManagerEntitlementObservedState struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
@@ -145,6 +147,7 @@ type PrivilegedAccessManagerEntitlementObservedState struct {
 // PrivilegedAccessManagerEntitlement is the Schema for the
 // PrivilegedAccessManagerEntitlement API.
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type PrivilegedAccessManagerEntitlement struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
