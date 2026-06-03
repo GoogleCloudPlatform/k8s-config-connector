@@ -488,4 +488,3 @@
 | workstations.cnrm.cloud.google.com            | WorkstationCluster                              | True         | True        | False  | Direct     | True        |
 | workstations.cnrm.cloud.google.com            | WorkstationConfig                               | True         | True        | False  | Direct     | True        |
 | workstations.cnrm.cloud.google.com            | Workstation                                     | True         | True        | False  | Direct     | True        |
-| cloudsecuritycompliance.cnrm.cloud.google.com | CloudSecurityComplianceCloudControl             | True         | False       | False  | Direct     | True        |
