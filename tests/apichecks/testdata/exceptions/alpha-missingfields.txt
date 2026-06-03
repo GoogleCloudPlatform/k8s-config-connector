@@ -494,6 +494,21 @@
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.imageAllowlist.allowPattern[]" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.platform" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.blockchainType" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.apiEnableAdmin" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.apiEnableDebug" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.consensusClient" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.executionClient" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.gethDetails.garbageCollectionMode" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.network" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.nodeType" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.validatorConfig.beaconFeeRecipient" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.validatorConfig.managedValidatorClient" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ethereumDetails.validatorConfig.mevRelayURLs[]" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.privateServiceConnectEnabled" is not set in unstructured objects
+[missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentID" is not set in unstructured objects
 [missing_field] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.callMetadata.agentChannel" is not set in unstructured objects
 [missing_field] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.callMetadata.customerChannel" is not set in unstructured objects

@@ -46,15 +46,21 @@ type BlockchainNode struct {
 }
 */
 
+/* found existing non-generated go type "BlockchainNode_ConnectionInfo", skipping
+
 // +kcc:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.ConnectionInfo
 type BlockchainNode_ConnectionInfo struct {
 }
+*/
 
-/* unreachable type BlockchainNode_ConnectionInfo_EndpointInfo
+/* found existing non-generated go type "BlockchainNode_ConnectionInfo_EndpointInfo", skipping
+
 // +kcc:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.ConnectionInfo.EndpointInfo
 type BlockchainNode_ConnectionInfo_EndpointInfo struct {
 }
 */
+
+/* found existing non-generated go type "BlockchainNode_EthereumDetails", skipping
 
 // +kcc:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails
 type BlockchainNode_EthereumDetails struct {
@@ -93,10 +99,16 @@ type BlockchainNode_EthereumDetails struct {
 	// +kcc:proto:field=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.validator_config
 	ValidatorConfig *BlockchainNode_EthereumDetails_ValidatorConfig `json:"validatorConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "BlockchainNode_EthereumDetails_EthereumEndpoints", skipping
 
 // +kcc:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.EthereumEndpoints
 type BlockchainNode_EthereumDetails_EthereumEndpoints struct {
 }
+*/
+
+/* found existing non-generated go type "BlockchainNode_EthereumDetails_GethDetails", skipping
 
 // +kcc:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.GethDetails
 type BlockchainNode_EthereumDetails_GethDetails struct {
@@ -104,6 +116,9 @@ type BlockchainNode_EthereumDetails_GethDetails struct {
 	// +kcc:proto:field=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.GethDetails.garbage_collection_mode
 	GarbageCollectionMode *string `json:"garbageCollectionMode,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "BlockchainNode_EthereumDetails_ValidatorConfig", skipping
 
 // +kcc:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.ValidatorConfig
 type BlockchainNode_EthereumDetails_ValidatorConfig struct {
@@ -130,6 +145,7 @@ type BlockchainNode_EthereumDetails_ValidatorConfig struct {
 	// +kcc:proto:field=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.ValidatorConfig.beacon_fee_recipient
 	BeaconFeeRecipient *string `json:"beaconFeeRecipient,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.blockchainnodeengine.v1.BlockchainNode", skipping
 
@@ -155,7 +171,7 @@ type BlockchainNodeObservedState struct {
 	// Output only. The connection information used to interact with a blockchain
 	//  node.
 	// +kcc:proto:field=google.cloud.blockchainnodeengine.v1.BlockchainNode.connection_info
-	ConnectionInfo *BlockchainNode_ConnectionInfo `json:"connectionInfo,omitempty"`
+	ConnectionInfo *BlockchainNode_ConnectionInfoObservedState `json:"connectionInfo,omitempty"`
 
 	// Output only. A status representing the state of the node.
 	// +kcc:proto:field=google.cloud.blockchainnodeengine.v1.BlockchainNode.state
@@ -163,13 +179,14 @@ type BlockchainNodeObservedState struct {
 }
 */
 
-/* unreachable type BlockchainNode_ConnectionInfoObservedState
+/* found existing non-generated go type "BlockchainNode_ConnectionInfoObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.ConnectionInfo
 type BlockchainNode_ConnectionInfoObservedState struct {
 	// Output only. The endpoint information through which to interact with a
 	//  blockchain node.
 	// +kcc:proto:field=google.cloud.blockchainnodeengine.v1.BlockchainNode.ConnectionInfo.endpoint_info
-	EndpointInfo *BlockchainNode_ConnectionInfo_EndpointInfo `json:"endpointInfo,omitempty"`
+	EndpointInfo *BlockchainNode_ConnectionInfo_EndpointInfoObservedState `json:"endpointInfo,omitempty"`
 
 	// Output only. A service attachment that exposes a node, and has the
 	//  following format:
@@ -179,7 +196,8 @@ type BlockchainNode_ConnectionInfoObservedState struct {
 }
 */
 
-/* unreachable type BlockchainNode_ConnectionInfo_EndpointInfoObservedState
+/* found existing non-generated go type "BlockchainNode_ConnectionInfo_EndpointInfoObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.ConnectionInfo.EndpointInfo
 type BlockchainNode_ConnectionInfo_EndpointInfoObservedState struct {
 	// Output only. The assigned URL for the node JSON-RPC API endpoint.
@@ -192,14 +210,18 @@ type BlockchainNode_ConnectionInfo_EndpointInfoObservedState struct {
 }
 */
 
+/* found existing non-generated go type "BlockchainNode_EthereumDetailsObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails
 type BlockchainNode_EthereumDetailsObservedState struct {
 	// Output only. Ethereum-specific endpoint information.
 	// +kcc:proto:field=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.additional_endpoints
-	AdditionalEndpoints *BlockchainNode_EthereumDetails_EthereumEndpoints `json:"additionalEndpoints,omitempty"`
+	AdditionalEndpoints *BlockchainNode_EthereumDetails_EthereumEndpointsObservedState `json:"additionalEndpoints,omitempty"`
 }
+*/
 
-/* unreachable type BlockchainNode_EthereumDetails_EthereumEndpointsObservedState
+/* found existing non-generated go type "BlockchainNode_EthereumDetails_EthereumEndpointsObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.EthereumEndpoints
 type BlockchainNode_EthereumDetails_EthereumEndpointsObservedState struct {
 	// Output only. The assigned URL for the node's Beacon API endpoint.

@@ -232,6 +232,24 @@ spec:
                   connectionInfo:
                     description: Output only. The connection information used to interact
                       with a blockchain node.
+                    properties:
+                      endpointInfo:
+                        description: Output only. The endpoint information through
+                          which to interact with a blockchain node.
+                        properties:
+                          jsonRpcAPIEndpoint:
+                            description: Output only. The assigned URL for the node
+                              JSON-RPC API endpoint.
+                            type: string
+                          websocketsAPIEndpoint:
+                            description: Output only. The assigned URL for the node
+                              WebSockets API endpoint.
+                            type: string
+                        type: object
+                      serviceAttachment:
+                        description: 'Output only. A service attachment that exposes
+                          a node, and has the following format: projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}'
+                        type: string
                     type: object
                   createTime:
                     description: Output only. The timestamp at which the blockchain
@@ -242,6 +260,21 @@ spec:
                     properties:
                       additionalEndpoints:
                         description: Output only. Ethereum-specific endpoint information.
+                        properties:
+                          beaconAPIEndpoint:
+                            description: Output only. The assigned URL for the node's
+                              Beacon API endpoint.
+                            type: string
+                          beaconPrometheusMetricsAPIEndpoint:
+                            description: Output only. The assigned URL for the node's
+                              Beacon Prometheus metrics endpoint. See [Prometheus
+                              Metrics](https://lighthouse-book.sigmaprime.io/advanced_metrics.html)
+                              for more details.
+                            type: string
+                          executionClientPrometheusMetricsAPIEndpoint:
+                            description: Output only. The assigned URL for the node's
+                              execution client's Prometheus metrics endpoint.
+                            type: string
                         type: object
                     type: object
                   name:
