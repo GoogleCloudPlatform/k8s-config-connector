@@ -1,4 +1,4 @@
-apiVersion: bigtable.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableMaterializedView
 metadata:
   finalizers:
