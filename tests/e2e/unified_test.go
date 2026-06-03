@@ -315,6 +315,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					forceDirect = true
 				case "APIKeysKey":
 					forceDirect = true
+				case "LoggingLogView":
+					forceDirect = true
 				case "TagsLocationTagBinding":
 					forceDirect = false
 				case "FirestoreIndex":
@@ -735,6 +737,11 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
+
+					if options.ForceDirectController || options.FallbackToOldController {
+						events.RemoveHTTPRequestHeader("User-Agent")
+						events.RemoveHTTPRequestHeader("X-Goog-Request-Params")
+					}
 
 					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
 					if options.TestPause {
