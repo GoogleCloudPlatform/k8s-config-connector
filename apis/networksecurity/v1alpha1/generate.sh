@@ -47,6 +47,7 @@ go run . generate-types \
   --resource NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup \
   --resource NetworkSecuritySACRealm:SACRealm \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
+  --resource NetworkSecurityAuthzPolicy:AuthzPolicy \
   --proto-source-path ${PROTO_OUT}
 
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)

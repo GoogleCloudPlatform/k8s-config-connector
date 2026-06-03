@@ -284,6 +284,7 @@ func constructResourceDefinitions(crdsPath, crdFile string) []*resourceDefinitio
 		if versionName == "v1alpha1" && versionNames.Has("v1beta1") {
 			continue
 		}
+
 		crdVersionDefinition := k8s.GetCRDVersionDefinition(crd, versionName)
 
 		r := &resourceDefinition{}
