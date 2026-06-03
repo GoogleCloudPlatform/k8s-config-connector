@@ -121,6 +121,11 @@ func (in *BigQueryReservationCapacityCommitmentSpec) DeepCopyInto(out *BigQueryR
 		*out = new(string)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)

@@ -30,13 +30,13 @@ var (
 	_ identity.Resource   = &BigQueryReservationReservationGroup{}
 )
 
-var BigQueryReservationReservationGroupIdentityFormat = gcpurls.Template[BigQueryReservationReservationGroupIdentity]("bigqueryreservation.googleapis.com", "projects/{project}/locations/{location}/reservationGroups/{reservationgroup}")
+var BigQueryReservationReservationGroupIdentityFormat = gcpurls.Template[BigQueryReservationReservationGroupIdentity]("bigqueryreservation.googleapis.com", "projects/{project}/locations/{location}/reservationGroups/{reservation_group}")
 
 // +k8s:deepcopy-gen=false
 type BigQueryReservationReservationGroupIdentity struct {
-	Project          string
-	Location         string
-	ReservationGroup string
+	Project           string
+	Location          string
+	Reservation_group string
 }
 
 func (i *BigQueryReservationReservationGroupIdentity) String() string {
@@ -77,9 +77,9 @@ func getIdentityFromBigQueryReservationReservationGroupSpec(ctx context.Context,
 	}
 
 	identity := &BigQueryReservationReservationGroupIdentity{
-		Project:          projectID,
-		Location:         location,
-		ReservationGroup: resourceID,
+		Project:           projectID,
+		Location:          location,
+		Reservation_group: resourceID,
 	}
 	return identity, nil
 }
