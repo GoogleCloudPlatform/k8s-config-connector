@@ -17,8 +17,8 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
+	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -135,16 +135,19 @@ func getIdentityFromLoggingLogExclusionSpec(ctx context.Context, reader client.R
 		}
 		identity.Organization = org.OrganizationID
 	} else if obj.Spec.BillingAccountRef != nil {
-		billingRef := obj.Spec.BillingAccountRef
-		if billingRef.External == "" {
-			return nil, fmt.Errorf("billingAccountRef only supports external reference")
+		billingRef := &billingv1alpha1.BillingAccountRef{
+			External:  obj.Spec.BillingAccountRef.External,
+			Name:      obj.Spec.BillingAccountRef.Name,
+			Namespace: obj.Spec.BillingAccountRef.Namespace,
 		}
-		billingIdentity := billingRef.External
-		if billingTokens := strings.Split(billingIdentity, "/"); len(billingTokens) == 2 && billingTokens[0] == "billingAccounts" {
-			identity.BillingAccount = billingTokens[1]
-		} else {
-			identity.BillingAccount = billingIdentity
+		if err := billingRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, fmt.Errorf("resolving spec.billingAccountRef: %w", err)
 		}
+		billingIdentity := &billingv1alpha1.BillingAccountIdentity{}
+		if err := billingIdentity.FromExternal(billingRef.External); err != nil {
+			return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
+		}
+		identity.BillingAccount = billingIdentity.BillingAccountID
 	} else {
 		// Fallback to project ID from namespace
 		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
