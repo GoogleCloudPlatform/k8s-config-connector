@@ -698,6 +698,10 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						switch event.Request.Method {
 						case "GET":
 							isReadOnly = true
+						case "GRPC":
+							if strings.Contains(event.Request.URL, "/Get") || strings.Contains(event.Request.URL, "/List") {
+								isReadOnly = true
+							}
 						}
 						if !isReadOnly {
 							t.Errorf("FAIL: unexpected event during re-reconciliation: %v", event)
