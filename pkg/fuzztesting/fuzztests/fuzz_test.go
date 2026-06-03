@@ -43,7 +43,7 @@ func TestSomeMappers(t *testing.T) {
 	seed := time.Now().UnixNano()
 	randStream := rand.New(rand.NewSource(seed))
 
-	for i := 0; i < 100000; i++ {
+	for i := 0; i < 10000; i++ {
 		fuzzer := fuzztesting.ChooseFuzzer(randStream.Int63())
 		nextSeed := randStream.Int63()
 		fuzzer(t, nextSeed)

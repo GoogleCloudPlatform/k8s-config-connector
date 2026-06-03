@@ -26,6 +26,7 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -101,6 +102,7 @@ type NetworkAttachmentAdapter struct {
 }
 
 var _ directbase.Adapter = &NetworkAttachmentAdapter{}
+var _ direct.IAMAdapter = &NetworkAttachmentAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
@@ -294,6 +296,50 @@ func (a *NetworkAttachmentAdapter) Delete(ctx context.Context, deleteOp *directb
 	}
 
 	return true, nil
+}
+
+func (a *NetworkAttachmentAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting IAM policy", "name", a.id)
+
+	req := &computepb.GetIamPolicyNetworkAttachmentRequest{
+		Project:  a.id.Parent().ProjectID,
+		Region:   a.id.Parent().Location,
+		Resource: a.id.ID(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting IAM policy for %q: %w", a.id, err)
+	}
+
+	mapCtx := &direct.MapContext{}
+	return IAMPolicy_FromProto(mapCtx, policy), mapCtx.Err()
+}
+
+func (a *NetworkAttachmentAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("setting IAM policy", "name", a.id)
+
+	mapCtx := &direct.MapContext{}
+	computepolicy := IAMPolicy_ToProto(mapCtx, policy)
+	if err := mapCtx.Err(); err != nil {
+		return nil, err
+	}
+
+	req := &computepb.SetIamPolicyNetworkAttachmentRequest{
+		Project:  a.id.Parent().ProjectID,
+		Region:   a.id.Parent().Location,
+		Resource: a.id.ID(),
+		RegionSetPolicyRequestResource: &computepb.RegionSetPolicyRequest{
+			Policy: computepolicy,
+		},
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting IAM policy for %q: %w", a.id, err)
+	}
+
+	return IAMPolicy_FromProto(mapCtx, newPolicy), mapCtx.Err()
 }
 
 func (a *NetworkAttachmentAdapter) get(ctx context.Context) (*computepb.NetworkAttachment, error) {
