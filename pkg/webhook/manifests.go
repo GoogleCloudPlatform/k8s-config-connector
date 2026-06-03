@@ -26,7 +26,7 @@ import (
 )
 
 var (
-	admissionReviewVersions = []string{"v1"}
+	admissionReviewVersions = []string{"v1", "v1beta1"}
 )
 
 func GenerateWebhookManifests(validatingWebhookConfigurationName, mutatingWebhookConfigurationName,
