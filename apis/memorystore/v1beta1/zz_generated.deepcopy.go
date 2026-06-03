@@ -20,7 +20,7 @@ package v1beta1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	runtime "k8s.io/apimachinery/pkg/runtime"

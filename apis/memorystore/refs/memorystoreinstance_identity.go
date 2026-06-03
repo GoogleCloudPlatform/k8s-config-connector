@@ -15,14 +15,10 @@
 package refs
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
-	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 var (
@@ -57,31 +53,4 @@ func (i *MemorystoreInstanceIdentity) FromExternal(ref string) error {
 
 func (i *MemorystoreInstanceIdentity) Host() string {
 	return MemorystoreInstanceIdentityFormat.Host()
-}
-
-// MemorystoreInstance_IdentityFromSpec gets the identity of a MemorystoreInstance from its spec.
-// We could have a registry mapping GVK to the type, once all the types implemented identity.Resource,
-// then we could move this helper into the resource type.
-func MemorystoreInstance_IdentityFromSpec(ctx context.Context, reader client.Reader, obj client.Object) (*MemorystoreInstanceIdentity, error) {
-	resourceID, err := refsv1beta1.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	location, err := refsv1beta1.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
-
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	identity := &MemorystoreInstanceIdentity{
-		Project:  projectID,
-		Location: location,
-		Instance: resourceID,
-	}
-	return identity, nil
 }

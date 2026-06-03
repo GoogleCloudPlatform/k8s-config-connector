@@ -15,20 +15,12 @@
 package v1beta1
 
 import (
-	"context"
-	"fmt"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	memorystorerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 
 // MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
 // +kcc:spec:proto=google.cloud.memorystore.v1.Instance
@@ -104,31 +96,6 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The automated backup config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.automated_backup_config
 	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
-}
-
-var _ identity.Resource = &MemorystoreInstance{}
-
-func (obj *MemorystoreInstance) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := refs.MemorystoreInstance_IdentityFromSpec(ctx, reader, obj)
-	if err != nil {
-		return nil, err
-	}
-
-	// Cross-check the identity against the status value, if present.
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		statusIdentity := &refs.MemorystoreInstanceIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change MemorystoreInstance identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
-	}
-
-	return specIdentity, nil
 }
 
 type Parent struct {
@@ -427,6 +394,8 @@ func init() {
 	SchemeBuilder.Register(&MemorystoreInstance{}, &MemorystoreInstanceList{})
 }
 
+var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
+
 type CrossInstanceReplicationConfig struct {
 	// Required. The role of the instance in cross instance replication.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.instance_role
@@ -444,7 +413,7 @@ type CrossInstanceReplicationConfig struct {
 type CrossInstanceReplicationConfig_RemoteInstance struct {
 	// Optional. The full resource path of the remote instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
-	InstanceRef *refs.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
+	InstanceRef *memorystorerefs.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
 }
 
 type CrossInstanceReplicationConfigObservedState struct {

@@ -23,6 +23,7 @@ When asked to update or create the identity and reference for a "resource of the
 2. Look for the resource version directory under `apis/<groupPrefix>/`. Example: `apis/memorystore/v1beta1/` or `apis/memorystore/v1alpha1/`. (Check the filesystem to see which versions exist).
 3. The files to edit/create are `apis/<groupPrefix>/<version>/<kind>_identity.go` and `apis/<groupPrefix>/<version>/<kind>_reference.go`.
    - Note: `<kind>` is typically the full lowercase Kind, e.g. `memorystoreinstance`. Sometimes the `groupPrefix` is dropped, so check if the files already exist.
+   - **Important:** If moving the `<kind>_reference.go` to the resource package causes a circular dependency (e.g. because another service referenced by this resource also references this resource), the Reference struct should instead be moved to `apis/refs/v1beta1/<kind>_reference.go` (package `v1beta1`).
 
 ### Step 2: Determine the Identity Template
 
