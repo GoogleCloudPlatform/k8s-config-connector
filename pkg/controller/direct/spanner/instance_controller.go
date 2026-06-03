@@ -30,6 +30,7 @@ import (
 
 	gcp "cloud.google.com/go/spanner/admin/instance/apiv1"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	spannerpb "cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -337,4 +338,37 @@ func (a *SpannerInstanceAdapter) SpecValidation() error {
 		return fmt.Errorf("Only one field can be set between numNodes and processingUnits.")
 	}
 	return nil
+}
+
+func (a *SpannerInstanceAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource ID")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *SpannerInstanceAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource ID")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }
