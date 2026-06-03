@@ -1,5 +1,5 @@
 ---
-name: kcc-direct-types-implementer
+name: kcc-direct-brownfield-types-implementer
 description: Guides the implementation of KRM types and CRD scaffolding for new "direct" resources.
 ---
 

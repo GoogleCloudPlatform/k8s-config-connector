@@ -68,7 +68,7 @@ To ensure stability and reproducibility, this task is pinned to the following re
 
 # Implementation Instructions
 
-1. **Scaffold types**: Use skill `.gemini/skills/kcc-direct-resource-scaffolder/SKILL.md` with:
+1. **Scaffold types**: Use skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` with:
    - service: <proto.package.name>
    - resource: <Kind>:<ProtoMessageName>
    - api_version: <group>.cnrm.cloud.google.com/v1alpha1

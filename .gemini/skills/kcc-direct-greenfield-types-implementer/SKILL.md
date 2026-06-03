@@ -1,5 +1,5 @@
 ---
-name: kcc-direct-resource-scaffolder
+name: kcc-direct-greenfield-types-implementer
 description: Automate the initial scaffolding of a KCC "direct" resource, including CRD types and generation scripts. Use this when starting a new "direct" implementation for a GCP resource.
 ---
 
