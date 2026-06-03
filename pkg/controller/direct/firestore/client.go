@@ -20,7 +20,9 @@ import (
 
 	api "cloud.google.com/go/firestore/apiv1"
 	adminapi "cloud.google.com/go/firestore/apiv1/admin"
+	iam "cloud.google.com/go/iam/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 func newFirestoreAdminClient(ctx context.Context, config *config.ControllerConfig) (*adminapi.FirestoreAdminClient, error) {
@@ -30,7 +32,20 @@ func newFirestoreAdminClient(ctx context.Context, config *config.ControllerConfi
 	}
 	client, err := adminapi.NewFirestoreAdminRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building firestore admin client: %w", err)
+		return nil, fmt.Errorf("building firestore client: %w", err)
+	}
+	return client, err
+}
+
+func newIAMPolicyClient(ctx context.Context, config *config.ControllerConfig) (*iam.IamPolicyClient, error) {
+	opts, err := config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, option.WithEndpoint("https://firestore.googleapis.com"))
+	client, err := iam.NewIamPolicyRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building iam policy client: %w", err)
 	}
 	return client, err
 }
