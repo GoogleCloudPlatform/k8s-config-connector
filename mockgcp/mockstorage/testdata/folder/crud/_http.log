@@ -68,7 +68,7 @@ Content-Type: application/json
 
 {
   "bucket": "bucket${uniqueId}",
-  "name": "${folderID}"
+  "name": "${folderId}"
 }
 
 200 OK
@@ -84,14 +84,14 @@ Vary: X-Origin
   "id": "000000000000000000000",
   "kind": "storage#folder",
   "metageneration": "1",
-  "name": "${folderID}/",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}",
+  "name": "${folderId}/",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}?alt=json
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -108,14 +108,14 @@ Vary: X-Origin
   "id": "000000000000000000000",
   "kind": "storage#folder",
   "metageneration": "1",
-  "name": "${folderID}/",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}",
+  "name": "${folderId}/",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o/${folderID}?alt=json&projection=noAcl
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o/${folderId}?alt=json&projection=noAcl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -133,18 +133,18 @@ Vary: X-Origin
     "errors": [
       {
         "domain": "global",
-        "message": "No such object: bucket${uniqueId}/${folderID}",
+        "message": "No such object: bucket${uniqueId}/${folderId}",
         "reason": "notFound"
       }
     ],
-    "message": "No such object: bucket${uniqueId}/${folderID}",
+    "message": "No such object: bucket${uniqueId}/${folderId}",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o?alt=json&delimiter=%2F&includeFoldersAsPrefixes=True&maxResults=1000&prefix=${folderID}&projection=noAcl
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o?alt=json&delimiter=%2F&includeFoldersAsPrefixes=True&maxResults=1000&prefix=${folderId}&projection=noAcl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -158,14 +158,14 @@ Vary: X-Origin
 {
   "kind": "storage#objects",
   "prefixes": [
-    "${folderID}",
+    "${folderId}",
     "testmanagedfolder"
   ]
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}?alt=json
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -182,14 +182,14 @@ Vary: X-Origin
   "id": "000000000000000000000",
   "kind": "storage#folder",
   "metageneration": "1",
-  "name": "${folderID}/",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}",
+  "name": "${folderId}/",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}?alt=json
+DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive

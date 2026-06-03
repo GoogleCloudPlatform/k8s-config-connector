@@ -38,10 +38,28 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type LogbucketCmekSettings struct {
+	/* The resource name for the configured Cloud KMS key. KMS key name format: "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]" */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+}
+
+type LogbucketIndexConfigs struct {
+	/* The LogEntry field path to index. Note that some paths are automatically indexed, and other paths are not eligible for indexing. See indexing documentation for details. */
+	FieldPath string `json:"fieldPath"`
+
+	/* The type of data in this index. */
+	Type string `json:"type"`
+}
+
 type LoggingLogBucketSpec struct {
 	/* Immutable. The BillingAccount that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
 	// +optional
 	BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
+
+	/* The CMEK settings of the log bucket. If present, new log entries written to this log bucket are encrypted using the CMEK key provided in this configuration. If a log bucket has CMEK settings, the CMEK settings cannot be disabled later by updating the log bucket. Changing the KMS key is allowed. */
+	// +optional
+	CmekSettings *LogbucketCmekSettings `json:"cmekSettings,omitempty"`
 
 	/* Describes this bucket. */
 	// +optional
@@ -54,6 +72,10 @@ type LoggingLogBucketSpec struct {
 	/* Immutable. The Folder that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+
+	/* A list of indexed fields and related configuration data. */
+	// +optional
+	IndexConfigs []LogbucketIndexConfigs `json:"indexConfigs,omitempty"`
 
 	/* Immutable. The location of the resource. The supported locations are: global, us-central1, us-east1, us-west1, asia-east1, europe-west1. */
 	Location string `json:"location"`
@@ -74,6 +96,10 @@ type LoggingLogBucketSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* Log entry field paths that are denied access in this bucket. The following fields and their children are eligible: textPayload, jsonPayload, protoPayload, httpRequest, labels, sourceLocation. Restricting a repeated field will restrict all values. Adding a parent will block all child fields. (e.g. foo.bar will block foo.bar.baz) */
+	// +optional
+	RestrictedFields []string `json:"restrictedFields,omitempty"`
+
 	/* Logs will be retained by default for this amount of time, after which they will automatically be deleted. The minimum retention period is 1 day. If this value is set to zero at bucket creation time, the default time of 30 days will be used. */
 	// +optional
 	RetentionDays *int64 `json:"retentionDays,omitempty"`
@@ -86,6 +112,10 @@ type LoggingLogBucketStatus struct {
 	/* Output only. The creation timestamp of the bucket. This is not set for any of the default buckets. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
+
+	/* A fully qualified name of the resource, typically in the form `projects/{{project}}/locations/{{location}}/buckets/{{bucket}}`. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* Output only. The bucket lifecycle state. Possible values: LIFECYCLE_STATE_UNSPECIFIED, ACTIVE, DELETE_REQUESTED */
 	// +optional
@@ -104,7 +134,6 @@ type LoggingLogBucketStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcplogginglogbucket;gcplogginglogbuckets
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
