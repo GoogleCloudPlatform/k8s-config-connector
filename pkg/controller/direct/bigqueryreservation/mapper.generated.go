@@ -60,6 +60,8 @@ func BigQueryReservationAssignmentObservedState_v1beta1_FromProto(mapCtx *direct
 	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
+	// MISSING: Principal
 	return out
 }
 func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentObservedState) *pb.Assignment {
@@ -70,6 +72,40 @@ func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.M
 	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
+	// MISSING: Principal
+	return out
+}
+func BigQueryReservationReservationGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReservationGroup) *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupObservedState{}
+	// MISSING: Name
+	return out
+}
+func BigQueryReservationReservationGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupObservedState) *pb.ReservationGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationGroup{}
+	// MISSING: Name
+	return out
+}
+func BigQueryReservationReservationGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReservationGroup) *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec{}
+	// MISSING: Name
+	return out
+}
+func BigQueryReservationReservationGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec) *pb.ReservationGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationGroup{}
+	// MISSING: Name
 	return out
 }
 
