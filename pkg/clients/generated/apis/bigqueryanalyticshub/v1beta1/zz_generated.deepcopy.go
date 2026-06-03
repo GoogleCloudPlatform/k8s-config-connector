@@ -339,7 +339,7 @@ func (in *DataexchangeObservedStateStatus) DeepCopyInto(out *DataexchangeObserve
 	*out = *in
 	if in.ListingCount != nil {
 		in, out := &in.ListingCount, &out.ListingCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return

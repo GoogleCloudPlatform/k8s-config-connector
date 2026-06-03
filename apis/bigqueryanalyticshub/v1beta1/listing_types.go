@@ -32,6 +32,7 @@ type SelectedResource struct {
 	TableRef *bigqueryv1beta1.BigQueryTableRef `json:"tableRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource
 type BigQueryDatasetSource struct {
 	// +required
 	// Resource name of the dataset source for this listing.
@@ -176,6 +177,7 @@ type BigQueryAnalyticsHubListingObservedState struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryanalyticshublisting;gcpbigqueryanalyticshublistings
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

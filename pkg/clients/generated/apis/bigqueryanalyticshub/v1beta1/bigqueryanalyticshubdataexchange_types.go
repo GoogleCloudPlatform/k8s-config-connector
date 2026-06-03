@@ -73,7 +73,7 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 type DataexchangeObservedStateStatus struct {
 	/* Number of listings contained in the data exchange. */
 	// +optional
-	ListingCount *int64 `json:"listingCount,omitempty"`
+	ListingCount *int32 `json:"listingCount,omitempty"`
 }
 
 type BigQueryAnalyticsHubDataExchangeStatus struct {
