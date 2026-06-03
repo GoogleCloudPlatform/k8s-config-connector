@@ -97,7 +97,6 @@ type LoggingLogViewStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcplogginglogview;gcplogginglogviews
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/default-controller=direct"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
