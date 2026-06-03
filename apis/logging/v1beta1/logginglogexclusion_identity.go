@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,90 +26,85 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &LogBucketIdentity{}
-	_ identity.Resource   = &LoggingLogBucket{}
+	_ identity.IdentityV2 = &LoggingLogExclusionIdentity{}
+	_ identity.Resource   = &LoggingLogExclusion{}
 )
 
 var (
-	ProjectLogBucketIdentityFormat        = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "projects/{project}/locations/{location}/buckets/{bucket}")
-	FolderLogBucketIdentityFormat         = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "folders/{folder}/locations/{location}/buckets/{bucket}")
-	OrganizationLogBucketIdentityFormat   = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "organizations/{organization}/locations/{location}/buckets/{bucket}")
-	BillingAccountLogBucketIdentityFormat = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "billingAccounts/{billingAccount}/locations/{location}/buckets/{bucket}")
-	AccessPolicyLogBucketIdentityFormat   = gcpurls.Template[LogBucketIdentity]("logging.googleapis.com", "accessPolicies/{accessPolicy}/locations/{location}/buckets/{bucket}")
+	ProjectLogExclusionIdentityFormat        = gcpurls.Template[LoggingLogExclusionIdentity]("logging.googleapis.com", "projects/{project}/exclusions/{exclusion}")
+	FolderLogExclusionIdentityFormat         = gcpurls.Template[LoggingLogExclusionIdentity]("logging.googleapis.com", "folders/{folder}/exclusions/{exclusion}")
+	OrganizationLogExclusionIdentityFormat   = gcpurls.Template[LoggingLogExclusionIdentity]("logging.googleapis.com", "organizations/{organization}/exclusions/{exclusion}")
+	BillingAccountLogExclusionIdentityFormat = gcpurls.Template[LoggingLogExclusionIdentity]("logging.googleapis.com", "billingAccounts/{billingAccount}/exclusions/{exclusion}")
 )
 
 // +k8s:deepcopy-gen=false
-type LogBucketIdentity struct {
+type LoggingLogExclusionIdentity struct {
 	Project        string
 	Folder         string
 	Organization   string
 	BillingAccount string
-	AccessPolicy   string
-	Location       string
-	Bucket         string
+	Exclusion      string
 }
 
-func (i *LogBucketIdentity) String() string {
+func (i *LoggingLogExclusionIdentity) String() string {
 	if i.Project != "" {
-		return ProjectLogBucketIdentityFormat.ToString(*i)
+		return ProjectLogExclusionIdentityFormat.ToString(*i)
 	}
 	if i.Folder != "" {
-		return FolderLogBucketIdentityFormat.ToString(*i)
+		return FolderLogExclusionIdentityFormat.ToString(*i)
 	}
 	if i.Organization != "" {
-		return OrganizationLogBucketIdentityFormat.ToString(*i)
+		return OrganizationLogExclusionIdentityFormat.ToString(*i)
 	}
 	if i.BillingAccount != "" {
-		return BillingAccountLogBucketIdentityFormat.ToString(*i)
-	}
-	if i.AccessPolicy != "" {
-		return AccessPolicyLogBucketIdentityFormat.ToString(*i)
+		return BillingAccountLogExclusionIdentityFormat.ToString(*i)
 	}
 	return ""
 }
 
-func (i *LogBucketIdentity) ID() string {
-	return i.Bucket
+func (i *LoggingLogExclusionIdentity) ID() string {
+	return i.Exclusion
 }
 
-func (i *LogBucketIdentity) FromExternal(ref string) error {
-	if parsed, match, _ := ProjectLogBucketIdentityFormat.Parse(ref); match {
+func (i *LoggingLogExclusionIdentity) FromExternal(ref string) error {
+	if parsed, match, _ := ProjectLogExclusionIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
 	}
-	if parsed, match, _ := FolderLogBucketIdentityFormat.Parse(ref); match {
+	if parsed, match, _ := FolderLogExclusionIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
 	}
-	if parsed, match, _ := OrganizationLogBucketIdentityFormat.Parse(ref); match {
+	if parsed, match, _ := OrganizationLogExclusionIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
 	}
-	if parsed, match, _ := BillingAccountLogBucketIdentityFormat.Parse(ref); match {
+	if parsed, match, _ := BillingAccountLogExclusionIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
 	}
-	if parsed, match, _ := AccessPolicyLogBucketIdentityFormat.Parse(ref); match {
-		*i = *parsed
-		return nil
-	}
-	return fmt.Errorf("format of LoggingLogBucket external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}})", ref)
+	return fmt.Errorf("format of LoggingLogExclusion external=%q was not known (use %s, %s, %s, or %s)",
+		ref,
+		ProjectLogExclusionIdentityFormat.CanonicalForm(),
+		FolderLogExclusionIdentityFormat.CanonicalForm(),
+		OrganizationLogExclusionIdentityFormat.CanonicalForm(),
+		BillingAccountLogExclusionIdentityFormat.CanonicalForm(),
+	)
 }
 
-func (i *LogBucketIdentity) Host() string {
+func (i *LoggingLogExclusionIdentity) Host() string {
 	return "logging.googleapis.com"
 }
 
-func getIdentityFromLoggingLogBucketSpec(ctx context.Context, reader client.Reader, obj *LoggingLogBucket) (*LogBucketIdentity, error) {
+func getIdentityFromLoggingLogExclusionSpec(ctx context.Context, reader client.Reader, obj *LoggingLogExclusion) (*LoggingLogExclusionIdentity, error) {
 	// Get user-configured ID
 	resourceID, err := refsv1beta1.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	identity := &LogBucketIdentity{
-		Bucket:   resourceID,
-		Location: obj.Spec.Location,
+	identity := &LoggingLogExclusionIdentity{
+		Exclusion: resourceID,
 	}
 
 	// Resolve parent references
@@ -165,6 +160,6 @@ func getIdentityFromLoggingLogBucketSpec(ctx context.Context, reader client.Read
 	return identity, nil
 }
 
-func (obj *LoggingLogBucket) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	return getIdentityFromLoggingLogBucketSpec(ctx, reader, obj)
+func (obj *LoggingLogExclusion) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return getIdentityFromLoggingLogExclusionSpec(ctx, reader, obj)
 }
