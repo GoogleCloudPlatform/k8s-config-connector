@@ -24,7 +24,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strings"
 
 	gcp "cloud.google.com/go/analytics/admin/apiv1alpha"
 	pb "cloud.google.com/go/analytics/admin/apiv1alpha/adminpb"
@@ -32,12 +31,14 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -65,10 +66,11 @@ func (m *accountModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewAccountIdentity(ctx, reader, obj)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.AccountIdentity)
 
 	config := m.config
 	// Get GCP client
@@ -117,7 +119,9 @@ func (a *accountAdapter) Find(ctx context.Context) (bool, error) {
 			return false, err
 		}
 		if id != "" {
-			a.id.SetID(id)
+			if err := a.id.FromExternal(id); err != nil {
+				return false, err
+			}
 			a.actual = acc
 			return true, nil
 		}
@@ -158,7 +162,7 @@ func (a *accountAdapter) discoverAccountID(ctx context.Context) (string, *pb.Acc
 		}
 		if acc.DisplayName == direct.ValueOf(a.desired.Spec.DisplayName) {
 			log.V(2).Info("automatically discovered analytics account ID via display name", "name", acc.Name)
-			return strings.TrimPrefix(acc.Name, "accounts/"), acc, nil
+			return acc.Name, acc, nil
 		}
 	}
 	return "", nil, nil
@@ -198,7 +202,7 @@ func (a *accountAdapter) Create(ctx context.Context, createOp *directbase.Create
 		log.Error(err, "error discovering account ID after provisioning ticket")
 	}
 	if id != "" {
-		status.ExternalRef = direct.LazyPtr("accounts/" + id)
+		status.ExternalRef = direct.LazyPtr(id)
 		status.ObservedState = AnalyticsAccountObservedState_FromProto(mapCtx, acc)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
@@ -230,27 +234,20 @@ func (a *accountAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	resource.Name = a.id.String()
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-
-	paths := []string{}
-	if desired.Spec.DisplayName != nil && direct.ValueOf(desired.Spec.DisplayName) != a.actual.DisplayName {
-		report.AddField("display_name", a.actual.DisplayName, desired.Spec.DisplayName)
-		paths = append(paths, "display_name")
-	}
-	if desired.Spec.RegionCode != nil && direct.ValueOf(desired.Spec.RegionCode) != a.actual.RegionCode {
-		report.AddField("region_code", a.actual.RegionCode, desired.Spec.RegionCode)
-		paths = append(paths, "region_code")
+	paths, report, err := common.CompareProtoMessageStructuredDiff(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
 
 	var updated *pb.Account
-	if len(paths) == 0 {
+	if paths.Len() == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
 		structuredreporting.ReportDiff(ctx, report)
 		req := &pb.UpdateAccountRequest{
 			Account:    resource,
-			UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
+			UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 		}
 		var err error
 		updated, err = a.gcpClient.UpdateAccount(ctx, req)

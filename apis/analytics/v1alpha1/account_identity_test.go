@@ -18,25 +18,22 @@ import (
 	"context"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
-func ptrTo(s string) *string {
-	return &s
-}
-
-func TestParseAccountExternal(t *testing.T) {
+func TestAccountIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name           string
-		external       string
-		wantResourceID string
-		wantErr        bool
+		name        string
+		external    string
+		wantAccount string
+		wantErr     bool
 	}{
 		{
-			name:           "valid external",
-			external:       "accounts/12345",
-			wantResourceID: "12345",
-			wantErr:        false,
+			name:        "valid external",
+			external:    "accounts/12345",
+			wantAccount: "12345",
+			wantErr:     false,
 		},
 		{
 			name:     "invalid external format",
@@ -56,19 +53,20 @@ func TestParseAccountExternal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotResourceID, err := ParseAccountExternal(tt.external)
+			id := &AccountIdentity{}
+			err := id.FromExternal(tt.external)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ParseAccountExternal() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !tt.wantErr && gotResourceID != tt.wantResourceID {
-				t.Errorf("ParseAccountExternal() gotResourceID = %v, want %v", gotResourceID, tt.wantResourceID)
+			if !tt.wantErr && id.Account != tt.wantAccount {
+				t.Errorf("FromExternal() gotAccount = %v, want %v", id.Account, tt.wantAccount)
 			}
 		})
 	}
 }
 
-func TestNewAccountIdentity(t *testing.T) {
+func TestAnalyticsAccount_GetIdentity(t *testing.T) {
 	ctx := context.Background()
 	fakeClient := fake.NewClientBuilder().Build()
 
@@ -82,7 +80,7 @@ func TestNewAccountIdentity(t *testing.T) {
 			name: "spec.resourceID is set",
 			obj: &AnalyticsAccount{
 				Spec: AnalyticsAccountSpec{
-					ResourceID: ptrTo("12345"),
+					ResourceID: direct.PtrTo("12345"),
 				},
 			},
 			wantID:  "12345",
@@ -92,7 +90,7 @@ func TestNewAccountIdentity(t *testing.T) {
 			name: "spec.resourceID is empty, status.externalRef is set",
 			obj: &AnalyticsAccount{
 				Status: AnalyticsAccountStatus{
-					ExternalRef: ptrTo("accounts/67890"),
+					ExternalRef: direct.PtrTo("accounts/67890"),
 				},
 			},
 			wantID:  "67890",
@@ -102,10 +100,10 @@ func TestNewAccountIdentity(t *testing.T) {
 			name: "spec.resourceID and status.externalRef are both set and consistent",
 			obj: &AnalyticsAccount{
 				Spec: AnalyticsAccountSpec{
-					ResourceID: ptrTo("12345"),
+					ResourceID: direct.PtrTo("12345"),
 				},
 				Status: AnalyticsAccountStatus{
-					ExternalRef: ptrTo("accounts/12345"),
+					ExternalRef: direct.PtrTo("accounts/12345"),
 				},
 			},
 			wantID:  "12345",
@@ -115,10 +113,10 @@ func TestNewAccountIdentity(t *testing.T) {
 			name: "spec.resourceID and status.externalRef are inconsistent",
 			obj: &AnalyticsAccount{
 				Spec: AnalyticsAccountSpec{
-					ResourceID: ptrTo("12345"),
+					ResourceID: direct.PtrTo("12345"),
 				},
 				Status: AnalyticsAccountStatus{
-					ExternalRef: ptrTo("accounts/67890"),
+					ExternalRef: direct.PtrTo("accounts/67890"),
 				},
 			},
 			wantErr: true,
@@ -127,17 +125,18 @@ func TestNewAccountIdentity(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewAccountIdentity(ctx, fakeClient, tt.obj)
+			gotIdentity, err := tt.obj.GetIdentity(ctx, fakeClient)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewAccountIdentity() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("GetIdentity() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr {
+				got := gotIdentity.(*AccountIdentity)
 				if got.ID() != tt.wantID {
-					t.Errorf("NewAccountIdentity() ID = %v, want %v", got.ID(), tt.wantID)
+					t.Errorf("GetIdentity() ID = %v, want %v", got.ID(), tt.wantID)
 				}
 				if got.String() != "accounts/"+tt.wantID {
-					t.Errorf("NewAccountIdentity() String = %v, want` %v", got.String(), "accounts/"+tt.wantID)
+					t.Errorf("GetIdentity() String = %v, want %v", got.String(), "accounts/"+tt.wantID)
 				}
 			}
 		})
