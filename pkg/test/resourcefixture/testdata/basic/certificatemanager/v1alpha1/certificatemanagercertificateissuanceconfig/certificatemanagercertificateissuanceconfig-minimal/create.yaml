@@ -1,0 +1,15 @@
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1alpha1
+kind: CertificateManagerCertificateIssuanceConfig
+metadata:
+  name: gcpcertiss-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: "us-central1"
+  certificateAuthorityConfig:
+    certificateAuthorityServiceConfig:
+      caPoolRef:
+        name: privatecacapool-${uniqueId}
+  lifetime: "1814400s"
+  rotationWindowPercentage: 34
+  keyAlgorithm: "RSA_2048"
