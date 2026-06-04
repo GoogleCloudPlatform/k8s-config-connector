@@ -1,0 +1,484 @@
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "scope \"projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes?alt=json&prettyPrint=false&scopeId=gkh-rb-group-dep-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.Scope",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}",
+    "state": {
+      "code": "READY"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}",
+  "state": {
+    "code": "READY"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "rBACRoleBinding \"projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings?alt=json&prettyPrint=false&rbacrolebindingId=gkh-rb-group-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "group": "groups1@example.com",
+  "role": {
+    "predefinedRole": "VIEW"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.RBACRoleBinding",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "group": "groups1@example.com",
+    "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}",
+    "role": {
+      "predefinedRole": "VIEW"
+    },
+    "state": {
+      "code": "READY"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "group": "groups1@example.com",
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}",
+  "role": {
+    "predefinedRole": "VIEW"
+  },
+  "state": {
+    "code": "READY"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}?alt=json&prettyPrint=false&updateMask=role
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "group": "groups1@example.com",
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}",
+  "role": {
+    "predefinedRole": "ADMIN"
+  },
+  "state": {
+    "code": "READY"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.RBACRoleBinding",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "group": "groups1@example.com",
+    "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}",
+    "role": {
+      "predefinedRole": "ADMIN"
+    },
+    "state": {
+      "code": "READY"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "group": "groups1@example.com",
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}",
+  "role": {
+    "predefinedRole": "ADMIN"
+  },
+  "state": {
+    "code": "READY"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/rbacrolebindings/gkh-rb-group-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}",
+  "state": {
+    "code": "READY"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/global/scopes/gkh-rb-group-dep-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
