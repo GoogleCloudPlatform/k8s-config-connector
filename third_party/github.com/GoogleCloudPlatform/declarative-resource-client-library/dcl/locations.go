@@ -15,25 +15,14 @@ package dcl
 
 import "regexp"
 
-// IsRegion returns true if this string refers to a GCP region or multi-region.
+// IsRegion returns true if this string refers to a GCP region.
 func IsRegion(s *string) bool {
 	if s == nil {
 		return false
 	}
 
 	r := regexp.MustCompile(`^[a-z]+-[a-z]+[0-9]+$`)
-	if r.MatchString(*s) {
-		return true
-	}
-
-	// Also support multi-regions/locations (e.g., us, eu, in)
-	// but exclude "global" to maintain backward compatibility for global URLs.
-	switch *s {
-	case "us", "eu", "in":
-		return true
-	}
-
-	return false
+	return r.MatchString(*s)
 }
 
 // IsZone returns true if this string refers to a GCP zone.

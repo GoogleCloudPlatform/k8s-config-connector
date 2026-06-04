@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package dcl
+package dlp
 
 import "testing"
 
@@ -27,12 +27,12 @@ func TestIsRegion(t *testing.T) {
 		{"asia-east1", true},
 		{"us-east4", true},
 
-		// Multi-regions
-		{"us", false},
-		{"eu", false},
+		// DLP Multi-regions
+		{"us", true},
+		{"eu", true},
+		{"in", true},
 		{"europe", false},
 		{"asia", false},
-		{"in", false},
 
 		// Global / Non-regional
 		{"global", false},
@@ -47,41 +47,9 @@ func TestIsRegion(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.input, func(t *testing.T) {
-			actual := IsRegion(&tc.input)
+			actual := isRegion(&tc.input)
 			if actual != tc.expected {
-				t.Errorf("IsRegion(%q) = %v; want %v", tc.input, actual, tc.expected)
-			}
-		})
-	}
-}
-
-func TestIsZone(t *testing.T) {
-	tests := []struct {
-		input    string
-		expected bool
-	}{
-		// Zones
-		{"us-central1-a", true},
-		{"europe-west3-b", true},
-		{"asia-east1-c", true},
-
-		// Standard regions
-		{"us-central1", false},
-		{"europe-west3", false},
-
-		// Multi-regions
-		{"us", false},
-		{"eu", false},
-		{"global", false},
-		{"", false},
-	}
-
-	for _, tc := range tests {
-		tc := tc
-		t.Run(tc.input, func(t *testing.T) {
-			actual := IsZone(&tc.input)
-			if actual != tc.expected {
-				t.Errorf("IsZone(%q) = %v; want %v", tc.input, actual, tc.expected)
+				t.Errorf("isRegion(%q) = %v; want %v", tc.input, actual, tc.expected)
 			}
 		})
 	}
