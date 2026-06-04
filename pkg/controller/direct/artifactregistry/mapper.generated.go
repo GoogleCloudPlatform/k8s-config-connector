@@ -175,6 +175,8 @@ func ArtifactRegistryRepositoryRemoteRepositoryConfig_ToProto(mapCtx *direct.Map
 	// MISSING: DisableUpstreamValidation
 	return out
 }
+
+/* found existing non-generated mapping function "ArtifactRegistryRepositorySpec_FromProto", skipping
 func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositorySpec {
 	if in == nil {
 		return nil
@@ -202,41 +204,47 @@ func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: RegistryURI
 	return out
 }
-func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositorySpec) *pb.Repository {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ArtifactRegistryRepositorySpec_ToProto", skipping
+
+	func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositorySpec) *pb.Repository {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Repository{}
+		if oneof := Repository_MavenRepositoryConfig_ToProto(mapCtx, in.MavenConfig); oneof != nil {
+			out.FormatConfig = &pb.Repository_MavenConfig{MavenConfig: oneof}
+		}
+		if oneof := Repository_DockerRepositoryConfig_ToProto(mapCtx, in.DockerConfig); oneof != nil {
+			out.FormatConfig = &pb.Repository_DockerConfig{DockerConfig: oneof}
+		}
+		if oneof := ArtifactRegistryRepositoryVirtualRepositoryConfig_ToProto(mapCtx, in.VirtualRepositoryConfig); oneof != nil {
+			out.ModeConfig = &pb.Repository_VirtualRepositoryConfig{VirtualRepositoryConfig: oneof}
+		}
+		if oneof := ArtifactRegistryRepositoryRemoteRepositoryConfig_ToProto(mapCtx, in.RemoteRepositoryConfig); oneof != nil {
+			out.ModeConfig = &pb.Repository_RemoteRepositoryConfig{RemoteRepositoryConfig: oneof}
+		}
+		// MISSING: Name
+		out.Format = direct.Enum_ToProto[pb.Repository_Format](mapCtx, in.Format)
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: Labels
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		// MISSING: KMSKeyName
+		out.Mode = direct.Enum_ToProto[pb.Repository_Mode](mapCtx, in.Mode)
+		// TODO: map type string message for field CleanupPolicies
+		// MISSING: SizeBytes
+		// MISSING: SatisfiesPzs
+		out.CleanupPolicyDryRun = direct.ValueOf(in.CleanupPolicyDryRun)
+		// MISSING: VulnerabilityScanningConfig
+		// MISSING: DisallowUnspecifiedMode
+		// MISSING: SatisfiesPzi
+		// MISSING: RegistryURI
+		return out
 	}
-	out := &pb.Repository{}
-	if oneof := Repository_MavenRepositoryConfig_ToProto(mapCtx, in.MavenConfig); oneof != nil {
-		out.FormatConfig = &pb.Repository_MavenConfig{MavenConfig: oneof}
-	}
-	if oneof := Repository_DockerRepositoryConfig_ToProto(mapCtx, in.DockerConfig); oneof != nil {
-		out.FormatConfig = &pb.Repository_DockerConfig{DockerConfig: oneof}
-	}
-	if oneof := ArtifactRegistryRepositoryVirtualRepositoryConfig_ToProto(mapCtx, in.VirtualRepositoryConfig); oneof != nil {
-		out.ModeConfig = &pb.Repository_VirtualRepositoryConfig{VirtualRepositoryConfig: oneof}
-	}
-	if oneof := ArtifactRegistryRepositoryRemoteRepositoryConfig_ToProto(mapCtx, in.RemoteRepositoryConfig); oneof != nil {
-		out.ModeConfig = &pb.Repository_RemoteRepositoryConfig{RemoteRepositoryConfig: oneof}
-	}
-	// MISSING: Name
-	out.Format = direct.Enum_ToProto[pb.Repository_Format](mapCtx, in.Format)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: KMSKeyName
-	out.Mode = direct.Enum_ToProto[pb.Repository_Mode](mapCtx, in.Mode)
-	// TODO: map type string message for field CleanupPolicies
-	// MISSING: SizeBytes
-	// MISSING: SatisfiesPzs
-	out.CleanupPolicyDryRun = direct.ValueOf(in.CleanupPolicyDryRun)
-	// MISSING: VulnerabilityScanningConfig
-	// MISSING: DisallowUnspecifiedMode
-	// MISSING: SatisfiesPzi
-	// MISSING: RegistryURI
-	return out
-}
+*/
 func ArtifactRegistryRepositoryUpstreamPolicy_FromProto(mapCtx *direct.MapContext, in *pb.UpstreamPolicy) *krm.ArtifactRegistryRepositoryUpstreamPolicy {
 	if in == nil {
 		return nil
