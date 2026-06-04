@@ -131,7 +131,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The billing account of the project.</p>
         </td>
     </tr>
     <tr>
@@ -141,7 +141,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `BillingAccount` resource.</p>
+            <p>A reference to an externally managed BillingAccount resource. Should be in the format "billingAccounts/{billingAccountID}".</p>
         </td>
     </tr>
     <tr>
@@ -151,7 +151,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a BillingAccount resource.</p>
         </td>
     </tr>
     <tr>
@@ -161,7 +161,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a BillingAccount resource.</p>
         </td>
     </tr>
     <tr>
@@ -171,9 +171,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The folder that this resource belongs to. Changing this forces the
-resource to be migrated to the newly specified folder. Only one of
-folderRef or organizationRef may be specified.</p>
+            <p>The folder that this resource belongs to. Changing this forces the resource to be migrated to the newly specified folder. Only one of folderRef or organizationRef may be specified.</p>
         </td>
     </tr>
     <tr>
@@ -183,7 +181,7 @@ folderRef or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `folderId` field of a `Folder` resource.</p>
+            <p>The 'name' field of a folder, when not managed by Config Connector. This field must be set when 'name' field is not set.</p>
         </td>
     </tr>
     <tr>
@@ -193,7 +191,7 @@ folderRef or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of a 'Folder' resource. This field must be set when 'external' field is not set.</p>
         </td>
     </tr>
     <tr>
@@ -203,7 +201,7 @@ folderRef or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of a 'Folder' resource. If unset, the namespace is defaulted to the namespace of the referencer resource.</p>
         </td>
     </tr>
     <tr>
@@ -223,10 +221,7 @@ folderRef or organizationRef may be specified.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The organization that this resource belongs to. Changing this
-forces the resource to be migrated to the newly specified
-organization. Only one of folderRef or organizationRef may be
-specified.</p>
+            <p>The organization that this resource belongs to. Changing this forces the resource to be migrated to the newly specified organization. Only one of folderRef or organizationRef may be specified.</p>
         </td>
     </tr>
     <tr>
@@ -236,7 +231,7 @@ specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of an `Organization` resource.</p>
+            <p>The 'name' field of an organization, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -246,7 +241,7 @@ specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The 'name' field of an 'Organization' resource.</p>
         </td>
     </tr>
     <tr>
@@ -256,7 +251,7 @@ specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The 'namespace' field of an 'Organization' resource.</p>
         </td>
     </tr>
     <tr>
@@ -296,7 +291,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

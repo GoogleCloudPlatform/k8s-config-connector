@@ -573,7 +573,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable.</p>
+            <p>The status of the GCS Fuse CSI driver addon, which allows the usage of GCS bucket as volumes. Defaults to disabled; set enabled = true to enable.</p>
         </td>
     </tr>
     <tr>
@@ -803,8 +803,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The Customer Managed Encryption Key used to encrypt the
-boot disk attached to each node in the node pool.</p>
+            <p>Immutable. The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool.</p>
         </td>
     </tr>
     <tr>
@@ -814,7 +813,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -824,7 +823,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -834,7 +833,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -974,7 +973,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1014,7 +1013,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Defines whether the instance has integrity monitoring enabled.</p>
+            <p>Immutable. Defines whether the instance has integrity monitoring enabled.</p>
         </td>
     </tr>
     <tr>
@@ -1024,7 +1023,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Defines whether the instance has Secure Boot enabled.</p>
+            <p>Immutable. Defines whether the instance has Secure Boot enabled.</p>
         </td>
     </tr>
     <tr>
@@ -1056,7 +1055,7 @@ boot disk attached to each node in the node pool.</p>
             <p><code class="apitype">string</code></p>
             <p>Time needed after draining entire blue pool. After this period, blue pool will be cleaned up.
 
-																A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".</p>
+A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".</p>
         </td>
     </tr>
     <tr>
@@ -1096,9 +1095,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Soak time after each batch gets drained.
-
-																			A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".</p>
+            <p>Soak time after each batch gets drained. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".</p>
         </td>
     </tr>
     <tr>
@@ -1268,7 +1265,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Whether Confidential Nodes feature is enabled for all nodes in this cluster.</p>
+            <p>Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool.</p>
         </td>
     </tr>
     <tr>
@@ -1358,7 +1355,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "ALL_OBJECTS_ENCRYPTION_ENABLED"; "DECRYPTED". key_name is the name of a CloudKMS key.</p>
+            <p>Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key.</p>
         </td>
     </tr>
     <tr>
@@ -1678,7 +1675,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>AdditionalIpRangesConfigs is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. Each AdditionalIPRangesConfig corresponds to a single subnetwork.</p>
+            <p>AdditionalIPRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. Each AdditionalIPRangesConfig corresponds to a single subnetwork.</p>
         </td>
     </tr>
     <tr>
@@ -1738,7 +1735,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -1748,7 +1745,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1758,7 +1755,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1928,7 +1925,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT.</p>
+            <p>Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM", where HH : [00-23] and MM : [00-59] GMT.</p>
         </td>
     </tr>
     <tr>
@@ -2248,7 +2245,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Whether master is accessbile via Google Compute Engine Public IP addresses.</p>
+            <p>Whether master is accessible via Google Compute Engine Public IP addresses.</p>
         </td>
     </tr>
     <tr>
@@ -2428,7 +2425,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
         </td>
     </tr>
     <tr>
@@ -2438,7 +2435,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -2448,7 +2445,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -2518,7 +2515,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -2528,7 +2525,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -2538,7 +2535,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -2668,7 +2665,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Whether or not GCFS is enabled.</p>
+            <p>Whether or not GCFS is enabled.</p>
         </td>
     </tr>
     <tr>
@@ -2988,9 +2985,7 @@ boot disk attached to each node in the node pool.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Setting this field will assign instances
-of this pool to run on the specified node group. This is useful
-for running workloads on sole tenant nodes.</p>
+            <p>Immutable. Setting this field will assign instances of this pool to run on the specified node group. This is useful for running workloads on sole tenant nodes.</p>
         </td>
     </tr>
     <tr>
@@ -3000,7 +2995,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeNodeGroup` resource.</p>
+            <p>A reference to an externally managed ComputeNodeGroup resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/nodeGroups/{{nodeGroupID}}".</p>
         </td>
     </tr>
     <tr>
@@ -3010,7 +3005,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNodeGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -3020,7 +3015,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNodeGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -3150,7 +3145,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -3580,7 +3575,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `projects/{{project}}/topics/{{value}}`, where {{value}} is the `name` field of a `PubSubTopic` resource.</p>
+            <p>A reference to an externally managed PubSubTopic resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".</p>
         </td>
     </tr>
     <tr>
@@ -3590,7 +3585,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a PubSubTopic resource.</p>
         </td>
     </tr>
     <tr>
@@ -3600,7 +3595,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a PubSubTopic resource.</p>
         </td>
     </tr>
     <tr>
@@ -3710,8 +3705,7 @@ for running workloads on sole tenant nodes.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Subnetwork in cluster's network where master's endpoint
-will be provisioned.</p>
+            <p>Immutable. Subnetwork in cluster's network where master's endpoint will be provisioned.</p>
         </td>
     </tr>
     <tr>
@@ -3721,7 +3715,7 @@ will be provisioned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -3731,7 +3725,7 @@ will be provisioned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
         </td>
     </tr>
     <tr>
@@ -3741,7 +3735,7 @@ will be provisioned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
         </td>
     </tr>
     <tr>
@@ -3821,11 +3815,7 @@ will be provisioned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The selected release channel. Accepted values are:
-* UNSPECIFIED: Not set.
-* RAPID: Weekly upgrade cadence; Early testers and developers who requires new features.
-* REGULAR: Multiple per month upgrade cadence; Production users who need features not yet offered in the Stable channel.
-* STABLE: Every few months upgrade cadence; Production users who need stability above all else, and for whom frequent upgrades are too risky.</p>
+            <p>The selected release channel. Accepted values are: * UNSPECIFIED: Not set. * RAPID: Weekly upgrade cadence; Early testers and developers who requires new features. * REGULAR: Multiple per month upgrade cadence; Production users who need features not yet offered in the Stable channel. * STABLE: Every few months upgrade cadence; Production users who need stability above all else, and for whom frequent upgrades are too risky.</p>
         </td>
     </tr>
     <tr>
@@ -3955,7 +3945,7 @@ will be provisioned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.</p>
+            <p>The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -3965,7 +3955,7 @@ will be provisioned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `ComputeSubnetwork` resource.</p>
         </td>
     </tr>
     <tr>
@@ -3975,7 +3965,7 @@ will be provisioned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `ComputeSubnetwork` resource.</p>
         </td>
     </tr>
     <tr>
@@ -4015,8 +4005,7 @@ will be provisioned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
-Enables workload identity.</p>
+            <p>DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field. Enables workload identity.</p>
         </td>
     </tr>
     <tr>
@@ -4074,7 +4063,7 @@ tpuIpv4CidrBlock: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ContainerCluster's current state.</p>
         </td>
     </tr>
     <tr>

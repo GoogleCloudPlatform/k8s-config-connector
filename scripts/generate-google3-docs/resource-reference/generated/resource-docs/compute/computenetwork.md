@@ -110,8 +110,7 @@ the user can explicitly connect subnetwork resources.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If set to 'true', default routes ('0.0.0.0/0') will be deleted
-immediately after network creation. Defaults to 'false'.</p>
+            <p>If set to 'true', default routes ('0.0.0.0/0') will be deleted immediately after network creation. Defaults to 'false'.</p>
         </td>
     </tr>
     <tr>
@@ -121,8 +120,7 @@ immediately after network creation. Defaults to 'false'.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. An optional description of this resource. The resource must be
-recreated to modify this field.</p>
+            <p>Immutable. An optional description of this resource. The resource must be recreated to modify this field.</p>
         </td>
     </tr>
     <tr>
@@ -132,8 +130,7 @@ recreated to modify this field.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Enable ULA internal ipv6 on this network. Enabling this feature will assign
-a /48 from google defined ULA prefix fd20::/20.</p>
+            <p>Enable ULA internal ipv6 on this network. Enabling this feature will assign a /48 from google defined ULA prefix fd20::/20.</p>
         </td>
     </tr>
     <tr>
@@ -143,11 +140,7 @@ a /48 from google defined ULA prefix fd20::/20.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. When enabling ula internal ipv6, caller optionally can specify the /48 range
-they want from the google defined ULA prefix fd20::/20. The input must be a
-valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will
-fail if the speficied /48 is already in used by another resource.
-If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field.</p>
+            <p>Immutable. When enabling ula internal ipv6, caller optionally can specify the /48 range they want from the google defined ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will fail if the speficied /48 is already in used by another resource. If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field.</p>
         </td>
     </tr>
     <tr>
@@ -157,11 +150,7 @@ If the field is not speficied, then a /48 range will be randomly allocated from 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Maximum Transmission Unit in bytes. The default value is 1460 bytes.
-The minimum value for this field is 1300 and the maximum value is 8896 bytes (jumbo frames).
-Note that packets larger than 1500 bytes (standard Ethernet) can be subject to TCP-MSS clamping or dropped
-with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs
-with varying MTUs.</p>
+            <p>Immutable. Maximum Transmission Unit in bytes. The default value is 1460 bytes. The minimum value for this field is 1300 and the maximum value is 8896 bytes (jumbo frames). Note that packets larger than 1500 bytes (standard Ethernet) can be subject to TCP-MSS clamping or dropped with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs with varying MTUs.</p>
         </td>
     </tr>
     <tr>
@@ -181,7 +170,7 @@ with varying MTUs.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The ComputeNetwork name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
     <tr>
@@ -191,11 +180,7 @@ with varying MTUs.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The network-wide routing mode to use. If set to 'REGIONAL', this
-network's cloud routers will only advertise routes with subnetworks
-of this network in the same region as the router. If set to 'GLOBAL',
-this network's cloud routers will advertise routes with all
-subnetworks of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"].</p>
+            <p>The network-wide routing mode to use. If set to 'REGIONAL', this network's cloud routers will only advertise routes with subnetworks of this network in the same region as the router. If set to 'GLOBAL', this network's cloud routers will advertise routes with all subnetworks of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"].</p>
         </td>
     </tr>
 </tbody>
@@ -226,7 +211,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -275,8 +260,7 @@ selfLink: string
         <td><code>gatewayIpv4</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The gateway address for default routing out of the network. This value
-is selected by GCP.</p>
+            <p>The gateway address for default routing out of the network. This value is selected by GCP.</p>
         </td>
     </tr>
     <tr>
@@ -290,7 +274,7 @@ is selected by GCP.</p>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>The self link of the ComputeNetwork.</p>
         </td>
     </tr>
 </tbody>
