@@ -28,11 +28,11 @@ go run "${REPO_ROOT}/dev/tools/openapi-to-krm/main.go" \
   --require-field "ManagedZoneCloudLoggingConfig:enableLogging,ManagedZoneForwardingConfig:targetNameServers,ManagedZonePeeringConfig:targetNetwork,ManagedZoneServiceDirectoryConfig:namespace" \
   --output-file "${REPO_ROOT}/apis/dns/v1beta1/types.generated.go"
 
-# Mapper is commented out for now; we do not need it at this stage.
-# go run . generate-mapper \
-#   --service google.cloud.dns.v1 \
-#   --api-version dns.cnrm.cloud.google.com/v1beta1 \
-#   --include-skipped-output
+# Generate OpenAPI mappers
+go run "${REPO_ROOT}/dev/tools/openapi-to-krm/cmd/generate-mapper/main.go" \
+  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSManagedZoneSpec::google.golang.org/api/dns/v1/ManagedZone" \
+  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSManagedZoneStatus::google.golang.org/api/dns/v1/ManagedZone" \
+  --output-file "${REPO_ROOT}/pkg/controller/direct/dns/zz_generated.mappers.go"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

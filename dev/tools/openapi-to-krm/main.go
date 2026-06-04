@@ -28,16 +28,9 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"unicode"
-)
 
-var Acronyms = []string{
-	"API", "BGP", "BYOID", "CA", "CDN", "CIDR", "CPU", "DNS", "EUC", "FS", "FQDN",
-	"GCE", "GB", "GCS", "GKE", "HTML", "HTTP", "HTTPS", "IAM", "IAP", "ID", "IP",
-	"IPV4", "IPV6", "KMS", "MiB", "NAT", "OAuth2", "OIDC", "OS", "PD", "PSC",
-	"SQL", "SSH", "SSL", "SSO", "TCP", "TLS", "TTL", "UDP", "URI", "URL", "VTPM",
-	"VM", "VPC", "VIP", "VPN", "X509", "VPC", "LRO", "KRM",
-}
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/openapi-to-krm/pkg/shared"
+)
 
 type DiscoveryDoc struct {
 	Schemas map[string]*Schema `json:"schemas"`
@@ -174,7 +167,7 @@ func Run(ctx context.Context, opt Options) error {
 				continue
 			}
 			prop := s.Properties[p]
-			goName := goFieldName(p)
+			goName := shared.GoFieldName(p)
 			gType := goType(prop)
 			comment := commentBlock(prop.Description, "\t")
 
@@ -321,44 +314,8 @@ func findHandCodedOpenAPIIDs(dir string) (map[string]bool, error) {
 	return handCodedIDs, nil
 }
 
-// splitWords splits an underscore_separated or camelCaseWord string into an array of individual words.
-func splitWords(s string) []string {
-	s = strings.ReplaceAll(s, "_", " ")
-	var res strings.Builder
-	for i, r := range s {
-		if i > 0 {
-			prev := rune(s[i-1])
-			if (unicode.IsLower(prev) && unicode.IsUpper(r)) || (unicode.IsDigit(prev) && unicode.IsUpper(r)) || (unicode.IsLower(prev) && unicode.IsDigit(r)) {
-				res.WriteRune(' ')
-			}
-		}
-		res.WriteRune(r)
-	}
-	return strings.Fields(res.String())
-}
-
-func goFieldName(jsonName string) string {
-	words := splitWords(jsonName)
-	for i, w := range words {
-		// Check acronyms
-		isAcronym := false
-		for _, acr := range Acronyms {
-			if strings.EqualFold(w, acr) {
-				words[i] = acr
-				isAcronym = true
-				break
-			}
-		}
-		if !isAcronym {
-			if len(w) > 0 {
-				runes := []rune(w)
-				runes[0] = unicode.ToUpper(runes[0])
-				words[i] = string(runes)
-			}
-		}
-	}
-	return strings.Join(words, "")
-}
+// splitWords is now imported from shared package
+// goFieldName is now imported from shared package
 
 func goType(prop *Schema) string {
 	if prop.Ref != "" {
