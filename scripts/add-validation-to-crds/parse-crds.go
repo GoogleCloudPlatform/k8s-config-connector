@@ -359,7 +359,7 @@ oneOf:
 			}
 		} else if signature == "external,name,namespace" {
 			ruleYAML = refRuleWithoutKind
-		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ContainerCluster") {
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig") {
 			ruleYAML = legacyRefRule
 		} else {
 			if strings.HasPrefix(signature, "external,") {
