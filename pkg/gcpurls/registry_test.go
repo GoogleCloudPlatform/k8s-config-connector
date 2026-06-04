@@ -87,6 +87,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}":                    true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
 		"//iam.googleapis.com/policies/{}/denypolicies/{}":                                          true,
+		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":                    true,
 		"//logging.googleapis.com/projects/{}/exclusions/{}":                                        true,
 		"//logging.googleapis.com/folders/{}/exclusions/{}":                                         true,
 		"//logging.googleapis.com/organizations/{}/exclusions/{}":                                   true,

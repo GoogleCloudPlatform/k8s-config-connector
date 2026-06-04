@@ -17,6 +17,8 @@ package e2e
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -150,7 +152,11 @@ func TestAllInSeries(t *testing.T) {
 					*h = *sharedHarness
 					h.T = t
 					h.Ctx = subCtx
-					projectID := fmt.Sprintf("test-%d", time.Now().UnixNano())
+					b := make([]byte, 2)
+					if _, err := rand.Read(b); err != nil {
+						t.Fatalf("failed to generate random project ID: %v", err)
+					}
+					projectID := fmt.Sprintf("test-%d-%s", time.Now().UnixNano(), hex.EncodeToString(b))
 					project = h.CreateMockProject(subCtx, projectID)
 					h.Project = project
 				} else {
