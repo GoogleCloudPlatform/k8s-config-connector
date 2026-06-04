@@ -13,29 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 set -o errexit
 set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
 go run . generate-types \
-  --service mockgcp.cloud.networkconnectivity.v1 \
-  --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output \
-  --resource NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy \
-  --resource NetworkConnectivityRegionalEndpoint:RegionalEndpoint
+    --service mockgcp.cloud.networkconnectivity.v1 \
+    --api-version networkconnectivity.cnrm.cloud.google.com/v1beta1 \
+    --resource NetworkConnectivityInternalRange:InternalRange
 
 go run . generate-mapper \
-  --service mockgcp.cloud.networkconnectivity.v1 \
-  --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+    --multiversion \
+    --service mockgcp.cloud.networkconnectivity.v1 \
+    --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+    --api-version networkconnectivity.cnrm.cloud.google.com/v1beta1
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/networkconnectivity/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg/controller/direct/networkconnectivity/

@@ -141,7 +141,7 @@ func (a *regionalEndpointAdapter) Create(ctx context.Context, createOp *directba
 	log.V(2).Info("creating networkconnectivity regionalendpoint", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := NetworkConnectivityRegionalEndpointSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desired := NetworkConnectivityRegionalEndpointSpec_v1alpha1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -175,7 +175,7 @@ func (a *regionalEndpointAdapter) Create(ctx context.Context, createOp *directba
 		return err
 	}
 	status := &krm.NetworkConnectivityRegionalEndpointStatus{}
-	status.ObservedState = NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx, createdPB)
+	status.ObservedState = NetworkConnectivityRegionalEndpointObservedState_v1alpha1_FromProto(mapCtx, createdPB)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -191,7 +191,7 @@ func (a *regionalEndpointAdapter) Update(ctx context.Context, updateOp *directba
 	// If any spec changes are attempted that would require an API update, it's not supported.
 	// We just update the status.
 	status := &krm.NetworkConnectivityRegionalEndpointStatus{}
-	status.ObservedState = NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx, a.actual)
+	status.ObservedState = NetworkConnectivityRegionalEndpointObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -206,7 +206,7 @@ func (a *regionalEndpointAdapter) Export(ctx context.Context) (*unstructured.Uns
 
 	obj := &krm.NetworkConnectivityRegionalEndpoint{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(NetworkConnectivityRegionalEndpointSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(NetworkConnectivityRegionalEndpointSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

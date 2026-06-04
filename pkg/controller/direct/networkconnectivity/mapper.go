@@ -26,7 +26,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func NetworkConnectivityServiceConnectionPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicySpec {
+func NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicySpec {
 	if in == nil {
 		return nil
 	}
@@ -40,7 +40,7 @@ func NetworkConnectivityServiceConnectionPolicySpec_FromProto(mapCtx *direct.Map
 	if in.Network != "" {
 		out.Network = &computev1beta1.ComputeNetworkRef{External: in.Network}
 	}
-	out.PSCConfig = PSCConfig_FromProto(mapCtx, in.GetPscConfig())
+	out.PSCConfig = PSCConfig_v1alpha1_FromProto(mapCtx, in.GetPscConfig())
 	// MISSING: PscConnections
 	out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
 	// MISSING: UpdateTime

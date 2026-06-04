@@ -16,21 +16,22 @@ package networkconnectivity
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
+
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Migration_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.Migration {
+func Migration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krmv1beta1.Migration {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Migration{}
+	out := &krmv1beta1.Migration{}
 	out.Source = direct.LazyPtr(in.GetSource())
 	out.Target = direct.LazyPtr(in.GetTarget())
 	return out
 }
-func Migration_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.Migration {
+func Migration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Migration) *pb.Migration {
 	if in == nil {
 		return nil
 	}
@@ -39,17 +40,17 @@ func Migration_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.Migrati
 	out.Target = direct.ValueOf(in.Target)
 	return out
 }
-func NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeObservedState {
+func NetworkConnectivityInternalRangeObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krmv1beta1.NetworkConnectivityInternalRangeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConnectivityInternalRangeObservedState{}
+	out := &krmv1beta1.NetworkConnectivityInternalRangeObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Users = in.Users
 	return out
 }
-func NetworkConnectivityInternalRangeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeObservedState) *pb.InternalRange {
+func NetworkConnectivityInternalRangeObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.NetworkConnectivityInternalRangeObservedState) *pb.InternalRange {
 	if in == nil {
 		return nil
 	}
@@ -59,15 +60,15 @@ func NetworkConnectivityInternalRangeObservedState_ToProto(mapCtx *direct.MapCon
 	out.Users = in.Users
 	return out
 }
-func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeSpec {
+func NetworkConnectivityInternalRangeSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krmv1beta1.NetworkConnectivityInternalRangeSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConnectivityInternalRangeSpec{}
+	out := &krmv1beta1.NetworkConnectivityInternalRangeSpec{}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.IPCIDRRange = direct.LazyPtr(in.GetIpCidrRange())
 	out.Labels = in.Labels
-	out.Migration = Migration_FromProto(mapCtx, in.GetMigration())
+	out.Migration = Migration_v1beta1_FromProto(mapCtx, in.GetMigration())
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
@@ -78,7 +79,7 @@ func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, i
 	out.Usage = direct.LazyPtr(in.GetUsage())
 	return out
 }
-func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
+func NetworkConnectivityInternalRangeSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
 	if in == nil {
 		return nil
 	}
@@ -86,7 +87,7 @@ func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in 
 	out.Description = direct.ValueOf(in.Description)
 	out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
 	out.Labels = in.Labels
-	out.Migration = Migration_ToProto(mapCtx, in.Migration)
+	out.Migration = Migration_v1beta1_ToProto(mapCtx, in.Migration)
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}

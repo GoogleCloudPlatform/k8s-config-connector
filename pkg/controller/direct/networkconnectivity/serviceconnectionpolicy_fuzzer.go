@@ -26,10 +26,10 @@ func init() {
 func serviceConnectionPolicyFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer := fuzztesting.NewKRMTypedFuzzer(
 		&pb.ServiceConnectionPolicy{},
-		NetworkConnectivityServiceConnectionPolicySpec_FromProto,
-		NetworkConnectivityServiceConnectionPolicySpec_ToProto,
-		NetworkConnectivityServiceConnectionPolicyObservedState_FromProto,
-		NetworkConnectivityServiceConnectionPolicyObservedState_ToProto,
+		NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_FromProto,
+		NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_ToProto,
+		NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_FromProto,
+		NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_ToProto,
 	)
 
 	fuzzer.UnimplementedFields.Insert(".name")
