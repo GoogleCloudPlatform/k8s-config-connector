@@ -68,6 +68,74 @@ spec:
                   and processing_units are treated as OUTPUT_ONLY fields and reflect
                   the current compute capacity allocated to the instance.
                 properties:
+                  asymmetricAutoscalingOptions:
+                    description: |-
+                      Optional. Optional asymmetric autoscaling options.
+                       Replicas matching the replica selection criteria will be autoscaled
+                       independently from other replicas. The autoscaler will scale the replicas
+                       based on the utilization of replicas identified by the replica selection.
+                       Replica selections should not overlap with each other.
+
+                       Other replicas (those do not match any replica selection) will be
+                       autoscaled together and will have the same compute capacity allocated to
+                       them.
+                    items:
+                      properties:
+                        overrides:
+                          description: Optional. Overrides applied to the top-level
+                            autoscaling configuration for the selected replicas.
+                          properties:
+                            autoscalingLimits:
+                              description: Optional. If specified, overrides the min/max
+                                limit in the top-level autoscaling configuration for
+                                the selected replicas.
+                              properties:
+                                maxNodes:
+                                  description: Maximum number of nodes allocated to
+                                    the instance. If set, this number should be greater
+                                    than or equal to min_nodes.
+                                  format: int32
+                                  type: integer
+                                maxProcessingUnits:
+                                  description: Maximum number of processing units
+                                    allocated to the instance. If set, this number
+                                    should be multiples of 1000 and be greater than
+                                    or equal to min_processing_units.
+                                  format: int32
+                                  type: integer
+                                minNodes:
+                                  description: Minimum number of nodes allocated to
+                                    the instance. If set, this number should be greater
+                                    than or equal to 1.
+                                  format: int32
+                                  type: integer
+                                minProcessingUnits:
+                                  description: Minimum number of processing units
+                                    allocated to the instance. If set, this number
+                                    should be multiples of 1000.
+                                  format: int32
+                                  type: integer
+                              type: object
+                            autoscalingTargetHighPriorityCPUUtilizationPercent:
+                              description: Optional. If specified, overrides the autoscaling
+                                target high_priority_cpu_utilization_percent in the
+                                top-level autoscaling configuration for the selected
+                                replicas.
+                              format: int32
+                              type: integer
+                          type: object
+                        replicaSelection:
+                          description: Required. Selects the replicas to which this
+                            AsymmetricAutoscalingOption applies. Only read-only replicas
+                            are supported.
+                          properties:
+                            location:
+                              description: Required. Name of the location of the replicas
+                                (e.g., "us-central1").
+                              type: string
+                          type: object
+                      type: object
+                    type: array
                   autoscalingLimits:
                     description: Required. Autoscaling limits for an instance.
                     properties:
@@ -97,7 +165,7 @@ spec:
                   autoscalingTargets:
                     description: Required. The autoscaling targets for an instance.
                     properties:
-                      highPriorityCpuUtilizationPercent:
+                      highPriorityCPUUtilizationPercent:
                         description: Required. The target high priority cpu utilization
                           percentage that the autoscaler should be trying to achieve
                           for the instance. This number is on a scale from 0 (no utilization)
@@ -108,8 +176,7 @@ spec:
                         description: Required. The target storage utilization percentage
                           that the autoscaler should be trying to achieve for the
                           instance. This number is on a scale from 0 (no utilization)
-                          to 100 (full utilization). The valid range is [10, 100]
-                          inclusive.
+                          to 100 (full utilization). The valid range is [10, 99] inclusive.
                         format: int32
                         type: integer
                     type: object

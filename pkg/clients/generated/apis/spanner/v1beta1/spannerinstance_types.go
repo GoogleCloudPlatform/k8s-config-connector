@@ -38,7 +38,29 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type InstanceAsymmetricAutoscalingOptions struct {
+	/* Optional. Overrides applied to the top-level autoscaling configuration for the selected replicas. */
+	// +optional
+	Overrides *InstanceOverrides `json:"overrides,omitempty"`
+
+	/* Required. Selects the replicas to which this AsymmetricAutoscalingOption applies. Only read-only replicas are supported. */
+	// +optional
+	ReplicaSelection *InstanceReplicaSelection `json:"replicaSelection,omitempty"`
+}
+
 type InstanceAutoscalingConfig struct {
+	/* Optional. Optional asymmetric autoscaling options.
+	Replicas matching the replica selection criteria will be autoscaled
+	independently from other replicas. The autoscaler will scale the replicas
+	based on the utilization of replicas identified by the replica selection.
+	Replica selections should not overlap with each other.
+
+	Other replicas (those do not match any replica selection) will be
+	autoscaled together and will have the same compute capacity allocated to
+	them. */
+	// +optional
+	AsymmetricAutoscalingOptions []InstanceAsymmetricAutoscalingOptions `json:"asymmetricAutoscalingOptions,omitempty"`
+
 	/* Required. Autoscaling limits for an instance. */
 	// +optional
 	AutoscalingLimits *InstanceAutoscalingLimits `json:"autoscalingLimits,omitempty"`
@@ -69,11 +91,27 @@ type InstanceAutoscalingLimits struct {
 type InstanceAutoscalingTargets struct {
 	/* Required. The target high priority cpu utilization percentage that the autoscaler should be trying to achieve for the instance. This number is on a scale from 0 (no utilization) to 100 (full utilization). The valid range is [10, 90] inclusive. */
 	// +optional
-	HighPriorityCpuUtilizationPercent *int32 `json:"highPriorityCpuUtilizationPercent,omitempty"`
+	HighPriorityCPUUtilizationPercent *int32 `json:"highPriorityCPUUtilizationPercent,omitempty"`
 
-	/* Required. The target storage utilization percentage that the autoscaler should be trying to achieve for the instance. This number is on a scale from 0 (no utilization) to 100 (full utilization). The valid range is [10, 100] inclusive. */
+	/* Required. The target storage utilization percentage that the autoscaler should be trying to achieve for the instance. This number is on a scale from 0 (no utilization) to 100 (full utilization). The valid range is [10, 99] inclusive. */
 	// +optional
 	StorageUtilizationPercent *int32 `json:"storageUtilizationPercent,omitempty"`
+}
+
+type InstanceOverrides struct {
+	/* Optional. If specified, overrides the min/max limit in the top-level autoscaling configuration for the selected replicas. */
+	// +optional
+	AutoscalingLimits *InstanceAutoscalingLimits `json:"autoscalingLimits,omitempty"`
+
+	/* Optional. If specified, overrides the autoscaling target high_priority_cpu_utilization_percent in the top-level autoscaling configuration for the selected replicas. */
+	// +optional
+	AutoscalingTargetHighPriorityCPUUtilizationPercent *int32 `json:"autoscalingTargetHighPriorityCPUUtilizationPercent,omitempty"`
+}
+
+type InstanceReplicaSelection struct {
+	/* Required. Name of the location of the replicas (e.g., "us-central1"). */
+	// +optional
+	Location *string `json:"location,omitempty"`
 }
 
 type SpannerInstanceSpec struct {

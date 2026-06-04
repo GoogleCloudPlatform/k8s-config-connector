@@ -730,7 +730,6 @@
 [acronyms] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instances[].name" should be ".spec.template.volumes[].cloudSQLInstance.instances[].name"
 [acronyms] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instances[].namespace" should be ".spec.template.volumes[].cloudSQLInstance.instances[].namespace"
 [acronyms] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.configId" should be ".spec.configID"
-[acronyms] crd=spannerinstances.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingConfig.autoscalingTargets.highPriorityCpuUtilizationPercent" should be ".spec.autoscalingConfig.autoscalingTargets.highPriorityCPUUtilizationPercent"
 [acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.allocatedIpRange" should be ".spec.settings.ipConfiguration.allocatedIPRange"
 [acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.requireSsl" should be ".spec.settings.ipConfiguration.requireSSL"
 [acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".status.firstIpAddress" should be ".status.firstIPAddress"
