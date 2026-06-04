@@ -17,7 +17,6 @@ package cluster
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
 	"google.golang.org/api/option"
@@ -35,8 +34,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/redis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/redis/cluster/apiv1"
@@ -108,7 +107,7 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := redis.RedisClusterSpec_ToProto(mapCtx, &obj.Spec)
+	desired := RedisClusterSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -225,7 +224,7 @@ func (a *redisClusterAdapter) Create(ctx context.Context, createOp *directbase.C
 	status.ExternalRef = direct.PtrTo(a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = redis.RedisClusterObservedState_FromProto(mapCtx, created)
+	status.ObservedState = RedisClusterObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -239,42 +238,24 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 	log := klog.FromContext(ctx)
 	log.V(0).Info("updating object", "u", u)
 
-	updateMask := &fieldmaskpb.FieldMask{}
-
-	// TODO: What if a different field (immutability again)
-
-	report := &structuredreporting.Diff{Object: u}
-	if direct.ValueOf(a.desired.ReplicaCount) != direct.ValueOf(a.actual.ReplicaCount) {
-		updateMask.Paths = append(updateMask.Paths, "replica_count")
-		report.AddField("replica_count", a.actual.ReplicaCount, a.desired.ReplicaCount)
-	}
-
-	if direct.ValueOf(a.desired.ShardCount) != direct.ValueOf(a.actual.ShardCount) {
-		updateMask.Paths = append(updateMask.Paths, "shard_count")
-		report.AddField("shard_count", a.actual.ShardCount, a.desired.ShardCount)
-	}
-
-	if direct.ValueOf(a.desired.DeletionProtectionEnabled) != direct.ValueOf(a.actual.DeletionProtectionEnabled) {
-		updateMask.Paths = append(updateMask.Paths, "deletion_protection_enabled")
-		report.AddField("deletion_protection_enabled", a.actual.DeletionProtectionEnabled, a.desired.DeletionProtectionEnabled)
-	}
-
-	if !proto.Equal(a.desired.PersistenceConfig, a.actual.PersistenceConfig) {
-		report.AddField("persistence_config", a.actual.PersistenceConfig, a.desired.PersistenceConfig)
-		updateMask.Paths = append(updateMask.Paths, "persistence_config")
-	}
-
-	if !reflect.DeepEqual(a.desired.GetRedisConfigs(), a.actual.GetRedisConfigs()) {
-		report.AddField("redis_configs", a.actual.GetRedisConfigs(), a.desired.GetRedisConfigs())
-		updateMask.Paths = append(updateMask.Paths, "redis_configs")
+	diffs, err := compareRedisCluster(ctx, a.actual, a.desired)
+	if err != nil {
+		return fmt.Errorf("comparing actual and desired RedisCluster: %w", err)
 	}
 
 	var latest *pb.Cluster
-	if len(updateMask.Paths) != 0 {
-		structuredreporting.ReportDiff(ctx, report)
+	if diffs.HasDiff() {
+		diffs.Object = u
+		structuredreporting.ReportDiff(ctx, diffs)
 
 		// exactly 1 update_mask field must be specified per update request
-		for _, path := range updateMask.Paths {
+
+		for _, field := range diffs.Fields {
+			if field.ProtoFieldDescriptor == nil {
+				return fmt.Errorf("unexpected diff field without proto descriptor: %s", field.ID)
+			}
+			path := string(field.ProtoFieldDescriptor.Name())
+
 			req := &pb.UpdateClusterRequest{
 				Cluster: a.desired,
 			}
@@ -303,14 +284,72 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 		latest = a.actual
 	}
 
-	// Set externalRef
 	status := &krm.RedisClusterStatus{}
-	status.ExternalRef = direct.PtrTo(a.id.String())
-
+	if status.ExternalRef == nil {
+		// If it is the first reconciliation after switching to direct controller,
+		// or is an acquisition with updates, then fill out the ExternalRef.
+		status.ExternalRef = direct.LazyPtr(a.id.String())
+	}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = redis.RedisClusterObservedState_FromProto(mapCtx, latest)
+	status.ObservedState = RedisClusterObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*structuredreporting.Diff, error) {
+	populateDefaults := func(cluster *pb.Cluster) *pb.Cluster {
+		if cluster.PersistenceConfig == nil {
+			cluster.PersistenceConfig = &pb.ClusterPersistenceConfig{}
+		}
+		if cluster.PersistenceConfig.Mode == pb.ClusterPersistenceConfig_PERSISTENCE_MODE_UNSPECIFIED {
+			cluster.PersistenceConfig.Mode = pb.ClusterPersistenceConfig_DISABLED
+		}
+		if cluster.AuthorizationMode == pb.AuthorizationMode_AUTH_MODE_UNSPECIFIED {
+			cluster.AuthorizationMode = pb.AuthorizationMode_AUTH_MODE_DISABLED
+		}
+		if cluster.NodeType == pb.NodeType_NODE_TYPE_UNSPECIFIED {
+			cluster.NodeType = pb.NodeType_REDIS_HIGHMEM_MEDIUM
+		}
+		if cluster.TransitEncryptionMode == pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+			cluster.TransitEncryptionMode = pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_DISABLED
+		}
+		if cluster.ZoneDistributionConfig == nil {
+			cluster.ZoneDistributionConfig = &pb.ZoneDistributionConfig{}
+		}
+		if cluster.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
+			cluster.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
+		}
+
+		// clear pscConfig as it's not included in the response
+		if cluster.PscConfigs != nil {
+			cluster.PscConfigs = nil
+		}
+
+		return cluster
+	}
+
+	var maskedActual *pb.Cluster
+	{
+		// A "trick" to only compare spec fields - round trip via the spec
+		mapCtx := &direct.MapContext{}
+		spec := RedisClusterSpec_FromProto(mapCtx, actual)
+		if mapCtx.Err() != nil {
+			return nil, mapCtx.Err()
+		}
+		maskedActual = RedisClusterSpec_ToProto(mapCtx, spec)
+		if mapCtx.Err() != nil {
+			return nil, mapCtx.Err()
+		}
+	}
+
+	maskedActual = populateDefaults(maskedActual)
+	desired = populateDefaults(proto.CloneOf(desired))
+
+	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, err
+	}
+	return diffs, nil
 }
