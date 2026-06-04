@@ -94,6 +94,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//logging.googleapis.com/organizations/{}/exclusions/{}":                                   true,
 		"//logging.googleapis.com/billingAccounts/{}/exclusions/{}":                                 true,
 		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}":                             true,
+		"//securitycenter.googleapis.com/organizations/{}/locations/{}/bigQueryExports/{}":          true,
+		"//securitycenter.googleapis.com/organizations/{}/muteConfigs/{}":                           true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
