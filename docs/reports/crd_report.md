@@ -129,6 +129,7 @@
 | cloudids.cnrm.cloud.google.com                | CloudIDSEndpoint                                | True         | True        | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                | CloudIOTDeviceRegistry                          | True         | False       | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                | CloudIOTDevice                                  | True         | False       | False  | Terraform  | False       |
+| run.cnrm.cloud.google.com                     | CloudRunWorkerPool                              | True         | False       | False  | Direct     | True        |
 | cloudscheduler.cnrm.cloud.google.com          | CloudSchedulerJob                               | False        | True        | False  | DCL        | False       |
 | cloudsecuritycompliance.cnrm.cloud.google.com | CloudSecurityComplianceCloudControl             | True         | False       | False  | Direct     | True        |
 | cloudsecuritycompliance.cnrm.cloud.google.com | CloudSecurityComplianceFramework                | True         | False       | False  | Direct     | True        |
