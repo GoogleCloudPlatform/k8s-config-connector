@@ -197,10 +197,7 @@ visibility: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Specifies parameters that will be used for generating initial DnsKeys
-for this ManagedZone. If you provide a spec for keySigning or zoneSigning,
-you must also provide one for the other.
-default_key_specs can only be updated when the state is 'off'.</p>
+            <p>Specifies parameters that will be used for generating initial DnsKeys for this ManagedZone. If you provide a spec for keySigning or zoneSigning, you must also provide one for the other. default_key_specs can only be updated when the state is 'off'.</p>
         </td>
     </tr>
     <tr>
@@ -240,12 +237,7 @@ default_key_specs can only be updated when the state is 'off'.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies whether this is a key signing key (KSK) or a zone
-signing key (ZSK). Key signing keys have the Secure Entry
-Point flag set and, when active, will only be used to sign
-resource record sets of type DNSKEY. Zone signing keys do
-not have the Secure Entry Point flag set and will be used
-to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"].</p>
+            <p>Specifies whether this is a key signing key (KSK) or a zone signing key (ZSK). Key signing keys have the Secure Entry Point flag set and, when active, will only be used to sign resource record sets of type DNSKEY. Zone signing keys do not have the Secure Entry Point flag set and will be used to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"].</p>
         </td>
     </tr>
     <tr>
@@ -275,8 +267,7 @@ to sign all other types of resource record sets. Possible values: ["keySigning",
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the mechanism used to provide authenticated denial-of-existence responses.
-non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"].</p>
+            <p>Specifies the mechanism used to provide authenticated denial-of-existence responses. non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"].</p>
         </td>
     </tr>
     <tr>
@@ -296,9 +287,7 @@ non_existence can only be updated when the state is 'off'. Possible values: ["ns
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The presence for this field indicates that outbound forwarding is enabled
-for this zone. The value of this field contains the set of destinations
-to forward to.</p>
+            <p>The presence for this field indicates that outbound forwarding is enabled for this zone. The value of this field contains the set of destinations to forward to.</p>
         </td>
     </tr>
     <tr>
@@ -308,9 +297,7 @@ to forward to.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>List of target name servers to forward to. Cloud DNS will
-select the best available name server if more than
-one target is given.</p>
+            <p>List of target name servers to forward to. Cloud DNS selects the best available name server if more than one target is given.</p>
         </td>
     </tr>
     <tr>
@@ -330,9 +317,7 @@ one target is given.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
-decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
-to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"].</p>
+            <p>Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"].</p>
         </td>
     </tr>
     <tr>
@@ -352,8 +337,7 @@ to the Internet. When set to 'private', Cloud DNS will always send queries throu
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The presence of this field indicates that DNS Peering is enabled for this
-zone. The value of this field contains the network to peer with.</p>
+            <p>The presence of this field indicates that DNS Peering is enabled for this zone. The value of this field contains the network to peer with.</p>
         </td>
     </tr>
     <tr>
@@ -383,7 +367,7 @@ zone. The value of this field contains the network to peer with.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
         </td>
     </tr>
     <tr>
@@ -393,7 +377,7 @@ zone. The value of this field contains the network to peer with.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -403,7 +387,7 @@ zone. The value of this field contains the network to peer with.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -413,8 +397,7 @@ zone. The value of this field contains the network to peer with.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>For privately visible zones, the set of Virtual Private Cloud
-resources that the zone is visible from. At least one of 'gke_clusters' or 'networks' must be specified.</p>
+            <p>For privately visible zones, the set of Virtual Private Cloud resources that the zone is visible from. At least one of 'gke_clusters' or 'networks' must be specified.</p>
         </td>
     </tr>
     <tr>
@@ -444,9 +427,7 @@ resources that the zone is visible from. At least one of 'gke_clusters' or 'netw
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The resource name of the cluster to bind this ManagedZone to.
-This should be specified in the format like
-'projects/*/locations/*/clusters/*'.</p>
+            <p>The resource name of the cluster to bind this ManagedZone to. This should be specified in the format like 'projects/*/locations/*/clusters/*'.</p>
         </td>
     </tr>
     <tr>
@@ -456,7 +437,7 @@ This should be specified in the format like
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ContainerCluster` resource.</p>
+            <p>The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}` `projects/{projectID}/zones/{zone}/clusters/{clusterID}`</p>
         </td>
     </tr>
     <tr>
@@ -466,7 +447,7 @@ This should be specified in the format like
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */</p>
         </td>
     </tr>
     <tr>
@@ -476,7 +457,7 @@ This should be specified in the format like
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>Namespace of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */</p>
         </td>
     </tr>
     <tr>
@@ -486,7 +467,7 @@ This should be specified in the format like
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>The list of VPC networks that can see this zone.</p>
         </td>
     </tr>
     <tr>
@@ -516,7 +497,7 @@ This should be specified in the format like
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
         </td>
     </tr>
     <tr>
@@ -526,7 +507,7 @@ This should be specified in the format like
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -536,7 +517,7 @@ This should be specified in the format like
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -556,9 +537,7 @@ This should be specified in the format like
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Specifies if this is a managed reverse lookup zone. If true, Cloud DNS will resolve reverse
-lookup queries using automatically configured records for VPC resources. This only applies
-to networks listed under 'private_visibility_config'.</p>
+            <p>Immutable. Specifies if this is a managed reverse lookup zone. If true, Cloud DNS will resolve reverse lookup queries using automatically configured records for VPC resources. This only applies to networks listed under 'private_visibility_config'.</p>
         </td>
     </tr>
     <tr>
@@ -578,7 +557,7 @@ to networks listed under 'private_visibility_config'.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The namespace associated with the zone.</p>
+            <p>Contains information about the namespace associated with the zone.</p>
         </td>
     </tr>
     <tr>
@@ -588,11 +567,7 @@ to networks listed under 'private_visibility_config'.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The fully qualified or partial URL of the service directory namespace that should be
-associated with the zone. This should be formatted like
-'https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace_id}'
-or simply 'projects/{project}/locations/{location}/namespaces/{namespace_id}'
-Ignored for 'public' visibility zones.</p>
+            <p>The fully qualified or partial URL of the service directory namespace that should be associated with the zone. This should be formatted like 'https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace_id}' or simply 'projects/{project}/locations/{location}/namespaces/{namespace_id}' Ignored for 'public' visibility zones.</p>
         </td>
     </tr>
     <tr>
@@ -602,8 +577,7 @@ Ignored for 'public' visibility zones.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The zone's visibility: public zones are exposed to the Internet,
-while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"].</p>
+            <p>Immutable. The zone's visibility: public zones are exposed to the Internet, while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"].</p>
         </td>
     </tr>
 </tbody>
@@ -638,7 +612,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the DNSManagedZone's current state.</p>
         </td>
     </tr>
     <tr>
@@ -687,8 +661,7 @@ observedGeneration: integer
         <td><code>creationTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time that this resource was created on the server.
-This is in RFC3339 text format.</p>
+            <p>The time that this resource was created on the server. This is in RFC3339 text format.</p>
         </td>
     </tr>
     <tr>
@@ -702,8 +675,7 @@ This is in RFC3339 text format.</p>
         <td><code>nameServers</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Delegate your managed_zone to these virtual name servers;
-defined by the server.</p>
+            <p>Delegate your managed_zone to these virtual name servers; defined by the server.</p>
         </td>
     </tr>
     <tr>

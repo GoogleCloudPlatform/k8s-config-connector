@@ -1947,7 +1947,7 @@ uri: string
         <td><code>expireTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>For a deleted resource, the time after which it will be permamently deleted.</p>
+            <p>For a deleted resource, the time after which it will be permanently deleted.</p>
         </td>
     </tr>
     <tr>

@@ -187,7 +187,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>ProcessorRef is a reference to a DocumentAIProcessor.</p>
         </td>
     </tr>
     <tr>

@@ -199,7 +199,7 @@ resourceType: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>InstanceRef defines the resource reference to ComputeInstance, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>InstanceRef is a reference to a ComputeInstance.</p>
         </td>
     </tr>
     <tr>

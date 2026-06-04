@@ -1647,7 +1647,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -4907,7 +4907,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -8117,7 +8117,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -11417,7 +11417,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.</p>
         </td>
     </tr>
     <tr>

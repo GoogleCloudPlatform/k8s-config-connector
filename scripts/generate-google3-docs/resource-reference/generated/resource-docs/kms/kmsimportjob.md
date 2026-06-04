@@ -89,7 +89,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>KMSKeyRingRef is a reference to a KMSKeyRing.</p>
         </td>
     </tr>
     <tr>
