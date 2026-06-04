@@ -1,0 +1,15 @@
+apiVersion: automl.cnrm.cloud.google.com/v1alpha1
+kind: AutoMLDataset
+metadata:
+  name: automldataset-max-${uniqueId}
+spec:
+  displayName: "ds_max_${uniqueId}"
+  description: "Initial description"
+  labels:
+    env: "dev"
+    test: "true"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  textClassificationDatasetMetadata:
+    classificationType: "MULTICLASS"
