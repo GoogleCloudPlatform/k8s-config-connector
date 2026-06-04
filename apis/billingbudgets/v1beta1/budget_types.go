@@ -137,7 +137,7 @@ type BudgetThresholdRule struct {
 // +kcc:proto=google.cloud.billing.budgets.v1.NotificationsRule
 type AllUpdatesRule struct {
 	// Optional. When set to true, disables default notifications sent when a threshold is exceeded. Default notifications are sent to those with Billing Account Administrator and Billing Account User IAM roles for the target account.
-	DisableDefaultIamRecipients *bool `json:"disableDefaultIamRecipients,omitempty"`
+	DisableDefaultIAMRecipients *bool `json:"disableDefaultIamRecipients,omitempty"`
 
 	MonitoringNotificationChannels []monitoringv1beta1.MonitoringNotificationChannelRef `json:"monitoringNotificationChannels,omitempty"`
 

@@ -26,10 +26,10 @@ package billingbudgets
 import (
 	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billingbudgets/v1beta1"
+	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-/* found existing non-generated mapping function "AllUpdatesRule_v1beta1_FromProto", skipping
 func AllUpdatesRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NotificationsRule) *krm.AllUpdatesRule {
 	if in == nil {
 		return nil
@@ -40,14 +40,10 @@ func AllUpdatesRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Notifica
 	}
 	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
 	out.MonitoringNotificationChannels = AllUpdatesRule_MonitoringNotificationChannels_FromProto(mapCtx, in.MonitoringNotificationChannels)
-	// MISSING: DisableDefaultIAMRecipients
-	// (near miss): "DisableDefaultIAMRecipients" vs "DisableDefaultIamRecipients"
+	out.DisableDefaultIAMRecipients = direct.LazyPtr(in.GetDisableDefaultIamRecipients())
 	// MISSING: EnableProjectLevelRecipients
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "AllUpdatesRule_v1beta1_ToProto", skipping
 func AllUpdatesRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdatesRule) *pb.NotificationsRule {
 	if in == nil {
 		return nil
@@ -58,12 +54,10 @@ func AllUpdatesRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdate
 	}
 	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
 	out.MonitoringNotificationChannels = AllUpdatesRule_MonitoringNotificationChannels_ToProto(mapCtx, in.MonitoringNotificationChannels)
-	// MISSING: DisableDefaultIAMRecipients
-	// (near miss): "DisableDefaultIAMRecipients" vs "DisableDefaultIamRecipients"
+	out.DisableDefaultIamRecipients = direct.ValueOf(in.DisableDefaultIAMRecipients)
 	// MISSING: EnableProjectLevelRecipients
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "BillingBudgetsBudgetSpec_v1beta1_FromProto", skipping
 func BillingBudgetsBudgetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetSpec {
