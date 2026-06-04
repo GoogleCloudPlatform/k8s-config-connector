@@ -122,3 +122,13 @@ func LoggingLogExclusionStatus_FromProto(mapCtx *direct.MapContext, in *pb.LogEx
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
+func LoggingLogExclusionStatus_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogExclusionStatus) *pb.LogExclusion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogExclusion{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
