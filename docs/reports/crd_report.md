@@ -31,6 +31,7 @@
 | apigee.cnrm.cloud.google.com                  | ApigeeSyncAuthorization                         | True         | False       | False  | Terraform  | False       |
 | apihub.cnrm.cloud.google.com                  | APIHubAPI                                       | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                  | APIHubDeployment                                | True         | False       | False  | Direct     | True        |
+| apihub.cnrm.cloud.google.com                  | APIHubExternalAPI                               | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                  | APIHubPlugin                                    | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                  | APIHubRuntimeProjectAttachment                  | True         | False       | False  | Direct     | True        |
 | apikeys.cnrm.cloud.google.com                 | APIKeysKey                                      | True         | False       | False  | Terraform  | True        |
