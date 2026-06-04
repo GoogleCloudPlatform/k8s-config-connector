@@ -21,7 +21,7 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.redis.cluster.v1
 
-package redis
+package cluster
 
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
