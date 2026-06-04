@@ -574,7 +574,7 @@ type RunServiceStatus struct {
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
-	/* For a deleted resource, the time after which it will be permamently deleted. */
+	/* For a deleted resource, the time after which it will be permanently deleted. */
 	// +optional
 	ExpireTime *string `json:"expireTime,omitempty"`
 
