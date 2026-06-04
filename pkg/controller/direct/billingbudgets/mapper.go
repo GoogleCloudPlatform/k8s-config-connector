@@ -152,52 +152,6 @@ func BudgetFilter_Labels_ToProto(mapCtx *direct.MapContext, in map[string]krm.Fi
 	return out
 }
 
-func BudgetAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmount) krm.BudgetAmount {
-	if in == nil {
-		return krm.BudgetAmount{}
-	}
-	out := krm.BudgetAmount{}
-	out.SpecifiedAmount = BudgetSpecifiedAmount_v1beta1_FromProto(mapCtx, in.GetSpecifiedAmount())
-	out.LastPeriodAmount = BudgetLastPeriodAmount_v1beta1_FromProto(mapCtx, in.GetLastPeriodAmount())
-	return out
-}
-
-func BudgetAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in krm.BudgetAmount) *pb.BudgetAmount {
-	if in.SpecifiedAmount == nil && in.LastPeriodAmount == nil {
-		return nil
-	}
-	out := &pb.BudgetAmount{}
-	if oneof := BudgetSpecifiedAmount_v1beta1_ToProto(mapCtx, in.SpecifiedAmount); oneof != nil {
-		out.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{SpecifiedAmount: oneof}
-	}
-	if oneof := BudgetLastPeriodAmount_v1beta1_ToProto(mapCtx, in.LastPeriodAmount); oneof != nil {
-		out.BudgetAmount = &pb.BudgetAmount_LastPeriodAmount{LastPeriodAmount: oneof}
-	}
-	return out
-}
-
-func BudgetCustomPeriod_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomPeriod) *krm.BudgetCustomPeriod {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BudgetCustomPeriod{}
-	if in.GetStartDate() != nil {
-		out.StartDate = *BudgetDate_v1beta1_FromProto(mapCtx, in.GetStartDate())
-	}
-	out.EndDate = BudgetDate_v1beta1_FromProto(mapCtx, in.GetEndDate())
-	return out
-}
-
-func BudgetCustomPeriod_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetCustomPeriod) *pb.CustomPeriod {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomPeriod{}
-	out.StartDate = BudgetDate_v1beta1_ToProto(mapCtx, &in.StartDate)
-	out.EndDate = BudgetDate_v1beta1_ToProto(mapCtx, in.EndDate)
-	return out
-}
-
 func BudgetThresholdRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRule) *krm.BudgetThresholdRule {
 	if in == nil {
 		return nil

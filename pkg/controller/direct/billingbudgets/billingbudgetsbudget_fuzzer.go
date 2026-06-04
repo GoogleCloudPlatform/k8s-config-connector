@@ -21,7 +21,6 @@ package billingbudgets
 import (
 	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	gdate "google.golang.org/genproto/googleapis/type/date"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
@@ -37,12 +36,6 @@ func billingbudgetsBudgetFuzzer() fuzztesting.KRMFuzzer {
 
 	f.FilterSpec = func(in *pb.Budget) {
 		if in.BudgetFilter != nil {
-			if cpOneof, ok := in.BudgetFilter.UsagePeriod.(*pb.Filter_CustomPeriod); ok && cpOneof != nil && cpOneof.CustomPeriod != nil {
-				cp := cpOneof.CustomPeriod
-				if cp.StartDate == nil {
-					cp.StartDate = &gdate.Date{}
-				}
-			}
 			if cpOneof, ok := in.BudgetFilter.UsagePeriod.(*pb.Filter_CalendarPeriod); ok && cpOneof != nil {
 				if cpOneof.CalendarPeriod == pb.CalendarPeriod_CALENDAR_PERIOD_UNSPECIFIED {
 					in.BudgetFilter.UsagePeriod = nil
@@ -62,9 +55,6 @@ func billingbudgetsBudgetFuzzer() fuzztesting.KRMFuzzer {
 					}
 				}
 			}
-		}
-		if in.Amount != nil && in.Amount.BudgetAmount == nil {
-			in.Amount = nil
 		}
 	}
 

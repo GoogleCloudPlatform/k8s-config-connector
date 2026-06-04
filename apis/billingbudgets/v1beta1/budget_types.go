@@ -37,7 +37,8 @@ type BillingBudgetsBudgetSpec struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. Budgeted amount.
-	Amount BudgetAmount `json:"amount"`
+	// +required
+	Amount *BudgetAmount `json:"amount"`
 
 	// Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget's time period, as well as other filters.
 	BudgetFilter *BudgetFilter `json:"budgetFilter,omitempty"`
@@ -110,7 +111,8 @@ type BudgetCustomPeriod struct {
 	EndDate *BudgetDate `json:"endDate,omitempty"`
 
 	// Immutable. Required. The start date must be after January 1, 2017.
-	StartDate BudgetDate `json:"startDate"`
+	// +required
+	StartDate *BudgetDate `json:"startDate"`
 }
 
 // +kcc:proto=google.type.Date
