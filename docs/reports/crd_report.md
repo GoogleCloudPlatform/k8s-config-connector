@@ -1,7 +1,7 @@
 # CRD Analysis Report
 
 | group                                         | kind                                            | has_v1alpha1 | has_v1beta1 | has_v1 | reconciler | has_go_type |
-|-----------------------------------------------|- ------------------------------------------------|- -------------|- ------------|- -------|- -----------|- ------------|
+|-----------------------------------------------|-------------------------------------------------|--------------|-------------|--------|------------|-------------|
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessLevelCondition        | True         | False       | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessLevel                 | False        | True        | False  | Terraform  | True        |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessPolicy                | False        | True        | False  | Terraform  | True        |
