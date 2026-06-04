@@ -37,7 +37,8 @@ type BillingBudgetsBudgetSpec struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. Budgeted amount.
-	Amount BudgetAmount `json:"amount"`
+	// +required
+	Amount *BudgetAmount `json:"amount"`
 
 	// Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget's time period, as well as other filters.
 	BudgetFilter *BudgetFilter `json:"budgetFilter,omitempty"`
@@ -110,7 +111,8 @@ type BudgetCustomPeriod struct {
 	EndDate *BudgetDate `json:"endDate,omitempty"`
 
 	// Immutable. Required. The start date must be after January 1, 2017.
-	StartDate BudgetDate `json:"startDate"`
+	// +required
+	StartDate *BudgetDate `json:"startDate"`
 }
 
 // +kcc:proto=google.type.Date
@@ -137,7 +139,7 @@ type BudgetThresholdRule struct {
 // +kcc:proto=google.cloud.billing.budgets.v1.NotificationsRule
 type AllUpdatesRule struct {
 	// Optional. When set to true, disables default notifications sent when a threshold is exceeded. Default notifications are sent to those with Billing Account Administrator and Billing Account User IAM roles for the target account.
-	DisableDefaultIamRecipients *bool `json:"disableDefaultIamRecipients,omitempty"`
+	DisableDefaultIAMRecipients *bool `json:"disableDefaultIamRecipients,omitempty"`
 
 	MonitoringNotificationChannels []monitoringv1beta1.MonitoringNotificationChannelRef `json:"monitoringNotificationChannels,omitempty"`
 

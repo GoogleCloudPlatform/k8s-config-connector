@@ -152,49 +152,6 @@ func BudgetFilter_Labels_ToProto(mapCtx *direct.MapContext, in map[string]krm.Fi
 	return out
 }
 
-func BudgetAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmount) krm.BudgetAmount {
-	if in == nil {
-		return krm.BudgetAmount{}
-	}
-	out := krm.BudgetAmount{}
-	out.SpecifiedAmount = BudgetSpecifiedAmount_v1beta1_FromProto(mapCtx, in.GetSpecifiedAmount())
-	out.LastPeriodAmount = BudgetLastPeriodAmount_v1beta1_FromProto(mapCtx, in.GetLastPeriodAmount())
-	return out
-}
-
-func BudgetAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in krm.BudgetAmount) *pb.BudgetAmount {
-	out := &pb.BudgetAmount{}
-	if oneof := BudgetSpecifiedAmount_v1beta1_ToProto(mapCtx, in.SpecifiedAmount); oneof != nil {
-		out.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{SpecifiedAmount: oneof}
-	}
-	if oneof := BudgetLastPeriodAmount_v1beta1_ToProto(mapCtx, in.LastPeriodAmount); oneof != nil {
-		out.BudgetAmount = &pb.BudgetAmount_LastPeriodAmount{LastPeriodAmount: oneof}
-	}
-	return out
-}
-
-func BudgetCustomPeriod_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomPeriod) *krm.BudgetCustomPeriod {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BudgetCustomPeriod{}
-	if in.GetStartDate() != nil {
-		out.StartDate = *BudgetDate_v1beta1_FromProto(mapCtx, in.GetStartDate())
-	}
-	out.EndDate = BudgetDate_v1beta1_FromProto(mapCtx, in.GetEndDate())
-	return out
-}
-
-func BudgetCustomPeriod_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetCustomPeriod) *pb.CustomPeriod {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomPeriod{}
-	out.StartDate = BudgetDate_v1beta1_ToProto(mapCtx, &in.StartDate)
-	out.EndDate = BudgetDate_v1beta1_ToProto(mapCtx, in.EndDate)
-	return out
-}
-
 func BudgetThresholdRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRule) *krm.BudgetThresholdRule {
 	if in == nil {
 		return nil
@@ -256,4 +213,52 @@ func BudgetFilter_CalendarPeriod_ToProto(mapCtx *direct.MapContext, in *string) 
 		return nil
 	}
 	return &pb.Filter_CalendarPeriod{CalendarPeriod: direct.Enum_ToProto[pb.CalendarPeriod](mapCtx, in)}
+}
+
+func BillingBudgetsBudgetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BillingBudgetsBudgetSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.BudgetFilter = BudgetFilter_v1beta1_FromProto(mapCtx, in.GetBudgetFilter())
+	out.Amount = BudgetAmount_v1beta1_FromProto(mapCtx, in.GetAmount())
+	out.ThresholdRules = direct.Slice_FromProto(mapCtx, in.ThresholdRules, BudgetThresholdRule_v1beta1_FromProto)
+	out.AllUpdatesRule = AllUpdatesRule_v1beta1_FromProto(mapCtx, in.GetNotificationsRule())
+	return out
+}
+
+func BillingBudgetsBudgetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetsBudgetSpec) *pb.Budget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Budget{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.BudgetFilter = BudgetFilter_v1beta1_ToProto(mapCtx, in.BudgetFilter)
+	out.Amount = BudgetAmount_v1beta1_ToProto(mapCtx, in.Amount)
+	out.ThresholdRules = direct.Slice_ToProto(mapCtx, in.ThresholdRules, BudgetThresholdRule_v1beta1_ToProto)
+	out.NotificationsRule = AllUpdatesRule_v1beta1_ToProto(mapCtx, in.AllUpdatesRule)
+	return out
+}
+
+func BillingBudgetsBudgetStatus_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BillingBudgetsBudgetStatus{}
+	if in.Etag != "" {
+		out.Etag = &in.Etag
+	}
+	return out
+}
+
+func BillingBudgetsBudgetStatus_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetsBudgetStatus) *pb.Budget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Budget{}
+	if in.Etag != nil {
+		out.Etag = *in.Etag
+	}
+	return out
 }
