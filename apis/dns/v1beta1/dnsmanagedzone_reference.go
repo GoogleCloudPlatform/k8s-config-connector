@@ -28,8 +28,7 @@ import (
 
 var _ refs.Ref = &DNSManagedZoneRef{}
 
-// DNSManagedZoneRef defines the resource reference to DNSManagedZone, which "External" field
-// holds the GCP identifier for the KRM object.
+// DNSManagedZoneRef is a reference to a DNSManagedZone.
 type DNSManagedZoneRef struct {
 	// A reference to an externally managed DNSManagedZone resource.
 	// Should be in the format "projects/{{projectID}}/managedZones/{{zone_number}}".
