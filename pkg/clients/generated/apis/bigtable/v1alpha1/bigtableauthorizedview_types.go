@@ -57,7 +57,7 @@ type BigtableAuthorizedViewSpec struct {
 	// +optional
 	SubsetView *AuthorizedviewSubsetView `json:"subsetView,omitempty"`
 
-	/* TableRef defines the resource reference to BigtableTable, which "External" field holds the GCP identifier for the KRM object. */
+	/* BigtableTableRef defines the resource reference to BigtableTable, which "External" field holds the GCP identifier for the KRM object. */
 	TableRef v1alpha1.ResourceRef `json:"tableRef"`
 }
 

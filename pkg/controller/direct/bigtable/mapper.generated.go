@@ -332,7 +332,7 @@ func BigtableBackupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Bac
 	out := &krmbigtablev1alpha1.BigtableBackupSpec{}
 	// MISSING: Name
 	if in.GetSourceTable() != "" {
-		out.SourceTableRef = &krm.TableRef{External: in.GetSourceTable()}
+		out.SourceTableRef = &krm.BigtableTableRef{External: in.GetSourceTable()}
 	}
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
