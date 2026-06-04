@@ -114,7 +114,8 @@ type ManagedZone struct {
 type ManagedZoneCloudLoggingConfig struct {
 	// If set, enable query logging for this ManagedZone. False by default, making
 	// logging opt-in.
-	EnableLogging *bool `json:"enableLogging,omitempty"`
+	// +required
+	EnableLogging *bool `json:"enableLogging"`
 }
 
 /* found existing non-generated go type with openapi tag "ManagedZoneDnsSecConfig", skipping
@@ -139,7 +140,8 @@ type ManagedZoneDnsSecConfig struct {
 type ManagedZoneForwardingConfig struct {
 	// List of target name servers to forward to. Cloud DNS selects the best available
 	// name server if more than one target is given.
-	TargetNameServers []ManagedZoneForwardingConfigNameServerTarget `json:"targetNameServers,omitempty"`
+	// +required
+	TargetNameServers []ManagedZoneForwardingConfigNameServerTarget `json:"targetNameServers"`
 }
 
 /* found existing non-generated go type with openapi tag "ManagedZoneForwardingConfigNameServerTarget", skipping
@@ -169,7 +171,8 @@ type ManagedZoneForwardingConfigNameServerTarget struct {
 // +openapi:ManagedZonePeeringConfig
 type ManagedZonePeeringConfig struct {
 	// The network with which to peer.
-	TargetNetwork *ManagedZonePeeringConfigTargetNetwork `json:"targetNetwork,omitempty"`
+	// +required
+	TargetNetwork *ManagedZonePeeringConfigTargetNetwork `json:"targetNetwork"`
 }
 
 /* found existing non-generated go type with openapi tag "ManagedZonePeeringConfigTargetNetwork", skipping
@@ -230,7 +233,8 @@ type ManagedZoneReverseLookupConfig struct {
 // +openapi:ManagedZoneServiceDirectoryConfig
 type ManagedZoneServiceDirectoryConfig struct {
 	// Contains information about the namespace associated with the zone.
-	Namespace *ManagedZoneServiceDirectoryConfigNamespace `json:"namespace,omitempty"`
+	// +required
+	Namespace *ManagedZoneServiceDirectoryConfigNamespace `json:"namespace"`
 }
 
 /* found existing non-generated go type with openapi tag "ManagedZoneServiceDirectoryConfigNamespace", skipping

@@ -210,7 +210,7 @@ type DNSManagedZone struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DNSManagedZoneSpec   `json:"spec,omitempty"`
+	Spec   DNSManagedZoneSpec   `json:"spec"`
 	Status DNSManagedZoneStatus `json:"status,omitempty"`
 }
 

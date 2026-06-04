@@ -19,12 +19,13 @@ set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
-# Generate KRM Go types from the OpenAPI / Discovery API JSON specification, ignoring all 'kind' fields
+# Generate KRM Go types from the OpenAPI / Discovery API JSON specification, ignoring all 'kind' fields and setting required fields
 go run "${REPO_ROOT}/dev/tools/openapi-to-krm/main.go" \
   --schema-file "${REPO_ROOT}/apis/dns/v1beta1/dns-api.json" \
   --api-version "dns.cnrm.cloud.google.com/v1beta1" \
   --resource "DNSManagedZone:ManagedZone" \
   --ignore-field "*:kind" \
+  --require-field "ManagedZoneCloudLoggingConfig:enableLogging,ManagedZoneForwardingConfig:targetNameServers,ManagedZonePeeringConfig:targetNetwork,ManagedZoneServiceDirectoryConfig:namespace" \
   --output-file "${REPO_ROOT}/apis/dns/v1beta1/types.generated.go"
 
 # Mapper is commented out for now; we do not need it at this stage.

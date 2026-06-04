@@ -70,6 +70,8 @@ spec:
                     description: If set, enable query logging for this ManagedZone.
                       False by default, making logging opt-in.
                     type: boolean
+                required:
+                - enableLogging
                 type: object
               description:
                 description: A textual description field. Defaults to 'Managed by
@@ -153,6 +155,8 @@ spec:
                       - ipv4Address
                       type: object
                     type: array
+                required:
+                - targetNameServers
                 type: object
               peeringConfig:
                 description: The presence of this field indicates that DNS Peering
@@ -194,6 +198,8 @@ spec:
                     required:
                     - networkRef
                     type: object
+                required:
+                - targetNetwork
                 type: object
               privateVisibilityConfig:
                 description: For privately visible zones, the set of Virtual Private
@@ -312,6 +318,8 @@ spec:
                     required:
                     - namespaceUrl
                     type: object
+                required:
+                - namespace
                 type: object
               visibility:
                 description: 'Immutable. The zone''s visibility: public zones are
@@ -375,6 +383,8 @@ spec:
                 format: int64
                 type: integer
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

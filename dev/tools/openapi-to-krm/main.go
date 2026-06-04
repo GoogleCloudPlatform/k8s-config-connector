@@ -55,22 +55,25 @@ type Schema struct {
 }
 
 type Options struct {
-	SchemaFile   string
-	APIVersion   string
-	Resource     string
-	OutputFile   string
-	IgnoreFields []string
+	SchemaFile    string
+	APIVersion    string
+	Resource      string
+	OutputFile    string
+	IgnoreFields  []string
+	RequireFields []string
 }
 
 func main() {
 	var opt Options
 	var ignoreFieldsStr string
+	var requireFieldsStr string
 
 	flag.StringVar(&opt.SchemaFile, "schema-file", "", "Path to the Discovery API / OpenAPI JSON file")
 	flag.StringVar(&opt.APIVersion, "api-version", "", "KRM API Version (e.g., dns.cnrm.cloud.google.com/v1beta1)")
 	flag.StringVar(&opt.Resource, "resource", "", "Resource mapping (e.g., DNSManagedZone:ManagedZone)")
 	flag.StringVar(&opt.OutputFile, "output-file", "", "Output file path")
 	flag.StringVar(&ignoreFieldsStr, "ignore-field", "", "Comma-separated or repeated field to ignore (e.g., *:kind,ManagedZone:labels)")
+	flag.StringVar(&requireFieldsStr, "require-field", "", "Comma-separated or repeated field to mark as required (e.g., *:dnsName,ManagedZone:dnsName)")
 	flag.Parse()
 
 	if opt.SchemaFile == "" || opt.APIVersion == "" || opt.Resource == "" || opt.OutputFile == "" {
@@ -79,6 +82,10 @@ func main() {
 
 	if ignoreFieldsStr != "" {
 		opt.IgnoreFields = strings.Split(ignoreFieldsStr, ",")
+	}
+
+	if requireFieldsStr != "" {
+		opt.RequireFields = strings.Split(requireFieldsStr, ",")
 	}
 
 	ctx := context.Background()
@@ -170,7 +177,19 @@ func Run(ctx context.Context, opt Options) error {
 			goName := goFieldName(p)
 			gType := goType(prop)
 			comment := commentBlock(prop.Description, "\t")
-			fmt.Fprintf(&buf, "%s\t%s %s `json:\"%s,omitempty\"`\n\n", comment, goName, gType, p)
+
+			jsonTag := fmt.Sprintf("`json:\"%s,omitempty\"`", p)
+			fieldRequired := isFieldRequired(id, p, opt.RequireFields)
+			if fieldRequired {
+				if comment != "" {
+					comment += "\t// +required\n"
+				} else {
+					comment = "\t// +required\n"
+				}
+				jsonTag = fmt.Sprintf("`json:\"%s\"`", p)
+			}
+
+			fmt.Fprintf(&buf, "%s\t%s %s %s\n\n", comment, goName, gType, jsonTag)
 		}
 
 		fmt.Fprintf(&buf, "}\n")
@@ -190,6 +209,20 @@ func Run(ctx context.Context, opt Options) error {
 
 func shouldIgnoreField(typeName string, fieldName string, ignoreRules []string) bool {
 	for _, rule := range ignoreRules {
+		parts := strings.Split(rule, ":")
+		if len(parts) != 2 {
+			continue
+		}
+		tRule, fRule := parts[0], parts[1]
+		if (tRule == "*" || tRule == typeName) && (fRule == "*" || fRule == fieldName) {
+			return true
+		}
+	}
+	return false
+}
+
+func isFieldRequired(typeName string, fieldName string, requiredRules []string) bool {
+	for _, rule := range requiredRules {
 		parts := strings.Split(rule, ":")
 		if len(parts) != 2 {
 			continue

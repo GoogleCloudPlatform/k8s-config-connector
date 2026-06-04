@@ -40,8 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type ManagedzoneCloudLoggingConfig struct {
 	/* If set, enable query logging for this ManagedZone. False by default, making logging opt-in. */
-	// +optional
-	EnableLogging *bool `json:"enableLogging,omitempty"`
+	EnableLogging bool `json:"enableLogging"`
 }
 
 type ManagedzoneDefaultKeySpecs struct {
@@ -82,8 +81,7 @@ type ManagedzoneDnssecConfig struct {
 
 type ManagedzoneForwardingConfig struct {
 	/* List of target name servers to forward to. Cloud DNS selects the best available name server if more than one target is given. */
-	// +optional
-	TargetNameServers []ManagedzoneTargetNameServers `json:"targetNameServers,omitempty"`
+	TargetNameServers []ManagedzoneTargetNameServers `json:"targetNameServers"`
 }
 
 type ManagedzoneGkeClusters struct {
@@ -103,8 +101,7 @@ type ManagedzoneNetworks struct {
 
 type ManagedzonePeeringConfig struct {
 	/* The network with which to peer. */
-	// +optional
-	TargetNetwork *ManagedzoneTargetNetwork `json:"targetNetwork,omitempty"`
+	TargetNetwork ManagedzoneTargetNetwork `json:"targetNetwork"`
 }
 
 type ManagedzonePrivateVisibilityConfig struct {
@@ -119,8 +116,7 @@ type ManagedzonePrivateVisibilityConfig struct {
 
 type ManagedzoneServiceDirectoryConfig struct {
 	/* Contains information about the namespace associated with the zone. */
-	// +optional
-	Namespace *ManagedzoneNamespace `json:"namespace,omitempty"`
+	Namespace ManagedzoneNamespace `json:"namespace"`
 }
 
 type ManagedzoneTargetNameServers struct {
