@@ -14,3 +14,7 @@ Transitioned the `Project` resource under `apis/resourcemanager` to support dire
   - In protobuf, RM v3 returns the resource name as `projects/123456789`. We extracted the project number by parsing/splitting the name prefix (`projects/`).
 - **Protobuf Generation Dependency**:
   - Local `generate.sh` runs require `.build/googleapis.pb` to exist. If it's missing, executing `dev/tools/controllerbuilder/generate-proto.sh` resolves the error by compiling the protos into the local build folder.
+- **Canonical Identity and Reference Types**:
+  - Implemented the canonical `_identity.go` (`project_identity.go`) and `_reference.go` (`project_reference.go`) under `apis/resourcemanager/v1beta1/` following the `identity.IdentityV2` and `refs.Ref` interface models.
+  - Leveraged `common.ToStructuredType[*Project](u)` in the `Normalize` fallback callback function of the reference implementation to safely convert unstructured objects into fully typed ones.
+  - Validated template registration with `go test ./pkg/gcpurls/...`, syntax correctness via `go vet ./apis/resourcemanager/v1beta1/...`, and project-wide formatting via `make fmt`.

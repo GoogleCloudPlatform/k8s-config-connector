@@ -39,9 +39,8 @@ Create or update the file to match the canonical example. Key requirements:
 - Use the standard copyright header (Year 2026).
 - Declare interface implementations: `_ identity.IdentityV2 = &<Kind>Identity{}` and `_ identity.Resource = &<Kind>{}`
 - Define the template var: `var <Kind>IdentityFormat = gcpurls.Template[<Kind>Identity]("api.googleapis.com", "projects/{project}/...")`
-- Define the identity struct with proper godoc comments.
-  - State clearly: `// <Kind>Identity is the identity of a <Kind> resource.`
-  - The struct must map exactly to the template fields (e.g., `Project string`, `Location string`, `Instance string`) and have `// +k8s:deepcopy-gen=false`.
+- The struct must map exactly to the template fields (e.g., `Project string`, `Location string`, `Instance string`) and have `// +k8s:deepcopy-gen=false`.
+  - **Important:** Add a standard Go doc comment like `// <Kind>Identity is the identity of a GCP <Kind> resource.` right above the struct definition.
   - **Important:** The variables in your `gcpurls.Template` (e.g. `{instance}`) MUST match the struct fields when both are lowercased (e.g. `{deploymentresourcepool}` matches `DeploymentResourcePool`). Do not use underscores in the template variables (e.g. `{deployment_resource_pool}`) if your struct field is CamelCased, as `gcpurls.Template` will panic at initialization.
   - **Note:** If an existing deepcopy method was previously generated for this identity struct, run `dev/tasks/generate-types-and-mappers` to regenerate the types and remove the obsolete code.
 - Implement `String()`, `FromExternal(ref string)`, and `Host()` by delegating to the format var.
@@ -62,7 +61,7 @@ Create or update the file to match the canonical example. Key requirements:
 - Implement `_ refs.Ref = &<Kind>Ref{}`.
 - Define the GVK variable: `var <Kind>GVK = schema.GroupVersionKind{...}` (It is also acceptable if this is defined in `<kind>_types.go`).
 - Define the `<Kind>Ref` struct with exactly 3 fields: `External`, `Name`, and `Namespace`.
-  - Include a docstring on the struct in the format: `// <Kind>Ref is a reference to a GCP <Kind>.`. Avoid older awkward phrasing like "...defines the resource reference... which 'External' field...".
+  - **Important:** Add a clean, simple doc comment like `// <Kind>Ref is a reference to a GCP <Kind>.` right above the struct definition. Avoid verbose or awkward boilerplate phrasing like "defines the resource reference to..." or "which External field...".
   - The `External` field MUST have specific godoc: `"A reference to an externally managed <Kind> resource. Should be in the format \"projects/{{projectID}}/...\""`. Do not use generic docstrings.
   - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
 - Include `func init() { refs.Register(&<Kind>Ref{}) }`.
