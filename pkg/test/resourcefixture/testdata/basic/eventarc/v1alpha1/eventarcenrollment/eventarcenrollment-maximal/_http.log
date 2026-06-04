@@ -1,0 +1,348 @@
+GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenrollments%2Feventarcenrollment-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/enrollments?%24alt=json%3Benum-encoding%3Dint&enrollmentId=eventarcenrollment-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "annotations": {
+    "my-annotation-key": "my-annotation-value"
+  },
+  "celMatch": "message.type == 'google.cloud.pubsub.topic.v1.messagePublished'",
+  "destination": "projects/${projectId}/locations/us-central1/pipelines/my-pipeline-${uniqueId}",
+  "displayName": "My Maximal Enrollment",
+  "labels": {
+    "my-key": "my-value"
+  },
+  "messageBus": "projects/${projectId}/locations/us-central1/messageBuses/my-message-bus-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.eventarc.v1.Enrollment",
+    "annotations": {
+      "my-annotation-key": "my-annotation-value"
+    },
+    "celMatch": "message.type == 'google.cloud.pubsub.topic.v1.messagePublished'",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "destination": "projects/${projectId}/locations/us-central1/pipelines/my-pipeline-${uniqueId}",
+    "displayName": "My Maximal Enrollment",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "my-key": "my-value"
+    },
+    "messageBus": "projects/${projectId}/locations/us-central1/messageBuses/my-message-bus-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenrollments%2Feventarcenrollment-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "my-annotation-key": "my-annotation-value"
+  },
+  "celMatch": "message.type == 'google.cloud.pubsub.topic.v1.messagePublished'",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": "projects/${projectId}/locations/us-central1/pipelines/my-pipeline-${uniqueId}",
+  "displayName": "My Maximal Enrollment",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "my-key": "my-value"
+  },
+  "messageBus": "projects/${projectId}/locations/us-central1/messageBuses/my-message-bus-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CcelMatch%2CdisplayName%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: enrollment.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenrollments%2Feventarcenrollment-maximal-${uniqueId}
+
+{
+  "annotations": {
+    "my-annotation-key": "my-updated-annotation-value"
+  },
+  "celMatch": "message.type == 'google.cloud.pubsub.topic.v1.messagePublishedUpdated'",
+  "destination": "projects/${projectId}/locations/us-central1/pipelines/my-pipeline-${uniqueId}",
+  "displayName": "My Updated Maximal Enrollment",
+  "labels": {
+    "my-key": "my-updated-value"
+  },
+  "messageBus": "projects/${projectId}/locations/us-central1/messageBuses/my-message-bus-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.eventarc.v1.Enrollment",
+    "annotations": {
+      "my-annotation-key": "my-updated-annotation-value"
+    },
+    "celMatch": "message.type == 'google.cloud.pubsub.topic.v1.messagePublishedUpdated'",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "destination": "projects/${projectId}/locations/us-central1/pipelines/my-pipeline-${uniqueId}",
+    "displayName": "My Updated Maximal Enrollment",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "my-key": "my-updated-value"
+    },
+    "messageBus": "projects/${projectId}/locations/us-central1/messageBuses/my-message-bus-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenrollments%2Feventarcenrollment-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "my-annotation-key": "my-updated-annotation-value"
+  },
+  "celMatch": "message.type == 'google.cloud.pubsub.topic.v1.messagePublishedUpdated'",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": "projects/${projectId}/locations/us-central1/pipelines/my-pipeline-${uniqueId}",
+  "displayName": "My Updated Maximal Enrollment",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "my-key": "my-updated-value"
+  },
+  "messageBus": "projects/${projectId}/locations/us-central1/messageBuses/my-message-bus-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenrollments%2Feventarcenrollment-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.eventarc.v1.Enrollment",
+    "annotations": {
+      "my-annotation-key": "my-updated-annotation-value"
+    },
+    "celMatch": "message.type == 'google.cloud.pubsub.topic.v1.messagePublishedUpdated'",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "destination": "projects/${projectId}/locations/us-central1/pipelines/my-pipeline-${uniqueId}",
+    "displayName": "My Updated Maximal Enrollment",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "my-key": "my-updated-value"
+    },
+    "messageBus": "projects/${projectId}/locations/us-central1/messageBuses/my-message-bus-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/enrollments/eventarcenrollment-maximal-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
