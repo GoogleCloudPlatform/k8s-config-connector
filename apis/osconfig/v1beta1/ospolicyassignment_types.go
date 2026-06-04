@@ -105,7 +105,7 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	// +kubebuilder:validation:Format="date-time"
 	RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
 	// Output only. The assignment revision ID
-	// A new revision is committed whenever a rollout is triggered for a OS policy assignment
+	// A new revision is committed whenever a rollout is triggered for an OS policy assignment
 	RevisionID *string `json:"revisionId,omitempty"`
 
 	// Output only. OS policy assignment rollout state Possible values: ROLLOUT_STATE_UNSPECIFIED, IN_PROGRESS, CANCELLING, CANCELLED, SUCCEEDED

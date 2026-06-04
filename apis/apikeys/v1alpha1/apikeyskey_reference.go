@@ -33,10 +33,10 @@ type APIKeysKeyRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/global/keys/{{keyID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a APIKeysKey resource.
+	// The name of an APIKeysKey resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a APIKeysKey resource.
+	// The namespace of an APIKeysKey resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

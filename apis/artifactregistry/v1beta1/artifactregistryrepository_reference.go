@@ -40,10 +40,10 @@ type ArtifactRegistryRepositoryRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ArtifactRegistryRepository resource.
+	// The name of an ArtifactRegistryRepository resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ArtifactRegistryRepository resource.
+	// The namespace of an ArtifactRegistryRepository resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

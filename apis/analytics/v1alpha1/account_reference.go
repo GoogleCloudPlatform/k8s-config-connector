@@ -34,10 +34,10 @@ type AccountRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/accounts/{{accountID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AnalyticsAccount resource.
+	// The name of an AnalyticsAccount resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AnalyticsAccount resource.
+	// The namespace of an AnalyticsAccount resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

@@ -33,10 +33,10 @@ type AlloyDBBackupRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AlloyDBBackup resource.
+	// The name of an AlloyDBBackup resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AlloyDBBackup resource.
+	// The namespace of an AlloyDBBackup resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

@@ -51,7 +51,7 @@ func (p *ApplicationParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a ApplicationIdentity from the Config Connector Application object.
+// New builds an ApplicationIdentity from the Config Connector Application object.
 func NewApplicationIdentity(ctx context.Context, reader client.Reader, obj *AppHubApplication) (*ApplicationIdentity, error) {
 
 	// Get Parent

@@ -49,7 +49,7 @@ func (p *ExternalAddressParent) String() string {
 	return p.PrivateCloud
 }
 
-// New builds a ExternalAddressIdentity from the Config Connector ExternalAddress object.
+// New builds an ExternalAddressIdentity from the Config Connector ExternalAddress object.
 func NewExternalAddressIdentity(ctx context.Context, reader client.Reader, obj *VMwareEngineExternalAddress) (*ExternalAddressIdentity, error) {
 	// Get Parent
 	privateCloud, err := obj.Spec.PrivateCloudRef.NormalizedExternal(ctx, reader, obj.GetNamespace())

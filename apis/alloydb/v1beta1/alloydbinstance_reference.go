@@ -34,10 +34,10 @@ type AlloyDBInstanceRef struct {
 	// Should be in the format "projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/instances/{{instance}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AlloyDBInstance resource.
+	// The name of an AlloyDBInstance resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AlloyDBInstance resource.
+	// The namespace of an AlloyDBInstance resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

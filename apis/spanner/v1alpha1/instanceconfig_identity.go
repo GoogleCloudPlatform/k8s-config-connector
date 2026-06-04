@@ -50,7 +50,7 @@ func (p *InstanceConfigParent) String() string {
 	return "projects/" + p.ProjectID
 }
 
-// New builds a InstanceConfigIdentity from the Config Connector InstanceConfig object.
+// New builds an InstanceConfigIdentity from the Config Connector InstanceConfig object.
 func NewInstanceConfigIdentity(ctx context.Context, reader client.Reader, obj *SpannerInstanceConfig) (*InstanceConfigIdentity, error) {
 
 	// Get Parent

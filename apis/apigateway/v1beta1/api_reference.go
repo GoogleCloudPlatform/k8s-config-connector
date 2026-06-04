@@ -34,10 +34,10 @@ type ApiRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/global/apis/{{apiID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a APIGatewayAPI resource.
+	// The name of an APIGatewayAPI resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a APIGatewayAPI resource.
+	// The namespace of an APIGatewayAPI resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

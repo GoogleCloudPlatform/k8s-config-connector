@@ -26,16 +26,16 @@ import (
 
 var _ refsv1beta1.Ref = &ApigeeEndpointAttachmentRef{}
 
-// ApigeeEndpointAttachmentRef is a reference to a ApigeeEndpointAttachment resource.
+// ApigeeEndpointAttachmentRef is a reference to an ApigeeEndpointAttachment resource.
 type ApigeeEndpointAttachmentRef struct {
 	// A reference to an externally managed ApigeeEndpointAttachment resource.
 	// Should be in the format "organizations/{{organizationID}}/endpointAttachments/{{attachmentID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ApigeeEndpointAttachment resource.
+	// The name of an ApigeeEndpointAttachment resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ApigeeEndpointAttachment resource.
+	// The namespace of an ApigeeEndpointAttachment resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

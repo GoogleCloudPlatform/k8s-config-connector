@@ -33,10 +33,10 @@ type ClusterRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AlloyDBCluster resource.
+	// The name of an AlloyDBCluster resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AlloyDBCluster resource.
+	// The namespace of an AlloyDBCluster resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

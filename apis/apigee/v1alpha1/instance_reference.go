@@ -26,16 +26,16 @@ import (
 
 var _ refsv1beta1.Ref = &ApigeeInstanceRef{}
 
-// ApigeeInstanceRef is a reference to a ApigeeInstance resource.
+// ApigeeInstanceRef is a reference to an ApigeeInstance resource.
 type ApigeeInstanceRef struct {
 	// A reference to an externally managed ApigeeInstance resource.
 	// Should be in the format "organizations/{{organizationID}}/instances/{{instanceID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ApigeeInstance resource.
+	// The name of an ApigeeInstance resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ApigeeInstance resource.
+	// The namespace of an ApigeeInstance resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

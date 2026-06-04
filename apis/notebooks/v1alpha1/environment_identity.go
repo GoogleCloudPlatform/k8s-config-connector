@@ -51,7 +51,7 @@ func (p *EnvironmentParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a EnvironmentIdentity from the Config Connector Environment object.
+// New builds an EnvironmentIdentity from the Config Connector Environment object.
 func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *NotebooksEnvironment) (*EnvironmentIdentity, error) {
 
 	// Get Parent

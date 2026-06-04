@@ -51,7 +51,7 @@ func (p *AuthorizationPolicyParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a AuthorizationPolicyIdentity from the Config Connector AuthorizationPolicy object.
+// New builds an AuthorizationPolicyIdentity from the Config Connector AuthorizationPolicy object.
 func NewAuthorizationPolicyIdentity(ctx context.Context, reader client.Reader, obj *NetworkSecurityAuthorizationPolicy) (*AuthorizationPolicyIdentity, error) {
 
 	// Get Parent

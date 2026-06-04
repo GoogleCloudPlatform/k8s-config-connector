@@ -53,7 +53,7 @@ func (p *EntryGroupParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a EntryGroupIdentity from the Config Connector EntryGroup object.
+// New builds an EntryGroupIdentity from the Config Connector EntryGroup object.
 func NewEntryGroupIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogEntryGroup) (*EntryGroupIdentity, error) {
 
 	// Get Parent

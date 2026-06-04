@@ -34,10 +34,10 @@ type AlloyDBUserRef struct {
 	// Should be in the format "projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/users/{{user}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AlloyDBUser resource.
+	// The name of an AlloyDBUser resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AlloyDBUser resource.
+	// The namespace of an AlloyDBUser resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

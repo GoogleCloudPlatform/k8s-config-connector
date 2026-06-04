@@ -33,10 +33,10 @@ type IAPSettingsRef struct {
 	// A reference to an externally managed IAPSettings resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a IAPSettings resource.
+	// The name of an IAPSettings resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a IAPSettings resource.
+	// The namespace of an IAPSettings resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

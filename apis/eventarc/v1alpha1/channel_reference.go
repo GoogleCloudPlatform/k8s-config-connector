@@ -34,10 +34,10 @@ type ChannelRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/channels/{{channelID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a EventarcChannel resource.
+	// The name of an EventarcChannel resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a EventarcChannel resource.
+	// The namespace of an EventarcChannel resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

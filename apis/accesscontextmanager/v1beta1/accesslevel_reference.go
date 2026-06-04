@@ -27,16 +27,16 @@ import (
 
 var _ refsv1beta1.Ref = &AccessLevelRef{}
 
-// AccessLevelRef is a reference to a AccessLevel resource.
+// AccessLevelRef is a reference to an AccessLevel resource.
 type AccessLevelRef struct {
 	// A reference to an externally managed AccessLevel resource.
 	// Should be in the format "accessPolicies/{{accessPolicyID}}/accessLevels/{{accessLevel}}".
 	External *string `json:"external,omitempty"`
 
-	// The name of a AccessLevel resource.
+	// The name of an AccessLevel resource.
 	Name *string `json:"name,omitempty"`
 
-	// The namespace of a AccessLevel resource.
+	// The namespace of an AccessLevel resource.
 	Namespace *string `json:"namespace,omitempty"`
 }
 
