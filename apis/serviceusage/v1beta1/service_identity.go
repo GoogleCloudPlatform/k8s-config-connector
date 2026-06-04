@@ -31,6 +31,9 @@ var (
 
 var ServiceIdentityFormat = gcpurls.Template[ServiceURIIdentity]("serviceusage.googleapis.com", "projects/{project}/services/{service}")
 
+// ServiceURIIdentity is the identity of a Service resource.
+// We use the name "ServiceURIIdentity" instead of "ServiceIdentity" to avoid a naming conflict
+// with the existing KRM "ServiceIdentity" resource types in the same package.
 // +k8s:deepcopy-gen=false
 type ServiceURIIdentity struct {
 	Project string

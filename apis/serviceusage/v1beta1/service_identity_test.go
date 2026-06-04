@@ -16,6 +16,8 @@ package v1beta1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestServiceIdentity_FromExternal(t *testing.T) {
@@ -57,11 +59,8 @@ func TestServiceIdentity_FromExternal(t *testing.T) {
 				return
 			}
 			if !tt.wantErr {
-				if i.Project != tt.want.Project {
-					t.Errorf("Project = %v, want %v", i.Project, tt.want.Project)
-				}
-				if i.Service != tt.want.Service {
-					t.Errorf("Service = %v, want %v", i.Service, tt.want.Service)
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})

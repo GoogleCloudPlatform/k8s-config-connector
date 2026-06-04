@@ -39,7 +39,9 @@ Create or update the file to match the canonical example. Key requirements:
 - Use the standard copyright header (Year 2026).
 - Declare interface implementations: `_ identity.IdentityV2 = &<Kind>Identity{}` and `_ identity.Resource = &<Kind>{}`
 - Define the template var: `var <Kind>IdentityFormat = gcpurls.Template[<Kind>Identity]("api.googleapis.com", "projects/{project}/...")`
-- The struct must map exactly to the template fields (e.g., `Project string`, `Location string`, `Instance string`) and have `// +k8s:deepcopy-gen=false`.
+- Define the identity struct with proper godoc comments.
+  - State clearly: `// <Kind>Identity is the identity of a <Kind> resource.`
+  - The struct must map exactly to the template fields (e.g., `Project string`, `Location string`, `Instance string`) and have `// +k8s:deepcopy-gen=false`.
   - **Important:** The variables in your `gcpurls.Template` (e.g. `{instance}`) MUST match the struct fields when both are lowercased (e.g. `{deploymentresourcepool}` matches `DeploymentResourcePool`). Do not use underscores in the template variables (e.g. `{deployment_resource_pool}`) if your struct field is CamelCased, as `gcpurls.Template` will panic at initialization.
   - **Note:** If an existing deepcopy method was previously generated for this identity struct, run `dev/tasks/generate-types-and-mappers` to regenerate the types and remove the obsolete code.
 - Implement `String()`, `FromExternal(ref string)`, and `Host()` by delegating to the format var.
@@ -69,4 +71,10 @@ Create or update the file to match the canonical example. Key requirements:
 
 ### Step 5: Verify
 
-Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.
+1. **Write Unit Tests**:
+   - Write comprehensive tests for both the Identity and Reference (e.g., `_identity_test.go`, `_reference_test.go`).
+   - Use `github.com/google/go-cmp/cmp` (with the `cmp.Diff` function) when comparing multiple fields in tests.
+   - Always use the "got/want" format in case of failures (e.g. `(-want +got):\n%s`).
+
+2. **Run Compilations and Linters**:
+   - Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.
