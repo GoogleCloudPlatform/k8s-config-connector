@@ -11,6 +11,15 @@ metadata:
   namespace: ${uniqueId}
 spec:
   authorizationMode: AUTH_MODE_IAM_AUTH
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    fixedFrequencySchedule:
+      startTime:
+        hours: 15
+        minutes: 0
+        nanos: 0
+        seconds: 0
+    retention: 1209600s
   deletionProtectionEnabled: false
   location: us-central1
   nodeType: REDIS_STANDARD_SMALL

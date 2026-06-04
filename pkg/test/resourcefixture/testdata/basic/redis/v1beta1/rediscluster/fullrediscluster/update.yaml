@@ -40,3 +40,12 @@ spec:
       rdbSnapshotPeriod: ONE_HOUR
       rdbSnapshotStartTime: 2024-10-02T15:01:23Z
   deletionProtectionEnabled: false
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    retention: 1209600s
+    fixedFrequencySchedule:
+      startTime:
+        hours: 15
+        minutes: 0
+        seconds: 0
+        nanos: 0

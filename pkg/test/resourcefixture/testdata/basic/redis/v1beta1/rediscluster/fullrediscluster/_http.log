@@ -529,6 +529,15 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 14
+      }
+    },
+    "retention": "2592000s"
+  },
   "deletionProtectionEnabled": true,
   "nodeType": 4,
   "persistenceConfig": {
@@ -606,6 +615,15 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 14
+        }
+      },
+      "retention": "2592000s"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
     "discoveryEndpoints": [
@@ -677,6 +695,15 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 14
+      }
+    },
+    "retention": "2592000s"
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": true,
   "discoveryEndpoints": [
@@ -730,13 +757,22 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=deletionProtectionEnabled
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupConfig
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
   "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 15
+      }
+    },
+    "retention": "1209600s"
+  },
   "deletionProtectionEnabled": false,
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
@@ -817,6 +853,174 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 15
+        }
+      },
+      "retention": "1209600s"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": true,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/${networkID}"
+        }
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_STANDARD_SMALL",
+    "persistenceConfig": {
+      "aofConfig": {
+        "appendFsync": "EVERYSEC"
+      },
+      "mode": "AOF"
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}"
+      },
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "redisConfigs": {
+      "maxmemory-policy": "volatile-ttl"
+    },
+    "replicaCount": 2,
+    "shardCount": 6,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
+    "uid": "111111111111111111111",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-b"
+    }
+  }
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=deletionProtectionEnabled
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+{
+  "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 15
+      }
+    },
+    "retention": "1209600s"
+  },
+  "deletionProtectionEnabled": false,
+  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "nodeType": 4,
+  "persistenceConfig": {
+    "mode": 2,
+    "rdbConfig": {
+      "rdbSnapshotPeriod": 1,
+      "rdbSnapshotStartTime": "2024-10-02T15:01:23Z"
+    }
+  },
+  "pscConfigs": [
+    {
+      "network": "projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "redisConfigs": {
+    "maxclients": "10",
+    "maxmemory-policy": "volatile-ttl"
+  },
+  "replicaCount": 1,
+  "shardCount": 6,
+  "transitEncryptionMode": 2,
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 15
+        }
+      },
+      "retention": "1209600s"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -878,6 +1082,15 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
 
 {
   "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 15
+      }
+    },
+    "retention": "1209600s"
+  },
   "deletionProtectionEnabled": false,
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
@@ -958,6 +1171,15 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 15
+        }
+      },
+      "retention": "1209600s"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -1020,6 +1242,15 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
 
 {
   "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 15
+      }
+    },
+    "retention": "1209600s"
+  },
   "deletionProtectionEnabled": false,
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
@@ -1100,6 +1331,15 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 15
+        }
+      },
+      "retention": "1209600s"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -1163,6 +1403,15 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
 
 {
   "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 15
+      }
+    },
+    "retention": "1209600s"
+  },
   "deletionProtectionEnabled": false,
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
@@ -1243,6 +1492,15 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 15
+        }
+      },
+      "retention": "1209600s"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -1316,6 +1574,15 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 15
+      }
+    },
+    "retention": "1209600s"
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
   "discoveryEndpoints": [

@@ -21,7 +21,6 @@
 
 package v1beta1
 
-/* unreachable type AutomatedBackupConfig
 // +kcc:proto=google.cloud.redis.cluster.v1.AutomatedBackupConfig
 type AutomatedBackupConfig struct {
 	// Optional. Trigger automated backups at a fixed frequency.
@@ -39,9 +38,7 @@ type AutomatedBackupConfig struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.AutomatedBackupConfig.retention
 	Retention *string `json:"retention,omitempty"`
 }
-*/
 
-/* unreachable type AutomatedBackupConfig_FixedFrequencySchedule
 // +kcc:proto=google.cloud.redis.cluster.v1.AutomatedBackupConfig.FixedFrequencySchedule
 type AutomatedBackupConfig_FixedFrequencySchedule struct {
 	// Required. The start time of every automated backup in UTC. It must be set
@@ -49,7 +46,6 @@ type AutomatedBackupConfig_FixedFrequencySchedule struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.AutomatedBackupConfig.FixedFrequencySchedule.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.cluster.v1.Cluster", skipping
 
@@ -404,7 +400,6 @@ type ZoneDistributionConfig struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
-/* unreachable type TimeOfDay
 // +kcc:proto=google.type.TimeOfDay
 type TimeOfDay struct {
 	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
@@ -425,7 +420,6 @@ type TimeOfDay struct {
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.cluster.v1.Cluster", skipping
 
