@@ -164,6 +164,7 @@ clusterIpv4Cidr: string
 clusterTelemetry:
   type: string
 confidentialNodes:
+  confidentialInstanceType: string
   enabled: boolean
 controlPlaneEndpointsConfig:
   dnsEndpointConfig:
@@ -289,6 +290,7 @@ nodeConfig:
     name: string
     namespace: string
   confidentialNodes:
+    confidentialInstanceType: string
     enabled: boolean
   diskSizeGb: integer
   diskType: string
@@ -1256,6 +1258,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">object</code></p>
             <p>Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after cluster creation without deleting and recreating the entire cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>confidentialNodes.confidentialInstanceType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Confidential instance type for the cluster nodes. Valid values are SEV, SEV_SNP, and TDX.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2546,6 +2558,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">object</code></p>
             <p>Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.confidentialNodes.confidentialInstanceType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Confidential instance type for the cluster nodes. Valid values are SEV, SEV_SNP, and TDX.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

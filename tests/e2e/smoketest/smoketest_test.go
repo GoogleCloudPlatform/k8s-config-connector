@@ -251,6 +251,23 @@ spec:
 		t.Fatalf("StorageBucket CRD not established: %v", err)
 	}
 
+	t.Logf("Waiting for cnrm-webhook-manager to be ready")
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=create", "deployment/cnrm-webhook-manager", "--timeout=5m"); err != nil {
+		t.Fatalf("cnrm-webhook-manager deployment not created: %v", err)
+	}
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=condition=Available", "deployment/cnrm-webhook-manager", "--timeout=5m"); err != nil {
+		t.Fatalf("cnrm-webhook-manager failed to become ready: %v", err)
+	}
+
+	t.Logf("Waiting for cnrm-controller-manager to be ready")
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=create", "statefulset/cnrm-controller-manager", "--timeout=5m"); err != nil {
+		t.Fatalf("cnrm-controller-manager statefulset not created: %v", err)
+	}
+	// StatefulSet doesn't have "Available" condition in older k8s, but we can wait for readyReplicas
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=jsonpath={.status.readyReplicas}=1", "statefulset/cnrm-controller-manager", "--timeout=5m"); err != nil {
+		t.Fatalf("cnrm-controller-manager failed to become ready: %v", err)
+	}
+
 	t.Logf("Creating namespace and StorageBucket")
 	ns := "config-control"
 	if err := runCommand(ctx, t, root, "kubectl", "create", "ns", ns); err != nil && !strings.Contains(err.Error(), "already exists") {

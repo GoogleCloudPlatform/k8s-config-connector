@@ -257,6 +257,11 @@ type ClusterTelemetry struct {
 
 // +kcc:proto=google.container.v1.ConfidentialNodes
 type ConfidentialNodes struct {
+	/* Immutable. Confidential instance type for the nodes in the pool. Valid values are SEV, SEV_SNP, and TDX. */
+	// +kcc:proto:field=google.container.v1.ConfidentialNodes.confidential_instance_type
+	// +optional
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
+
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	// +required
 	// +kcc:proto:field=google.container.v1.ConfidentialNodes.enabled

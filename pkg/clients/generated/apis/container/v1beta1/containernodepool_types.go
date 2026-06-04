@@ -104,6 +104,10 @@ type NodepoolBlueGreenSettings struct {
 }
 
 type NodepoolConfidentialNodes struct {
+	/* Immutable. Confidential instance type for the nodes in the pool. Valid values are SEV, SEV_SNP, and TDX. */
+	// +optional
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
+
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
 }
