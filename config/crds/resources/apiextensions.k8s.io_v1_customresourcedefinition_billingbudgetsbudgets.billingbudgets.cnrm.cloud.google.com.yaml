@@ -307,8 +307,7 @@ spec:
                     type: object
                   projects:
                     items:
-                      description: ProjectRef is a clean resource reference to a GCP
-                        Project that does not include the kind field.
+                      description: ProjectRef is a reference to a GCP Project.
                       oneOf:
                       - not:
                           required:
@@ -347,8 +346,7 @@ spec:
                     type: array
                   subaccounts:
                     items:
-                      description: BillingAccountRef is a clean resource reference
-                        to a GCP BillingAccount that does not include the kind field.
+                      description: BillingAccountRef is a reference to a GCP BillingAccount.
                       oneOf:
                       - not:
                           required:

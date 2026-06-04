@@ -14,7 +14,7 @@
 
 package refs
 
-// FolderRef is a clean resource reference to a GCP Folder that does not include the kind field.
+// FolderRef is a reference to a GCP Folder.
 type FolderRef struct {
 	/* The 'name' field of a folder, when not managed by Config Connector. */
 	// +optional
