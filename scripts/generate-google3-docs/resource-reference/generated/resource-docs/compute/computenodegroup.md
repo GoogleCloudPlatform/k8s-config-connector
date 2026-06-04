@@ -113,8 +113,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. If you use sole-tenant nodes for your workloads, you can use the node
-group autoscaler to automatically manage the sizes of your node groups.</p>
+            <p>Immutable. If you use sole-tenant nodes for your workloads, you can use the node group autoscaler to automatically manage the sizes of your node groups.</p>
         </td>
     </tr>
     <tr>
@@ -124,8 +123,7 @@ group autoscaler to automatically manage the sizes of your node groups.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Maximum size of the node group. Set to a value less than or equal
-to 100 and greater than or equal to min-nodes.</p>
+            <p>Immutable. Maximum size of the node group. Set to a value less than or equal to 100 and greater than or equal to min-nodes.</p>
         </td>
     </tr>
     <tr>
@@ -135,8 +133,7 @@ to 100 and greater than or equal to min-nodes.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Minimum size of the node group. Must be less
-than or equal to max-nodes. The default value is 0.</p>
+            <p>Immutable. Minimum size of the node group. Must be less than or equal to max-nodes. The default value is 0.</p>
         </td>
     </tr>
     <tr>
@@ -146,12 +143,7 @@ than or equal to max-nodes. The default value is 0.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The autoscaling mode. Set to one of the following:
-  - OFF: Disables the autoscaler.
-  - ON: Enables scaling in and scaling out.
-  - ONLY_SCALE_OUT: Enables only scaling out.
-  You must use this mode if your node groups are configured to
-  restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"].</p>
+            <p>Immutable. The autoscaling mode. Set to one of the following: - OFF: Disables the autoscaler. - ON: Enables scaling in and scaling out. - ONLY_SCALE_OUT: Enables only scaling out. You must use this mode if your node groups are configured to restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"].</p>
         </td>
     </tr>
     <tr>
@@ -301,7 +293,7 @@ than or equal to max-nodes. The default value is 0.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -311,7 +303,7 @@ than or equal to max-nodes. The default value is 0.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -321,7 +313,7 @@ than or equal to max-nodes. The default value is 0.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -331,8 +323,7 @@ than or equal to max-nodes. The default value is 0.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The project id/number should be the same as the key of this project
-config in the project map.</p>
+            <p>The project id/number should be the same as the key of this project config in the project map.</p>
         </td>
     </tr>
     <tr>
@@ -342,7 +333,7 @@ config in the project map.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -352,7 +343,7 @@ config in the project map.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -362,7 +353,7 @@ config in the project map.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -425,7 +416,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

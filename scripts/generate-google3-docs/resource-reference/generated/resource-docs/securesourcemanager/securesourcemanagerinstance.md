@@ -175,7 +175,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed PrivateCACAPool. Should be in the format `projects/{project_id}/locations/{region}/caPools/{caPool}`.</p>
+            <p>A reference to an externally managed PrivateCACAPool resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/caPools/{{caPoolID}}".</p>
         </td>
     </tr>
     <tr>
@@ -185,7 +185,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` of a `PrivateCACAPool` resource.</p>
+            <p>The name of a PrivateCACAPool resource.</p>
         </td>
     </tr>
     <tr>
@@ -195,7 +195,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `PrivateCACAPool` resource.</p>
+            <p>The namespace of a PrivateCACAPool resource.</p>
         </td>
     </tr>
     <tr>

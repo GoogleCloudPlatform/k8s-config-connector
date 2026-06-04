@@ -12,7 +12,7 @@ title: "IAMWorkloadIdentityPool"
 <tbody>
 <tr>
 <td>Google Cloud Service Name</td>
-<td>{{iam_name_short}}</td>
+<td>IAM</td>
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>
