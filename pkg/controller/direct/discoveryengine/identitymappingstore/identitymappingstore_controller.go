@@ -192,8 +192,13 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating discoveryengine identitymappingstore", "name", a.id.String())
 
 	desired := proto.CloneOf(a.desired)
-	if a.actual != nil && a.actual.Name != "" {
-		desired.Name = a.actual.Name
+	if a.actual != nil {
+		desired.CmekConfig = a.actual.CmekConfig
+		if a.actual.Name != "" {
+			desired.Name = a.actual.Name
+		} else {
+			desired.Name = a.id.String()
+		}
 	} else {
 		desired.Name = a.id.String()
 	}
