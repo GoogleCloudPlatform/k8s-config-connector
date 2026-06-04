@@ -263,6 +263,13 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 		obj.WindowsNodeConfig = &pb.WindowsNodeConfig{}
 	}
 
+	if obj.ConfidentialNodes != nil {
+		if obj.ConfidentialNodes.Enabled &&
+			obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
+	}
+
 	return nil
 }
 
