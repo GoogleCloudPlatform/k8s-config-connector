@@ -26,31 +26,37 @@ MODULE_DIRS=$(find . -name "go.mod" -not -path "*/vendor/*" -exec dirname {} \; 
 for dir in ${MODULE_DIRS}; do
   echo "=== Processing module in: ${dir} ==="
   pushd "${dir}" > /dev/null
-  
-  # Determine the module path of the current directory to avoid prebuilding itself
-  # We use GOWORK=off to run strictly in module context
-  MODULE_PATH=$(GOWORK=off go list -m)
-  echo "Module path: ${MODULE_PATH}"
 
   echo "Downloading modules..."
   GOWORK=off go mod download || true
 
-  echo "Identifying direct dependencies..."
-  # List all direct dependencies (excluding indirects)
-  DEPS=$(GOWORK=off go list -m -f '{{if not .Indirect}}{{.Path}}{{end}}' all 2>/dev/null || true)
-
-  for dep in ${DEPS}; do
-    # Skip empty lines, the current module itself, and local submodules/references
-    if [[ -z "${dep}" || "${dep}" == "${MODULE_PATH}" || "${dep}" == github.com/GoogleCloudPlatform/k8s-config-connector* ]]; then
-      continue
-    fi
-
-    echo "  Prebuilding dependency: ${dep}"
-    # Try building with /... first, then fallback to just the package, ignore failures
-    GOWORK=off go build -o /dev/null "${dep}/..." 2>/dev/null || GOWORK=off go build -o /dev/null "${dep}" 2>/dev/null || true
-  done
+  # Only prebuild the e2e tests for the root module to avoid compiling the entire codebase
+  # and bloating the cache (since compiling everything results in >10GB cache).
+  if [[ "${dir}" == "." ]]; then
+    echo "  Prebuilding e2e tests..."
+    GOWORK=off go test -c -o /dev/null ./tests/e2e 2>/dev/null || true
+  fi
 
   popd > /dev/null
 done
+
+echo "Pre-downloading envtest assets and prebuilding setup-envtest..."
+./dev/tasks/setup-envtest || true
+
+echo "=== Cache Statistics ==="
+echo "Total size of ~/.cache:"
+du -h --max-depth=1 ~/.cache 2>/dev/null || true
+
+echo "Any huge files in ~/.cache (larger than 100M):"
+find ~/.cache -size +100M -exec ls -lh {} \; 2>/dev/null || true
+
+echo "Total size of envtest assets:"
+du -h --max-depth=2 ~/.local/share/kubebuilder-envtest 2>/dev/null || true
+
+echo "Total size of Go module cache (GOMODCACHE):"
+GOMOD_PATH=$(go env GOMODCACHE)
+if [[ -d "${GOMOD_PATH}" ]]; then
+  du -sh "${GOMOD_PATH}" 2>/dev/null || true
+fi
 
 echo "Dependency pre-building completed successfully!"

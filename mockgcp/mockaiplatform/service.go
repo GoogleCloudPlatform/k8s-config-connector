@@ -64,6 +64,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterModelServiceServer(grpcServer, &modelService{MockService: s})
 	pb.RegisterNotebookServiceServer(grpcServer, &notebookService{MockService: s})
 	pb.RegisterScheduleServiceServer(grpcServer, &scheduleService{MockService: s})
+	pb.RegisterExampleStoreServiceServer(grpcServer, &exampleStoreService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -80,6 +81,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewModelServiceClient(conn))
 	mux.AddService(pb.NewNotebookServiceClient(conn))
 	mux.AddService(pb.NewScheduleServiceClient(conn))
+	mux.AddService(pb.NewExampleStoreServiceClient(conn))
 
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/ui/{prefix=**}/operations/{name}", conn)

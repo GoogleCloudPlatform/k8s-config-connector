@@ -514,7 +514,7 @@ type NotebookRuntimeObservedState struct {
 
 	// Output only. EUC configuration of the notebook runtime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.euc_config
-	EUCConfig *NotebookEUCConfig `json:"eucConfig,omitempty"`
+	EUCConfig *NotebookEUCConfigObservedState `json:"eucConfig,omitempty"`
 
 	// Output only. Runtime Shielded VM spec.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.shielded_vm_config
@@ -522,7 +522,7 @@ type NotebookRuntimeObservedState struct {
 
 	// Output only. Software config of the notebook runtime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.software_config
-	SoftwareConfig *NotebookSoftwareConfig `json:"softwareConfig,omitempty"`
+	SoftwareConfig *NotebookSoftwareConfigObservedState `json:"softwareConfig,omitempty"`
 
 	// Output only. Customer-managed encryption key spec for the notebook runtime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.encryption_spec

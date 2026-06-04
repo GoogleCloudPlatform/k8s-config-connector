@@ -1454,6 +1454,10 @@ type NodeNetworkConfigObservedState struct {
 /* unreachable type NodePoolObservedState
 // +kcc:observedstate:proto=google.container.v1.NodePool
 type NodePoolObservedState struct {
+	// The node configuration of the pool.
+	// +kcc:proto:field=google.container.v1.NodePool.config
+	Config *NodeConfigObservedState `json:"config,omitempty"`
+
 	// Networking configuration for this NodePool. If specified, it overrides the
 	//  cluster-level defaults.
 	// +kcc:proto:field=google.container.v1.NodePool.network_config

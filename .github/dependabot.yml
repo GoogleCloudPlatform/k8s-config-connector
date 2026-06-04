@@ -32,6 +32,8 @@ updates:
       update-types: ["version-update:semver-major", "version-update:semver-minor"]
     groups:
       go-dependencies:
+        patterns:
+          - "*"
         group-by: dependency-name
   - package-ecosystem: docker
     directory: /

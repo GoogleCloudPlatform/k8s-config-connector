@@ -761,6 +761,14 @@ spec:
                       - value
                       type: object
                     type: array
+                  windowsNodeConfig:
+                    description: Parameters that can be configured on Windows nodes.
+                    properties:
+                      osVersion:
+                        description: os_version specifies the Windows Server release
+                          version to be used on the node.
+                        type: string
+                    type: object
                   workloadMetadataConfig:
                     description: The workload metadata configuration for this node.
                     properties:

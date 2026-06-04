@@ -31,6 +31,10 @@ type FakeApihubV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeApihubV1alpha1) APIHubAPIs(namespace string) v1alpha1.APIHubAPIInterface {
+	return newFakeAPIHubAPIs(c, namespace)
+}
+
 func (c *FakeApihubV1alpha1) APIHubDeployments(namespace string) v1alpha1.APIHubDeploymentInterface {
 	return newFakeAPIHubDeployments(c, namespace)
 }

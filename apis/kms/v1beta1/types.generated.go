@@ -198,7 +198,7 @@ type ImportJobObservedState struct {
 	//  [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is one with a
 	//  protection level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.attestation
-	Attestation *KeyOperationAttestation `json:"attestation,omitempty"`
+	Attestation *KeyOperationAttestationObservedState `json:"attestation,omitempty"`
 }
 */
 

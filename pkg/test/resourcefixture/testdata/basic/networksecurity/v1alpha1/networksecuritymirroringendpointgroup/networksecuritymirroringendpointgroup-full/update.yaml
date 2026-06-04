@@ -1,0 +1,15 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityMirroringEndpointGroup
+metadata:
+  labels:
+    key-one: value-one
+    key-two: value-two
+  name: mirroringeg-full-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  type: DIRECT
+  description: "Updated description for full mirroring endpoint group"
+  mirroringDeploymentGroupRef:
+    external: "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}"

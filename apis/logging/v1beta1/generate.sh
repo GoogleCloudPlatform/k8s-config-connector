@@ -29,7 +29,9 @@ go run . generate-types \
     --api-version "logging.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output \
     --resource LoggingLink:Link \
-    --resource LoggingLogView:LogView
+    --resource LoggingLogView:LogView \
+    --resource LoggingLogBucket:LogBucket \
+    --resource LoggingLogExclusion:LogExclusion
 
 go run . generate-mapper \
     --service google.logging.v2 \
