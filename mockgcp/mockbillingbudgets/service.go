@@ -25,7 +25,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
+	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 

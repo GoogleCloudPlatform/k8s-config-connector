@@ -31,7 +31,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
+	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
 )
 
 func (s *BudgetServiceServer) CreateBudget(ctx context.Context, req *pb.CreateBudgetRequest) (*pb.Budget, error) {

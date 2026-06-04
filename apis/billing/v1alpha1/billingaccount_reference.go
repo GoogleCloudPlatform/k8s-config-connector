@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"context"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
@@ -59,13 +60,19 @@ func (r *BillingAccountRef) SetExternal(ref string) {
 }
 
 func (r *BillingAccountRef) ValidateExternal(ref string) error {
+	if ref != "" && !strings.Contains(ref, "/") {
+		ref = "billingAccounts/" + ref
+	}
 	id := &BillingAccountIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (r *BillingAccountRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" && !strings.Contains(r.External, "/") {
+		r.External = "billingAccounts/" + r.External
+	}
 	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
