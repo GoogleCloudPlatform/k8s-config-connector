@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -42,6 +43,10 @@ func (i *ProjectIdentity) String() string {
 }
 
 func (i *ProjectIdentity) FromExternal(ref string) error {
+	if !strings.Contains(ref, "/") {
+		ref = "projects/" + ref
+	}
+
 	parsed, match, err := ProjectIdentityFormat.Parse(ref)
 	if err != nil {
 		return fmt.Errorf("format of Project external=%q was not known (use %s): %w", ref, ProjectIdentityFormat.CanonicalForm(), err)
