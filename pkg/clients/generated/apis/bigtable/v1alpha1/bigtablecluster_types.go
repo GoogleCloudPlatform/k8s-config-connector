@@ -93,7 +93,7 @@ type BigtableClusterSpec struct {
 	// +optional
 	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
 
-	/* InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object. */
+	/* InstanceRef is a reference to a BigtableInstance. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* Immutable. The location where this cluster's nodes and storage reside. For best performance, clients should be located as close as possible to this cluster. Currently only zones are supported, so values should be of the form `projects/{project}/locations/{zone}`. */
