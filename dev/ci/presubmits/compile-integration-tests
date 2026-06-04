@@ -28,4 +28,4 @@ cd ${REPO_ROOT}
 echo "Verifying that all packages and integration tests compile..."
 # Compile all packages (excluding operator/cli/preview/etc.) with integration tag to catch syntax/signature changes.
 UNIT_TEST_PACKAGES=$(go list ./... | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview")
-go test -run=^$ -tags=integration ${UNIT_TEST_PACKAGES}
+go vet -tags=integration ${UNIT_TEST_PACKAGES}
