@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securitycenter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -169,7 +170,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	resource.Name = a.fullyQualifiedName()
 
-	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	paths, report, err := common.CompareProtoMessageStructuredDiff(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -177,6 +178,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.V(2).Info("no field needs update", "name", a.fullyQualifiedName())
 		return nil
 	}
+
+	report.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, report)
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	for path := range paths {
