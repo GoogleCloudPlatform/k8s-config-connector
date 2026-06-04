@@ -192,7 +192,11 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating discoveryengine identitymappingstore", "name", a.id.String())
 
 	desired := proto.CloneOf(a.desired)
-	desired.Name = a.id.String()
+	if a.actual != nil && a.actual.Name != "" {
+		desired.Name = a.actual.Name
+	} else {
+		desired.Name = a.id.String()
+	}
 
 	paths, report, err := common.CompareProtoMessageStructuredDiff(desired, a.actual, common.BasicDiff)
 	if err != nil {
