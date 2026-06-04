@@ -1,0 +1,817 @@
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/dataproc.worker"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "clusterName": "dataproccluster-${uniqueId}",
+  "config": {
+    "dataprocMetricConfig": {
+      "metrics": [
+        {
+          "metricOverrides": [
+            "spark:spark.executor.memory"
+          ],
+          "metricSource": "SPARK"
+        }
+      ]
+    },
+    "encryptionConfig": {
+      "gcePdKmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/my-keyring/cryptoKeys/my-key"
+    },
+    "endpointConfig": {
+      "enableHttpPortAccess": true
+    },
+    "gceClusterConfig": {
+      "confidentialInstanceConfig": {
+        "enableConfidentialCompute": false
+      },
+      "internalIpOnly": false,
+      "metadata": {
+        "key-a": "value-a"
+      },
+      "privateIpv6GoogleAccess": "OUTBOUND",
+      "reservationAffinity": {
+        "consumeReservationType": "NO_RESERVATION"
+      },
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "serviceAccountScopes": [
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableSecureBoot": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "tag-a",
+        "tag-b"
+      ],
+      "zoneUri": "us-central1-f"
+    },
+    "initializationActions": [
+      {
+        "executableFile": "gs://my-bucket/init-action.sh",
+        "executionTimeout": "300s"
+      }
+    ],
+    "lifecycleConfig": {
+      "idleDeleteTtl": "3600s"
+    },
+    "masterConfig": {
+      "diskConfig": {
+        "bootDiskSizeGb": 50,
+        "bootDiskType": "pd-standard"
+      },
+      "machineTypeUri": "n2-standard-2",
+      "numInstances": 1
+    },
+    "securityConfig": {
+      "identityConfig": {
+        "userServiceAccountMapping": {
+          "my-mapping": "my-sa@${projectId}.iam.gserviceaccount.com"
+        }
+      }
+    },
+    "softwareConfig": {
+      "imageVersion": "2.2-debian12",
+      "optionalComponents": [
+        "JUPYTER"
+      ],
+      "properties": {
+        "spark:spark.executor.memory": "2048m"
+      }
+    },
+    "workerConfig": {
+      "diskConfig": {
+        "bootDiskSizeGb": 50,
+        "bootDiskType": "pd-standard"
+      },
+      "machineTypeUri": "n2-standard-2",
+      "numInstances": 2
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+    "clusterName": "dataproccluster-${uniqueId}",
+    "clusterUuid": "${dataStoreClusterUUID}",
+    "description": "Create cluster with 2 workers",
+    "operationType": "CREATE",
+    "status": {
+      "innerState": "PENDING",
+      "state": "PENDING",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "warnings": [
+      "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk.",
+      "The specified custom staging bucket '${dataStoreConfigBucketPath}' is not using uniform bucket level access IAM configuration. It is recommended to update bucket to enable the same. See https://cloud.google.com/storage/docs/uniform-bucket-level-access.",
+      "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
+    ]
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+    "clusterName": "dataproccluster-${uniqueId}",
+    "clusterUuid": "${dataStoreClusterUUID}",
+    "description": "Create cluster with 2 workers",
+    "operationType": "CREATE",
+    "status": {
+      "innerState": "DONE",
+      "state": "DONE",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "statusHistory": [
+      {
+        "state": "PENDING",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      },
+      {
+        "state": "RUNNING",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      }
+    ],
+    "warnings": [
+      "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk.",
+      "The specified custom staging bucket '${dataStoreConfigBucketPath}' is not using uniform bucket level access IAM configuration. It is recommended to update bucket to enable the same. See https://cloud.google.com/storage/docs/uniform-bucket-level-access.",
+      "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
+    ]
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.Cluster",
+    "clusterName": "dataproccluster-${uniqueId}",
+    "clusterUuid": "${dataStoreClusterUUID}",
+    "config": {
+      "configBucket": "${dataStoreConfigBucketPath}",
+      "dataprocMetricConfig": {
+        "metrics": [
+          {
+            "metricOverrides": [
+              "spark:spark.executor.memory"
+            ],
+            "metricSource": "SPARK"
+          }
+        ]
+      },
+      "encryptionConfig": {
+        "gcePdKmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/my-keyring/cryptoKeys/my-key"
+      },
+      "endpointConfig": {
+        "enableHttpPortAccess": true
+      },
+      "gceClusterConfig": {
+        "confidentialInstanceConfig": {},
+        "internalIpOnly": false,
+        "metadata": {
+          "key-a": "value-a"
+        },
+        "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+        "privateIpv6GoogleAccess": "OUTBOUND",
+        "reservationAffinity": {
+          "consumeReservationType": "NO_RESERVATION"
+        },
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccountScopes": [
+          "https://www.googleapis.com/auth/cloud-platform"
+        ],
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true,
+          "enableSecureBoot": true,
+          "enableVtpm": true
+        },
+        "tags": [
+          "tag-a",
+          "tag-b"
+        ],
+        "zoneUri": "us-central1-f"
+      },
+      "initializationActions": [
+        {
+          "executableFile": "gs://my-bucket/init-action.sh",
+          "executionTimeout": "300s"
+        }
+      ],
+      "lifecycleConfig": {
+        "idleDeleteTtl": "3600s"
+      },
+      "masterConfig": {
+        "diskConfig": {
+          "bootDiskSizeGb": 50,
+          "bootDiskType": "pd-standard"
+        },
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+        "minCpuPlatform": "AUTOMATIC",
+        "numInstances": 1,
+        "preemptibility": "NON_PREEMPTIBLE"
+      },
+      "securityConfig": {
+        "identityConfig": {
+          "userServiceAccountMapping": {
+            "my-mapping": "my-sa@${projectId}.iam.gserviceaccount.com"
+          }
+        }
+      },
+      "softwareConfig": {
+        "imageVersion": "2.2-debian12",
+        "optionalComponents": [
+          "JUPYTER"
+        ],
+        "properties": {
+          "spark:spark.executor.memory": "2048m"
+        }
+      },
+      "tempBucket": "${dataStoreTempBucketPath}",
+      "workerConfig": {
+        "diskConfig": {
+          "bootDiskSizeGb": 50,
+          "bootDiskType": "pd-standard"
+        },
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+        "minCpuPlatform": "AUTOMATIC",
+        "numInstances": 2,
+        "preemptibility": "NON_PREEMPTIBLE"
+      }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-autozone": "enabled",
+      "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
+      "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
+      "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
+      "goog-dataproc-location": "us-central1",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    },
+    "projectId": "${projectId}"
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "clusterName": "dataproccluster-${uniqueId}",
+  "clusterUuid": "${dataStoreClusterUUID}",
+  "config": {
+    "configBucket": "${dataStoreConfigBucketPath}",
+    "dataprocMetricConfig": {
+      "metrics": [
+        {
+          "metricOverrides": [
+            "spark:spark.executor.memory"
+          ],
+          "metricSource": "SPARK"
+        }
+      ]
+    },
+    "encryptionConfig": {
+      "gcePdKmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/my-keyring/cryptoKeys/my-key"
+    },
+    "endpointConfig": {
+      "enableHttpPortAccess": true
+    },
+    "gceClusterConfig": {
+      "confidentialInstanceConfig": {},
+      "internalIpOnly": false,
+      "metadata": {
+        "key-a": "value-a"
+      },
+      "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+      "privateIpv6GoogleAccess": "OUTBOUND",
+      "reservationAffinity": {
+        "consumeReservationType": "NO_RESERVATION"
+      },
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "serviceAccountScopes": [
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableSecureBoot": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "tag-a",
+        "tag-b"
+      ],
+      "zoneUri": "us-central1-f"
+    },
+    "initializationActions": [
+      {
+        "executableFile": "gs://my-bucket/init-action.sh",
+        "executionTimeout": "300s"
+      }
+    ],
+    "lifecycleConfig": {
+      "idleDeleteTtl": "3600s"
+    },
+    "masterConfig": {
+      "diskConfig": {
+        "bootDiskSizeGb": 50,
+        "bootDiskType": "pd-standard"
+      },
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+      "instanceNames": [
+        "dataproccluster-${uniqueId}-m"
+      ],
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "minCpuPlatform": "AUTOMATIC",
+      "numInstances": 1,
+      "preemptibility": "NON_PREEMPTIBLE"
+    },
+    "securityConfig": {
+      "identityConfig": {
+        "userServiceAccountMapping": {
+          "my-mapping": "my-sa@${projectId}.iam.gserviceaccount.com"
+        }
+      }
+    },
+    "softwareConfig": {
+      "imageVersion": "2.2-debian12",
+      "optionalComponents": [
+        "JUPYTER"
+      ],
+      "properties": {
+        "spark:spark.executor.memory": "2048m"
+      }
+    },
+    "tempBucket": "${dataStoreTempBucketPath}",
+    "workerConfig": {
+      "diskConfig": {
+        "bootDiskSizeGb": 50,
+        "bootDiskType": "pd-standard"
+      },
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+      "instanceNames": [
+        "dataproccluster-${uniqueId}-w-0",
+        "dataproccluster-${uniqueId}-w-1"
+      ],
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "minCpuPlatform": "AUTOMATIC",
+      "numInstances": 2,
+      "preemptibility": "NON_PREEMPTIBLE"
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "goog-dataproc-autozone": "enabled",
+    "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
+    "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
+    "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
+    "goog-dataproc-location": "us-central1",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "projectId": "${projectId}",
+  "status": {
+    "state": "RUNNING",
+    "stateStartTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "statusHistory": [
+    {
+      "state": "CREATING",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+    "clusterName": "dataproccluster-${uniqueId}",
+    "clusterUuid": "${dataStoreClusterUUID}",
+    "description": "Delete cluster",
+    "operationType": "DELETE",
+    "status": {
+      "innerState": "PENDING",
+      "state": "PENDING",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+    "clusterName": "dataproccluster-${uniqueId}",
+    "clusterUuid": "${dataStoreClusterUUID}",
+    "description": "Delete cluster",
+    "operationType": "DELETE",
+    "status": {
+      "innerState": "DONE",
+      "state": "DONE",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "statusHistory": [
+      {
+        "state": "PENDING",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      },
+      {
+        "state": "RUNNING",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
