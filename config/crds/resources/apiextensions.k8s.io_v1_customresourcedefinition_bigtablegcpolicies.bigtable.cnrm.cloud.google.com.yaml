@@ -114,7 +114,6 @@ spec:
                     days:
                       description: DEPRECATED. Deprecated in favor of duration. Immutable.
                         Number of days before applying GC policy.
-                      format: int64
                       type: integer
                     duration:
                       description: Immutable. Duration before applying GC policy.
@@ -131,7 +130,6 @@ spec:
                     number:
                       description: Immutable. Number of version before applying the
                         GC policy.
-                      format: int64
                       type: integer
                   required:
                   - number
@@ -165,10 +163,10 @@ spec:
                       resource.
                     type: string
                   name:
-                    description: The name of a BigtableInstance resource.
+                    description: The name of a BigtableTable resource.
                     type: string
                   namespace:
-                    description: The namespace of a BigtableInstance resource.
+                    description: The namespace of a BigtableTable resource.
                     type: string
                 type: object
             required:
@@ -210,7 +208,6 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
             type: object
         required:

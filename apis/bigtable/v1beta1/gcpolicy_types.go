@@ -22,7 +22,7 @@ import (
 type GcpolicyMaxAge struct {
 	/* DEPRECATED. Deprecated in favor of duration. Immutable. Number of days before applying GC policy. */
 	// +optional
-	Days *int64 `json:"days,omitempty"`
+	Days *int `json:"days,omitempty"`
 
 	/* Immutable. Duration before applying GC policy. */
 	// +optional
@@ -31,10 +31,11 @@ type GcpolicyMaxAge struct {
 
 type GcpolicyMaxVersion struct {
 	/* Immutable. Number of version before applying the GC policy. */
-	Number int64 `json:"number"`
+	Number int `json:"number"`
 }
 
 // BigtableGCPolicySpec defines the desired state of BigtableGCPolicy
+// +kcc:spec:proto=google.bigtable.admin.v2.GcRule
 type BigtableGCPolicySpec struct {
 	/* Immutable. The name of the column family. */
 	ColumnFamily string `json:"columnFamily"`
@@ -54,10 +55,12 @@ type BigtableGCPolicySpec struct {
 
 	/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all cells older than the given age. */
 	// +optional
+	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.max_age
 	MaxAge []GcpolicyMaxAge `json:"maxAge,omitempty"`
 
 	/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all versions of a cell except for the most recent. */
 	// +optional
+	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.max_num_versions
 	MaxVersion []GcpolicyMaxVersion `json:"maxVersion,omitempty"`
 
 	/* Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. If multiple policies are set, you should choose between UNION OR INTERSECTION. */
@@ -74,7 +77,7 @@ type BigtableGCPolicyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
@@ -96,6 +99,7 @@ type BigtableGCPolicy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// +required
 	Spec   BigtableGCPolicySpec   `json:"spec"`
 	Status BigtableGCPolicyStatus `json:"status,omitempty"`
 }
