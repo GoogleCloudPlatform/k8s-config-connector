@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &ServiceRef{}
 
-// ServiceRef defines the resource reference to Service, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceRef is a reference to a Service.
 type ServiceRef struct {
 	// A reference to an externally managed Service resource.
 	// Should be in the format "projects/{{projectID}}/services/{{service}}".
