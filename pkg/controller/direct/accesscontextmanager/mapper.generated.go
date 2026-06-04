@@ -136,6 +136,42 @@ func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Etag
 	return out
 }
+func AccessContextManagerGCPUserAccessBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GcpUserAccessBinding) *krm.AccessContextManagerGCPUserAccessBindingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerGCPUserAccessBindingObservedState{}
+	// MISSING: Name
+	return out
+}
+func AccessContextManagerGCPUserAccessBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerGCPUserAccessBindingObservedState) *pb.GcpUserAccessBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcpUserAccessBinding{}
+	// MISSING: Name
+	return out
+}
+func AccessContextManagerGCPUserAccessBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.GcpUserAccessBinding) *krm.AccessContextManagerGCPUserAccessBindingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerGCPUserAccessBindingSpec{}
+	// MISSING: Name
+	out.GroupKey = direct.LazyPtr(in.GetGroupKey())
+	out.AccessLevels = in.AccessLevels
+	return out
+}
+func AccessContextManagerGCPUserAccessBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerGCPUserAccessBindingSpec) *pb.GcpUserAccessBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcpUserAccessBinding{}
+	// MISSING: Name
+	out.GroupKey = direct.ValueOf(in.GroupKey)
+	out.AccessLevels = in.AccessLevels
+	return out
+}
 func AccessLevelCustom_FromProto(mapCtx *direct.MapContext, in *pb.CustomLevel) *krm.AccessLevelCustom {
 	if in == nil {
 		return nil

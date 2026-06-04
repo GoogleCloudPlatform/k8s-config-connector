@@ -51,3 +51,15 @@ This skill guides an automated agent through the process of implementing a round
      go test -count=1 -v ./pkg/fuzztesting/fuzztests/
      ```
    - Ensure the test suite completes successfully. If any fields fail round-tripping, examine the `<hint_for_agent>` in the test output to identify which fields need to be registered or marked as unimplemented.
+
+## Tips & Troubleshooting
+
+### Missing Proto Messages during Code Generation
+If running `generate.sh` fails with `failed to find the proto message ...: proto: not found`, it is likely because the proto directory (e.g. `google/identity/...`) is not being matched and compiled by `dev/tools/controllerbuilder/generate-proto.sh`. Add the necessary matching pattern (e.g. `${THIRD_PARTY}/googleapis/google/identity/*/*/*.proto`) to `generate-proto.sh` and remove any cached `.pb` files in `.build/` to force reconstruction.
+
+### Spec Fields Expecting Custom Map Functions
+If compilation of generated mappers fails due to undefined mapper functions like `SomeSpec_SomeField_ToProto`, check the Go type of that field. In KCC, the `mappergenerator` expects spec string fields to be declared as pointer types (`*string`). If declared as non-pointers (e.g. `string`), it expects a custom map function. Switching the field to a pointer (e.g. `*string`) allows automatic mapper generation.
+
+### Parent Resource References (Organization / Folder / Project)
+By default, the template generator scaffolds a `projectRef` parent reference. If the resource is parented by an Organization or a Folder, manually replace `projectRef *refsv1beta1.ProjectRef` with `organizationRef *refsv1beta1.OrganizationRef` or `folderRef *refsv1beta1.FolderRef` in the `_types.go` spec, and make sure to remove any irrelevant `location` fields if the resource is global.
+
