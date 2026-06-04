@@ -1276,6 +1276,8 @@ cloud.google.com/go/servicedirectory v1.11.1/go.mod h1:tJywXimEWzNzw9FvtNjsQxxJ3
 cloud.google.com/go/servicedirectory v1.11.2/go.mod h1:KD9hCLhncWRV5jJphwIpugKwM5bn1x0GyVVD4NO8mGg=
 cloud.google.com/go/servicedirectory v1.11.3/go.mod h1:LV+cHkomRLr67YoQy3Xq2tUXBGOs5z5bPofdq7qtiAw=
 cloud.google.com/go/servicedirectory v1.11.4/go.mod h1:Bz2T9t+/Ehg6x+Y7Ycq5xiShYLD96NfEsWNHyitj1qM=
+cloud.google.com/go/servicedirectory v1.12.7 h1:je2yZlVcVFI/TshPXjjF9ZAlWedj0s5EbO2kozJrzBo=
+cloud.google.com/go/servicedirectory v1.12.7/go.mod h1:gOtN+qbuCMH6tj2dqlDY3qQL7w3V0+nkWaZElnJK8Ps=
 cloud.google.com/go/servicemanagement v1.4.0/go.mod h1:d8t8MDbezI7Z2R1O/wu8oTggo3BI2GKYbdG4y/SJTco=
 cloud.google.com/go/servicemanagement v1.5.0/go.mod h1:XGaCRe57kfqu4+lRxaFEAuqmjzF0r+gWHjWqKqBvKFo=
 cloud.google.com/go/servicemanagement v1.6.0/go.mod h1:aWns7EeeCOtGEX4OvZUWCCJONRZeFKiptqKf1D0l/Jc=
