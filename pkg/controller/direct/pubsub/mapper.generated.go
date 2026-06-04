@@ -101,3 +101,43 @@ func PubSubSnapshotSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSnapsho
 	return out
 }
 */
+
+/* found existing non-generated mapping function "PubSubTopicSpec_FromProto", skipping
+func PubSubTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.PubSubTopicSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PubSubTopicSpec{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.MessageStoragePolicy = MessageStoragePolicy_FromProto(mapCtx, in.GetMessageStoragePolicy())
+	// MISSING: KMSKeyName
+	out.SchemaSettings = SchemaSettings_FromProto(mapCtx, in.GetSchemaSettings())
+	// MISSING: SatisfiesPzs
+	out.MessageRetentionDuration = direct.StringDuration_FromProto(mapCtx, in.GetMessageRetentionDuration())
+	// MISSING: State
+	// MISSING: IngestionDataSourceSettings
+	// MISSING: MessageTransforms
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "PubSubTopicSpec_ToProto", skipping
+func PubSubTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubTopicSpec) *pb.Topic {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.MessageStoragePolicy = MessageStoragePolicy_ToProto(mapCtx, in.MessageStoragePolicy)
+	// MISSING: KMSKeyName
+	out.SchemaSettings = SchemaSettings_ToProto(mapCtx, in.SchemaSettings)
+	// MISSING: SatisfiesPzs
+	out.MessageRetentionDuration = direct.StringDuration_ToProto(mapCtx, in.MessageRetentionDuration)
+	// MISSING: State
+	// MISSING: IngestionDataSourceSettings
+	// MISSING: MessageTransforms
+	return out
+}
+*/

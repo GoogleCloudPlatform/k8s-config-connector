@@ -28,7 +28,8 @@ go run . generate-types \
     --api-version pubsub.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
     --resource PubSubSnapshot:Snapshot \
-    --resource PubSubSchema:Schema
+    --resource PubSubSchema:Schema \
+    --resource PubSubTopic:Topic
 
 go run . generate-mapper \
     --service google.pubsub.v1 \
