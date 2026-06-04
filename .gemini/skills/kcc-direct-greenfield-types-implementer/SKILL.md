@@ -7,9 +7,6 @@ description: Automate the initial scaffolding of a KCC "direct" resource, includ
 
 This skill guides the initial scaffolding of *new* (greenfield) KCC "direct" resources, ensuring standardized CRD generation and adherence to project-wide validation patterns.
 
-## Prerequisites
-You **must** also apply the standards from the base skill: `.gemini/skills/kcc-direct-base-types-implementer/SKILL.md`.
-
 ## Inputs
 - `service`: The Google API service name (e.g., `google.cloud.aiplatform.v1`).
 - `resource`: The mapping of KCC Kind to GCP Resource (e.g., `VertexAIExampleStore:ExampleStore`).
@@ -32,9 +29,16 @@ go run ../../../tooling/main.go generate-types \
 Run the `generate.sh` script.
 
 ### 3. Validate and Enhance Output
-Apply the baseline validations from `kcc-direct-base-types-implementer`, plus these greenfield-specific rules:
+After running the generator, you must verify and enforce the following baseline and greenfield-specific requirements on the resulting `_types.go` file:
 
-- **Stability Level**: Add `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"`.
+- **Copyright**: The file must start with `// Copyright 2026 Google LLC`.
+- **CRD Labels**: Include at least these three labels in the type definition:
+  ```go
+  // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+  // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+  // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
+  ```
+- **Status Fields**: `status.observedGeneration` must be exactly `*int64`.
 - **Field Validation**: Manually add or verify kubebuilder tags:
   - Use `// +kubebuilder:validation:Required` for fields that are mandatory in the GCP API.
   - Use `// +kubebuilder:validation:Optional` for all other fields.

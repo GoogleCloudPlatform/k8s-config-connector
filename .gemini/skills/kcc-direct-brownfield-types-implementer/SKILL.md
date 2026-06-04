@@ -7,9 +7,6 @@ description: Guides the implementation of KRM types and CRD scaffolding for migr
 
 This skill provides the mandatory standards for creating the initial KRM types (`_types.go`) and generation scripts (`generate.sh`) when migrating an *existing* (brownfield) resource to the direct controller approach.
 
-## Prerequisites
-You **must** also apply the standards from the base skill: `.gemini/skills/kcc-direct-base-types-implementer/SKILL.md`.
-
 ## Workflow
 
 ### 1. Configure generate.sh
@@ -38,12 +35,17 @@ go run . generate-types \
 ```
 
 ### 2. Validate and Enhance Output
-Apply the baseline validations from `kcc-direct-base-types-implementer`, plus these brownfield-specific rules:
+After running the generator, you must verify and enforce the following requirements on the resulting `_types.go` file:
 
-- **Stability Level**: Add the appropriate stability level label (often `alpha` or matching the existing CRD).
+- **Copyright**: The file must start with `// Copyright 2026 Google LLC`.
+- **CRD Labels**: Include at least these three labels in the type definition:
   ```go
+  // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+  // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
   // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
   ```
+  *(Note: Choose the appropriate stability level label, often `alpha` or matching the existing CRD).*
+- **Status Fields**: `status.observedGeneration` must be exactly `*int64`.
 - **Proto Mapping**: Ensure `+kcc:proto` tags are present on the Spec and ObservedState structs to link them to the GCP API definitions.
 - **Use Existing References**: ALWAYS reuse existing resource reference structures that live in `apis/refs/` instead of hand-coding or defining duplicate types.
   * For example, `ProjectRef` (which lives in `apis/refs/v1beta1/project_ref.go`) and other resource reference types should be imported from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1` rather than being defined locally in `<kind>_types.go`.
