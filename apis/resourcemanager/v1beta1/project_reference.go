@@ -28,8 +28,7 @@ import (
 
 var _ refs.Ref = &ProjectRef{}
 
-// ProjectRef defines the resource reference to Project, which "External" field
-// holds the GCP identifier for the KRM object.
+// ProjectRef is a reference to a GCP Project.
 type ProjectRef struct {
 	// A reference to an externally managed Project resource.
 	// Should be in the format "projects/{{projectID}}".
