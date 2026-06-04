@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &CloudBatchResourceAllowanceRef{}
 
-// CloudBatchResourceAllowanceRef defines the resource reference to CloudBatchResourceAllowance, which "External" field
-// holds the GCP identifier for the KRM object.
+// CloudBatchResourceAllowanceRef is a reference to a CloudBatchResourceAllowance.
 type CloudBatchResourceAllowanceRef struct {
 	// A reference to an externally managed CloudBatchResourceAllowance resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/resourceAllowances/{{resourceAllowanceID}}".

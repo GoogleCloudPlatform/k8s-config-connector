@@ -25,8 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// LogicalViewIdentity defines the resource reference to BigtableLogicalView, which "External" field
-// holds the GCP identifier for the KRM object.
+// LogicalViewIdentity is the identity of a BigtableLogicalView.
 type LogicalViewIdentity struct {
 	parent *v1beta1.InstanceIdentity
 	id     string

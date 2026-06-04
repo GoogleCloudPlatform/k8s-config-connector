@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// BackupVaultIdentity defines the resource reference to BackupDRBackupVault, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupVaultIdentity is the identity of a BackupDRBackupVault.
 type BackupVaultIdentity struct {
 	parent *BackupVaultParent
 	id     string

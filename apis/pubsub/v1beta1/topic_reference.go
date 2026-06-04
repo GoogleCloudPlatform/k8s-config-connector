@@ -29,8 +29,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &PubSubTopicRef{}
 var PubSubTopicGVK = GroupVersion.WithKind("PubSubTopic")
 
-// PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field
-// holds the GCP identifier for the KRM object.
+// PubSubTopicRef is a reference to a PubSubTopic.
 type PubSubTopicRef struct {
 	// A reference to an externally managed PubSubTopic resource.
 	// Should be in the format "projects/{{projectID}}/topics/{{topicID}}".

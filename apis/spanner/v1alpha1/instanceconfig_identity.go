@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// InstanceConfigIdentity defines the resource reference to SpannerInstanceConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceConfigIdentity is the identity of a SpannerInstanceConfig.
 type InstanceConfigIdentity struct {
 	parent *InstanceConfigParent
 	id     string

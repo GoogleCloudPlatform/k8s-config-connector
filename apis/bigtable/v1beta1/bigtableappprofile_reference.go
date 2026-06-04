@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &BigtableAppProfileRef{}
 
-// BigtableAppProfileRef defines the resource reference to BigtableAppProfile, which "External" field
-// holds the GCP identifier for the KRM object.
+// BigtableAppProfileRef is a reference to a BigtableAppProfile.
 type BigtableAppProfileRef struct {
 	// A reference to an externally managed BigtableAppProfile resource.
 	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/appProfiles/{{appProfileID}}".

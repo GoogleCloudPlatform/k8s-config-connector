@@ -27,8 +27,7 @@ import (
 
 var _ identity.Identity = &EnvironmentIdentity{}
 
-// EnvironmentIdentity defines the resource reference to ComposerEnvironment, which "External" field
-// holds the GCP identifier for the KRM object.
+// EnvironmentIdentity is the identity of a ComposerEnvironment.
 type EnvironmentIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string

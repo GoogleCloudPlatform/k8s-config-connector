@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &DeployPolicyRef{}
 
-// DeployPolicyRef defines the resource reference to DeployDeployPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// DeployPolicyRef is a reference to a DeployDeployPolicy.
 type DeployPolicyRef struct {
 	// A reference to an externally managed DeployDeployPolicy resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/deploypolicys/{{deploypolicyID}}".

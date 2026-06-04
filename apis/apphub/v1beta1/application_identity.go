@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ApplicationIdentity defines the resource reference to AppHubApplication, which "External" field
-// holds the GCP identifier for the KRM object.
+// ApplicationIdentity is the identity of an AppHubApplication.
 type ApplicationIdentity struct {
 	parent *ApplicationParent
 	id     string

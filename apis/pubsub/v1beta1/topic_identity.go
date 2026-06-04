@@ -21,8 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
-// TopicIdentity defines the resource reference to PubSubTopic, which "External" field
-// holds the GCP identifier for the KRM object.
+// TopicIdentity is the identity of a PubSubTopic.
 type TopicIdentity struct {
 	parent *parent.ProjectParent
 	id     string

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &QuotaAdjusterSettingsRef{}
 
-// QuotaAdjusterSettingsRef defines the resource reference to APIQuotaAdjusterSettings, which "External" field
-// holds the GCP identifier for the KRM object.
+// QuotaAdjusterSettingsRef is a reference to an APIQuotaAdjusterSettings.
 type QuotaAdjusterSettingsRef struct {
 	// A reference to an externally managed APIQuotaAdjusterSettings resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/quotaadjustersettingss/{{quotaadjustersettingsID}}".

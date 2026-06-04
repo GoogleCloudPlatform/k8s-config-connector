@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &AccessContextManagerServicePerimeterRef{}
 
-// AccessContextManagerServicePerimeterRef defines the resource reference to AccessContextManagerServicePerimeter, which "External" field
-// holds the GCP identifier for the KRM object.
+// AccessContextManagerServicePerimeterRef is a reference to an AccessContextManagerServicePerimeter.
 type AccessContextManagerServicePerimeterRef struct {
 	// A reference to an externally managed AccessContextManagerServicePerimeter resource.
 	// Should be in the format "accessPolicies/{{accessPolicyID}}/servicePerimeters/{{servicePerimeterID}}".

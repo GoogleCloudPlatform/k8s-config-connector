@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.Ref = &BillingBudgetsBudgetRef{}
 
-// BillingBudgetsBudgetRef defines the resource reference to BillingBudgetsBudget, which "External" field
-// holds the GCP identifier for the KRM object.
+// BillingBudgetsBudgetRef is a reference to a BillingBudgetsBudget.
 type BillingBudgetsBudgetRef struct {
 	// A reference to an externally managed BillingBudgetsBudget resource.
 	// Should be in the format "billingAccounts/{{billingAccountID}}/budgets/{{budgetID}}".

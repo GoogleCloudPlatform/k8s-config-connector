@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AnywhereCacheIdentity defines the resource reference to StorageAnywhereCache, which "External" field
-// holds the GCP identifier for the KRM object.
+// AnywhereCacheIdentity is the identity of a StorageAnywhereCache.
 type AnywhereCacheIdentity struct {
 	parent *AnywhereCacheParent
 	id     string

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &BackupScheduleRef{}
 
-// BackupScheduleRef defines the resource reference to SpannerBackupSchedule, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupScheduleRef is a reference to a SpannerBackupSchedule.
 type BackupScheduleRef struct {
 	// A reference to an externally managed SpannerBackupSchedule resource.
 	// Should be in the format "projects/{{projectID}}/instances/{{instance}}/databases/{{database}}/backupSchedules/{{backupscheduleID}}".

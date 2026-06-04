@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &MembershipRef{}
 
-// MembershipRef defines the resource reference to CloudIdentityMembership, which "External" field
-// holds the GCP identifier for the KRM object.
+// MembershipRef is a reference to a CloudIdentityMembership.
 type MembershipRef struct {
 	// A reference to an externally managed CloudIdentityMembership resource.
 	// Should be in the format "groups/{{groupID}}/memberships/{{membershipID}}".

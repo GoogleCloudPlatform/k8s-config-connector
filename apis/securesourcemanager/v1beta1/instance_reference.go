@@ -30,8 +30,7 @@ import (
 
 var _ refs.Ref = &SecureSourceManagerInstanceRef{}
 
-// SecureSourceManagerInstanceRef defines the resource reference to SecureSourceManagerInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// SecureSourceManagerInstanceRef is a reference to a SecureSourceManagerInstance.
 type SecureSourceManagerInstanceRef struct {
 	// A reference to an externally managed SecureSourceManagerInstance resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".

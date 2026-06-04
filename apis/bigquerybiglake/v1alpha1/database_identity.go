@@ -30,8 +30,7 @@ const (
 	DatabaseIDURL = CatalogIDURL + "/databases/{{databaseID}}"
 )
 
-// DatabaseIdentity defines the resource reference to BigLakeDatabase, which "External" field
-// holds the GCP identifier for the KRM object.
+// DatabaseIdentity is the identity of a BigLakeDatabase.
 type DatabaseIdentity struct {
 	parent *CatalogIdentity
 	id     string

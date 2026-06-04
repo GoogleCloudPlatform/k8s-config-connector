@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ManagementServerRef{}
 
-// ManagementServerRef defines the resource reference to BackupDRManagementServer, which "External" field
-// holds the GCP identifier for the KRM object.
+// ManagementServerRef is a reference to a BackupDRManagementServer.
 type ManagementServerRef struct {
 	// A reference to an externally managed BackupDRManagementServer resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/managementservers/{{managementserverID}}".

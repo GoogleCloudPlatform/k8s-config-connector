@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &InstanceRef{}
 
-// InstanceRef defines the resource reference to BigtableInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceRef is a reference to a BigtableInstance.
 type InstanceRef struct {
 	// A reference to an externally managed BigtableInstance resource.
 	External string `json:"external,omitempty"`

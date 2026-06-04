@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &BigQueryAnalyticsHubListingRef{}
 
-// BigQueryAnalyticsHubListingRef defines the resource reference to BigQueryAnalyticsHubListing, which "External" field
-// holds the GCP identifier for the KRM object.
+// BigQueryAnalyticsHubListingRef is a reference to a BigQueryAnalyticsHubListing.
 type BigQueryAnalyticsHubListingRef struct {
 	// A reference to an externally managed BigQueryAnalyticsHubListing resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/dataExchanges/{{dataExchangeID}}/listings/{{listingID}}".

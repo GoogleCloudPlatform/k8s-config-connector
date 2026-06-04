@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &NetworkSecurityBackendAuthenticationConfigRef{}
 
-// NetworkSecurityBackendAuthenticationConfigRef defines the resource reference to NetworkSecurityBackendAuthenticationConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkSecurityBackendAuthenticationConfigRef is a reference to a NetworkSecurityBackendAuthenticationConfig.
 type NetworkSecurityBackendAuthenticationConfigRef struct {
 	// A reference to an externally managed NetworkSecurityBackendAuthenticationConfig resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backendAuthenticationConfigs/{{backend_authentication_config}}".

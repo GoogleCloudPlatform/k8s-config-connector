@@ -76,9 +76,8 @@ spec:
                     type: boolean
                   monitoringNotificationChannels:
                     items:
-                      description: MonitoringNotificationChannelRef defines the resource
-                        reference to MonitoringNotificationChannel, which "External"
-                        field holds the GCP identifier for the KRM object.
+                      description: MonitoringNotificationChannelRef is a reference
+                        to a MonitoringNotificationChannel.
                       oneOf:
                       - not:
                           required:
@@ -109,9 +108,7 @@ spec:
                       type: object
                     type: array
                   pubsubTopicRef:
-                    description: PubSubTopicRef defines the resource reference to
-                      PubSubTopic, which "External" field holds the GCP identifier
-                      for the KRM object.
+                    description: PubSubTopicRef is a reference to a PubSubTopic.
                     oneOf:
                     - not:
                         required:

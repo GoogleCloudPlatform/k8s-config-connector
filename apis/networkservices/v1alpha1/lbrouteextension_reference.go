@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &NetworkServicesLBRouteExtensionRef{}
 
-// NetworkServicesLBRouteExtensionRef defines the resource reference to NetworkServicesLBRouteExtension, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkServicesLBRouteExtensionRef is a reference to a NetworkServicesLBRouteExtension.
 type NetworkServicesLBRouteExtensionRef struct {
 	// A reference to an externally managed NetworkServicesLBRouteExtension resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/lbRouteExtensions/{{lbRouteExtensionID}}".

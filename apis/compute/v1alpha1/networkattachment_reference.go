@@ -30,8 +30,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ComputeNetworkAttachmentRef{}
 
-// ComputeNetworkAttachmentRef defines the resource reference to ComputeNetworkAttachment, which "External" field
-// holds the GCP identifier for the KRM object.
+// ComputeNetworkAttachmentRef is a reference to a ComputeNetworkAttachment.
 type ComputeNetworkAttachmentRef struct {
 
 	// The value of an externally managed ComputeNetworkAttachment resource in

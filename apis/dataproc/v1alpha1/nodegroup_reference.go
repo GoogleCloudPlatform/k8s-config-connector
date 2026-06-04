@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &NodeGroupRef{}
 
-// NodeGroupRef defines the resource reference to DataprocNodeGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// NodeGroupRef is a reference to a DataprocNodeGroup.
 type NodeGroupRef struct {
 	// A reference to an externally managed DataprocNodeGroup resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/nodegroups/{{nodegroupID}}".

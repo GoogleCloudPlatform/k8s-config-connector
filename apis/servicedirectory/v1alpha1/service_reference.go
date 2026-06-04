@@ -32,8 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &ServiceDirectoryServiceRef{}
 var GroupVersion = schema.GroupVersion{Group: "servicedirectory.cnrm.cloud.google.com", Version: "v1alpha1"}
 var ServiceDirectoryServiceGVK = GroupVersion.WithKind("ServiceDirectoryService")
 
-// ServiceRef defines the resource reference to NetworkServices, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceDirectoryServiceRef is a reference to a NetworkServices.
 type ServiceDirectoryServiceRef struct {
 	// A reference to an externally managed DataprocJob resource.
 	// Should be in the format "/projects/*/locations/*/namespaces/*/services/*".

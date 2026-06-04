@@ -34,8 +34,7 @@ func init() {
 
 var _ refsv1beta1.Ref = &RunServiceRef{}
 
-// RunServiceRef defines the resource reference to RunService, which "External" field
-// holds the GCP identifier for the KRM object.
+// RunServiceRef is a reference to a RunService.
 type RunServiceRef struct {
 	// A reference to an externally managed RunService resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{service}}".

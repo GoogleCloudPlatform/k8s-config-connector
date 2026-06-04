@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// TaxonomyIdentity defines the resource reference to DataCatalogTaxonomy, which "External" field
-// holds the GCP identifier for the KRM object.
+// TaxonomyIdentity is the identity of a DataCatalogTaxonomy.
 type TaxonomyIdentity struct {
 	parent *TaxonomyParent
 	id     string

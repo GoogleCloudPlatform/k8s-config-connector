@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EngineIdentity defines the resource reference to DiscoveryEngineEngine, which "External" field
-// holds the GCP identifier for the KRM object.
+// EngineIdentity is the identity of a DiscoveryEngineEngine.
 type EngineIdentity struct {
 	parent *EngineParent
 	id     string

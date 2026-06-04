@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &VertexAIDeploymentResourcePoolRef{}
 
-// VertexAIDeploymentResourcePoolRef defines the resource reference to VertexAIDeploymentResourcePool, which "External" field
-// holds the GCP identifier for the KRM object.
+// VertexAIDeploymentResourcePoolRef is a reference to a VertexAIDeploymentResourcePool.
 type VertexAIDeploymentResourcePoolRef struct {
 	// A reference to an externally managed VertexAIDeploymentResourcePool resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/deploymentResourcePools/{{deploymentresourcepool}}".

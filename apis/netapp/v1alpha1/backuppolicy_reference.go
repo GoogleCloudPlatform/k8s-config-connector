@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &BackupPolicyRef{}
 
-// BackupPolicyRef defines the resource reference to NetAppBackupPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupPolicyRef is a reference to a NetAppBackupPolicy.
 type BackupPolicyRef struct {
 	// A reference to an externally managed NetAppBackupPolicy resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backuppolicys/{{backuppolicyID}}".

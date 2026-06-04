@@ -26,8 +26,7 @@ import (
 
 var _ refs.Ref = &RedisClusterRef{}
 
-// RedisClusterRef defines the resource reference to RedisCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// RedisClusterRef is a reference to a RedisCluster.
 type RedisClusterRef struct {
 	// A reference to an externally managed RedisCluster resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".

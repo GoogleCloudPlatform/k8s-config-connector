@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &AlloyDBBackupRef{}
 
-// AlloyDBBackupRef defines the resource reference to AlloyDBBackup, which "External" field
-// holds the GCP identifier for the KRM object.
+// AlloyDBBackupRef is a reference to an AlloyDBBackup.
 type AlloyDBBackupRef struct {
 	// A reference to an externally managed AlloyDBBackup resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".

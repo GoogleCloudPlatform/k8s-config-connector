@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &FirewallPolicyRef{}
 
-// FirewallPolicyRef defines the resource reference to ReCAPTCHAEnterpriseFirewallPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// FirewallPolicyRef is a reference to a ReCAPTCHAEnterpriseFirewallPolicy.
 type FirewallPolicyRef struct {
 	// A reference to an externally managed ReCAPTCHAEnterpriseFirewallPolicy resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/firewallpolicies/{{firewallpolicyID}}".

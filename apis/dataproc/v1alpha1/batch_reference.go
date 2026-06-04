@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &BatchRef{}
 
-// BatchRef defines the resource reference to DataprocBatch, which "External" field
-// holds the GCP identifier for the KRM object.
+// BatchRef is a reference to a DataprocBatch.
 type BatchRef struct {
 	// A reference to an externally managed DataprocBatch resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/batchs/{{batchID}}".

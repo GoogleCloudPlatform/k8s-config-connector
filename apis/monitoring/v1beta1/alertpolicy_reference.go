@@ -30,8 +30,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &MonitoringAlertPolicyRef{}
 var MonitoringAlertPolicyGVK = GroupVersion.WithKind("MonitoringAlertPolicy")
 
-// MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// MonitoringAlertPolicyRef is a reference to a MonitoringAlertPolicy.
 type MonitoringAlertPolicyRef struct {
 	// The value of an externally managed MonitoringAlertPolicy resource.
 	// Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".

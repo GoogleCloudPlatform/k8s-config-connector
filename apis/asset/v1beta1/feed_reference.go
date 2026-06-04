@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &FeedRef{}
 
-// FeedRef defines the resource reference to AssetFeed, which "External" field
-// holds the GCP identifier for the KRM object.
+// FeedRef is a reference to an AssetFeed.
 type FeedRef struct {
 	// A reference to an externally managed AssetFeed resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/feeds/{{feedID}}".

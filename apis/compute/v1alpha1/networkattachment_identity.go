@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NetworkAttachmentIdentity defines the resource reference to ComputeNetworkAttachment, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkAttachmentIdentity is the identity of a ComputeNetworkAttachment.
 type NetworkAttachmentIdentity struct {
 	parent *NetworkAttachmentParent
 	id     string

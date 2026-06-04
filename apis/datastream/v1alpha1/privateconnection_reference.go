@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &PrivateConnectionRef{}
 
-// PrivateConnectionRef defines the resource reference to DatastreamPrivateConnection, which "External" field
-// holds the GCP identifier for the KRM object.
+// PrivateConnectionRef is a reference to a DatastreamPrivateConnection.
 type PrivateConnectionRef struct {
 	// A reference to an externally managed DatastreamPrivateConnection resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/privateConnections/{{privateconnectionID}}".

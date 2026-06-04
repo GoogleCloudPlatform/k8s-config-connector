@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &PubSubSchemaRef{}
 
-// PubSubSchemaRef defines the resource reference to PubSubSchema, which "External" field
-// holds the GCP identifier for the KRM object.
+// PubSubSchemaRef is a reference to a PubSubSchema.
 type PubSubSchemaRef struct {
 	// A reference to an externally managed PubSubSchema resource.
 	// Should be in the format "projects/{{projectID}}/schemas/{{schemaID}}".

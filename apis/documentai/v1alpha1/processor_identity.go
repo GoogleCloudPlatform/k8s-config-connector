@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ProcessorIdentity defines the resource reference to DocumentAIProcessor, which "External" field
-// holds the GCP identifier for the KRM object.
+// ProcessorIdentity is the identity of a DocumentAIProcessor.
 type ProcessorIdentity struct {
 	parent *ProcessorParent
 	id     string

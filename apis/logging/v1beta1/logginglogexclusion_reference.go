@@ -28,8 +28,7 @@ import (
 
 var _ refs.Ref = &LoggingLogExclusionRef{}
 
-// LoggingLogExclusionRef defines the resource reference to LoggingLogExclusion, which "External" field
-// holds the GCP identifier for the KRM object.
+// LoggingLogExclusionRef is a reference to a LoggingLogExclusion.
 type LoggingLogExclusionRef struct {
 	// A reference to an externally managed LoggingLogExclusion resource.
 	// Should be in the format "projects/{{projectID}}/exclusions/{{exclusionID}}".

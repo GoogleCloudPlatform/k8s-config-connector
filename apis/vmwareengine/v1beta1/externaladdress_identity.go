@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ExternalAddressIdentity defines the resource reference to VMwareEngineExternalAddress, which "External" field
-// holds the GCP identifier for the KRM object.
+// ExternalAddressIdentity is the identity of a VMwareEngineExternalAddress.
 type ExternalAddressIdentity struct {
 	parent *ExternalAddressParent
 	id     string

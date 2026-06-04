@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &FirestoreIndexRef{}
 
-// FirestoreIndexRef defines the resource reference to FirestoreIndex, which "External" field
-// holds the GCP identifier for the KRM object.
+// FirestoreIndexRef is a reference to a FirestoreIndex.
 type FirestoreIndexRef struct {
 	// A reference to an externally managed FirestoreIndex resource.
 	// Should be in the format "projects/{{projectID}}/databases/{{database}}/collectionGroups/{{collectionGroup}}/indexes/{{index}}".

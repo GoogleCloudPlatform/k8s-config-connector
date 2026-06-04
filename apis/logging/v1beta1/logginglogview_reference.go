@@ -28,8 +28,7 @@ import (
 
 var _ refs.Ref = &LoggingLogViewRef{}
 
-// LoggingLogViewRef defines the resource reference to LoggingLogView, which "External" field
-// holds the GCP identifier for the KRM object.
+// LoggingLogViewRef is a reference to a LoggingLogView.
 type LoggingLogViewRef struct {
 	// A reference to an externally managed LoggingLogView resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/views/{{viewID}}".

@@ -35,8 +35,7 @@ var BeyondCorpClientConnectorServiceIdentityFormat = gcpurls.Template[BeyondCorp
 	"projects/{project}/locations/{location}/clientConnectorServices/{clientConnectorService}",
 )
 
-// BeyondCorpClientConnectorServiceIdentity defines the resource reference to BeyondCorpClientConnectorService, which "External" field
-// holds the GCP identifier for the KRM object.
+// BeyondCorpClientConnectorServiceIdentity is the identity of a BeyondCorpClientConnectorService.
 // +k8s:deepcopy-gen=false
 type BeyondCorpClientConnectorServiceIdentity struct {
 	Project                string

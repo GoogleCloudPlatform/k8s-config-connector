@@ -25,8 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ImportJobIdentity defines the resource reference to KMSImportJob, which "External" field
-// holds the GCP identifier for the KRM object.
+// ImportJobIdentity is the identity of a KMSImportJob.
 type ImportJobIdentity struct {
 	parent *KMSKeyRingIdentity
 	id     string

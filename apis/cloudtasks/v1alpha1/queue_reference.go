@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &TasksQueueRef{}
 
-// TasksQueueRef defines the resource reference to TasksQueue, which "External" field
-// holds the GCP identifier for the KRM object.
+// TasksQueueRef is a reference to a TasksQueue.
 type TasksQueueRef struct {
 	// A reference to an externally managed TasksQueue resource.
 	// Should be in the format "projects/{{project}}/locations/{{location}}/queues/{{queue}}".

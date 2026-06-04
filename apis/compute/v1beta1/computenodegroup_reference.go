@@ -31,8 +31,7 @@ func init() {
 	refsv1beta1.Register(&ComputeNodeGroupRef{})
 }
 
-// ComputeNodeGroupRef defines the resource reference to ComputeNodeGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// ComputeNodeGroupRef is a reference to a ComputeNodeGroup.
 type ComputeNodeGroupRef struct {
 	// A reference to an externally managed ComputeNodeGroup resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/nodeGroups/{{nodeGroupID}}".
 	External string `json:"external,omitempty"`

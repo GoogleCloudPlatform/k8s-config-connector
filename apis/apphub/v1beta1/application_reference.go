@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ApplicationRef{}
 
-// ApplicationRef defines the resource reference to AppHubApplication, which "External" field
-// holds the GCP identifier for the KRM object.
+// ApplicationRef is a reference to an AppHubApplication.
 type ApplicationRef struct {
 	// A reference to an externally managed AppHubApplication resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/applications/{{applicationID}}".

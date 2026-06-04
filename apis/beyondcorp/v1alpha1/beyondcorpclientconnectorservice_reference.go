@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &BeyondCorpClientConnectorServiceRef{}
 
-// BeyondCorpClientConnectorServiceRef defines the resource reference to BeyondCorpClientConnectorService, which "External" field
-// holds the GCP identifier for the KRM object.
+// BeyondCorpClientConnectorServiceRef is a reference to a BeyondCorpClientConnectorService.
 type BeyondCorpClientConnectorServiceRef struct {
 	// A reference to an externally managed BeyondCorpClientConnectorService resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clientConnectorServices/{{clientConnectorServiceID}}".

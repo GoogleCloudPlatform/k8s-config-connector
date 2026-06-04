@@ -29,8 +29,7 @@ import (
 var _ refs.Ref = &LoggingLogBucketRef{}
 var LoggingLogBucketGVK = GroupVersion.WithKind("LoggingLogBucket")
 
-// LoggingLogBucketRef defines the resource reference to LoggingLogBucket, which "External" field
-// holds the GCP identifier for the KRM object.
+// LoggingLogBucketRef is a reference to a LoggingLogBucket.
 type LoggingLogBucketRef struct {
 	// A reference to an externally managed LoggingLogBucket resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".

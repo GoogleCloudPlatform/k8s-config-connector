@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.Ref = &GKEHubNamespaceRef{}
 
-// GKEHubNamespaceRef defines the resource reference to GKEHubNamespace, which "External" field
-// holds the GCP identifier for the KRM object.
+// GKEHubNamespaceRef is a reference to a GKEHubNamespace.
 type GKEHubNamespaceRef struct {
 	// A reference to an externally managed GKEHubNamespace resource.
 	// Should be in the format "projects/{{project}}/locations/{{location}}/scopes/{{scope}}/namespaces/{{namespace}}".

@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &FirestoreBackupScheduleRef{}
 
-// FirestoreBackupScheduleRef defines the resource reference to FirestoreBackupSchedule, which "External" field
-// holds the GCP identifier for the KRM object.
+// FirestoreBackupScheduleRef is a reference to a FirestoreBackupSchedule.
 type FirestoreBackupScheduleRef struct {
 	// A reference to an externally managed FirestoreBackupSchedule resource.
 	// Should be in the format "projects/{{projectID}}/databases/{{databaseID}}/backupSchedules/{{backupScheduleID}}".

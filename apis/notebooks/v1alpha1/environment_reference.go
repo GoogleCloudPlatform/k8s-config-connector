@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &EnvironmentRef{}
 
-// EnvironmentRef defines the resource reference to NotebooksEnvironment, which "External" field
-// holds the GCP identifier for the KRM object.
+// EnvironmentRef is a reference to a NotebooksEnvironment.
 type EnvironmentRef struct {
 	// A reference to an externally managed NotebooksEnvironment resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/environments/{{environmentID}}".

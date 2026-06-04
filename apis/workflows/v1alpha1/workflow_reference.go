@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &WorkflowsWorkflowRef{}
 
-// WorkflowsWorkflowRef defines the resource reference to WorkflowsWorkflow, which "External" field
-// holds the GCP identifier for the KRM object.
+// WorkflowsWorkflowRef is a reference to a WorkflowsWorkflow.
 type WorkflowsWorkflowRef struct {
 	// A reference to an externally managed WorkflowsWorkflow resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/workflows/{{workflowID}}".

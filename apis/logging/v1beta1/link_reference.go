@@ -25,8 +25,7 @@ import (
 
 var _ refsv1beta1.Ref = &LoggingLinkRef{}
 
-// LoggingLinkRef defines the resource reference to LoggingLink, which "External" field
-// holds the GCP identifier for the KRM object.
+// LoggingLinkRef is a reference to a LoggingLink.
 type LoggingLinkRef struct {
 	// A reference to an externally managed LoggingLink resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/links/{{linkID}}".

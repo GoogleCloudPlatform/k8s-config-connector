@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &AIPlatformModelRef{}
 
-// AIPlatformModelRef defines the resource reference to AIPlatformModel, which "External" field
-// holds the GCP identifier for the KRM object.
+// AIPlatformModelRef is a reference to an AIPlatformModel.
 type AIPlatformModelRef struct {
 	// A reference to an externally managed AIPlatformModel resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/models/{{modelID}}".

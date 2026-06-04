@@ -22,8 +22,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AccessPolicyIdentity defines the resource reference to AccessContextManagerAccessPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// AccessPolicyIdentity is the identity of an AccessContextManagerAccessPolicy.
 type AccessPolicyIdentity struct {
 	resourceID string
 	title      string

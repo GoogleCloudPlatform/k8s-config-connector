@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &MonitoringDashboardRef{}
 
-// MonitoringDashboardRef defines the resource reference to MonitoringDashboard, which "External" field
-// holds the GCP identifier for the KRM object.
+// MonitoringDashboardRef is a reference to a MonitoringDashboard.
 type MonitoringDashboardRef struct {
 	// A reference to an externally managed MonitoringDashboard resource.
 	// Should be in the format "projects/{{projectID}}/dashboards/{{dashboardID}}".

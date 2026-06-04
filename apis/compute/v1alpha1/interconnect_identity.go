@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// InterconnectIdentity defines the resource reference to ComputeInterconnect, which "External" field
-// holds the GCP identifier for the KRM object.
+// InterconnectIdentity is the identity of a ComputeInterconnect.
 type InterconnectIdentity struct {
 	parent *InterconnectParent
 	id     string
