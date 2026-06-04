@@ -20,9 +20,14 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computehealthcheck-${uniqueId}
 spec:
+  checkIntervalSec: 30
   httpHealthCheck:
     port: 80
   location: global
+  sourceRegions:
+  - us-central1
+  - us-east1
+  - us-west1
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
