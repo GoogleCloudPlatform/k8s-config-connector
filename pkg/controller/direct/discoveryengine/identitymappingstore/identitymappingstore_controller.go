@@ -31,9 +31,11 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -57,8 +59,7 @@ func (m *model) client(ctx context.Context, projectID string) (*gcp.IdentityMapp
 
 	// Workaround for an unusual behaviour (bug?):
 	//  the service requires that a quota project be set
-	if !config.UserProjectOverride || config.BillingProject == "" {
-		config.UserProjectOverride = true
+	if config.UserProjectOverride && config.BillingProject == "" {
 		config.BillingProject = projectID
 	}
 
@@ -190,8 +191,20 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating discoveryengine identitymappingstore", "name", a.id.String())
 
-	// DiscoveryEngineIdentityMappingStore is immutable after creation, so we do nothing.
-	// We just ensure status and externalRef are up to date.
+	desired := proto.CloneOf(a.desired)
+	desired.Name = a.id.String()
+
+	paths, report, err := common.CompareProtoMessageStructuredDiff(desired, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+
+	structuredreporting.ReportDiff(ctx, report)
+
+	if len(paths) > 0 {
+		return fmt.Errorf("cannot update DiscoveryEngineIdentityMappingStore %q: fields changed: %v; DiscoveryEngineIdentityMappingStores are immutable after creation", a.id.String(), paths.UnsortedList())
+	}
+
 	status := &krm.DiscoveryEngineIdentityMappingStoreStatus{}
 	mapCtx := &direct.MapContext{}
 	status.ObservedState = discoveryengine.DiscoveryEngineIdentityMappingStoreObservedState_FromProto(mapCtx, a.actual)
@@ -237,6 +250,9 @@ func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	req := &pb.DeleteIdentityMappingStoreRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteIdentityMappingStore(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting discoveryengine identitymappingstore %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted discoveryengine identitymappingstore", "name", a.id.String())
@@ -244,6 +260,9 @@ func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	if !op.Done() {
 		err = op.Wait(ctx)
 		if err != nil {
+			if direct.IsNotFound(err) {
+				return true, nil
+			}
 			return false, fmt.Errorf("waiting for deletion of discoveryengine identitymappingstore %s: %w", a.id.String(), err)
 		}
 	}

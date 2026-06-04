@@ -106,3 +106,7 @@ func (obj *DiscoveryEngineIdentityMappingStore) GetIdentity(ctx context.Context,
 
 	return specIdentity, nil
 }
+
+func (obj *DiscoveryEngineIdentityMappingStore) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
+}
