@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package apihubdeployment
+package apihubapi
 
 import (
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
@@ -21,13 +21,13 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(apihubDeploymentFuzzer())
+	fuzztesting.RegisterKRMFuzzer(apihubApiFuzzer())
 }
 
-func apihubDeploymentFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.Deployment{},
-		apihub.APIHubDeploymentSpec_FromProto, apihub.APIHubDeploymentSpec_ToProto,
-		apihub.APIHubDeploymentObservedState_FromProto, apihub.APIHubDeploymentObservedState_ToProto,
+func apihubApiFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Api{},
+		apihub.APIHubAPISpec_FromProto, apihub.APIHubAPISpec_ToProto,
+		apihub.APIHubAPIObservedState_FromProto, apihub.APIHubAPIObservedState_ToProto,
 	)
 
 	// Identity field
@@ -37,26 +37,28 @@ func apihubDeploymentFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".display_name")
 	f.SpecField(".description")
 	f.SpecField(".documentation")
-	f.SpecField(".resource_uri")
-	f.SpecField(".endpoints")
+	f.SpecField(".owner")
+	f.SpecField(".api_requirements")
+	f.SpecField(".api_functional_requirements")
+	f.SpecField(".api_technical_requirements")
+	f.SpecField(".fingerprint")
 
 	// Status fields
-	f.StatusField(".api_versions")
+	f.StatusField(".versions")
 	f.StatusField(".create_time")
 	f.StatusField(".update_time")
+	f.StatusField(".source_metadata")
 
 	// Unimplemented or partially implemented fields
+	f.Unimplemented_NotYetTriaged(".target_user")
+	f.Unimplemented_NotYetTriaged(".team")
+	f.Unimplemented_NotYetTriaged(".business_unit")
+	f.Unimplemented_NotYetTriaged(".maturity_level")
+	f.Unimplemented_NotYetTriaged(".api_style")
+	f.Unimplemented_NotYetTriaged(".selected_version")
 	f.Unimplemented_NotYetTriaged(".attributes")
-	f.Unimplemented_NotYetTriaged(".source_metadata")
-	f.Unimplemented_NotYetTriaged(".management_url")
-	f.Unimplemented_NotYetTriaged(".source_uri")
-	f.Unimplemented_NotYetTriaged(".source_project")
-	f.Unimplemented_NotYetTriaged(".source_environment")
-	f.Unimplemented_NotYetTriaged(".deployment_type")
-	f.Unimplemented_NotYetTriaged(".slo")
-	f.Unimplemented_NotYetTriaged(".environment")
 
-	f.FilterSpec = func(in *pb.Deployment) {
+	f.FilterSpec = func(in *pb.Api) {
 		filterAV := func(av *pb.AttributeValues) {
 			if av == nil {
 				return
@@ -72,9 +74,13 @@ func apihubDeploymentFuzzer() fuzztesting.KRMFuzzer {
 				av.Value = nil
 			}
 		}
-		filterAV(in.DeploymentType)
-		filterAV(in.Slo)
-		filterAV(in.Environment)
+		filterAV(in.ApiRequirements)
+		filterAV(in.ApiFunctionalRequirements)
+		filterAV(in.ApiTechnicalRequirements)
+	}
+
+	f.FilterStatus = func(in *pb.Api) {
+		in.SourceMetadata = nil
 	}
 
 	return f

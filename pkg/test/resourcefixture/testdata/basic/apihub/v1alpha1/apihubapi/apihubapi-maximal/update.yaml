@@ -1,0 +1,27 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubAPI
+metadata:
+  name: apihubapi-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Maximal API Updated"
+  description: "An updated comprehensive description of the API resource under test."
+  documentation:
+    externalURI: "https://example.com/docs-updated"
+  owner:
+    displayName: "API Owner Name Updated"
+    email: "owner-updated@example.com"
+  apiRequirements:
+    stringValues:
+      values:
+        - "Requirement 1 Updated"
+  apiFunctionalRequirements:
+    stringValues:
+      values:
+        - "Functional Requirement 1 Updated"
+  apiTechnicalRequirements:
+    stringValues:
+      values:
+        - "Technical Requirement 1 Updated"

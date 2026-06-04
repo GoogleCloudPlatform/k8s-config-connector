@@ -1,0 +1,9 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubAPI
+metadata:
+  name: apihubapi-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Minimal API"
