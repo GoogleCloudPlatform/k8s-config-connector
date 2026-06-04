@@ -149,7 +149,7 @@ type AllUpdatesRule struct {
 	SchemaVersion *string `json:"schemaVersion,omitempty"`
 }
 
-// BillingBudgetsBudgetStatus defines the config connector machine state of BillingBudgetsBudget
+// BillingBudgetsBudgetStatus defines the Config Connector machine state of BillingBudgetsBudget
 type BillingBudgetsBudgetStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
