@@ -24,6 +24,7 @@ import (
 
 	"google.golang.org/grpc"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -48,6 +49,7 @@ type MockService struct {
 type DataplexService struct {
 	*MockService
 	pb.UnimplementedDataplexServiceServer
+	iampb.UnimplementedIAMPolicyServer
 }
 
 // New creates a MockService.
@@ -69,6 +71,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexService)
 	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
+	iampb.RegisterIAMPolicyServer(grpcServer, s.dataplexService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

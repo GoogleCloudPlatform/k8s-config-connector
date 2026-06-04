@@ -22,6 +22,7 @@ import (
 	"fmt"
 
 	api "cloud.google.com/go/dataplex/apiv1"
+	iam "cloud.google.com/go/iam/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"google.golang.org/api/option"
 )
@@ -68,6 +69,23 @@ func (m *gcpClient) catalogClient(ctx context.Context) (*api.CatalogClient, erro
 	grpcClient, err := api.NewCatalogClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building dataplex catalog client: %w", err)
+	}
+
+	return grpcClient, err
+}
+
+func (m *gcpClient) iamClient(ctx context.Context) (*iam.IamPolicyClient, error) {
+	opts, err := m.options()
+	if err != nil {
+		return nil, err
+	}
+
+	// We MUST add the Dataplex endpoint to the IAM client options!
+	opts = append(opts, option.WithEndpoint("dataplex.googleapis.com"))
+
+	grpcClient, err := iam.NewIamPolicyClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building iam policy client: %w", err)
 	}
 
 	return grpcClient, err

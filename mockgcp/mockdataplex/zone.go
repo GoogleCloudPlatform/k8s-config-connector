@@ -20,12 +20,14 @@ package mockdataplex
 
 import (
 	"context"
+	"crypto/md5"
 	"fmt"
 	"strings"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
+	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -211,6 +213,63 @@ func (s *DataplexService) DeleteZone(ctx context.Context, req *pb.DeleteZoneRequ
 		lroMetadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func (s *DataplexService) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseZoneName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, fqn, policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			policy.Etag = computeEtag(policy)
+			return policy, nil
+		}
+		return nil, err
+	}
+
+	return policy, nil
+}
+
+func (s *DataplexService) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	name, err := s.parseZoneName(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	req.Policy.Etag = computeEtag(req.Policy)
+
+	if err := s.storage.Update(ctx, fqn, req.Policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, fqn, req.Policy); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	return req.Policy, nil
+}
+
+func computeEtag(obj proto.Message) []byte {
+	// TODO: Do we risk exposing internal fields?  Doesn't matter on a mock, I guess
+	b, err := proto.Marshal(obj)
+	if err != nil {
+		panic(fmt.Sprintf("failed to marshal proto object: %v", err))
+	}
+	hash := md5.Sum(b)
+	return hash[:]
+}
+
+func (s *DataplexService) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
 
 type zoneName struct {
