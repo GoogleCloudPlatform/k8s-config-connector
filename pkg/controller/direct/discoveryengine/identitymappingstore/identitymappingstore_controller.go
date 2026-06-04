@@ -58,10 +58,11 @@ func (m *model) client(ctx context.Context, projectID string) (*gcp.IdentityMapp
 	config := m.config
 
 	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	config.UserProjectOverride = true
+	//  the service requires that a quota project be set. If the user hasn't provided a billing/quota project,
+	//  fall back to the resource's project ID and enable project override.
 	if config.BillingProject == "" {
 		config.BillingProject = projectID
+		config.UserProjectOverride = true
 	}
 
 	opts, err := config.RESTClientOptions()
