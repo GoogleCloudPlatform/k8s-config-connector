@@ -59,7 +59,8 @@ func (m *model) client(ctx context.Context, projectID string) (*gcp.IdentityMapp
 
 	// Workaround for an unusual behaviour (bug?):
 	//  the service requires that a quota project be set
-	if config.UserProjectOverride && config.BillingProject == "" {
+	config.UserProjectOverride = true
+	if config.BillingProject == "" {
 		config.BillingProject = projectID
 	}
 
