@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ManagedKafkaConsumerGroupSpec struct {
-	/* ClusterRef defines the resource reference to ManagedKafkaCluster, which "External" field holds the GCP identifier for the KRM object. */
+	/* ClusterRef is a reference to a ManagedKafkaCluster. */
 	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
 	Location string `json:"location"`

@@ -43,7 +43,7 @@ type BigtableBackupSpec struct {
 	// +optional
 	BackupType *string `json:"backupType,omitempty"`
 
-	/* ClusterRef defines the resource reference to BigtableCluster, which "External" field holds the GCP identifier for the KRM object. */
+	/* ClusterRef is a reference to a BigtableCluster. */
 	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Required. The expiration time of the backup.
