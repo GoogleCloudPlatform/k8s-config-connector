@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found",
+        "message": "healthCheck \"projects/${projectId}/global/healthChecks/${healthCheckID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/healthChecks/${healthCheckID}' was not found"
+    "message": "healthCheck \"projects/${projectId}/global/healthChecks/${healthCheckID}\" not found"
   }
 }
 
@@ -168,11 +168,12 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The 'parameters.managedZone' resource named 'dnsmanagedzone-${uniqueId}' does not exist.",
+        "message": "managedZone \"projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "The 'parameters.managedZone' resource named 'dnsmanagedzone-${uniqueId}' does not exist."
+    "message": "managedZone \"projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -226,6 +227,7 @@ X-Xss-Protection: 0
     "ns-cloud-a3.googledomains.com.",
     "ns-cloud-a4.googledomains.com."
   ],
+  "privateVisibilityConfig": {},
   "visibility": "public"
 }
 
@@ -265,6 +267,7 @@ X-Xss-Protection: 0
     "ns-cloud-a3.googledomains.com.",
     "ns-cloud-a4.googledomains.com."
   ],
+  "privateVisibilityConfig": {},
   "visibility": "public"
 }
 
@@ -284,8 +287,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "kind": "dns#resourceRecordSetsListResponse",
-  "rrsets": []
+  "kind": "dns#resourceRecordSetsListResponse"
 }
 
 ---
@@ -310,12 +312,11 @@ X-Xss-Protection: 0
       "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
-        "ns-cloud-d1.googledomains.com.",
-        "ns-cloud-d2.googledomains.com.",
-        "ns-cloud-d3.googledomains.com.",
-        "ns-cloud-d4.googledomains.com."
+        "ns-cloud-c1.googledomains.com.",
+        "ns-cloud-c2.googledomains.com.",
+        "ns-cloud-c3.googledomains.com.",
+        "ns-cloud-c4.googledomains.com."
       ],
-      "signatureRrdatas": [],
       "ttl": 21600,
       "type": "NS"
     },
@@ -323,9 +324,8 @@ X-Xss-Protection: 0
       "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "rrdatas": [
-        "ns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+        "ns-cloud-c1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
       ],
-      "signatureRrdatas": [],
       "ttl": 21600,
       "type": "SOA"
     }
@@ -385,11 +385,9 @@ X-Xss-Protection: 0
 {
   "additions": [
     {
-      "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -397,41 +395,29 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.6
             },
             {
               "healthCheckedTargets": {
                 "externalEndpoints": [
                   "1.1.1.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.4
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
   ],
-  "deletions": [],
   "id": "000000000000000000000",
   "kind": "dns#change",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
+  "status": "done"
 }
 
 ---
@@ -452,11 +438,9 @@ X-Xss-Protection: 0
 {
   "additions": [
     {
-      "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -464,104 +448,25 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.6
             },
             {
               "healthCheckedTargets": {
                 "externalEndpoints": [
                   "1.1.1.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.4
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
   ],
-  "deletions": [],
-  "id": "000000000000000000000",
-  "kind": "dns#change",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
-}
-
----
-
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "additions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "routingPolicy": {
-        "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
-        "wrr": {
-          "items": [
-            {
-              "healthCheckedTargets": {
-                "externalEndpoints": [
-                  "8.8.8.8",
-                  "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
-              },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
-              "weight": 0.6
-            },
-            {
-              "healthCheckedTargets": {
-                "externalEndpoints": [
-                  "1.1.1.1"
-                ],
-                "internalLoadBalancers": []
-              },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
-              "weight": 0.4
-            }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
-        }
-      },
-      "rrdatas": [],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "deletions": [],
   "id": "000000000000000000000",
   "kind": "dns#change",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -591,7 +496,6 @@ X-Xss-Protection: 0
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -599,32 +503,21 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.6
             },
             {
               "healthCheckedTargets": {
                 "externalEndpoints": [
                   "1.1.1.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.4
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
@@ -716,11 +609,9 @@ X-Xss-Protection: 0
 {
   "additions": [
     {
-      "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -728,12 +619,8 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             },
             {
@@ -741,31 +628,22 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "1.1.1.1",
                   "1.0.0.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
   ],
   "deletions": [
     {
-      "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -773,32 +651,21 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.6
             },
             {
               "healthCheckedTargets": {
                 "externalEndpoints": [
                   "1.1.1.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.4
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
@@ -806,7 +673,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "dns#change",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
+  "status": "done"
 }
 
 ---
@@ -827,11 +694,9 @@ X-Xss-Protection: 0
 {
   "additions": [
     {
-      "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -839,12 +704,8 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             },
             {
@@ -852,31 +713,22 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "1.1.1.1",
                   "1.0.0.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
   ],
   "deletions": [
     {
-      "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -884,143 +736,21 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.6
             },
             {
               "healthCheckedTargets": {
                 "externalEndpoints": [
                   "1.1.1.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.4
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "id": "000000000000000000000",
-  "kind": "dns#change",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
-}
-
----
-
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "additions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "routingPolicy": {
-        "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
-        "wrr": {
-          "items": [
-            {
-              "healthCheckedTargets": {
-                "externalEndpoints": [
-                  "8.8.8.8",
-                  "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
-              },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
-              "weight": 0.5
-            },
-            {
-              "healthCheckedTargets": {
-                "externalEndpoints": [
-                  "1.1.1.1",
-                  "1.0.0.1"
-                ],
-                "internalLoadBalancers": []
-              },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
-              "weight": 0.5
-            }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
-        }
-      },
-      "rrdatas": [],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "deletions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "routingPolicy": {
-        "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
-        "wrr": {
-          "items": [
-            {
-              "healthCheckedTargets": {
-                "externalEndpoints": [
-                  "8.8.8.8",
-                  "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
-              },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
-              "weight": 0.6
-            },
-            {
-              "healthCheckedTargets": {
-                "externalEndpoints": [
-                  "1.1.1.1"
-                ],
-                "internalLoadBalancers": []
-              },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
-              "weight": 0.4
-            }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
-        }
-      },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
@@ -1054,7 +784,6 @@ X-Xss-Protection: 0
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -1062,12 +791,8 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             },
             {
@@ -1075,20 +800,13 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "1.1.1.1",
                   "1.0.0.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
@@ -1147,14 +865,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "additions": [],
   "deletions": [
     {
-      "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -1162,12 +877,8 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             },
             {
@@ -1175,20 +886,13 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "1.1.1.1",
                   "1.0.0.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
@@ -1196,7 +900,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "dns#change",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
+  "status": "done"
 }
 
 ---
@@ -1215,14 +919,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "additions": [],
   "deletions": [
     {
-      "kind": "dns#resourceRecordSet",
       "name": "cnrm-dns-example-${uniqueId}.com.",
       "routingPolicy": {
         "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
         "wrr": {
           "items": [
             {
@@ -1230,12 +931,8 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "8.8.8.8",
                   "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             },
             {
@@ -1243,88 +940,13 @@ X-Xss-Protection: 0
                 "externalEndpoints": [
                   "1.1.1.1",
                   "1.0.0.1"
-                ],
-                "internalLoadBalancers": []
+                ]
               },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
               "weight": 0.5
             }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
+          ]
         }
       },
-      "rrdatas": [],
-      "signatureRrdatas": [],
-      "ttl": 300,
-      "type": "A"
-    }
-  ],
-  "id": "000000000000000000000",
-  "kind": "dns#change",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "pending"
-}
-
----
-
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "additions": [],
-  "deletions": [
-    {
-      "kind": "dns#resourceRecordSet",
-      "name": "cnrm-dns-example-${uniqueId}.com.",
-      "routingPolicy": {
-        "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-        "kind": "dns#rRSetRoutingPolicy",
-        "wrr": {
-          "items": [
-            {
-              "healthCheckedTargets": {
-                "externalEndpoints": [
-                  "8.8.8.8",
-                  "8.8.4.4"
-                ],
-                "internalLoadBalancers": []
-              },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
-              "weight": 0.5
-            },
-            {
-              "healthCheckedTargets": {
-                "externalEndpoints": [
-                  "1.1.1.1",
-                  "1.0.0.1"
-                ],
-                "internalLoadBalancers": []
-              },
-              "kind": "dns#rRSetRoutingPolicyWrrPolicyWrrPolicyItem",
-              "rrdatas": [],
-              "signatureRrdatas": [],
-              "weight": 0.5
-            }
-          ],
-          "kind": "dns#rRSetRoutingPolicyWrrPolicy"
-        }
-      },
-      "rrdatas": [],
-      "signatureRrdatas": [],
       "ttl": 300,
       "type": "A"
     }
@@ -1371,6 +993,7 @@ X-Xss-Protection: 0
     "ns-cloud-a3.googledomains.com.",
     "ns-cloud-a4.googledomains.com."
   ],
+  "privateVisibilityConfig": {},
   "visibility": "public"
 }
 
