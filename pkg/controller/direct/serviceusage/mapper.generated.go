@@ -61,3 +61,31 @@ func ServiceIdentitySpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceIdent
 	out := &pb.ServiceIdentity{}
 	return out
 }
+
+/* found existing non-generated mapping function "ServiceSpec_FromProto", skipping
+func ServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceSpec{}
+	// MISSING: Name
+	// MISSING: Parent
+	// MISSING: Config
+	// MISSING: State
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ServiceSpec_ToProto", skipping
+func ServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceSpec) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	// MISSING: Parent
+	// MISSING: Config
+	// MISSING: State
+	return out
+}
+*/
