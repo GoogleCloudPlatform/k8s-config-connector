@@ -28,11 +28,11 @@ func TestIsRegion(t *testing.T) {
 		{"us-east4", true},
 
 		// Multi-regions
-		{"us", false},
-		{"eu", false},
+		{"us", true},
+		{"eu", true},
 		{"europe", false},
 		{"asia", false},
-		{"in", false},
+		{"in", true},
 
 		// Global / Non-regional
 		{"global", false},

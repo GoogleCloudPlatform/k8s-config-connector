@@ -210,7 +210,7 @@ func (op *updateJobTriggerUpdateJobTriggerOperation) do(ctx context.Context, r *
 	return nil
 }
 
-// isRegion returns true if this string refers to a GCP region or multi-region (such as 'us', 'eu', 'europe', 'asia', 'in') for DLP resources.
+// isRegion returns true if this string refers to a GCP region or multi-region (such as 'us', 'eu', 'in') for DLP resources.
 func isRegion(s *string) bool {
 	if s == nil {
 		return false
@@ -219,7 +219,7 @@ func isRegion(s *string) bool {
 		return true
 	}
 	switch *s {
-	case "us", "eu", "europe", "asia", "in":
+	case "us", "eu", "in":
 		return true
 	}
 	return false
