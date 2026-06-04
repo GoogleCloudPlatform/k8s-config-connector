@@ -34,10 +34,10 @@ type QuotaAdjusterSettingsRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/quotaadjustersettingss/{{quotaadjustersettingsID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a APIQuotaAdjusterSettings resource.
+	// The name of an APIQuotaAdjusterSettings resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a APIQuotaAdjusterSettings resource.
+	// The namespace of an APIQuotaAdjusterSettings resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

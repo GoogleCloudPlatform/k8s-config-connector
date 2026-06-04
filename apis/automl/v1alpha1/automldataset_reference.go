@@ -32,10 +32,10 @@ type AutoMLDatasetRef struct {
 	// A reference to an externally managed AutoMLDataset resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/datasets/{{dataset}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AutoMLDataset resource.
+	// The name of an AutoMLDataset resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AutoMLDataset resource.
+	// The namespace of an AutoMLDataset resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

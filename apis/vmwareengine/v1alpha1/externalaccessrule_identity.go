@@ -49,7 +49,7 @@ func (p *ExternalAccessRuleParent) String() string {
 	return p.NetworkPolicy
 }
 
-// New builds a ExternalAccessRuleIdentity from the Config Connector ExternalAccessRule object.
+// New builds an ExternalAccessRuleIdentity from the Config Connector ExternalAccessRule object.
 func NewExternalAccessRuleIdentity(ctx context.Context, reader client.Reader, obj *VMwareEngineExternalAccessRule) (*ExternalAccessRuleIdentity, error) {
 	// Get Parent
 	networkPolicyRef := obj.Spec.NetworkPolicyRef

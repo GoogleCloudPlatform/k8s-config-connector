@@ -34,10 +34,10 @@ type DiscoveredServiceRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/discoveredservices/{{discoveredserviceID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AppHubDiscoveredService resource.
+	// The name of an AppHubDiscoveredService resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AppHubDiscoveredService resource.
+	// The namespace of an AppHubDiscoveredService resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

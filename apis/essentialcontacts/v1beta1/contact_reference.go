@@ -34,10 +34,10 @@ type ContactRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/contacts/{{contactID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a EssentialContactsContact resource.
+	// The name of an EssentialContactsContact resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a EssentialContactsContact resource.
+	// The namespace of an EssentialContactsContact resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

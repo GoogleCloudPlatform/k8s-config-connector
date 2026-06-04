@@ -34,10 +34,10 @@ type QuotaPreferenceRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/quotapreferences/{{quotapreferenceID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a APIQuotaPreference resource.
+	// The name of an APIQuotaPreference resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a APIQuotaPreference resource.
+	// The namespace of an APIQuotaPreference resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

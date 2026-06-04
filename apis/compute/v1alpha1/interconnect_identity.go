@@ -51,7 +51,7 @@ func (p *InterconnectParent) String() string {
 	return "projects/" + p.ProjectID
 }
 
-// New builds a InterconnectIdentity from the Config Connector Interconnect object.
+// New builds an InterconnectIdentity from the Config Connector Interconnect object.
 func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *ComputeInterconnect) (*InterconnectIdentity, error) {
 
 	// Get Parent

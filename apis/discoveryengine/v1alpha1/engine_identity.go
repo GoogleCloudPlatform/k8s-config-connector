@@ -51,7 +51,7 @@ func (p *EngineParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a EngineIdentity from the Config Connector Engine object.
+// New builds an EngineIdentity from the Config Connector Engine object.
 func NewEngineIdentity(ctx context.Context, reader client.Reader, obj *DiscoveryEngineEngine) (*EngineIdentity, error) {
 
 	// Get Parent

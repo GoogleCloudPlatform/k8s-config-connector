@@ -58,7 +58,7 @@ func (p *BQReservation) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/reservations/" + p.ReservationName
 }
 
-// New builds a AssignmentIdentity from the Config Connector BigQueryReservationAssignment object.
+// New builds an AssignmentIdentity from the Config Connector BigQueryReservationAssignment object.
 func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQueryReservationAssignment) (*AssignmentIdentity, error) {
 
 	// Get the reservation to move the assignment to.

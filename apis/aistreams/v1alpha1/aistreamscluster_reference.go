@@ -33,10 +33,10 @@ type AIStreamsClusterRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AIStreamsCluster resource.
+	// The name of an AIStreamsCluster resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AIStreamsCluster resource.
+	// The namespace of an AIStreamsCluster resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

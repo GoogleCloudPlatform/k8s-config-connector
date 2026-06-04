@@ -51,7 +51,7 @@ func (p *ApiParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a ApiIdentity from the Config Connector Api object.
+// New builds an ApiIdentity from the Config Connector Api object.
 func NewApiIdentity(ctx context.Context, reader client.Reader, obj *APIGatewayAPI) (*ApiIdentity, error) {
 
 	// Get Parent

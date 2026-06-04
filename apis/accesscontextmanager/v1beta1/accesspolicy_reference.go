@@ -35,10 +35,10 @@ type AccessPolicyRef struct {
 	// Should be in the format "accessPolicies/{{accesspolicyID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AccessContextManagerAccessPolicy resource.
+	// The name of an AccessContextManagerAccessPolicy resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AccessContextManagerAccessPolicy resource.
+	// The namespace of an AccessContextManagerAccessPolicy resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

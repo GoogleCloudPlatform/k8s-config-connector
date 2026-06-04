@@ -43,7 +43,7 @@ func (i *ImportJobIdentity) Parent() *KMSKeyRingIdentity {
 	return i.parent
 }
 
-// New builds a ImportJobIdentity from the Config Connector ImportJob object.
+// New builds an ImportJobIdentity from the Config Connector ImportJob object.
 func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImportJob) (*ImportJobIdentity, error) {
 
 	// Get Parent

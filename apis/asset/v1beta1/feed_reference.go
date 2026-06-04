@@ -34,10 +34,10 @@ type FeedRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/feeds/{{feedID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AssetFeed resource.
+	// The name of an AssetFeed resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AssetFeed resource.
+	// The namespace of an AssetFeed resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

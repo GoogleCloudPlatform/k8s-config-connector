@@ -34,10 +34,10 @@ type MachineRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/machines/{{machineID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a EdgeContainerMachine resource.
+	// The name of an EdgeContainerMachine resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a EdgeContainerMachine resource.
+	// The namespace of an EdgeContainerMachine resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

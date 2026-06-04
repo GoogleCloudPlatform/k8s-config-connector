@@ -34,10 +34,10 @@ type GoogleChannelConfigRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/googlechannelconfigs/{{googlechannelconfigID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a EventarcGoogleChannelConfig resource.
+	// The name of an EventarcGoogleChannelConfig resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a EventarcGoogleChannelConfig resource.
+	// The namespace of an EventarcGoogleChannelConfig resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

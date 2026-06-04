@@ -34,10 +34,10 @@ type PolicyRef struct {
 	// Should be in the format "projects|folders|organizations/{{ID}}/policies/{{policyID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a OrgPolicyPolicy resource.
+	// The name of an OrgPolicyPolicy resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a OrgPolicyPolicy resource.
+	// The namespace of an OrgPolicyPolicy resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

@@ -34,10 +34,10 @@ type SavedQueryRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/savedquerys/{{savedqueryID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AssetSavedQuery resource.
+	// The name of an AssetSavedQuery resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AssetSavedQuery resource.
+	// The namespace of an AssetSavedQuery resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

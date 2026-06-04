@@ -72,7 +72,7 @@ func (p *InstanceParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a InstanceIdentity from the Config Connector Instance object.
+// New builds an InstanceIdentity from the Config Connector Instance object.
 func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *NotebookInstance) (*InstanceIdentity, error) {
 
 	// Get Parent

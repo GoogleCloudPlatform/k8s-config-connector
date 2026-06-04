@@ -41,7 +41,7 @@ func (i *AccessPolicyIdentity) Title() string {
 	return i.title
 }
 
-// New builds a AccessPolicyIdentity from the Config Connector AccessPolicy object.
+// New builds an AccessPolicyIdentity from the Config Connector AccessPolicy object.
 func NewAccessPolicyIdentity(ctx context.Context, reader client.Reader, obj *AccessContextManagerAccessPolicy) (*AccessPolicyIdentity, error) {
 	return &AccessPolicyIdentity{
 		resourceID: *obj.Spec.ResourceID,

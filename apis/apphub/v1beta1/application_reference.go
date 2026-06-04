@@ -34,10 +34,10 @@ type ApplicationRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/applications/{{applicationID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AppHubApplication resource.
+	// The name of an AppHubApplication resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AppHubApplication resource.
+	// The namespace of an AppHubApplication resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

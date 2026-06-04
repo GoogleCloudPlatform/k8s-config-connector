@@ -33,7 +33,7 @@ children:
     - accessPolicyRef
     - name
     shortname: name
-    description: The name of a AccessContextManagerAccessPolicy resource.
+    description: The name of an AccessContextManagerAccessPolicy resource.
     type: string
     format: ""
     requirementlevel: Optional
@@ -44,7 +44,7 @@ children:
     - accessPolicyRef
     - namespace
     shortname: namespace
-    description: The namespace of a AccessContextManagerAccessPolicy resource.
+    description: The namespace of an AccessContextManagerAccessPolicy resource.
     type: string
     format: ""
     requirementlevel: Optional
@@ -505,7 +505,7 @@ children:
           - requiredAccessLevels
           - '[]'
           shortname: '[]'
-          description: AccessLevelRef is a reference to a AccessLevel resource.
+          description: AccessLevelRef is a reference to an AccessLevel resource.
           type: object
           format: ""
           requirementlevel: Optional
@@ -535,7 +535,7 @@ children:
             - '[]'
             - name
             shortname: name
-            description: The name of a AccessLevel resource.
+            description: The name of an AccessLevel resource.
             type: string
             format: ""
             requirementlevel: Optional
@@ -550,7 +550,7 @@ children:
             - '[]'
             - namespace
             shortname: namespace
-            description: The namespace of a AccessLevel resource.
+            description: The namespace of an AccessLevel resource.
             type: string
             format: ""
             requirementlevel: Optional

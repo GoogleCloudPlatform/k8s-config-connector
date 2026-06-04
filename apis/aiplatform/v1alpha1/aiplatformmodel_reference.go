@@ -33,10 +33,10 @@ type AIPlatformModelRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/models/{{modelID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AIPlatformModel resource.
+	// The name of an AIPlatformModel resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AIPlatformModel resource.
+	// The namespace of an AIPlatformModel resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

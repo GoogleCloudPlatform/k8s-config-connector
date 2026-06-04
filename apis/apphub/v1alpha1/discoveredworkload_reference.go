@@ -34,10 +34,10 @@ type DiscoveredWorkloadRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/discoveredworkloads/{{discoveredworkloadID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AppHubDiscoveredWorkload resource.
+	// The name of an AppHubDiscoveredWorkload resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AppHubDiscoveredWorkload resource.
+	// The namespace of an AppHubDiscoveredWorkload resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

@@ -33,10 +33,10 @@ type OSConfigOSPolicyAssignmentRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/osPolicyAssignments/{{osConfigOSPolicyAssignmentID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a OSConfigOSPolicyAssignment resource.
+	// The name of an OSConfigOSPolicyAssignment resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a OSConfigOSPolicyAssignment resource.
+	// The namespace of an OSConfigOSPolicyAssignment resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
