@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: google.cloud.billing.budgets.v1.BudgetService
-// proto.message: google.cloud.billing.budgets.v1.Budget
+// proto.service: google.cloud.billing.budgets.v1beta1.BudgetService
+// proto.message: google.cloud.billing.budgets.v1beta1.Budget
 
 package mockbillingbudgets
 
@@ -149,7 +149,6 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 			return nil, status.Errorf(codes.InvalidArgument, "unhandled path %q in mockgcp UpdateBudget", path)
 		}
 	}
-
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

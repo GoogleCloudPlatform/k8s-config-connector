@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -42,6 +43,15 @@ func (i *BillingAccountIdentity) String() string {
 }
 
 func (i *BillingAccountIdentity) FromExternal(ref string) error {
+	if ref == "" {
+		return fmt.Errorf("BillingAccount external reference cannot be empty")
+	}
+
+	if !strings.Contains(ref, "/") {
+		i.BillingAccount = ref
+		return nil
+	}
+
 	parsed, match, err := BillingAccountIdentityFormat.Parse(ref)
 	if err != nil {
 		return fmt.Errorf("format of BillingAccount external=%q was not known (use %s): %w", ref, BillingAccountIdentityFormat.CanonicalForm(), err)

@@ -33,6 +33,13 @@ func TestBillingAccountIdentity_FromExternal(t *testing.T) {
 			},
 		},
 		{
+			name: "raw ID format",
+			ref:  "012345-567890-ABCDEF",
+			want: &BillingAccountIdentity{
+				BillingAccount: "012345-567890-ABCDEF",
+			},
+		},
+		{
 			name:    "invalid reference format",
 			ref:     "invalid/format",
 			wantErr: true,
