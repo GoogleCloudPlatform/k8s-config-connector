@@ -57,9 +57,7 @@ type BigtableGCPolicySpec struct {
 	/* Immutable. The name of the column family. */
 	ColumnFamily string `json:"columnFamily"`
 
-	/* The deletion policy for the GC policy. Setting ABANDON allows the resource
-	to be abandoned rather than deleted. This is useful for GC policy as it cannot be deleted
-	in a replicated instance. Possible values are: "ABANDON". */
+	/* The deletion policy for the GC policy. Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful for GC policy as it cannot be deleted in a replicated instance. Possible values are: "ABANDON". */
 	// +optional
 	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 

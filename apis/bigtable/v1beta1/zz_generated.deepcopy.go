@@ -518,7 +518,7 @@ func (in *BigtableGCPolicyStatus) DeepCopyInto(out *BigtableGCPolicyStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 }
@@ -956,7 +956,7 @@ func (in *GcpolicyMaxAge) DeepCopyInto(out *GcpolicyMaxAge) {
 	*out = *in
 	if in.Days != nil {
 		in, out := &in.Days, &out.Days
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.Duration != nil {
