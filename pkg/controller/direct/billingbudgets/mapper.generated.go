@@ -26,10 +26,10 @@ package billingbudgets
 import (
 	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billingbudgets/v1beta1"
-	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+/* found existing non-generated mapping function "AllUpdatesRule_v1beta1_FromProto", skipping
 func AllUpdatesRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NotificationsRule) *krm.AllUpdatesRule {
 	if in == nil {
 		return nil
@@ -45,6 +45,9 @@ func AllUpdatesRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Notifica
 	// MISSING: EnableProjectLevelRecipients
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "AllUpdatesRule_v1beta1_ToProto", skipping
 func AllUpdatesRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdatesRule) *pb.NotificationsRule {
 	if in == nil {
 		return nil
@@ -60,6 +63,9 @@ func AllUpdatesRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdate
 	// MISSING: EnableProjectLevelRecipients
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BillingBudgetsBudgetSpec_v1beta1_FromProto", skipping
 func BillingBudgetsBudgetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetSpec {
 	if in == nil {
 		return nil
@@ -74,6 +80,9 @@ func BillingBudgetsBudgetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: Etag
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "BillingBudgetsBudgetSpec_v1beta1_ToProto", skipping
 func BillingBudgetsBudgetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetsBudgetSpec) *pb.Budget {
 	if in == nil {
 		return nil
@@ -88,6 +97,7 @@ func BillingBudgetsBudgetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Etag
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "BudgetAmount_v1beta1_FromProto", skipping
 func BudgetAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmount) *krm.BudgetAmount {

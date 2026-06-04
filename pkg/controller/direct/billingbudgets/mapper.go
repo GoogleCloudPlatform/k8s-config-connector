@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billingbudgets/v1beta1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	gdate "google.golang.org/genproto/googleapis/type/date"
@@ -163,6 +164,9 @@ func BudgetAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmou
 }
 
 func BudgetAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in krm.BudgetAmount) *pb.BudgetAmount {
+	if in.SpecifiedAmount == nil && in.LastPeriodAmount == nil {
+		return nil
+	}
 	out := &pb.BudgetAmount{}
 	if oneof := BudgetSpecifiedAmount_v1beta1_ToProto(mapCtx, in.SpecifiedAmount); oneof != nil {
 		out.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{SpecifiedAmount: oneof}
@@ -256,4 +260,80 @@ func BudgetFilter_CalendarPeriod_ToProto(mapCtx *direct.MapContext, in *string) 
 		return nil
 	}
 	return &pb.Filter_CalendarPeriod{CalendarPeriod: direct.Enum_ToProto[pb.CalendarPeriod](mapCtx, in)}
+}
+
+func BillingBudgetsBudgetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BillingBudgetsBudgetSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.BudgetFilter = BudgetFilter_v1beta1_FromProto(mapCtx, in.GetBudgetFilter())
+	out.Amount = BudgetAmount_v1beta1_FromProto(mapCtx, in.GetAmount())
+	out.ThresholdRules = direct.Slice_FromProto(mapCtx, in.ThresholdRules, BudgetThresholdRule_v1beta1_FromProto)
+	out.AllUpdatesRule = AllUpdatesRule_v1beta1_FromProto(mapCtx, in.GetNotificationsRule())
+	return out
+}
+
+func BillingBudgetsBudgetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetsBudgetSpec) *pb.Budget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Budget{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.BudgetFilter = BudgetFilter_v1beta1_ToProto(mapCtx, in.BudgetFilter)
+	out.Amount = BudgetAmount_v1beta1_ToProto(mapCtx, in.Amount)
+	out.ThresholdRules = direct.Slice_ToProto(mapCtx, in.ThresholdRules, BudgetThresholdRule_v1beta1_ToProto)
+	out.NotificationsRule = AllUpdatesRule_v1beta1_ToProto(mapCtx, in.AllUpdatesRule)
+	return out
+}
+
+func AllUpdatesRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NotificationsRule) *krm.AllUpdatesRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllUpdatesRule{}
+	if in.GetPubsubTopic() != "" {
+		out.PubsubTopicRef = &pubsubv1beta1.PubSubTopicRef{External: in.GetPubsubTopic()}
+	}
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	out.MonitoringNotificationChannels = AllUpdatesRule_MonitoringNotificationChannels_FromProto(mapCtx, in.MonitoringNotificationChannels)
+	out.DisableDefaultIamRecipients = direct.LazyPtr(in.GetDisableDefaultIamRecipients())
+	return out
+}
+
+func AllUpdatesRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdatesRule) *pb.NotificationsRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotificationsRule{}
+	if in.PubsubTopicRef != nil {
+		out.PubsubTopic = in.PubsubTopicRef.External
+	}
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.MonitoringNotificationChannels = AllUpdatesRule_MonitoringNotificationChannels_ToProto(mapCtx, in.MonitoringNotificationChannels)
+	out.DisableDefaultIamRecipients = direct.ValueOf(in.DisableDefaultIamRecipients)
+	return out
+}
+
+func BillingBudgetsBudgetStatus_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BillingBudgetsBudgetStatus{}
+	if in.Etag != "" {
+		out.Etag = &in.Etag
+	}
+	return out
+}
+
+func BillingBudgetsBudgetStatus_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetsBudgetStatus) *pb.Budget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Budget{}
+	if in.Etag != nil {
+		out.Etag = *in.Etag
+	}
+	return out
 }
