@@ -160,3 +160,15 @@ Once definitions are updated, the agent must verify correctness of the field usi
    - **Gotcha**: Some legacy resources are exempted from Server-Side Apply (SSA) for object creation in [ratcheting.go](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/tests/e2e/ratcheting.go). During fixture tests, the object is created using a legacy `Create` call, but updates are always applied via `Apply` (SSA). If your update switches between choices in a `oneOf` field (e.g., from `rrdatas` to `rrdatasRefs`), the legacy field is not owned by the SSA field manager and remains in the live object. This triggers a validation failure: `"spec" must validate one and only one schema (oneOf). Found 2 valid alternatives`.
    - **Solution**: Enable Server-Side Apply for the resource by removing it from the exempted list in [ratcheting.go](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/tests/e2e/ratcheting.go). This ensures both creation and updates use SSA, and unreferenced fields under a `oneOf` choice are correctly cleaned up.
 
+4. **Local CI/CD Presubmit Verification (CRITICAL)**:
+   - To ensure that generated PRs do not fail CI/CD validation pipelines (`validate-generated-files` and `validations`), you **MUST** run the local presubmit verifications before submitting:
+     ```bash
+     dev/ci/presubmits/validate-generated-files
+     scripts/validate-prereqs.sh
+     ```
+   - If these scripts generate any updates to auto-generated mappers, CRDs, static configs, or GitHub Actions workflows, verify with `git status` and stage and commit them:
+     ```bash
+     git add -A
+     git commit -m "chore: ensure clean generated state for CI/CD presubmits"
+     ```
+

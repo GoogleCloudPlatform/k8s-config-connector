@@ -162,23 +162,28 @@ If the mock test fails or produces a diff against the baseline golden logs, appl
 
 ## 6. Pre-Submit Checks
 
-Before finishing the task, the agent must run formatting, generation, and static analysis checks to avoid CI failures:
+Before finishing the task or proposing a PR, the agent must run formatting, generation, static analysis, and full CI validation checks locally to ensure zero CI/CD failures:
 
 1. **Prepare PR and Regenerate Code**:
    - Run `make ready-pr` to ensure all manifests, Go client types, and code formatting are up to date:
      ```bash
      make ready-pr
      ```
-   - Verify if any generated files under `pkg/clients/generated/` or `config/crds/` are modified using `git status` or `git diff`. If there are modifications, make sure to stage and commit them.
-2. **Go Vet**:
+2. **Mandatory CI/CD Presubmit Verification (CRITICAL)**:
+   - To guarantee generated PRs pass GitHub Actions CI/CD checks cleanly, execute the primary validation scripts locally:
+     ```bash
+     dev/ci/presubmits/validate-generated-files
+     scripts/validate-prereqs.sh
+     ```
+   - *(Note: `validate-generated-files` runs GitHub Actions workflow codegen, static config generation, CRDs, and mappers. `validate-prereqs.sh` validates formatting and generation).*
+3. **Go Vet**:
    ```bash
    go vet ./...
    ```
-3. **Verify Local Control Plane Webhooks**:
+4. **Verify Local Control Plane Webhooks**:
    - If envtest webhook startup fails with validation errors under new Kubernetes control plane versions, ensure `admissionReviewVersions` in `pkg/webhook/manifests.go` includes both `"v1"` and `"v1beta1"`.
-4. **Verify CRD Field Coverage Checks**:
-   - Run the API checks tests to ensure all new fields are either tested in the fixture tests or explicitly added to the exceptions list.
-   - Run the following command (setting `WRITE_GOLDEN_OUTPUT=1` will automatically regenerate the exceptions file `tests/apichecks/testdata/exceptions/missingfields.txt` if there are any updates/removals/additions):
+5. **Verify CRD Field Coverage Checks**:
+   - Run the API checks tests to ensure all new fields are either tested in the fixture tests or explicitly added to the exceptions list:
      - For **Beta** resources:
        ```bash
        WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests
@@ -187,11 +192,16 @@ Before finishing the task, the agent must run formatting, generation, and static
        ```bash
        WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
        ```
-   - If the golden output gets updated, make sure to stage and commit the changes in `tests/apichecks/testdata/exceptions/`.
-5. **Run CI/CD Group Presubmit Tests Locally**:
-   - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<service_name>` matching the resource's service name (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly before proposing a PR:
+6. **Run CI/CD Group Presubmit Tests Locally**:
+   - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<service_name>` matching the resource's service name (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly:
      ```bash
      dev/ci/presubmits/tests-e2e-fixtures-<service_name>
+     ```
+7. **Commit All Updated Artifacts and Generated Changes**:
+   - Verify if any generated files (such as `mapper.generated.go`, GitHub Actions YAMLs, CRDs, Go clients, or exceptions) are modified using `git status` or `git diff`. Stage and commit them:
+     ```bash
+     git add -A
+     git commit -m "chore: ensure pristine generated state and formatting to pass CI/CD presubmits"
      ```
 
 
