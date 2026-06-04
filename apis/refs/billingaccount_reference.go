@@ -14,7 +14,7 @@
 
 package refs
 
-// BillingAccountRef is a clean resource reference to a GCP BillingAccount that does not include the kind field.
+// BillingAccountRef is a reference to a GCP BillingAccount.
 type BillingAccountRef struct {
 	/* The 'name' field of a billing account, when not managed by Config Connector. */
 	// +optional

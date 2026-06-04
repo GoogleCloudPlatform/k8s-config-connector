@@ -14,7 +14,7 @@
 
 package refs
 
-// OrganizationRef is a clean resource reference to a GCP Organization that does not include the kind field.
+// OrganizationRef is a reference to a GCP Organization.
 type OrganizationRef struct {
 	/* The 'name' field of an organization, when not managed by Config Connector. */
 	// +optional
