@@ -2,7 +2,7 @@
 
 > `Feature State`: `alpha` as of version v1.114
 
-KCC can be configured to pause actuation of resouces on the cloud provider
+KCC can be configured to pause actuation of resources on the cloud provider
 (GCP). K8s objects continue to be reconciled with the api server but any
 interaction with the cloud provider should be paused. This can be helpful for
 debugging purposes or to have a hot standby.
