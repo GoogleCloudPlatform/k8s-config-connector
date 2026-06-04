@@ -1180,6 +1180,7 @@ pscConnectionId: string
 pscConnectionStatus: string
 selfLink: string
 serviceName: string
+target: string
 ```
 
 <table class="properties responsive">
@@ -1299,6 +1300,13 @@ serviceName: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The internal fully qualified service name for this Forwarding Rule. This field is only used for INTERNAL load balancing.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>target</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The target resource to receive the matched traffic.</p>
         </td>
     </tr>
 </tbody>

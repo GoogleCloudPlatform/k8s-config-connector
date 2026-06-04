@@ -41,6 +41,11 @@ func ConvertToGithubMarkdown(content string) string {
 	// Replace placeholders
 	s = strings.ReplaceAll(s, "{{gcp_name_short}}", "Google Cloud")
 	s = strings.ReplaceAll(s, "{{product_name_short}}", "Config Connector")
+	s = strings.ReplaceAll(s, "{{product_name}}", "Config Connector")
+	s = strings.ReplaceAll(s, "{{iam_name_short}}", "IAM")
+	s = strings.ReplaceAll(s, "{{crmapi_name}}", "Cloud Resource Manager API")
+	s = strings.ReplaceAll(s, "{{billing_name}}", "Cloud Billing")
+	s = strings.ReplaceAll(s, "{{billing_api}}", "Cloud Billing API")
 
 	// Remove verbatim tags
 	s = strings.ReplaceAll(s, "{% verbatim %}", "")

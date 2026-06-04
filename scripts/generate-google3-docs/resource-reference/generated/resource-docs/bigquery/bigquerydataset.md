@@ -5,7 +5,7 @@ title: "BigQueryDataset"
 Note: Resource-level IAM permissions for `BigQueryDataset` must be set through
 the resource's `spec.access` field. You cannot reference `BigQueryDataset`
 resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
-`BigQueryDataset` does not support {{iam_name_short}}.
+`BigQueryDataset` does not support IAM.
 
 Warning: You must specify the `spec.access[].role` field using the (legacy)
 basic role format (e.g. `OWNER`) instead of the (newer) predefined role format
