@@ -39,21 +39,24 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type UptimecheckconfigAuthInfo struct {
+	/* The password to use when authenticating with the HTTP server. */
 	Password UptimecheckconfigPassword `json:"password"`
 
+	/* The username to use when authenticating with the HTTP server. */
 	Username string `json:"username"`
 }
 
 type UptimecheckconfigContentMatchers struct {
+	/* String, regex or JSON content to match. Maximum 1024 bytes. An empty `content` string indicates no content matching is to be performed. */
 	Content string `json:"content"`
 
-	/* Possible values: CONTENT_MATCHER_OPTION_UNSPECIFIED, CONTAINS_STRING, NOT_CONTAINS_STRING, MATCHES_REGEX, NOT_MATCHES_REGEX */
+	/* The type of content matcher that will be applied to the server output, compared to the `content` string when the check is run. */
 	// +optional
 	Matcher *string `json:"matcher,omitempty"`
 }
 
 type UptimecheckconfigHttpCheck struct {
-	/* The authentication information. Optional when creating an HTTP check; defaults to empty. */
+	/* The authentication information. Optional when creating an HTTP check; defaults to empty. Do not set both `auth_method` and `auth_info`. */
 	// +optional
 	AuthInfo *UptimecheckconfigAuthInfo `json:"authInfo,omitempty"`
 
@@ -61,7 +64,7 @@ type UptimecheckconfigHttpCheck struct {
 	// +optional
 	Body *string `json:"body,omitempty"`
 
-	/* Immutable. The content type to use for the check.  Possible values: TYPE_UNSPECIFIED, URL_ENCODED */
+	/* Immutable. The content type to use for the check. Possible values: TYPE_UNSPECIFIED, URL_ENCODED */
 	// +optional
 	ContentType *string `json:"contentType,omitempty"`
 
@@ -113,7 +116,7 @@ type UptimecheckconfigPassword struct {
 }
 
 type UptimecheckconfigResourceGroup struct {
-	/* Immutable. */
+	/* Immutable. The group resource associated with the configuration. */
 	// +optional
 	GroupRef *v1alpha1.ResourceRef `json:"groupRef,omitempty"`
 
