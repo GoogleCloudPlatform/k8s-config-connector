@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type BackupplanassociationResource struct {
-	/* InstanceRef defines the resource reference to ComputeInstance, which "External" field holds the GCP identifier for the KRM object. */
+	/* InstanceRef is a reference to a ComputeInstance. */
 	// +optional
 	ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
 }
