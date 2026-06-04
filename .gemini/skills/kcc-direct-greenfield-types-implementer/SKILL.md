@@ -34,6 +34,7 @@ Run the `generate.sh` script.
 ### 3. Validate and Enhance Output
 Apply the baseline validations from `kcc-direct-base-types-implementer`, plus these greenfield-specific rules:
 
+- **Unverified Label**: Add `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/unverified-greenfield=true"` above the `type <Kind> struct {` definition in the `_types.go` file. This prevents the new CRD from being included in the release bundle before it is fully verified.
 - **Stability Level**: Add `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"`.
 - **Field Validation**: Manually add or verify kubebuilder tags:
   - Use `// +kubebuilder:validation:Required` for fields that are mandatory in the GCP API.
