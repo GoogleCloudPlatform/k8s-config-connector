@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	"flag"
 	"log"
 	"os"
 	"testing"
@@ -32,6 +33,14 @@ var cfg *rest.Config
 var c client.Client
 
 func TestMain(m *testing.M) {
+	if !flag.Parsed() {
+		flag.Parse()
+	}
+
+	if r := flag.Lookup("test.run"); r != nil && r.Value.String() == "^$" {
+		os.Exit(m.Run())
+	}
+
 	t := &envtest.Environment{
 		CRDDirectoryPaths:        []string{repo.GetCRDsPath()},
 		ControlPlaneStartTimeout: time.Minute,

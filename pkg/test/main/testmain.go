@@ -85,6 +85,10 @@ func TestMain(m *testing.M, testType test.Type, crds []*apiextensions.CustomReso
 func SetupMultipleEnvironments(m *testing.M, testType test.Type, crds []*apiextensions.CustomResourceDefinition, mgrPtrs []*manager.Manager) {
 	logging.SetupLogger()
 
+	if !flag.Parsed() {
+		flag.Parse()
+	}
+
 	// If we are running a compile-only check (e.g. -run=^$), skip starting the test environments
 	if r := flag.Lookup("test.run"); r != nil && r.Value.String() == "^$" {
 		os.Exit(m.Run())
