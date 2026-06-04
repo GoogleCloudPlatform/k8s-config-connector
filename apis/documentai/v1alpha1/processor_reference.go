@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ProcessorRef{}
 
-// ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field
-// holds the GCP identifier for the KRM object.
+// ProcessorRef is a reference to a DocumentAIProcessor.
 type ProcessorRef struct {
 	// A reference to an externally managed DocumentAIProcessor resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/processors/{{processorID}}".

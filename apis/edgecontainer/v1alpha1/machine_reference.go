@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &MachineRef{}
 
-// MachineRef defines the resource reference to EdgeContainerMachine, which "External" field
-// holds the GCP identifier for the KRM object.
+// MachineRef is a reference to an EdgeContainerMachine.
 type MachineRef struct {
 	// A reference to an externally managed EdgeContainerMachine resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/machines/{{machineID}}".

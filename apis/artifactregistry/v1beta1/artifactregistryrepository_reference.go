@@ -33,8 +33,7 @@ var ArtifactRegistryRepositoryGVK = schema.GroupVersionKind{
 
 var _ refs.Ref = &ArtifactRegistryRepositoryRef{}
 
-// ArtifactRegistryRepositoryRef defines the resource reference to ArtifactRegistryRepository, which "External" field
-// holds the GCP identifier for the KRM object.
+// ArtifactRegistryRepositoryRef is a reference to an ArtifactRegistryRepository.
 type ArtifactRegistryRepositoryRef struct {
 	// A reference to an externally managed ArtifactRegistryRepository resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".

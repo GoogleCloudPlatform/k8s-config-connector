@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &InstanceRef{}
 
-// InstanceRef defines the resource reference to NotebookInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceRef is a reference to a NotebookInstance.
 type InstanceRef struct {
 	// A reference to an externally managed NotebookInstance resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".

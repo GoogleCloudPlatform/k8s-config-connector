@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &SavedQueryRef{}
 
-// SavedQueryRef defines the resource reference to AssetSavedQuery, which "External" field
-// holds the GCP identifier for the KRM object.
+// SavedQueryRef is a reference to an AssetSavedQuery.
 type SavedQueryRef struct {
 	// A reference to an externally managed AssetSavedQuery resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/savedquerys/{{savedqueryID}}".

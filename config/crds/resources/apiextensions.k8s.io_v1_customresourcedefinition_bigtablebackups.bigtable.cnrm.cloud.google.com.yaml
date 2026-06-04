@@ -66,8 +66,7 @@ spec:
                 description: Indicates the backup type of the backup.
                 type: string
               clusterRef:
-                description: ClusterRef defines the resource reference to BigtableCluster,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: ClusterRef is a reference to a BigtableCluster.
                 oneOf:
                 - not:
                     required:

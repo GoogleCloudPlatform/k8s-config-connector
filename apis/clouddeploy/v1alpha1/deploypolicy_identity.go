@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DeployPolicyIdentity defines the resource reference to DeployDeployPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// DeployPolicyIdentity is the identity of a DeployDeployPolicy.
 type DeployPolicyIdentity struct {
 	parent *DeployPolicyParent
 	id     string

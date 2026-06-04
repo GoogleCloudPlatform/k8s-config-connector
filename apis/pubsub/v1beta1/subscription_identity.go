@@ -21,8 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
-// SubscriptionIdentity defines the resource reference to PubSubSubscription, which "External" field
-// holds the GCP identifier for the KRM object.
+// SubscriptionIdentity is the identity of a PubSubSubscription.
 type SubscriptionIdentity struct {
 	parent *parent.ProjectParent
 	id     string

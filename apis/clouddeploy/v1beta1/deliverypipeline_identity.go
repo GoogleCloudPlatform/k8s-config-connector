@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DeliveryPipelineIdentity defines the resource reference to DeployDeliveryPipeline, which "External" field
-// holds the GCP identifier for the KRM object.
+// DeliveryPipelineIdentity is the identity of a DeployDeliveryPipeline.
 type DeliveryPipelineIdentity struct {
 	parent *DeliveryPipelineParent
 	id     string

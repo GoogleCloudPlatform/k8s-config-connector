@@ -25,8 +25,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &KMSCryptoKeyVersionRef{}
 var KMSCryptoKeyVersionGVK = GroupVersion.WithKind("KMSCryptoKeyVersion")
 
-// KMSCryptoKeyVersionRef defines the resource reference to KMSCryptoKeyVersion, which "External" field
-// holds the GCP identifier for the KRM object.
+// KMSCryptoKeyVersionRef is a reference to a KMSCryptoKeyVersion.
 type KMSCryptoKeyVersionRef struct {
 	// A reference to an externally managed cryptoKeyVersion.
 	// Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}`.

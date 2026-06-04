@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// BatchIdentity defines the resource reference to DataprocBatch, which "External" field
-// holds the GCP identifier for the KRM object.
+// BatchIdentity is the identity of a DataprocBatch.
 type BatchIdentity struct {
 	parent *BatchParent
 	id     string

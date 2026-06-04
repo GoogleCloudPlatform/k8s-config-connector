@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &ClusterRef{}
 
-// ClusterRef defines the resource reference to AlloyDBCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// ClusterRef is a reference to an AlloyDBCluster.
 type ClusterRef struct {
 	// A reference to an externally managed AlloyDBCluster resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".

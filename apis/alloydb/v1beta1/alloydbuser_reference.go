@@ -28,8 +28,7 @@ import (
 
 var _ refs.Ref = &AlloyDBUserRef{}
 
-// AlloyDBUserRef defines the resource reference to AlloyDBUser, which "External" field
-// holds the GCP identifier for the KRM object.
+// AlloyDBUserRef is a reference to an AlloyDBUser.
 type AlloyDBUserRef struct {
 	// A reference to an externally managed AlloyDBUser resource.
 	// Should be in the format "projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/users/{{user}}".

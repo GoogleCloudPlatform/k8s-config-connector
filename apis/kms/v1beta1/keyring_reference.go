@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &KMSKeyRingRef{}
 
-// KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field
-// holds the GCP identifier for the KRM object.
+// KMSKeyRingRef is a reference to a KMSKeyRing.
 type KMSKeyRingRef struct {
 	// A reference to an externally managed KMSKeyRing.
 	// Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}`.

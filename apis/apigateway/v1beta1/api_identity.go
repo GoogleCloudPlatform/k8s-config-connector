@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ApiIdentity defines the resource reference to APIGatewayAPI, which "External" field
-// holds the GCP identifier for the KRM object.
+// ApiIdentity is the identity of an APIGatewayAPI.
 type ApiIdentity struct {
 	parent *ApiParent
 	id     string

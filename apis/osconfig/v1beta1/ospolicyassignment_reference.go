@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &OSConfigOSPolicyAssignmentRef{}
 
-// OSConfigOSPolicyAssignmentRef defines the resource reference to OSConfigOSPolicyAssignment, which "External" field
-// holds the GCP identifier for the KRM object.
+// OSConfigOSPolicyAssignmentRef is a reference to an OSConfigOSPolicyAssignment.
 type OSConfigOSPolicyAssignmentRef struct {
 	// A reference to an externally managed OSConfigOSPolicyAssignment resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/osPolicyAssignments/{{osConfigOSPolicyAssignmentID}}".

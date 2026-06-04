@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EnvironmentIdentity defines the resource reference to NotebooksEnvironment, which "External" field
-// holds the GCP identifier for the KRM object.
+// EnvironmentIdentity is the identity of a NotebooksEnvironment.
 type EnvironmentIdentity struct {
 	parent *EnvironmentParent
 	id     string

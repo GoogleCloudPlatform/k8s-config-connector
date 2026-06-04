@@ -14,8 +14,7 @@
 
 package v1beta1
 
-// CertificateManagerCertificateRef defines the resource reference to CertificateManagerCertificate, which "External" field
-// holds the GCP identifier for the KRM object.
+// CertificateManagerCertificateRef is a reference to a CertificateManagerCertificate.
 type CertificateManagerCertificateRef struct {
 	// A reference to an externally managed CertificateManagerCertificate resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/certificates/{{certificate}}".
@@ -28,8 +27,7 @@ type CertificateManagerCertificateRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// CertificateManagerTrustConfigRef defines the resource reference to CertificateManagerTrustConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// CertificateManagerTrustConfigRef is a reference to a CertificateManagerTrustConfig.
 type CertificateManagerTrustConfigRef struct {
 	// A reference to an externally managed CertificateManagerTrustConfig resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/trustConfigs/{{trustConfig}}".

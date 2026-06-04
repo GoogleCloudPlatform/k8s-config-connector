@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &GKEHubMembershipBindingRef{}
 
-// GKEHubMembershipBindingRef defines the resource reference to GKEHubMembershipBinding, which "External" field
-// holds the GCP identifier for the KRM object.
+// GKEHubMembershipBindingRef is a reference to a GKEHubMembershipBinding.
 type GKEHubMembershipBindingRef struct {
 	// A reference to an externally managed GKEHubMembershipBinding resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/memberships/{{membershipID}}/bindings/{{membershipBindingID}}".

@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &CertificateManagerCertificateIssuanceConfigRef{}
 
-// CertificateManagerCertificateIssuanceConfigRef defines the resource reference to CertificateManagerCertificateIssuanceConfig, which "External" field
-// holds the GCP identifier for the KRM object.
+// CertificateManagerCertificateIssuanceConfigRef is a reference to a CertificateManagerCertificateIssuanceConfig.
 type CertificateManagerCertificateIssuanceConfigRef struct {
 	// A reference to an externally managed CertificateManagerCertificateIssuanceConfig resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/certificateIssuanceConfigs/{{certificateIssuanceConfigID}}".

@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &MonitoringNotificationChannelRef{}
 
-// MonitoringNotificationChannelRef defines the resource reference to MonitoringNotificationChannel, which "External" field
-// holds the GCP identifier for the KRM object.
+// MonitoringNotificationChannelRef is a reference to a MonitoringNotificationChannel.
 type MonitoringNotificationChannelRef struct {
 	// A reference to an externally managed MonitoringNotificationChannel resource.
 	// Should be in the format "projects/{{projectID}}/notificationChannels/{{channelID}}".

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &AuthorizedViewRef{}
 
-// AuthorizedViewRef defines the resource reference to BigtableAuthorizedView, which "External" field
-// holds the GCP identifier for the KRM object.
+// AuthorizedViewRef is a reference to a BigtableAuthorizedView.
 type AuthorizedViewRef struct {
 	// A reference to an externally managed BigtableAuthorizedView resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/authorizedviews/{{authorizedviewID}}".

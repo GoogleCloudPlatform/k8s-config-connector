@@ -27,8 +27,7 @@ import (
 
 var _ refsv1beta1.Ref = &NetworkServicesMeshRef{}
 
-// NetworkServicesMeshRef defines the resource reference to NetworkServicesMesh, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkServicesMeshRef is a reference to a NetworkServicesMesh.
 type NetworkServicesMeshRef struct {
 	// A reference to an externally managed NetworkServicesMesh resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/meshes/{{meshID}}".

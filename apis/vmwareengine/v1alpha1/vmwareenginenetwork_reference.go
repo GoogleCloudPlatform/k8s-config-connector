@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &VmwareEngineNetworkRef{}
 
-// VmwareEngineNetworkRef defines the resource reference to VMwareEngineNetwork, which "External" field
-// holds the GCP identifier for the KRM object.
+// VmwareEngineNetworkRef is a reference to a VMwareEngineNetwork.
 type VmwareEngineNetworkRef struct {
 	// A reference to an externally managed VMwareEngineNetwork resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/vmwareEngineNetworks/{{vmwareenginenetworkID}}".

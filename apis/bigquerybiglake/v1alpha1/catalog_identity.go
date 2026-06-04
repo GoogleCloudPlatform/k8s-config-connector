@@ -31,8 +31,7 @@ const (
 	CatalogIDURL = parent.ProjectAndLocationURL + "/catalogs/{{catalogID}}"
 )
 
-// CatalogIdentity defines the resource reference to BigLakeCatalog, which "External" field
-// holds the GCP identifier for the KRM object.
+// CatalogIdentity is the identity of a BigLakeCatalog.
 type CatalogIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string

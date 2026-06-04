@@ -89,8 +89,7 @@ func NewBigQueryConnectionConnectionRef(ctx context.Context, reader client.Reade
 
 var _ refsv1beta1.ExternalNormalizer = &BigQueryConnectionConnectionRef{}
 
-// BigQueryConnectionConnectionRef defines the resource reference to BigQueryConnectionConnection, which "External" field
-// holds the GCP identifier for the KRM object.
+// BigQueryConnectionConnectionRef is a reference to a BigQueryConnectionConnection.
 type BigQueryConnectionConnectionRef struct {
 	// A reference to an externally managed BigQueryConnectionConnection resource.
 	// Should be in the format `projects/{{projectID}}/locations/{{location}}/connections/{{connectionID}}`.

@@ -29,8 +29,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &DiscoveryEngineDataStoreRef{}
 
-// DiscoveryEngineDataStoreRef defines the resource reference to DiscoveryEngineDataStore, which "External" field
-// holds the GCP identifier for the KRM object.
+// DiscoveryEngineDataStoreRef is a reference to a DiscoveryEngineDataStore.
 type DiscoveryEngineDataStoreRef struct {
 	// A reference to an externally managed DiscoveryEngineDataStore resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
@@ -43,8 +42,7 @@ type DiscoveryEngineDataStoreRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// DiscoveryEngineDataStoreRef defines the resource reference to DiscoveryEngineDataStore, which "External" field
-// holds the GCP identifier for the KRM object.
+// DiscoveryEngineDataStoreID is a reference to a DiscoveryEngineDataStore.
 type DiscoveryEngineDataStoreID struct {
 	*CollectionLink
 	DataStore string

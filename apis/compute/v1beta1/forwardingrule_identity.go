@@ -29,8 +29,7 @@ import (
 
 var _ identity.Identity = &ForwardingRuleIdentity{}
 
-// ForwardingRuleIdentity defines the resource reference to ComputeForwardingRule, which "External" field
-// holds the GCP identifier for the KRM object.
+// ForwardingRuleIdentity is the identity of a ComputeForwardingRule.
 type ForwardingRuleIdentity struct {
 	ParentID   *parent.ComputeParent
 	ResourceID string

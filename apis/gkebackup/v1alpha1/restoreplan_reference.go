@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &RestorePlanRef{}
 
-// RestorePlanRef defines the resource reference to GKEBackupRestorePlan, which "External" field
-// holds the GCP identifier for the KRM object.
+// RestorePlanRef is a reference to a GKEBackupRestorePlan.
 type RestorePlanRef struct {
 	// A reference to an externally managed GKEBackupRestorePlan resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/restorePlans/{{restoreplanID}}".

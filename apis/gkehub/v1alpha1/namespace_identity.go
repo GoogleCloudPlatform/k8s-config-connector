@@ -37,8 +37,7 @@ var GKEHubNamespaceIdentityFormat = gcpurls.Template[GKEHubNamespaceIdentity](
 	"projects/{project}/locations/{location}/scopes/{scope}/namespaces/{namespace}",
 )
 
-// GKEHubNamespaceIdentity defines the resource reference to GKEHubNamespace, which "External" field
-// holds the GCP identifier for the KRM object.
+// GKEHubNamespaceIdentity is the identity of a GKEHubNamespace.
 // +k8s:deepcopy-gen=false
 type GKEHubNamespaceIdentity struct {
 	Project   string

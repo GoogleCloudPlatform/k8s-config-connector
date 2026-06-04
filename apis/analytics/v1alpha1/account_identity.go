@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AccountIdentity defines the resource reference to AnalyticsAccount, which "External" field
-// holds the GCP identifier for the KRM object.
+// AccountIdentity is the identity of an AnalyticsAccount.
 type AccountIdentity struct {
 	id string
 }

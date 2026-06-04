@@ -29,8 +29,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &PubSubSubscriptionRef{}
 var PubSubSubscriptionGVK = GroupVersion.WithKind("PubSubSubscription")
 
-// PubSubSubscriptionRef defines the resource reference to PubSubSubscription, which "External" field
-// holds the GCP identifier for the KRM object.
+// PubSubSubscriptionRef is a reference to a PubSubSubscription.
 type PubSubSubscriptionRef struct {
 	// A reference to an externally managed PubSubSubscription resource.
 	// Should be in the format "projects/{{projectID}}/subscriptions/{{subscriptionID}}".

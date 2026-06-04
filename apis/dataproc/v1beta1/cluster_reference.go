@@ -29,8 +29,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &DataprocClusterRef{}
 var DataprocClusterGVK = GroupVersion.WithKind("DataprocCluster")
 
-// DataprocClusterRef defines the resource reference to DataprocCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// DataprocClusterRef is a reference to a DataprocCluster.
 type DataprocClusterRef struct {
 	// A reference to an externally managed DataprocCluster resource.
 	// Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".

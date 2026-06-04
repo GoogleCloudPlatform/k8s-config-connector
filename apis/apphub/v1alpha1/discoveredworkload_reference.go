@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &DiscoveredWorkloadRef{}
 
-// DiscoveredWorkloadRef defines the resource reference to AppHubDiscoveredWorkload, which "External" field
-// holds the GCP identifier for the KRM object.
+// DiscoveredWorkloadRef is a reference to an AppHubDiscoveredWorkload.
 type DiscoveredWorkloadRef struct {
 	// A reference to an externally managed AppHubDiscoveredWorkload resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/discoveredworkloads/{{discoveredworkloadID}}".

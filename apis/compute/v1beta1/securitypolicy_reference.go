@@ -34,8 +34,7 @@ var ComputeSecurityPolicyGVK = schema.GroupVersionKind{
 var _ refsv1beta1.Ref = &ComputeSecurityPolicyRef{}
 var _ refsv1beta1.ExternalNormalizer = &ComputeSecurityPolicyRef{}
 
-// ComputeSecurityPolicyRef defines the resource reference to ComputeSecurityPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// ComputeSecurityPolicyRef is a reference to a ComputeSecurityPolicy.
 type ComputeSecurityPolicyRef struct {
 	// A reference to an externally managed ComputeSecurityPolicy resource.
 	// Should be in the format "projects/{{projectID}}/global/securityPolicies/{{name}}".

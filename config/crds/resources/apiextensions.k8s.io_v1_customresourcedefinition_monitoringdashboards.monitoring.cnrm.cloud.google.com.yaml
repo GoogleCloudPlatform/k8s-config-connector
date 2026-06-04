@@ -225,10 +225,8 @@ spec:
                                     description: Optional. A list of alert policies
                                       to filter the incident list by.
                                     items:
-                                      description: MonitoringAlertPolicyRef defines
-                                        the resource reference to MonitoringAlertPolicy,
-                                        which "External" field holds the GCP identifier
-                                        for the KRM object.
+                                      description: MonitoringAlertPolicyRef is a reference
+                                        to a MonitoringAlertPolicy.
                                       oneOf:
                                       - not:
                                           required:
@@ -2271,10 +2269,8 @@ spec:
                               description: Optional. A list of alert policies to filter
                                 the incident list by.
                               items:
-                                description: MonitoringAlertPolicyRef defines the
-                                  resource reference to MonitoringAlertPolicy, which
-                                  "External" field holds the GCP identifier for the
-                                  KRM object.
+                                description: MonitoringAlertPolicyRef is a reference
+                                  to a MonitoringAlertPolicy.
                                 oneOf:
                                 - not:
                                     required:
@@ -4138,10 +4134,8 @@ spec:
                                   description: Optional. A list of alert policies
                                     to filter the incident list by.
                                   items:
-                                    description: MonitoringAlertPolicyRef defines
-                                      the resource reference to MonitoringAlertPolicy,
-                                      which "External" field holds the GCP identifier
-                                      for the KRM object.
+                                    description: MonitoringAlertPolicyRef is a reference
+                                      to a MonitoringAlertPolicy.
                                     oneOf:
                                     - not:
                                         required:
@@ -6150,10 +6144,8 @@ spec:
                                     description: Optional. A list of alert policies
                                       to filter the incident list by.
                                     items:
-                                      description: MonitoringAlertPolicyRef defines
-                                        the resource reference to MonitoringAlertPolicy,
-                                        which "External" field holds the GCP identifier
-                                        for the KRM object.
+                                      description: MonitoringAlertPolicyRef is a reference
+                                        to a MonitoringAlertPolicy.
                                       oneOf:
                                       - not:
                                           required:

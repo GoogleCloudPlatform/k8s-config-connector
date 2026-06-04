@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &BackupRef{}
 
-// BackupRef defines the resource reference to GKEBackupBackup, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupRef is a reference to a GKEBackupBackup.
 type BackupRef struct {
 	// A reference to an externally managed GKEBackupBackup resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".

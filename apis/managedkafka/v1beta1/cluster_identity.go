@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ClusterIdentity defines the resource reference to ManagedKafkaCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// ClusterIdentity is the identity of a ManagedKafkaCluster.
 type ClusterIdentity struct {
 	parent *ClusterParent
 	id     string

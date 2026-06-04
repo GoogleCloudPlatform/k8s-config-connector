@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &NetworkEdgeSecurityServiceRef{}
 
-// NetworkEdgeSecurityServiceRef defines the resource reference to ComputeNetworkEdgeSecurityService, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkEdgeSecurityServiceRef is a reference to a ComputeNetworkEdgeSecurityService.
 type NetworkEdgeSecurityServiceRef struct {
 	// A reference to an externally managed ComputeNetworkEdgeSecurityService resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/networkEdgeSecurityServices/{{networkedgesecurityserviceID}}".

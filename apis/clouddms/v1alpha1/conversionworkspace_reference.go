@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ConversionWorkspaceRef{}
 
-// ConversionWorkspaceRef defines the resource reference to CloudDMSConversionWorkspace, which "External" field
-// holds the GCP identifier for the KRM object.
+// ConversionWorkspaceRef is a reference to a CloudDMSConversionWorkspace.
 type ConversionWorkspaceRef struct {
 	// A reference to an externally managed CloudDMSConversionWorkspace resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/conversionworkspaces/{{conversionworkspaceID}}".

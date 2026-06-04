@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &LoggingLogMetricRef{}
 
-// LoggingLogMetricRef defines the resource reference to LoggingLogMetric, which "External" field
-// holds the GCP identifier for the KRM object.
+// LoggingLogMetricRef is a reference to a LoggingLogMetric.
 type LoggingLogMetricRef struct {
 	// A reference to an externally managed LoggingLogMetric resource.
 	// Should be in the format "projects/{{projectID}}/metrics/{{metricID}}".

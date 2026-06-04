@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// MachineIdentity defines the resource reference to EdgeContainerMachine, which "External" field
-// holds the GCP identifier for the KRM object.
+// MachineIdentity is the identity of an EdgeContainerMachine.
 type MachineIdentity struct {
 	parent *MachineParent
 	id     string

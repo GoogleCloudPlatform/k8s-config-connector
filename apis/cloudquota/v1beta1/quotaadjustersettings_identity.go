@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// QuotaAdjusterSettingsIdentity defines the resource reference to APIQuotaAdjusterSettings, which "External" field
-// holds the GCP identifier for the KRM object.
+// QuotaAdjusterSettingsIdentity is the identity of an APIQuotaAdjusterSettings.
 type QuotaAdjusterSettingsIdentity struct {
 	parent *QuotaAdjusterSettingsParent
 }

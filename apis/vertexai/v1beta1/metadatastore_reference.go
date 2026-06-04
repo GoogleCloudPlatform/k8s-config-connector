@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &MetadataStoreRef{}
 
-// MetadataStoreRef defines the resource reference to VertexAIMetadataStore, which "External" field
-// holds the GCP identifier for the KRM object.
+// MetadataStoreRef is a reference to a VertexAIMetadataStore.
 type MetadataStoreRef struct {
 	// A reference to an externally managed VertexAIMetadataStore resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/metadatastores/{{metadatastoreID}}".

@@ -25,8 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EntryGroupIdentity defines the resource reference to DataCatalogEntryGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// EntryGroupIdentity is the identity of a DataCatalogEntryGroup.
 type EntryGroupIdentity struct {
 	parent *EntryGroupParent
 	id     string

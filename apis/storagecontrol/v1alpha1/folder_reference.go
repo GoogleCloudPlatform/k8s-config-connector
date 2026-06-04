@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &FolderRef{}
 
-// FolderRef defines the resource reference to StorageFolder, which "External" field
-// holds the GCP identifier for the KRM object.
+// FolderRef is a reference to a StorageFolder.
 type FolderRef struct {
 	// A reference to an externally managed StorageFolder resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/folders/{{folderID}}".

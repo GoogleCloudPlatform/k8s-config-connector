@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &APIKeysKeyRef{}
 
-// APIKeysKeyRef defines the resource reference to APIKeysKey, which "External" field
-// holds the GCP identifier for the KRM object.
+// APIKeysKeyRef is a reference to an APIKeysKey.
 type APIKeysKeyRef struct {
 	// A reference to an externally managed APIKeysKey resource.
 	// Should be in the format "projects/{{projectID}}/locations/global/keys/{{keyID}}".

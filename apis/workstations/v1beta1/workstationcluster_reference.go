@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &WorkstationClusterRef{}
 
-// WorkstationClusterRef defines the resource reference to WorkstationCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// WorkstationClusterRef is a reference to a WorkstationCluster.
 type WorkstationClusterRef struct {
 	// A reference to an externally managed WorkstationCluster resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}".

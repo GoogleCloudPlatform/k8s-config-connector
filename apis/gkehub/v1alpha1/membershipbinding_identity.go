@@ -38,8 +38,7 @@ var GKEHubMembershipBindingIdentityFormat = gcpurls.Template[GKEHubMembershipBin
 	"projects/{project}/locations/{location}/memberships/{membership}/bindings/{membershipBinding}",
 )
 
-// GKEHubMembershipBindingIdentity defines the resource reference to GKEHubMembershipBinding, which "External" field
-// holds the GCP identifier for the KRM object.
+// GKEHubMembershipBindingIdentity is the identity of a GKEHubMembershipBinding.
 // +k8s:deepcopy-gen=false
 type GKEHubMembershipBindingIdentity struct {
 	Project           string

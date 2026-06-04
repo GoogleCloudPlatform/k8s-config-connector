@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &RecognizerRef{}
 
-// RecognizerRef defines the resource reference to SpeechRecognizer, which "External" field
-// holds the GCP identifier for the KRM object.
+// RecognizerRef is a reference to a SpeechRecognizer.
 type RecognizerRef struct {
 	// A reference to an externally managed SpeechRecognizer resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/recognizers/{{recognizerID}}".

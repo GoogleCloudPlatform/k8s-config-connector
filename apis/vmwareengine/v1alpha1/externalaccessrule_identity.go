@@ -23,8 +23,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ExternalAccessRuleIdentity defines the resource reference to VMwareEngineExternalAccessRule, which "External" field
-// holds the GCP identifier for the KRM object.
+// ExternalAccessRuleIdentity is the identity of a VMwareEngineExternalAccessRule.
 type ExternalAccessRuleIdentity struct {
 	parent *ExternalAccessRuleParent
 	id     string

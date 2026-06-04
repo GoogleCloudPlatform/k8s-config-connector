@@ -27,8 +27,7 @@ import (
 
 var _ identity.IdentityV2 = &RecognizerIdentity{}
 
-// RecognizerIdentity defines the resource reference to SpeechRecognizer, which "External" field
-// holds the GCP identifier for the KRM object.
+// RecognizerIdentity is the identity of a SpeechRecognizer.
 type RecognizerIdentity struct {
 	parent *RecognizerParent
 	id     string

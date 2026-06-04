@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ConnectionProfileRef{}
 
-// ConnectionProfileRef defines the resource reference to DatastreamConnectionProfile, which "External" field
-// holds the GCP identifier for the KRM object.
+// ConnectionProfileRef is a reference to a DatastreamConnectionProfile.
 type ConnectionProfileRef struct {
 	// A reference to an externally managed DatastreamConnectionProfile resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionprofileID}}".

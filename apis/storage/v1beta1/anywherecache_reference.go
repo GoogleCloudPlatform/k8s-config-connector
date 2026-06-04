@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &AnywhereCacheRef{}
 
-// AnywhereCacheRef defines the resource reference to StorageAnywhereCache, which "External" field
-// holds the GCP identifier for the KRM object.
+// AnywhereCacheRef is a reference to a StorageAnywhereCache.
 type AnywhereCacheRef struct {
 	// A reference to an externally managed StorageAnywhereCache resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/anywherecaches/{{anywherecacheID}}".

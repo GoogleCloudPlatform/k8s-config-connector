@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ChannelRef{}
 
-// ChannelRef defines the resource reference to EventarcChannel, which "External" field
-// holds the GCP identifier for the KRM object.
+// ChannelRef is a reference to an EventarcChannel.
 type ChannelRef struct {
 	// A reference to an externally managed EventarcChannel resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/channels/{{channelID}}".

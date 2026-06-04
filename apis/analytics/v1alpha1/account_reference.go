@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &AccountRef{}
 
-// AccountRef defines the resource reference to AnalyticsAccount, which "External" field
-// holds the GCP identifier for the KRM object.
+// AccountRef is a reference to an AnalyticsAccount.
 type AccountRef struct {
 	// A reference to an externally managed AnalyticsAccount resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/accounts/{{accountID}}".

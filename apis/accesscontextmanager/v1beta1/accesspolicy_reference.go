@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &AccessPolicyRef{}
 
-// AccessPolicyRef defines the resource reference to AccessContextManagerAccessPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// AccessPolicyRef is a reference to an AccessContextManagerAccessPolicy.
 type AccessPolicyRef struct {
 	// A reference to an externally managed AccessContextManagerAccessPolicy resource.
 	// As per https://docs.cloud.google.com/asset-inventory/docs/asset-names

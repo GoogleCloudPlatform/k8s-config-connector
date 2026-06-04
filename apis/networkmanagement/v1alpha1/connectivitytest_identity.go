@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ConnectivityTestIdentity defines the resource reference to NetworkManagementConnectivityTest, which "External" field
-// holds the GCP identifier for the KRM object.
+// ConnectivityTestIdentity is the identity of a NetworkManagementConnectivityTest.
 type ConnectivityTestIdentity struct {
 	parent *ConnectivityTestParent
 	id     string

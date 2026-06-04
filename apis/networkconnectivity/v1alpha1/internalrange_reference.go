@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &InternalRangeRef{}
 
-// InternalRangeRef defines the resource reference to NetworkConnectivityInternalRange, which "External" field
-// holds the GCP identifier for the KRM object.
+// InternalRangeRef is a reference to a NetworkConnectivityInternalRange.
 type InternalRangeRef struct {
 	// A reference to an externally managed NetworkConnectivityInternalRange resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/internalRanges/{{internalrangeID}}".

@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DiscoveredServiceIdentity defines the resource reference to AppHubDiscoveredService, which "External" field
-// holds the GCP identifier for the KRM object.
+// DiscoveredServiceIdentity is the identity of an AppHubDiscoveredService.
 type DiscoveredServiceIdentity struct {
 	parent *DiscoveredServiceParent
 	id     string

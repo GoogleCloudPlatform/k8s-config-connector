@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AuthorizationPolicyIdentity defines the resource reference to NetworkSecurityAuthorizationPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// AuthorizationPolicyIdentity is the identity of a NetworkSecurityAuthorizationPolicy.
 type AuthorizationPolicyIdentity struct {
 	parent *AuthorizationPolicyParent
 	id     string

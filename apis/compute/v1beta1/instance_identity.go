@@ -19,8 +19,7 @@ import (
 	"strings"
 )
 
-// InstanceIdentity defines the resource reference to ComputeInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceIdentity is the identity of a ComputeInstance.
 type InstanceIdentity struct {
 	parent *InstanceParent
 	id     string

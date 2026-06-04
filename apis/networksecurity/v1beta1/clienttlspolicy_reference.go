@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &NetworkSecurityClientTLSPolicyRef{}
 
-// NetworkSecurityClientTLSPolicyRef defines the resource reference to NetworkSecurityClientTLSPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkSecurityClientTLSPolicyRef is a reference to a NetworkSecurityClientTLSPolicy.
 type NetworkSecurityClientTLSPolicyRef struct {
 	// A reference to an externally managed NetworkSecurityClientTLSPolicy resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clientTlsPolicies/{{clientTlsPolicyID}}".

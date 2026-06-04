@@ -30,8 +30,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &TargetTCPProxyRef{}
 
-// TargetTCPProxyRef defines the resource reference to ComputeTargetTCPProxy, which "External" field
-// holds the GCP identifier for the KRM object.
+// TargetTCPProxyRef is a reference to a ComputeTargetTCPProxy.
 type TargetTCPProxyRef struct {
 	// A reference to an externally managed ComputeTargetTCPProxy resource.
 	// Should be in the format "projects/{{projectID}}/global/targetTcpProxies/{{targettcpproxyID}}"

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &FeaturestoreRef{}
 
-// FeaturestoreRef defines the resource reference to VertexAIFeaturestore, which "External" field
-// holds the GCP identifier for the KRM object.
+// FeaturestoreRef is a reference to a VertexAIFeaturestore.
 type FeaturestoreRef struct {
 	// A reference to an externally managed VertexAIFeaturestore resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/featurestores/{{featurestoreID}}".

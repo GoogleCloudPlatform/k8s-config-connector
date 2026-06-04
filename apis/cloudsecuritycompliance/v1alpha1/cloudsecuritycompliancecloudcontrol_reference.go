@@ -33,8 +33,7 @@ var CloudSecurityComplianceCloudControlGVK = schema.GroupVersionKind{
 
 var _ refs.Ref = &CloudSecurityComplianceCloudControlRef{}
 
-// CloudSecurityComplianceCloudControlRef defines the resource reference to CloudSecurityComplianceCloudControl, which "External" field
-// holds the GCP identifier for the KRM object.
+// CloudSecurityComplianceCloudControlRef is a reference to a CloudSecurityComplianceCloudControl.
 type CloudSecurityComplianceCloudControlRef struct {
 	// A reference to an externally managed CloudSecurityComplianceCloudControl resource.
 	// Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".

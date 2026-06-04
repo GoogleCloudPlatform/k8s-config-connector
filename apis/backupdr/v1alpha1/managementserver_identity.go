@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ManagementServerIdentity defines the resource reference to BackupDRManagementServer, which "External" field
-// holds the GCP identifier for the KRM object.
+// ManagementServerIdentity is the identity of a BackupDRManagementServer.
 type ManagementServerIdentity struct {
 	parent *ManagementServerParent
 	id     string
