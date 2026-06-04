@@ -60,7 +60,7 @@ func (i *ArtifactRegistryRepositoryIdentity) Host() string {
 	return ArtifactRegistryRepositoryIdentityFormat.Host()
 }
 
-func getIdentityFromArtifactRegistryRepositorySpec(ctx context.Context, reader client.Reader, obj client.Object) (*ArtifactRegistryRepositoryIdentity, error) {
+func getIdentityFromArtifactRegistryRepositorySpec(ctx context.Context, reader client.Reader, obj *ArtifactRegistryRepository) (*ArtifactRegistryRepositoryIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
