@@ -28,8 +28,7 @@ import (
 
 var _ refs.Ref = &DataflowJobRef{}
 
-// DataflowJobRef defines the resource reference to DataflowJob, which "External" field
-// holds the GCP identifier for the KRM object.
+// DataflowJobRef is a reference to a GCP DataflowJob.
 type DataflowJobRef struct {
 	// A reference to an externally managed DataflowJob resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}".

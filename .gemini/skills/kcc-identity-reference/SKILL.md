@@ -60,6 +60,7 @@ Create or update the file to match the canonical example. Key requirements:
 - Implement `_ refs.Ref = &<Kind>Ref{}`.
 - Define the GVK variable: `var <Kind>GVK = schema.GroupVersionKind{...}` (It is also acceptable if this is defined in `<kind>_types.go`).
 - Define the `<Kind>Ref` struct with exactly 3 fields: `External`, `Name`, and `Namespace`.
+  - Include a docstring on the struct in the format: `// <Kind>Ref is a reference to a GCP <Kind>.`. Avoid older awkward phrasing like "...defines the resource reference... which 'External' field...".
   - The `External` field MUST have specific godoc: `"A reference to an externally managed <Kind> resource. Should be in the format \"projects/{{projectID}}/...\""`. Do not use generic docstrings.
   - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
 - Include `func init() { refs.Register(&<Kind>Ref{}) }`.
