@@ -77,115 +77,16 @@ cat config/installbundle/components/manager/base/manager_image_patch_template.ya
 rm -f kustomization.yaml
 kustomize create
 
-# The following resources are Greenfield implementations (Phase 1-3) that are currently
-# being tracked in hack/tools/greenfield/RESOURCE_STATUS.md. 
-# They are hardcoded here to block them from being included in the release bundle
-# until they pass a final manual verification. Once verified, they should be removed from this list.
-BLOCKED_KINDS=(
-    "VertexAICachedContent"
-    "VertexAICustomJob"
-    "VertexAIDataset"
-    "VertexAIEndpoint"
-    "VertexAIExampleStore"
-    "CloudIdentityDevice"
-    "ApigeeApiProduct"
-    "NetworkConnectivityRegionalEndpoint"
-    "KMSEKMConnection"
-    "NotebookRuntime"
-    "BigLakeCatalog"
-    "BeyondCorpClientGateway"
-    "BeyondCorpClientConnectorService"
-    "AutoMLDataset"
-    "AppHubServiceProjectAttachment"
-    "ApiHubDeployment"
-    "APIHubAPI"
-    "ApiHubDependency"
-    "ApiHubCuration"
-    "ApiHubAttribute"
-    "ApiHubInstance"
-    "ApigeeRegistryApi"
-    "BigQueryAnalyticsHubDataExchange"
-    "AIStreamsCluster"
-    "VertexAIModelDeploymentMonitoringJob"
-    "VertexAIIndexEndpoint"
-    "VertexAIIndex"
-    "VertexAIHyperparameterTuningJob"
-    "VertexAIFeatureOnlineStore"
-    "VertexAIFeatureGroup"
-    "SecretManagerRegionalSecret"
-    "EventarcEnrollment"
-    "CertificateManagerTrustConfig"
-    "ArtifactRegistryVPCSCConfig"
-    "NetworkSecurityUrlList"
-    "NetworkSecurityTLSInspectionPolicy"
-    "NetworkSecurityGatewaySecurityPolicy"
-    "ConnectorsConnection"
-    "ApigeeRegistryInstance"
-    "BlockchainNodeEngineNode"
-    "CloudSecurityFramework"
-    "CCInsightsQaScorecard"
-    "ContentWarehouseSchema"
-    "DataLineageProcess"
-    "DevConnectConnection"
-    "DeviceStreamingSession"
-    "BigQueryMigrationWorkflow"
-    "CloudBatchResourceAllowance"
-    "CloudAssetSavedQuery"
-    "CloudBuildConnection"
-    "CloudTasksQueue"
-    "InfraManagerDeploymentGroup"
-    "DataformFolder"
-    "DatabaseMigrationJob"
-    "DataplexDataScan"
-    "DataprocSession"
-    "DialogflowConversationDataset"
-    "ModelArmorTemplate"
-    "DiscoveryEngineIdentityMappingStore"
-    "DiscoveryEngineSampleQuerySet"
-    "SecurityCenterBigQueryExport"
-    "SecurityCenterMuteConfig"
-    "SecurityCenterManagementEventThreatDetectionCustomModule"
-    "SecurityCenterManagementSecurityHealthAnalyticsCustomModule"
-    "CloudRunWorkerPool"
-    "NetworkSecurityAddressGroup"
-    "NetworkSecurityAuthzPolicy"
-    "CloudRunInstance"
-    "NetworkSecurityBackendAuthenticationConfig"
-    "NetworkSecurityDnsThreatDetector"
-    "NetworkSecurityFirewallEndpoint"
-    "NetworkSecurityFirewallEndpointAssociation"
-    "NetworkSecurityInterceptDeployment"
-    "NetworkSecurityInterceptDeploymentGroup"
-    "NetworkSecurityInterceptEndpointGroup"
-    "NetworkSecurityInterceptEndpointGroupAssociation"
-    "NetworkSecurityMirroringDeployment"
-    "NetworkSecurityMirroringDeploymentGroup"
-    "NetworkSecurityMirroringEndpointGroup"
-    "NetworkSecurityMirroringEndpointGroupAssociation"
-    "NetworkSecurityPartnerSSEGateway"
-    "NetworkSecurityPartnerSSERealm"
-    "NetworkSecuritySACRealm"
-    "NetworkSecuritySecurityProfile"
-    "NetworkSecuritySecurityProfileGroup"
-    "NetworkSecurityTlsInspectionPolicy"
-    "NetworkSecurityUrlList"
-    "BinaryAuthorizationPlatformPolicy"
-    "VertexAIDeploymentResourcePool"
-)
+# Greenfield implementations that are unverified should have the following label in their types.go file:
+# +kubebuilder:metadata:labels="cnrm.cloud.google.com/unverified-greenfield=true"
+# They are blocked from being included in the release bundle until they pass a final manual verification.
 
 for f in config/crds/resources/*.yaml; do
-    KIND=$(grep -m 1 -E "^    kind: " "$f" | awk '{print $2}')
-    EXCLUDE=false
-    for BLOCKED in "${BLOCKED_KINDS[@]}"; do
-        if [[ "${KIND,,}" == "${BLOCKED,,}" ]]; then
-            EXCLUDE=true
-            break
-        fi
-    done
-    if [[ "$EXCLUDE" == false ]]; then
-        kustomize edit add resource "$f"
-    else
+    # Check if the CRD has the unverified-greenfield label
+    if grep -q 'cnrm.cloud.google.com/unverified-greenfield: "true"' "$f"; then
         echo "Excluding unverified greenfield CRD from release bundle: $f"
+    else
+        kustomize edit add resource "$f"
     fi
 done
 
