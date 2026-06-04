@@ -183,6 +183,52 @@ func CertificateManagerDNSAuthorizationStatus_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Type
 	return out
 }
+func CertificateManagerTrustConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig) *krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	return out
+}
+func CertificateManagerTrustConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigObservedState) *pb.TrustConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	return out
+}
+func CertificateManagerTrustConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig) *krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Etag
+	out.TrustStores = direct.Slice_FromProto(mapCtx, in.TrustStores, TrustConfig_TrustStore_FromProto)
+	return out
+}
+func CertificateManagerTrustConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigSpec) *pb.TrustConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Etag
+	out.TrustStores = direct.Slice_ToProto(mapCtx, in.TrustStores, TrustConfig_TrustStore_ToProto)
+	return out
+}
 func DNSAuthorization_DNSResourceRecordObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization_DnsResourceRecord) *krm.DNSAuthorization_DNSResourceRecordObservedState {
 	if in == nil {
 		return nil
@@ -201,5 +247,71 @@ func DNSAuthorization_DNSResourceRecordObservedState_ToProto(mapCtx *direct.MapC
 	out.Name = direct.ValueOf(in.Name)
 	out.Type = direct.ValueOf(in.Type)
 	out.Data = direct.ValueOf(in.Data)
+	return out
+}
+func TrustConfig_IntermediateCA_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig_IntermediateCA) *krmcertificatemanagerv1alpha1.TrustConfig_IntermediateCA {
+	if in == nil {
+		return nil
+	}
+	out := &krmcertificatemanagerv1alpha1.TrustConfig_IntermediateCA{}
+	out.PemCertificate = direct.LazyPtr(in.GetPemCertificate())
+	return out
+}
+func TrustConfig_IntermediateCA_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.TrustConfig_IntermediateCA) *pb.TrustConfig_IntermediateCA {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig_IntermediateCA{}
+	if oneof := TrustConfig_IntermediateCA_PemCertificate_ToProto(mapCtx, in.PemCertificate); oneof != nil {
+		out.Kind = oneof
+	}
+	return out
+}
+func TrustConfig_IntermediateCA_PemCertificate_ToProto(mapCtx *direct.MapContext, in *string) *pb.TrustConfig_IntermediateCA_PemCertificate {
+	if in == nil {
+		return nil
+	}
+	return &pb.TrustConfig_IntermediateCA_PemCertificate{PemCertificate: *in}
+}
+func TrustConfig_TrustAnchor_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig_TrustAnchor) *krmcertificatemanagerv1alpha1.TrustConfig_TrustAnchor {
+	if in == nil {
+		return nil
+	}
+	out := &krmcertificatemanagerv1alpha1.TrustConfig_TrustAnchor{}
+	out.PemCertificate = direct.LazyPtr(in.GetPemCertificate())
+	return out
+}
+func TrustConfig_TrustAnchor_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.TrustConfig_TrustAnchor) *pb.TrustConfig_TrustAnchor {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig_TrustAnchor{}
+	if oneof := TrustConfig_TrustAnchor_PemCertificate_ToProto(mapCtx, in.PemCertificate); oneof != nil {
+		out.Kind = oneof
+	}
+	return out
+}
+func TrustConfig_TrustAnchor_PemCertificate_ToProto(mapCtx *direct.MapContext, in *string) *pb.TrustConfig_TrustAnchor_PemCertificate {
+	if in == nil {
+		return nil
+	}
+	return &pb.TrustConfig_TrustAnchor_PemCertificate{PemCertificate: *in}
+}
+func TrustConfig_TrustStore_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig_TrustStore) *krmcertificatemanagerv1alpha1.TrustConfig_TrustStore {
+	if in == nil {
+		return nil
+	}
+	out := &krmcertificatemanagerv1alpha1.TrustConfig_TrustStore{}
+	out.TrustAnchors = direct.Slice_FromProto(mapCtx, in.TrustAnchors, TrustConfig_TrustAnchor_FromProto)
+	out.IntermediateCas = direct.Slice_FromProto(mapCtx, in.IntermediateCas, TrustConfig_IntermediateCA_FromProto)
+	return out
+}
+func TrustConfig_TrustStore_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.TrustConfig_TrustStore) *pb.TrustConfig_TrustStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig_TrustStore{}
+	out.TrustAnchors = direct.Slice_ToProto(mapCtx, in.TrustAnchors, TrustConfig_TrustAnchor_ToProto)
+	out.IntermediateCas = direct.Slice_ToProto(mapCtx, in.IntermediateCas, TrustConfig_IntermediateCA_ToProto)
 	return out
 }
