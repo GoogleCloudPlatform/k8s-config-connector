@@ -28,6 +28,7 @@
 | apigee.cnrm.cloud.google.com                  | ApigeeNATAddress                                | True         | False       | False  | Terraform  | False       |
 | apigee.cnrm.cloud.google.com                  | ApigeeOrganization                              | False        | True        | False  | DCL        | True        |
 | apigee.cnrm.cloud.google.com                  | ApigeeSyncAuthorization                         | True         | False       | False  | Terraform  | False       |
+| apihub.cnrm.cloud.google.com                  | APIHubAPI                                       | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                  | APIHubDeployment                                | True         | False       | False  | Direct     | True        |
 | apikeys.cnrm.cloud.google.com                 | APIKeysKey                                      | True         | False       | False  | Terraform  | True        |
 | cloudquota.cnrm.cloud.google.com              | APIQuotaAdjusterSettings                        | True         | True        | False  | Direct     | True        |
@@ -82,7 +83,7 @@
 | bigtable.cnrm.cloud.google.com                | BigtableMaterializedView                        | True         | False       | False  | Direct     | True        |
 | bigtable.cnrm.cloud.google.com                | BigtableTable                                   | False        | True        | False  | Terraform  | True        |
 | billing.cnrm.cloud.google.com                 | BillingAccount                                  | True         | False       | False  | Direct     | True        |
-| billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        | False       |
+| billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        | True        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        | False       |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPlatformPolicy               | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        | False       |
@@ -113,6 +114,7 @@
 | cloudiot.cnrm.cloud.google.com                | CloudIOTDeviceRegistry                          | True         | False       | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                | CloudIOTDevice                                  | True         | False       | False  | Terraform  | False       |
 | cloudscheduler.cnrm.cloud.google.com          | CloudSchedulerJob                               | False        | True        | False  | DCL        | False       |
+| cloudsecuritycompliance.cnrm.cloud.google.com | CloudSecurityComplianceCloudControl             | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                   | ColabRuntime                                    | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                   | ColabRuntimeTemplate                            | True         | False       | False  | Direct     | True        |
 | composer.cnrm.cloud.google.com                | ComposerEnvironment                             | True         | True        | False  | Direct     | True        |
@@ -335,7 +337,7 @@
 | kms.cnrm.cloud.google.com                     | KMSSecretCiphertext                             | True         | False       | False  | Terraform  | False       |
 | logging.cnrm.cloud.google.com                 | LoggingLink                                     | True         | True        | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                 | LoggingLogBucket                                | False        | True        | False  | DCL        | True        |
-| logging.cnrm.cloud.google.com                 | LoggingLogExclusion                             | False        | True        | False  | DCL        | False       |
+| logging.cnrm.cloud.google.com                 | LoggingLogExclusion                             | False        | True        | False  | DCL        | True        |
 | logging.cnrm.cloud.google.com                 | LoggingLogMetric                                | False        | True        | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                 | LoggingLogSink                                  | False        | True        | False  | Terraform  | False       |
 | logging.cnrm.cloud.google.com                 | LoggingLogView                                  | False        | True        | False  | DCL        | True        |
@@ -406,7 +408,7 @@
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteReservation                           | False        | True        | False  | Terraform  | False       |
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteSubscription                          | True         | False       | False  | Terraform  | False       |
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteTopic                                 | True         | False       | False  | Terraform  | False       |
-| pubsub.cnrm.cloud.google.com                  | PubSubSchema                                    | False        | True        | False  | Terraform  | False       |
+| pubsub.cnrm.cloud.google.com                  | PubSubSchema                                    | False        | True        | False  | Terraform  | True        |
 | pubsub.cnrm.cloud.google.com                  | PubSubSnapshot                                  | True         | True        | False  | Direct     | True        |
 | pubsub.cnrm.cloud.google.com                  | PubSubSubscription                              | False        | True        | False  | Terraform  | False       |
 | pubsub.cnrm.cloud.google.com                  | PubSubTopic                                     | False        | True        | False  | Terraform  | False       |

@@ -18,5 +18,74 @@
 // krm.version: v1beta1
 // proto.service: google.pubsub.v1
 // resource: PubSubSnapshot:Snapshot
+// resource: PubSubSchema:Schema
 
 package v1beta1
+
+/* found existing non-generated go type with proto tag "google.pubsub.v1.Schema", skipping
+
+// +kcc:proto=google.pubsub.v1.Schema
+type Schema struct {
+	// Required. Name of the schema.
+	//  Format is `projects/{project}/schemas/{schema}`.
+	// +kcc:proto:field=google.pubsub.v1.Schema.name
+	Name *string `json:"name,omitempty"`
+
+	// The type of the schema definition.
+	// +kcc:proto:field=google.pubsub.v1.Schema.type
+	Type *string `json:"type,omitempty"`
+
+	// The definition of the schema. This should contain a string representing
+	//  the full definition of the schema that is a valid schema definition of
+	//  the type specified in `type`.
+	// +kcc:proto:field=google.pubsub.v1.Schema.definition
+	Definition *string `json:"definition,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.pubsub.v1.Snapshot", skipping
+
+// +kcc:proto=google.pubsub.v1.Snapshot
+type Snapshot struct {
+	// Optional. The name of the snapshot.
+	// +kcc:proto:field=google.pubsub.v1.Snapshot.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The name of the topic from which this snapshot is retaining
+	//  messages.
+	// +kcc:proto:field=google.pubsub.v1.Snapshot.topic
+	Topic *string `json:"topic,omitempty"`
+
+	// Optional. The snapshot is guaranteed to exist up until this time.
+	//  A newly-created snapshot expires no later than 7 days from the time of its
+	//  creation. Its exact lifetime is determined at creation by the existing
+	//  backlog in the source subscription. Specifically, the lifetime of the
+	//  snapshot is `7 days - (age of oldest unacked message in the subscription)`.
+	//  For example, consider a subscription whose oldest unacked message is 3 days
+	//  old. If a snapshot is created from this subscription, the snapshot -- which
+	//  will always capture this 3-day-old backlog as long as the snapshot
+	//  exists -- will expire in 4 days. The service will refuse to create a
+	//  snapshot that would expire in less than 1 hour after creation.
+	// +kcc:proto:field=google.pubsub.v1.Snapshot.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Optional. See [Creating and managing labels]
+	//  (https://cloud.google.com/pubsub/docs/labels).
+	// +kcc:proto:field=google.pubsub.v1.Snapshot.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.pubsub.v1.Schema", skipping
+
+// +kcc:observedstate:proto=google.pubsub.v1.Schema
+type SchemaObservedState struct {
+	// Output only. Immutable. The revision ID of the schema.
+	// +kcc:proto:field=google.pubsub.v1.Schema.revision_id
+	RevisionID *string `json:"revisionID,omitempty"`
+
+	// Output only. The timestamp that the revision was created.
+	// +kcc:proto:field=google.pubsub.v1.Schema.revision_create_time
+	RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
+}
+*/

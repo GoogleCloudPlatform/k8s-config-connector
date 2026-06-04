@@ -1,6 +1,5 @@
 POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "For keyname resources.",
@@ -29,7 +28,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -64,7 +62,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -91,7 +88,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v3/tagValues?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "For valuename resources.",
@@ -120,8 +116,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=operations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -156,7 +150,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v3/tagValues?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "For valuename resources.",
@@ -186,7 +179,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/tagValues?%24alt=json%3Benum-encoding%3Dint&parent=tagKeys%2F${tagKeyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -217,8 +209,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=tagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -245,8 +235,6 @@ X-Xss-Protection: 0
 
 DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=tagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -269,8 +257,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=operations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -305,8 +291,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=tagValues%2F${tagValueID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -337,7 +321,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -364,7 +347,6 @@ X-Xss-Protection: 0
 
 DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -387,7 +369,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

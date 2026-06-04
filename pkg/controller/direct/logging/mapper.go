@@ -60,6 +60,17 @@ func LoggingLogBucketStatus_FromProto(mapCtx *direct.MapContext, in *pb.LogBucke
 	return out
 }
 
+func LoggingLogBucketStatus_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogBucketStatus) *pb.LogBucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogBucket{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LifecycleState = direct.Enum_ToProto[pb.LifecycleState](mapCtx, in.LifecycleState)
+	return out
+}
+
 func LoggingLogViewStatus_FromProto(mapCtx *direct.MapContext, in *pb.LogView) *krm.LoggingLogViewStatus {
 	if in == nil {
 		return nil
@@ -77,5 +88,37 @@ func LoggingLogViewStatus_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogV
 	out := &pb.LogView{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func LoggingLogExclusionSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogExclusion) *krm.LoggingLogExclusionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogExclusionSpec{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.Filter = in.GetFilter()
+	return out
+}
+
+func LoggingLogExclusionSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogExclusionSpec) *pb.LogExclusion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogExclusion{}
+	out.Description = direct.ValueOf(in.Description)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.Filter = in.Filter
+	return out
+}
+
+func LoggingLogExclusionStatus_FromProto(mapCtx *direct.MapContext, in *pb.LogExclusion) *krm.LoggingLogExclusionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogExclusionStatus{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }

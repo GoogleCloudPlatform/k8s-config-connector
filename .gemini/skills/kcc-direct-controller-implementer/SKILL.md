@@ -17,23 +17,79 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
 1.  **Package Isolation**:
     You MUST implement all controller-related logic in the provided `package_path`. This prevents symbol collisions in `mapper.generated.go`.
 
-2.  **Mappers**:
-    Implement/verify `mapper.generated.go` and manual mappers. Ensure all references use the standard `Ref` pattern.
+2.  **Brownfield Migrations**:
+    For brownfield resources (with existing terraform/DCL controllers), we do NOT immediately change the default controller to `direct` in Go type labels or static config map defaults.
+    - Keep the default controller as legacy (TF/DCL), so users can opt-in gradually.
+    - Always test both the direct and legacy controllers. To do this, add the resource Kind to the `forceDirect = true` switch cases inside `tests/e2e/unified_test.go`.
 
-3.  **Fuzzer**:
+3.  **Controller Structure & Patterns**:
+    - **Proto Format Desired State**: Convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`.
+    - **NormalizeReferences**: Always call `common.NormalizeReferences` in `AdapterForObject` to resolve any resource references:
+      ```go
+      if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+          return nil, fmt.Errorf("normalizing references: %w", err)
+      }
+      ```
+    - **Client Creation Options**: Do NOT build the authenticated HTTP client manually. Instead, retrieve configuration options using `RESTClientOptions()` and construct the REST client:
+      ```go
+      var opts []option.ClientOption
+      opts, err := m.config.RESTClientOptions()
+      if err != nil {
+          return nil, err
+      }
+      gcpClient, err := gcp.NewConfigRESTClient(ctx, opts...)
+      ```
+    - **Diff Comparison (`compare<Resource>` pattern)**: Implement a dedicated `compare<Resource>` helper function to compare the spec fields of actual/desired proto structures by round-tripping actual via its KRM Spec and calling `tags.DiffForTopLevelFields`:
+      ```go
+      func compareResource(ctx context.Context, actual, desired *pb.MyResource) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+          var maskedActual *pb.MyResource
+          {
+              mapCtx := &direct.MapContext{}
+              spec := MyResourceSpec_FromProto(mapCtx, actual)
+              if mapCtx.Err() != nil {
+                  return nil, nil, mapCtx.Err()
+              }
+              maskedActual = MyResourceSpec_ToProto(mapCtx, spec)
+              if mapCtx.Err() != nil {
+                  return nil, nil, mapCtx.Err()
+              }
+          }
+          diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+          if err != nil {
+              return nil, nil, err
+          }
+          return diffs, updateMask, nil
+      }
+      ```
+    - **Structured Reporting & updateStatus**: In the `Update` method, use `diffs.HasDiff()` to report exact diffs back to the user via `structuredreporting.ReportDiff`. Always call a helper `updateStatus` function to update the Kube status at the end of both `Create` and `Update` reconciliation paths:
+      ```go
+      func (a *MyResourceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.MyResource) error {
+          mapCtx := &direct.MapContext{}
+          status := MyResourceStatus_FromProto(mapCtx, latest)
+          if mapCtx.Err() != nil {
+              return mapCtx.Err()
+          }
+          return op.UpdateStatus(ctx, status, nil)
+      }
+      ```
+
+4.  **Mappers**:
+    Verify `mapper.generated.go` and manual mappers. Ensure all references use the standard `Ref` pattern.
+
+5.  **Fuzzer**:
     Implement `<resource_lower>_fuzzer.go` and register it with `fuzztesting.RegisterKRMFuzzer`.
     - **Fuzzer Implementation Guidelines**:
       * ALWAYS prefer and encourage using the fluent `f.SpecField(".foo")` and `f.StatusField(".bar")` methods rather than inserting directly into `SpecFields`/`StatusFields` sets (e.g. avoid `f.SpecFields.Insert...`).
       * For unhandled or unimplemented fields, prefer highly descriptive helper methods (such as `f.Unimplemented_NotYetTriaged(".baz")`, `f.Unimplemented_Identity(".id")`, or other specific variants) rather than standard inserts into `UnimplementedFields` sets. This categorizes why we are not handling specific fields.
 
-4.  **Final Generation & Reporting**:
+6.  **Final Generation & Reporting**:
     Run `make ready-pr` from the repository root. This is a critical step that:
     - Regenerates all Go clients in `pkg/clients/generated`.
     - Updates global CRD reports (`docs/reports/crd_report.md` and `.csv`).
     - Runs `make fmt` and `make vet`.
     YOU MUST COMMIT ALL RESULTING CHANGES.
 
-5.  **Validation & Last-Mile Tests**:
+7.  **Validation & Last-Mile Tests**:
     Run the following tests to ensure CI compliance:
     - **Fuzzing**: `dev/ci/presubmits/fuzz-roundtrippers`
     - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-direct`
