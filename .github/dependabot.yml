@@ -32,6 +32,7 @@ updates:
       update-types: ["version-update:semver-major", "version-update:semver-minor"]
     groups:
       go-dependencies:
+        # Group Go module updates across both the root (/) and /mockgcp directories.
         patterns:
           - "*"
         group-by: dependency-name
