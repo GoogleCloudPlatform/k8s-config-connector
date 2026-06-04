@@ -86,10 +86,10 @@ spec:
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                     type: string
                   name:
-                    description: The name of a AlloyDBCluster resource.
+                    description: The name of an AlloyDBCluster resource.
                     type: string
                   namespace:
-                    description: The namespace of a AlloyDBCluster resource.
+                    description: The namespace of an AlloyDBCluster resource.
                     type: string
                 type: object
               description:
@@ -299,10 +299,10 @@ spec:
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                     type: string
                   name:
-                    description: The name of a AlloyDBCluster resource.
+                    description: The name of an AlloyDBCluster resource.
                     type: string
                   namespace:
-                    description: The namespace of a AlloyDBCluster resource.
+                    description: The namespace of an AlloyDBCluster resource.
                     type: string
                 type: object
               description:

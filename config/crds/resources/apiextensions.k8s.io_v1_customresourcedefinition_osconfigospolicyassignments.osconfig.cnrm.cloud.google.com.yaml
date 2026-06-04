@@ -1007,7 +1007,7 @@ spec:
                 type: string
               revisionId:
                 description: Output only. The assignment revision ID A new revision
-                  is committed whenever a rollout is triggered for a OS policy assignment
+                  is committed whenever a rollout is triggered for an OS policy assignment
                 type: string
               rolloutState:
                 description: 'Output only. OS policy assignment rollout state Possible

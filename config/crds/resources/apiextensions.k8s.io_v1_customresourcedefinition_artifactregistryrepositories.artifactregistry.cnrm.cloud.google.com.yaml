@@ -282,11 +282,11 @@ spec:
                                 resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
                               type: string
                             name:
-                              description: The name of a ArtifactRegistryRepository
+                              description: The name of an ArtifactRegistryRepository
                                 resource.
                               type: string
                             namespace:
-                              description: The namespace of a ArtifactRegistryRepository
+                              description: The namespace of an ArtifactRegistryRepository
                                 resource.
                               type: string
                           type: object
