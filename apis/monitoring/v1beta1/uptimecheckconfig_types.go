@@ -15,21 +15,13 @@
 package v1beta1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var MonitoringUptimeCheckConfigGVK = GroupVersion.WithKind("MonitoringUptimeCheckConfig")
-
-type ProjectRef struct {
-	/* The `projectID` field of a project, when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `Project` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `Project` resource. */
-	Namespace string `json:"namespace,omitempty"`
-}
 
 type MonitoringGroupRef struct {
 	// The group of resources being monitored. Should be only the `[GROUP_ID]`, and not the full-path `projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]`.
@@ -41,29 +33,43 @@ type MonitoringGroupRef struct {
 }
 
 type UptimeCheckConfig_ContentMatcher struct {
+	// String, regex or JSON content to match. Maximum 1024 bytes. An empty `content` string indicates no content matching is to be performed.
 	// +required
 	Content *string `json:"content,omitempty"`
+	// The type of content matcher that will be applied to the server output, compared to the `content` string when the check is run.
 	Matcher *string `json:"matcher,omitempty"`
 }
 
 type UptimeCheckConfig_HTTPCheck_BasicAuthentication struct {
+	// The password to use when authenticating with the HTTP server.
 	// +required
 	Password *refsv1beta1secret.Legacy `json:"password,omitempty"`
+	// The username to use when authenticating with the HTTP server.
 	// +required
 	Username *string `json:"username,omitempty"`
 }
 
 type UptimeCheckConfig_HTTPCheck struct {
-	AuthInfo      *UptimeCheckConfig_HTTPCheck_BasicAuthentication `json:"authInfo,omitempty"`
-	Body          *string                                          `json:"body,omitempty"`
-	ContentType   *string                                          `json:"contentType,omitempty"`
-	Headers       map[string]string                                `json:"headers,omitempty"`
-	MaskHeaders   *bool                                            `json:"maskHeaders,omitempty"`
-	Path          *string                                          `json:"path,omitempty"`
-	Port          *int64                                           `json:"port,omitempty"`
-	RequestMethod *string                                          `json:"requestMethod,omitempty"`
-	UseSsl        *bool                                            `json:"useSsl,omitempty"`
-	ValidateSsl   *bool                                            `json:"validateSsl,omitempty"`
+	// The authentication information. Optional when creating an HTTP check; defaults to empty. Do not set both `auth_method` and `auth_info`.
+	AuthInfo *UptimeCheckConfig_HTTPCheck_BasicAuthentication `json:"authInfo,omitempty"`
+	// The request body associated with the HTTP POST request. If `content_type` is `URL_ENCODED`, the body passed in must be URL-encoded. Users can provide a `Content-Length` header via the `headers` field or the API will do so. If the `request_method` is `GET` and `body` is not empty, the API will return an error. The maximum byte size is 1 megabyte. Note: As with all `bytes` fields JSON representations are base64 encoded. e.g.: "foo=bar" in URL-encoded form is "foo%3Dbar" and in base64 encoding is "Zm9vJTI1M0RiYXI=".
+	Body *string `json:"body,omitempty"`
+	// Immutable. The content type to use for the check. Possible values: TYPE_UNSPECIFIED, URL_ENCODED
+	ContentType *string `json:"contentType,omitempty"`
+	// The list of headers to send as part of the Uptime check request. If two headers have the same key and different values, they should be entered as a single header, with the value being a comma-separated list of all the desired values as described at https://www.w3.org/Protocols/rfc2616/rfc2616.txt (page 31). Entering two separate headers with the same key in a Create call will cause the first to be overwritten by the second. The maximum number of headers allowed is 100.
+	Headers map[string]string `json:"headers,omitempty"`
+	// Immutable. Boolean specifying whether to encrypt the header information. Encryption should be specified for any headers related to authentication that you do not wish to be seen when retrieving the configuration. The server will be responsible for encrypting the headers. On Get/List calls, if `mask_headers` is set to `true` then the headers will be obscured with `******.`
+	MaskHeaders *bool `json:"maskHeaders,omitempty"`
+	// Optional (defaults to "/"). The path to the page against which to run the check. Will be combined with the `host` (specified within the `monitored_resource`) and `port` to construct the full URL. If the provided path does not begin with "/", a "/" will be prepended automatically.
+	Path *string `json:"path,omitempty"`
+	// Optional (defaults to 80 when `use_ssl` is `false`, and 443 when `use_ssl` is `true`). The TCP port on the HTTP server against which to run the check. Will be combined with host (specified within the `monitored_resource`) and `path` to construct the full URL.
+	Port *int64 `json:"port,omitempty"`
+	// Immutable. The HTTP request method to use for the check. If set to `METHOD_UNSPECIFIED` then `request_method` defaults to `GET`.
+	RequestMethod *string `json:"requestMethod,omitempty"`
+	// If `true`, use HTTPS instead of HTTP to run the check.
+	UseSsl *bool `json:"useSsl,omitempty"`
+	// Boolean specifying whether to include SSL certificate validation as a part of the Uptime check. Only applies to checks where `monitored_resource` is set to `uptime_url`. If `use_ssl` is `false`, setting `validate_ssl` to `true` has no effect.
+	ValidateSsl *bool `json:"validateSsl,omitempty"`
 }
 
 type UptimeCheckConfig_MonitoredResource struct {
@@ -76,40 +82,54 @@ type UptimeCheckConfig_MonitoredResource struct {
 }
 
 type UptimeCheckConfig_ResourceGroup struct {
-	GroupRef     *MonitoringGroupRef `json:"groupRef,omitempty"`
-	ResourceType *string             `json:"resourceType,omitempty"`
+	// Immutable. The group resource associated with the configuration.
+	GroupRef *MonitoringGroupRef `json:"groupRef,omitempty"`
+	// Immutable. The resource type of the group members. Possible values: RESOURCE_TYPE_UNSPECIFIED, INSTANCE, AWS_ELB_LOAD_BALANCER
+	ResourceType *string `json:"resourceType,omitempty"`
 }
 
 type UptimeCheckConfig_TCPCheck struct {
+	// The TCP port on the server against which to run the check. Will be combined with host (specified within the `monitored_resource`) to construct the full URL. Required.
 	// +required
 	Port *int64 `json:"port,omitempty"`
 }
 
 // MonitoringUptimeCheckConfigSpec defines the desired state of MonitoringUptimeCheckConfig
 type MonitoringUptimeCheckConfigSpec struct {
+	// A human-friendly name for the Uptime check configuration. The display name should be unique within a Stackdriver Workspace in order to make it easier to identify; however, uniqueness is not enforced. Required.
 	// +required
 	DisplayName *string `json:"displayName,omitempty"`
 
+	// Immutable. The Project that this resource belongs to.
 	// +required
-	ProjectRef *ProjectRef `json:"projectRef,omitempty"`
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
+	// The maximum amount of time to wait for the request to complete (must be between 1 and 60 seconds). Required.
 	// +required
 	Timeout *string `json:"timeout,omitempty"`
 
+	// The content that is expected to appear in the data returned by the target server against which the check is run.  Currently, only the first entry in the `content_matchers` list is supported, and additional entries will be ignored. This field is optional and should only be specified if a content match is required as part of the/ Uptime check.
 	ContentMatchers []UptimeCheckConfig_ContentMatcher `json:"contentMatchers,omitempty"`
 
+	// Contains information needed to make an HTTP or HTTPS check.
 	HTTPCheck *UptimeCheckConfig_HTTPCheck `json:"httpCheck,omitempty"`
 
+	// Immutable. The [monitored resource](https://cloud.google.com/monitoring/api/resources) associated with the configuration. The following monitored resource types are supported for Uptime checks:   `uptime_url`,   `gce_instance`,   `gae_app`,   `aws_ec2_instance`,   `aws_elb_load_balancer`
 	MonitoredResource *UptimeCheckConfig_MonitoredResource `json:"monitoredResource,omitempty"`
 
+	// How often, in seconds, the Uptime check is performed. Currently, the only supported values are `60s` (1 minute), `300s` (5 minutes), `600s` (10 minutes), and `900s` (15 minutes). Optional, defaults to `60s`.
 	Period *string `json:"period,omitempty"`
 
+	// Immutable. The group resource associated with the configuration.
 	ResourceGroup *UptimeCheckConfig_ResourceGroup `json:"resourceGroup,omitempty"`
 
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// The list of regions from which the check will be run. Some regions contain one location, and others contain more than one. If this field is specified, enough regions must be provided to include a minimum of 3 locations.  Not specifying this field will result in Uptime checks running from all available regions.
 	SelectedRegions []string `json:"selectedRegions,omitempty"`
 
+	// Contains information needed to make a TCP check.
 	TCPCheck *UptimeCheckConfig_TCPCheck `json:"tcpCheck,omitempty"`
 }
 
