@@ -299,37 +299,6 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 }
 
 func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*structuredreporting.Diff, error) {
-	populateDefaults := func(cluster *pb.Cluster) *pb.Cluster {
-		if cluster.PersistenceConfig == nil {
-			cluster.PersistenceConfig = &pb.ClusterPersistenceConfig{}
-		}
-		if cluster.PersistenceConfig.Mode == pb.ClusterPersistenceConfig_PERSISTENCE_MODE_UNSPECIFIED {
-			cluster.PersistenceConfig.Mode = pb.ClusterPersistenceConfig_DISABLED
-		}
-		if cluster.AuthorizationMode == pb.AuthorizationMode_AUTH_MODE_UNSPECIFIED {
-			cluster.AuthorizationMode = pb.AuthorizationMode_AUTH_MODE_DISABLED
-		}
-		if cluster.NodeType == pb.NodeType_NODE_TYPE_UNSPECIFIED {
-			cluster.NodeType = pb.NodeType_REDIS_HIGHMEM_MEDIUM
-		}
-		if cluster.TransitEncryptionMode == pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
-			cluster.TransitEncryptionMode = pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_DISABLED
-		}
-		if cluster.ZoneDistributionConfig == nil {
-			cluster.ZoneDistributionConfig = &pb.ZoneDistributionConfig{}
-		}
-		if cluster.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
-			cluster.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
-		}
-
-		// clear pscConfig as it's not included in the response
-		if cluster.PscConfigs != nil {
-			cluster.PscConfigs = nil
-		}
-
-		return cluster
-	}
-
 	var maskedActual *pb.Cluster
 	{
 		// A "trick" to only compare spec fields - round trip via the spec
@@ -352,4 +321,35 @@ func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*str
 		return nil, err
 	}
 	return diffs, nil
+}
+
+func populateDefaults(cluster *pb.Cluster) *pb.Cluster {
+	if cluster.PersistenceConfig == nil {
+		cluster.PersistenceConfig = &pb.ClusterPersistenceConfig{}
+	}
+	if cluster.PersistenceConfig.Mode == pb.ClusterPersistenceConfig_PERSISTENCE_MODE_UNSPECIFIED {
+		cluster.PersistenceConfig.Mode = pb.ClusterPersistenceConfig_DISABLED
+	}
+	if cluster.AuthorizationMode == pb.AuthorizationMode_AUTH_MODE_UNSPECIFIED {
+		cluster.AuthorizationMode = pb.AuthorizationMode_AUTH_MODE_DISABLED
+	}
+	if cluster.NodeType == pb.NodeType_NODE_TYPE_UNSPECIFIED {
+		cluster.NodeType = pb.NodeType_REDIS_HIGHMEM_MEDIUM
+	}
+	if cluster.TransitEncryptionMode == pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+		cluster.TransitEncryptionMode = pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_DISABLED
+	}
+	if cluster.ZoneDistributionConfig == nil {
+		cluster.ZoneDistributionConfig = &pb.ZoneDistributionConfig{}
+	}
+	if cluster.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
+		cluster.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
+	}
+
+	// clear pscConfig as it's not included in the response
+	if cluster.PscConfigs != nil {
+		cluster.PscConfigs = nil
+	}
+
+	return cluster
 }
