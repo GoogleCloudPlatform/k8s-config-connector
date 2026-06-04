@@ -6,7 +6,7 @@ description: Standards and workflows for creating direct KRM Go types for an exi
 # CRD Mapper Fuzzer Existing Type
 
 ## Overview
-This skill outlines standard practices when transitioning an existing KCC resource (e.g., from Terraform or DCL) to a direct controller by generating the initial KRM types (`_types.go`), ensuring **strict schema compatibility** with the baseline CRD.
+This skill outlines standard practices when transitioning an existing KCC resource (e.g., from Terraform or DCL) to a direct controller by generating the initial KRM types (`_types.go`), ensuring **strict schema compatibility** with the baseline CRD. You must NOT change the schema at all (other than descriptions). Do not add any new fields, including `spec.projectRef`, unless it was already part of the baseline CRD. You MUST run `dev/tasks/diff-crds` to check for any schema changes.
 
 ## Workflow
 
@@ -27,10 +27,11 @@ go run . generate-mapper \
 ```
 
 ### 2. Standards for Strict Schema Compatibility
-When defining the KRM Go type in `<kind>_types.go`, you must ensure it matches the original CRD schema exactly:
+When defining the KRM Go type in `<kind>_types.go`, you must ensure it matches the original CRD schema exactly. You must not add, remove, or modify any fields (including `spec.projectRef`) in a way that alters the KRM schema:
 
 - **Do Not Change the Schema**: You must **not change the schema** when the type already exists. Description changes are OK, but adding/removing/renaming fields (such as adding `projectRef` if the baseline CRD did not have it) is strictly forbidden.
-- **Run diff-crds**: Run `dev/tasks/diff-crds` frequently and carefully to check for any schema changes or deviations between the baseline CRD and the generated one. Ensure that `dev/tasks/diff-crds` output is completely empty (except for description changes) before proceeding.
+- **Run diff-crds**: You MUST run `dev/tasks/diff-crds` frequently (and definitely before opening/updating a PR) to identify any schema changes or deviations between the baseline CRD and the generated one. The diff-crds output must be absolutely empty (or contain only minor description reflows if expected).
+- **No spec.projectRef addition**: If the baseline CRD did not contain `spec.projectRef`, do not add it to the Spec struct in `<kind>_types.go`.
 - **Reference Hand-coding & Manual Edits**: If there are schema mismatches, you must manually copy, edit, or hand-code types (e.g. to change or remove fields) until the schemas match perfectly.
 - **Hand-code custom reference types**: If a resource reference structure (like `ProjectRef`, `FolderRef`, `OrganizationRef`, or `BillingAccountRef`) in the baseline CRD lacks a `kind` field or retains specific fields (like `name`/`namespace` in `OrganizationRef`), you **must hand-code custom reference types** locally in `<kind>_types.go` or import the clean, kindless reference types from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs` (e.g. `refs.ProjectRef`).
 - **Match Signatures for automatic validation**: The schema builder `scripts/add-validation-to-crds` automatically adds OpenAPI `oneOf` blocks depending on field signatures.
