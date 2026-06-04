@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -300,4 +301,27 @@ func (a *JobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 		return false, fmt.Errorf("waiting delete Job %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *JobAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.gcpClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for Job %s: %w", a.id.String(), err)
+	}
+	return policy, nil
+}
+
+func (a *JobAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	policy, err := a.gcpClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for Job %s: %w", a.id.String(), err)
+	}
+	return policy, nil
 }
