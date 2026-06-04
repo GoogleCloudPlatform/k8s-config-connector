@@ -34,6 +34,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -182,14 +183,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	report.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, report)
 
-	updateMask := &fieldmaskpb.FieldMask{}
-	for path := range paths {
-		updateMask.Paths = append(updateMask.Paths, path)
-	}
-
 	req := &pb.UpdateBigQueryExportRequest{
 		BigQueryExport: resource,
-		UpdateMask:     updateMask,
+		UpdateMask:     &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 	}
 
 	updated, err := a.gcpClient.UpdateBigQueryExport(ctx, req)
