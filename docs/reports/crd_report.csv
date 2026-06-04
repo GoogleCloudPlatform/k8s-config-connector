@@ -209,7 +209,7 @@ datacatalog.cnrm.cloud.google.com,DataCatalogTag,True,False,False,Direct,True
 datacatalog.cnrm.cloud.google.com,DataCatalogTagTemplate,True,False,False,Direct,True
 datacatalog.cnrm.cloud.google.com,DataCatalogTaxonomy,False,True,False,Terraform,True
 dataflow.cnrm.cloud.google.com,DataflowFlexTemplateJob,False,True,False,Terraform,True
-dataflow.cnrm.cloud.google.com,DataflowJob,False,True,False,Terraform,False
+dataflow.cnrm.cloud.google.com,DataflowJob,False,True,False,Terraform,True
 dataform.cnrm.cloud.google.com,DataformRepository,True,True,False,Direct,True
 datafusion.cnrm.cloud.google.com,DataFusionInstance,False,True,False,DCL,False
 dataplex.cnrm.cloud.google.com,DataplexEntryGroup,True,False,False,Direct,True
