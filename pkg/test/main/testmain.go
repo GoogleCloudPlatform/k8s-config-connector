@@ -84,6 +84,12 @@ func TestMain(m *testing.M, testType test.Type, crds []*apiextensions.CustomReso
 // the length of the 'mgrPtrs' argument. This is useful when testing multi-cluster scenarios.
 func SetupMultipleEnvironments(m *testing.M, testType test.Type, crds []*apiextensions.CustomResourceDefinition, mgrPtrs []*manager.Manager) {
 	logging.SetupLogger()
+
+	// If we are running a compile-only check (e.g. -run=^$), skip starting the test environments
+	if r := flag.Lookup("test.run"); r != nil && r.Value.String() == "^$" {
+		os.Exit(m.Run())
+	}
+
 	var err error
 
 	envs := make([]*envtest.Environment, 0, len(mgrPtrs))
