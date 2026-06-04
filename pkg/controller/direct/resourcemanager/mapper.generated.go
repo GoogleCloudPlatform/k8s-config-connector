@@ -23,12 +23,7 @@
 
 package resourcemanager
 
-import (
-	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-)
-
+/* found existing non-generated mapping function "ProjectSpec_FromProto", skipping
 func ProjectSpec_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.ProjectSpec {
 	if in == nil {
 		return nil
@@ -46,6 +41,9 @@ func ProjectSpec_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.Proje
 	// MISSING: Labels
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ProjectSpec_ToProto", skipping
 func ProjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.ProjectSpec) *pb.Project {
 	if in == nil {
 		return nil
@@ -63,6 +61,9 @@ func ProjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.ProjectSpec) *pb.Pro
 	// MISSING: Labels
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ProjectStatus_FromProto", skipping
 func ProjectStatus_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.ProjectStatus {
 	if in == nil {
 		return nil
@@ -80,6 +81,9 @@ func ProjectStatus_FromProto(mapCtx *direct.MapContext, in *pb.Project) *krm.Pro
 	// MISSING: Labels
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ProjectStatus_ToProto", skipping
 func ProjectStatus_ToProto(mapCtx *direct.MapContext, in *krm.ProjectStatus) *pb.Project {
 	if in == nil {
 		return nil
@@ -97,3 +101,4 @@ func ProjectStatus_ToProto(mapCtx *direct.MapContext, in *krm.ProjectStatus) *pb
 	// MISSING: Labels
 	return out
 }
+*/
