@@ -3,6 +3,7 @@ kind: AutoMLDataset
 metadata:
   name: automldataset-max-${uniqueId}
 spec:
+  resourceID: ds-max-${uniqueId}
   displayName: "ds_max_${uniqueId}"
   description: "Initial description"
   labels:

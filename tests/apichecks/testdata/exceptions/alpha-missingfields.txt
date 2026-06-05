@@ -324,12 +324,6 @@
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.partner" is not set in unstructured objects
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSettings[].displayName" is not set in unstructured objects
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSettings[].resourceType" is not set in unstructured objects
-[missing_field] crd=automldatasets.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.imageClassificationDatasetMetadata.classificationType" is not set in unstructured objects
-[missing_field] crd=automldatasets.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.imageObjectDetectionDatasetMetadata" is not set in unstructured objects
-[missing_field] crd=automldatasets.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.textExtractionDatasetMetadata" is not set in unstructured objects
-[missing_field] crd=automldatasets.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.textSentimentDatasetMetadata.sentimentMax" is not set in unstructured objects
-[missing_field] crd=automldatasets.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.translationDatasetMetadata.sourceLanguageCode" is not set in unstructured objects
-[missing_field] crd=automldatasets.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.translationDatasetMetadata.targetLanguageCode" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].peeringMode" is not set in unstructured objects
