@@ -95,5 +95,11 @@ var (
 		Kind:    reflect.TypeOf(DiscoveryEngineSampleQuerySet{}).Name(),
 	}
 
+	DiscoveryEngineSessionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DiscoveryEngineSession{}).Name(),
+	}
+
 	discoveryengineAPIVersion = SchemeGroupVersion.String()
 )

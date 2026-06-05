@@ -38,6 +38,7 @@ type DiscoveryengineV1alpha1Interface interface {
 	DiscoveryEngineEnginesGetter
 	DiscoveryEngineIdentityMappingStoresGetter
 	DiscoveryEngineSampleQuerySetsGetter
+	DiscoveryEngineSessionsGetter
 }
 
 // DiscoveryengineV1alpha1Client is used to interact with features provided by the discoveryengine.cnrm.cloud.google.com group.
@@ -71,6 +72,10 @@ func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineIdentityMappingStores(nam
 
 func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineSampleQuerySets(namespace string) DiscoveryEngineSampleQuerySetInterface {
 	return newDiscoveryEngineSampleQuerySets(c, namespace)
+}
+
+func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineSessions(namespace string) DiscoveryEngineSessionInterface {
+	return newDiscoveryEngineSessions(c, namespace)
 }
 
 // NewForConfig creates a new DiscoveryengineV1alpha1Client for the given config.
