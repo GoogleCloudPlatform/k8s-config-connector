@@ -1,0 +1,191 @@
+GET https://kube-apiserver/api/v1
+Accept: application/json, */*
+
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+// discovery response removed for length
+
+---
+
+GET https://kube-apiserver/api/v1/namespaces/ns1
+Accept: application/json
+
+
+404 Not Found
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "code": 404,
+  "details": {
+    "kind": "namespaces",
+    "name": "ns1"
+  },
+  "kind": "Status",
+  "message": "namespaces \"ns1\" not found",
+  "metadata": {},
+  "reason": "NotFound",
+  "status": "Failure"
+}
+
+---
+
+POST https://kube-apiserver/api/v1/namespaces?fieldManager=kubectl-client-side-apply&fieldValidation=Strict
+Accept: application/json
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"name\":\"ns1\"}}\n"
+    },
+    "name": "ns1"
+  }
+}
+
+201 Created
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"name\":\"ns1\"}}\n"
+    },
+    "creationTimestamp": "2025-04-01T00:00:00Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "ns1"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:annotations": {
+              ".": {},
+              "f:kubectl.kubernetes.io/last-applied-configuration": {}
+            },
+            "f:labels": {
+              ".": {},
+              "f:kubernetes.io/metadata.name": {}
+            }
+          }
+        },
+        "manager": "kubectl-client-side-apply",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      }
+    ],
+    "name": "ns1",
+    "resourceVersion": "1000",
+    "uid": "fake-uid"
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  },
+  "status": {
+    "phase": "Active"
+  }
+}
+
+---
+
+GET https://kube-apiserver/api/v1/namespaces/ns2
+Accept: application/json
+
+
+404 Not Found
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "code": 404,
+  "details": {
+    "kind": "namespaces",
+    "name": "ns2"
+  },
+  "kind": "Status",
+  "message": "namespaces \"ns2\" not found",
+  "metadata": {},
+  "reason": "NotFound",
+  "status": "Failure"
+}
+
+---
+
+POST https://kube-apiserver/api/v1/namespaces?fieldManager=kubectl-client-side-apply&fieldValidation=Strict
+Accept: application/json
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"name\":\"ns2\"}}\n"
+    },
+    "name": "ns2"
+  }
+}
+
+201 Created
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"name\":\"ns2\"}}\n"
+    },
+    "creationTimestamp": "2025-04-01T00:00:00Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "ns2"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:annotations": {
+              ".": {},
+              "f:kubectl.kubernetes.io/last-applied-configuration": {}
+            },
+            "f:labels": {
+              ".": {},
+              "f:kubernetes.io/metadata.name": {}
+            }
+          }
+        },
+        "manager": "kubectl-client-side-apply",
+        "operation": "Update",
+        "time": "2025-04-01T00:00:00Z"
+      }
+    ],
+    "name": "ns2",
+    "resourceVersion": "1001",
+    "uid": "fake-uid"
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  },
+  "status": {
+    "phase": "Active"
+  }
+}
