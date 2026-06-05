@@ -289,7 +289,7 @@ func (a *analyticsHubServer) UpdateListing(ctx context.Context, request *pb.Upda
 			obj.DataProvider = request.Listing.GetDataProvider()
 		case "requestAccess":
 			obj.RequestAccess = request.Listing.GetRequestAccess()
-		case "source":
+		case "bigqueryDataset":
 			obj.Source = request.Listing.GetSource()
 		case "categories":
 			obj.Categories = request.Listing.GetCategories()
