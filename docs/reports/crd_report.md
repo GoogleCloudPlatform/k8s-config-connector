@@ -217,6 +217,7 @@
 | datafusion.cnrm.cloud.google.com              | DataFusionInstance                              | False        | True        | False  | DCL        | False       |
 | dataplex.cnrm.cloud.google.com                | DataplexEntryGroup                              | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexEntryType                               | True         | False       | False  | Direct     | True        |
+| dataplex.cnrm.cloud.google.com                | DataplexGlossary                                | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexLake                                    | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexTask                                    | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexZone                                    | True         | False       | False  | Direct     | True        |

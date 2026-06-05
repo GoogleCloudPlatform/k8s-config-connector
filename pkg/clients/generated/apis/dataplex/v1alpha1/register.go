@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(DataplexEntryType{}).Name(),
 	}
 
+	DataplexGlossaryGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataplexGlossary{}).Name(),
+	}
+
 	DataplexLakeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

@@ -33,6 +33,7 @@ type DataplexV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DataplexEntryGroupsGetter
 	DataplexEntryTypesGetter
+	DataplexGlossariesGetter
 	DataplexLakesGetter
 	DataplexTasksGetter
 	DataplexZonesGetter
@@ -49,6 +50,10 @@ func (c *DataplexV1alpha1Client) DataplexEntryGroups(namespace string) DataplexE
 
 func (c *DataplexV1alpha1Client) DataplexEntryTypes(namespace string) DataplexEntryTypeInterface {
 	return newDataplexEntryTypes(c, namespace)
+}
+
+func (c *DataplexV1alpha1Client) DataplexGlossaries(namespace string) DataplexGlossaryInterface {
+	return newDataplexGlossaries(c, namespace)
 }
 
 func (c *DataplexV1alpha1Client) DataplexLakes(namespace string) DataplexLakeInterface {

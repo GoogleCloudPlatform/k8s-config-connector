@@ -137,6 +137,7 @@ BLOCKED_KINDS=(
     "DataformFolder"
     "DatabaseMigrationJob"
     "DataplexDataScan"
+    "DataplexGlossary"
     "DataprocSession"
     "DialogflowConversationDataset"
     "ModelArmorTemplate"
