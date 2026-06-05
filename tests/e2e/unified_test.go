@@ -31,6 +31,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -59,6 +60,8 @@ import (
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
+
+var projectCounter uint64
 
 func TestAllInSeries(t *testing.T) {
 	if os.Getenv("RUN_E2E") == "" {
@@ -150,7 +153,8 @@ func TestAllInSeries(t *testing.T) {
 					*h = *sharedHarness
 					h.T = t
 					h.Ctx = subCtx
-					projectID := fmt.Sprintf("test-%d", time.Now().UnixNano())
+					id := atomic.AddUint64(&projectCounter, 1)
+					projectID := fmt.Sprintf("test-%d-%d", time.Now().UnixNano(), id)
 					project = h.CreateMockProject(subCtx, projectID)
 					h.Project = project
 				} else {
