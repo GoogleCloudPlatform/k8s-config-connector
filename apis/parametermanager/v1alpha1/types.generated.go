@@ -24,6 +24,8 @@ package v1alpha1
 
 /* unreachable type ResourcePolicyMember
 // +kcc:proto=google.iam.v1.ResourcePolicyMember
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type ResourcePolicyMember struct {
 }
 */

@@ -312,6 +312,8 @@ type MetricDescriptor_MetricDescriptorMetadata struct {
 
 /* unreachable type BigQueryDataset
 // +kcc:proto=google.logging.v2.BigQueryDataset
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type BigQueryDataset struct {
 }
 */

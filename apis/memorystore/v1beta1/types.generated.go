@@ -80,6 +80,8 @@ type CrossInstanceReplicationConfig struct {
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type CrossInstanceReplicationConfig_Membership struct {
 }
 */
@@ -98,6 +100,8 @@ type CrossInstanceReplicationConfig_RemoteInstance struct {
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.DiscoveryEndpoint", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.DiscoveryEndpoint
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type DiscoveryEndpoint struct {
 }
 */
@@ -261,6 +265,8 @@ type Instance_ManagedBackupSource struct {
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance.StateInfo", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.StateInfo
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Instance_StateInfo struct {
 }
 */
@@ -268,6 +274,8 @@ type Instance_StateInfo struct {
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Instance_StateInfo_UpdateInfo struct {
 }
 */
@@ -284,6 +292,8 @@ type MaintenancePolicy struct {
 
 /* unreachable type MaintenanceSchedule
 // +kcc:proto=google.cloud.memorystore.v1.MaintenanceSchedule
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type MaintenanceSchedule struct {
 }
 */
@@ -291,6 +301,8 @@ type MaintenanceSchedule struct {
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.NodeConfig", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.NodeConfig
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type NodeConfig struct {
 }
 */
@@ -342,6 +354,8 @@ type PersistenceConfig_RdbConfig struct {
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.PscAttachmentDetail", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.PscAttachmentDetail
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type PSCAttachmentDetail struct {
 }
 */

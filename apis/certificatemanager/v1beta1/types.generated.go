@@ -95,6 +95,8 @@ type Certificate_ManagedCertificate_AuthorizationAttemptInfo struct {
 /* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.Certificate.ManagedCertificate.ProvisioningIssue", skipping
 
 // +kcc:proto=google.cloud.certificatemanager.v1.Certificate.ManagedCertificate.ProvisioningIssue
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type Certificate_ManagedCertificate_ProvisioningIssue struct {
 }
 */
@@ -137,6 +139,8 @@ type CertificateMap struct {
 /* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.CertificateMap.GclbTarget", skipping
 
 // +kcc:proto=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type CertificateMap_GclbTarget struct {
 }
 */
@@ -144,6 +148,8 @@ type CertificateMap_GclbTarget struct {
 /* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.IpConfig", skipping
 
 // +kcc:proto=google.cloud.certificatemanager.v1.CertificateMap.GclbTarget.IpConfig
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type CertificateMap_GclbTarget_IPConfig struct {
 }
 */
@@ -219,6 +225,8 @@ type DNSAuthorization struct {
 
 /* unreachable type DNSAuthorization_DNSResourceRecord
 // +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type DNSAuthorization_DNSResourceRecord struct {
 }
 */

@@ -23,6 +23,8 @@ package v1beta1
 
 /* unreachable type BuildInfo
 // +kcc:proto=google.cloud.run.v2.BuildInfo
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type BuildInfo struct {
 }
 */

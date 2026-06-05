@@ -711,6 +711,8 @@ type GCSSource struct {
 }
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.HoldData
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type HoldData struct {
 }
 
@@ -734,6 +736,8 @@ type IntentMatchData struct {
 }
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.InterruptionData
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type InterruptionData struct {
 }
 
@@ -1179,6 +1183,8 @@ type SentimentData struct {
 }
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.SilenceData
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type SilenceData struct {
 }
 

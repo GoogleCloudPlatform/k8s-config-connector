@@ -268,6 +268,8 @@ type ReverseSSHConnectivity struct {
 /* found existing non-generated go type "StaticIPConnectivity", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.StaticIpConnectivity
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type StaticIPConnectivity struct {
 }
 */

@@ -99,6 +99,8 @@ type ImportJob_WrappingPublicKey struct {
 /* found existing non-generated go type with proto tag "google.cloud.kms.v1.KeyOperationAttestation", skipping
 
 // +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type KeyOperationAttestation struct {
 }
 */

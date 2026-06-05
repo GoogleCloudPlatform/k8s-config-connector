@@ -358,7 +358,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			}
 
 			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
-								isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice -> krm single
 				var fromProtoElemFunc string
 				switch protoField.Kind() {
@@ -520,15 +520,25 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				// special handling for proto messages that mapped to KRM string
+				var isMappedProtoMsg bool
 				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+					isMappedProtoMsg = true
 				}
 
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					krmFieldName,
-					functionName,
-					protoAccessor,
-				)
+				if isMappedProtoMsg && !strings.HasPrefix(krmField.Type, "*") && !strings.HasPrefix(krmField.Type, "[]") {
+					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(%s(mapCtx, in.%s))\n",
+						krmFieldName,
+						functionName,
+						protoAccessor,
+					)
+				} else {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						krmFieldName,
+						functionName,
+						protoAccessor,
+					)
+				}
 			case protoreflect.EnumKind:
 				functionName := "direct.Enum_FromProto"
 				// Not needed if we use the accessor:
@@ -645,7 +655,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			}
 
 			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
-								isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if !isProtoFieldSlice && isKRMFieldSlice { // proto single <- krm slice
 				krmElemType := strings.TrimPrefix(krmField.Type, "[]")
 				krmElemTypeName := strings.TrimPrefix(krmElemType, "*")
@@ -817,15 +827,22 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				// special handling for proto messages that mapped to KRM string
+				var isMappedProtoMsg bool
 				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 					functionName = krmToProtoFunctionName(protoField, krmField.Name)
+					isMappedProtoMsg = true
+				}
+
+				argName := "in." + krmFieldName
+				if isMappedProtoMsg && !strings.HasPrefix(krmField.Type, "*") && !strings.HasPrefix(krmField.Type, "[]") {
+					argName = "&in." + krmFieldName
 				}
 
 				oneof := protoField.ContainingOneof()
 				if oneof != nil && !protoField.HasOptionalKeyword() {
-					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
+					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, %s); oneof != nil {\n",
 						functionName,
-						krmFieldName,
+						argName,
 					)
 
 					oneofFieldName := ToGoFieldName(oneof.Name())
@@ -840,10 +857,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, %s)\n",
 					protoFieldName,
 					functionName,
-					krmFieldName,
+					argName,
 				)
 			case protoreflect.EnumKind:
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
@@ -1113,6 +1130,10 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_FromProto"
+	case "google.protobuf.Value":
+		return "direct.Value_FromProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
@@ -1147,6 +1168,10 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_ToProto"
+	case "google.protobuf.Value":
+		return "direct.Value_ToProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":

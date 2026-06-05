@@ -379,6 +379,8 @@ type Build_Warning struct {
 
 /* unreachable type BuildApproval
 // +kcc:proto=google.devtools.cloudbuild.v1.BuildApproval
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type BuildApproval struct {
 }
 */

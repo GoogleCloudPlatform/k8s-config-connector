@@ -49,6 +49,8 @@ type BlockchainNode struct {
 /* found existing non-generated go type "BlockchainNode_ConnectionInfo", skipping
 
 // +kcc:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.ConnectionInfo
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type BlockchainNode_ConnectionInfo struct {
 }
 */
@@ -56,6 +58,8 @@ type BlockchainNode_ConnectionInfo struct {
 /* found existing non-generated go type "BlockchainNode_ConnectionInfo_EndpointInfo", skipping
 
 // +kcc:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.ConnectionInfo.EndpointInfo
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type BlockchainNode_ConnectionInfo_EndpointInfo struct {
 }
 */
@@ -104,6 +108,8 @@ type BlockchainNode_EthereumDetails struct {
 /* found existing non-generated go type "BlockchainNode_EthereumDetails_EthereumEndpoints", skipping
 
 // +kcc:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.EthereumEndpoints
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
 type BlockchainNode_EthereumDetails_EthereumEndpoints struct {
 }
 */

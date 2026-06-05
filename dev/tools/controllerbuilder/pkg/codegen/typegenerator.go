@@ -232,7 +232,9 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 				name := field.Message().FullName()
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
+				}
+				if name == "google.protobuf.Struct" || name == "google.protobuf.Value" || name == "google.protobuf.ListValue" {
+					out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 				}
 			}
 		}
@@ -290,7 +292,9 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 				name := field.Message().FullName()
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
+				}
+				if name == "google.protobuf.Struct" || name == "google.protobuf.Value" || name == "google.protobuf.ListValue" {
+					out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 				}
 			}
 		}
@@ -351,6 +355,17 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationMisc, msg.FullName())
+	fieldCount := 0
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+			fieldCount++
+		}
+	}
+	if fieldCount == 0 {
+		fmt.Fprintf(out, "// +kubebuilder:pruning:PreserveUnknownFields\n")
+		fmt.Fprintf(out, "// +kubebuilder:validation:Schemaless\n")
+	}
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
@@ -368,6 +383,10 @@ func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails, 
 
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationObservedState, msg.FullName())
+	if len(msgDetails.OutputFields) == 0 {
+		fmt.Fprintf(out, "// +kubebuilder:pruning:PreserveUnknownFields\n")
+		fmt.Fprintf(out, "// +kubebuilder:validation:Schemaless\n")
+	}
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i, field := range msgDetails.OutputFields {
 		isMessage := field.Kind() == protoreflect.MessageKind && !field.IsMap()

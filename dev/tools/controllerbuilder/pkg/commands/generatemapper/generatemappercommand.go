@@ -112,10 +112,14 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	pathForMessage := func(msg protoreflect.MessageDescriptor) (string, bool) {
 		fullName := string(msg.FullName())
 		if strings.HasSuffix(fullName, "Request") {
-			return "", false
+			if !strings.HasSuffix(fullName, "CreatePipelineJobRequest") && !strings.HasSuffix(fullName, "CreateNotebookExecutionJobRequest") {
+				return "", false
+			}
 		}
 		if strings.HasSuffix(fullName, "Response") {
-			return "", false
+			if !strings.HasSuffix(fullName, "RunResponse") {
+				return "", false
+			}
 		}
 		if strings.HasSuffix(fullName, "OperationMetadata") {
 			return "", false
