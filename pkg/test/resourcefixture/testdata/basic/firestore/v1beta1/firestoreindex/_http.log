@@ -141,18 +141,19 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?%24alt=json%3Benum-encoding%3Dint
+POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?alt=json
 Content-Type: application/json
+
 
 {
   "fields": [
     {
       "fieldPath": "field1",
-      "order": 1
+      "order": "ASCENDING"
     },
     {
       "fieldPath": "field2",
-      "order": 2
+      "order": "DESCENDING"
     }
   ],
   "queryScope": 1
@@ -173,15 +174,16 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
     "index": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
     "startTime": "2024-04-01T12:34:56.123456Z",
-    "state": 1
+    "state": "INITIALIZING"
   },
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
+
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -229,8 +231,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
 Content-Type: application/json
+
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -243,19 +246,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "density": 1,
+  "density": "SPARSE_ALL",
   "fields": [
     {
       "fieldPath": "field1",
-      "order": 1
+      "order": "ASCENDING"
     },
     {
       "fieldPath": "field2",
-      "order": 2
+      "order": "DESCENDING"
     },
     {
       "fieldPath": "__name__",
-      "order": 2
+      "order": "DESCENDING"
     }
   ],
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
@@ -265,8 +268,9 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
 Content-Type: application/json
+
 
 200 OK
 Content-Type: application/json; charset=UTF-8

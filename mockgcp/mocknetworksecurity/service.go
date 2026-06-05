@@ -26,6 +26,7 @@ import (
 
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
+	pbmockv1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networksecurity/v1"
 )
 
 func init() {
@@ -59,6 +60,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkSecurityServer(grpcServer, &NetworkSecurityServer{MockService: s})
 	pbv1.RegisterMirroringServer(grpcServer, &MirroringServer{MockService: s})
 	pbv1.RegisterSSERealmServiceServer(grpcServer, &SSERealmServer{MockService: s})
+	pbmockv1.RegisterNetworkSecurityServer(grpcServer, &NetworkSecurityV1Server{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -70,6 +72,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewNetworkSecurityClient(conn))
 	mux.AddService(pbv1.NewMirroringClient(conn))
 	mux.AddService(pbv1.NewSSERealmServiceClient(conn))
+	mux.AddService(pbmockv1.NewNetworkSecurityClient(conn), httptogrpc.WithServiceName("google.cloud.networksecurity.v1.NetworkSecurity"))
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
