@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,33 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package bigqueryanalyticshub
+package bigqueryanalyticshubdataexchange
 
 import (
 	"context"
 	"fmt"
-	"reflect"
-
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigquery/analyticshub/apiv1"
-	bigqueryanalyticshubpb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
+	pb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
-
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 )
 
 const (
-	ctrlName = "bigqueryanalyticshub-dataexchange-controller"
+	ctrlName = "bigqueryanalyticshub-v1alpha1-dataexchange-controller"
 )
 
 func init() {
@@ -76,12 +75,21 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 
-	// Get bigqueryanalyticshub GCP client
+	mapCtx := &direct.MapContext{}
+	desiredpb := BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -90,11 +98,11 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		id:        id.(*krm.BigQueryAnalyticsHubDataExchangeIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
+		desiredpb: desiredpb,
 	}, nil
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
 	return nil, nil
 }
 
@@ -102,7 +110,8 @@ type Adapter struct {
 	id        *krm.BigQueryAnalyticsHubDataExchangeIdentity
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryAnalyticsHubDataExchange
-	actual    *bigqueryanalyticshubpb.DataExchange
+	desiredpb *pb.DataExchange
+	actual    *pb.DataExchange
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -111,7 +120,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting DataExchange", "name", a.id.String())
 
-	req := &bigqueryanalyticshubpb.GetDataExchangeRequest{Name: a.id.String()}
+	req := &pb.GetDataExchangeRequest{Name: a.id.String()}
 	dataexchangepb, err := a.gcpClient.GetDataExchange(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -125,23 +134,14 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
-
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating DataExchange", "name", a.id.String())
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
-	req := &bigqueryanalyticshubpb.CreateDataExchangeRequest{
+	req := &pb.CreateDataExchangeRequest{
 		Parent:         parent,
 		DataExchangeId: a.id.DataExchange,
-		DataExchange:   resource,
+		DataExchange:   a.desiredpb,
 	}
 	created, err := a.gcpClient.CreateDataExchange(ctx, req)
 	if err != nil {
@@ -149,65 +149,29 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created DataExchange", "name", a.id.String())
 
-	status := &krm.BigQueryAnalyticsHubDataExchangeStatus{}
-	status.ObservedState = BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	externalRef := a.id.String()
-	status.ExternalRef = &externalRef
-	return setStatus(u, status)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating DataExchange", "name", a.id.String())
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	diffs, updateMask, err := compareBigQueryAnalyticsHubDataExchange(ctx, a.actual, a.desiredpb)
+	if err != nil {
+		return err
 	}
 
-	// TODO(kcc): Autogen "func immutable()" for each field
-	// TODO(kcc): autogen updateMastk.path for mutable gcp fields.
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
-		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
-		updateMask.Paths = append(updateMask.Paths, "display_name")
-	}
-	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
-		report.AddField("description", a.actual.Description, resource.Description)
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
-	if !reflect.DeepEqual(resource.PrimaryContact, a.actual.PrimaryContact) {
-		report.AddField("primary_contact", a.actual.PrimaryContact, resource.PrimaryContact)
-		updateMask.Paths = append(updateMask.Paths, "primary_contact")
-	}
-	if !reflect.DeepEqual(resource.Documentation, a.actual.Documentation) {
-		report.AddField("documentation", a.actual.Documentation, resource.Documentation)
-		updateMask.Paths = append(updateMask.Paths, "documentation")
-	}
-	// not yet
-	// if !reflect.DeepEqual(a.desired.Spec.Icon, string(a.actual.Icon)) {
-	// 	updateMask.Paths = append(updateMask.Paths, "icon")
-	// }
-	if desired.Spec.DiscoveryType != nil && !reflect.DeepEqual(resource.DiscoveryType, a.actual.DiscoveryType) {
-		report.AddField("discovery_type", a.actual.DiscoveryType, resource.DiscoveryType)
-		updateMask.Paths = append(updateMask.Paths, "discovery_type")
+	if !diffs.HasDiff() {
+		log.V(2).Info("no diff detected for DataExchange", "name", a.id.String())
+		return nil
 	}
 
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = a.actual.Name
+	structuredreporting.ReportDiff(ctx, diffs)
 
-	req := &bigqueryanalyticshubpb.UpdateDataExchangeRequest{
+	a.desiredpb.Name = a.actual.Name
+	req := &pb.UpdateDataExchangeRequest{
 		UpdateMask:   updateMask,
-		DataExchange: resource,
+		DataExchange: a.desiredpb,
 	}
 
 	updated, err := a.gcpClient.UpdateDataExchange(ctx, req)
@@ -216,19 +180,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	log.V(2).Info("successfully updated DataExchange", "name", a.id.String())
 
-	status := &krm.BigQueryAnalyticsHubDataExchangeStatus{}
-	status.ObservedState = BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return setStatus(updateOp.GetUnstructured(), status)
+	return a.updateStatus(ctx, updateOp, updated)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
-	u := &unstructured.Unstructured{}
 
 	obj := &krm.BigQueryAnalyticsHubDataExchange{}
 	mapCtx := &direct.MapContext{}
@@ -237,24 +195,25 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
-	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
-	u.Object = uObj
+
+	u := &unstructured.Unstructured{Object: uObj}
 	return u, nil
 }
 
-// Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting DataExchange", "name", a.id.String())
 
-	req := &bigqueryanalyticshubpb.DeleteDataExchangeRequest{Name: a.id.String()}
+	req := &pb.DeleteDataExchangeRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteDataExchange(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
 		return false, fmt.Errorf("deleting DataExchange %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted DataExchange", "name", a.id.String())
@@ -262,20 +221,34 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	return true, nil
 }
 
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.DataExchange) error {
+	mapCtx := &direct.MapContext{}
+	status := &krm.BigQueryAnalyticsHubDataExchangeStatus{}
+	status.ObservedState = BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	externalRef := a.id.String()
+	status.ExternalRef = &externalRef
+	return op.UpdateStatus(ctx, status, nil)
+}
+
+func compareBigQueryAnalyticsHubDataExchange(ctx context.Context, actual, desired *pb.DataExchange) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	var maskedActual *pb.DataExchange
+	{
+		mapCtx := &direct.MapContext{}
+		spec := BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx, actual)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
+		maskedActual = BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx, spec)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
+	}
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
+		return nil, nil, err
 	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
-	}
-
-	u.Object["status"] = status
-
-	return nil
+	return diffs, updateMask, nil
 }
