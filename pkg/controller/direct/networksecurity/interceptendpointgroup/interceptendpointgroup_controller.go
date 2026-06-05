@@ -28,7 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networksecurity/v1"
+	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	option "google.golang.org/api/option"
 	gtransport "google.golang.org/api/transport/grpc"
 	grpc "google.golang.org/grpc"

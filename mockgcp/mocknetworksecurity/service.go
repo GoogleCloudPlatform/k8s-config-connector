@@ -26,7 +26,6 @@ import (
 
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
-	pbintercept "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networksecurity/v1"
 )
 
 func init() {
@@ -59,7 +58,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkSecurityServer(grpcServer, &NetworkSecurityServer{MockService: s})
 	pbv1.RegisterMirroringServer(grpcServer, &MirroringServer{MockService: s})
-	pbintercept.RegisterInterceptServer(grpcServer, &InterceptServer{MockService: s})
+	pbv1.RegisterInterceptServer(grpcServer, &InterceptServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -70,7 +69,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	mux.AddService(pb.NewNetworkSecurityClient(conn))
 	mux.AddService(pbv1.NewMirroringClient(conn))
-	mux.AddService(pbintercept.NewInterceptClient(conn))
+	mux.AddService(pbv1.NewInterceptClient(conn))
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
