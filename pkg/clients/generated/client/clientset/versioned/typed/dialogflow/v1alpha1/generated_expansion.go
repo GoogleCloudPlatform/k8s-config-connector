@@ -27,6 +27,8 @@ type DialogflowEntityTypeExpansion interface{}
 
 type DialogflowFulfillmentExpansion interface{}
 
+type DialogflowGeneratorExpansion interface{}
+
 type DialogflowIntentExpansion interface{}
 
 type DialogflowKnowledgeBaseExpansion interface{}

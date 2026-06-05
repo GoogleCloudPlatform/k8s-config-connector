@@ -24,8 +24,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 # Generate the KCC type structs from the GCP proto definitions
 go run . generate-types \
   --service google.cloud.dialogflow.v2 \
-  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1  \
-  --resource DialogflowKnowledgeBase:KnowledgeBase
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowKnowledgeBase:KnowledgeBase \
+  --resource DialogflowGenerator:Generator
 
 # Change back to the repo root
 cd ${REPO_ROOT}

@@ -43,6 +43,10 @@ func (c *FakeDialogflowV1alpha1) DialogflowFulfillments(namespace string) v1alph
 	return newFakeDialogflowFulfillments(c, namespace)
 }
 
+func (c *FakeDialogflowV1alpha1) DialogflowGenerators(namespace string) v1alpha1.DialogflowGeneratorInterface {
+	return newFakeDialogflowGenerators(c, namespace)
+}
+
 func (c *FakeDialogflowV1alpha1) DialogflowIntents(namespace string) v1alpha1.DialogflowIntentInterface {
 	return newFakeDialogflowIntents(c, namespace)
 }

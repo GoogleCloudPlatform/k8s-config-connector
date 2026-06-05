@@ -34,6 +34,7 @@ type DialogflowV1alpha1Interface interface {
 	DialogflowAgentsGetter
 	DialogflowEntityTypesGetter
 	DialogflowFulfillmentsGetter
+	DialogflowGeneratorsGetter
 	DialogflowIntentsGetter
 	DialogflowKnowledgeBasesGetter
 }
@@ -53,6 +54,10 @@ func (c *DialogflowV1alpha1Client) DialogflowEntityTypes(namespace string) Dialo
 
 func (c *DialogflowV1alpha1Client) DialogflowFulfillments(namespace string) DialogflowFulfillmentInterface {
 	return newDialogflowFulfillments(c, namespace)
+}
+
+func (c *DialogflowV1alpha1Client) DialogflowGenerators(namespace string) DialogflowGeneratorInterface {
+	return newDialogflowGenerators(c, namespace)
 }
 
 func (c *DialogflowV1alpha1Client) DialogflowIntents(namespace string) DialogflowIntentInterface {
