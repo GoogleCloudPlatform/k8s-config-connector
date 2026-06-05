@@ -32,9 +32,14 @@ go run . generate-types \
 go run . generate-mapper \
   --service google.cloud.redis.cluster.v1 \
   --api-version redis.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --output-dir ${REPO_ROOT}/pkg/controller/direct/redis/cluster
+
+mv ${REPO_ROOT}/pkg/controller/direct/redis/cluster/redis/mapper.generated.go ${REPO_ROOT}/pkg/controller/direct/redis/cluster/mapper.generated.go
+rmdir ${REPO_ROOT}/pkg/controller/direct/redis/cluster/redis
+sed -i 's/package redis/package cluster/g' ${REPO_ROOT}/pkg/controller/direct/redis/cluster/mapper.generated.go
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/redis/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/redis/cluster/
