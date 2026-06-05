@@ -22,4 +22,14 @@ Then open [http://localhost:8000](http://localhost:8000) in your web browser.
 
 ## Updating Data
 
-To update the status of a migration, simply edit `data.json` and change the relevant fields. For example, changing `"state": "Not Started"` to `"state": "In Progress"` or updating `"steps"`.
+To update the status of a migration, you can edit `data.json` manually (e.g. for notes, mock status, etc.).
+
+However, to automatically detect migration progress (generated types, reference files, direct controller implementations, test fixtures) and keep dependencies, sort orders, and resource lists up to date:
+
+```bash
+cd dev/migration-tracker
+python3 generate_data.py
+```
+
+This script reads the existing `data.json` and merges manual updates (like notes or mock progress) with the auto-detected progress from the codebase.
+

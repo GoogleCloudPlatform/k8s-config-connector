@@ -16,6 +16,7 @@ import json
 import re
 import os
 import sys
+import glob
 import yaml
 from collections import defaultdict
 
@@ -52,6 +53,43 @@ def get_implemented_types(apis_dir="../../apis"):
                             implemented_kinds[kind] = []
                         implemented_kinds[kind].append(filepath)
     return implemented_kinds
+
+def find_direct_controllers(repo_root):
+    controllers = {}
+    fuzzers = {}
+    controller_dir = os.path.join(repo_root, 'pkg', 'controller', 'direct')
+    if not os.path.exists(controller_dir):
+        return controllers, fuzzers
+    for filepath in glob.glob(os.path.join(controller_dir, '**', '*_controller.go'), recursive=True):
+        with open(filepath, 'r') as f:
+            content = f.read()
+        matches = re.findall(r':=\s*&krm\.(\w+)\{', content)
+        if not matches:
+            matches = re.findall(r':=\s*&krmv1beta1\.(\w+)\{', content)
+        if not matches:
+            matches = re.findall(r'RegisterModel\((?:krm|krmv1beta1)\.(\w+)GVK', content)
+        for kind in matches:
+            controllers[kind] = filepath
+            
+    for filepath in glob.glob(os.path.join(controller_dir, '**', '*_fuzzer.go'), recursive=True):
+        with open(filepath, 'r') as f:
+            content = f.read()
+        matches = re.findall(r"fuzztesting\.NewKRMTyped(?:Spec)?Fuzzer\(\s*&pb\.[A-Za-z0-9_.]+\{\},\s*([A-Za-z0-9_]+)Spec_FromProto", content)
+        for kind in matches:
+            fuzzers[kind] = filepath
+            
+    return controllers, fuzzers
+
+def find_test_fixtures(repo_root):
+    test_kinds = set()
+    basic_dir = os.path.join(repo_root, 'pkg', 'test', 'resourcefixture', 'testdata', 'basic')
+    if not os.path.exists(basic_dir):
+        return test_kinds
+    for root, dirs, files in os.walk(basic_dir):
+        if 'create.yaml' in files:
+            grandparent = os.path.basename(os.path.dirname(root))
+            test_kinds.add(grandparent.lower())
+    return test_kinds
 
 def build_dependency_graph(crds_dir="../../config/crds/resources"):
     known_kinds = {}
@@ -112,12 +150,30 @@ def build_dependency_graph(crds_dir="../../config/crds/resources"):
 
     return dependencies, known_kinds
 
-def parse_data(config_file_path, apis_dir, crds_dir):
+def parse_data(config_file_path, apis_dir, crds_dir, repo_root):
     resources = {}
     
+    # Load existing data.json to preserve manual state
+    existing_resources = {}
+    data_json_path = os.path.join(repo_root, 'dev', 'migration-tracker', 'data.json')
+    if os.path.exists(data_json_path):
+        try:
+            with open(data_json_path, 'r') as f:
+                existing_list = json.load(f)
+                for item in existing_list:
+                    existing_resources[item['kind']] = item
+        except Exception as e:
+            print(f"Error loading existing data.json: {e}")
+
     with open(config_file_path, 'r') as f:
         config_lines = f.readlines()
         
+    # Pre-fetch codebase state
+    dependencies, known_kinds = build_dependency_graph(crds_dir)
+    implemented_types = get_implemented_types(apis_dir)
+    direct_controllers, fuzzers = find_direct_controllers(repo_root)
+    test_fixtures = find_test_fixtures(repo_root)
+
     for line in config_lines:
         line = line.strip()
         if not line.startswith('{Group: '):
@@ -133,29 +189,78 @@ def parse_data(config_file_path, apis_dir, crds_dir):
             group = group_full.split('.')[0]
             kind = kind_match.group(1)
             
-            resources[kind] = create_default_resource(kind, group)
-            
+            # 1. Start with existing resource data if available, or create default
+            if kind in existing_resources:
+                res = existing_resources[kind]
+                # Update basic fields that might have changed structurally
+                res['group'] = group
+                res['version'] = "v1beta1"
+            else:
+                res = create_default_resource(kind, group)
+
+            # 2. Update controller configuration from static_config.go
             if default_ctrl_match:
-                resources[kind]['defaultController'] = default_ctrl_match.group(1)
-                resources[kind]['controllerType'] = default_ctrl_match.group(1)
+                res['defaultController'] = default_ctrl_match.group(1)
+                res['controllerType'] = default_ctrl_match.group(1)
                 
+            supported = []
             if supported_ctrls_match:
                 ctrls_raw = supported_ctrls_match.group(1)
                 supported = re.findall(r'k8s\.ReconcilerType([A-Za-z]+)', ctrls_raw)
-                resources[kind]['supportedControllers'] = supported
-                if 'Direct' in supported:
-                    resources[kind]['state'] = 'Completed'
-                    resources[kind]['steps'] = {
-                        "gen-types": True,
-                        "identity-reference": True,
-                        "mapper-fuzzer": True,
-                        "mocks": True,
-                        "controller": True,
-                        "tests": True
-                    }
+                if len(supported) == 1 and supported[0] == 'Direct':
+                    continue
+                res['supportedControllers'] = supported
 
-    dependencies, known_kinds = build_dependency_graph(crds_dir)
-    implemented_types = get_implemented_types(apis_dir)
+            # 3. Auto-detect steps and states
+            has_types = kind in implemented_types
+            has_reference = False
+            if has_types:
+                for filepath in implemented_types[kind]:
+                    ref_filepath = filepath.replace("_types.go", "_reference.go")
+                    if os.path.exists(ref_filepath):
+                        has_reference = True
+                        break
+
+            has_controller = kind in direct_controllers
+            has_fuzzer = kind in fuzzers
+            has_tests = kind.lower() in test_fixtures
+
+            # Update steps (merging with existing)
+            res['steps']['gen-types'] = res['steps'].get('gen-types', False) or has_types
+            res['steps']['identity-reference'] = res['steps'].get('identity-reference', False) or has_reference
+            res['steps']['controller'] = res['steps'].get('controller', False) or has_controller
+            res['steps']['mapper-fuzzer'] = res['steps'].get('mapper-fuzzer', False) or has_fuzzer
+            res['steps']['tests'] = res['steps'].get('tests', False)
+            
+            if 'Direct' in supported:
+                res['steps']['mocks'] = res['steps'].get('mocks', True)
+                res['steps']['tests'] = res['steps'].get('tests', True) or has_tests
+                # A completed resource should have these true
+                res['state'] = 'Completed'
+            else:
+                res['steps']['mocks'] = res['steps'].get('mocks', False)
+                
+                # Determine state
+                any_step = (
+                    res['steps'].get('gen-types', False) or
+                    res['steps'].get('identity-reference', False) or
+                    res['steps'].get('mapper-fuzzer', False) or
+                    res['steps'].get('controller', False) or
+                    res['steps'].get('tests', False) or
+                    res['steps'].get('mocks', False)
+                )
+                if any_step:
+                    res['state'] = 'In Progress'
+                else:
+                    res['state'] = 'Not Started'
+
+            # Missing reference notes
+            if has_types and not has_reference:
+                res['notes'] = 'Missing _reference.go'
+            elif res.get('notes') == 'Missing _reference.go':
+                res['notes'] = ''
+
+            resources[kind] = res
 
     # Calculate topological sort order and downstream count
     nodes = set(known_kinds.keys())
@@ -213,18 +318,6 @@ def parse_data(config_file_path, apis_dir, crds_dir):
             valid_deps = [dep for dep in dependencies[kind] if dep in resources]
             res['dependencies'] = sorted(valid_deps)
 
-        if kind in implemented_types:
-            has_reference = False
-            for filepath in implemented_types[kind]:
-                ref_filepath = filepath.replace("_types.go", "_reference.go")
-                if os.path.exists(ref_filepath):
-                    has_reference = True
-                    break
-            
-            if not has_reference:
-                res['notes'] = 'Missing _reference.go'
-                res['steps']['identity-reference'] = False
-
     return list(resources.values())
 
 def create_default_resource(kind, group="unknown"):
@@ -250,10 +343,11 @@ def create_default_resource(kind, group="unknown"):
     }
 
 if __name__ == "__main__":
-    config_path = '../../pkg/controller/resourceconfig/static_config.go'
-    apis_dir = '../../apis'
-    crds_dir = '../../config/crds/resources'
-    data = parse_data(config_path, apis_dir, crds_dir)
+    repo_root = '../..'
+    config_path = os.path.join(repo_root, 'pkg/controller/resourceconfig/static_config.go')
+    apis_dir = os.path.join(repo_root, 'apis')
+    crds_dir = os.path.join(repo_root, 'config/crds/resources')
+    data = parse_data(config_path, apis_dir, crds_dir, repo_root)
     data = sorted(data, key=lambda x: x['kind'])
     with open('data.json', 'w') as f:
         json.dump(data, f, indent=2)
