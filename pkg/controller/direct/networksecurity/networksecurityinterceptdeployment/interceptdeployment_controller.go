@@ -240,7 +240,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	// Re-inject project/location back to spec because mapper doesn't know about it
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
-	obj.Spec.Location = a.id.Location
+	obj.Spec.Location = direct.LazyPtr(a.id.Location)
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
