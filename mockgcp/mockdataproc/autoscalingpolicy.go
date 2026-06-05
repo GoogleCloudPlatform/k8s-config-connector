@@ -93,7 +93,7 @@ func (s *autoscalingPolicyServiceServer) DeleteAutoscalingPolicy(ctx context.Con
 }
 
 func (s *autoscalingPolicyServiceServer) UpdateAutoscalingPolicy(ctx context.Context, req *pb.UpdateAutoscalingPolicyRequest) (*pb.AutoscalingPolicy, error) {
-	name, err := s.parseAutoscalingPolicyName(req.Policy.Id)
+	name, err := s.parseAutoscalingPolicyName(req.Policy.Name)
 	if err != nil {
 		return nil, err
 	}
