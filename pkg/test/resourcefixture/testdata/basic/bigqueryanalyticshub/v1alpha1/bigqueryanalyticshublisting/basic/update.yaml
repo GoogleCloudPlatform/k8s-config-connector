@@ -1,0 +1,16 @@
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryAnalyticsHubListing
+metadata:
+  name: bqahlisting-${uniqueId}
+spec:
+  displayName: "Updated Basic Listing"
+  location: us-central1
+  source:
+    bigQueryDatasetSource:
+      datasetRef:
+        name: bigqueryanalyticshublisting-dep
+  dataExchangeRef:
+    name: bigqueryanalyticshublisting-dep
+  projectRef:
+    external: ${projectId}
+  description: "An updated description"
