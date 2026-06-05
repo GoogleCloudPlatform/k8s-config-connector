@@ -99,6 +99,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/partner/aistreams/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto \
