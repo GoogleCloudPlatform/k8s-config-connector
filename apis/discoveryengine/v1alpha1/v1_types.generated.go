@@ -23,8 +23,13 @@
 // resource: DiscoveryEngineIdentityMappingStore:IdentityMappingStore
 // resource: DiscoveryEngineTargetSite:TargetSite
 // resource: DiscoveryEngineConversation:Conversation
+// resource: DiscoveryEngineSession:Session
 
 package v1alpha1
+
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
 
 /* unreachable type AdvancedSiteSearchConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.AdvancedSiteSearchConfig
@@ -38,6 +43,364 @@ type AdvancedSiteSearchConfig struct {
 	DisableAutomaticRefresh *bool `json:"disableAutomaticRefresh,omitempty"`
 }
 */
+
+/* unreachable type Answer
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer
+type Answer struct {
+	// Immutable. Fully qualified name
+	//  `projects/{project}/locations/global/collections/{collection}/engines/{engine}/sessions/-*-/answers/-*`
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.name
+	Name *string `json:"name,omitempty"`
+
+	// The state of the answer generation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.state
+	State *string `json:"state,omitempty"`
+
+	// The textual answer.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.answer_text
+	AnswerText *string `json:"answerText,omitempty"`
+
+	// A score in the range of [0, 1] describing how grounded the answer is by the
+	//  reference chunks.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.grounding_score
+	GroundingScore *float64 `json:"groundingScore,omitempty"`
+
+	// Citations.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.citations
+	Citations []Answer_Citation `json:"citations,omitempty"`
+
+	// Optional. Grounding supports.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.grounding_supports
+	GroundingSupports []Answer_GroundingSupport `json:"groundingSupports,omitempty"`
+
+	// References.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.references
+	References []Answer_Reference `json:"references,omitempty"`
+
+	// Suggested related questions.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.related_questions
+	RelatedQuestions []string `json:"relatedQuestions,omitempty"`
+
+	// Answer generation steps.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.steps
+	Steps []Answer_Step `json:"steps,omitempty"`
+
+	// Query understanding information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.query_understanding_info
+	QueryUnderstandingInfo *Answer_QueryUnderstandingInfo `json:"queryUnderstandingInfo,omitempty"`
+
+	// Additional answer-skipped reasons. This provides the reason for ignored
+	//  cases. If nothing is skipped, this field is not set.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.answer_skipped_reasons
+	AnswerSkippedReasons []string `json:"answerSkippedReasons,omitempty"`
+
+	// Optional. Safety ratings.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.safety_ratings
+	SafetyRatings []SafetyRating `json:"safetyRatings,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Citation
+type Answer_Citation struct {
+	// Index indicates the start of the segment, measured in bytes (UTF-8
+	//  unicode). If there are multi-byte characters,such as non-ASCII
+	//  characters, the index measurement is longer than the string length.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Citation.start_index
+	StartIndex *int64 `json:"startIndex,omitempty"`
+
+	// End of the attributed segment, exclusive. Measured in bytes (UTF-8
+	//  unicode). If there are multi-byte characters,such as non-ASCII
+	//  characters, the index measurement is longer than the string length.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Citation.end_index
+	EndIndex *int64 `json:"endIndex,omitempty"`
+
+	// Citation sources for the attributed segment.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Citation.sources
+	Sources []Answer_CitationSource `json:"sources,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.CitationSource
+type Answer_CitationSource struct {
+	// ID of the citation source.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.CitationSource.reference_id
+	ReferenceID *string `json:"referenceID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.GroundingSupport
+type Answer_GroundingSupport struct {
+	// Required. Index indicates the start of the claim, measured in bytes
+	//  (UTF-8 unicode).
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.start_index
+	StartIndex *int64 `json:"startIndex,omitempty"`
+
+	// Required. End of the claim, exclusive.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.end_index
+	EndIndex *int64 `json:"endIndex,omitempty"`
+
+	// A score in the range of [0, 1] describing how grounded is a specific
+	//  claim by the references.
+	//  Higher value means that the claim is better supported by the reference
+	//  chunks.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.grounding_score
+	GroundingScore *float64 `json:"groundingScore,omitempty"`
+
+	// Indicates that this claim required grounding check. When the
+	//  system decided this claim didn't require attribution/grounding check,
+	//  this field is set to false. In that case, no grounding check was
+	//  done for the claim and therefore `grounding_score`, `sources` is not
+	//  returned.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.grounding_check_required
+	GroundingCheckRequired *bool `json:"groundingCheckRequired,omitempty"`
+
+	// Optional. Citation sources for the claim.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.GroundingSupport.sources
+	Sources []Answer_CitationSource `json:"sources,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.QueryUnderstandingInfo
+type Answer_QueryUnderstandingInfo struct {
+	// Query classification information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.QueryUnderstandingInfo.query_classification_info
+	QueryClassificationInfo []Answer_QueryUnderstandingInfo_QueryClassificationInfo `json:"queryClassificationInfo,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.QueryUnderstandingInfo.QueryClassificationInfo
+type Answer_QueryUnderstandingInfo_QueryClassificationInfo struct {
+	// Query classification type.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.QueryUnderstandingInfo.QueryClassificationInfo.type
+	Type *string `json:"type,omitempty"`
+
+	// Classification output.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.QueryUnderstandingInfo.QueryClassificationInfo.positive
+	Positive *bool `json:"positive,omitempty"`
+}
+
+/* unreachable type Answer_Reference
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Reference
+type Answer_Reference struct {
+	// Unstructured document information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.unstructured_document_info
+	UnstructuredDocumentInfo *Answer_Reference_UnstructuredDocumentInfo `json:"unstructuredDocumentInfo,omitempty"`
+
+	// Chunk information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.chunk_info
+	ChunkInfo *Answer_Reference_ChunkInfo `json:"chunkInfo,omitempty"`
+
+	// Structured document information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.structured_document_info
+	StructuredDocumentInfo *Answer_Reference_StructuredDocumentInfo `json:"structuredDocumentInfo,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo
+type Answer_Reference_ChunkInfo struct {
+	// Chunk resource name.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.chunk
+	Chunk *string `json:"chunk,omitempty"`
+
+	// Chunk textual content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.content
+	Content *string `json:"content,omitempty"`
+
+	// The relevance of the chunk for a given query. Values range from 0.0
+	//  (completely irrelevant) to 1.0 (completely relevant).
+	//  This value is for informational purpose only. It may change for
+	//  the same query and chunk at any time due to a model retraining or
+	//  change in implementation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.relevance_score
+	RelevanceScore *float32 `json:"relevanceScore,omitempty"`
+
+	// Document metadata.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.document_metadata
+	DocumentMetadata *Answer_Reference_ChunkInfo_DocumentMetadata `json:"documentMetadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.DocumentMetadata
+type Answer_Reference_ChunkInfo_DocumentMetadata struct {
+	// Document resource name.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.DocumentMetadata.document
+	Document *string `json:"document,omitempty"`
+
+	// URI for the document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.DocumentMetadata.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Title.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.DocumentMetadata.title
+	Title *string `json:"title,omitempty"`
+
+	// Page identifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.DocumentMetadata.page_identifier
+	PageIdentifier *string `json:"pageIdentifier,omitempty"`
+
+	// The structured JSON metadata for the document.
+	//  It is populated from the struct data from the Chunk in search result.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.ChunkInfo.DocumentMetadata.struct_data
+	StructData apiextensionsv1.JSON `json:"structData,omitempty"`
+}
+
+/* unreachable type Answer_Reference_StructuredDocumentInfo
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Reference.StructuredDocumentInfo
+type Answer_Reference_StructuredDocumentInfo struct {
+	// Document resource name.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.StructuredDocumentInfo.document
+	Document *string `json:"document,omitempty"`
+
+	// Structured search data.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.StructuredDocumentInfo.struct_data
+	StructData apiextensionsv1.JSON `json:"structData,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo
+type Answer_Reference_UnstructuredDocumentInfo struct {
+	// Document resource name.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo.document
+	Document *string `json:"document,omitempty"`
+
+	// URI for the document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Title.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo.title
+	Title *string `json:"title,omitempty"`
+
+	// List of cited chunk contents derived from document content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo.chunk_contents
+	ChunkContents []Answer_Reference_UnstructuredDocumentInfo_ChunkContent `json:"chunkContents,omitempty"`
+
+	// The structured JSON metadata for the document.
+	//  It is populated from the struct data from the Chunk in search result.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo.struct_data
+	StructData apiextensionsv1.JSON `json:"structData,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo.ChunkContent
+type Answer_Reference_UnstructuredDocumentInfo_ChunkContent struct {
+	// Chunk textual content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo.ChunkContent.content
+	Content *string `json:"content,omitempty"`
+
+	// Page identifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo.ChunkContent.page_identifier
+	PageIdentifier *string `json:"pageIdentifier,omitempty"`
+
+	// The relevance of the chunk for a given query. Values range from 0.0
+	//  (completely irrelevant) to 1.0 (completely relevant).
+	//  This value is for informational purpose only. It may change for
+	//  the same query and chunk at any time due to a model retraining or
+	//  change in implementation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.UnstructuredDocumentInfo.ChunkContent.relevance_score
+	RelevanceScore *float32 `json:"relevanceScore,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Step
+type Answer_Step struct {
+	// The state of the step.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.state
+	State *string `json:"state,omitempty"`
+
+	// The description of the step.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.description
+	Description *string `json:"description,omitempty"`
+
+	// The thought of the step.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.thought
+	Thought *string `json:"thought,omitempty"`
+
+	// Actions.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.actions
+	Actions []Answer_Step_Action `json:"actions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Step.Action
+type Answer_Step_Action struct {
+	// Search action.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.search_action
+	SearchAction *Answer_Step_Action_SearchAction `json:"searchAction,omitempty"`
+
+	// Observation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.observation
+	Observation *Answer_Step_Action_Observation `json:"observation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation
+type Answer_Step_Action_Observation struct {
+	// Search results observed by the search action, it can be snippets info
+	//  or chunk info, depending on the citation type set by the user.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.search_results
+	SearchResults []Answer_Step_Action_Observation_SearchResult `json:"searchResults,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult
+type Answer_Step_Action_Observation_SearchResult struct {
+	// Document resource name.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.document
+	Document *string `json:"document,omitempty"`
+
+	// URI for the document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Title.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.title
+	Title *string `json:"title,omitempty"`
+
+	// If citation_type is DOCUMENT_LEVEL_CITATION, populate document
+	//  level snippets.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.snippet_info
+	SnippetInfo []Answer_Step_Action_Observation_SearchResult_SnippetInfo `json:"snippetInfo,omitempty"`
+
+	// If citation_type is CHUNK_LEVEL_CITATION and chunk mode is on,
+	//  populate chunk info.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.chunk_info
+	ChunkInfo []Answer_Step_Action_Observation_SearchResult_ChunkInfo `json:"chunkInfo,omitempty"`
+
+	// Data representation.
+	//  The structured JSON data for the document.
+	//  It's populated from the struct data from the Document, or the
+	//  Chunk in search result.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.struct_data
+	StructData apiextensionsv1.JSON `json:"structData,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.ChunkInfo
+type Answer_Step_Action_Observation_SearchResult_ChunkInfo struct {
+	// Chunk resource name.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.ChunkInfo.chunk
+	Chunk *string `json:"chunk,omitempty"`
+
+	// Chunk textual content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.ChunkInfo.content
+	Content *string `json:"content,omitempty"`
+
+	// The relevance of the chunk for a given query. Values range from
+	//  0.0 (completely irrelevant) to 1.0 (completely relevant).
+	//  This value is for informational purpose only. It may change for
+	//  the same query and chunk at any time due to a model retraining or
+	//  change in implementation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.ChunkInfo.relevance_score
+	RelevanceScore *float32 `json:"relevanceScore,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.SnippetInfo
+type Answer_Step_Action_Observation_SearchResult_SnippetInfo struct {
+	// Snippet content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.SnippetInfo.snippet
+	Snippet *string `json:"snippet,omitempty"`
+
+	// Status of the snippet defined by the search team.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.Observation.SearchResult.SnippetInfo.snippet_status
+	SnippetStatus *string `json:"snippetStatus,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1.Answer.Step.Action.SearchAction
+type Answer_Step_Action_SearchAction struct {
+	// The query to search.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Step.Action.SearchAction.query
+	Query *string `json:"query,omitempty"`
+}
 
 // +kcc:proto=google.cloud.discoveryengine.v1.CmekConfig
 type CmekConfig struct {
@@ -611,12 +974,25 @@ type HealthcareFhirConfig struct {
 }
 */
 
+// +kcc:proto=google.cloud.discoveryengine.v1.Query
+type Query struct {
+	// Plain text.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Query.text
+	Text *string `json:"text,omitempty"`
+}
+
 // +kcc:proto=google.cloud.discoveryengine.v1.Reply
 type Reply struct {
 	// Summary based on search results.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Reply.summary
 	Summary *SearchResponse_Summary `json:"summary,omitempty"`
 }
+
+/* unreachable type SafetyRating
+// +kcc:proto=google.cloud.discoveryengine.v1.SafetyRating
+type SafetyRating struct {
+}
+*/
 
 /* unreachable type Schema
 // +kcc:proto=google.cloud.discoveryengine.v1.Schema
@@ -787,6 +1163,28 @@ type SearchResponse_Summary_SummaryWithMetadata struct {
 	References []SearchResponse_Summary_Reference `json:"references,omitempty"`
 }
 
+// +kcc:proto=google.cloud.discoveryengine.v1.Session.Turn
+type Session_Turn struct {
+	// Optional. The user query. May not be set if this turn is merely
+	//  regenerating an answer to a different turn
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.query
+	Query *Query `json:"query,omitempty"`
+
+	// Optional. The resource name of the answer to the user query.
+	//
+	//  Only set if the answer generation (/answer API call) happened in this
+	//  turn.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.answer
+	Answer *string `json:"answer,omitempty"`
+
+	// Optional. Represents metadata related to the query config, for example
+	//  LLM model and version used, model parameters (temperature, grounding
+	//  parameters, etc.). The prefix "google." is reserved for Google-developed
+	//  functionality.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.query_config
+	QueryConfig map[string]string `json:"queryConfig,omitempty"`
+}
+
 // +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
 type SingleRegionKey struct {
 	// Required. Single-regional kms key resource name which will be used to
@@ -856,6 +1254,102 @@ type WorkspaceConfig struct {
 	SuperAdminEmailAddress *string `json:"superAdminEmailAddress,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Answer
+type AnswerObservedState struct {
+	// Immutable. Fully qualified name
+	//  `projects/{project}/locations/global/collections/{collection}/engines/{engine}/sessions/*/answers/*`
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.name
+	Name *string `json:"name,omitempty"`
+
+	// The state of the answer generation.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.state
+	State *string `json:"state,omitempty"`
+
+	// The textual answer.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.answer_text
+	AnswerText *string `json:"answerText,omitempty"`
+
+	// A score in the range of [0, 1] describing how grounded the answer is by the
+	//  reference chunks.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.grounding_score
+	GroundingScore *float64 `json:"groundingScore,omitempty"`
+
+	// Citations.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.citations
+	Citations []Answer_Citation `json:"citations,omitempty"`
+
+	// Optional. Grounding supports.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.grounding_supports
+	GroundingSupports []Answer_GroundingSupport `json:"groundingSupports,omitempty"`
+
+	// References.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.references
+	References []Answer_ReferenceObservedState `json:"references,omitempty"`
+
+	// Suggested related questions.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.related_questions
+	RelatedQuestions []string `json:"relatedQuestions,omitempty"`
+
+	// Answer generation steps.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.steps
+	Steps []Answer_Step `json:"steps,omitempty"`
+
+	// Query understanding information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.query_understanding_info
+	QueryUnderstandingInfo *Answer_QueryUnderstandingInfo `json:"queryUnderstandingInfo,omitempty"`
+
+	// Additional answer-skipped reasons. This provides the reason for ignored
+	//  cases. If nothing is skipped, this field is not set.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.answer_skipped_reasons
+	AnswerSkippedReasons []string `json:"answerSkippedReasons,omitempty"`
+
+	// Output only. Answer creation timestamp.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Answer completed timestamp.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.complete_time
+	CompleteTime *string `json:"completeTime,omitempty"`
+
+	// Optional. Safety ratings.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.safety_ratings
+	SafetyRatings []SafetyRatingObservedState `json:"safetyRatings,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Answer.Reference
+type Answer_ReferenceObservedState struct {
+	// Unstructured document information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.unstructured_document_info
+	UnstructuredDocumentInfo *Answer_Reference_UnstructuredDocumentInfo `json:"unstructuredDocumentInfo,omitempty"`
+
+	// Chunk information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.chunk_info
+	ChunkInfo *Answer_Reference_ChunkInfo `json:"chunkInfo,omitempty"`
+
+	// Structured document information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.structured_document_info
+	StructuredDocumentInfo *Answer_Reference_StructuredDocumentInfoObservedState `json:"structuredDocumentInfo,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Answer.Reference.StructuredDocumentInfo
+type Answer_Reference_StructuredDocumentInfoObservedState struct {
+	// Document resource name.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.StructuredDocumentInfo.document
+	Document *string `json:"document,omitempty"`
+
+	// Structured search data.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.StructuredDocumentInfo.struct_data
+	StructData apiextensionsv1.JSON `json:"structData,omitempty"`
+
+	// Output only. The title of the document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.StructuredDocumentInfo.title
+	Title *string `json:"title,omitempty"`
+
+	// Output only. The URI of the document.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Answer.Reference.StructuredDocumentInfo.uri
+	URI *string `json:"uri,omitempty"`
+}
+
 /* unreachable type CmekConfigObservedState
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.CmekConfig
 type CmekConfigObservedState struct {
@@ -905,3 +1399,55 @@ type ConversationMessageObservedState struct {
 	CreateTime *string `json:"createTime,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Query
+type QueryObservedState struct {
+	// Output only. Unique Id for the query.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Query.query_id
+	QueryID *string `json:"queryID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.SafetyRating
+type SafetyRatingObservedState struct {
+	// Output only. Harm category.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SafetyRating.category
+	Category *string `json:"category,omitempty"`
+
+	// Output only. Harm probability levels in the content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SafetyRating.probability
+	Probability *string `json:"probability,omitempty"`
+
+	// Output only. Harm probability score.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SafetyRating.probability_score
+	ProbabilityScore *float32 `json:"probabilityScore,omitempty"`
+
+	// Output only. Harm severity levels in the content.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SafetyRating.severity
+	Severity *string `json:"severity,omitempty"`
+
+	// Output only. Harm severity score.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SafetyRating.severity_score
+	SeverityScore *float32 `json:"severityScore,omitempty"`
+
+	// Output only. Indicates whether the content was filtered out because of this
+	//  rating.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.SafetyRating.blocked
+	Blocked *bool `json:"blocked,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Session.Turn
+type Session_TurnObservedState struct {
+	// Optional. The user query. May not be set if this turn is merely
+	//  regenerating an answer to a different turn
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.query
+	Query *QueryObservedState `json:"query,omitempty"`
+
+	// Output only. In
+	//  [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1.ConversationalSearchService.GetSession]
+	//  API, if
+	//  [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1.GetSessionRequest.include_answer_details]
+	//  is set to true, this field will be populated when getting answer query
+	//  session.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.detailed_answer
+	DetailedAnswer *AnswerObservedState `json:"detailedAnswer,omitempty"`
+}
