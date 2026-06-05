@@ -31,12 +31,17 @@ import (
 
 type DeveloperconnectV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	DevConnectAccountConnectorsGetter
 	DevConnectInsightsConfigsGetter
 }
 
 // DeveloperconnectV1alpha1Client is used to interact with features provided by the developerconnect.cnrm.cloud.google.com group.
 type DeveloperconnectV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *DeveloperconnectV1alpha1Client) DevConnectAccountConnectors(namespace string) DevConnectAccountConnectorInterface {
+	return newDevConnectAccountConnectors(c, namespace)
 }
 
 func (c *DeveloperconnectV1alpha1Client) DevConnectInsightsConfigs(namespace string) DevConnectInsightsConfigInterface {
