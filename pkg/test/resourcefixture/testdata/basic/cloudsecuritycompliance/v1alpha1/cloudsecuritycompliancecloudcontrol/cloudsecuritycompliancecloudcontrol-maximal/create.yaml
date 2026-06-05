@@ -1,0 +1,27 @@
+apiVersion: cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1
+kind: CloudSecurityComplianceCloudControl
+metadata:
+  name: cc-maximal-${uniqueId}
+spec:
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  location: global
+  description: "A comprehensive description of this cloud control"
+  displayName: "My Display Name"
+  severity: "MEDIUM"
+  findingCategory: "My Category"
+  supportedCloudProviders:
+    - "GCP"
+  remediationSteps: "Remediation steps go here"
+  categories:
+    - "CC_CATEGORY_ENCRYPTION"
+  supportedTargetResourceTypes:
+    - "TARGET_RESOURCE_CRM_TYPE_PROJECT"
+  parameterSpec:
+    - name: "my_parameter"
+      displayName: "My Parameter"
+      description: "A parameter for testing"
+      isRequired: true
+      valueType: "STRING"
+      defaultValue:
+        stringValue: "my_default_value"

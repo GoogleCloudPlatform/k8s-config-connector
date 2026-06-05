@@ -1,0 +1,8 @@
+apiVersion: cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1
+kind: CloudSecurityComplianceCloudControl
+metadata:
+  name: cc-minimal-${uniqueId}
+spec:
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  location: global
