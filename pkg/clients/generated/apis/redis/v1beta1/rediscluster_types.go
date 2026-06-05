@@ -44,6 +44,26 @@ type ClusterAofConfig struct {
 	AppendFsync *string `json:"appendFsync,omitempty"`
 }
 
+type ClusterAutomatedBackupConfig struct {
+	/* Optional. The automated backup mode. If the mode is disabled, the other fields will be ignored. */
+	// +optional
+	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+
+	/* Optional. Trigger automated backups at a fixed frequency. */
+	// +optional
+	FixedFrequencySchedule *ClusterFixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+
+	/* Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days. */
+	// +optional
+	Retention *string `json:"retention,omitempty"`
+}
+
+type ClusterFixedFrequencySchedule struct {
+	/* Required. The start time of every automated backup in UTC. It must be set to the start of an hour. This field is required. */
+	// +optional
+	StartTime *ClusterStartTime `json:"startTime,omitempty"`
+}
+
 type ClusterPersistenceConfig struct {
 	/* Optional. AOF configuration. This field will be ignored if mode is not AOF. */
 	// +optional
@@ -73,6 +93,24 @@ type ClusterRdbConfig struct {
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
 }
 
+type ClusterStartTime struct {
+	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
+	// +optional
+	Hours *int32 `json:"hours,omitempty"`
+
+	/* Minutes of hour of day. Must be from 0 to 59. */
+	// +optional
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	// +optional
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int32 `json:"seconds,omitempty"`
+}
+
 type ClusterZoneDistributionConfig struct {
 	/* Optional. The mode of zone distribution. Defaults to MULTI_ZONE, when not specified. */
 	// +optional
@@ -87,6 +125,10 @@ type RedisClusterSpec struct {
 	/* Optional. The authorization mode of the Redis cluster. If not provided, auth feature is disabled for the cluster. */
 	// +optional
 	AuthorizationMode *string `json:"authorizationMode,omitempty"`
+
+	/* Optional. The automated backup config for the cluster. */
+	// +optional
+	AutomatedBackupConfig *ClusterAutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
 
 	/* Optional. The delete operation will fail when the value is set to true. */
 	// +optional
