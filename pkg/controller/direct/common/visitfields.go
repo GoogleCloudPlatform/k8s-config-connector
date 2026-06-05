@@ -45,7 +45,11 @@ func (w *visitorWalker) visitAny(path string, v reflect.Value) {
 		}
 	}
 	if shouldCallVisitor {
-		if err := w.visitor.VisitField(path, v.Interface()); err != nil {
+		val := v.Interface()
+		if v.Kind() != reflect.Ptr && v.CanAddr() {
+			val = v.Addr().Interface()
+		}
+		if err := w.visitor.VisitField(path, val); err != nil {
 			w.errs = append(w.errs, err)
 		}
 	}

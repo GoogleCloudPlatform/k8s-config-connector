@@ -157,6 +157,8 @@ func (r *ExtendedProjectRef) Normalize(ctx context.Context, reader client.Reader
 			return err
 		}
 		r.External = projectRef.External
+		r.Name = ""
+		r.Namespace = ""
 		return nil
 	}
 	return Normalize(ctx, reader, r, defaultNamespace)

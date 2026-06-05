@@ -330,6 +330,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					forceDirect = false
 				case "FirestoreIndex":
 					forceDirect = true
+				case "DNSManagedZone":
+					forceDirect = true
 				default:
 					forceDirect = false
 				}
