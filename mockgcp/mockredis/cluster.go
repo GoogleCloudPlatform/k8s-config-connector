@@ -297,6 +297,8 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.AutomatedBackupConfig = req.Cluster.AutomatedBackupConfig
 		case "maintenancePolicy":
 			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
+		case "crossClusterReplicationConfig":
+			obj.CrossClusterReplicationConfig = req.Cluster.CrossClusterReplicationConfig
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
