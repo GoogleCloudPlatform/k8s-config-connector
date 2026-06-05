@@ -31,7 +31,7 @@ import (
 
 type DevicestreamingV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	DeviceStreamingSessionsGetter
+	DeviceStreamingDeviceSessionsGetter
 }
 
 // DevicestreamingV1alpha1Client is used to interact with features provided by the devicestreaming.cnrm.cloud.google.com group.
@@ -39,8 +39,8 @@ type DevicestreamingV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *DevicestreamingV1alpha1Client) DeviceStreamingSessions(namespace string) DeviceStreamingSessionInterface {
-	return newDeviceStreamingSessions(c, namespace)
+func (c *DevicestreamingV1alpha1Client) DeviceStreamingDeviceSessions(namespace string) DeviceStreamingDeviceSessionInterface {
+	return newDeviceStreamingDeviceSessions(c, namespace)
 }
 
 // NewForConfig creates a new DevicestreamingV1alpha1Client for the given config.

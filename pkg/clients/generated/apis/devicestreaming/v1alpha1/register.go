@@ -53,10 +53,10 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	DeviceStreamingSessionGVK = schema.GroupVersionKind{
+	DeviceStreamingDeviceSessionGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DeviceStreamingSession{}).Name(),
+		Kind:    reflect.TypeOf(DeviceStreamingDeviceSession{}).Name(),
 	}
 
 	devicestreamingAPIVersion = SchemeGroupVersion.String()

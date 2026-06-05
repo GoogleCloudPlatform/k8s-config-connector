@@ -20,16 +20,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var DeviceStreamingSessionGVK = GroupVersion.WithKind("DeviceStreamingSession")
+var DeviceStreamingDeviceSessionGVK = GroupVersion.WithKind("DeviceStreamingDeviceSession")
 
-// DeviceStreamingSessionSpec defines the desired state of DeviceStreamingSession
+// DeviceStreamingDeviceSessionSpec defines the desired state of DeviceStreamingDeviceSession
 // +kcc:spec:proto=google.cloud.devicestreaming.v1.DeviceSession
-type DeviceStreamingSessionSpec struct {
+type DeviceStreamingDeviceSessionSpec struct {
 	// The project that this resource belongs to.
 	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The DeviceStreamingSession name. If not given, the metadata.name will be used.
+	// The DeviceStreamingDeviceSession name. If not given, the metadata.name will be used.
 	// +kubebuilder:validation:Optional
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Optional. The amount of time that a device will be initially allocated
@@ -49,8 +49,8 @@ type DeviceStreamingSessionSpec struct {
 	AndroidDevice *AndroidDevice `json:"androidDevice"`
 }
 
-// DeviceStreamingSessionStatus defines the config connector machine state of DeviceStreamingSession
-type DeviceStreamingSessionStatus struct {
+// DeviceStreamingDeviceSessionStatus defines the config connector machine state of DeviceStreamingDeviceSession
+type DeviceStreamingDeviceSessionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -58,16 +58,16 @@ type DeviceStreamingSessionStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DeviceStreamingSession resource in GCP.
+	// A unique specifier for the DeviceStreamingDeviceSession resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *DeviceStreamingSessionObservedState `json:"observedState,omitempty"`
+	ObservedState *DeviceStreamingDeviceSessionObservedState `json:"observedState,omitempty"`
 }
 
-// DeviceStreamingSessionObservedState is the state of the DeviceStreamingSession resource as most recently observed in GCP.
+// DeviceStreamingDeviceSessionObservedState is the state of the DeviceStreamingDeviceSession resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.devicestreaming.v1.DeviceSession
-type DeviceStreamingSessionObservedState struct {
+type DeviceStreamingDeviceSessionObservedState struct {
 	// Output only. The title of the DeviceSession to be presented in the UI.
 	DisplayName *string `json:"displayName,omitempty"`
 
@@ -91,32 +91,33 @@ type DeviceStreamingSessionObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdevicestreamingsession;gcpdevicestreamingsessions
+// +kubebuilder:resource:categories=gcp,shortName=gcpdevicestreamingdevicesession;gcpdevicestreamingdevicesessions
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// DeviceStreamingSession is the Schema for the DeviceStreamingSession API
+// DeviceStreamingDeviceSession is the Schema for the DeviceStreamingDeviceSession API
 // +k8s:openapi-gen=true
-type DeviceStreamingSession struct {
+type DeviceStreamingDeviceSession struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   DeviceStreamingSessionSpec   `json:"spec,omitempty"`
-	Status DeviceStreamingSessionStatus `json:"status,omitempty"`
+	Spec   DeviceStreamingDeviceSessionSpec   `json:"spec,omitempty"`
+	Status DeviceStreamingDeviceSessionStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// DeviceStreamingSessionList contains a list of DeviceStreamingSession
-type DeviceStreamingSessionList struct {
+// DeviceStreamingDeviceSessionList contains a list of DeviceStreamingDeviceSession
+type DeviceStreamingDeviceSessionList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DeviceStreamingSession `json:"items"`
+	Items           []DeviceStreamingDeviceSession `json:"items"`
 }
 
 // +kcc:proto=google.cloud.devicestreaming.v1.AndroidDevice
@@ -156,5 +157,5 @@ type DeviceSession_SessionStateEvent struct {
 }
 
 func init() {
-	SchemeBuilder.Register(&DeviceStreamingSession{}, &DeviceStreamingSessionList{})
+	SchemeBuilder.Register(&DeviceStreamingDeviceSession{}, &DeviceStreamingDeviceSessionList{})
 }

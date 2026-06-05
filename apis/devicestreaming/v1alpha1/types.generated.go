@@ -17,6 +17,6 @@
 // krm.group: devicestreaming.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.devicestreaming.v1
-// resource: DeviceStreamingSession:DeviceSession
+// resource: DeviceStreamingDeviceSession:DeviceSession
 
 package v1alpha1

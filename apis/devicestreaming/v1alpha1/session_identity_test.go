@@ -18,17 +18,17 @@ import (
 	"testing"
 )
 
-func TestDeviceStreamingSessionIdentity_FromExternal(t *testing.T) {
+func TestDeviceStreamingDeviceSessionIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
-		expected *DeviceStreamingSessionIdentity
+		expected *DeviceStreamingDeviceSessionIdentity
 		hasError bool
 	}{
 		{
 			name:  "Full resource name",
 			input: "projects/my-project/deviceSessions/my-session",
-			expected: &DeviceStreamingSessionIdentity{
+			expected: &DeviceStreamingDeviceSessionIdentity{
 				Project:       "my-project",
 				DeviceSession: "my-session",
 			},
@@ -37,7 +37,7 @@ func TestDeviceStreamingSessionIdentity_FromExternal(t *testing.T) {
 		{
 			name:  "Full resource name with host",
 			input: "devicestreaming.googleapis.com/projects/my-project/deviceSessions/my-session",
-			expected: &DeviceStreamingSessionIdentity{
+			expected: &DeviceStreamingDeviceSessionIdentity{
 				Project:       "my-project",
 				DeviceSession: "my-session",
 			},
@@ -53,7 +53,7 @@ func TestDeviceStreamingSessionIdentity_FromExternal(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			id := &DeviceStreamingSessionIdentity{}
+			id := &DeviceStreamingDeviceSessionIdentity{}
 			err := id.FromExternal(tc.input)
 			if tc.hasError {
 				if err == nil {

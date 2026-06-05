@@ -27,26 +27,26 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeDeviceStreamingSessions implements DeviceStreamingSessionInterface
-type fakeDeviceStreamingSessions struct {
-	*gentype.FakeClientWithList[*v1alpha1.DeviceStreamingSession, *v1alpha1.DeviceStreamingSessionList]
+// fakeDeviceStreamingDeviceSessions implements DeviceStreamingDeviceSessionInterface
+type fakeDeviceStreamingDeviceSessions struct {
+	*gentype.FakeClientWithList[*v1alpha1.DeviceStreamingDeviceSession, *v1alpha1.DeviceStreamingDeviceSessionList]
 	Fake *FakeDevicestreamingV1alpha1
 }
 
-func newFakeDeviceStreamingSessions(fake *FakeDevicestreamingV1alpha1, namespace string) devicestreamingv1alpha1.DeviceStreamingSessionInterface {
-	return &fakeDeviceStreamingSessions{
-		gentype.NewFakeClientWithList[*v1alpha1.DeviceStreamingSession, *v1alpha1.DeviceStreamingSessionList](
+func newFakeDeviceStreamingDeviceSessions(fake *FakeDevicestreamingV1alpha1, namespace string) devicestreamingv1alpha1.DeviceStreamingDeviceSessionInterface {
+	return &fakeDeviceStreamingDeviceSessions{
+		gentype.NewFakeClientWithList[*v1alpha1.DeviceStreamingDeviceSession, *v1alpha1.DeviceStreamingDeviceSessionList](
 			fake.Fake,
 			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("devicestreamingsessions"),
-			v1alpha1.SchemeGroupVersion.WithKind("DeviceStreamingSession"),
-			func() *v1alpha1.DeviceStreamingSession { return &v1alpha1.DeviceStreamingSession{} },
-			func() *v1alpha1.DeviceStreamingSessionList { return &v1alpha1.DeviceStreamingSessionList{} },
-			func(dst, src *v1alpha1.DeviceStreamingSessionList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DeviceStreamingSessionList) []*v1alpha1.DeviceStreamingSession {
+			v1alpha1.SchemeGroupVersion.WithResource("devicestreamingdevicesessions"),
+			v1alpha1.SchemeGroupVersion.WithKind("DeviceStreamingDeviceSession"),
+			func() *v1alpha1.DeviceStreamingDeviceSession { return &v1alpha1.DeviceStreamingDeviceSession{} },
+			func() *v1alpha1.DeviceStreamingDeviceSessionList { return &v1alpha1.DeviceStreamingDeviceSessionList{} },
+			func(dst, src *v1alpha1.DeviceStreamingDeviceSessionList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DeviceStreamingDeviceSessionList) []*v1alpha1.DeviceStreamingDeviceSession {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.DeviceStreamingSessionList, items []*v1alpha1.DeviceStreamingSession) {
+			func(list *v1alpha1.DeviceStreamingDeviceSessionList, items []*v1alpha1.DeviceStreamingDeviceSession) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),

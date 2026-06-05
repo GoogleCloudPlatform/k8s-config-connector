@@ -31,8 +31,8 @@ type FakeDevicestreamingV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeDevicestreamingV1alpha1) DeviceStreamingSessions(namespace string) v1alpha1.DeviceStreamingSessionInterface {
-	return newFakeDeviceStreamingSessions(c, namespace)
+func (c *FakeDevicestreamingV1alpha1) DeviceStreamingDeviceSessions(namespace string) v1alpha1.DeviceStreamingDeviceSessionInterface {
+	return newFakeDeviceStreamingDeviceSessions(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

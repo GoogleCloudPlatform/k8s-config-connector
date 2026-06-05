@@ -127,7 +127,7 @@ BLOCKED_KINDS=(
     "ContentWarehouseSchema"
     "DataLineageProcess"
     "DevConnectConnection"
-    "DeviceStreamingSession"
+    "DeviceStreamingDeviceSession"
     "BigQueryMigrationWorkflow"
     "CloudBatchResourceAllowance"
     "CloudAssetSavedQuery"

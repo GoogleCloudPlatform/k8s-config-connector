@@ -56,7 +56,7 @@ This file tracks the progress of new "Direct" resource implementations.
 | ContentWarehouseSchema | contentwarehouse | - | - | - | 0 | PLANNED |
 | DataLineageProcess | datalineage | - | - | - | 0 | PLANNED |
 | DevConnectConnection | developerconnect | - | - | - | 0 | PLANNED |
-| DeviceStreamingSession | devicestreaming | - | - | - | 0 | PLANNED |
+| DeviceStreamingDeviceSession | devicestreaming | - | - | - | 0 | PLANNED |
 | BigQueryMigrationWorkflow | bigquerymigration | - | - | - | 0 | PLANNED |
 | CloudBatchResourceAllowance | batch | - | - | - | 0 | PLANNED |
 | CloudAssetSavedQuery | cloudasset | - | - | - | 0 | PLANNED |

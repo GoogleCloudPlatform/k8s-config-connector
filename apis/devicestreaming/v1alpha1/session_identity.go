@@ -26,43 +26,43 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &DeviceStreamingSessionIdentity{}
-	_ identity.Resource   = &DeviceStreamingSession{}
+	_ identity.IdentityV2 = &DeviceStreamingDeviceSessionIdentity{}
+	_ identity.Resource   = &DeviceStreamingDeviceSession{}
 )
 
-var DeviceStreamingSessionIdentityFormat = gcpurls.Template[DeviceStreamingSessionIdentity]("devicestreaming.googleapis.com", "projects/{project}/deviceSessions/{devicesession}")
+var DeviceStreamingDeviceSessionIdentityFormat = gcpurls.Template[DeviceStreamingDeviceSessionIdentity]("devicestreaming.googleapis.com", "projects/{project}/deviceSessions/{devicesession}")
 
 // +k8s:deepcopy-gen=false
-type DeviceStreamingSessionIdentity struct {
+type DeviceStreamingDeviceSessionIdentity struct {
 	Project       string
 	DeviceSession string
 }
 
-func (i *DeviceStreamingSessionIdentity) String() string {
-	return DeviceStreamingSessionIdentityFormat.ToString(*i)
+func (i *DeviceStreamingDeviceSessionIdentity) String() string {
+	return DeviceStreamingDeviceSessionIdentityFormat.ToString(*i)
 }
 
-func (i *DeviceStreamingSessionIdentity) FromExternal(ref string) error {
-	parsed, match, err := DeviceStreamingSessionIdentityFormat.Parse(ref)
+func (i *DeviceStreamingDeviceSessionIdentity) FromExternal(ref string) error {
+	parsed, match, err := DeviceStreamingDeviceSessionIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of DeviceStreamingSession external=%q was not known (use %s): %w", ref, DeviceStreamingSessionIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of DeviceStreamingDeviceSession external=%q was not known (use %s): %w", ref, DeviceStreamingDeviceSessionIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of DeviceStreamingSession external=%q was not known (use %s)", ref, DeviceStreamingSessionIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of DeviceStreamingDeviceSession external=%q was not known (use %s)", ref, DeviceStreamingDeviceSessionIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *DeviceStreamingSessionIdentity) Host() string {
-	return DeviceStreamingSessionIdentityFormat.Host()
+func (i *DeviceStreamingDeviceSessionIdentity) Host() string {
+	return DeviceStreamingDeviceSessionIdentityFormat.Host()
 }
 
-func getIdentityFromDeviceStreamingSessionSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DeviceStreamingSessionIdentity, error) {
-	_, ok := obj.(*DeviceStreamingSession)
+func getIdentityFromDeviceStreamingDeviceSessionSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DeviceStreamingDeviceSessionIdentity, error) {
+	_, ok := obj.(*DeviceStreamingDeviceSession)
 	if !ok {
-		return nil, fmt.Errorf("object is not a DeviceStreamingSession")
+		return nil, fmt.Errorf("object is not a DeviceStreamingDeviceSession")
 	}
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
@@ -74,15 +74,15 @@ func getIdentityFromDeviceStreamingSessionSpec(ctx context.Context, reader clien
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
-	identity := &DeviceStreamingSessionIdentity{
+	identity := &DeviceStreamingDeviceSessionIdentity{
 		Project:       projectID,
 		DeviceSession: resourceID,
 	}
 	return identity, nil
 }
 
-func (obj *DeviceStreamingSession) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromDeviceStreamingSessionSpec(ctx, reader, obj)
+func (obj *DeviceStreamingDeviceSession) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromDeviceStreamingDeviceSessionSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -91,13 +91,13 @@ func (obj *DeviceStreamingSession) GetIdentity(ctx context.Context, reader clien
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &DeviceStreamingSessionIdentity{}
+		statusIdentity := &DeviceStreamingDeviceSessionIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DeviceStreamingSession identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change DeviceStreamingDeviceSession identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 
@@ -105,7 +105,7 @@ func (obj *DeviceStreamingSession) GetIdentity(ctx context.Context, reader clien
 }
 
 // ExternalIdentifier implements the identity.ExternalIdentifier interface.
-func (c *DeviceStreamingSession) ExternalIdentifier() *string {
+func (c *DeviceStreamingDeviceSession) ExternalIdentifier() *string {
 	if c.Status.ExternalRef != nil {
 		return c.Status.ExternalRef
 	}

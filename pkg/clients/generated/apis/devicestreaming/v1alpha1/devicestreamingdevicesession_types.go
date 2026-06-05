@@ -38,7 +38,7 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type SessionAndroidDevice struct {
+type DevicesessionAndroidDevice struct {
 	/* Required. The id of the Android device to be used. Use the TestEnvironmentDiscoveryService to get supported options. */
 	AndroidModelID string `json:"androidModelID"`
 
@@ -54,9 +54,9 @@ type SessionAndroidDevice struct {
 	Orientation *string `json:"orientation,omitempty"`
 }
 
-type DeviceStreamingSessionSpec struct {
+type DeviceStreamingDeviceSessionSpec struct {
 	/* Required. The requested device */
-	AndroidDevice SessionAndroidDevice `json:"androidDevice"`
+	AndroidDevice DevicesessionAndroidDevice `json:"androidDevice"`
 
 	/* Optional. If the device is still in use at this time, any connections will be ended and the SessionState will transition from ACTIVE to FINISHED. */
 	// +optional
@@ -65,7 +65,7 @@ type DeviceStreamingSessionSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The DeviceStreamingSession name. If not given, the metadata.name will be used. */
+	/* The DeviceStreamingDeviceSession name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -74,7 +74,7 @@ type DeviceStreamingSessionSpec struct {
 	Ttl *string `json:"ttl,omitempty"`
 }
 
-type SessionObservedStateStatus struct {
+type DevicesessionObservedStateStatus struct {
 	/* Output only. The timestamp that the session first became ACTIVE. */
 	// +optional
 	ActiveStartTime *string `json:"activeStartTime,omitempty"`
@@ -97,10 +97,10 @@ type SessionObservedStateStatus struct {
 
 	/* Output only. The historical state transitions of the session_state message including the current session state. */
 	// +optional
-	StateHistories []SessionStateHistoriesStatus `json:"stateHistories,omitempty"`
+	StateHistories []DevicesessionStateHistoriesStatus `json:"stateHistories,omitempty"`
 }
 
-type SessionStateHistoriesStatus struct {
+type DevicesessionStateHistoriesStatus struct {
 	/* Output only. The time that the session_state first encountered that state. */
 	// +optional
 	EventTime *string `json:"eventTime,omitempty"`
@@ -114,11 +114,11 @@ type SessionStateHistoriesStatus struct {
 	StateMessage *string `json:"stateMessage,omitempty"`
 }
 
-type DeviceStreamingSessionStatus struct {
+type DeviceStreamingDeviceSessionStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DeviceStreamingSession's current state. */
+	   DeviceStreamingDeviceSession's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DeviceStreamingSession resource in GCP. */
+	/* A unique specifier for the DeviceStreamingDeviceSession resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -128,39 +128,40 @@ type DeviceStreamingSessionStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *SessionObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *DevicesessionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdevicestreamingsession;gcpdevicestreamingsessions
+// +kubebuilder:resource:categories=gcp,shortName=gcpdevicestreamingdevicesession;gcpdevicestreamingdevicesessions
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// DeviceStreamingSession is the Schema for the devicestreaming API
+// DeviceStreamingDeviceSession is the Schema for the devicestreaming API
 // +k8s:openapi-gen=true
-type DeviceStreamingSession struct {
+type DeviceStreamingDeviceSession struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DeviceStreamingSessionSpec   `json:"spec,omitempty"`
-	Status DeviceStreamingSessionStatus `json:"status,omitempty"`
+	Spec   DeviceStreamingDeviceSessionSpec   `json:"spec,omitempty"`
+	Status DeviceStreamingDeviceSessionStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// DeviceStreamingSessionList contains a list of DeviceStreamingSession
-type DeviceStreamingSessionList struct {
+// DeviceStreamingDeviceSessionList contains a list of DeviceStreamingDeviceSession
+type DeviceStreamingDeviceSessionList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DeviceStreamingSession `json:"items"`
+	Items           []DeviceStreamingDeviceSession `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&DeviceStreamingSession{}, &DeviceStreamingSessionList{})
+	SchemeBuilder.Register(&DeviceStreamingDeviceSession{}, &DeviceStreamingDeviceSessionList{})
 }

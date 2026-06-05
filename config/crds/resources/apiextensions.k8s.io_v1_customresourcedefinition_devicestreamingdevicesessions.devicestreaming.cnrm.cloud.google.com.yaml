@@ -8,20 +8,21 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: devicestreamingsessions.devicestreaming.cnrm.cloud.google.com
+  name: devicestreamingdevicesessions.devicestreaming.cnrm.cloud.google.com
 spec:
   group: devicestreaming.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: DeviceStreamingSession
-    listKind: DeviceStreamingSessionList
-    plural: devicestreamingsessions
+    kind: DeviceStreamingDeviceSession
+    listKind: DeviceStreamingDeviceSessionList
+    plural: devicestreamingdevicesessions
     shortNames:
-    - gcpdevicestreamingsession
-    - gcpdevicestreamingsessions
-    singular: devicestreamingsession
+    - gcpdevicestreamingdevicesession
+    - gcpdevicestreamingdevicesessions
+    singular: devicestreamingdevicesession
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -44,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: DeviceStreamingSession is the Schema for the DeviceStreamingSession
+        description: DeviceStreamingDeviceSession is the Schema for the DeviceStreamingDeviceSession
           API
         properties:
           apiVersion:
@@ -60,7 +61,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: DeviceStreamingSessionSpec defines the desired state of DeviceStreamingSession
+            description: DeviceStreamingDeviceSessionSpec defines the desired state
+              of DeviceStreamingDeviceSession
             properties:
               androidDevice:
                 description: Required. The requested device
@@ -124,8 +126,8 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The DeviceStreamingSession name. If not given, the metadata.name
-                  will be used.
+                description: The DeviceStreamingDeviceSession name. If not given,
+                  the metadata.name will be used.
                 type: string
               ttl:
                 description: 'Optional. The amount of time that a device will be initially
@@ -137,8 +139,8 @@ spec:
             - projectRef
             type: object
           status:
-            description: DeviceStreamingSessionStatus defines the config connector
-              machine state of DeviceStreamingSession
+            description: DeviceStreamingDeviceSessionStatus defines the config connector
+              machine state of DeviceStreamingDeviceSession
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -167,8 +169,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the DeviceStreamingSession resource
-                  in GCP.
+                description: A unique specifier for the DeviceStreamingDeviceSession
+                  resource in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
