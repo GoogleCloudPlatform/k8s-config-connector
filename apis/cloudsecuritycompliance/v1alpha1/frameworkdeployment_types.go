@@ -22,7 +22,7 @@ import (
 
 var CloudSecurityComplianceFrameworkDeploymentGVK = GroupVersion.WithKind("CloudSecurityComplianceFrameworkDeployment")
 
-type CloudControlObservedState = CloudSecurityComplianceCloudControlObservedState
+type CloudControlObservedState CloudSecurityComplianceCloudControlObservedState
 
 // CloudSecurityComplianceFrameworkDeploymentSpec defines the desired state of CloudSecurityComplianceFrameworkDeployment
 // +kcc:spec:proto=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment

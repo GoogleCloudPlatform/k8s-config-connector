@@ -141,7 +141,7 @@ func (in *CloudControlDeploymentObservedState) DeepCopyInto(out *CloudControlDep
 	}
 	if in.ParameterSubstitutedCloudControl != nil {
 		in, out := &in.ParameterSubstitutedCloudControl, &out.ParameterSubstitutedCloudControl
-		*out = new(CloudSecurityComplianceCloudControlObservedState)
+		*out = new(CloudControlObservedState)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.FrameworkDeploymentReferences != nil {
