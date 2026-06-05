@@ -261,6 +261,332 @@ X-Xss-Protection: 0
 
 ---
 
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/dataproc.worker"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/storage.admin"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
@@ -998,6 +1324,12 @@ X-Xss-Protection: 0
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/dataproc.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1033,6 +1365,12 @@ X-Xss-Protection: 0
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/dataproc.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1047,6 +1385,14 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 {
   "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/storage.admin"
+      }
+    ],
     "etag": "abcdef0123A=",
     "version": 1
   },
@@ -1064,6 +1410,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
@@ -1091,6 +1445,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
@@ -1118,6 +1480,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
@@ -1145,6 +1515,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
@@ -1172,6 +1550,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
   "etag": "abcdef0123A=",
   "version": 1
 }

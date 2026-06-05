@@ -26,3 +26,18 @@ spec:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     external: projects/${projectId}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-storage-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  member: serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com
+  role: roles/storage.admin
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/${projectId}
