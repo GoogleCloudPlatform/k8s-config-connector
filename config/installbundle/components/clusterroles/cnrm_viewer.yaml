@@ -631,6 +631,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - enterpriseknowledgegraph.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - essentialcontacts.cnrm.cloud.google.com
   resources:
   - '*'
