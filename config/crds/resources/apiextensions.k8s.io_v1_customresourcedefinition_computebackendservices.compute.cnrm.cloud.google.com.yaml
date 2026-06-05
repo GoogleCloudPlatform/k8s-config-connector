@@ -527,11 +527,11 @@ spec:
                           resource.
                         type: string
                       name:
-                        description: The name field of a IAPIdentityAwareProxyClient
+                        description: The name field of an IAPIdentityAwareProxyClient
                           resource.
                         type: string
                       namespace:
-                        description: The namespace field of a IAPIdentityAwareProxyClient
+                        description: The namespace field of an IAPIdentityAwareProxyClient
                           resource.
                         type: string
                     type: object

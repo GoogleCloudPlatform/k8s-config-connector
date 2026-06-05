@@ -17,8 +17,8 @@ package v1beta1
 type IAPOAuth2ClientIDRef struct {
 	/* A reference to an externally managed IAPIdentityAwareProxyClient resource. */
 	External string `json:"external,omitempty"`
-	/* The name field of a IAPIdentityAwareProxyClient resource. */
+	/* The name field of an IAPIdentityAwareProxyClient resource. */
 	Name string `json:"name,omitempty"`
-	/* The namespace field of a IAPIdentityAwareProxyClient resource. */
+	/* The namespace field of an IAPIdentityAwareProxyClient resource. */
 	Namespace string `json:"namespace,omitempty"`
 }

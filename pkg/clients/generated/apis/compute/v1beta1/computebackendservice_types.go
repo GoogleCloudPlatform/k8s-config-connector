@@ -39,6 +39,14 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type BackendserviceBackend struct {
+	/* Specifies the balancing mode for this backend.
+
+	For global HTTP(S) or TCP/SSL load balancing, the default is
+	UTILIZATION. Valid values are UTILIZATION, RATE (for HTTP(S))
+	and CONNECTION (for TCP/SSL).
+
+	See the [Backend Services Overview](https://cloud.google.com/load-balancing/docs/backend-service#balancing-mode)
+	for an explanation of load balancing modes. Default value: "UTILIZATION" Possible values: ["UTILIZATION", "RATE", "CONNECTION"]. */
 	// +optional
 	BalancingMode *string `json:"balancingMode,omitempty"`
 
@@ -76,6 +84,7 @@ type BackendserviceBackend struct {
 }
 
 type BackendserviceBaseEjectionTime struct {
+	/* Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
 	Nanos *int64 `json:"nanos,omitempty"`
 
@@ -83,10 +92,12 @@ type BackendserviceBaseEjectionTime struct {
 }
 
 type BackendserviceBypassCacheOnRequestHeaders struct {
+	/* The header field name to match on when bypassing cache. Values are case-insensitive. */
 	HeaderName string `json:"headerName"`
 }
 
 type BackendserviceCacheKeyPolicy struct {
+	/* If true requests to different hosts will be cached separately. */
 	// +optional
 	IncludeHost *bool `json:"includeHost,omitempty"`
 
@@ -110,6 +121,7 @@ type BackendserviceCacheKeyPolicy struct {
 }
 
 type BackendserviceCdnPolicy struct {
+	/* Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings. */
 	// +optional
 	BypassCacheOnRequestHeaders []BackendserviceBypassCacheOnRequestHeaders `json:"bypassCacheOnRequestHeaders,omitempty"`
 
@@ -142,6 +154,7 @@ type BackendserviceCdnPolicy struct {
 }
 
 type BackendserviceCircuitBreakers struct {
+	/* The timeout for new network connections to hosts. */
 	// +optional
 	ConnectTimeout *BackendserviceConnectTimeout `json:"connectTimeout,omitempty"`
 
@@ -162,6 +175,7 @@ type BackendserviceCircuitBreakers struct {
 }
 
 type BackendserviceConnectTimeout struct {
+	/* Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
 	Nanos *int64 `json:"nanos,omitempty"`
 
@@ -169,6 +183,22 @@ type BackendserviceConnectTimeout struct {
 }
 
 type BackendserviceConnectionTrackingPolicy struct {
+	/* Specifies connection persistence when backends are unhealthy.
+
+	If set to 'DEFAULT_FOR_PROTOCOL', the existing connections persist on
+	unhealthy backends only for connection-oriented protocols (TCP and SCTP)
+	and only if the Tracking Mode is PER_CONNECTION (default tracking mode)
+	or the Session Affinity is configured for 5-tuple. They do not persist
+	for UDP.
+
+	If set to 'NEVER_PERSIST', after a backend becomes unhealthy, the existing
+	connections on the unhealthy backend are never persisted on the unhealthy
+	backend. They are always diverted to newly selected healthy backends
+	(unless all backends are unhealthy).
+
+	If set to 'ALWAYS_PERSIST', existing connections always persist on
+	unhealthy backends regardless of protocol and session affinity. It is
+	generally not recommended to use this mode overriding the default. Default value: "DEFAULT_FOR_PROTOCOL" Possible values: ["DEFAULT_FOR_PROTOCOL", "NEVER_PERSIST", "ALWAYS_PERSIST"]. */
 	// +optional
 	ConnectionPersistenceOnUnhealthyBackends *string `json:"connectionPersistenceOnUnhealthyBackends,omitempty"`
 
@@ -183,6 +213,7 @@ type BackendserviceConnectionTrackingPolicy struct {
 }
 
 type BackendserviceConsistentHash struct {
+	/* Hash is based on HTTP Cookie. This field describes a HTTP cookie that will be used as the hash key for the consistent hash load balancer. If the cookie is not present, it will be generated. This field is applicable if the sessionAffinity is set to HTTP_COOKIE. */
 	// +optional
 	HttpCookie *BackendserviceHttpCookie `json:"httpCookie,omitempty"`
 
@@ -194,6 +225,7 @@ type BackendserviceConsistentHash struct {
 }
 
 type BackendserviceCustomPolicy struct {
+	/* An optional, arbitrary JSON object with configuration data, understood by a locally installed custom policy implementation. */
 	// +optional
 	Data *string `json:"data,omitempty"`
 
@@ -201,6 +233,7 @@ type BackendserviceCustomPolicy struct {
 }
 
 type BackendserviceFailoverPolicy struct {
+	/* On failover or failback, this field indicates whether connection drain will be honored. Setting this to true has the following effect: connections to the old active pool are not drained. Connections to the new active pool use the timeout of 10 min (currently fixed). Setting to false has the following effect: both old and new connections will have a drain timeout of 10 min. This can be set to true only if the protocol is TCP. The default is false. */
 	// +optional
 	DisableConnectionDrainOnFailover *bool `json:"disableConnectionDrainOnFailover,omitempty"`
 
@@ -228,6 +261,41 @@ type BackendserviceHealthChecks struct {
 }
 
 type BackendserviceHttpCookie struct {
+	/* The name of a locality load balancer policy to be used. The value
+	should be one of the predefined ones as supported by localityLbPolicy,
+	although at the moment only ROUND_ROBIN is supported.
+
+	This field should only be populated when the customPolicy field is not
+	used.
+
+	Note that specifying the same policy more than once for a backend is
+	not a valid configuration and will be rejected.
+
+	The possible values are:
+
+	* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
+	is selected in round robin order.
+
+	* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
+	hosts and picks the host which has fewer active requests.
+
+	* 'RING_HASH': The ring/modulo hash load balancer implements consistent
+	hashing to backends. The algorithm has the property that the
+	addition/removal of a host from a set of N hosts only affects
+	1/N of the requests.
+
+	* 'RANDOM': The load balancer selects a random healthy host.
+
+	* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
+	connection metadata, i.e., connections are opened
+	to the same address as the destination address of
+	the incoming connection before the connection
+	was redirected to the load balancer.
+
+	* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
+	Maglev is not as stable as ring hash but has faster table lookup
+	build times and host selection times. For more information about
+	Maglev, refer to https://ai.google/research/pubs/pub44824 Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
@@ -239,6 +307,7 @@ type BackendserviceHttpCookie struct {
 }
 
 type BackendserviceIap struct {
+	/* DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.iap.oauth2ClientIdRef` instead. */
 	// +optional
 	Oauth2ClientId *string `json:"oauth2ClientId,omitempty"`
 
@@ -253,6 +322,7 @@ type BackendserviceIap struct {
 }
 
 type BackendserviceInterval struct {
+	/* Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
 	Nanos *int64 `json:"nanos,omitempty"`
 
@@ -260,6 +330,7 @@ type BackendserviceInterval struct {
 }
 
 type BackendserviceLocalityLbPolicies struct {
+	/* The configuration for a custom policy implemented by the user and deployed with the client. */
 	// +optional
 	CustomPolicy *BackendserviceCustomPolicy `json:"customPolicy,omitempty"`
 
@@ -268,6 +339,7 @@ type BackendserviceLocalityLbPolicies struct {
 }
 
 type BackendserviceLogConfig struct {
+	/* Whether to enable logging for the load balancer traffic served by this backend service. */
 	// +optional
 	Enable *bool `json:"enable,omitempty"`
 
@@ -276,6 +348,7 @@ type BackendserviceLogConfig struct {
 }
 
 type BackendserviceNegativeCachingPolicy struct {
+	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501 can be specified as values, and you cannot specify a status code more than once. */
 	// +optional
 	Code *int64 `json:"code,omitempty"`
 
@@ -284,6 +357,7 @@ type BackendserviceNegativeCachingPolicy struct {
 }
 
 type BackendserviceOauth2ClientSecret struct {
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 
@@ -292,6 +366,7 @@ type BackendserviceOauth2ClientSecret struct {
 }
 
 type BackendserviceOutlierDetection struct {
+	/* The base time that a host is ejected for. The real time is equal to the base time multiplied by the number of times the host has been ejected. Defaults to 30000ms or 30s. */
 	// +optional
 	BaseEjectionTime *BackendserviceBaseEjectionTime `json:"baseEjectionTime,omitempty"`
 
@@ -327,20 +402,58 @@ type BackendserviceOutlierDetection struct {
 }
 
 type BackendservicePolicy struct {
+	/* The name of a locality load balancer policy to be used. The value
+	should be one of the predefined ones as supported by localityLbPolicy,
+	although at the moment only ROUND_ROBIN is supported.
+
+	This field should only be populated when the customPolicy field is not
+	used.
+
+	Note that specifying the same policy more than once for a backend is
+	not a valid configuration and will be rejected.
+
+	The possible values are:
+
+	* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
+	is selected in round robin order.
+
+	* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
+	hosts and picks the host which has fewer active requests.
+
+	* 'RING_HASH': The ring/modulo hash load balancer implements consistent
+	hashing to backends. The algorithm has the property that the
+	addition/removal of a host from a set of N hosts only affects
+	1/N of the requests.
+
+	* 'RANDOM': The load balancer selects a random healthy host.
+
+	* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
+	connection metadata, i.e., connections are opened
+	to the same address as the destination address of
+	the incoming connection before the connection
+	was redirected to the load balancer.
+
+	* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
+	Maglev is not as stable as ring hash but has faster table lookup
+	build times and host selection times. For more information about
+	Maglev, refer to https://ai.google/research/pubs/pub44824 Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]. */
 	Name string `json:"name"`
 }
 
 type BackendserviceSecuritySettings struct {
+	/* ClientTlsPolicy is a resource that specifies how a client should authenticate connections to backends of a service. This resource itself does not affect configuration unless it is attached to a backend service resource. */
 	ClientTLSPolicyRef v1alpha1.ResourceRef `json:"clientTLSPolicyRef"`
 
 	SubjectAltNames []string `json:"subjectAltNames"`
 }
 
 type BackendserviceSubsetting struct {
+	/* The algorithm used for subsetting. Possible values: ["CONSISTENT_HASH_SUBSETTING"]. */
 	Policy string `json:"policy"`
 }
 
 type BackendserviceTtl struct {
+	/* Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
 	Nanos *int64 `json:"nanos,omitempty"`
 
@@ -348,11 +461,18 @@ type BackendserviceTtl struct {
 }
 
 type BackendserviceValueFrom struct {
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
 	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeBackendServiceSpec struct {
+	/* Lifetime of cookies in seconds if session_affinity is
+	GENERATED_COOKIE. If set to 0, the cookie is non-persistent and lasts
+	only until the end of the browser session (or equivalent). The
+	maximum allowed value for TTL is one day.
+
+	When the load balancing scheme is INTERNAL, this field is not used. */
 	// +optional
 	AffinityCookieTtlSec *int64 `json:"affinityCookieTtlSec,omitempty"`
 
@@ -459,6 +579,7 @@ type ComputeBackendServiceStatus struct {
 	// +optional
 	Fingerprint *string `json:"fingerprint,omitempty"`
 
+	/* The unique identifier for the resource. This identifier is defined by the server. */
 	// +optional
 	GeneratedId *int64 `json:"generatedId,omitempty"`
 
