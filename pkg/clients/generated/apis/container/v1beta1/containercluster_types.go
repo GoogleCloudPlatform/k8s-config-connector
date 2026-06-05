@@ -1257,6 +1257,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	NetworkPolicy *ClusterNetworkPolicy `json:"networkPolicy,omitempty"`
 
+	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
