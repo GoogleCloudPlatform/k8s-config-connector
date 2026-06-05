@@ -35,6 +35,7 @@ type DataprocV1alpha1Interface interface {
 	DataprocJobsGetter
 	DataprocNodeGroupsGetter
 	DataprocSessionsGetter
+	DataprocSessionTemplatesGetter
 }
 
 // DataprocV1alpha1Client is used to interact with features provided by the dataproc.cnrm.cloud.google.com group.
@@ -56,6 +57,10 @@ func (c *DataprocV1alpha1Client) DataprocNodeGroups(namespace string) DataprocNo
 
 func (c *DataprocV1alpha1Client) DataprocSessions(namespace string) DataprocSessionInterface {
 	return newDataprocSessions(c, namespace)
+}
+
+func (c *DataprocV1alpha1Client) DataprocSessionTemplates(namespace string) DataprocSessionTemplateInterface {
+	return newDataprocSessionTemplates(c, namespace)
 }
 
 // NewForConfig creates a new DataprocV1alpha1Client for the given config.
