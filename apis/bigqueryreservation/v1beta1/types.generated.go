@@ -27,25 +27,31 @@ package v1beta1
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
 type Assignment struct {
 
-	// The resource which will use the reservation. E.g.
+	// Optional. The resource which will use the reservation. E.g.
 	//  `projects/myproject`, `folders/123`, or `organizations/456`.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.assignee
 	Assignee *string `json:"assignee,omitempty"`
 
-	// Which type of jobs will use the reservation.
+	// Optional. Which type of jobs will use the reservation.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.job_type
 	JobType *string `json:"jobType,omitempty"`
 
-	// Optional. This field controls if "Gemini in BigQuery"
+	// Optional. Deprecated: "Gemini in BigQuery" is now available by
+	//  default for all BigQuery editions and should not be explicitly set.
+	//  Controls if "Gemini in BigQuery"
 	//  (https://cloud.google.com/gemini/docs/bigquery/overview) features should be
-	//  enabled for this reservation assignment, which is not on by default.
-	//  "Gemini in BigQuery" has a distinct compliance posture from BigQuery.  If
-	//  this field is set to true, the assignment job type is QUERY, and
-	//  the parent reservation edition is ENTERPRISE_PLUS, then the assignment will
-	//  give the grantee project/organization access to "Gemini in BigQuery"
-	//  features.
+	//  enabled for this reservation assignment.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.enable_gemini_in_bigquery
 	EnableGeminiInBigquery *bool `json:"enableGeminiInBigquery,omitempty"`
+
+	// Optional. The scheduling policy to use for jobs and queries of this
+	//  assignee when running under the associated reservation. The scheduling
+	//  policy controls how the reservation's resources are distributed. This
+	//  overrides the default scheduling policy specified on the reservation.
+	//
+	//  This feature is not yet generally available.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.scheduling_policy
+	SchedulingPolicy *SchedulingPolicy `json:"schedulingPolicy,omitempty"`
 }
 */
 
@@ -53,7 +59,7 @@ type Assignment struct {
 
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation
 type Reservation struct {
-	// The resource name of the reservation, e.g.,
+	// Identifier. The resource name of the reservation, e.g.,
 	//  `projects/* /locations/* /reservations/team1-prod`.
 	//  The reservation_id must only contain lower case alphanumeric characters or
 	//  dashes. It must start with a letter and must not end with a dash. Its
@@ -61,7 +67,7 @@ type Reservation struct {
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.name
 	Name *string `json:"name,omitempty"`
 
-	// Baseline slots available to this reservation. A slot is a unit of
+	// Optional. Baseline slots available to this reservation. A slot is a unit of
 	//  computational power in BigQuery, and serves as the unit of parallelism.
 	//
 	//  Queries using this reservation might use more slots during runtime if
@@ -78,25 +84,24 @@ type Reservation struct {
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.slot_capacity
 	SlotCapacity *int64 `json:"slotCapacity,omitempty"`
 
-	// If false, any query or pipeline job using this reservation will use idle
-	//  slots from other reservations within the same admin project. If true, a
-	//  query or pipeline job using this reservation will execute with the slot
-	//  capacity specified in the slot_capacity field at most.
+	// Optional. If false, any query or pipeline job using this reservation will
+	//  use idle slots from other reservations within the same admin project. If
+	//  true, a query or pipeline job using this reservation will execute with the
+	//  slot capacity specified in the slot_capacity field at most.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ignore_idle_slots
 	IgnoreIdleSlots *bool `json:"ignoreIdleSlots,omitempty"`
 
-	// The configuration parameters for the auto scaling feature.
+	// Optional. The configuration parameters for the auto scaling feature.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.autoscale
 	Autoscale *Reservation_Autoscale `json:"autoscale,omitempty"`
 
-	// Job concurrency target which sets a soft upper bound on the number of jobs
-	//  that can run concurrently in this reservation. This is a soft target due to
-	//  asynchronous nature of the system and various optimizations for small
-	//  queries.
-	//  Default value is 0 which means that concurrency target will be
-	//  automatically computed by the system.
-	//  NOTE: this field is exposed as target job concurrency in the Information
-	//  Schema, DDL and BigQuery CLI.
+	// Optional. Job concurrency target which sets a soft upper bound on the
+	//  number of jobs that can run concurrently in this reservation. This is a
+	//  soft target due to asynchronous nature of the system and various
+	//  optimizations for small queries. Default value is 0 which means that
+	//  concurrency target will be automatically computed by the system. NOTE: this
+	//  field is exposed as target job concurrency in the Information Schema, DDL
+	//  and BigQuery CLI.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.concurrency
 	Concurrency *int64 `json:"concurrency,omitempty"`
 
@@ -112,7 +117,7 @@ type Reservation struct {
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.multi_region_auxiliary
 	MultiRegionAuxiliary *bool `json:"multiRegionAuxiliary,omitempty"`
 
-	// Edition of the reservation.
+	// Optional. Edition of the reservation.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.edition
 	Edition *string `json:"edition,omitempty"`
 
@@ -134,10 +139,13 @@ type Reservation struct {
 	//  will never exceed the max_slots - baseline.
 	//
 	//
-	//  This field must be set together with the scaling_mode enum value.
+	//  This field must be set together with the scaling_mode enum value,
+	//  otherwise the request will be rejected with error code
+	//  `google.rpc.Code.INVALID_ARGUMENT`.
 	//
 	//  If the max_slots and scaling_mode are set, the autoscale or
-	//  autoscale.max_slots field must be unset. However, the
+	//  autoscale.max_slots field must be unset. Otherwise the request will be
+	//  rejected with error code `google.rpc.Code.INVALID_ARGUMENT`. However, the
 	//  autoscale field may still be in the output. The autopscale.max_slots will
 	//  always show as 0 and the autoscaler.current_slots will represent the
 	//  current slots from autoscaler excluding idle slots.
@@ -154,12 +162,14 @@ type Reservation struct {
 	//
 	//  If the max_slots and scaling_mode are set, then the ignore_idle_slots field
 	//  must be aligned with the scaling_mode enum value.(See details in
-	//  ScalingMode comments).
+	//  ScalingMode comments). Otherwise the request will be rejected with
+	//  error code `google.rpc.Code.INVALID_ARGUMENT`.
 	//
 	//  Please note,  the max_slots is for user to manage the part of slots greater
 	//  than the baseline. Therefore, we don't allow users to set max_slots smaller
 	//  or equal to the baseline as it will not be meaningful. If the field is
-	//  present and slot_capacity>=max_slots.
+	//  present and slot_capacity>=max_slots, requests will be rejected with error
+	//  code `google.rpc.Code.INVALID_ARGUMENT`.
 	//
 	//  Please note that if max_slots is set to 0, we will treat it as unset.
 	//  Customers can set max_slots to 0 and set scaling_mode to
@@ -168,9 +178,33 @@ type Reservation struct {
 	MaxSlots *int64 `json:"maxSlots,omitempty"`
 
 	// Optional. The scaling mode for the reservation.
-	//  If the field is present but max_slots is not present.
+	//  If the field is present but max_slots is not present, requests will be
+	//  rejected with error code `google.rpc.Code.INVALID_ARGUMENT`.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.scaling_mode
 	ScalingMode *string `json:"scalingMode,omitempty"`
+
+	// Optional. The labels associated with this reservation. You can use these
+	//  to organize and group your reservations.
+	//  You can set this property when you create or update a reservation.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. The reservation group that this reservation belongs to.
+	//  You can set this property when you create or update a reservation.
+	//  Reservations do not need to belong to a reservation group.
+	//  Format:
+	//  projects/{project}/locations/{location}/reservationGroups/{reservation_group}
+	//  or just {reservation_group}
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.reservation_group
+	ReservationGroup *string `json:"reservationGroup,omitempty"`
+
+	// Optional. The scheduling policy to use for jobs and queries running under
+	//  this reservation. The scheduling policy controls how the reservation's
+	//  resources are distributed.
+	//
+	//  This feature is not yet generally available.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.scheduling_policy
+	SchedulingPolicy *SchedulingPolicy `json:"schedulingPolicy,omitempty"`
 }
 */
 
@@ -179,7 +213,7 @@ type Reservation struct {
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.Autoscale
 type Reservation_Autoscale struct {
 
-	// Number of slots to be scaled when needed.
+	// Optional. Number of slots to be scaled when needed.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.Autoscale.max_slots
 	MaxSlots *int64 `json:"maxSlots,omitempty"`
 }
@@ -188,6 +222,27 @@ type Reservation_Autoscale struct {
 /* unreachable type Reservation_ReplicationStatus
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
 type Reservation_ReplicationStatus struct {
+}
+*/
+
+/* unreachable type SchedulingPolicy
+// +kcc:proto=google.cloud.bigquery.reservation.v1.SchedulingPolicy
+type SchedulingPolicy struct {
+	// Optional. If present and > 0, the reservation will attempt to limit the
+	//  concurrency of jobs running for any particular project within it to the
+	//  given value.
+	//
+	//  This feature is not yet generally available.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy.concurrency
+	Concurrency *int64 `json:"concurrency,omitempty"`
+
+	// Optional. If present and > 0, the reservation will attempt to limit the
+	//  slot consumption of queries running for any particular project within it to
+	//  the given value.
+	//
+	//  This feature is not yet generally available.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy.max_slots
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
 }
 */
 
@@ -212,7 +267,7 @@ type AssignmentObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.Reservation
 type ReservationObservedState struct {
-	// The configuration parameters for the auto scaling feature.
+	// Optional. The configuration parameters for the auto scaling feature.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.autoscale
 	Autoscale *Reservation_AutoscaleObservedState `json:"autoscale,omitempty"`
 
@@ -282,5 +337,13 @@ type Reservation_ReplicationStatusObservedState struct {
 	//  that was successfully replicated to the secondary.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.last_replication_time
 	LastReplicationTime *string `json:"lastReplicationTime,omitempty"`
+
+	// Output only. The time at which a soft failover for the reservation and
+	//  its associated datasets was initiated. After this field is set, all
+	//  subsequent changes to the reservation will be rejected unless a hard
+	//  failover overrides this operation. This field will be cleared once the
+	//  failover is complete.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.soft_failover_start_time
+	SoftFailoverStartTime *string `json:"softFailoverStartTime,omitempty"`
 }
 */

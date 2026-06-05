@@ -39,23 +39,23 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type CloudcontrolAllowedValues struct {
-	/* Required. List of allowed values for the parameter. */
+	/* Required. The list of allowed values for the parameter. */
 	// +optional
 	Values []CloudcontrolValues `json:"values,omitempty"`
 }
 
 type CloudcontrolAttributeSubstitutionRule struct {
-	/* Fully qualified proto attribute path (in dot notation). Example: rules[0].cel_expression.resource_types_values */
+	/* The fully qualified proto attribute path, in dot notation. For example: `rules[0].cel_expression.resource_types_values` */
 	// +optional
 	Attribute *string `json:"attribute,omitempty"`
 }
 
 type CloudcontrolCelExpression struct {
-	/* Required. Logic expression in CEL language. The max length of the condition is 1000 characters. */
+	/* Required. The logical expression in CEL. The maximum length of the condition is 1000 characters. For more information, see [CEL expression](https://cloud.google.com/security-command-center/docs/compliance-manager-write-cel-expressions). */
 	// +optional
 	Expression *string `json:"expression,omitempty"`
 
-	/* The resource instance types on which this expression is defined. Format will be of the form : `<canonical service name>/<type>` Example: `compute.googleapis.com/Instance`. */
+	/* The resource instance types on which this expression is defined. The format is `<SERVICE_NAME>/<type>`. For example: `compute.googleapis.com/Instance` */
 	// +optional
 	ResourceTypesValues *CloudcontrolResourceTypesValues `json:"resourceTypesValues,omitempty"`
 }
@@ -83,11 +83,11 @@ type CloudcontrolDefaultValue struct {
 }
 
 type CloudcontrolIntRange struct {
-	/* Required. Maximum allowed value for the numeric parameter (inclusive). */
+	/* Required. The maximum permitted value for the numeric parameter (inclusive). */
 	// +optional
 	Max *int64 `json:"max,omitempty"`
 
-	/* Required. Minimum allowed value for the numeric parameter (inclusive). */
+	/* Required. The minimum permitted value for the numeric parameter (inclusive). */
 	// +optional
 	Min *int64 `json:"min,omitempty"`
 }
@@ -144,13 +144,13 @@ type CloudcontrolParameterValue struct {
 }
 
 type CloudcontrolPlaceholderSubstitutionRule struct {
-	/* Fully qualified proto attribute path (e.g., dot notation) */
+	/* The fully qualified proto attribute path, in dot notation. */
 	// +optional
 	Attribute *string `json:"attribute,omitempty"`
 }
 
 type CloudcontrolRegexpPattern struct {
-	/* Required. Regex Pattern to match the value(s) of parameter. */
+	/* Required. The regex pattern to match the values of the parameter with. */
 	// +optional
 	Pattern *string `json:"pattern,omitempty"`
 }
@@ -162,15 +162,15 @@ type CloudcontrolResourceTypesValues struct {
 }
 
 type CloudcontrolRules struct {
-	/* Logic expression in CEL language. */
+	/* The rule's logic expression in Common Expression Language (CEL). */
 	// +optional
 	CelExpression *CloudcontrolCelExpression `json:"celExpression,omitempty"`
 
-	/* Optional. Description of the Rule. The maximum length is 2000 characters. */
+	/* Optional. The rule description. The maximum length is 2000 characters. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Required. The functionality enabled by the Rule. */
+	/* Required. The functionality that's enabled by the rule. */
 	// +optional
 	RuleActionTypes []string `json:"ruleActionTypes,omitempty"`
 }
@@ -216,25 +216,25 @@ type CloudcontrolSubParameters struct {
 }
 
 type CloudcontrolSubstitutionRules struct {
-	/* Attribute substitution rule. */
+	/* The attribute substitution rule. */
 	// +optional
 	AttributeSubstitutionRule *CloudcontrolAttributeSubstitutionRule `json:"attributeSubstitutionRule,omitempty"`
 
-	/* Placeholder substitution rule. */
+	/* The placeholder substitution rule. */
 	// +optional
 	PlaceholderSubstitutionRule *CloudcontrolPlaceholderSubstitutionRule `json:"placeholderSubstitutionRule,omitempty"`
 }
 
 type CloudcontrolValidation struct {
-	/* Allowed set of values for the parameter. */
+	/* The permitted set of values for the parameter. */
 	// +optional
 	AllowedValues *CloudcontrolAllowedValues `json:"allowedValues,omitempty"`
 
-	/* Allowed range for numeric parameters. */
+	/* The permitted range for numeric parameters. */
 	// +optional
 	IntRange *CloudcontrolIntRange `json:"intRange,omitempty"`
 
-	/* Regular expression for string parameters. */
+	/* The regular expression for string parameters. */
 	// +optional
 	RegexpPattern *CloudcontrolRegexpPattern `json:"regexpPattern,omitempty"`
 }

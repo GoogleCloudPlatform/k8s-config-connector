@@ -38,80 +38,44 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type EntrytypeAuthorization struct {
-	/* Immutable. The IAM permission grantable on the Entry Group to allow access to instantiate Entries of Dataplex Universal Catalog owned Entry Types, only settable for Dataplex Universal Catalog owned Types. */
-	// +optional
-	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
-}
+type DataformTeamFolderSpec struct {
+	/* Required. The TeamFolder's user-friendly name. */
+	DisplayName string `json:"displayName"`
 
-type EntrytypeRequiredAspects struct {
-	/* A reference to an externally managed DataplexAspectType resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}". */
-	TypeRef v1alpha1.ResourceRef `json:"typeRef"`
-}
-
-type DataplexEntryTypeSpec struct {
-	/* Authorization contains constraints on the visibility of Entries that conform to the EntryType. */
-	// +optional
-	Authorization *EntrytypeAuthorization `json:"authorization,omitempty"`
-
-	/* Optional. Description of the EntryType. */
-	// +optional
-	Description *string `json:"description,omitempty"`
-
-	/* Optional. User friendly display name. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
-
-	/* The location that this resource belongs to. */
+	/* Immutable. The location of this resource. */
 	Location string `json:"location"`
 
-	/* Optional. The platform that Entries of this type belongs to. */
-	// +optional
-	Platform *string `json:"platform,omitempty"`
-
-	/* The Project that this resource belongs to. */
+	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* AspectInfo contains overriding configuration for aspects. */
-	// +optional
-	RequiredAspects []EntrytypeRequiredAspects `json:"requiredAspects,omitempty"`
-
-	/* The DataplexEntryType name. If not given, the metadata.name will be used. */
+	/* The DataformTeamFolder name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* Optional. The system that Entries of this type belongs to. Examples include CloudSQL, MariaDB etc */
-	// +optional
-	System *string `json:"system,omitempty"`
-
-	/* Optional. Indicates the classes this Entry Type belongs to, for example, TABLE, DATABASE, MODEL. */
-	// +optional
-	TypeAliases []string `json:"typeAliases,omitempty"`
 }
 
-type EntrytypeObservedStateStatus struct {
-	/* Output only. The time when the EntryType was created. */
+type TeamfolderObservedStateStatus struct {
+	/* Output only. The timestamp of when the TeamFolder was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Optional. This checksum is computed by the service, and might be sent on update and delete requests to ensure the client has an up-to-date value before proceeding. */
+	/* Output only. The IAM principal identifier of the creator of the TeamFolder. */
 	// +optional
-	Etag *string `json:"etag,omitempty"`
+	CreatorIAMPrincipal *string `json:"creatorIAMPrincipal,omitempty"`
 
-	/* Output only. System generated globally unique ID for the EntryType. This ID will be different if the EntryType is deleted and re-created with the same name. */
+	/* Output only. All the metadata information that is used internally to serve the resource. For example: timestamps, flags, status fields, etc. The format of this field is a JSON string. */
 	// +optional
-	Uid *string `json:"uid,omitempty"`
+	InternalMetadata *string `json:"internalMetadata,omitempty"`
 
-	/* Output only. The time when the EntryType was last updated. */
+	/* Output only. The timestamp of when the TeamFolder was last updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type DataplexEntryTypeStatus struct {
+type DataformTeamFolderStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DataplexEntryType's current state. */
+	   DataformTeamFolder's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DataplexEntryType resource in GCP. */
+	/* A unique specifier for the DataformTeamFolder resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -121,39 +85,40 @@ type DataplexEntryTypeStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *EntrytypeObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *TeamfolderObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdataplexentrytype;gcpdataplexentrytypes
+// +kubebuilder:resource:categories=gcp,shortName=gcpdataformteamfolder;gcpdataformteamfolders
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// DataplexEntryType is the Schema for the dataplex API
+// DataformTeamFolder is the Schema for the dataform API
 // +k8s:openapi-gen=true
-type DataplexEntryType struct {
+type DataformTeamFolder struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DataplexEntryTypeSpec   `json:"spec,omitempty"`
-	Status DataplexEntryTypeStatus `json:"status,omitempty"`
+	Spec   DataformTeamFolderSpec   `json:"spec,omitempty"`
+	Status DataformTeamFolderStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// DataplexEntryTypeList contains a list of DataplexEntryType
-type DataplexEntryTypeList struct {
+// DataformTeamFolderList contains a list of DataformTeamFolder
+type DataformTeamFolderList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DataplexEntryType `json:"items"`
+	Items           []DataformTeamFolder `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&DataplexEntryType{}, &DataplexEntryTypeList{})
+	SchemeBuilder.Register(&DataformTeamFolder{}, &DataformTeamFolderList{})
 }

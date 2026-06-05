@@ -439,6 +439,58 @@ func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEn
 	out.Authorization = EntryType_Authorization_ToProto(mapCtx, in.Authorization)
 	return out
 }
+func DataplexGlossaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) *krm.DataplexGlossaryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossaryObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.TermCount = direct.LazyPtr(in.GetTermCount())
+	out.CategoryCount = direct.LazyPtr(in.GetCategoryCount())
+	// MISSING: Etag
+	return out
+}
+func DataplexGlossaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryObservedState) *pb.Glossary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Glossary{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.TermCount = direct.ValueOf(in.TermCount)
+	out.CategoryCount = direct.ValueOf(in.CategoryCount)
+	// MISSING: Etag
+	return out
+}
+func DataplexGlossarySpec_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) *krm.DataplexGlossarySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossarySpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	// MISSING: Etag
+	return out
+}
+func DataplexGlossarySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossarySpec) *pb.Glossary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Glossary{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	// MISSING: Etag
+	return out
+}
 func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeObservedState {
 	if in == nil {
 		return nil

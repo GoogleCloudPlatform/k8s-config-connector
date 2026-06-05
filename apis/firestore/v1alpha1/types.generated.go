@@ -92,9 +92,58 @@ type ArrayValue struct {
 }
 */
 
+/* unreachable type Function
+// +kcc:proto=google.firestore.v1.Function
+type Function struct {
+	// Required. The name of the function to evaluate.
+	//
+	//  **Requires:**
+	//
+	//  * must be in snake case (lower case with underscore separator).
+	// +kcc:proto:field=google.firestore.v1.Function.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Ordered list of arguments the given function expects.
+	// +kcc:proto:field=google.firestore.v1.Function.args
+	Args []Value `json:"args,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
 /* unreachable type MapValue
 // +kcc:proto=google.firestore.v1.MapValue
 type MapValue struct {
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* unreachable type Pipeline
+// +kcc:proto=google.firestore.v1.Pipeline
+type Pipeline struct {
+	// Required. Ordered list of stages to evaluate.
+	// +kcc:proto:field=google.firestore.v1.Pipeline.stages
+	Stages []Pipeline_Stage `json:"stages,omitempty"`
+}
+*/
+
+/* unreachable type Pipeline_Stage
+// +kcc:proto=google.firestore.v1.Pipeline.Stage
+type Pipeline_Stage struct {
+	// Required. The name of the stage to evaluate.
+	//
+	//  **Requires:**
+	//
+	//  * must be in snake case (lower case with underscore separator).
+	// +kcc:proto:field=google.firestore.v1.Pipeline.Stage.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Ordered list of arguments the given stage expects.
+	// +kcc:proto:field=google.firestore.v1.Pipeline.Stage.args
+	Args []Value `json:"args,omitempty"`
 
 	// TODO: unsupported map type with key string and value message
 
@@ -161,6 +210,43 @@ type Value struct {
 	// A map value.
 	// +kcc:proto:field=google.firestore.v1.Value.map_value
 	MapValue *MapValue `json:"mapValue,omitempty"`
+
+	// Value which references a field.
+	//
+	//  This is considered relative (vs absolute) since it only refers to a field
+	//  and not a field within a particular document.
+	//
+	//  **Requires:**
+	//
+	//  * Must follow [field reference][FieldReference.field_path] limitations.
+	//
+	//  * Not allowed to be used when writing documents.
+	// +kcc:proto:field=google.firestore.v1.Value.field_reference_value
+	FieldReferenceValue *string `json:"fieldReferenceValue,omitempty"`
+
+	// Pointer to a variable defined elsewhere in a pipeline.
+	//
+	//  Unlike `field_reference_value` which references a field within a
+	//  document, this refers to a variable, defined in a separate namespace than
+	//  the fields of a document.
+	// +kcc:proto:field=google.firestore.v1.Value.variable_reference_value
+	VariableReferenceValue *string `json:"variableReferenceValue,omitempty"`
+
+	// A value that represents an unevaluated expression.
+	//
+	//  **Requires:**
+	//
+	//  * Not allowed to be used when writing documents.
+	// +kcc:proto:field=google.firestore.v1.Value.function_value
+	FunctionValue *Function `json:"functionValue,omitempty"`
+
+	// A value that represents an unevaluated pipeline.
+	//
+	//  **Requires:**
+	//
+	//  * Not allowed to be used when writing documents.
+	// +kcc:proto:field=google.firestore.v1.Value.pipeline_value
+	PipelineValue *Pipeline `json:"pipelineValue,omitempty"`
 }
 */
 

@@ -16,7 +16,7 @@
 // +generated:types
 // krm.group: dataform.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.dataform.v1beta1
-// resource: DataformFolder:Folder
+// proto.service: google.cloud.dataform.v1
+// resource: DataformTeamFolder:TeamFolder
 
 package v1alpha1

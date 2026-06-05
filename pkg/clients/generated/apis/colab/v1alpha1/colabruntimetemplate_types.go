@@ -112,6 +112,10 @@ type RuntimetemplateMachineSpec struct {
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
+	/* Optional. Immutable. The minimum GPU driver version that this machine requires. For example, "535.104.06". If not specified, the default GPU driver version will be used by the underlying infrastructure. */
+	// +optional
+	MinGpuDriverVersion *string `json:"minGpuDriverVersion,omitempty"`
+
 	/* Optional. Immutable. The number of nodes per replica for multihost GPU deployments. */
 	// +optional
 	MultihostGpuNodeCount *int32 `json:"multihostGpuNodeCount,omitempty"`
