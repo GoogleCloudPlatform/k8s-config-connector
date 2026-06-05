@@ -487,6 +487,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - developerconnect.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - devicestreaming.cnrm.cloud.google.com
   resources:
   - '*'
