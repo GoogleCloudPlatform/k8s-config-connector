@@ -29,6 +29,11 @@ go run . generate-types \
     --api-version "configdelivery.cnrm.cloud.google.com/v1alpha1" \
     --resource ConfigDeliveryResourceBundle:ResourceBundle
 
+go run . generate-types \
+    --service google.cloud.configdelivery.v1 \
+    --api-version "configdelivery.cnrm.cloud.google.com/v1alpha1" \
+    --resource ConfigDeliveryFleetPackage:FleetPackage
+
 go run . generate-mapper \
     --service google.cloud.configdelivery.v1 \
     --api-version "configdelivery.cnrm.cloud.google.com/v1alpha1"
