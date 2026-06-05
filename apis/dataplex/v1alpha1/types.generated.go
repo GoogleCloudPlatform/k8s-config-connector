@@ -24,14 +24,15 @@
 // resource: DataplexEntryType:EntryType
 // resource: DataplexDataTaxonomy:DataTaxonomy
 // resource: DataplexAspectType:AspectType
+// resource: DataplexMetadataFeed:MetadataFeed
 
 package v1alpha1
 
 // +kcc:proto=google.cloud.dataplex.v1.AspectType.Authorization
 type AspectType_Authorization struct {
 	// Immutable. The IAM permission grantable on the EntryGroup to allow access
-	//  to instantiate Aspects of Dataplex owned AspectTypes, only settable for
-	//  Dataplex owned Types.
+	//  to instantiate Aspects of Dataplex Universal Catalog owned AspectTypes,
+	//  only settable for Dataplex Universal Catalog owned Types.
 	// +kcc:proto:field=google.cloud.dataplex.v1.AspectType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
@@ -56,8 +57,8 @@ type AspectType_MetadataTemplate struct {
 	//  Primitive types:
 	//
 	//  * string
-	//  * integer
-	//  * boolean
+	//  * int
+	//  * bool
 	//  * double
 	//  * datetime. Must be of the format RFC3339 UTC "Zulu" (Examples:
 	//  "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z").
@@ -203,8 +204,8 @@ type AssetStatus struct {
 // +kcc:proto=google.cloud.dataplex.v1.EntryType.Authorization
 type EntryType_Authorization struct {
 	// Immutable. The IAM permission grantable on the Entry Group to allow
-	//  access to instantiate Entries of Dataplex owned Entry Types, only
-	//  settable for Dataplex owned Types.
+	//  access to instantiate Entries of Dataplex Universal Catalog owned Entry
+	//  Types, only settable for Dataplex Universal Catalog owned Types.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }

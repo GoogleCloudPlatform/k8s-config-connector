@@ -95,6 +95,12 @@ var (
 		Kind:    reflect.TypeOf(DataplexLake{}).Name(),
 	}
 
+	DataplexMetadataFeedGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataplexMetadataFeed{}).Name(),
+	}
+
 	DataplexTaskGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

@@ -22,7 +22,16 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+PROTO_SHA="ee4a3e1ce4e8d16661fcc624322000ad792ffb8a"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Force proto generation with correct SHA even if SKIP_GENERATE_PROTOS is set
+OLD_SKIP_GENERATE_PROTOS=${SKIP_GENERATE_PROTOS:-}
+unset SKIP_GENERATE_PROTOS
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+if [ -n "${OLD_SKIP_GENERATE_PROTOS}" ]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 go run . generate-types \
     --service google.cloud.dataplex.v1 \
@@ -33,7 +42,9 @@ go run . generate-types \
     --resource DataplexEntryGroup:EntryGroup \
     --resource DataplexEntryType:EntryType \
     --resource DataplexDataTaxonomy:DataTaxonomy \
-    --resource DataplexAspectType:AspectType
+    --resource DataplexAspectType:AspectType \
+    --resource DataplexMetadataFeed:MetadataFeed \
+    --proto-source-path ${PROTO_OUT}
 
 # Post-process types.generated.go to inject kubebuilder validation annotations for recursive self-referential fields
 python3 -c "
@@ -58,7 +69,8 @@ with open(path, 'w') as f:
 
 go run . generate-mapper \
     --service google.cloud.dataplex.v1 \
-    --api-version "dataplex.cnrm.cloud.google.com/v1alpha1"
+    --api-version "dataplex.cnrm.cloud.google.com/v1alpha1" \
+    --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

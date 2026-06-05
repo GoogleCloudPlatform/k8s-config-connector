@@ -59,6 +59,10 @@ func (c *FakeDataplexV1alpha1) DataplexLakes(namespace string) v1alpha1.Dataplex
 	return newFakeDataplexLakes(c, namespace)
 }
 
+func (c *FakeDataplexV1alpha1) DataplexMetadataFeeds(namespace string) v1alpha1.DataplexMetadataFeedInterface {
+	return newFakeDataplexMetadataFeeds(c, namespace)
+}
+
 func (c *FakeDataplexV1alpha1) DataplexTasks(namespace string) v1alpha1.DataplexTaskInterface {
 	return newFakeDataplexTasks(c, namespace)
 }

@@ -10,8 +10,15 @@
   2. Reverted `apis/git.versions` and `generate.sh` back to their original states once generation completed. This avoids breaking build/vet checks in CI for firestore/sql, but preserves the generated `glossary_types.go`, identity, and CRD YAML.
   3. Ensured `Location` is defined as a pointer (`*string`) in `DataplexGlossarySpec` to adhere to the strict scalar primitive pointer standard in KCC direct resources.
 - **Impact**: Enables `DataplexGlossary` CRD and types to be safely committed and validated in CI without triggering global protobuf mismatch regressions.
+
 ### 2026-06-05 Implementing DataplexDataTaxonomy Direct Types
 - **Context**: Implementing KRM types, CRD, and IdentityV2 for DataplexDataTaxonomy.
 - **Problem**: The proto-to-KRM generator initially marked `DataTaxonomy` and `DataTaxonomyObservedState` as unreachable because the scaffolded `DataplexDataTaxonomySpec` and `DataplexDataTaxonomyObservedState` were empty, causing those fields/types to be commented out as unreachable in `types.generated.go`.
 - **Solution**: We defined `DataplexDataTaxonomySpec` to use `parent.ProjectAndLocationRef` and standard fields, and implemented `DataplexDataTaxonomyObservedState` with the proper output-only fields (`Uid`, `CreateTime`, `UpdateTime`, `AttributeCount`, `ClassCount`). Running the generator again successfully resolved all unreachability and correctly generated the deepcopy and CRD files.
 - **Impact**: When adding greenfield resources, always ensure Spec and ObservedState map the proto fields before final generation so that types are correctly kept in `types.generated.go`.
+
+### 2026-06-05 Implementing DataplexMetadataFeed
+- **Context**: Implementing `DataplexMetadataFeed` types, CRD, and IdentityV2.
+- **Problem**: The resource `MetadataFeed` did not exist in the pinned googleapis SHA in `apis/git.versions`. However, updating `git.versions` globally caused many unrelated services to regenerate their types, leading to a massive, bloated diff. Additionally, when running local validations, `SKIP_GENERATE_PROTOS=1` was set, which prevented compiling the newer proto.
+- **Solution**: We overrode `generate.sh` in the Dataplex service to temporarily unset `SKIP_GENERATE_PROTOS` and compile the specific googleapis commit containing the `MetadataFeed` proto (`ee4a3e1ce4e8d16661fcc624322000ad792ffb8a`), while preserving the global `git.versions` pin for all other services.
+- **Impact**: This keeps the PR clean of unrelated changes to other resources while allowing new resources to use newer proto commits seamlessly.

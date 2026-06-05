@@ -35,6 +35,8 @@ type DataplexGlossaryExpansion interface{}
 
 type DataplexLakeExpansion interface{}
 
+type DataplexMetadataFeedExpansion interface{}
+
 type DataplexTaskExpansion interface{}
 
 type DataplexZoneExpansion interface{}

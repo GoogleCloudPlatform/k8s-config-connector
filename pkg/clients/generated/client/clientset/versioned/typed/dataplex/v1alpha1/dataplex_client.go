@@ -38,6 +38,7 @@ type DataplexV1alpha1Interface interface {
 	DataplexEntryTypesGetter
 	DataplexGlossariesGetter
 	DataplexLakesGetter
+	DataplexMetadataFeedsGetter
 	DataplexTasksGetter
 	DataplexZonesGetter
 }
@@ -73,6 +74,10 @@ func (c *DataplexV1alpha1Client) DataplexGlossaries(namespace string) DataplexGl
 
 func (c *DataplexV1alpha1Client) DataplexLakes(namespace string) DataplexLakeInterface {
 	return newDataplexLakes(c, namespace)
+}
+
+func (c *DataplexV1alpha1Client) DataplexMetadataFeeds(namespace string) DataplexMetadataFeedInterface {
+	return newDataplexMetadataFeeds(c, namespace)
 }
 
 func (c *DataplexV1alpha1Client) DataplexTasks(namespace string) DataplexTaskInterface {
