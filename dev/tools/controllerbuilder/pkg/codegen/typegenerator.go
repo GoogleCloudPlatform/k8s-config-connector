@@ -123,6 +123,10 @@ func (g *TypeGenerator) needsObservedState(msg protoreflect.MessageDescriptor, s
 	if val, ok := seen[fqn]; ok {
 		return val
 	}
+	if fqn == "google.cloud.contactcenterinsights.v1.AnnotatorSelector" || fqn == "google.cloud.contactcenterinsights.v1.AnnotatorSelector.SummarizationConfig" {
+		seen[fqn] = true
+		return true
+	}
 	seen[fqn] = false // Assume false for recursion
 
 	for i := 0; i < msg.Fields().Len(); i++ {
@@ -258,7 +262,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
-		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
+		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), goTypeName, out.OutputDir(), skipGenerated)
 		if err != nil {
 			return fmt.Errorf("looking up go type by proto tag: %w", err)
 		}
@@ -319,7 +323,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
-		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
+		goType, err = g.findObservedStateTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
 		if err != nil {
 			return fmt.Errorf("looking up go type by proto tag: %w", err)
 		}

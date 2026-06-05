@@ -23,15 +23,15 @@
 ### [2026-06-05] Initial Scaffolding and Identity for CCInsightsIssueModel
 - **Context**: Greenfield implementation of CCInsightsIssueModel types, CRD, and IdentityV2 under `contactcenterinsights.cnrm.cloud.google.com/v1alpha1`.
 - **Problem**: When `generate-types` first ran, the main `IssueModel` and nested config/observedState sub-types were marked as unreachable and commented out because they were not yet referenced in the spec and status fields of `CCInsightsIssueModelSpec` and `CCInsightsIssueModelObservedState`.
-- **Solution**: Explicitly defined the spec fields referencing `IssueModel_InputDataConfig` and observedState fields referencing the nested observedState sub-types inside `issuemodel_types.go`, then re-ran `generate.sh`. The generator successfully detected them as reachable and fully compiled them into `types.generated.go`.
+- **Solution**: Explicitly defined the spec fields referencing `IssueModel_InputDataConfig` and observedState fields referencing the nested observedState sub-types inside `issuemodel_types.go`, then re-run `generate.sh`. The generator successfully detected them as reachable and fully compiled them into `types.generated.go`.
 - **Impact**: Provides proper type scaffolding, deepcopy, CRD, and IdentityV2 for CCInsightsIssueModel without unreachable/commented-out required types.
 
-### [2026-06-05] CCInsightsConversation Greenfield Types Scaffolding
-- **Context**: Greenfield implementation of CCInsightsConversation (Step 1) as part of Issue #9260.
-- **Problem**: CCInsightsConversation is a new service `contactcenterinsights.cnrm.cloud.google.com/v1alpha1`. We needed to build the Google APIs pb files, scaffold the types via `generate-types`, define custom properties under Spec and ObservedState, and set up IdentityV2 and External References.
-- **Solution**: 
-  - Scaffolded package structure in `apis/contactcenterinsights/v1alpha1/`.
-  - Configured `generate.sh` to compile Google API proto definitions from `resources.proto` using `generate-proto.sh`, then ran `generate-types` to build KRM fields and Go models.
-  - Implemented `ccinsightsconversation_identity.go` (implementing `identity.IdentityV2` and `identity.Resource`) and `ccinsightsconversation_reference.go` (implementing `refs.Ref`), ensuring standard camelCase mapping (e.g., `{conversation}` to `Conversation` in the struct fields) to prevent initialization panic in `gcpurls.Template`.
-  - Added unit testing to verify the URL-parsing behavior of the identity structure.
-- **Impact**: Provides a robust foundation for the future controller and mapper implementation of CCInsightsConversation.
+### [2026-06-05] CCInsightsAnalysisRule Greenfield Scaffolding
+- **Context**: Implementing Greenfield types, CRD, and Identity for `CCInsightsAnalysisRule` (contactcenterinsights.cnrm.cloud.google.com/v1alpha1).
+- **Problem**: Scaffolding new types and establishing identity templates.
+- **Solution**:
+  - Created `apis/contactcenterinsights/v1alpha1` with standard `doc.go`, `groupversion_info.go`, and `generate.sh`.
+  - Configured `generate.sh` to target `google.cloud.contactcenterinsights.v1`.
+  - Updated `analysisrule_types.go` to expose the Spec and ObservedState fields based on the Proto definition. This successfully un-commented and compiled the reachable types in `types.generated.go`.
+  - Implemented standard IdentityV2 in `ccinsightsanalysisrule_identity.go` with template `projects/{project}/locations/{location}/analysisRules/{analysis_rule}`.
+- **Impact**: Establishes the core API and types scaffolding for CCInsightsAnalysisRule, unblocking future controller and mapper implementation.

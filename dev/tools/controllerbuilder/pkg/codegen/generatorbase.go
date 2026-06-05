@@ -217,7 +217,45 @@ func (g *generatorBase) findTypeDeclaration(goTypeName string, srcDir string, sk
 	return nil, nil
 }
 
-func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
+func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, goTypeName string, srcDir string, skipGenerated bool) (*string, error) {
+	files, err := os.ReadDir(srcDir)
+	if err != nil {
+		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
+	}
+
+	for _, f := range files {
+		p := filepath.Join(srcDir, f.Name())
+		if !strings.HasSuffix(p, ".go") {
+			continue
+		}
+		if skipGenerated && strings.HasSuffix(p, "generated.go") {
+			continue
+		}
+		b, err := os.ReadFile(p)
+		if err != nil {
+			return nil, fmt.Errorf("reading file %q: %w", p, err)
+		}
+
+		lines := strings.Split(string(b), "\n")
+		for idx, line := range lines {
+			if proto, ok := GetProtoMessageFromAnnotation(line); ok {
+				if proto == protoTag {
+					if goTypeName != "" && idx+1 < len(lines) {
+						nextLine := strings.TrimSpace(lines[idx+1])
+						if !strings.Contains(nextLine, "type "+goTypeName) {
+							continue
+						}
+					}
+					return &line, nil
+				}
+			}
+		}
+	}
+
+	return nil, nil
+}
+
+func (g *generatorBase) findObservedStateTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
@@ -237,7 +275,7 @@ func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir 
 		}
 
 		for _, line := range strings.Split(string(b), "\n") {
-			if proto, ok := GetProtoMessageFromAnnotation(line); ok {
+			if proto, ok := GetObservedStateProtoMessageFromAnnotation(line); ok {
 				if proto == protoTag {
 					return &line, nil
 				}

@@ -591,6 +591,26 @@
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.platform" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.active" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.analysisPercentage" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.issueModelsRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.phraseMatchersRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.qaConfig.scorecardList.qaScorecardRevisions[]" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.runEntityAnnotator" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.runIntentAnnotator" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.runInterruptionAnnotator" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.runIssueModelAnnotator" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.runPhraseMatcherAnnotator" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.runQaAnnotator" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.runSentimentAnnotator" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.runSilenceAnnotator" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.runSummarizationAnnotator" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.summarizationConfig.conversationProfileRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.summarizationConfig.summarizationModel" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.conversationFilter" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentID" is not set in unstructured objects
 [missing_field] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.callMetadata.agentChannel" is not set in unstructured objects
 [missing_field] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.callMetadata.customerChannel" is not set in unstructured objects

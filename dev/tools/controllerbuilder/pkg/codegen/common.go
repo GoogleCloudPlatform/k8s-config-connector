@@ -51,6 +51,21 @@ func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
 	return "", false
 }
 
+// GetObservedStateProtoMessageFromAnnotation will extract a proto message annotation only for observedstate/status
+func GetObservedStateProtoMessageFromAnnotation(commentLine string) (string, bool) {
+	trimmed := strings.TrimPrefix(commentLine, "//")
+	trimmed = strings.TrimSpace(trimmed)
+	for _, annotation := range []string{
+		KCCProtoMessageAnnotationObservedState,
+		KCCProtoMessageAnnotationStatus,
+	} {
+		if strings.HasPrefix(trimmed, annotation+"=") {
+			return strings.TrimSpace(strings.TrimPrefix(trimmed, annotation+"=")), true
+		}
+	}
+	return "", false
+}
+
 // special-case proto messages that are currently not mapped to KRM Go structs
 var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Timestamp":         "string",

@@ -10,7 +10,7 @@
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
+# See the License for the_api:specific permissions and
 # limitations under the License.
 
 set -o errexit
@@ -22,8 +22,6 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
-
 go run . generate-types \
   --service google.cloud.contactcenterinsights.v1 \
   --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
@@ -32,6 +30,7 @@ go run . generate-types \
   --resource CCInsightsPhraseMatcher:PhraseMatcher \
   --resource CCInsightsIssueModel:IssueModel \
   --resource CCInsightsConversation:Conversation \
+  --resource CCInsightsAnalysisRule:AnalysisRule \
   --prune-unused-types=false
 
 cd ${REPO_ROOT}
