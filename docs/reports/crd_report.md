@@ -144,7 +144,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeInstanceGroupNamedPort                   | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeInstanceGroup                            | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeInstance                                 | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeInstanceTemplate                         | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeInstanceTemplate                         | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeInterconnectAttachment                   | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeInterconnect                             | True         | False       | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeMachineImage                             | True         | False       | False  | Terraform  | False       |
