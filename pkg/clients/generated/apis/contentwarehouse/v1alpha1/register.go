@@ -71,5 +71,11 @@ var (
 		Kind:    reflect.TypeOf(ContentWarehouseSchema{}).Name(),
 	}
 
+	ContentWarehouseSynonymSetGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ContentWarehouseSynonymSet{}).Name(),
+	}
+
 	contentwarehouseAPIVersion = SchemeGroupVersion.String()
 )
