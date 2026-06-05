@@ -217,6 +217,17 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 			continue
 		}
 
+		// Only generate mapper if the group of KRM type matches the target directory package group
+		krmGroup := pair.KRMType.GoPackage
+		if ix := strings.LastIndex(krmGroup, "/"); ix != -1 {
+			krmGroup = krmGroup[:ix]
+		}
+		krmGroup = lastComponent(krmGroup)
+		targetGroup := lastComponent(goPackage)
+		if krmGroup != targetGroup {
+			continue
+		}
+
 		k := generatedFileKey{
 			GoPackage: goPackage,
 			FileName:  "mapper.generated.go",
@@ -346,13 +357,13 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			}
 
 			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
-								isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice -> krm single
 				var fromProtoElemFunc string
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
 					krmElemTypeName := strings.TrimPrefix(krmField.Type, "*")
-					fromProtoElemFunc = krmElemTypeName + versionSpecifier + "_FromProto"
+					fromProtoElemFunc = adjustFunctionName(krmElemTypeName + versionSpecifier + "_FromProto")
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 						fromProtoElemFunc = krmFromProtoFunctionName(protoField, krmField.Name)
 					}
@@ -380,7 +391,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
 					krmElemTypeName := strings.TrimPrefix(krmSliceElemType, "*")
-					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
+					functionName := adjustFunctionName(krmElemTypeName + versionSpecifier + "_FromProto")
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 						functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 					}
@@ -501,7 +512,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName := krmField.Type
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
-				functionName := krmTypeName + versionSpecifier + "_FromProto"
+				functionName := adjustFunctionName(krmTypeName + versionSpecifier + "_FromProto")
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
@@ -633,7 +644,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			}
 
 			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
-								isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if !isProtoFieldSlice && isKRMFieldSlice { // proto single <- krm slice
 				krmElemType := strings.TrimPrefix(krmField.Type, "[]")
 				krmElemTypeName := strings.TrimPrefix(krmElemType, "*")
@@ -642,7 +653,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
-					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					functionName := adjustFunctionName(krmElemTypeName + versionSpecifier + "_ToProto")
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 						functionName = krmToProtoFunctionName(protoField, krmField.Name)
 					}
@@ -684,7 +695,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
-					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					functionName := adjustFunctionName(krmElemTypeName + versionSpecifier + "_ToProto")
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 						functionName = krmToProtoFunctionName(protoField, krmField.Name)
 					}
@@ -728,7 +739,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
-					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					functionName := adjustFunctionName(krmElemTypeName + versionSpecifier + "_ToProto")
 					useSliceToProtoFunction = functionName
 
 				case protoreflect.StringKind:
@@ -798,7 +809,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName := krmField.Type
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
-				functionName := krmTypeName + versionSpecifier + "_ToProto"
+				functionName := adjustFunctionName(krmTypeName + versionSpecifier + "_ToProto")
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
@@ -1276,4 +1287,16 @@ func usesPointersInProtoBinding(msg protoreflect.MessageDescriptor) bool {
 	default:
 		return false
 	}
+}
+
+func adjustFunctionName(funcName string) string {
+	if strings.Contains(funcName, "apiextensionsv1.JSON") {
+		if strings.HasSuffix(funcName, "_ToProto") {
+			return "direct.JSON_ToProto"
+		}
+		if strings.HasSuffix(funcName, "_FromProto") {
+			return "direct.JSON_FromProto"
+		}
+	}
+	return funcName
 }

@@ -151,9 +151,9 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 			StringValue: direct.ValueOf(in.StringValue),
 		}
 	}
-	if in.StructValue != nil {
+	if in.StructValue.Raw != nil {
 		out.Kind = &structpb.Value_StructValue{
-			StructValue: StructValue_ToProto(mapCtx, in.StructValue),
+			StructValue: direct.Struct_ToProto(mapCtx, &in.StructValue),
 		}
 	}
 	return out
@@ -178,7 +178,9 @@ func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
 		value := in.GetBoolValue()
 		out.BoolValue = &value
 	case *structpb.Value_StructValue:
-		out.StructValue = StructValue_FromProto(mapCtx, in.GetStructValue())
+		if v := direct.Struct_FromProto(mapCtx, in.GetStructValue()); v != nil {
+			out.StructValue = *v
+		}
 	}
 	return out
 }
@@ -413,5 +415,27 @@ func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32)
 	}
 	out := &pb.SmoothGradConfig_NoiseSigma{}
 	out.NoiseSigma = direct.ValueOf(in)
+	return out
+}
+
+func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ListValue{}
+	for _, val := range in.Values {
+		out.Values = append(out.Values, *Value_FromProto(mapCtx, val))
+	}
+	return out
+}
+
+func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	for i := range in.Values {
+		out.Values = append(out.Values, Value_ToProto(mapCtx, &in.Values[i]))
+	}
 	return out
 }
