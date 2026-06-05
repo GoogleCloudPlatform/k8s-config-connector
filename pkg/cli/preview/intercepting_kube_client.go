@@ -230,6 +230,10 @@ func (c *interceptingControllerRuntimeClient) Patch(ctx context.Context, obj cli
 	return c.ignoredMethod(ctx, "patch", obj, opts)
 }
 
+func (c *interceptingControllerRuntimeClient) Apply(ctx context.Context, obj runtime.ApplyConfiguration, opts ...client.ApplyOption) error {
+	return c.ignoredMethod(ctx, "apply", obj, opts)
+}
+
 // DeleteAllOf deletes all objects of the given type matching the given options.
 func (c *interceptingControllerRuntimeClient) DeleteAllOf(ctx context.Context, obj client.Object, opts ...client.DeleteAllOfOption) error {
 	return c.blockedMethod(ctx, "deleteAllOf", obj, opts)
@@ -286,6 +290,10 @@ func (c *interceptingControllerRuntimeClientSubResourceWriter) Update(ctx contex
 
 func (c *interceptingControllerRuntimeClientSubResourceWriter) Patch(ctx context.Context, obj client.Object, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.blockedMethod(ctx, "status.patch", obj, patch, opts)
+}
+
+func (c *interceptingControllerRuntimeClientSubResourceWriter) Apply(ctx context.Context, obj runtime.ApplyConfiguration, opts ...client.SubResourceApplyOption) error {
+	return c.client.ignoredMethod(ctx, "status.apply", obj, opts)
 }
 
 // interceptingControllerRuntimeCache is a controller-runtime cache that intercepts Kubernetes API calls.

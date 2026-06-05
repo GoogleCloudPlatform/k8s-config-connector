@@ -551,14 +551,19 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	// 	+    "value": {}
 	// 	   }
 	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
-		response := obj["response"]
-		if responseMap, ok := response.(map[string]any); ok {
-			if responseMap["@type"] == "type.googleapis.com/google.protobuf.Empty" {
-				value := responseMap["value"]
+		sanitizeEmpty := func(m map[string]any) {
+			if m["@type"] == "type.googleapis.com/google.protobuf.Empty" {
+				value := m["value"]
 				if valueMap, ok := value.(map[string]any); ok && len(valueMap) == 0 {
-					delete(responseMap, "value")
+					delete(m, "value")
 				}
 			}
+		}
+		if responseMap, ok := obj["response"].(map[string]any); ok {
+			sanitizeEmpty(responseMap)
+		}
+		if metadataMap, ok := obj["metadata"].(map[string]any); ok {
+			sanitizeEmpty(metadataMap)
 		}
 	})
 

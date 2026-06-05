@@ -1,0 +1,4 @@
+# Versions for the stable channel
+manifests:
+- name: simpletest
+  version: 0.1.0
