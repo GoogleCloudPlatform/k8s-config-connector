@@ -20,7 +20,6 @@ package cluster
 
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/redis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -30,8 +29,8 @@ func init() {
 
 func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Cluster{},
-		redis.RedisClusterSpec_FromProto, redis.RedisClusterSpec_ToProto,
-		redis.RedisClusterObservedState_FromProto, redis.RedisClusterObservedState_ToProto,
+		RedisClusterSpec_FromProto, RedisClusterSpec_ToProto,
+		RedisClusterObservedState_FromProto, RedisClusterObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name") // Identifier

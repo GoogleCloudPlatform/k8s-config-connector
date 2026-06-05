@@ -1,0 +1,42 @@
+apiVersion: cloudtasks.cnrm.cloud.google.com/v1alpha1
+kind: TasksQueue
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: tasksqueue-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  appEngineRoutingOverride:
+    host: host1.example.com
+    instance: inst1
+    service: default
+    version: v1
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  rateLimits:
+    maxBurstSize: 250
+    maxConcurrentDispatches: 350
+    maxDispatchesPerSecond: 150.5
+  retryConfig:
+    maxAttempts: 25
+    maxBackoff: 90s
+    maxDoublings: 10
+    maxRetryDuration: 180s
+    minBackoff: 3s
+  stackdriverLoggingConfig:
+    samplingRatio: 0.5
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/queues/tasksqueue-max-${uniqueId}
+  observedGeneration: 2
+  observedState: {}

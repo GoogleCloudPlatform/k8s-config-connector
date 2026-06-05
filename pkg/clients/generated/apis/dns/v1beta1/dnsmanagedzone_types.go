@@ -52,12 +52,7 @@ type ManagedzoneDefaultKeySpecs struct {
 	// +optional
 	KeyLength *int64 `json:"keyLength,omitempty"`
 
-	/* Specifies whether this is a key signing key (KSK) or a zone
-	signing key (ZSK). Key signing keys have the Secure Entry
-	Point flag set and, when active, will only be used to sign
-	resource record sets of type DNSKEY. Zone signing keys do
-	not have the Secure Entry Point flag set and will be used
-	to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"]. */
+	/* Specifies whether this is a key signing key (KSK) or a zone signing key (ZSK). Key signing keys have the Secure Entry Point flag set and, when active, will only be used to sign resource record sets of type DNSKEY. Zone signing keys do not have the Secure Entry Point flag set and will be used to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"]. */
 	// +optional
 	KeyType *string `json:"keyType,omitempty"`
 
@@ -67,10 +62,7 @@ type ManagedzoneDefaultKeySpecs struct {
 }
 
 type ManagedzoneDnssecConfig struct {
-	/* Specifies parameters that will be used for generating initial DnsKeys
-	for this ManagedZone. If you provide a spec for keySigning or zoneSigning,
-	you must also provide one for the other.
-	default_key_specs can only be updated when the state is 'off'. */
+	/* Specifies parameters that will be used for generating initial DnsKeys for this ManagedZone. If you provide a spec for keySigning or zoneSigning, you must also provide one for the other. default_key_specs can only be updated when the state is 'off'. */
 	// +optional
 	DefaultKeySpecs []ManagedzoneDefaultKeySpecs `json:"defaultKeySpecs,omitempty"`
 
@@ -78,8 +70,7 @@ type ManagedzoneDnssecConfig struct {
 	// +optional
 	Kind *string `json:"kind,omitempty"`
 
-	/* Specifies the mechanism used to provide authenticated denial-of-existence responses.
-	non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"]. */
+	/* Specifies the mechanism used to provide authenticated denial-of-existence responses. non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"]. */
 	// +optional
 	NonExistence *string `json:"nonExistence,omitempty"`
 
@@ -89,25 +80,17 @@ type ManagedzoneDnssecConfig struct {
 }
 
 type ManagedzoneForwardingConfig struct {
-	/* List of target name servers to forward to. Cloud DNS will
-	select the best available name server if more than
-	one target is given. */
+	/* List of target name servers to forward to. Cloud DNS selects the best available name server if more than one target is given. */
 	TargetNameServers []ManagedzoneTargetNameServers `json:"targetNameServers"`
 }
 
 type ManagedzoneGkeClusters struct {
-	/* The resource name of the cluster to bind this ManagedZone to.
-	This should be specified in the format like
-	'projects/* /locations/* /clusters/*'. */
+	/* The resource name of the cluster to bind this ManagedZone to. This should be specified in the format like 'projects/* /locations/* /clusters/*'. */
 	GkeClusterNameRef v1alpha1.ResourceRef `json:"gkeClusterNameRef"`
 }
 
 type ManagedzoneNamespace struct {
-	/* The fully qualified or partial URL of the service directory namespace that should be
-	associated with the zone. This should be formatted like
-	'https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace_id}'
-	or simply 'projects/{project}/locations/{location}/namespaces/{namespace_id}'
-	Ignored for 'public' visibility zones. */
+	/* The fully qualified or partial URL of the service directory namespace that should be associated with the zone. This should be formatted like 'https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace_id}' or simply 'projects/{project}/locations/{location}/namespaces/{namespace_id}' Ignored for 'public' visibility zones. */
 	NamespaceUrl string `json:"namespaceUrl"`
 }
 
@@ -126,19 +109,18 @@ type ManagedzonePrivateVisibilityConfig struct {
 	// +optional
 	GkeClusters []ManagedzoneGkeClusters `json:"gkeClusters,omitempty"`
 
+	/* The list of VPC networks that can see this zone. */
 	// +optional
 	Networks []ManagedzoneNetworks `json:"networks,omitempty"`
 }
 
 type ManagedzoneServiceDirectoryConfig struct {
-	/* The namespace associated with the zone. */
+	/* Contains information about the namespace associated with the zone. */
 	Namespace ManagedzoneNamespace `json:"namespace"`
 }
 
 type ManagedzoneTargetNameServers struct {
-	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
-	decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
-	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"]. */
+	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"]. */
 	// +optional
 	ForwardingPath *string `json:"forwardingPath,omitempty"`
 
@@ -167,19 +149,15 @@ type DNSManagedZoneSpec struct {
 	// +optional
 	DnssecConfig *ManagedzoneDnssecConfig `json:"dnssecConfig,omitempty"`
 
-	/* The presence for this field indicates that outbound forwarding is enabled
-	for this zone. The value of this field contains the set of destinations
-	to forward to. */
+	/* The presence for this field indicates that outbound forwarding is enabled for this zone. The value of this field contains the set of destinations to forward to. */
 	// +optional
 	ForwardingConfig *ManagedzoneForwardingConfig `json:"forwardingConfig,omitempty"`
 
-	/* The presence of this field indicates that DNS Peering is enabled for this
-	zone. The value of this field contains the network to peer with. */
+	/* The presence of this field indicates that DNS Peering is enabled for this zone. The value of this field contains the network to peer with. */
 	// +optional
 	PeeringConfig *ManagedzonePeeringConfig `json:"peeringConfig,omitempty"`
 
-	/* For privately visible zones, the set of Virtual Private Cloud
-	resources that the zone is visible from. At least one of 'gke_clusters' or 'networks' must be specified. */
+	/* For privately visible zones, the set of Virtual Private Cloud resources that the zone is visible from. At least one of 'gke_clusters' or 'networks' must be specified. */
 	// +optional
 	PrivateVisibilityConfig *ManagedzonePrivateVisibilityConfig `json:"privateVisibilityConfig,omitempty"`
 
@@ -187,9 +165,7 @@ type DNSManagedZoneSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Specifies if this is a managed reverse lookup zone. If true, Cloud DNS will resolve reverse
-	lookup queries using automatically configured records for VPC resources. This only applies
-	to networks listed under 'private_visibility_config'. */
+	/* Immutable. Specifies if this is a managed reverse lookup zone. If true, Cloud DNS will resolve reverse lookup queries using automatically configured records for VPC resources. This only applies to networks listed under 'private_visibility_config'. */
 	// +optional
 	ReverseLookup *bool `json:"reverseLookup,omitempty"`
 
@@ -197,8 +173,7 @@ type DNSManagedZoneSpec struct {
 	// +optional
 	ServiceDirectoryConfig *ManagedzoneServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
 
-	/* Immutable. The zone's visibility: public zones are exposed to the Internet,
-	while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"]. */
+	/* Immutable. The zone's visibility: public zones are exposed to the Internet, while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"]. */
 	// +optional
 	Visibility *string `json:"visibility,omitempty"`
 }
@@ -207,8 +182,7 @@ type DNSManagedZoneStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DNSManagedZone's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The time that this resource was created on the server.
-	This is in RFC3339 text format. */
+	/* The time that this resource was created on the server. This is in RFC3339 text format. */
 	// +optional
 	CreationTime *string `json:"creationTime,omitempty"`
 
@@ -216,8 +190,7 @@ type DNSManagedZoneStatus struct {
 	// +optional
 	ManagedZoneId *int64 `json:"managedZoneId,omitempty"`
 
-	/* Delegate your managed_zone to these virtual name servers;
-	defined by the server. */
+	/* Delegate your managed_zone to these virtual name servers; defined by the server. */
 	// +optional
 	NameServers []string `json:"nameServers,omitempty"`
 

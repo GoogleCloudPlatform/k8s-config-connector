@@ -29,8 +29,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &InstanceRef{}
 var ComputeInstanceGVK = GroupVersion.WithKind("ComputeInstance")
 
-// InstanceRef defines the resource reference to ComputeInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// InstanceRef is a reference to a ComputeInstance.
 type InstanceRef struct {
 	// A reference to an externally managed ComputeInstance resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".

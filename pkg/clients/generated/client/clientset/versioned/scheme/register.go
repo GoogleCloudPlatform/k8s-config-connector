@@ -40,6 +40,7 @@ import (
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/asset/v1beta1"
 	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/assuredworkloads/v1alpha1"
+	automlv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/automl/v1alpha1"
 	backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1alpha1"
 	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/backupdr/v1beta1"
 	batchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/batch/v1alpha1"
@@ -74,6 +75,7 @@ import (
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudiot/v1alpha1"
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudquota/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudscheduler/v1beta1"
+	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudsecuritycompliance/v1alpha1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtasks/v1alpha1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/colab/v1alpha1"
 	composerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/composer/v1beta1"
@@ -222,6 +224,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	artifactregistryv1beta1.AddToScheme,
 	assetv1beta1.AddToScheme,
 	assuredworkloadsv1alpha1.AddToScheme,
+	automlv1alpha1.AddToScheme,
 	backupdrv1alpha1.AddToScheme,
 	backupdrv1beta1.AddToScheme,
 	batchv1alpha1.AddToScheme,
@@ -256,6 +259,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	cloudiotv1alpha1.AddToScheme,
 	cloudquotav1beta1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,
+	cloudsecuritycompliancev1alpha1.AddToScheme,
 	cloudtasksv1alpha1.AddToScheme,
 	colabv1alpha1.AddToScheme,
 	composerv1beta1.AddToScheme,

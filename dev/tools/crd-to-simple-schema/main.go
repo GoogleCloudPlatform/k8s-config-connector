@@ -384,6 +384,9 @@ func walk(s *apiextensionsv1.JSONSchemaProps) any {
 			val := v
 			m[k] = walk(&val)
 		}
+		for _, req := range s.Required {
+			m["_required."+req] = "true"
+		}
 		return m
 	}
 

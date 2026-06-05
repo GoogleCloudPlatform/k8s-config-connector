@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// BackupPlanIdentity defines the resource reference to BackupDRBackupPlan, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupPlanIdentity is the identity of a BackupDRBackupPlan.
 type BackupPlanIdentity struct {
 	parent *BackupPlanParent
 	id     string

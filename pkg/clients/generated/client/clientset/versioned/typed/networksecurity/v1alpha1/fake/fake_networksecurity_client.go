@@ -31,12 +31,24 @@ type FakeNetworksecurityV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityBackendAuthenticationConfigs(namespace string) v1alpha1.NetworkSecurityBackendAuthenticationConfigInterface {
+	return newFakeNetworkSecurityBackendAuthenticationConfigs(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptDeployments(namespace string) v1alpha1.NetworkSecurityInterceptDeploymentInterface {
 	return newFakeNetworkSecurityInterceptDeployments(c, namespace)
 }
 
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptEndpointGroups(namespace string) v1alpha1.NetworkSecurityInterceptEndpointGroupInterface {
 	return newFakeNetworkSecurityInterceptEndpointGroups(c, namespace)
+}
+
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringDeployments(namespace string) v1alpha1.NetworkSecurityMirroringDeploymentInterface {
+	return newFakeNetworkSecurityMirroringDeployments(c, namespace)
+}
+
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringEndpointGroups(namespace string) v1alpha1.NetworkSecurityMirroringEndpointGroupInterface {
+	return newFakeNetworkSecurityMirroringEndpointGroups(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

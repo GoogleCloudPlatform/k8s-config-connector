@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// FeaturestoreIdentity defines the resource reference to VertexAIFeaturestore, which "External" field
-// holds the GCP identifier for the KRM object.
+// FeaturestoreIdentity is the identity of a VertexAIFeaturestore.
 type FeaturestoreIdentity struct {
 	parent *FeaturestoreParent
 	id     string

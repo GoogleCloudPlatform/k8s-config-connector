@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// SnapshotIdentity defines the resource reference to PubSubSnapshot, which "External" field
-// holds the GCP identifier for the KRM object.
+// SnapshotIdentity is the identity of a PubSubSnapshot.
 type SnapshotIdentity struct {
 	parent *SnapshotParent
 	id     string

@@ -30,10 +30,10 @@ func TestGKEHubMembershipBindingIdentity_FromExternal(t *testing.T) {
 			name:     "canonical format",
 			external: "projects/my-project/locations/global/memberships/my-membership/bindings/my-binding",
 			want: &GKEHubMembershipBindingIdentity{
-				ProjectID:           "my-project",
-				Location:            "global",
-				MembershipID:        "my-membership",
-				MembershipBindingID: "my-binding",
+				Project:           "my-project",
+				Location:          "global",
+				Membership:        "my-membership",
+				MembershipBinding: "my-binding",
 			},
 			wantErr: false,
 		},
@@ -58,5 +58,18 @@ func TestGKEHubMembershipBindingIdentity_FromExternal(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestGKEHubMembershipBindingIdentity_Parent(t *testing.T) {
+	identity := &GKEHubMembershipBindingIdentity{
+		Project:           "my-project",
+		Location:          "global",
+		Membership:        "my-membership",
+		MembershipBinding: "my-binding",
+	}
+	want := "projects/my-project/locations/global/memberships/my-membership"
+	if got := identity.Parent(); got != want {
+		t.Errorf("Parent() = %v, want %v", got, want)
 	}
 }

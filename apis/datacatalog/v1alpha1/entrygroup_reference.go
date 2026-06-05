@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &EntryGroupRef{}
 
-// EntryGroupRef defines the resource reference to DataCatalogEntryGroup, which "External" field
-// holds the GCP identifier for the KRM object.
+// EntryGroupRef is a reference to a DataCatalogEntryGroup.
 type EntryGroupRef struct {
 	// A reference to an externally managed DataCatalogEntryGroup resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/entrygroups/{{entrygroupID}}".

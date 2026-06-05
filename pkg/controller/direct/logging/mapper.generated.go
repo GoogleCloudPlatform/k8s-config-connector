@@ -85,3 +85,103 @@ func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec)
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+
+/* found existing non-generated mapping function "LoggingLogBucketSpec_FromProto", skipping
+func LoggingLogBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogBucket) *krm.LoggingLogBucketSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogBucketSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.RetentionDays = direct.LazyPtr(in.GetRetentionDays())
+	out.Locked = direct.LazyPtr(in.GetLocked())
+	// MISSING: LifecycleState
+	// MISSING: AnalyticsEnabled
+	// MISSING: RestrictedFields
+	// MISSING: IndexConfigs
+	// MISSING: CmekSettings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "LoggingLogBucketSpec_ToProto", skipping
+func LoggingLogBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogBucketSpec) *pb.LogBucket {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogBucket{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.RetentionDays = direct.ValueOf(in.RetentionDays)
+	out.Locked = direct.ValueOf(in.Locked)
+	// MISSING: LifecycleState
+	// MISSING: AnalyticsEnabled
+	// MISSING: RestrictedFields
+	// MISSING: IndexConfigs
+	// MISSING: CmekSettings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "LoggingLogExclusionSpec_FromProto", skipping
+func LoggingLogExclusionSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogExclusion) *krm.LoggingLogExclusionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogExclusionSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Filter = in.GetFilter()
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "LoggingLogExclusionSpec_ToProto", skipping
+
+	func LoggingLogExclusionSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogExclusionSpec) *pb.LogExclusion {
+		if in == nil {
+			return nil
+		}
+		out := &pb.LogExclusion{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		out.Filter = LoggingLogExclusionSpec_Filter_ToProto(mapCtx, in.Filter)
+		out.Disabled = direct.ValueOf(in.Disabled)
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		return out
+	}
+*/
+func LoggingLogViewSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogView) *krm.LoggingLogViewSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogViewSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	return out
+}
+func LoggingLogViewSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogViewSpec) *pb.LogView {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogView{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Filter = direct.ValueOf(in.Filter)
+	return out
+}

@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// InterconnectIdentity defines the resource reference to ComputeInterconnect, which "External" field
-// holds the GCP identifier for the KRM object.
+// InterconnectIdentity is the identity of a ComputeInterconnect.
 type InterconnectIdentity struct {
 	parent *InterconnectParent
 	id     string
@@ -52,7 +51,7 @@ func (p *InterconnectParent) String() string {
 	return "projects/" + p.ProjectID
 }
 
-// New builds a InterconnectIdentity from the Config Connector Interconnect object.
+// New builds an InterconnectIdentity from the Config Connector Interconnect object.
 func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *ComputeInterconnect) (*InterconnectIdentity, error) {
 
 	// Get Parent

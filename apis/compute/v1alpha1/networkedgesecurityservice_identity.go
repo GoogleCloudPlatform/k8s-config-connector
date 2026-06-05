@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NetworkEdgeSecurityServiceIdentity defines the resource reference to ComputeNetworkEdgeSecurityService, which "External" field
-// holds the GCP identifier for the KRM object.
+// NetworkEdgeSecurityServiceIdentity is the identity of a ComputeNetworkEdgeSecurityService.
 type NetworkEdgeSecurityServiceIdentity struct {
 	parent *NetworkEdgeSecurityServiceParent
 	id     string

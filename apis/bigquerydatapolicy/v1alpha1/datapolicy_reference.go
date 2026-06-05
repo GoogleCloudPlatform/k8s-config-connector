@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &DataPolicyRef{}
 
-// DataPolicyRef defines the resource reference to BigQueryDataPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// DataPolicyRef is a reference to a BigQueryDataPolicy.
 type DataPolicyRef struct {
 	// A reference to an externally managed BigQueryDataPolicy resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/datapolicys/{{datapolicyID}}".

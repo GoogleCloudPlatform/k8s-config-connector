@@ -283,13 +283,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "job \"projects/${projectId}/locations/us-central1/jobs/batchjob-network-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "job \"projects/${projectId}/locations/us-central1/jobs/batchjob-network-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }

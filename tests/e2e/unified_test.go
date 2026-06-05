@@ -17,6 +17,8 @@ package e2e
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -81,12 +83,26 @@ func TestAllInSeries(t *testing.T) {
 	t.Run("samples", func(t *testing.T) {
 		samples := create.ListAllSamples(t)
 
+		targetGCP := os.Getenv("E2E_GCP_TARGET")
+		if targetGCP == "" {
+			targetGCP = "mock"
+		}
+
+		var sharedHarness *create.Harness
+		if targetGCP == "mock" {
+			sharedCtx, sharedCancel := context.WithCancel(ctx)
+			t.Cleanup(func() { sharedCancel() })
+			sharedHarness = create.NewHarness(sharedCtx, t)
+		}
+
 		for _, sampleKey := range samples {
 			sampleKey := sampleKey
-			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
-				ctx := addTestTimeout(ctx, t, subtestTimeout, sampleKey.TestKey)
+				if sharedHarness != nil {
+					t.Parallel()
+				}
+				subCtx := addTestTimeout(ctx, t, subtestTimeout, sampleKey.TestKey)
 				var harnessOptions []create.HarnessOption
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
@@ -119,17 +135,35 @@ func TestAllInSeries(t *testing.T) {
 						t.Skip(skipTestReason)
 					}
 
-					// Record the CRDs we will use, for faster testing
-					keepCRDs := map[schema.GroupKind]bool{}
-					for _, obj := range dummySample.Resources {
-						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					if sharedHarness == nil {
+						// Record the CRDs we will use, for faster testing
+						keepCRDs := map[schema.GroupKind]bool{}
+						for _, obj := range dummySample.Resources {
+							keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+						}
+						harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
 					}
-					harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
-
 				}
 
-				h := create.NewHarness(ctx, t, harnessOptions...)
-				project := h.Project
+				var h *create.Harness
+				var project testgcp.GCPProject
+				if sharedHarness != nil {
+					h = &create.Harness{}
+					*h = *sharedHarness
+					h.T = t
+					h.Ctx = subCtx
+					b := make([]byte, 2)
+					if _, err := rand.Read(b); err != nil {
+						t.Fatalf("failed to generate random project ID: %v", err)
+					}
+					projectID := fmt.Sprintf("test-%d-%s", time.Now().UnixNano(), hex.EncodeToString(b))
+					project = h.CreateMockProject(subCtx, projectID)
+					h.Project = project
+				} else {
+					h = create.NewHarness(subCtx, t, harnessOptions...)
+					project = h.Project
+				}
+
 				s := create.LoadSample(t, sampleKey, project)
 
 				create.SetupNamespacesAndApplyDefaults(h, s.Resources, project)
@@ -286,6 +320,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				case "TagsTagKey", "TagsTagValue", "TagsTagBinding":
 					forceDirect = true
 				case "APIKeysKey":
+					forceDirect = true
+				case "LoggingLogView":
 					forceDirect = true
 				case "TagsLocationTagBinding":
 					forceDirect = false
@@ -670,6 +706,10 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						switch event.Request.Method {
 						case "GET":
 							isReadOnly = true
+						case "GRPC":
+							if strings.Contains(event.Request.URL, "/Get") || strings.Contains(event.Request.URL, "/List") {
+								isReadOnly = true
+							}
 						}
 						if !isReadOnly {
 							t.Errorf("FAIL: unexpected event during re-reconciliation: %v", event)
@@ -703,6 +743,11 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
+
+					if options.ForceDirectController || options.FallbackToOldController {
+						events.RemoveHTTPRequestHeader("User-Agent")
+						events.RemoveHTTPRequestHeader("X-Goog-Request-Params")
+					}
 
 					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
 					if options.TestPause {

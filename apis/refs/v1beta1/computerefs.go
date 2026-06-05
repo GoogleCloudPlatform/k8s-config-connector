@@ -36,6 +36,46 @@ func fixStaleExternalFormat(external string) string {
 	return external
 }
 
+// TrimComputeURIPrefix trims known GCP Compute Engine URL and URI prefixes
+// to normalize the resource path to projects/{{project}}/... format.
+// This is robust and ensures unknown values/prefixes are not silently ignored.
+func TrimComputeURIPrefix(ref string) string {
+	prefixes := []string{
+		"https://compute.googleapis.com/compute/v1/",
+		"https://compute.googleapis.com/compute/beta/",
+		"https://compute.googleapis.com/compute/v1beta1/",
+		"https://compute.googleapis.com/",
+		"https://www.googleapis.com/compute/v1/",
+		"https://www.googleapis.com/compute/beta/",
+		"https://www.googleapis.com/compute/v1beta1/",
+		"https://www.googleapis.com/",
+		"http://compute.googleapis.com/compute/v1/",
+		"http://compute.googleapis.com/compute/beta/",
+		"http://compute.googleapis.com/compute/v1beta1/",
+		"http://compute.googleapis.com/",
+		"http://www.googleapis.com/compute/v1/",
+		"http://www.googleapis.com/compute/beta/",
+		"http://www.googleapis.com/compute/v1beta1/",
+		"http://www.googleapis.com/",
+		"//compute.googleapis.com/compute/v1/",
+		"//compute.googleapis.com/compute/beta/",
+		"//compute.googleapis.com/compute/v1beta1/",
+		"//compute.googleapis.com/",
+		"//www.googleapis.com/compute/v1/",
+		"//www.googleapis.com/compute/beta/",
+		"//www.googleapis.com/compute/v1beta1/",
+		"//www.googleapis.com/",
+		"compute/v1/",
+		"compute/beta/",
+		"compute/v1beta1/",
+		"/",
+	}
+	for _, prefix := range prefixes {
+		ref = strings.TrimPrefix(ref, prefix)
+	}
+	return ref
+}
+
 type ComputeSubnetworkRef struct {
 	/* The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
@@ -119,6 +159,75 @@ type ComputeAddressRef struct {
 	Name string `json:"name,omitempty"`
 	/* The `namespace` field of a `ComputeAddress` resource. */
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeAddressRef) (*ComputeAddressRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External == "" {
+		if ref.Name == "" {
+			return nil, fmt.Errorf("must specify either name or external on computeaddress reference")
+		}
+
+		key := types.NamespacedName{
+			Namespace: ref.Namespace,
+			Name:      ref.Name,
+		}
+		if key.Namespace == "" {
+			key.Namespace = src.GetNamespace()
+		}
+
+		addressObj := &unstructured.Unstructured{}
+		addressObj.SetGroupVersionKind(schema.GroupVersionKind{
+			Group:   "compute.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "ComputeAddress",
+		})
+		if err := reader.Get(ctx, key, addressObj); err != nil {
+			if apierrors.IsNotFound(err) {
+				return nil, fmt.Errorf("referenced ComputeAddress %v not found", key)
+			}
+			return nil, fmt.Errorf("error reading referenced ComputeAddress %v: %w", key, err)
+		}
+
+		addressID, err := GetResourceID(addressObj)
+		if err != nil {
+			return nil, err
+		}
+
+		region, _, _ := unstructured.NestedString(addressObj.Object, "spec", "location")
+		if region == "" {
+			region, _, _ = unstructured.NestedString(addressObj.Object, "spec", "region")
+		}
+		if region == "" {
+			return nil, fmt.Errorf("cannot get region or location from referenced ComputeAddress %v", key)
+		}
+
+		projectID, err := ResolveProjectID(ctx, reader, addressObj)
+		if err != nil {
+			return nil, err
+		}
+		ref.External = fmt.Sprintf("projects/%s/regions/%s/addresses/%s", projectID, region, addressID)
+	} else {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on computeaddress reference")
+		}
+	}
+
+	ref.External = fixStaleExternalFormat(ref.External)
+
+	tokens := strings.Split(ref.External, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "addresses" {
+		projectID := tokens[1]
+		region := tokens[3]
+		addressID := tokens[5]
+		return &ComputeAddressRef{
+			External: fmt.Sprintf("projects/%s/regions/%s/addresses/%s", projectID, region, addressID),
+		}, nil
+	}
+	return nil, fmt.Errorf("format of computeaddress external=%q was not known (use projects/<projectId>/regions/<region>/addresses/<addressId>)", ref.External)
 }
 
 type ComputeServiceAttachmentRef struct {

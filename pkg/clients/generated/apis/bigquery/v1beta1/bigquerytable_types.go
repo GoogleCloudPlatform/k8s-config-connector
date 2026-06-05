@@ -365,7 +365,7 @@ type BigQueryTableSpec struct {
 	// +optional
 	Clustering []string `json:"clustering,omitempty"`
 
-	/* DatasetRef defines the resource reference to BigQueryDataset, which "External" field holds the GCP identifier for the KRM object. */
+	/* DatasetRef is a reference to a BigQueryDataset. */
 	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
 
 	/* A user-friendly description of this table. */

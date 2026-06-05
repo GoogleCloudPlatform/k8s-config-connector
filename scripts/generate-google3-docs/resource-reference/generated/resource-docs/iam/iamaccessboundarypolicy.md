@@ -14,7 +14,7 @@ Use of <code>IAMAccessBoundaryPolicy</code> is restricted and is covered by the 
 <tbody>
 <tr>
 <td>Google Cloud Service Name</td>
-<td>{{iam_name_short}}</td>
+<td>IAM</td>
 </tr>
 <tr>
 <td>Google Cloud Service Documentation</td>

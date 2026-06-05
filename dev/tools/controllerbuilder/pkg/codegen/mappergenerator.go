@@ -324,9 +324,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				continue
 			}
 
-			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
-			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
-
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
+								isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice -> krm single
 				var fromProtoElemFunc string
 				switch protoField.Kind() {
@@ -524,6 +523,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						krmFieldName,
 						protoFieldName,
 					)
+				} else if !strings.HasPrefix(krmField.Type, "*") {
+					fmt.Fprintf(out, "\tout.%s = in.%s\n",
+						krmFieldName,
+						protoAccessor,
+					)
 				} else {
 					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
 						krmFieldName,
@@ -607,9 +611,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				continue
 			}
 
-			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
-			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
-
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
+								isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
 			if !isProtoFieldSlice && isKRMFieldSlice { // proto single <- krm slice
 				krmElemType := strings.TrimPrefix(krmField.Type, "[]")
 				krmElemTypeName := strings.TrimPrefix(krmElemType, "*")
@@ -1097,6 +1100,8 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.UInt64Value_FromProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_FromProto"
+	case "google.rpc.Status":
+		return "direct.Status_FromProto"
 	}
 	klog.Fatalf("unhandled case in krmFromProtoFunctionName for proto field %s", fullname)
 	return ""
@@ -1129,6 +1134,8 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.UInt64Value_ToProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_ToProto"
+	case "google.rpc.Status":
+		return "direct.Status_ToProto"
 	}
 	klog.Fatalf("unhandled case in krmToProtoFunctionName for proto field %s", fullname)
 	return ""

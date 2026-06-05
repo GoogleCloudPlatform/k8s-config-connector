@@ -31,8 +31,7 @@ import (
 
 var _ refsv1beta1.Ref = &ForwardingRuleRef{}
 
-// ForwardingRuleRef defines the resource reference to ComputeForwardingRule, which "External" field
-// holds the GCP identifier for the KRM object.
+// ForwardingRuleRef is a reference to a ComputeForwardingRule.
 type ForwardingRuleRef struct {
 	// A reference to an externally managed ComputeForwardingRule resource.
 	// Should be in the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}"

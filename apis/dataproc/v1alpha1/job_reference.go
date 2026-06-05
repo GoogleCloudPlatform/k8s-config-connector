@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &JobRef{}
 
-// JobRef defines the resource reference to DataprocJob, which "External" field
-// holds the GCP identifier for the KRM object.
+// JobRef is a reference to a DataprocJob.
 type JobRef struct {
 	// A reference to an externally managed DataprocJob resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}".

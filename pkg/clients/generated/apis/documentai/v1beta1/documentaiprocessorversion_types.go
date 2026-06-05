@@ -65,7 +65,7 @@ type DocumentAIProcessorVersionSpec struct {
 	// +optional
 	KmsKeyVersionNameRef *v1alpha1.ResourceRef `json:"kmsKeyVersionNameRef,omitempty"`
 
-	/* ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field holds the GCP identifier for the KRM object. */
+	/* ProcessorRef is a reference to a DocumentAIProcessor. */
 	ProcessorRef v1alpha1.ResourceRef `json:"processorRef"`
 
 	/* The DocumentAIProcessorVersion name. If not given, the metadata.name will be used. */

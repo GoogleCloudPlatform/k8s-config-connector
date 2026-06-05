@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &InterconnectRef{}
 
-// InterconnectRef defines the resource reference to ComputeInterconnect, which "External" field
-// holds the GCP identifier for the KRM object.
+// InterconnectRef is a reference to a ComputeInterconnect.
 type InterconnectRef struct {
 	// A reference to an externally managed ComputeInterconnect resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/interconnects/{{interconnectID}}".

@@ -76,8 +76,7 @@ spec:
                   be at most 200 bytes long when encoded in UTF-8.'
                 type: string
               parentPolicyTagRef:
-                description: PolicyTagRef defines the resource reference to DataCatalogPolicyTag,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: PolicyTagRef is a reference to a DataCatalogPolicyTag.
                 oneOf:
                 - not:
                     required:
@@ -110,8 +109,7 @@ spec:
                   resource.
                 type: string
               taxonomyRef:
-                description: TaxonomyRef defines the resource reference to DataCatalogTaxonomy,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: TaxonomyRef is a reference to a DataCatalogTaxonomy.
                 oneOf:
                 - not:
                     required:

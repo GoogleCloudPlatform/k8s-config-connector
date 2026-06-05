@@ -26,8 +26,7 @@ import (
 
 var _ refs.Ref = &ComputeFutureReservationRef{}
 
-// ComputeFutureReservationRef defines the resource reference to ComputeFutureReservation, which "External" field
-// holds the GCP identifier for the KRM object.
+// ComputeFutureReservationRef is a reference to a ComputeFutureReservation.
 type ComputeFutureReservationRef struct {
 	// A reference to an externally managed ComputeFutureReservation resource.
 	// Should be in the format "projects/{project}/zones/{zone}/futureReservations/{futureReservation}".

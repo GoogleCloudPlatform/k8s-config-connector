@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ImportJobRef{}
 
-// ImportJobRef defines the resource reference to KMSImportJob, which "External" field
-// holds the GCP identifier for the KRM object.
+// ImportJobRef is a reference to a KMSImportJob.
 type ImportJobRef struct {
 	// A reference to an externally managed KMSImportJob resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/importjobs/{{importjobID}}".

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2024 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
@@ -25,8 +26,15 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.devtools.artifactregistry.v1 \
   --api-version artifactregistry.cnrm.cloud.google.com/v1beta1  \
+  --include-skipped-output \
   --resource ArtifactRegistryRepository:Repository
 
 go run . generate-mapper \
   --service google.devtools.artifactregistry.v1 \
-  --api-version artifactregistry.cnrm.cloud.google.com/v1beta1
+  --api-version artifactregistry.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/artifactregistry/

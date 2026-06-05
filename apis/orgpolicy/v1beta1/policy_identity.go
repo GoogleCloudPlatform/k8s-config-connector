@@ -25,8 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// PolicyIdentity defines the resource reference to OrgPolicyPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// PolicyIdentity is the identity of an OrgPolicyPolicy.
 type PolicyIdentity struct {
 	parent *PolicyParent
 	id     string

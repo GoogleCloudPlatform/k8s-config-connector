@@ -803,20 +803,138 @@ func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_FromProto(mapCtx *direct.Map
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto", skipping
+func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEdgeSecurityService{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	// MISSING: Name
+	if in.SecurityPolicyRef != nil {
+		out.SecurityPolicy = &in.SecurityPolicyRef.External
+	}
+	return out
+}
+*/
 
-	func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+/* found existing non-generated mapping function "ComputeNetworkSpec_v1beta1_FromProto", skipping
+func ComputeNetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkSpec{}
+	// MISSING: IPv4Range
+	out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.EnableUlaInternalIPV6 = in.EnableUlaInternalIpv6
+	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
+	// MISSING: ID
+	out.InternalIPV6Range = in.InternalIpv6Range
+	// MISSING: Kind
+	out.Mtu = in.Mtu
+	// MISSING: Name
+	out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
+	// MISSING: NetworkProfile
+	// MISSING: Params
+	// MISSING: Peerings
+	// MISSING: RoutingConfig
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: Subnetworks
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeNetworkSpec_v1beta1_ToProto", skipping
+func ComputeNetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkSpec) *pb.Network {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Network{}
+	// MISSING: IPv4Range
+	out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.EnableUlaInternalIpv6 = in.EnableUlaInternalIPV6
+	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
+	// MISSING: ID
+	out.InternalIpv6Range = in.InternalIPV6Range
+	// MISSING: Kind
+	out.Mtu = in.Mtu
+	// MISSING: Name
+	out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
+	// MISSING: NetworkProfile
+	// MISSING: Params
+	// MISSING: Peerings
+	// MISSING: RoutingConfig
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: Subnetworks
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeNodeGroupSpec_v1beta1_FromProto", skipping
+func ComputeNodeGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krm.ComputeNodeGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNodeGroupSpec{}
+	out.AutoscalingPolicy = NodeGroupAutoscalingPolicy_v1beta1_FromProto(mapCtx, in.GetAutoscalingPolicy())
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LocationHint
+	// MISSING: MaintenanceInterval
+	out.MaintenancePolicy = in.MaintenancePolicy
+	out.MaintenanceWindow = NodeGroupMaintenanceWindow_v1beta1_FromProto(mapCtx, in.GetMaintenanceWindow())
+	// MISSING: Name
+	if in.GetNodeTemplate() != "" {
+		out.NodeTemplateRef = &krm.ComputeNodeTemplateRef{External: in.GetNodeTemplate()}
+	}
+	// MISSING: SelfLink
+	out.ShareSettings = NodeGroupShareSettings_v1beta1_FromProto(mapCtx, in.GetShareSettings())
+	out.Size = in.Size
+	// MISSING: Status
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeNodeGroupSpec_v1beta1_ToProto", skipping
+
+	func ComputeNodeGroupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNodeGroupSpec) *pb.NodeGroup {
 		if in == nil {
 			return nil
 		}
-		out := &pb.NetworkEdgeSecurityService{}
+		out := &pb.NodeGroup{}
+		out.AutoscalingPolicy = NodeGroupAutoscalingPolicy_v1beta1_ToProto(mapCtx, in.AutoscalingPolicy)
+		// MISSING: CreationTimestamp
 		out.Description = in.Description
-		out.Fingerprint = in.Fingerprint
+		// MISSING: Fingerprint
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: LocationHint
+		// MISSING: MaintenanceInterval
+		out.MaintenancePolicy = in.MaintenancePolicy
+		out.MaintenanceWindow = NodeGroupMaintenanceWindow_v1beta1_ToProto(mapCtx, in.MaintenanceWindow)
 		// MISSING: Name
-		if in.SecurityPolicyRef != nil {
-			out.SecurityPolicy = &in.SecurityPolicyRef.External
+		if in.NodeTemplateRef != nil {
+			out.NodeTemplate = &in.NodeTemplateRef.External
 		}
+		// MISSING: SelfLink
+		out.ShareSettings = NodeGroupShareSettings_v1beta1_ToProto(mapCtx, in.ShareSettings)
+		out.Size = in.Size
+		// MISSING: Status
+		out.Zone = in.Zone
 		return out
 	}
 */
@@ -1347,7 +1465,7 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out := &krm.ComputeTargetHTTPSProxySpec{}
 	// MISSING: AuthorizationPolicy
 	if in.GetCertificateMap() != "" {
-		out.CertificateMapRef = &krm.CertificateManagerCertificateMapRef{External: in.GetCertificateMap()}
+		out.CertificateMapRef = &krmcertificatemanagerv1beta1.CertificateManagerCertificateMapRef{External: in.GetCertificateMap()}
 	}
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
@@ -1956,6 +2074,82 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
 	return out
 }
+
+/* found existing non-generated mapping function "NodeGroupAutoscalingPolicy_v1beta1_FromProto", skipping
+func NodeGroupAutoscalingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroupAutoscalingPolicy) *krm.NodeGroupAutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeGroupAutoscalingPolicy{}
+	out.MaxNodes = in.MaxNodes
+	out.MinNodes = in.MinNodes
+	out.Mode = in.Mode
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "NodeGroupAutoscalingPolicy_v1beta1_ToProto", skipping
+func NodeGroupAutoscalingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupAutoscalingPolicy) *pb.NodeGroupAutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeGroupAutoscalingPolicy{}
+	out.MaxNodes = in.MaxNodes
+	out.MinNodes = in.MinNodes
+	out.Mode = in.Mode
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "NodeGroupMaintenanceWindow_v1beta1_FromProto", skipping
+func NodeGroupMaintenanceWindow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroupMaintenanceWindow) *krm.NodeGroupMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeGroupMaintenanceWindow{}
+	// MISSING: MaintenanceDuration
+	out.StartTime = in.StartTime
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "NodeGroupMaintenanceWindow_v1beta1_ToProto", skipping
+func NodeGroupMaintenanceWindow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupMaintenanceWindow) *pb.NodeGroupMaintenanceWindow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeGroupMaintenanceWindow{}
+	// MISSING: MaintenanceDuration
+	out.StartTime = in.StartTime
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "NodeGroupShareSettings_v1beta1_FromProto", skipping
+func NodeGroupShareSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ShareSettings) *krm.NodeGroupShareSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeGroupShareSettings{}
+	// TODO: map type string message for field ProjectMap
+	out.ShareType = in.ShareType
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "NodeGroupShareSettings_v1beta1_ToProto", skipping
+
+	func NodeGroupShareSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupShareSettings) *pb.ShareSettings {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ShareSettings{}
+		// TODO: map type string message for field ProjectMap
+		out.ShareType = in.ShareType
+		return out
+	}
+*/
 func NodeTemplateNodeTypeFlexibility_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeTemplateNodeTypeFlexibility) *krm.NodeTemplateNodeTypeFlexibility {
 	if in == nil {
 		return nil

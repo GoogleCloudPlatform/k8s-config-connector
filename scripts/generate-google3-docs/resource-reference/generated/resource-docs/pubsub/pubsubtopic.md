@@ -119,11 +119,7 @@ schemaSettings:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The KMSCryptoKey to be used to protect access to messages published
-on this topic. Your project's Pub/Sub service account
-('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
-must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-feature.</p>
+            <p>The KMSCryptoKey to be used to protect access to messages published on this topic. Your project's Pub/Sub service account ('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature.</p>
         </td>
     </tr>
     <tr>
@@ -163,13 +159,7 @@ feature.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Indicates the minimum duration to retain a message after it is published
-to the topic. If this field is set, messages published to the topic in
-the last messageRetentionDuration are always available to subscribers.
-For instance, it allows any attached subscription to seek to a timestamp
-that is up to messageRetentionDuration in the past. If this field is not
-set, message retention is controlled by settings on individual subscriptions.
-Cannot be more than 31 days or less than 10 minutes.</p>
+            <p>Indicates the minimum duration to retain a message after it is published to the topic. If this field is set, messages published to the topic in the last messageRetentionDuration are always available to subscribers. For instance, it allows any attached subscription to seek to a timestamp that is up to messageRetentionDuration in the past. If this field is not set, message retention is controlled by settings on individual subscriptions. Cannot be more than 31 days or less than 10 minutes.</p>
         </td>
     </tr>
     <tr>
@@ -179,9 +169,7 @@ Cannot be more than 31 days or less than 10 minutes.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Policy constraining the set of Google Cloud Platform regions where
-messages published to the topic may be stored. If not present, then no
-constraints are in effect.</p>
+            <p>Policy constraining the set of Google Cloud Platform regions where messages published to the topic may be stored. If not present, then no constraints are in effect.</p>
         </td>
     </tr>
     <tr>
@@ -191,12 +179,7 @@ constraints are in effect.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of IDs of GCP regions where messages that are published to
-the topic may be persisted in storage. Messages published by
-publishers running in non-allowed GCP regions (or running outside
-of GCP altogether) will be routed for storage in one of the
-allowed regions. An empty list means that no regions are allowed,
-and is not a valid configuration.</p>
+            <p>A list of IDs of GCP regions where messages that are published to the topic may be persisted in storage. Messages published by publishers running in non-allowed GCP regions (or running outside of GCP altogether) will be routed for storage in one of the allowed regions. An empty list means that no regions are allowed, and is not a valid configuration.</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +290,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

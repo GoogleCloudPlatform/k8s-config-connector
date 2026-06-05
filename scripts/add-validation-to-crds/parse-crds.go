@@ -340,6 +340,14 @@ oneOf:
     - required: [folderRef]
     - required: [organizationRef]
 `
+		} else if (kind == "LoggingLogView" || kind == "LoggingLogBucket" || kind == "LoggingLogExclusion") && fieldPath == ".spec" {
+			ruleYAML = `
+oneOf:
+- required: [billingAccountRef]
+- required: [folderRef]
+- required: [organizationRef]
+- required: [projectRef]
+`
 		} else if signature == "external,kind,name,namespace" {
 			ruleYAML = refRuleWithKind
 			// kind is optional for projectRef (and maybe in future other well-known ref types)
@@ -351,7 +359,7 @@ oneOf:
 			}
 		} else if signature == "external,name,namespace" {
 			ruleYAML = refRuleWithoutKind
-		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ContainerCluster") {
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig") {
 			ruleYAML = legacyRefRule
 		} else {
 			if strings.HasPrefix(signature, "external,") {

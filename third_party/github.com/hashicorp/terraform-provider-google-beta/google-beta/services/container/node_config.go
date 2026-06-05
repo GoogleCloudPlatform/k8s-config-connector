@@ -666,6 +666,21 @@ func schemaNodeConfig() *schema.Schema {
 						},
 					},
 				},
+				"windows_node_config": {
+					Type:        schema.TypeList,
+					Optional:    true,
+					MaxItems:    1,
+					Description: `Parameters that can be configured on Windows nodes.`,
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"os_version": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Description: `os_version specifies the Windows Server release version to be used on the node.`,
+							},
+						},
+					},
+				},
 			},
 		},
 	}
@@ -959,6 +974,10 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 		nc.ConfidentialNodes = expandConfidentialNodes(v)
 	}
 
+	if v, ok := nodeConfig["windows_node_config"]; ok {
+		nc.WindowsNodeConfig = expandWindowsNodeConfig(v)
+	}
+
 	return nc
 }
 
@@ -1181,6 +1200,7 @@ func flattenNodeConfig(c *container.NodeConfig, v interface{}) []map[string]inte
 		"advanced_machine_features":          flattenAdvancedMachineFeaturesConfig(c.AdvancedMachineFeatures),
 		"sole_tenant_config":                 flattenSoleTenantConfig(c.SoleTenantConfig),
 		"fast_socket":                        flattenFastSocket(c.FastSocket),
+		"windows_node_config":                flattenWindowsNodeConfig(c.WindowsNodeConfig),
 	})
 
 	if len(c.OauthScopes) > 0 {
@@ -1471,5 +1491,31 @@ func flattenHostMaintenancePolicy(c *container.HostMaintenancePolicy) []map[stri
 		})
 	}
 
+	return result
+}
+
+func expandWindowsNodeConfig(v interface{}) *container.WindowsNodeConfig {
+	if v == nil {
+		return nil
+	}
+	ls := v.([]interface{})
+	if len(ls) == 0 {
+		return nil
+	}
+	wnc := &container.WindowsNodeConfig{}
+	cfg := ls[0].(map[string]interface{})
+	if val, ok := cfg["os_version"]; ok {
+		wnc.OsVersion = val.(string)
+	}
+	return wnc
+}
+
+func flattenWindowsNodeConfig(c *container.WindowsNodeConfig) []map[string]interface{} {
+	result := []map[string]interface{}{}
+	if c != nil && c.OsVersion != "" {
+		result = append(result, map[string]interface{}{
+			"os_version": c.OsVersion,
+		})
+	}
 	return result
 }

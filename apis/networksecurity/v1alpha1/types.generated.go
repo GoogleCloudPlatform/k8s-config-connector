@@ -17,6 +17,10 @@
 // krm.group: networksecurity.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.networksecurity.v1
+// resource: NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig
+// resource: NetworkSecurityInterceptDeployment:InterceptDeployment
 // resource: NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
+// resource: NetworkSecurityMirroringDeployment:MirroringDeployment
+// resource: NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup
 
 package v1alpha1

@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &BackupRef{}
 
-// BackupRef defines the resource reference to BigtableBackup, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupRef is a reference to a BigtableBackup.
 type BackupRef struct {
 	// A reference to an externally managed BigtableBackup resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".

@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// CustomClassIdentity defines the resource reference to SpeechCustomClass, which "External" field
-// holds the GCP identifier for the KRM object.
+// CustomClassIdentity is the identity of a SpeechCustomClass.
 type CustomClassIdentity struct {
 	parent *CustomClassParent
 	id     string

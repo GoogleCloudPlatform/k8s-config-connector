@@ -16,23 +16,21 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &QueueRef{}
+var _ refs.Ref = &TasksQueueRef{}
 
-// QueueRef defines the resource reference to TasksQueue, which "External" field
-// holds the GCP identifier for the KRM object.
-type QueueRef struct {
+// TasksQueueRef is a reference to a TasksQueue.
+type TasksQueueRef struct {
 	// A reference to an externally managed TasksQueue resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/queues/{{queueID}}".
+	// Should be in the format "projects/{{project}}/locations/{{location}}/queues/{{queue}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a TasksQueue resource.
@@ -42,42 +40,48 @@ type QueueRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on TasksQueue.
-// If the "External" is given in the other resource's spec.TasksQueueRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual TasksQueue object from the cluster.
-func (r *QueueRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", TasksQueueGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseQueueExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func init() {
+	refs.Register(&TasksQueueRef{})
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *TasksQueueRef) GetGVK() schema.GroupVersionKind {
+	return TasksQueueGVK.GroupVersion().WithKind(TasksQueueGVK.Kind)
+}
+
+func (r *TasksQueueRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *TasksQueueRef) GetExternal() string {
+	return r.External
+}
+
+func (r *TasksQueueRef) SetExternal(external string) {
+	r.External = external
+}
+
+func (r *TasksQueueRef) ValidateExternal(ref string) error {
+	id := &TasksQueueIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(TasksQueueGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+	return nil
+}
+
+func (r *TasksQueueRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &TasksQueueIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *TasksQueueRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
+	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, func(u *unstructured.Unstructured) string {
+		identity, err := getIdentityFromTasksQueueSpec(ctx, reader, u)
+		if err != nil {
+			return ""
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", TasksQueueGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+		return identity.String()
+	})
 }

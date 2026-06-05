@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ConnectivityTestRef{}
 
-// ConnectivityTestRef defines the resource reference to NetworkManagementConnectivityTest, which "External" field
-// holds the GCP identifier for the KRM object.
+// ConnectivityTestRef is a reference to a NetworkManagementConnectivityTest.
 type ConnectivityTestRef struct {
 	// A reference to an externally managed NetworkManagementConnectivityTest resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connectivityTests/{{connectivityTestID}}".

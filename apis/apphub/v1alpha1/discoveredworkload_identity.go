@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DiscoveredWorkloadIdentity defines the resource reference to AppHubDiscoveredWorkload, which "External" field
-// holds the GCP identifier for the KRM object.
+// DiscoveredWorkloadIdentity is the identity of an AppHubDiscoveredWorkload.
 type DiscoveredWorkloadIdentity struct {
 	parent *DiscoveredWorkloadParent
 	id     string

@@ -25,8 +25,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &RevisionRef{}
 
-// Revision defines the resource reference to RunRevision, which "External" field
-// holds the GCP identifier for the KRM object.
+// RevisionRef is a reference to a RunRevision.
 type RevisionRef struct {
 	// A reference to an externally managed RunRevision resource.
 	// Should be in the format "projects/{{project}}/locations/{{location}}/revisions/{{revision}}".

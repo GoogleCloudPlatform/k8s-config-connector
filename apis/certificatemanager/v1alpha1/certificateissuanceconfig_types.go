@@ -16,7 +16,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -128,5 +128,5 @@ type CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthoritySe
 	//  The CA pool string has a relative resource path following the form
 	//  "projects/{project}/locations/{location}/caPools/{ca_pool}".
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.CertificateAuthorityConfig.CertificateAuthorityServiceConfig.ca_pool
-	CAPoolRef *refsv1beta1.PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
+	CAPoolRef *privatecav1beta1.PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
 }

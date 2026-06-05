@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EntryIdentity defines the resource reference to DataCatalogEntry, which "External" field
-// holds the GCP identifier for the KRM object.
+// EntryIdentity is the identity of a DataCatalogEntry.
 type EntryIdentity struct {
 	parent *EntryParent
 	id     string
@@ -58,7 +57,7 @@ func (p *EntryParent) String() string {
 	return fmt.Sprintf("projects/%s/locations/%s/entryGroups/%s", p.ProjectID, p.Location, p.EntryGroupID)
 }
 
-// NewEntryIdentity builds a EntryIdentity from the Config Connector DataCatalogEntry object.
+// NewEntryIdentity builds an EntryIdentity from the Config Connector DataCatalogEntry object.
 func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogEntry) (*EntryIdentity, error) {
 	// --- Determine Parent ---
 	if obj.Spec.EntryGroupRef == nil || (obj.Spec.EntryGroupRef.External == "" && obj.Spec.EntryGroupRef.Name == "") {

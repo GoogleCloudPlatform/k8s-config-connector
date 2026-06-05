@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &DataformRepositoryRef{}
 
-// DataformRepositoryRef defines the resource reference to DataformRepository, which "External" field
-// holds the GCP identifier for the KRM object.
+// DataformRepositoryRef is a reference to a DataformRepository.
 type DataformRepositoryRef struct {
 	// A reference to an externally managed DataformRepository resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".

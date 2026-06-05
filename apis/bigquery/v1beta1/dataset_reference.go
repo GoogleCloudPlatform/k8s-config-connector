@@ -32,8 +32,7 @@ func init() {
 var _ refs.Ref = &DatasetRef{}
 var _ refs.ExternalRef = &DatasetRef{}
 
-// DatasetRef defines the resource reference to BigQueryDataset, which "External" field
-// holds the GCP identifier for the KRM object.
+// DatasetRef is a reference to a BigQueryDataset.
 type DatasetRef struct {
 	// A reference to an externally-managed BigQueryDataset resource.
 	// Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".

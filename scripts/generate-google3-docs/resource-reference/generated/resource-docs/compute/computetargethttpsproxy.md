@@ -136,7 +136,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `externalRef` field of a `CertificateManagerCertificate` resource.</p>
+            <p>Allowed value: The format `projects/{{project}}/locations/{{location}}/certificates/{{name}}` or `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}`.</p>
         </td>
     </tr>
     <tr>
@@ -146,7 +146,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a CertificateManagerCertificate resource.</p>
         </td>
     </tr>
     <tr>
@@ -156,7 +156,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a CertificateManagerCertificate resource.</p>
         </td>
     </tr>
     <tr>
@@ -186,7 +186,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a CertificateManagerCertificateMap resource.</p>
         </td>
     </tr>
     <tr>
@@ -196,7 +196,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a CertificateManagerCertificateMap resource.</p>
         </td>
     </tr>
     <tr>
@@ -286,7 +286,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a NetworkSecurityServerTLSPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -296,7 +296,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a NetworkSecurityServerTLSPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -336,7 +336,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSSLCertificate resource.</p>
         </td>
     </tr>
     <tr>
@@ -346,7 +346,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSSLCertificate resource.</p>
         </td>
     </tr>
     <tr>
@@ -376,7 +376,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSSLPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -386,7 +386,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSSLPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -416,7 +416,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeURLMap resource.</p>
         </td>
     </tr>
     <tr>
@@ -426,7 +426,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeURLMap resource.</p>
         </td>
     </tr>
 </tbody>

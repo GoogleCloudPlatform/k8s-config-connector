@@ -135,9 +135,7 @@ spec:
                   backupplan is applied
                 properties:
                   computeInstanceRef:
-                    description: InstanceRef defines the resource reference to ComputeInstance,
-                      which "External" field holds the GCP identifier for the KRM
-                      object.
+                    description: InstanceRef is a reference to a ComputeInstance.
                     oneOf:
                     - not:
                         required:
@@ -435,9 +433,7 @@ spec:
                   backupplan is applied
                 properties:
                   computeInstanceRef:
-                    description: InstanceRef defines the resource reference to ComputeInstance,
-                      which "External" field holds the GCP identifier for the KRM
-                      object.
+                    description: InstanceRef is a reference to a ComputeInstance.
                     oneOf:
                     - not:
                         required:

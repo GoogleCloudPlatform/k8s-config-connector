@@ -199,6 +199,7 @@ type LoggingLogMetricStatus struct {
 	/* Conditions represent the latest available observations of the
 	   LoggingLogMetric's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
 	/* Output only. The creation timestamp of the metric. This field may not be present for older metrics. */
 	// +optional
 	// +kubebuilder:validation:Format=date-time

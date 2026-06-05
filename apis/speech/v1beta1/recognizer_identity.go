@@ -20,19 +20,41 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// RecognizerIdentity defines the resource reference to SpeechRecognizer, which "External" field
-// holds the GCP identifier for the KRM object.
+var _ identity.IdentityV2 = &RecognizerIdentity{}
+
+// RecognizerIdentity is the identity of a SpeechRecognizer.
 type RecognizerIdentity struct {
 	parent *RecognizerParent
 	id     string
 }
 
 func (i *RecognizerIdentity) String() string {
+	if i.parent == nil {
+		return ""
+	}
 	return i.parent.String() + "/recognizers/" + i.id
+}
+
+func (i *RecognizerIdentity) FromExternal(ref string) error {
+	ref = strings.TrimPrefix(ref, "https://speech.googleapis.com/v2/")
+	ref = strings.TrimPrefix(ref, "https://speech.googleapis.com/v1beta1/")
+	ref = strings.TrimPrefix(ref, "https://speech.googleapis.com/")
+	parent, resourceID, err := ParseRecognizerExternal(ref)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.id = resourceID
+	return nil
+}
+
+func (i *RecognizerIdentity) Host() string {
+	return "speech.googleapis.com"
 }
 
 func (i *RecognizerIdentity) ID() string {

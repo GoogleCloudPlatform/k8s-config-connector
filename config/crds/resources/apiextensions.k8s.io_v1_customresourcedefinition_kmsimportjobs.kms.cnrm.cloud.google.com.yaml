@@ -66,8 +66,7 @@ spec:
                   incoming key material.
                 type: string
               kmsKeyRingRef:
-                description: KMSKeyRingRef defines the resource reference to KMSKeyRing,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: KMSKeyRingRef is a reference to a KMSKeyRing.
                 oneOf:
                 - not:
                     required:
@@ -279,8 +278,7 @@ spec:
                   incoming key material.
                 type: string
               kmsKeyRingRef:
-                description: KMSKeyRingRef defines the resource reference to KMSKeyRing,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: KMSKeyRingRef is a reference to a KMSKeyRing.
                 oneOf:
                 - not:
                     required:

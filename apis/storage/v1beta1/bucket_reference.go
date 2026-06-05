@@ -32,8 +32,7 @@ func init() {
 	refsv1beta1.Register(&StorageBucketRef{})
 }
 
-// StorageBucketRef defines the resource reference to StorageBucket, which "External" field
-// holds the GCP identifier for the KRM object.
+// StorageBucketRef is a reference to a StorageBucket.
 type StorageBucketRef struct {
 	// For backward compatibility, we are not enforcing the external format.
 

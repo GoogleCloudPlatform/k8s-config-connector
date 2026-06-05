@@ -217,6 +217,21 @@ func (in *IAMDenyPolicySpec) DeepCopyInto(out *IAMDenyPolicySpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.FolderRef != nil {
+		in, out := &in.FolderRef, &out.FolderRef
+		*out = new(k8sv1alpha1.ResourceRef)
+		**out = **in
+	}
+	if in.OrganizationRef != nil {
+		in, out := &in.OrganizationRef, &out.OrganizationRef
+		*out = new(k8sv1alpha1.ResourceRef)
+		**out = **in
+	}
+	if in.ProjectRef != nil {
+		in, out := &in.ProjectRef, &out.ProjectRef
+		*out = new(k8sv1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)

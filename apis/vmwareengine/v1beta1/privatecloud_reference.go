@@ -36,8 +36,7 @@ var VMwareEnginePrivateCloudGVK = schema.GroupVersionKind{
 
 var _ refsv1beta1.ExternalNormalizer = &PrivateCloudRef{}
 
-// PrivateCloudRef defines the resource reference to VMwareEnginePrivateCloud, which "External" field
-// holds the GCP identifier for the KRM object.
+// PrivateCloudRef is a reference to a VMwareEnginePrivateCloud.
 type PrivateCloudRef struct {
 	// A reference to an externally managed VMwareEnginePrivateCloud resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/privateClouds/{{privatecloudID}}".

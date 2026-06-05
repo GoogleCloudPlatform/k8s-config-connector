@@ -1,0 +1,19 @@
+apiVersion: iam.cnrm.cloud.google.com/v1alpha1
+kind: IAMDenyPolicy
+metadata:
+  name: iamdenypolicy-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  displayName: "My Updated Deny Policy"
+  rules:
+    - description: "Deny roles.get"
+      denyRule:
+        deniedPermissions:
+          - "iam.googleapis.com/roles.get"
+        exceptionPermissions:
+          - "iam.googleapis.com/roles.list"
+        deniedPrincipals:
+          - "principalSet://goog/public:all"
+        exceptionPrincipals:
+          - "principalSet://goog/cloudIdentityCustomerId/C01Abc35"

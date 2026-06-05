@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &BackupRef{}
 
-// BackupRef defines the resource reference to MetastoreBackup, which "External" field
-// holds the GCP identifier for the KRM object.
+// BackupRef is a reference to a MetastoreBackup.
 type BackupRef struct {
 	// A reference to an externally managed MetastoreBackup resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".

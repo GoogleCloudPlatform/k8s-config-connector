@@ -18,8 +18,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
-// AlertPolicyIdentity defines the resource reference to AlertPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// AlertPolicyIdentity is the identity of an AlertPolicy.
 type AlertPolicyIdentity struct {
 	parent *parent.ProjectParent
 	id     string

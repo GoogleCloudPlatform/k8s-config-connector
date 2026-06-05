@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &ServiceRef{}
 
-// ServiceRef defines the resource reference to MetastoreService, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceRef is a reference to a MetastoreService.
 type ServiceRef struct {
 	// A reference to an externally managed MetastoreService resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".

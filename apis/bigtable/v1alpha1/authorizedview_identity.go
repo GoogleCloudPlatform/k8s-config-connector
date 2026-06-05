@@ -26,8 +26,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AuthorizedViewIdentity defines the resource reference to BigtableAuthorizedView, which "External" field
-// holds the GCP identifier for the KRM object.
+// AuthorizedViewIdentity is the identity of a BigtableAuthorizedView.
 type AuthorizedViewIdentity struct {
 	parent *bigtablev1beta1.TableIdentity
 	id     string
@@ -41,7 +40,7 @@ func (i *AuthorizedViewIdentity) ID() string {
 	return i.id
 }
 
-// New builds a AuthorizedViewIdentity from the Config Connector AuthorizedView object.
+// New builds an AuthorizedViewIdentity from the Config Connector AuthorizedView object.
 func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *BigtableAuthorizedView) (*AuthorizedViewIdentity, error) {
 
 	// Get Parent

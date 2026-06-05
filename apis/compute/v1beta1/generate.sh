@@ -31,11 +31,13 @@ go run . generate-types \
   --resource ComputeResourcePolicy:ResourcePolicy \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSubnetwork:Subnetwork \
+  --resource ComputeNetwork:Network \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeNodeTemplate:NodeTemplate \
   --resource ComputeReservation:Reservation \
   --resource ComputeHealthCheck:HealthCheck \
+  --resource ComputeNodeGroup:NodeGroup \
   --include-skipped-output
 
 go run . generate-mapper \

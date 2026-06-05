@@ -27,8 +27,7 @@ import (
 
 var _ refs.Ref = &SpannerInstanceRef{}
 
-// SpannerInstanceRef defines the resource reference to SpannerInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+// SpannerInstanceRef is a reference to a SpannerInstance.
 type SpannerInstanceRef struct {
 	// A reference to an externally managed SpannerInstance resource.
 	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".

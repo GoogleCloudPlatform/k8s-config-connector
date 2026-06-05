@@ -31,8 +31,7 @@ const (
 	TableIDURL = krmv1alpha1.CatalogIDURL + "/tables/{{tableID}}"
 )
 
-// TableIdentity defines the resource reference to BigLakeTable, which "External" field
-// holds the GCP identifier for the KRM object.
+// TableIdentity is the identity of a BigLakeTable.
 type TableIdentity struct {
 	parent *krmv1alpha1.DatabaseIdentity
 	id     string

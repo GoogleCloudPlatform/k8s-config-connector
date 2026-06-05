@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// FederationIdentity defines the resource reference to MetastoreFederation, which "External" field
-// holds the GCP identifier for the KRM object.
+// FederationIdentity is the identity of a MetastoreFederation.
 type FederationIdentity struct {
 	parent *FederationParent
 	id     string

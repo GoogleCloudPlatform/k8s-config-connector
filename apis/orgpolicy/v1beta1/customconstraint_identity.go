@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// CustomConstraintIdentity defines the resource reference to OrgPolicyCustomConstraint, which "External" field
-// holds the GCP identifier for the KRM object.
+// CustomConstraintIdentity is the identity of an OrgPolicyCustomConstraint.
 type CustomConstraintIdentity struct {
 	parent *CustomConstraintParent
 	id     string

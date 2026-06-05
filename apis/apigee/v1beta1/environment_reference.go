@@ -29,16 +29,16 @@ import (
 
 var _ refsv1beta1.Ref = &ApigeeEnvironmentRef{}
 
-// ApigeeEnvironmentRef is a reference to a ApigeeEnvironment resource.
+// ApigeeEnvironmentRef is a reference to an ApigeeEnvironment resource.
 type ApigeeEnvironmentRef struct {
 	// A reference to an externally managed ApigeeEnvironment resource.
 	// Should be in the format "organizations/{{organizationID}}/environments/{{environmentID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ApigeeEnvironment resource.
+	// The name of an ApigeeEnvironment resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ApigeeEnvironment resource.
+	// The namespace of an ApigeeEnvironment resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

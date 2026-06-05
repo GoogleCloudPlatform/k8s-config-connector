@@ -942,7 +942,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>If provided must be in the format `projects/[projectId]/locations/[location]/backups/[backupId]`.</p>
+            <p>A reference to an externally managed AlloyDBBackup resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".</p>
         </td>
     </tr>
     <tr>
@@ -952,7 +952,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.name` field of a `AlloyDBBackup` resource.</p>
+            <p>The name of a AlloyDBBackup resource.</p>
         </td>
     </tr>
     <tr>
@@ -962,7 +962,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `AlloyDBBackup` resource.</p>
+            <p>The namespace of a AlloyDBBackup resource.</p>
         </td>
     </tr>
     <tr>

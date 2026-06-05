@@ -25,8 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ServiceIdentityIdentity defines the resource reference to ServiceIdentity, which "External" field
-// holds the GCP identifier for the KRM object.
+// ServiceIdentityIdentity is the identity of a ServiceIdentity.
 type ServiceIdentityIdentity struct {
 	parent *ServiceIdentityParent
 	id string

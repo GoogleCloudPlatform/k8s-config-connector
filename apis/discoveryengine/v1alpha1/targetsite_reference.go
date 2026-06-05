@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &TargetSiteRef{}
 
-// TargetSiteRef defines the resource reference to DiscoveryEngineDataStoreTargetSite, which "External" field
-// holds the GCP identifier for the KRM object.
+// TargetSiteRef is a reference to a DiscoveryEngineDataStoreTargetSite.
 type TargetSiteRef struct {
 	// A reference to an externally managed DiscoveryEngineDataStoreTargetSite resource.
 	// Should be in the format "projects/<projectID>/locations/<location>/targetsites/<targetsiteID>".

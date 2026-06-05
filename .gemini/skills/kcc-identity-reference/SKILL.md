@@ -40,12 +40,15 @@ Create or update the file to match the canonical example. Key requirements:
 - Declare interface implementations: `_ identity.IdentityV2 = &<Kind>Identity{}` and `_ identity.Resource = &<Kind>{}`
 - Define the template var: `var <Kind>IdentityFormat = gcpurls.Template[<Kind>Identity]("api.googleapis.com", "projects/{project}/...")`
 - The struct must map exactly to the template fields (e.g., `Project string`, `Location string`, `Instance string`) and have `// +k8s:deepcopy-gen=false`.
+  - **Important:** Add a standard Go doc comment like `// <Kind>Identity is the identity of a GCP <Kind> resource.` right above the struct definition.
   - **Important:** The variables in your `gcpurls.Template` (e.g. `{instance}`) MUST match the struct fields when both are lowercased (e.g. `{deploymentresourcepool}` matches `DeploymentResourcePool`). Do not use underscores in the template variables (e.g. `{deployment_resource_pool}`) if your struct field is CamelCased, as `gcpurls.Template` will panic at initialization.
   - **Note:** If an existing deepcopy method was previously generated for this identity struct, run `dev/tasks/generate-types-and-mappers` to regenerate the types and remove the obsolete code.
 - Implement `String()`, `FromExternal(ref string)`, and `Host()` by delegating to the format var.
-- Implement `getIdentityFrom<Kind>Spec(...)` to extract fields from the spec/obj (often using `refs.ResolveProjectID`, `refs.GetLocation`, etc.).
-  - **Important:** This function MUST handle both typed and `*unstructured.Unstructured` objects, as it is used by `Normalize`. If you need to access fields that are not covered by `refs` helpers (like a custom `platform` or `instance` field), ensure you convert the object to `*unstructured.Unstructured` (if it isn't already) and use `unstructured.NestedString(u.Object, "spec", "...")`.
-- Implement `GetIdentity(ctx, reader)` on the Resource struct, including cross-checking `externalRef` or `status.Name`. (Look at `artifactregistryrepository_identity.go`'s `GetIdentity` implementation for exactly how to do this cross-check).
+- Implement `getIdentityFrom<Kind>Spec(ctx context.Context, reader client.Reader, obj *<Kind>) (*<Kind>Identity, error)` to extract fields from the spec/obj (often using `refs.ResolveProjectID`, `refs.GetLocation`, etc.).
+  - **Important:** This function MUST take a typed pointer `*<Kind>` directly. If any callers (such as `Normalize` fallback) only have an `*unstructured.Unstructured` object, those callers must first convert it using `common.ToStructuredType[*<Kind>](unstructuredObj)` before calling `getIdentityFrom<Kind>Spec`. This keeps the extraction code highly type-safe and avoids manual unstructured field parsing.
+- Implement `GetIdentity(ctx, reader)` on the Resource struct, including cross-checking `externalRef` or `status.Name` if either exists on the `Status` struct. (Look at `artifactregistryrepository_identity.go`'s `GetIdentity` implementation for exactly how to do this cross-check).
+  - **CRITICAL / MANDATORY:** Do NOT change the schema (e.g., do not add `status.externalRef` or `status.name` fields to the `_types.go` file if they are not already there) in this phase. If the resource's `Status` struct does not already contain an `ExternalRef` or `Name` field, do NOT perform any cross-check against the status in `GetIdentity`. Simply return the parsed `specIdentity` without checking status. **We should never change the schema to introduce an identity or reference.**
+  - **Verification:** Always run `dev/tasks/diff-crds` to check and guarantee that we have not changed the schema in any way.
 
   - **Note:** If you are updating an existing resource's Identity struct to the IdentityV2 pattern, be sure to check for existing usages of the struct and its old methods (e.g. `.Parent()`, `.ID()`) in dependent identity files and direct controllers, and update them to use the new fields (e.g. `.Project`, `.Location`, etc.).  The compiler is your friend: remove the functions, then run `go vet ./...` or `go build ./...` to look for references to functions that no longer exist.
 
@@ -58,6 +61,7 @@ Create or update the file to match the canonical example. Key requirements:
 - Implement `_ refs.Ref = &<Kind>Ref{}`.
 - Define the GVK variable: `var <Kind>GVK = schema.GroupVersionKind{...}` (It is also acceptable if this is defined in `<kind>_types.go`).
 - Define the `<Kind>Ref` struct with exactly 3 fields: `External`, `Name`, and `Namespace`.
+  - **Important:** Add a clean, simple doc comment like `// <Kind>Ref is a reference to a GCP <Kind>.` right above the struct definition. Avoid verbose or awkward boilerplate phrasing like "defines the resource reference to..." or "which External field...".
   - The `External` field MUST have specific godoc: `"A reference to an externally managed <Kind> resource. Should be in the format \"projects/{{projectID}}/...\""`. Do not use generic docstrings.
   - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
 - Include `func init() { refs.Register(&<Kind>Ref{}) }`.
@@ -66,4 +70,10 @@ Create or update the file to match the canonical example. Key requirements:
 
 ### Step 5: Verify
 
-Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.
+1. **Write Unit Tests**:
+   - Write comprehensive tests for both the Identity and Reference (e.g., `_identity_test.go`, `_reference_test.go`).
+   - Use `github.com/google/go-cmp/cmp` (with the `cmp.Diff` function) when comparing multiple fields in tests.
+   - Always use the "got/want" format in case of failures (e.g. `(-want +got):\n%s`).
+
+2. **Run Compilations and Linters**:
+   - Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.

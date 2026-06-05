@@ -1,0 +1,148 @@
+---
+name: test-terraform-fields
+description: Guides through validating, testing, generating golden files (HTTP logs and KRM objects), running tests against mockgcp or real GCP, and aligning mock behavior.
+---
+
+# KCC Test Terraform Fields (Agentic-Friendly Guide)
+
+This skill guides an automated agent or developer through testing, validating, and generating golden test assets (HTTP logs and KRM object configurations) when adding or modifying fields on Config Connector resources. It covers running tests against real GCP, recording the baseline behavior, running against MockGCP, and resolving mock discrepancies.
+
+---
+
+## 1. Structure of Resource Fixture Tests
+
+KCC uses a golden file testing strategy for end-to-end (E2E) validation. The tests are defined under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
+
+A complete test fixture directory contains:
+- **`create.yaml`**: The primary KRM resource definition (what gets created first). Ensure the resource has unique labels/names.
+- **`dependencies.yaml` (optional)**: Supporting resources (e.g. IAM policies, networks, service accounts) that the primary resource depends on.
+- **`update.yaml` (optional)**: The KRM resource definition with updates applied after initial creation.
+- **`_http.log`**: Golden HTTP/gRPC request/response traffic log generated during E2E reconciliation.
+- **`_generated_object_[testname].golden.yaml`**: Golden file representing the final KRM object status/spec in the Kube API server.
+- **`_generated_export_[testname].golden` (optional)**: Golden exported KRM representation.
+
+---
+
+## 2. Setting Up Test Cases
+
+1. **Create Directory**: Create the directory `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
+2. **Define KRM files**: Add `create.yaml`, and optionally `dependencies.yaml` and `update.yaml`.
+3. **Verify Yaml Validation**: Ensure YAML files are valid Kubernetes manifests. Avoid any hardcoded project IDs or dynamic IDs (use placeholders if necessary, but KCC test runner resolves them).
+
+---
+
+## 3. Recording Ground Truth against Real GCP
+
+To establish a baseline, run the tests against real GCP to produce golden logs.
+
+1. **GCP Project & Credentials Check**:
+   - Ensure the terminal is authenticated (e.g. `gcloud auth application-default login`).
+   - KCC uses the Kubernetes namespace as the GCP project name by default. Ensure the test namespace maps to an active GCP project or is configured with appropriate annotations.
+2. **Run E2E Recorder**:
+   - Run `hack/record-gcp <testname>`.
+     - **Example:** `hack/record-gcp tests-e2e-sql`
+   - If the script fails, verify you have the permissions to create the resources in the GCP project.
+3. **Commit the Baseline**:
+   - Stage and commit the generated `_http.log` and `_generated_object_*.yaml` files to establish a clean git diff base:
+     ```bash
+     git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
+     git commit -m "Establish clean GCP golden logs for <testname>"
+     ```
+
+---
+
+## 4. Running against MockGCP and Checking Diffs
+
+To verify the mock implementation matches real GCP behavior:
+
+1. **Run Mock Test**:
+   - Run `hack/compare-mock <testname>`. 
+     - **Example:** `hack/compare-mock tests-e2e-sql`
+   - The test will execute using the MockGCP control plane.
+2. **Check for Differences**:
+   - Check if the command fails or if `git status` shows modifications to the golden files.
+   - Run `git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
+3. **Commit the Baseline Updates**:
+   - If there are any differences (such as `selfLink` removal or minor formatting alignment), stage and commit these updates:
+     ```bash
+     git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
+     git commit -m "Update golden logs for <testname> after mock comparison"
+     ```
+
+---
+
+## 5. Aligning MockGCP with Real GCP (Troubleshooting & Alignment)
+
+If the mock test fails or produces a diff against the baseline golden logs, apply the following strategies:
+
+### A. Enum Mismatch (e.g., Short vs. Proto Enum Names)
+- **Problem**: GCP REST API returns short enum values (e.g., `"OS_2022"`), but MockGCP protobuf definition expects full enum values (e.g., `"OS_VERSION_LTSC2022"`).
+- **Solution**: Intercept the request and response bodies in the mock HTTP Mux (`mockgcp/mock<service>/service.go`) to translate these names.
+- **Example in `mockgcp/mockcontainer/service.go`**:
+  ```go
+  // Intercept Request Body: OS_2022 -> OS_VERSION_LTSC2022
+  if r.Body != nil {
+      bodyBytes, err := io.ReadAll(r.Body)
+      if err == nil {
+          bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2022"`), []byte(`"OS_VERSION_LTSC2022"`))
+          r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+          r.ContentLength = int64(len(bodyBytes))
+      }
+  }
+  ```
+
+### B. Output-Only or Server-Generated Fields
+- **Problem**: Fields generated by real GCP (e.g. project numbers, server-assigned IDs, URLs) differ in the mock response.
+- **Solution**: Implement default value generation in the mock service CRUD handlers (`mockgcp/mock<service>/<resource>.go`). Ensure values match patterns expected by KCC (e.g., `projects/<project-id>/locations/<location>/...`).
+
+### C. Normalizing Volatile Fields (timestamps, UUIDs, IPs)
+- **Problem**: Dynamic values change on every execution.
+- **Solution**: Add normalization rules in `mockgcp/mock<service>/normalize.go`.
+- **CRITICAL**: The `Previsit` normalizer runs globally. To prevent corrupting golden files of unrelated services, **always scope the normalization rule to the specific service domain**:
+  ```go
+  func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+      if !strings.Contains(event.URL(), "myservice.googleapis.com") {
+          return
+      }
+      // Apply replacements here...
+      // e.g. replacements.Replace(uuidRegex, "uuid-placeholder")
+  }
+  ```
+
+---
+
+## 6. Pre-Submit Checks
+
+Before finishing the task, the agent must run formatting, generation, and static analysis checks to avoid CI failures:
+
+1. **Prepare PR and Regenerate Code**:
+   - Run `make ready-pr` to ensure all manifests, Go client types, and code formatting are up to date:
+     ```bash
+     make ready-pr
+     ```
+   - Verify if any generated files under `pkg/clients/generated/` or `config/crds/` are modified using `git status` or `git diff`. If there are modifications, make sure to stage and commit them.
+2. **Go Vet**:
+   ```bash
+   go vet ./...
+   ```
+3. **Verify Local Control Plane Webhooks**:
+   - If envtest webhook startup fails with validation errors under new Kubernetes control plane versions, ensure `admissionReviewVersions` in `pkg/webhook/manifests.go` includes both `"v1"` and `"v1beta1"`.
+4. **Verify CRD Field Coverage Checks**:
+   - Run the API checks tests to ensure all new fields are either tested in the fixture tests or explicitly added to the exceptions list.
+   - Run the following command (setting `WRITE_GOLDEN_OUTPUT=1` will automatically regenerate the exceptions file `tests/apichecks/testdata/exceptions/missingfields.txt` if there are any updates/removals/additions):
+     - For **Beta** resources:
+       ```bash
+       WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests
+       ```
+     - For **Alpha** resources:
+       ```bash
+       WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
+       ```
+   - If the golden output gets updated, make sure to stage and commit the changes in `tests/apichecks/testdata/exceptions/`.
+5. **Run CI/CD Group Presubmit Tests Locally**:
+   - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<service_name>` matching the resource's service name (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly before proposing a PR:
+     ```bash
+     dev/ci/presubmits/tests-e2e-fixtures-<service_name>
+     ```
+
+

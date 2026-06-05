@@ -1462,6 +1462,21 @@ type ApprovalResultObservedState struct {
 	// Output only. The time when the approval decision was made.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.ApprovalResult.approval_time
 	ApprovalTime *string `json:"approvalTime,omitempty"`
+
+	// Required. The decision of this manual approval.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.ApprovalResult.decision
+	Decision *string `json:"decision,omitempty"`
+
+	// Optional. An optional comment for this manual approval result.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.ApprovalResult.comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Optional. An optional URL tied to this manual approval result. This field
+	//  is essentially the same as comment, except that it will be rendered by the
+	//  UI differently. An example use case is a link to an external job that
+	//  approved this Build.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.ApprovalResult.url
+	URL *string `json:"url,omitempty"`
 }
 */
 
@@ -1524,7 +1539,7 @@ type BuildObservedState struct {
 
 	// Output only. Results of the build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.results
-	Results *Results `json:"results,omitempty"`
+	Results *ResultsObservedState `json:"results,omitempty"`
 
 	// Output only. Time at which the request to create the build was received.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.create_time
@@ -1548,7 +1563,7 @@ type BuildObservedState struct {
 
 	// Output only. A permanent fixed identifier for source.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.source_provenance
-	SourceProvenance *SourceProvenance `json:"sourceProvenance,omitempty"`
+	SourceProvenance *SourceProvenanceObservedState `json:"sourceProvenance,omitempty"`
 
 	// Output only. The ID of the `BuildTrigger` that triggered this build, if it
 	//  was triggered automatically.
@@ -1564,7 +1579,7 @@ type BuildObservedState struct {
 	// Output only. Describes this build's approval configuration, status,
 	//  and result.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.approval
-	Approval *BuildApproval `json:"approval,omitempty"`
+	Approval *BuildApprovalObservedState `json:"approval,omitempty"`
 
 	// Output only. Non-fatal problems encountered during the execution of the
 	//  build.
@@ -1590,7 +1605,7 @@ type BuildApprovalObservedState struct {
 
 	// Output only. Result of manual approval for this Build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildApproval.result
-	Result *ApprovalResult `json:"result,omitempty"`
+	Result *ApprovalResultObservedState `json:"result,omitempty"`
 }
 */
 
@@ -1649,6 +1664,15 @@ type BuildTriggerObservedState struct {
 /* unreachable type BuiltImageObservedState
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.BuiltImage
 type BuiltImageObservedState struct {
+	// Name used to push the container image to Google Container Registry, as
+	//  presented to `docker push`.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuiltImage.name
+	Name *string `json:"name,omitempty"`
+
+	// Docker Registry 2.0 digest.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuiltImage.digest
+	Digest *string `json:"digest,omitempty"`
+
 	// Output only. Stores timing information for pushing the specified image.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuiltImage.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
@@ -1682,6 +1706,35 @@ type ResultsObservedState struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Results.images
 	Images []BuiltImageObservedState `json:"images,omitempty"`
 
+	// List of build step digests, in the order corresponding to build step
+	//  indices.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Results.build_step_images
+	BuildStepImages []string `json:"buildStepImages,omitempty"`
+
+	// Path to the artifact manifest for non-container artifacts uploaded to Cloud
+	//  Storage. Only populated when artifacts are uploaded to Cloud Storage.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Results.artifact_manifest
+	ArtifactManifest *string `json:"artifactManifest,omitempty"`
+
+	// Number of non-container artifacts uploaded to Cloud Storage. Only populated
+	//  when artifacts are uploaded to Cloud Storage.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Results.num_artifacts
+	NumArtifacts *int64 `json:"numArtifacts,omitempty"`
+
+	// List of build step outputs, produced by builder images, in the order
+	//  corresponding to build step indices.
+	//
+	//  [Cloud Builders](https://cloud.google.com/cloud-build/docs/cloud-builders)
+	//  can produce this output by writing to `$BUILDER_OUTPUT/output`. Only the
+	//  first 50KB of data is stored. Note that the `$BUILDER_OUTPUT` variable is
+	//  read-only and can't be substituted.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Results.build_step_outputs
+	BuildStepOutputs [][]byte `json:"buildStepOutputs,omitempty"`
+
+	// Time to push all non-container artifacts to Cloud Storage.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Results.artifact_timing
+	ArtifactTiming *TimeSpan `json:"artifactTiming,omitempty"`
+
 	// Python artifacts uploaded to Artifact Registry at the end of the build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Results.python_packages
 	PythonPackages []UploadedPythonPackageObservedState `json:"pythonPackages,omitempty"`
@@ -1704,6 +1757,21 @@ type ResultsObservedState struct {
 /* unreachable type SourceProvenanceObservedState
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.SourceProvenance
 type SourceProvenanceObservedState struct {
+	// A copy of the build's `source.storage_source`, if exists, with any
+	//  generations resolved.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.SourceProvenance.resolved_storage_source
+	ResolvedStorageSource *StorageSource `json:"resolvedStorageSource,omitempty"`
+
+	// A copy of the build's `source.repo_source`, if exists, with any
+	//  revisions resolved.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.SourceProvenance.resolved_repo_source
+	ResolvedRepoSource *RepoSource `json:"resolvedRepoSource,omitempty"`
+
+	// A copy of the build's `source.storage_source_manifest`, if exists, with any
+	//  revisions resolved.
+	//  This feature is in Preview.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.SourceProvenance.resolved_storage_source_manifest
+	ResolvedStorageSourceManifest *StorageSourceManifest `json:"resolvedStorageSourceManifest,omitempty"`
 
 	// TODO: unsupported map type with key string and value message
 
@@ -1713,6 +1781,14 @@ type SourceProvenanceObservedState struct {
 /* unreachable type UploadedGoModuleObservedState
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.UploadedGoModule
 type UploadedGoModuleObservedState struct {
+	// URI of the uploaded artifact.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedGoModule.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Hash types and values of the Go Module Artifact.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedGoModule.file_hashes
+	FileHashes *FileHashes `json:"fileHashes,omitempty"`
+
 	// Output only. Stores timing information for pushing the specified artifact.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedGoModule.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
@@ -1722,6 +1798,14 @@ type UploadedGoModuleObservedState struct {
 /* unreachable type UploadedMavenArtifactObservedState
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.UploadedMavenArtifact
 type UploadedMavenArtifactObservedState struct {
+	// URI of the uploaded artifact.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedMavenArtifact.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Hash types and values of the Maven Artifact.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedMavenArtifact.file_hashes
+	FileHashes *FileHashes `json:"fileHashes,omitempty"`
+
 	// Output only. Stores timing information for pushing the specified artifact.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedMavenArtifact.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
@@ -1731,6 +1815,14 @@ type UploadedMavenArtifactObservedState struct {
 /* unreachable type UploadedNpmPackageObservedState
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.UploadedNpmPackage
 type UploadedNpmPackageObservedState struct {
+	// URI of the uploaded npm package.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedNpmPackage.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Hash types and values of the npm package.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedNpmPackage.file_hashes
+	FileHashes *FileHashes `json:"fileHashes,omitempty"`
+
 	// Output only. Stores timing information for pushing the specified artifact.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedNpmPackage.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
@@ -1740,6 +1832,14 @@ type UploadedNpmPackageObservedState struct {
 /* unreachable type UploadedPythonPackageObservedState
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.UploadedPythonPackage
 type UploadedPythonPackageObservedState struct {
+	// URI of the uploaded artifact.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedPythonPackage.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Hash types and values of the Python Artifact.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedPythonPackage.file_hashes
+	FileHashes *FileHashes `json:"fileHashes,omitempty"`
+
 	// Output only. Stores timing information for pushing the specified artifact.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.UploadedPythonPackage.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`

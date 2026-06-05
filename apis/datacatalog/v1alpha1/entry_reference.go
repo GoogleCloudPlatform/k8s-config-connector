@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &EntryRef{}
 
-// EntryRef defines the resource reference to DataCatalogEntry, which "External" field
-// holds the GCP identifier for the KRM object.
+// EntryRef is a reference to a DataCatalogEntry.
 type EntryRef struct {
 	// A reference to an externally managed DataCatalogEntry resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/entrys/{{entryID}}".

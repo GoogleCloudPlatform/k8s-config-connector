@@ -31,13 +31,20 @@ import (
 
 type NetworksecurityV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	NetworkSecurityBackendAuthenticationConfigsGetter
 	NetworkSecurityInterceptDeploymentsGetter
 	NetworkSecurityInterceptEndpointGroupsGetter
+	NetworkSecurityMirroringDeploymentsGetter
+	NetworkSecurityMirroringEndpointGroupsGetter
 }
 
 // NetworksecurityV1alpha1Client is used to interact with features provided by the networksecurity.cnrm.cloud.google.com group.
 type NetworksecurityV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityBackendAuthenticationConfigs(namespace string) NetworkSecurityBackendAuthenticationConfigInterface {
+	return newNetworkSecurityBackendAuthenticationConfigs(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeployments(namespace string) NetworkSecurityInterceptDeploymentInterface {
@@ -46,6 +53,14 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeployments(name
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptEndpointGroups(namespace string) NetworkSecurityInterceptEndpointGroupInterface {
 	return newNetworkSecurityInterceptEndpointGroups(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringDeployments(namespace string) NetworkSecurityMirroringDeploymentInterface {
+	return newNetworkSecurityMirroringDeployments(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringEndpointGroups(namespace string) NetworkSecurityMirroringEndpointGroupInterface {
+	return newNetworkSecurityMirroringEndpointGroups(c, namespace)
 }
 
 // NewForConfig creates a new NetworksecurityV1alpha1Client for the given config.

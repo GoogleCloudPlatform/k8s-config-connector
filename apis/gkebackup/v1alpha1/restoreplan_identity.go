@@ -24,8 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// RestorePlanIdentity defines the resource reference to GKEBackupRestorePlan, which "External" field
-// holds the GCP identifier for the KRM object.
+// RestorePlanIdentity is the identity of a GKEBackupRestorePlan.
 type RestorePlanIdentity struct {
 	parent *RestorePlanParent
 	id     string

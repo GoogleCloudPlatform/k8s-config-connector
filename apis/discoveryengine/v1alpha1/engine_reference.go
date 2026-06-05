@@ -29,8 +29,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &DiscoveryEngineEngineRef{}
 
-// DiscoveryEngineEngineRef defines the resource reference to DiscoveryEngineEngine, which "External" field
-// holds the GCP identifier for the KRM object.
+// DiscoveryEngineEngineRef is a reference to a DiscoveryEngineEngine.
 type DiscoveryEngineEngineRef struct {
 	// A reference to an externally managed DiscoveryEngineEngine resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/engines/{{engineID}}".

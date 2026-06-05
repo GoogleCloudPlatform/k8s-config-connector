@@ -28,8 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &TaskRef{}
 
-// TaskRef defines the resource reference to BatchTask, which "External" field
-// holds the GCP identifier for the KRM object.
+// TaskRef is a reference to a BatchTask.
 type TaskRef struct {
 	// A reference to an externally managed BatchTask resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tasks/{{taskID}}".

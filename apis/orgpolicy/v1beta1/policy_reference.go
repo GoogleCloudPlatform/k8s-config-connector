@@ -29,17 +29,16 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &PolicyRef{}
 
-// PolicyRef defines the resource reference to OrgPolicyPolicy, which "External" field
-// holds the GCP identifier for the KRM object.
+// PolicyRef is a reference to an OrgPolicyPolicy.
 type PolicyRef struct {
 	// A reference to an externally managed OrgPolicyPolicy resource.
 	// Should be in the format "projects|folders|organizations/{{ID}}/policies/{{policyID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a OrgPolicyPolicy resource.
+	// The name of an OrgPolicyPolicy resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a OrgPolicyPolicy resource.
+	// The namespace of an OrgPolicyPolicy resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

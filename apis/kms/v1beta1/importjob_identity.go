@@ -25,8 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ImportJobIdentity defines the resource reference to KMSImportJob, which "External" field
-// holds the GCP identifier for the KRM object.
+// ImportJobIdentity is the identity of a KMSImportJob.
 type ImportJobIdentity struct {
 	parent *KMSKeyRingIdentity
 	id     string
@@ -44,7 +43,7 @@ func (i *ImportJobIdentity) Parent() *KMSKeyRingIdentity {
 	return i.parent
 }
 
-// New builds a ImportJobIdentity from the Config Connector ImportJob object.
+// New builds an ImportJobIdentity from the Config Connector ImportJob object.
 func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImportJob) (*ImportJobIdentity, error) {
 
 	// Get Parent

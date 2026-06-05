@@ -27,17 +27,16 @@ import (
 
 var _ refs.Ref = &AIStreamsClusterRef{}
 
-// AIStreamsClusterRef defines the resource reference to AIStreamsCluster, which "External" field
-// holds the GCP identifier for the KRM object.
+// AIStreamsClusterRef is a reference to an AIStreamsCluster.
 type AIStreamsClusterRef struct {
 	// A reference to an externally managed AIStreamsCluster resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AIStreamsCluster resource.
+	// The name of an AIStreamsCluster resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AIStreamsCluster resource.
+	// The namespace of an AIStreamsCluster resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
