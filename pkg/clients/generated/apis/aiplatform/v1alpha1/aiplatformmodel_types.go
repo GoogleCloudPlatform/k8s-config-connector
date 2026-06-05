@@ -236,6 +236,21 @@ type ModelContainerSpec struct {
 	// +optional
 	ImageURI *string `json:"imageURI,omitempty"`
 
+	/* Immutable. Invoke route prefix for the custom container. "/*" is the only
+	supported value right now. By setting this field, any non-root route on
+	this model will be accessible with invoke http call eg: "/invoke/foo/bar",
+	however the [PredictionService.Invoke] RPC is not supported yet.
+
+	Only one of `predict_route` or `invoke_route_prefix` can be set, and we
+	default to using `predict_route` if this field is not set. If this field
+	is set, the Model can only be deployed to dedicated endpoint. */
+	// +optional
+	InvokeRoutePrefix *string `json:"invokeRoutePrefix,omitempty"`
+
+	/* Immutable. Specification for Kubernetes liveness probe. */
+	// +optional
+	LivenessProbe *ModelLivenessProbe `json:"livenessProbe,omitempty"`
+
 	/* Immutable. List of ports to expose from the container. Vertex AI sends any
 	prediction requests that it receives to the first port on this list. Vertex
 	AI also sends
@@ -328,28 +343,6 @@ type ModelDataStats struct {
 	ValidationDataItemsCount *int64 `json:"validationDataItemsCount,omitempty"`
 }
 
-type ModelEncodedBaselines struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue map[string]string `json:"structValue,omitempty"`
-}
-
 type ModelEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
@@ -383,7 +376,7 @@ type ModelExamples struct {
 
 	/* The full configuration for the generated index, the semantics are the same as [metadata][google.cloud.aiplatform.v1.Index.metadata] and should match [NearestNeighborSearchConfig](https://cloud.google.com/vertex-ai/docs/explainable-ai/configuring-explanations-example-based#nearest-neighbor-search-config). */
 	// +optional
-	NearestNeighborSearchConfig *ModelNearestNeighborSearchConfig `json:"nearestNeighborSearchConfig,omitempty"`
+	NearestNeighborSearchConfig apiextensionsv1.JSON `json:"nearestNeighborSearchConfig,omitempty"`
 
 	/* The number of neighbors to return when querying for examples. */
 	// +optional
@@ -435,7 +428,7 @@ type ModelFeatureValueDomain struct {
 }
 
 type ModelGcsSource struct {
-	/* Required. Google Cloud Storage URI(-s) to the input file(s). May contain wildcards. For more information on wildcards, see https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames. */
+	/* Required. Google Cloud Storage URI(-s) to the input file(s). May contain wildcards. For more information on wildcards, see https://cloud.google.com/storage/docs/wildcards. */
 	// +optional
 	Uris []string `json:"uris,omitempty"`
 }
@@ -444,6 +437,20 @@ type ModelGenieSource struct {
 	/* Required. The public base model URI. */
 	// +optional
 	BaseModelURI *string `json:"baseModelURI,omitempty"`
+}
+
+type ModelGrpc struct {
+	/* Port number of the gRPC service. Number must be in the range 1 to 65535. */
+	// +optional
+	Port *int32 `json:"port,omitempty"`
+
+	/* Service is the name of the service to place in the gRPC
+	HealthCheckRequest (see
+	https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+
+	If this is not specified, the default behavior is defined by gRPC. */
+	// +optional
+	Service *string `json:"service,omitempty"`
 }
 
 type ModelGrpcPorts struct {
@@ -457,12 +464,45 @@ type ModelHealthProbe struct {
 	// +optional
 	Exec *ModelExec `json:"exec,omitempty"`
 
+	/* Number of consecutive failures before the probe is considered failed.
+	Defaults to 3. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'failureThreshold'. */
+	// +optional
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	/* GrpcAction probes the health of a container by sending a gRPC request. */
+	// +optional
+	Grpc *ModelGrpc `json:"grpc,omitempty"`
+
+	/* HttpGetAction probes the health of a container by sending an HTTP GET request. */
+	// +optional
+	HttpGet *ModelHttpGet `json:"httpGet,omitempty"`
+
+	/* Number of seconds to wait before starting the probe. Defaults to 0.
+	Minimum value is 0.
+
+	Maps to Kubernetes probe argument 'initialDelaySeconds'. */
+	// +optional
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
 	/* How often (in seconds) to perform the probe. Default to 10 seconds.
 	Minimum value is 1. Must be less than timeout_seconds.
 
 	Maps to Kubernetes probe argument 'periodSeconds'. */
 	// +optional
 	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+
+	/* Number of consecutive successes before the probe is considered successful.
+	Defaults to 1. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'successThreshold'. */
+	// +optional
+	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+
+	/* TcpSocketAction probes the health of a container by opening a TCP socket connection. */
+	// +optional
+	TcpSocket *ModelTcpSocket `json:"tcpSocket,omitempty"`
 
 	/* Number of seconds after which the probe times out. Defaults to 1 second.
 	Minimum value is 1. Must be greater or equal to period_seconds.
@@ -472,48 +512,36 @@ type ModelHealthProbe struct {
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
 }
 
-type ModelIndexDisplayNameMapping struct {
-	/* Represents a boolean value. */
+type ModelHttpGet struct {
+	/* Host name to connect to, defaults to the model serving container's IP. You probably want to set "Host" in httpHeaders instead. */
 	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
+	Host *string `json:"host,omitempty"`
 
-	/* Represents a null value. */
+	/* Custom headers to set in the request. HTTP allows repeated headers. */
 	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
+	HttpHeaders []ModelHttpHeaders `json:"httpHeaders,omitempty"`
 
-	/* Represents a double value. */
+	/* Path to access on the HTTP server. */
 	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
+	Path *string `json:"path,omitempty"`
 
-	/* Represents a string value. */
+	/* Number of the port to access on the container. Number must be in the range 1 to 65535. */
 	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 
-	/* Represents a structured value. */
+	/* Scheme to use for connecting to the host. Defaults to HTTP. Acceptable values are "HTTP" or "HTTPS". */
 	// +optional
-	StructValue map[string]string `json:"structValue,omitempty"`
+	Scheme *string `json:"scheme,omitempty"`
 }
 
-type ModelInputBaselines struct {
-	/* Represents a boolean value. */
+type ModelHttpHeaders struct {
+	/* The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header. */
 	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
+	Name *string `json:"name,omitempty"`
 
-	/* Represents a null value. */
+	/* The header field value */
 	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue map[string]string `json:"structValue,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 type ModelInputs struct {
@@ -527,7 +555,7 @@ type ModelInputs struct {
 	If a scalar is provided, Vertex AI broadcasts to the same shape as the
 	encoded tensor. */
 	// +optional
-	EncodedBaselines []ModelEncodedBaselines `json:"encodedBaselines,omitempty"`
+	EncodedBaselines []apiextensionsv1.JSON `json:"encodedBaselines,omitempty"`
 
 	/* Encoded tensor is a transformation of the input tensor. Must be provided
 	if choosing
@@ -581,7 +609,7 @@ type ModelInputs struct {
 	[PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
 	[instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri]. */
 	// +optional
-	InputBaselines []ModelInputBaselines `json:"inputBaselines,omitempty"`
+	InputBaselines []apiextensionsv1.JSON `json:"inputBaselines,omitempty"`
 
 	/* Name of the input tensor for this feature. Required and is only applicable to Vertex AI-provided images for Tensorflow. */
 	// +optional
@@ -624,54 +652,111 @@ type ModelIntegratedGradientsAttribution struct {
 	StepCount *int32 `json:"stepCount,omitempty"`
 }
 
+type ModelLivenessProbe struct {
+	/* ExecAction probes the health of a container by executing a command. */
+	// +optional
+	Exec *ModelExec `json:"exec,omitempty"`
+
+	/* Number of consecutive failures before the probe is considered failed.
+	Defaults to 3. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'failureThreshold'. */
+	// +optional
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	/* GrpcAction probes the health of a container by sending a gRPC request. */
+	// +optional
+	Grpc *ModelGrpc `json:"grpc,omitempty"`
+
+	/* HttpGetAction probes the health of a container by sending an HTTP GET request. */
+	// +optional
+	HttpGet *ModelHttpGet `json:"httpGet,omitempty"`
+
+	/* Number of seconds to wait before starting the probe. Defaults to 0.
+	Minimum value is 0.
+
+	Maps to Kubernetes probe argument 'initialDelaySeconds'. */
+	// +optional
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
+	/* How often (in seconds) to perform the probe. Default to 10 seconds.
+	Minimum value is 1. Must be less than timeout_seconds.
+
+	Maps to Kubernetes probe argument 'periodSeconds'. */
+	// +optional
+	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+
+	/* Number of consecutive successes before the probe is considered successful.
+	Defaults to 1. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'successThreshold'. */
+	// +optional
+	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+
+	/* TcpSocketAction probes the health of a container by opening a TCP socket connection. */
+	// +optional
+	TcpSocket *ModelTcpSocket `json:"tcpSocket,omitempty"`
+
+	/* Number of seconds after which the probe times out. Defaults to 1 second.
+	Minimum value is 1. Must be greater or equal to period_seconds.
+
+	Maps to Kubernetes probe argument 'timeoutSeconds'. */
+	// +optional
+	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+}
+
 type ModelMetadata struct {
-	/* Represents a boolean value. */
+	/* Points to a YAML file stored on Google Cloud Storage describing the format of the [feature attributions][google.cloud.aiplatform.v1.Attribution.feature_attributions]. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML tabular Models always have this field populated by Vertex AI. Note: The URI given on output may be different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
 	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
+	FeatureAttributionsSchemaURI *string `json:"featureAttributionsSchemaURI,omitempty"`
 
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
+	/* Required. Map from feature names to feature input metadata. Keys are the
+	name of the features. Values are the specification of the feature.
 
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
+	An empty InputMetadata is valid. It describes a text feature which has the
+	name specified as the key in
+	[ExplanationMetadata.inputs][google.cloud.aiplatform.v1.ExplanationMetadata.inputs].
+	The baseline of the empty feature is chosen by Vertex AI.
 
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
+	For Vertex AI-provided Tensorflow images, the key can be any friendly
+	name of the feature. Once specified,
+	[featureAttributions][google.cloud.aiplatform.v1.Attribution.feature_attributions]
+	are keyed by this key (if not grouped with another feature).
 
-	/* Represents a structured value. */
+	For custom images, the key must match with the key in
+	[instance][google.cloud.aiplatform.v1.ExplainRequest.instances]. */
 	// +optional
-	StructValue map[string]string `json:"structValue,omitempty"`
+	Inputs map[string]ModelInputs `json:"inputs,omitempty"`
+
+	/* Name of the source to generate embeddings for example based explanations. */
+	// +optional
+	LatentSpaceSource *string `json:"latentSpaceSource,omitempty"`
+
+	/* Required. Map from output names to output metadata.
+
+	For Vertex AI-provided Tensorflow images, keys can be any user defined
+	string that consists of any UTF-8 characters.
+
+	For custom images, keys are the name of the output field in the prediction
+	to be explained.
+
+	Currently only one key is allowed. */
+	// +optional
+	Outputs map[string]ModelOutputs `json:"outputs,omitempty"`
 }
 
 type ModelModelGardenSource struct {
 	/* Required. The model garden source model resource name. */
 	// +optional
 	PublicModelName *string `json:"publicModelName,omitempty"`
-}
 
-type ModelNearestNeighborSearchConfig struct {
-	/* Represents a boolean value. */
+	/* Optional. Whether to avoid pulling the model from the HF cache. */
 	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
+	SkipHfModelCache *bool `json:"skipHfModelCache,omitempty"`
 
-	/* Represents a null value. */
+	/* Optional. The model garden source model version ID. */
 	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue map[string]string `json:"structValue,omitempty"`
+	VersionID *string `json:"versionID,omitempty"`
 }
 
 type ModelNoiseSigma struct {
@@ -711,7 +796,7 @@ type ModelOutputs struct {
 	is populated by locating in the mapping with
 	[Attribution.output_index][google.cloud.aiplatform.v1.Attribution.output_index]. */
 	// +optional
-	IndexDisplayNameMapping *ModelIndexDisplayNameMapping `json:"indexDisplayNameMapping,omitempty"`
+	IndexDisplayNameMapping apiextensionsv1.JSON `json:"indexDisplayNameMapping,omitempty"`
 
 	/* Name of the output tensor. Required and is only applicable to Vertex AI provided images for Tensorflow. */
 	// +optional
@@ -726,6 +811,21 @@ type ModelParameters struct {
 	/* An attribution method that computes Aumann-Shapley values taking advantage of the model's fully differentiable structure. Refer to this paper for more details: https://arxiv.org/abs/1703.01365 */
 	// +optional
 	IntegratedGradientsAttribution *ModelIntegratedGradientsAttribution `json:"integratedGradientsAttribution,omitempty"`
+
+	/* If populated, only returns attributions that have
+	[output_index][google.cloud.aiplatform.v1.Attribution.output_index]
+	contained in output_indices. It must be an ndarray of integers, with the
+	same shape of the output it's explaining.
+
+	If not populated, returns attributions for
+	[top_k][google.cloud.aiplatform.v1.ExplanationParameters.top_k] indices of
+	outputs. If neither top_k nor output_indices is populated, returns the
+	argmax index of the outputs.
+
+	Only applicable to Models that predict multiple outputs (e,g, multi-class
+	Models that predict multiple classes). */
+	// +optional
+	OutputIndices apiextensionsv1.JSON `json:"outputIndices,omitempty"`
 
 	/* An attribution method that approximates Shapley values for features that contribute to the label being predicted. A sampling strategy is used to approximate the value rather than considering all subsets of features. Refer to this paper for model details: https://arxiv.org/abs/1306.4265. */
 	// +optional
@@ -818,6 +918,28 @@ type ModelStartupProbe struct {
 	// +optional
 	Exec *ModelExec `json:"exec,omitempty"`
 
+	/* Number of consecutive failures before the probe is considered failed.
+	Defaults to 3. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'failureThreshold'. */
+	// +optional
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	/* GrpcAction probes the health of a container by sending a gRPC request. */
+	// +optional
+	Grpc *ModelGrpc `json:"grpc,omitempty"`
+
+	/* HttpGetAction probes the health of a container by sending an HTTP GET request. */
+	// +optional
+	HttpGet *ModelHttpGet `json:"httpGet,omitempty"`
+
+	/* Number of seconds to wait before starting the probe. Defaults to 0.
+	Minimum value is 0.
+
+	Maps to Kubernetes probe argument 'initialDelaySeconds'. */
+	// +optional
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
 	/* How often (in seconds) to perform the probe. Default to 10 seconds.
 	Minimum value is 1. Must be less than timeout_seconds.
 
@@ -825,12 +947,33 @@ type ModelStartupProbe struct {
 	// +optional
 	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
 
+	/* Number of consecutive successes before the probe is considered successful.
+	Defaults to 1. Minimum value is 1.
+
+	Maps to Kubernetes probe argument 'successThreshold'. */
+	// +optional
+	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+
+	/* TcpSocketAction probes the health of a container by opening a TCP socket connection. */
+	// +optional
+	TcpSocket *ModelTcpSocket `json:"tcpSocket,omitempty"`
+
 	/* Number of seconds after which the probe times out. Defaults to 1 second.
 	Minimum value is 1. Must be greater or equal to period_seconds.
 
 	Maps to Kubernetes probe argument 'timeoutSeconds'. */
 	// +optional
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+}
+
+type ModelTcpSocket struct {
+	/* Optional: Host name to connect to, defaults to the model serving container's IP. */
+	// +optional
+	Host *string `json:"host,omitempty"`
+
+	/* Number of the port to access on the container. Number must be in the range 1 to 65535. */
+	// +optional
+	Port *int32 `json:"port,omitempty"`
 }
 
 type ModelVisualization struct {
@@ -979,7 +1122,7 @@ type AIPlatformModelSpec struct {
 
 	/* Immutable. An additional information about the Model; the schema of the metadata can be found in [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri]. Unset if the Model does not have any additional information. */
 	// +optional
-	Metadata *ModelMetadata `json:"metadata,omitempty"`
+	Metadata ModelMetadata `json:"metadata,omitempty"`
 
 	/* Immutable. Points to a YAML file stored on Google Cloud Storage describing additional information about the Model, that is specific to it. Unset if the Model does not have any additional information. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML Models always have this field populated by Vertex AI, if no additional metadata is needed, this field is set to an empty string. Note: The URI given on output will be immutable and probably different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
 	// +optional

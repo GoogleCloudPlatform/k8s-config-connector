@@ -527,6 +527,8 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 			switch listType {
 			case "boolean", "string", "number", "integer":
 				return fmt.Sprintf("[]%v", formatToGoLiteral(listType))
+			case "schemaless", "":
+				return "[]apiextensionsv1.JSON"
 			default:
 				if isRef {
 					return fmt.Sprintf("[]v1alpha1.ResourceRef")

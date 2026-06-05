@@ -89,6 +89,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":        true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                   true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                     true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                           true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":        true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/securityProfiles/{}":             true,
 		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                           true,
