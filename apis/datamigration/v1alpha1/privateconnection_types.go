@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -22,21 +23,6 @@ import (
 )
 
 var DatabaseMigrationPrivateConnectionGVK = GroupVersion.WithKind("DatabaseMigrationPrivateConnection")
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-}
 
 // +kcc:proto=google.cloud.clouddms.v1.VpcPeeringConfig
 type VpcPeeringConfig struct {
@@ -112,7 +98,7 @@ type DatabaseMigrationPrivateConnectionObservedState struct {
 
 	// Output only. The error details in case of state FAILED.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.error
-	Error *Status `json:"error,omitempty"`
+	Error *common.Status `json:"error,omitempty"`
 }
 
 // +genclient
