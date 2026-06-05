@@ -98,3 +98,13 @@ This file tracks the progress of new "Direct" resource implementations.
 | NetworkSecuritySecurityProfileGroup | networksecurity | - | - | - | 0 | PLANNED |
 | NetworkSecurityTlsInspectionPolicy | networksecurity | - | - | - | 0 | PLANNED |
 | NetworkSecurityUrlList | networksecurity | - | - | - | 0 | PLANNED |
+| AppOptimizeReport | appoptimize | [#9015](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9015) | - | - | 1 | ISSUE_CREATED |
+| ContactCenterInsightsConversation | contactcenterinsights | [#9016](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9016) | - | - | 1 | ISSUE_CREATED |
+| BlockchainNodeEngineBlockchainNode | blockchainnodeengine | [#9017](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9017) | - | - | 1 | ISSUE_CREATED |
+| CESApp | ces | [#9018](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9018) | - | - | 1 | ISSUE_CREATED |
+| ContentWarehouseDocument | contentwarehouse | [#9019](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9019) | - | - | 1 | ISSUE_CREATED |
+| ConfigDeploymentGroup | config | [#9020](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9020) | - | - | 1 | ISSUE_CREATED |
+| BigQueryDataTransferTransferConfig | bigquerydatatransfer | [#9021](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9021) | - | - | 1 | ISSUE_CREATED |
+| BigQueryReservationReservationGroup | bigqueryreservation | [#9022](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9022) | - | - | 1 | ISSUE_CREATED |
+| BigQueryMigrationMigrationWorkflow | bigquerymigration | [#9023](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9023) | - | - | 1 | ISSUE_CREATED |
+| CloudSecurityComplianceCloudControl | cloudsecuritycompliance | [#9024](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/9024) | - | - | 1 | ISSUE_CREATED |
