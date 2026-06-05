@@ -28,3 +28,5 @@ type DialogflowEntityTypeExpansion interface{}
 type DialogflowFulfillmentExpansion interface{}
 
 type DialogflowIntentExpansion interface{}
+
+type DialogflowSipTrunkExpansion interface{}
