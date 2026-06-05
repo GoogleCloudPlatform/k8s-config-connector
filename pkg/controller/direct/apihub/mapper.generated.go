@@ -54,16 +54,16 @@ func APIHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AP
 	// MISSING: Attributes
 	return out
 }
-func ApiHubRuntimeProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.ApiHubRuntimeProjectAttachmentObservedState {
+func APIHubRuntimeProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.APIHubRuntimeProjectAttachmentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiHubRuntimeProjectAttachmentObservedState{}
+	out := &krm.APIHubRuntimeProjectAttachmentObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
-func ApiHubRuntimeProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiHubRuntimeProjectAttachmentObservedState) *pb.RuntimeProjectAttachment {
+func APIHubRuntimeProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubRuntimeProjectAttachmentObservedState) *pb.RuntimeProjectAttachment {
 	if in == nil {
 		return nil
 	}
@@ -72,18 +72,18 @@ func ApiHubRuntimeProjectAttachmentObservedState_ToProto(mapCtx *direct.MapConte
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }
-func ApiHubRuntimeProjectAttachmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.ApiHubRuntimeProjectAttachmentSpec {
+func APIHubRuntimeProjectAttachmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.APIHubRuntimeProjectAttachmentSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiHubRuntimeProjectAttachmentSpec{}
+	out := &krm.APIHubRuntimeProjectAttachmentSpec{}
 	// MISSING: Name
 	if in.GetRuntimeProject() != "" {
 		out.RuntimeProjectRef = &refsv1beta1.ProjectRef{External: in.GetRuntimeProject()}
 	}
 	return out
 }
-func ApiHubRuntimeProjectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiHubRuntimeProjectAttachmentSpec) *pb.RuntimeProjectAttachment {
+func APIHubRuntimeProjectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubRuntimeProjectAttachmentSpec) *pb.RuntimeProjectAttachment {
 	if in == nil {
 		return nil
 	}

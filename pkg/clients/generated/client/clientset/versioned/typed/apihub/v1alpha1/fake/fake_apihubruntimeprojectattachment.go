@@ -27,28 +27,28 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeApiHubRuntimeProjectAttachments implements ApiHubRuntimeProjectAttachmentInterface
-type fakeApiHubRuntimeProjectAttachments struct {
-	*gentype.FakeClientWithList[*v1alpha1.ApiHubRuntimeProjectAttachment, *v1alpha1.ApiHubRuntimeProjectAttachmentList]
+// fakeAPIHubRuntimeProjectAttachments implements APIHubRuntimeProjectAttachmentInterface
+type fakeAPIHubRuntimeProjectAttachments struct {
+	*gentype.FakeClientWithList[*v1alpha1.APIHubRuntimeProjectAttachment, *v1alpha1.APIHubRuntimeProjectAttachmentList]
 	Fake *FakeApihubV1alpha1
 }
 
-func newFakeApiHubRuntimeProjectAttachments(fake *FakeApihubV1alpha1, namespace string) apihubv1alpha1.ApiHubRuntimeProjectAttachmentInterface {
-	return &fakeApiHubRuntimeProjectAttachments{
-		gentype.NewFakeClientWithList[*v1alpha1.ApiHubRuntimeProjectAttachment, *v1alpha1.ApiHubRuntimeProjectAttachmentList](
+func newFakeAPIHubRuntimeProjectAttachments(fake *FakeApihubV1alpha1, namespace string) apihubv1alpha1.APIHubRuntimeProjectAttachmentInterface {
+	return &fakeAPIHubRuntimeProjectAttachments{
+		gentype.NewFakeClientWithList[*v1alpha1.APIHubRuntimeProjectAttachment, *v1alpha1.APIHubRuntimeProjectAttachmentList](
 			fake.Fake,
 			namespace,
 			v1alpha1.SchemeGroupVersion.WithResource("apihubruntimeprojectattachments"),
-			v1alpha1.SchemeGroupVersion.WithKind("ApiHubRuntimeProjectAttachment"),
-			func() *v1alpha1.ApiHubRuntimeProjectAttachment { return &v1alpha1.ApiHubRuntimeProjectAttachment{} },
-			func() *v1alpha1.ApiHubRuntimeProjectAttachmentList {
-				return &v1alpha1.ApiHubRuntimeProjectAttachmentList{}
+			v1alpha1.SchemeGroupVersion.WithKind("APIHubRuntimeProjectAttachment"),
+			func() *v1alpha1.APIHubRuntimeProjectAttachment { return &v1alpha1.APIHubRuntimeProjectAttachment{} },
+			func() *v1alpha1.APIHubRuntimeProjectAttachmentList {
+				return &v1alpha1.APIHubRuntimeProjectAttachmentList{}
 			},
-			func(dst, src *v1alpha1.ApiHubRuntimeProjectAttachmentList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.ApiHubRuntimeProjectAttachmentList) []*v1alpha1.ApiHubRuntimeProjectAttachment {
+			func(dst, src *v1alpha1.APIHubRuntimeProjectAttachmentList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.APIHubRuntimeProjectAttachmentList) []*v1alpha1.APIHubRuntimeProjectAttachment {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.ApiHubRuntimeProjectAttachmentList, items []*v1alpha1.ApiHubRuntimeProjectAttachment) {
+			func(list *v1alpha1.APIHubRuntimeProjectAttachmentList, items []*v1alpha1.APIHubRuntimeProjectAttachment) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),

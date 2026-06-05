@@ -16,8 +16,8 @@ spec:
   names:
     categories:
     - gcp
-    kind: ApiHubRuntimeProjectAttachment
-    listKind: ApiHubRuntimeProjectAttachmentList
+    kind: APIHubRuntimeProjectAttachment
+    listKind: APIHubRuntimeProjectAttachmentList
     plural: apihubruntimeprojectattachments
     shortNames:
     - gcpapihubruntimeprojectattachment
@@ -45,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ApiHubRuntimeProjectAttachment is the Schema for the ApiHubRuntimeProjectAttachment
+        description: APIHubRuntimeProjectAttachment is the Schema for the APIHubRuntimeProjectAttachment
           API
         properties:
           apiVersion:
@@ -61,8 +61,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: ApiHubRuntimeProjectAttachmentSpec defines the desired state
-              of ApiHubRuntimeProjectAttachment
+            description: APIHubRuntimeProjectAttachmentSpec defines the desired state
+              of APIHubRuntimeProjectAttachment
             properties:
               location:
                 description: The location of this resource.
@@ -100,7 +100,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The ApiHubRuntimeProjectAttachment name. If not given,
+                description: The APIHubRuntimeProjectAttachment name. If not given,
                   the metadata.name will be used.
                 type: string
               runtimeProjectRef:
@@ -144,8 +144,8 @@ spec:
             - runtimeProjectRef
             type: object
           status:
-            description: ApiHubRuntimeProjectAttachmentStatus defines the config connector
-              machine state of ApiHubRuntimeProjectAttachment
+            description: APIHubRuntimeProjectAttachmentStatus defines the config connector
+              machine state of APIHubRuntimeProjectAttachment
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -174,7 +174,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the ApiHubRuntimeProjectAttachment
+                description: A unique specifier for the APIHubRuntimeProjectAttachment
                   resource in GCP.
                 type: string
               observedGeneration:

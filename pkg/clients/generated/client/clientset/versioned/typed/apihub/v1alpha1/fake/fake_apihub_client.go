@@ -39,8 +39,8 @@ func (c *FakeApihubV1alpha1) APIHubDeployments(namespace string) v1alpha1.APIHub
 	return newFakeAPIHubDeployments(c, namespace)
 }
 
-func (c *FakeApihubV1alpha1) ApiHubRuntimeProjectAttachments(namespace string) v1alpha1.ApiHubRuntimeProjectAttachmentInterface {
-	return newFakeApiHubRuntimeProjectAttachments(c, namespace)
+func (c *FakeApihubV1alpha1) APIHubRuntimeProjectAttachments(namespace string) v1alpha1.APIHubRuntimeProjectAttachmentInterface {
+	return newFakeAPIHubRuntimeProjectAttachments(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

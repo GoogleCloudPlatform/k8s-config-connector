@@ -25,4 +25,4 @@ type APIHubAPIExpansion interface{}
 
 type APIHubDeploymentExpansion interface{}
 
-type ApiHubRuntimeProjectAttachmentExpansion interface{}
+type APIHubRuntimeProjectAttachmentExpansion interface{}

@@ -20,11 +20,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var ApiHubRuntimeProjectAttachmentGVK = GroupVersion.WithKind("ApiHubRuntimeProjectAttachment")
+var APIHubRuntimeProjectAttachmentGVK = GroupVersion.WithKind("APIHubRuntimeProjectAttachment")
 
-// ApiHubRuntimeProjectAttachmentSpec defines the desired state of ApiHubRuntimeProjectAttachment
+// APIHubRuntimeProjectAttachmentSpec defines the desired state of APIHubRuntimeProjectAttachment
 // +kcc:spec:proto=google.cloud.apihub.v1.RuntimeProjectAttachment
-type ApiHubRuntimeProjectAttachmentSpec struct {
+type APIHubRuntimeProjectAttachmentSpec struct {
 	// The project that this resource belongs to.
 	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -33,7 +33,7 @@ type ApiHubRuntimeProjectAttachmentSpec struct {
 	// +required
 	Location string `json:"location"`
 
-	// The ApiHubRuntimeProjectAttachment name. If not given, the metadata.name will be used.
+	// The APIHubRuntimeProjectAttachment name. If not given, the metadata.name will be used.
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -45,8 +45,8 @@ type ApiHubRuntimeProjectAttachmentSpec struct {
 	RuntimeProjectRef *refsv1beta1.ProjectRef `json:"runtimeProjectRef"`
 }
 
-// ApiHubRuntimeProjectAttachmentStatus defines the config connector machine state of ApiHubRuntimeProjectAttachment
-type ApiHubRuntimeProjectAttachmentStatus struct {
+// APIHubRuntimeProjectAttachmentStatus defines the config connector machine state of APIHubRuntimeProjectAttachment
+type APIHubRuntimeProjectAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -54,16 +54,16 @@ type ApiHubRuntimeProjectAttachmentStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ApiHubRuntimeProjectAttachment resource in GCP.
+	// A unique specifier for the APIHubRuntimeProjectAttachment resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ApiHubRuntimeProjectAttachmentObservedState `json:"observedState,omitempty"`
+	ObservedState *APIHubRuntimeProjectAttachmentObservedState `json:"observedState,omitempty"`
 }
 
-// ApiHubRuntimeProjectAttachmentObservedState is the state of the ApiHubRuntimeProjectAttachment resource as most recently observed in GCP.
+// APIHubRuntimeProjectAttachmentObservedState is the state of the APIHubRuntimeProjectAttachment resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.apihub.v1.RuntimeProjectAttachment
-type ApiHubRuntimeProjectAttachmentObservedState struct {
+type APIHubRuntimeProjectAttachmentObservedState struct {
 	// Output only. Create time.
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -81,25 +81,25 @@ type ApiHubRuntimeProjectAttachmentObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// ApiHubRuntimeProjectAttachment is the Schema for the ApiHubRuntimeProjectAttachment API
+// APIHubRuntimeProjectAttachment is the Schema for the APIHubRuntimeProjectAttachment API
 // +k8s:openapi-gen=true
-type ApiHubRuntimeProjectAttachment struct {
+type APIHubRuntimeProjectAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   ApiHubRuntimeProjectAttachmentSpec   `json:"spec,omitempty"`
-	Status ApiHubRuntimeProjectAttachmentStatus `json:"status,omitempty"`
+	Spec   APIHubRuntimeProjectAttachmentSpec   `json:"spec,omitempty"`
+	Status APIHubRuntimeProjectAttachmentStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// ApiHubRuntimeProjectAttachmentList contains a list of ApiHubRuntimeProjectAttachment
-type ApiHubRuntimeProjectAttachmentList struct {
+// APIHubRuntimeProjectAttachmentList contains a list of APIHubRuntimeProjectAttachment
+type APIHubRuntimeProjectAttachmentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ApiHubRuntimeProjectAttachment `json:"items"`
+	Items           []APIHubRuntimeProjectAttachment `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&ApiHubRuntimeProjectAttachment{}, &ApiHubRuntimeProjectAttachmentList{})
+	SchemeBuilder.Register(&APIHubRuntimeProjectAttachment{}, &APIHubRuntimeProjectAttachmentList{})
 }

@@ -26,41 +26,41 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &ApiHubRuntimeProjectAttachmentIdentity{}
-	_ identity.Resource   = &ApiHubRuntimeProjectAttachment{}
+	_ identity.IdentityV2 = &APIHubRuntimeProjectAttachmentIdentity{}
+	_ identity.Resource   = &APIHubRuntimeProjectAttachment{}
 )
 
-var ApiHubRuntimeProjectAttachmentIdentityFormat = gcpurls.Template[ApiHubRuntimeProjectAttachmentIdentity]("apihub.googleapis.com", "projects/{project}/locations/{location}/runtimeProjectAttachments/{runtime_project_attachment}")
+var APIHubRuntimeProjectAttachmentIdentityFormat = gcpurls.Template[APIHubRuntimeProjectAttachmentIdentity]("apihub.googleapis.com", "projects/{project}/locations/{location}/runtimeProjectAttachments/{runtime_project_attachment}")
 
 // +k8s:deepcopy-gen=false
-type ApiHubRuntimeProjectAttachmentIdentity struct {
+type APIHubRuntimeProjectAttachmentIdentity struct {
 	Project                    string
 	Location                   string
 	Runtime_project_attachment string
 }
 
-func (i *ApiHubRuntimeProjectAttachmentIdentity) String() string {
-	return ApiHubRuntimeProjectAttachmentIdentityFormat.ToString(*i)
+func (i *APIHubRuntimeProjectAttachmentIdentity) String() string {
+	return APIHubRuntimeProjectAttachmentIdentityFormat.ToString(*i)
 }
 
-func (i *ApiHubRuntimeProjectAttachmentIdentity) FromExternal(ref string) error {
-	parsed, match, err := ApiHubRuntimeProjectAttachmentIdentityFormat.Parse(ref)
+func (i *APIHubRuntimeProjectAttachmentIdentity) FromExternal(ref string) error {
+	parsed, match, err := APIHubRuntimeProjectAttachmentIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of ApiHubRuntimeProjectAttachment external=%q was not known (use %s): %w", ref, ApiHubRuntimeProjectAttachmentIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of APIHubRuntimeProjectAttachment external=%q was not known (use %s): %w", ref, APIHubRuntimeProjectAttachmentIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of ApiHubRuntimeProjectAttachment external=%q was not known (use %s)", ref, ApiHubRuntimeProjectAttachmentIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of APIHubRuntimeProjectAttachment external=%q was not known (use %s)", ref, APIHubRuntimeProjectAttachmentIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *ApiHubRuntimeProjectAttachmentIdentity) Host() string {
-	return ApiHubRuntimeProjectAttachmentIdentityFormat.Host()
+func (i *APIHubRuntimeProjectAttachmentIdentity) Host() string {
+	return APIHubRuntimeProjectAttachmentIdentityFormat.Host()
 }
 
-func getIdentityFromApiHubRuntimeProjectAttachmentSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ApiHubRuntimeProjectAttachmentIdentity, error) {
+func getIdentityFromAPIHubRuntimeProjectAttachmentSpec(ctx context.Context, reader client.Reader, obj client.Object) (*APIHubRuntimeProjectAttachmentIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -76,7 +76,7 @@ func getIdentityFromApiHubRuntimeProjectAttachmentSpec(ctx context.Context, read
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &ApiHubRuntimeProjectAttachmentIdentity{
+	identity := &APIHubRuntimeProjectAttachmentIdentity{
 		Project:                    projectID,
 		Location:                   location,
 		Runtime_project_attachment: resourceID,
@@ -84,8 +84,8 @@ func getIdentityFromApiHubRuntimeProjectAttachmentSpec(ctx context.Context, read
 	return identity, nil
 }
 
-func (obj *ApiHubRuntimeProjectAttachment) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromApiHubRuntimeProjectAttachmentSpec(ctx, reader, obj)
+func (obj *APIHubRuntimeProjectAttachment) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAPIHubRuntimeProjectAttachmentSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -94,13 +94,13 @@ func (obj *ApiHubRuntimeProjectAttachment) GetIdentity(ctx context.Context, read
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &ApiHubRuntimeProjectAttachmentIdentity{}
+		statusIdentity := &APIHubRuntimeProjectAttachmentIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change ApiHubRuntimeProjectAttachment identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change APIHubRuntimeProjectAttachment identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 

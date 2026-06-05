@@ -19,7 +19,7 @@
 // proto.service: google.cloud.apihub.v1
 // resource: APIHubDeployment:Deployment
 // resource: APIHubAPI:Api
-// resource: ApiHubRuntimeProjectAttachment:RuntimeProjectAttachment
+// resource: APIHubRuntimeProjectAttachment:RuntimeProjectAttachment
 
 package v1alpha1
 

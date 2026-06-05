@@ -32,45 +32,45 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// ApiHubRuntimeProjectAttachmentsGetter has a method to return a ApiHubRuntimeProjectAttachmentInterface.
+// APIHubRuntimeProjectAttachmentsGetter has a method to return a APIHubRuntimeProjectAttachmentInterface.
 // A group's client should implement this interface.
-type ApiHubRuntimeProjectAttachmentsGetter interface {
-	ApiHubRuntimeProjectAttachments(namespace string) ApiHubRuntimeProjectAttachmentInterface
+type APIHubRuntimeProjectAttachmentsGetter interface {
+	APIHubRuntimeProjectAttachments(namespace string) APIHubRuntimeProjectAttachmentInterface
 }
 
-// ApiHubRuntimeProjectAttachmentInterface has methods to work with ApiHubRuntimeProjectAttachment resources.
-type ApiHubRuntimeProjectAttachmentInterface interface {
-	Create(ctx context.Context, apiHubRuntimeProjectAttachment *apihubv1alpha1.ApiHubRuntimeProjectAttachment, opts v1.CreateOptions) (*apihubv1alpha1.ApiHubRuntimeProjectAttachment, error)
-	Update(ctx context.Context, apiHubRuntimeProjectAttachment *apihubv1alpha1.ApiHubRuntimeProjectAttachment, opts v1.UpdateOptions) (*apihubv1alpha1.ApiHubRuntimeProjectAttachment, error)
+// APIHubRuntimeProjectAttachmentInterface has methods to work with APIHubRuntimeProjectAttachment resources.
+type APIHubRuntimeProjectAttachmentInterface interface {
+	Create(ctx context.Context, aPIHubRuntimeProjectAttachment *apihubv1alpha1.APIHubRuntimeProjectAttachment, opts v1.CreateOptions) (*apihubv1alpha1.APIHubRuntimeProjectAttachment, error)
+	Update(ctx context.Context, aPIHubRuntimeProjectAttachment *apihubv1alpha1.APIHubRuntimeProjectAttachment, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubRuntimeProjectAttachment, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, apiHubRuntimeProjectAttachment *apihubv1alpha1.ApiHubRuntimeProjectAttachment, opts v1.UpdateOptions) (*apihubv1alpha1.ApiHubRuntimeProjectAttachment, error)
+	UpdateStatus(ctx context.Context, aPIHubRuntimeProjectAttachment *apihubv1alpha1.APIHubRuntimeProjectAttachment, opts v1.UpdateOptions) (*apihubv1alpha1.APIHubRuntimeProjectAttachment, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*apihubv1alpha1.ApiHubRuntimeProjectAttachment, error)
-	List(ctx context.Context, opts v1.ListOptions) (*apihubv1alpha1.ApiHubRuntimeProjectAttachmentList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*apihubv1alpha1.APIHubRuntimeProjectAttachment, error)
+	List(ctx context.Context, opts v1.ListOptions) (*apihubv1alpha1.APIHubRuntimeProjectAttachmentList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apihubv1alpha1.ApiHubRuntimeProjectAttachment, err error)
-	ApiHubRuntimeProjectAttachmentExpansion
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *apihubv1alpha1.APIHubRuntimeProjectAttachment, err error)
+	APIHubRuntimeProjectAttachmentExpansion
 }
 
-// apiHubRuntimeProjectAttachments implements ApiHubRuntimeProjectAttachmentInterface
-type apiHubRuntimeProjectAttachments struct {
-	*gentype.ClientWithList[*apihubv1alpha1.ApiHubRuntimeProjectAttachment, *apihubv1alpha1.ApiHubRuntimeProjectAttachmentList]
+// aPIHubRuntimeProjectAttachments implements APIHubRuntimeProjectAttachmentInterface
+type aPIHubRuntimeProjectAttachments struct {
+	*gentype.ClientWithList[*apihubv1alpha1.APIHubRuntimeProjectAttachment, *apihubv1alpha1.APIHubRuntimeProjectAttachmentList]
 }
 
-// newApiHubRuntimeProjectAttachments returns a ApiHubRuntimeProjectAttachments
-func newApiHubRuntimeProjectAttachments(c *ApihubV1alpha1Client, namespace string) *apiHubRuntimeProjectAttachments {
-	return &apiHubRuntimeProjectAttachments{
-		gentype.NewClientWithList[*apihubv1alpha1.ApiHubRuntimeProjectAttachment, *apihubv1alpha1.ApiHubRuntimeProjectAttachmentList](
+// newAPIHubRuntimeProjectAttachments returns a APIHubRuntimeProjectAttachments
+func newAPIHubRuntimeProjectAttachments(c *ApihubV1alpha1Client, namespace string) *aPIHubRuntimeProjectAttachments {
+	return &aPIHubRuntimeProjectAttachments{
+		gentype.NewClientWithList[*apihubv1alpha1.APIHubRuntimeProjectAttachment, *apihubv1alpha1.APIHubRuntimeProjectAttachmentList](
 			"apihubruntimeprojectattachments",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *apihubv1alpha1.ApiHubRuntimeProjectAttachment {
-				return &apihubv1alpha1.ApiHubRuntimeProjectAttachment{}
+			func() *apihubv1alpha1.APIHubRuntimeProjectAttachment {
+				return &apihubv1alpha1.APIHubRuntimeProjectAttachment{}
 			},
-			func() *apihubv1alpha1.ApiHubRuntimeProjectAttachmentList {
-				return &apihubv1alpha1.ApiHubRuntimeProjectAttachmentList{}
+			func() *apihubv1alpha1.APIHubRuntimeProjectAttachmentList {
+				return &apihubv1alpha1.APIHubRuntimeProjectAttachmentList{}
 			},
 		),
 	}

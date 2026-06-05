@@ -18,17 +18,17 @@ import (
 	"testing"
 )
 
-func TestApiHubRuntimeProjectAttachmentIdentity_FromExternal(t *testing.T) {
+func TestAPIHubRuntimeProjectAttachmentIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
-		expected *ApiHubRuntimeProjectAttachmentIdentity
+		expected *APIHubRuntimeProjectAttachmentIdentity
 		hasError bool
 	}{
 		{
 			name:  "Full resource name",
 			input: "projects/my-project/locations/us-central1/runtimeProjectAttachments/my-attachment",
-			expected: &ApiHubRuntimeProjectAttachmentIdentity{
+			expected: &APIHubRuntimeProjectAttachmentIdentity{
 				Project:                    "my-project",
 				Location:                   "us-central1",
 				Runtime_project_attachment: "my-attachment",
@@ -38,7 +38,7 @@ func TestApiHubRuntimeProjectAttachmentIdentity_FromExternal(t *testing.T) {
 		{
 			name:  "Full resource name with host",
 			input: "apihub.googleapis.com/projects/my-project/locations/us-central1/runtimeProjectAttachments/my-attachment",
-			expected: &ApiHubRuntimeProjectAttachmentIdentity{
+			expected: &APIHubRuntimeProjectAttachmentIdentity{
 				Project:                    "my-project",
 				Location:                   "us-central1",
 				Runtime_project_attachment: "my-attachment",
@@ -55,7 +55,7 @@ func TestApiHubRuntimeProjectAttachmentIdentity_FromExternal(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			id := &ApiHubRuntimeProjectAttachmentIdentity{}
+			id := &APIHubRuntimeProjectAttachmentIdentity{}
 			err := id.FromExternal(tc.input)
 			if tc.hasError {
 				if err == nil {
