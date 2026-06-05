@@ -18,5 +18,6 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.contentwarehouse.v1
 // resource: ContentWarehouseSchema:DocumentSchema
+// resource: ContentWarehouseRuleSet:RuleSet
 
 package v1alpha1
