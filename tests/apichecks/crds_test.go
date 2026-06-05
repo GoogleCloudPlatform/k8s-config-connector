@@ -1075,6 +1075,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com":     true, // status.observedState is an empty object
 		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                          true, // spec.fullBackupSpec is an empty object
 		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
+		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
 
 	}
 
