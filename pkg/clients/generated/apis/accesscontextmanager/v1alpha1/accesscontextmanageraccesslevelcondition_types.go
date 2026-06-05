@@ -75,7 +75,8 @@ type AccesslevelconditionOsConstraints struct {
 
 type AccessContextManagerAccessLevelConditionSpec struct {
 	/* Immutable. The AccessContextManagerAccessLevel that this condition is bound to. */
-	AccessLevelRef v1alpha1.ResourceRef `json:"accessLevelRef"`
+	// +optional
+	AccessLevelRef *v1alpha1.ResourceRef `json:"accessLevelRef,omitempty"`
 
 	/* Immutable. Device specific restrictions, all restrictions must hold for the Condition to be true. If not specified, all devices are allowed. */
 	// +optional
@@ -117,10 +118,6 @@ type AccessContextManagerAccessLevelConditionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AccessContextManagerAccessLevelCondition's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the AccessContextManagerAccessLevelCondition resource in GCP. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
