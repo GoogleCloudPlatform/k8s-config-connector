@@ -25,9 +25,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.datalabeling.v1beta1 \
   --api-version datalabeling.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource DataLabelingInstruction:Instruction \
   --resource DataLabelingAnnotationSpecSet:AnnotationSpecSet \
   --resource DataLabelingDataset:Dataset \
-  --resource DataLabelingInstruction:Instruction \
+  --resource DataLabelingEvaluationJob:EvaluationJob \
   --prune-unused-types=false
 
 cd ${REPO_ROOT}

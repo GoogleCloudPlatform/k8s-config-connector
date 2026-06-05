@@ -33,6 +33,7 @@ type DatalabelingV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DataLabelingAnnotationSpecSetsGetter
 	DataLabelingDatasetsGetter
+	DataLabelingEvaluationJobsGetter
 	DataLabelingInstructionsGetter
 }
 
@@ -47,6 +48,10 @@ func (c *DatalabelingV1alpha1Client) DataLabelingAnnotationSpecSets(namespace st
 
 func (c *DatalabelingV1alpha1Client) DataLabelingDatasets(namespace string) DataLabelingDatasetInterface {
 	return newDataLabelingDatasets(c, namespace)
+}
+
+func (c *DatalabelingV1alpha1Client) DataLabelingEvaluationJobs(namespace string) DataLabelingEvaluationJobInterface {
+	return newDataLabelingEvaluationJobs(c, namespace)
 }
 
 func (c *DatalabelingV1alpha1Client) DataLabelingInstructions(namespace string) DataLabelingInstructionInterface {
