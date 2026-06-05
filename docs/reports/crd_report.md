@@ -247,6 +247,7 @@
 | dataplex.cnrm.cloud.google.com                | DataplexEntryType                               | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexGlossary                                | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexLake                                    | True         | False       | False  | Direct     | True        |
+| dataplex.cnrm.cloud.google.com                | DataplexMetadataJob                             | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexTask                                    | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexZone                                    | True         | False       | False  | Direct     | True        |
 | dataproc.cnrm.cloud.google.com                | DataprocAutoscalingPolicy                       | False        | True        | False  | DCL        | True        |

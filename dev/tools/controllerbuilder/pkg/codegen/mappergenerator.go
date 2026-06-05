@@ -312,7 +312,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						}
 					`
 
-					qualifiedTypeName := strings.TrimPrefix(krmFieldRefs.Type, "*")
+					qualifiedTypeName := krmFieldRefs.Type
+					qualifiedTypeName = strings.TrimPrefix(qualifiedTypeName, "[]")
+					qualifiedTypeName = strings.TrimPrefix(qualifiedTypeName, "*")
 					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
 					if len(tokens) > 1 {
 						alias := v.getGoImportAlias(krmFieldRefs.GoPackage)

@@ -33,7 +33,8 @@ go run . generate-types \
     --resource DataplexEntryGroup:EntryGroup \
     --resource DataplexEntryType:EntryType \
     --resource DataplexDataTaxonomy:DataTaxonomy \
-    --resource DataplexAspectType:AspectType
+    --resource DataplexAspectType:AspectType \
+    --resource DataplexMetadataJob:MetadataJob
 
 # Post-process types.generated.go to inject kubebuilder validation annotations for recursive self-referential fields
 python3 -c "
