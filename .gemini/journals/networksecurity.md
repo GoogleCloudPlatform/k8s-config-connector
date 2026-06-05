@@ -12,3 +12,9 @@
   2. Updated `dev/tools/controllerbuilder/generate-proto.sh` to include `${REPO_ROOT}/mockgcp/apis/google/cloud/networksecurity/*/*.proto`.
   3. Created `NetworkSecurityInterceptDeploymentGroupRef` in `apis/refs/v1beta1/networksecurity_refs.go`.
 - **Impact**: Future agents working on Greenfield resources where protos are missing from the pinned SHA should vendor the proto files into `mockgcp/apis/google/cloud/...` and update `generate-proto.sh` instead of attempting to bump the `apis/git.versions` SHA.
+
+### [2026-06-03] Protobuf SHA Override in generate.sh for NetworkSecurity v1alpha1
+- **Context**: Implementing types for `NetworkSecuritySACRealm` (Issue #8736).
+- **Problem**: The main pinned `googleapis` SHA (`731d7f2ab6`) does not contain `BackendAuthenticationConfig` or `SACRealm`. When attempting to regenerate the protobuf with `731d7f2ab6`, the generation fails because `BackendAuthenticationConfig` is not found.
+- **Solution**: Reverted the generator's `PROTO_SHA` in `apis/networksecurity/v1alpha1/generate.sh` to its custom override commit `cdc919ff596e263f2cc55a9780d2f74633da1ced`. This commit contains the protobufs for both `BackendAuthenticationConfig` and `SACRealm`, allowing the code generation to succeed.
+- **Impact**: When adding new resources in `networksecurity`, keep in mind that `v1alpha1/generate.sh` uses a specific protobuf SHA override `cdc919ff596e263f2cc55a9780d2f74633da1ced` to fetch newer APIs that are not yet available in the repo-wide default SHA.
