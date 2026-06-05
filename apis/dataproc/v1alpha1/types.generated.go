@@ -21,6 +21,7 @@
 // resource: DataprocJob:Job
 // resource: DataprocNodeGroup:NodeGroup
 // resource: DataprocSession:Session
+// resource: DataprocSessionTemplate:SessionTemplate
 
 package v1alpha1
 
@@ -1121,6 +1122,46 @@ type Session_SessionStateHistory struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SessionTemplate", skipping
+
+// +kcc:proto=google.cloud.dataproc.v1.SessionTemplate
+type SessionTemplate struct {
+	// Required. The resource name of the session template.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Brief description of the template.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Jupyter session config.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.jupyter_session
+	JupyterSession *JupyterConfig `json:"jupyterSession,omitempty"`
+
+	// Optional. Spark Connect session config.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.spark_connect_session
+	SparkConnectSession *SparkConnectConfig `json:"sparkConnectSession,omitempty"`
+
+	// Optional. Labels to associate with sessions created using this template.
+	//  Label **keys** must contain 1 to 63 characters, and must conform to
+	//  [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
+	//  Label **values** can be empty, but, if present, must contain 1 to 63
+	//  characters and conform to [RFC
+	//  1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be
+	//  associated with a session.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Runtime configuration for session execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.runtime_config
+	RuntimeConfig *RuntimeConfig `json:"runtimeConfig,omitempty"`
+
+	// Optional. Environment configuration for session execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.environment_config
+	EnvironmentConfig *EnvironmentConfig `json:"environmentConfig,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "SparkBatch", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SparkBatch
@@ -1158,7 +1199,7 @@ type SparkBatch struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SparkConnectConfig", skipping
+/* found existing non-generated go type "SparkConnectConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SparkConnectConfig
 type SparkConnectConfig struct {
@@ -1816,5 +1857,28 @@ type Session_SessionStateHistoryObservedState struct {
 	// Output only. The time when the session entered the historical state.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.SessionStateHistory.state_start_time
 	StateStartTime *string `json:"stateStartTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SessionTemplate", skipping
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.SessionTemplate
+type SessionTemplateObservedState struct {
+	// Output only. The time when the template was created.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The email address of the user who created the template.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.creator
+	Creator *string `json:"creator,omitempty"`
+
+	// Output only. The time the template was last updated.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. A session template UUID (Unique Universal Identifier). The
+	//  service generates this value when it creates the session template.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.uuid
+	Uuid *string `json:"uuid,omitempty"`
 }
 */

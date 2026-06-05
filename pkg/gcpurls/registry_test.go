@@ -77,6 +77,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                       true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":                          true,
+		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}":                    true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":        true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                   true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":           true,
