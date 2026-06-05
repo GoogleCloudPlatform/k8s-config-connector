@@ -525,7 +525,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					visitor.VisitPrimitive(mapPath, val, setter)
 					return true
 				})
-			case "string->int32":
+			case "string->int32", "string->int64", "string->uint32", "string->uint64":
 				mapVal := msg.Mutable(field).Map()
 				setter := func(v protoreflect.Value) {
 					if v.IsValid() {
