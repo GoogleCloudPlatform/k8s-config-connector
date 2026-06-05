@@ -27,6 +27,8 @@ import (
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	iam "cloud.google.com/go/iam/apiv1"
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -104,6 +106,16 @@ func (m *entryTypeModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 	adapter.gcpClient = catalogClient
 
+	opts, err := gcpClient.options()
+	if err != nil {
+		return nil, err
+	}
+	iamClient, err := iam.NewIamPolicyClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building iam policy client: %w", err)
+	}
+	adapter.iamClient = iamClient
+
 	return adapter, nil
 }
 
@@ -114,6 +126,7 @@ func (m *entryTypeModel) AdapterForURL(ctx context.Context, url string) (directb
 
 type entryTypeAdapter struct {
 	gcpClient *gcp.CatalogClient
+	iamClient *iam.IamPolicyClient
 	id        *krm.EntryTypeIdentity
 	desired   *pb.EntryType
 	actual    *pb.EntryType
@@ -293,4 +306,37 @@ func (a *entryTypeAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 		return false, fmt.Errorf("waiting for deletion of dataplex entrytype %s: %w", a.id.String(), err)
 	}
 	return true, nil
+}
+
+func (a *entryTypeAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	req := &iampb.GetIamPolicyRequest{
+		Resource: a.id.String(),
+	}
+	policy, err := a.iamClient.GetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return policy, nil
+}
+
+func (a *entryTypeAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &iampb.SetIamPolicyRequest{
+		Resource: a.id.String(),
+		Policy:   policy,
+	}
+	newPolicy, err := a.iamClient.SetIamPolicy(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return newPolicy, nil
 }

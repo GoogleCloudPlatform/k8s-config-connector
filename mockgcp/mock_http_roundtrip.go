@@ -21,6 +21,7 @@ import (
 	"net/http"
 	"regexp"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"k8s.io/klog/v2"
@@ -218,6 +219,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	}
 
 	mockRoundTripper.iamPolicies = newMockIAMPolicies()
+	iampb.RegisterIAMPolicyServer(server, mockRoundTripper.iamPolicies)
 
 	return mockRoundTripper, nil
 }

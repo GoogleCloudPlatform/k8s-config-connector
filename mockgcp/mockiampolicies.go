@@ -16,6 +16,7 @@ package mockgcp
 
 import (
 	"bytes"
+	"context"
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
@@ -27,6 +28,7 @@ import (
 )
 
 type mockIAMPolicies struct {
+	iampb.UnimplementedIAMPolicyServer
 	policies map[string]*iampb.Policy
 }
 
@@ -126,4 +128,43 @@ func computeEtag(policy *iampb.Policy) []byte {
 	}
 	hash := md5.Sum(b)
 	return hash[:]
+}
+
+func (m *mockIAMPolicies) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	return m.getIAMPolicy(req.Resource)
+}
+
+func (m *mockIAMPolicies) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	oldPolicy, err := m.getIAMPolicy(req.Resource)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.Policy.Etag != nil && !bytes.Equal(req.Policy.Etag, oldPolicy.Etag) {
+		return nil, fmt.Errorf("conflict: etags did not match")
+	}
+
+	// conditional role bindings must specify version 3
+	hasConditions := false
+	for _, binding := range req.Policy.Bindings {
+		if binding.Condition != nil {
+			hasConditions = true
+			break
+		}
+	}
+	// GCP returns the version as 1 if there are no conditions
+	if !hasConditions {
+		req.Policy.Version = 1
+	}
+
+	req.Policy.Etag = computeEtag(req.Policy)
+	m.policies[req.Resource] = req.Policy
+
+	return req.Policy, nil
+}
+
+func (m *mockIAMPolicies) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	return &iampb.TestIamPermissionsResponse{
+		Permissions: req.Permissions,
+	}, nil
 }
