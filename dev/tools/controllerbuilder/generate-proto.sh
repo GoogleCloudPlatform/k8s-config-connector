@@ -52,7 +52,14 @@ if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
     GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
 fi
 
-VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
+if command -v sha256sum > /dev/null; then
+    PROTO_HASH=$(sha256sum "${REPO_ROOT}/dev/tools/controllerbuilder/generate-proto.sh" | awk '{print $1}' | head -c 8)
+elif command -v shasum > /dev/null; then
+    PROTO_HASH=$(shasum -a 256 "${REPO_ROOT}/dev/tools/controllerbuilder/generate-proto.sh" | awk '{print $1}' | head -c 8)
+else
+    PROTO_HASH="nocache"
+fi
+VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}-${PROTO_HASH}.pb"
 
 cd googleapis
 
