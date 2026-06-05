@@ -25,7 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
-	refcommon "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	resourcemanagerpb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
@@ -82,7 +82,7 @@ func (r *ComputeNetworkRef) SetExternal(ref string) {
 }
 
 func (r *ComputeNetworkRef) ValidateExternal(ref string) error {
-	trimmedRef := refcommon.FixStaleComputeExternalFormat(ref)
+	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
 	id := &NetworkIdentity{}
 	if err := id.FromExternal(trimmedRef); err != nil {
 		return err
@@ -100,14 +100,14 @@ func (r *ComputeNetworkRef) ParseExternalToIdentity() (identity.Identity, error)
 
 func (r *ComputeNetworkRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	if r.External != "" {
-		r.External = refcommon.FixStaleComputeExternalFormat(r.External)
+		r.External = apirefs.TrimComputeURIPrefix(r.External)
 	}
 
 	fallback := func(u *unstructured.Unstructured) string {
 		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
 		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
 		if selfLink != "" {
-			return refcommon.FixStaleComputeExternalFormat(selfLink)
+			return apirefs.TrimComputeURIPrefix(selfLink)
 		}
 
 		obj, err := common.ToStructuredType[*ComputeNetwork](u)

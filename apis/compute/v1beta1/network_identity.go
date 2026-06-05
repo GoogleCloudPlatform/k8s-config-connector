@@ -20,7 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refcommon "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -45,7 +45,7 @@ func (i *NetworkIdentity) String() string {
 }
 
 func (i *NetworkIdentity) FromExternal(ref string) error {
-	trimmedRef := refcommon.FixStaleComputeExternalFormat(ref)
+	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
 	parsed, match, err := ComputeNetworkIdentityFormat.Parse(trimmedRef)
 	if err != nil {
 		return fmt.Errorf("format of ComputeNetwork external=%q was not known (use %s): %w", ref, ComputeNetworkIdentityFormat.CanonicalForm(), err)
