@@ -18,7 +18,15 @@
    - We configured `apis/dataflow/v1beta1/generate.sh` to include both the pre-existing `DataflowFlexTemplateJob` and our new `DataflowJob`.
    - Running `./generate.sh` correctly parses the `google.dataflow.v1beta3` protobuf messages and produces/updates `types.generated.go`.
 
+5. **Round-trip KRM Fuzzer Implementation**:
+   - Added proto mapping annotations `// +kcc:spec:proto=google.dataflow.v1beta3.Job` and `// +kcc:status:proto=google.dataflow.v1beta3.Job` to trigger the mapper generator.
+   - Wrote handcoded `DataflowJobSpec_FromProto`, `DataflowJobSpec_ToProto`, `DataflowJobStatus_FromProto`, and `DataflowJobStatus_ToProto` functions in `pkg/controller/direct/dataflow/mapper.go` to cleanly map nested protobuf `Job.Environment` and `WorkerPool` fields to flat KRM fields.
+   - Handled `*runtime.RawExtension` <-> `map[string]string` conversion by marshaling and unmarshaling.
+   - Designed and implemented `dataflowjob_fuzzer.go` using `fuzztesting.RegisterKRMFuzzer` to round-trip and verify conversion losslessness of both Spec and Status fields.
+   - Designed a robust `FilterSpec` and `FilterStatus` in the fuzzer to normalize randomized `WorkerPool` slices and empty nested `Environment` messages, allowing 100,000 randomized fuzz test runs to pass successfully with zero loss.
+
 ## Verification
 
 - Successfully ran `dev/tasks/diff-crds` showing that the generated CRD schema is 100% structurally identical to the baseline schema.
 - Successfully executed `make manifests`, `make generate-go-client`, and `go vet ./...` without compilation or lint issues.
+- Successfully ran fuzzer tests `TestSomeMappers` and `FuzzAllMappers` confirming 100% round-trip conversion losslessness.
