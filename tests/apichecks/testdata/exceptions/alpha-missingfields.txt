@@ -496,6 +496,13 @@
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.imageAllowlist.allowPattern[]" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.platform" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=ccinsightsissuemodels.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=ccinsightsissuemodels.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputDataConfig.filter" is not set in unstructured objects
+[missing_field] crd=ccinsightsissuemodels.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputDataConfig.medium" is not set in unstructured objects
+[missing_field] crd=ccinsightsissuemodels.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageCode" is not set in unstructured objects
+[missing_field] crd=ccinsightsissuemodels.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=ccinsightsissuemodels.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelType" is not set in unstructured objects
+[missing_field] crd=ccinsightsissuemodels.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=ccinsightsphrasematchers.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.active" is not set in unstructured objects
 [missing_field] crd=ccinsightsphrasematchers.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=ccinsightsphrasematchers.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
