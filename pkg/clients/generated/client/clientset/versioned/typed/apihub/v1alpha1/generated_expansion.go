@@ -24,3 +24,5 @@ package v1alpha1
 type APIHubAPIExpansion interface{}
 
 type APIHubDeploymentExpansion interface{}
+
+type ApiHubRuntimeProjectAttachmentExpansion interface{}
