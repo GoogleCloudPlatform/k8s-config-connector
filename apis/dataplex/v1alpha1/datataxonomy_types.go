@@ -87,7 +87,7 @@ type DataplexDataTaxonomyObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdataplexdatataxonomy;gcpdataplexdatataxonomys
+// +kubebuilder:resource:categories=gcp,shortName=gcpdataplexdatataxonomy;gcpdataplexdatataxonomies
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"

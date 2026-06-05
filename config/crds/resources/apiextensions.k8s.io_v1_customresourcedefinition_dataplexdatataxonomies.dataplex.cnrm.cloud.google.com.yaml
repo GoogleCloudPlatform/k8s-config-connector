@@ -21,7 +21,7 @@ spec:
     plural: dataplexdatataxonomies
     shortNames:
     - gcpdataplexdatataxonomy
-    - gcpdataplexdatataxonomys
+    - gcpdataplexdatataxonomies
     singular: dataplexdatataxonomy
   preserveUnknownFields: false
   scope: Namespaced
