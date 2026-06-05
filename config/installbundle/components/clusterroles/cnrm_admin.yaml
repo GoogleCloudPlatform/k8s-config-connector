@@ -584,6 +584,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - contactcenterinsights.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - container.cnrm.cloud.google.com
   resources:
   - '*'

@@ -487,6 +487,10 @@
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.imageAllowlist.allowPattern[]" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.platform" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=ccinsightsviews.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=ccinsightsviews.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=ccinsightsviews.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=ccinsightsviews.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.value" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.certificateAuthorityConfig.certificateAuthorityServiceConfig.caPoolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyAlgorithm" is not set in unstructured objects

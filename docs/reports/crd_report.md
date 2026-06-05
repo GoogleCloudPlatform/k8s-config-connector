@@ -88,6 +88,7 @@
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        | False       |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPlatformPolicy               | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        | False       |
+| contactcenterinsights.cnrm.cloud.google.com   | CCInsightsView                                  | True         | False       | False  | Direct     | True        |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateIssuanceConfig     | True         | False       | False  | Direct     | True        |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMapEntry           | True         | True        | False  | Terraform  | False       |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMap                | True         | True        | False  | Terraform  | False       |
