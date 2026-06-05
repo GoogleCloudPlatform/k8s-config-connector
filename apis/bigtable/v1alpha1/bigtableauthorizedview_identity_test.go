@@ -16,6 +16,8 @@ package v1alpha1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestParseAuthorizedViewExternal(t *testing.T) {
@@ -73,6 +75,57 @@ func TestParseAuthorizedViewExternal(t *testing.T) {
 				}
 				if resourceID != tt.viewID {
 					t.Errorf("ViewID = %v, want %v", resourceID, tt.viewID)
+				}
+			}
+		})
+	}
+}
+
+func TestBigtableAuthorizedViewIdentity_FromExternal(t *testing.T) {
+	tests := []struct {
+		name    string
+		ref     string
+		wantErr bool
+		want    *AuthorizedViewIdentity
+	}{
+		{
+			name: "valid reference",
+			ref:  "projects/my-project/instances/my-instance/tables/my-table/authorizedViews/my-view",
+			want: &AuthorizedViewIdentity{
+				Project:        "my-project",
+				Instance:       "my-instance",
+				Table:          "my-table",
+				AuthorizedView: "my-view",
+			},
+		},
+		{
+			name:    "invalid reference format",
+			ref:     "invalid/format",
+			wantErr: true,
+		},
+		{
+			name: "full url",
+			ref:  "https://bigtableadmin.googleapis.com/projects/my-project/instances/my-instance/tables/my-table/authorizedViews/my-view",
+			want: &AuthorizedViewIdentity{
+				Project:        "my-project",
+				Instance:       "my-instance",
+				Table:          "my-table",
+				AuthorizedView: "my-view",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			i := &AuthorizedViewIdentity{}
+			err := i.FromExternal(tt.ref)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})

@@ -4,14 +4,13 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: av-${uniqueId}
   namespace: ${uniqueId}
 spec:
   deletionProtection: true
-  resourceID: av-${uniqueId}
   subsetView:
     rowPrefixes:
     - dXNlcg==
@@ -26,5 +25,5 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}
-  observedGeneration: 3
+  observedGeneration: 2
   observedState: {}

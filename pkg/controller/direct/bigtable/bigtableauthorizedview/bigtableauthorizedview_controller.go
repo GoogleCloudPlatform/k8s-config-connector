@@ -17,16 +17,18 @@ package bigtableauthorizedview
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigtable"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigtable"
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -113,34 +115,64 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+func convertAuthorizedViewInfoToProto(info *gcp.AuthorizedViewInfo) *pb.AuthorizedView {
+	if info == nil {
+		return nil
+	}
+	out := &pb.AuthorizedView{}
+	if info.AuthorizedView != nil {
+		if sv, ok := info.AuthorizedView.(*gcp.SubsetViewInfo); ok {
+			out.AuthorizedView = &pb.AuthorizedView_SubsetView_{
+				SubsetView: &pb.AuthorizedView_SubsetView{
+					RowPrefixes: sv.RowPrefixes,
+				},
+			}
+		}
+	}
+	if info.DeletionProtection == gcp.Protected {
+		out.DeletionProtection = true
+	} else if info.DeletionProtection == gcp.Unprotected {
+		out.DeletionProtection = false
+	}
+	return out
+}
+
+func convertProtoToAuthorizedViewConf(id *krm.AuthorizedViewIdentity, pbView *pb.AuthorizedView) *gcp.AuthorizedViewConf {
+	if pbView == nil {
+		return nil
+	}
+	var subsetView *gcp.SubsetViewConf
+	if pbView.GetSubsetView() != nil {
+		subsetView = &gcp.SubsetViewConf{
+			RowPrefixes: pbView.GetSubsetView().RowPrefixes,
+		}
+	}
+	var deletionProtection gcp.DeletionProtection
+	if pbView.GetDeletionProtection() {
+		deletionProtection = gcp.Protected
+	} else {
+		deletionProtection = gcp.Unprotected
+	}
+	return &gcp.AuthorizedViewConf{
+		TableID:            id.TableID(),
+		AuthorizedViewID:   id.ID(),
+		AuthorizedView:     subsetView,
+		DeletionProtection: deletionProtection,
+	}
+}
+
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BigtableAuthorizedView", "name", a.id)
 
-	var subsetView *gcp.SubsetViewConf
-	if a.desired.Spec.SubsetView != nil {
-		subsetView = &gcp.SubsetViewConf{
-			RowPrefixes: a.desired.Spec.SubsetView.RowPrefixes,
-		}
+	mapCtx := &direct.MapContext{}
+	desiredPb := bigtable.BigtableAuthorizedViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
 
-	var deletionProtection gcp.DeletionProtection
-	if a.desired.Spec.DeletionProtection != nil {
-		if *a.desired.Spec.DeletionProtection {
-			deletionProtection = gcp.Protected
-		} else {
-			deletionProtection = gcp.Unprotected
-		}
-	}
-
-	conf := gcp.AuthorizedViewConf{
-		TableID:            a.id.TableID(),
-		AuthorizedViewID:   a.id.ID(),
-		AuthorizedView:     subsetView,
-		DeletionProtection: deletionProtection,
-	}
-
-	err := a.gcpClient.CreateAuthorizedView(ctx, &conf)
+	conf := convertProtoToAuthorizedViewConf(a.id, desiredPb)
+	err := a.gcpClient.CreateAuthorizedView(ctx, conf)
 	if err != nil {
 		return fmt.Errorf("creating BigtableAuthorizedView %s: %w", a.id, err)
 	}
@@ -150,84 +182,49 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	status.ObservedState = &krm.BigtableAuthorizedViewObservedState{}
 
-	if err := createOp.UpdateStatus(ctx, status, nil); err != nil {
-		return err
-	}
-
-	// Write resourceID into spec.
-	if err := unstructured.SetNestedField(createOp.GetUnstructured().Object, a.id.ID(), "spec", "resourceID"); err != nil {
-		return fmt.Errorf("error setting spec.resourceID: %w", err)
-	}
-	return nil
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BigtableAuthorizedView", "name", a.id)
 
-	var subsetView *gcp.SubsetViewConf
-	if a.desired.Spec.SubsetView != nil {
-		subsetView = &gcp.SubsetViewConf{
-			RowPrefixes: a.desired.Spec.SubsetView.RowPrefixes,
-		}
+	mapCtx := &direct.MapContext{}
+	desiredPb := bigtable.BigtableAuthorizedViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
 
-	var deletionProtection gcp.DeletionProtection
-	if a.desired.Spec.DeletionProtection != nil {
-		if *a.desired.Spec.DeletionProtection {
-			deletionProtection = gcp.Protected
-		} else {
-			deletionProtection = gcp.Unprotected
-		}
-	}
+	actualPb := convertAuthorizedViewInfoToProto(a.actual)
 
-	conf := gcp.AuthorizedViewConf{
-		TableID:            a.id.TableID(),
-		AuthorizedViewID:   a.id.ID(),
-		AuthorizedView:     subsetView,
-		DeletionProtection: deletionProtection,
-	}
-
-	var actualRowPrefixes [][]byte
-	if a.actual.AuthorizedView != nil {
-		if sv, ok := a.actual.AuthorizedView.(*gcp.SubsetViewInfo); ok {
-			actualRowPrefixes = sv.RowPrefixes
-		}
-	}
-
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	needsUpdate := false
-
-	if subsetView != nil && !reflect.DeepEqual(subsetView.RowPrefixes, actualRowPrefixes) {
-		report.AddField("subset_view.row_prefixes", actualRowPrefixes, subsetView.RowPrefixes)
-		needsUpdate = true
-	}
-
-	if deletionProtection != a.actual.DeletionProtection {
-		report.AddField("deletion_protection", a.actual.DeletionProtection, deletionProtection)
-		needsUpdate = true
-	}
-
-	if !needsUpdate {
-		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
-	}
-
-	structuredreporting.ReportDiff(ctx, report)
-
-	updateConf := gcp.UpdateAuthorizedViewConf{
-		AuthorizedViewConf: conf,
-	}
-
-	err := a.gcpClient.UpdateAuthorizedView(ctx, updateConf)
+	paths, report, err := common.CompareProtoMessageStructuredDiff(desiredPb, actualPb, common.BasicDiff)
 	if err != nil {
-		return fmt.Errorf("updating BigtableAuthorizedView %s: %w", a.id, err)
+		return err
 	}
-	log.V(2).Info("successfully updated BigtableAuthorizedView", "name", a.id)
 
 	status := &krm.BigtableAuthorizedViewStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	status.ObservedState = &krm.BigtableAuthorizedViewObservedState{}
+
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		// According to Mandatory Rule 3, always call UpdateStatus before returning
+		return updateOp.UpdateStatus(ctx, status, nil)
+	}
+
+	report.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, report)
+
+	conf := convertProtoToAuthorizedViewConf(a.id, desiredPb)
+	updateConf := gcp.UpdateAuthorizedViewConf{
+		AuthorizedViewConf: *conf,
+	}
+
+	err = a.gcpClient.UpdateAuthorizedView(ctx, updateConf)
+	if err != nil {
+		return fmt.Errorf("updating BigtableAuthorizedView %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully updated BigtableAuthorizedView", "name", a.id)
 
 	return updateOp.UpdateStatus(ctx, status, nil)
 }

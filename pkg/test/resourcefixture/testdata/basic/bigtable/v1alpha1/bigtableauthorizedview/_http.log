@@ -349,26 +349,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}"
-}
-
-OK
-
-{
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}",
-  "subsetView": {
-    "rowPrefixes": [
-      "dXNlcg=="
-    ]
-  }
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/UpdateAuthorizedView
 
 {
