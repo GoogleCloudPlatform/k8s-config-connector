@@ -26,7 +26,8 @@ var AccessContextManagerAccessLevelConditionGVK = GroupVersion.WithKind("AccessC
 // +kcc:spec:proto=google.identity.accesscontextmanager.v1.Condition
 type AccessContextManagerAccessLevelConditionSpec struct {
 	/* Immutable. The AccessContextManagerAccessLevel that this condition is bound to. */
-	AccessLevelRef acmv1beta1.AccessLevelRef `json:"accessLevelRef"`
+	// +optional
+	AccessLevelRef *acmv1beta1.AccessLevelRef `json:"accessLevelRef,omitempty"`
 
 	/* Immutable. Device specific restrictions, all restrictions must hold for
 	the Condition to be true. If not specified, all devices are
@@ -135,10 +136,6 @@ type AccessContextManagerAccessLevelConditionStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	// A unique specifier for the AccessContextManagerAccessLevelCondition resource in GCP.
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
 }
 
 // +genclient
@@ -160,7 +157,6 @@ type AccessContextManagerAccessLevelCondition struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// +required
 	Spec   AccessContextManagerAccessLevelConditionSpec   `json:"spec,omitempty"`
 	Status AccessContextManagerAccessLevelConditionStatus `json:"status,omitempty"`
 }

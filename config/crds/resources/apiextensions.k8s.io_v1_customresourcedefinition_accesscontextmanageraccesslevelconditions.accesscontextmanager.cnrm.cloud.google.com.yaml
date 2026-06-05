@@ -196,8 +196,6 @@ spec:
                   Used for creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
-            required:
-            - accessLevelRef
             type: object
           status:
             description: AccessContextManagerAccessLevelConditionStatus defines the
@@ -229,10 +227,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              externalRef:
-                description: A unique specifier for the AccessContextManagerAccessLevelCondition
-                  resource in GCP.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -242,8 +236,6 @@ spec:
                 format: int64
                 type: integer
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
