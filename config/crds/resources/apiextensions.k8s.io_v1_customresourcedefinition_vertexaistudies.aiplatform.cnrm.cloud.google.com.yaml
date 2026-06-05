@@ -260,53 +260,7 @@ spec:
 
                              If two items in conditional_parameter_specs have the same name, they
                              must have disjoint parent_value_condition.
-                          items:
-                            properties:
-                              parameterSpec:
-                                description: Required. The spec for a conditional
-                                  parameter.
-                              parentCategoricalValues:
-                                description: The spec for matching values from a parent
-                                  parameter of `CATEGORICAL` type.
-                                properties:
-                                  values:
-                                    description: Required. Matches values of the parent
-                                      parameter of 'CATEGORICAL' type. All values
-                                      must exist in `categorical_value_spec` of parent
-                                      parameter.
-                                    items:
-                                      type: string
-                                    type: array
-                                type: object
-                              parentDiscreteValues:
-                                description: The spec for matching values from a parent
-                                  parameter of `DISCRETE` type.
-                                properties:
-                                  values:
-                                    description: |-
-                                      Required. Matches values of the parent parameter of 'DISCRETE' type.
-                                       All values must exist in `discrete_value_spec` of parent parameter.
-
-                                       The Epsilon of the value matching is 1e-10.
-                                    items:
-                                      type: number
-                                    type: array
-                                type: object
-                              parentIntValues:
-                                description: The spec for matching values from a parent
-                                  parameter of `INTEGER` type.
-                                properties:
-                                  values:
-                                    description: Required. Matches values of the parent
-                                      parameter of 'INTEGER' type. All values must
-                                      lie in `integer_value_spec` of parent parameter.
-                                    items:
-                                      format: int64
-                                      type: integer
-                                    type: array
-                                type: object
-                            type: object
-                          type: array
+                          x-kubernetes-preserve-unknown-fields: true
                         discreteValueSpec:
                           description: The value spec for a 'DISCRETE' parameter.
                           properties:

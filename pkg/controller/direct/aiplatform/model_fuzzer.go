@@ -46,6 +46,7 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".container_spec.startup_probe.success_threshold")
 	f.UnimplementedFields.Insert(".container_spec.liveness_probe")
 	f.UnimplementedFields.Insert(".explanation_spec.explanation_parameters.output_indices")
+	f.UnimplementedFields.Insert(".metadata")
 	f.UnimplementedFields.Insert(".metadata.list_value")
 
 	f.Unimplemented_NotYetTriaged(".checkpoints")
@@ -72,12 +73,8 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 		if in.ExplanationSpec != nil {
 			if in.ExplanationSpec.Metadata != nil {
 				for _, input := range in.ExplanationSpec.Metadata.Inputs {
-					for _, b := range input.InputBaselines {
-						clearUnsupportedValueFields(b)
-					}
-					for _, b := range input.EncodedBaselines {
-						clearUnsupportedValueFields(b)
-					}
+					input.InputBaselines = nil
+					input.EncodedBaselines = nil
 					if input.Visualization != nil {
 						input.Visualization.Type = 0
 						input.Visualization.Polarity = 0
@@ -85,7 +82,9 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 					}
 				}
 				for _, output := range in.ExplanationSpec.Metadata.Outputs {
-					clearUnsupportedValueFields(output.GetIndexDisplayNameMapping())
+					if _, ok := output.DisplayNameMapping.(*pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping); ok {
+						output.DisplayNameMapping = nil
+					}
 				}
 			}
 			if in.ExplanationSpec.Parameters != nil {
@@ -136,7 +135,7 @@ func clearUnsupportedValueFields(v *structpb.Value) {
 	}
 	switch k := v.Kind.(type) {
 	case *structpb.Value_ListValue:
-		v.Kind = nil // clear list_value since KRM doesn't support recursive/nested lists in Value
+		v.Kind = &structpb.Value_NullValue{NullValue: structpb.NullValue_NULL_VALUE} // clear list_value since KRM doesn't support recursive/nested lists in Value
 	case *structpb.Value_StructValue:
 		if k.StructValue != nil {
 			for _, val := range k.StructValue.Fields {

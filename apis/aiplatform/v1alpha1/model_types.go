@@ -80,7 +80,7 @@ type AIPlatformModelSpec struct {
 	//  [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri].
 	//  Unset if the Model does not have any additional information.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.metadata
-	Metadata *Value `json:"metadata,omitempty"`
+	Metadata *apiextensionsv1.JSON `json:"metadata,omitempty"`
 
 	// Optional. This field is populated if the model is produced by a pipeline
 	//  job.
@@ -423,13 +423,6 @@ type AIPlatformModelObservedState struct {
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.satisfies_pzi
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
-}
-
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
 }
 
 const (
