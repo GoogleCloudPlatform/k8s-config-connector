@@ -31,6 +31,10 @@ type FakeDataplexV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDataplexV1alpha1) DataplexDataTaxonomies(namespace string) v1alpha1.DataplexDataTaxonomyInterface {
+	return newFakeDataplexDataTaxonomies(c, namespace)
+}
+
 func (c *FakeDataplexV1alpha1) DataplexEntryGroups(namespace string) v1alpha1.DataplexEntryGroupInterface {
 	return newFakeDataplexEntryGroups(c, namespace)
 }

@@ -1,0 +1,5 @@
+### 2026-06-05 Implementing DataplexDataTaxonomy Direct Types
+- **Context**: Implementing KRM types, CRD, and IdentityV2 for DataplexDataTaxonomy.
+- **Problem**: The proto-to-KRM generator initially marked `DataTaxonomy` and `DataTaxonomyObservedState` as unreachable because the scaffolded `DataplexDataTaxonomySpec` and `DataplexDataTaxonomyObservedState` were empty, causing those fields/types to be commented out as unreachable in `types.generated.go`.
+- **Solution**: We defined `DataplexDataTaxonomySpec` to use `parent.ProjectAndLocationRef` and standard fields, and implemented `DataplexDataTaxonomyObservedState` with the proper output-only fields (`Uid`, `CreateTime`, `UpdateTime`, `AttributeCount`, `ClassCount`). Running the generator again successfully resolved all unreachability and correctly generated the deepcopy and CRD files.
+- **Impact**: When adding greenfield resources, always ensure Spec and ObservedState map the proto fields before final generation so that types are correctly kept in `types.generated.go`.
