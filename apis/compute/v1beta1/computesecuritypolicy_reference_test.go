@@ -30,6 +30,16 @@ func TestComputeSecurityPolicyRef_ValidateExternal(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name:    "valid regional reference",
+			ref:     "projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			wantErr: false,
+		},
+		{
+			name:    "valid regional url reference",
+			ref:     "https://compute.googleapis.com/projects/my-project/regions/us-central1/securityPolicies/my-policy",
+			wantErr: false,
+		},
+		{
 			name:    "invalid prefix",
 			ref:     "invalid/my-project/global/securityPolicies/my-policy",
 			wantErr: true,
