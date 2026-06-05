@@ -35,6 +35,10 @@ func (c *FakeOrgpolicyV1beta1) OrgPolicyCustomConstraints(namespace string) v1be
 	return newFakeOrgPolicyCustomConstraints(c, namespace)
 }
 
+func (c *FakeOrgpolicyV1beta1) OrgPolicyPolicies(namespace string) v1beta1.OrgPolicyPolicyInterface {
+	return newFakeOrgPolicyPolicies(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeOrgpolicyV1beta1) RESTClient() rest.Interface {

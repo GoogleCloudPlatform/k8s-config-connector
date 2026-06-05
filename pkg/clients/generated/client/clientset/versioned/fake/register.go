@@ -153,7 +153,6 @@ import (
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
 	notebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/notebooks/v1alpha1"
 	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/notebooks/v1beta1"
-	orgpolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/orgpolicy/v1alpha1"
 	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/orgpolicy/v1beta1"
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/osconfig/v1alpha1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/osconfig/v1beta1"
@@ -338,7 +337,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	networkservicesv1beta1.AddToScheme,
 	notebooksv1alpha1.AddToScheme,
 	notebooksv1beta1.AddToScheme,
-	orgpolicyv1alpha1.AddToScheme,
 	orgpolicyv1beta1.AddToScheme,
 	osconfigv1alpha1.AddToScheme,
 	osconfigv1beta1.AddToScheme,

@@ -825,6 +825,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/orgpolicy/orgpolicycustomconstraint.md">OrgPolicyCustomConstraint</a></td>
 </tr>
 <tr>
+  <td><a href="/resource-manager/docs/organization-policy/overview">Organization Policy</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/orgpolicy/orgpolicypolicy.md">OrgPolicyPolicy</a></td>
+</tr>
+<tr>
   <td><a href="/certificate-authority-service/docs/">Private CA</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/privateca/privatecacapool.md">PrivateCACAPool</a></td>
 </tr>
