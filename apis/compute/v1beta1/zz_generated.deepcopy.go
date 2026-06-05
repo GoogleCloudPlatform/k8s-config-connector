@@ -1426,6 +1426,11 @@ func (in *ComputeHealthCheckSpec) DeepCopyInto(out *ComputeHealthCheckSpec) {
 		*out = new(HealthCheckLogConfig)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.SourceRegions != nil {
+		in, out := &in.SourceRegions, &out.SourceRegions
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	if in.SSLHealthCheck != nil {
 		in, out := &in.SSLHealthCheck, &out.SSLHealthCheck
 		*out = new(HealthCheckSSLHealthCheck)
