@@ -93,7 +93,7 @@ func propsToDescription(props apiextensions.JSONSchemaProps, parent FieldDescrip
 	case "boolean", "integer", "string", "number":
 		return newFieldDescription(props, parent, name, required)
 	default:
-		if props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields {
+		if (props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields) || props.Type == "" {
 			return schemalessToDescription(props, parent, name, required)
 		}
 		panic(fmt.Sprintf("unhandled type: %v", props.Type))

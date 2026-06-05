@@ -32,8 +32,7 @@ import (
 type AiplatformV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	AIPlatformModelsGetter
-	VertexAIFeatureOnlineStoresGetter
-	VertexAISpecialistPoolsGetter
+	VertexAITrainingPipelinesGetter
 }
 
 // AiplatformV1alpha1Client is used to interact with features provided by the aiplatform.cnrm.cloud.google.com group.
@@ -45,12 +44,8 @@ func (c *AiplatformV1alpha1Client) AIPlatformModels(namespace string) AIPlatform
 	return newAIPlatformModels(c, namespace)
 }
 
-func (c *AiplatformV1alpha1Client) VertexAIFeatureOnlineStores(namespace string) VertexAIFeatureOnlineStoreInterface {
-	return newVertexAIFeatureOnlineStores(c, namespace)
-}
-
-func (c *AiplatformV1alpha1Client) VertexAISpecialistPools(namespace string) VertexAISpecialistPoolInterface {
-	return newVertexAISpecialistPools(c, namespace)
+func (c *AiplatformV1alpha1Client) VertexAITrainingPipelines(namespace string) VertexAITrainingPipelineInterface {
+	return newVertexAITrainingPipelines(c, namespace)
 }
 
 // NewForConfig creates a new AiplatformV1alpha1Client for the given config.
