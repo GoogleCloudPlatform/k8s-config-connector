@@ -217,6 +217,11 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 			continue
 		}
 
+		// Skip if the KRM type belongs to a different package than the one we are generating mappers for
+		if !strings.Contains(pair.KRMType.GoPackage, "/"+goPackage+"/") {
+			continue
+		}
+
 		k := generatedFileKey{
 			GoPackage: goPackage,
 			FileName:  "mapper.generated.go",
@@ -512,11 +517,17 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 				}
 
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					krmFieldName,
-					functionName,
-					protoAccessor,
-				)
+				if krmField.Type == "apiextensionsv1.JSON" {
+					fmt.Fprintf(out, "\tif v := %s(mapCtx, in.%s); v != nil {\n", functionName, protoAccessor)
+					fmt.Fprintf(out, "\t\tout.%s = *v\n", krmFieldName)
+					fmt.Fprintf(out, "\t}\n")
+				} else {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						krmFieldName,
+						functionName,
+						protoAccessor,
+					)
+				}
 			case protoreflect.EnumKind:
 				functionName := "direct.Enum_FromProto"
 				// Not needed if we use the accessor:
@@ -811,9 +822,13 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				oneof := protoField.ContainingOneof()
 				if oneof != nil && !protoField.HasOptionalKeyword() {
-					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
+					arg := "in." + krmFieldName
+					if krmField.Type == "apiextensionsv1.JSON" {
+						arg = "&in." + krmFieldName
+					}
+					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, %s); oneof != nil {\n",
 						functionName,
-						krmFieldName,
+						arg,
 					)
 
 					oneofFieldName := ToGoFieldName(oneof.Name())
@@ -828,11 +843,19 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					protoFieldName,
-					functionName,
-					krmFieldName,
-				)
+				if krmField.Type == "apiextensionsv1.JSON" {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, &in.%s)\n",
+						protoFieldName,
+						functionName,
+						krmFieldName,
+					)
+				} else {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						protoFieldName,
+						functionName,
+						krmFieldName,
+					)
+				}
 			case protoreflect.EnumKind:
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 				functionName := "direct.Enum_ToProto"
@@ -1101,6 +1124,10 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_FromProto"
+	case "google.protobuf.Value":
+		return "direct.Value_FromProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
@@ -1135,6 +1162,10 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_ToProto"
+	case "google.protobuf.Value":
+		return "direct.Value_ToProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":

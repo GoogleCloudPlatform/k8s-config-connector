@@ -114,13 +114,13 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "Request") {
 			return "", false
 		}
-		if strings.HasSuffix(fullName, "Response") {
+		if strings.HasSuffix(fullName, "Response") && fullName != "google.cloud.aiplatform.v1.FunctionResponse" {
 			return "", false
 		}
 		if strings.HasSuffix(fullName, "OperationMetadata") {
 			return "", false
 		}
-		if strings.HasSuffix(fullName, "Metadata") {
+		if strings.HasSuffix(fullName, "Metadata") && fullName != "google.cloud.aiplatform.v1.VideoMetadata" {
 			return "", false
 		}
 		matchedService := false

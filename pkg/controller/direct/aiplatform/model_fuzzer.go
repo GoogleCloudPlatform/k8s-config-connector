@@ -134,9 +134,12 @@ func clearUnsupportedValueFields(v *structpb.Value) {
 	if v == nil {
 		return
 	}
+	if v.Kind == nil {
+		v.Kind = &structpb.Value_NullValue{NullValue: structpb.NullValue_NULL_VALUE}
+	}
 	switch k := v.Kind.(type) {
 	case *structpb.Value_ListValue:
-		v.Kind = nil // clear list_value since KRM doesn't support recursive/nested lists in Value
+		v.Kind = &structpb.Value_NullValue{NullValue: structpb.NullValue_NULL_VALUE}
 	case *structpb.Value_StructValue:
 		if k.StructValue != nil {
 			for _, val := range k.StructValue.Fields {

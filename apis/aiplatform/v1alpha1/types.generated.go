@@ -141,7 +141,7 @@ type Examples struct {
 	//  match
 	//  [NearestNeighborSearchConfig](https://cloud.google.com/vertex-ai/docs/explainable-ai/configuring-explanations-example-based#nearest-neighbor-search-config).
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.nearest_neighbor_search_config
-	NearestNeighborSearchConfig *Value `json:"nearestNeighborSearchConfig,omitempty"`
+	NearestNeighborSearchConfig apiextensionsv1.JSON `json:"nearestNeighborSearchConfig,omitempty"`
 
 	// Simplified preset configuration, which automatically sets configuration
 	//  values based on the desired query speed-precision trade-off and modality.
@@ -197,7 +197,7 @@ type ExplanationMetadata_InputMetadata struct {
 	//  [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
 	//  [instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri].
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata.input_baselines
-	InputBaselines []Value `json:"inputBaselines,omitempty"`
+	InputBaselines []apiextensionsv1.JSON `json:"inputBaselines,omitempty"`
 
 	// Name of the input tensor for this feature. Required and is only
 	//  applicable to Vertex AI-provided images for Tensorflow.
@@ -258,7 +258,7 @@ type ExplanationMetadata_InputMetadata struct {
 	//  If a scalar is provided, Vertex AI broadcasts to the same shape as the
 	//  encoded tensor.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata.encoded_baselines
-	EncodedBaselines []Value `json:"encodedBaselines,omitempty"`
+	EncodedBaselines []apiextensionsv1.JSON `json:"encodedBaselines,omitempty"`
 
 	// Visualization configurations for image explanation.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata.visualization
@@ -364,7 +364,7 @@ type ExplanationMetadata_OutputMetadata struct {
 	//  is populated by locating in the mapping with
 	//  [Attribution.output_index][google.cloud.aiplatform.v1.Attribution.output_index].
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationMetadata.OutputMetadata.index_display_name_mapping
-	IndexDisplayNameMapping *Value `json:"indexDisplayNameMapping,omitempty"`
+	IndexDisplayNameMapping apiextensionsv1.JSON `json:"indexDisplayNameMapping,omitempty"`
 
 	// Specify a field name in the prediction to look for the display name.
 	//
@@ -435,7 +435,7 @@ type ExplanationParameters struct {
 	//  Only applicable to Models that predict multiple outputs (e,g, multi-class
 	//  Models that predict multiple classes).
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationParameters.output_indices
-	OutputIndices *ListValue `json:"outputIndices,omitempty"`
+	OutputIndices apiextensionsv1.JSON `json:"outputIndices,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.ExplanationSpec
@@ -1340,40 +1340,6 @@ type XraiAttribution struct {
 	//  https://arxiv.org/abs/2004.03383
 	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
-}
-
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
-}
-
-// +kcc:proto=google.protobuf.Value
-type Value struct {
-	// Represents a null value.
-	// +kcc:proto:field=google.protobuf.Value.null_value
-	NullValue *string `json:"nullValue,omitempty"`
-
-	// Represents a double value.
-	// +kcc:proto:field=google.protobuf.Value.number_value
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	// Represents a string value.
-	// +kcc:proto:field=google.protobuf.Value.string_value
-	StringValue *string `json:"stringValue,omitempty"`
-
-	// Represents a boolean value.
-	// +kcc:proto:field=google.protobuf.Value.bool_value
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	// Represents a structured value.
-	// +kcc:proto:field=google.protobuf.Value.struct_value
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-
-	// Represents a repeated `Value`.
-	// +kcc:proto:field=google.protobuf.Value.list_value
-	ListValue *ListValue `json:"listValue,omitempty"`
 }
 
 /* unreachable type Model_ExportFormatObservedState
