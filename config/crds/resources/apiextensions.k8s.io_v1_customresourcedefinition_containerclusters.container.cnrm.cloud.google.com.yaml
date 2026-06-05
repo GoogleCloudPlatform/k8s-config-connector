@@ -470,6 +470,10 @@ spec:
                   configuration can''t be changed (or added/removed) after cluster
                   creation without deleting and recreating the entire cluster.'
                 properties:
+                  confidentialInstanceType:
+                    description: Immutable. Defines the type of technology used by
+                      the confidential node.
+                    type: string
                   enabled:
                     description: Immutable. Whether Confidential Nodes feature is
                       enabled for all nodes in this pool.
@@ -1123,6 +1127,10 @@ spec:
                       This configuration can''t be changed (or added/removed) after
                       pool creation without deleting and recreating the entire pool.'
                     properties:
+                      confidentialInstanceType:
+                        description: Immutable. Defines the type of technology used
+                          by the confidential node.
+                        type: string
                       enabled:
                         description: Immutable. Whether Confidential Nodes feature
                           is enabled for all nodes in this pool.

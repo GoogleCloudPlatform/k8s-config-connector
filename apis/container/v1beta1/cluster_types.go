@@ -261,6 +261,10 @@ type ConfidentialNodes struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.ConfidentialNodes.enabled
 	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Immutable. Defines the type of technology used by the confidential node. */
+	// +kcc:proto:field=google.container.v1.ConfidentialNodes.confidentialInstanceType
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ConfigConnectorConfig

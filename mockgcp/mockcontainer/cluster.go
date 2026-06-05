@@ -486,9 +486,23 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		hasDefaultPool = true
 	}
 
+	if obj.ConfidentialNodes != nil {
+		if obj.ConfidentialNodes.Enabled &&
+			obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
+	}
+
 	if hasDefaultPool {
 		if obj.NodeConfig == nil {
 			obj.NodeConfig = &pb.NodeConfig{}
+		}
+		if obj.ConfidentialNodes != nil && obj.ConfidentialNodes.Enabled {
+			if obj.NodeConfig.ConfidentialNodes == nil {
+				obj.NodeConfig.ConfidentialNodes = &pb.ConfidentialNodes{}
+			}
+			obj.NodeConfig.ConfidentialNodes.Enabled = true
+			obj.NodeConfig.ConfidentialNodes.ConfidentialInstanceType = obj.ConfidentialNodes.ConfidentialInstanceType
 		}
 		if err := s.populateNodeConfig(obj.NodeConfig); err != nil {
 			return err
