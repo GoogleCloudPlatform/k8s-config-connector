@@ -151,6 +151,16 @@
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceURI" is not set in unstructured objects
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.sloRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.enumValues.values[].description" is not set in unstructured objects
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.enumValues.values[].displayName" is not set in unstructured objects
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.enumValues.values[].id" is not set in unstructured objects
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.enumValues.values[].immutable" is not set in unstructured objects
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.jsonValues.values[]" is not set in unstructured objects
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.stringValues.values[]" is not set in unstructured objects
 [missing_field] crd=apihubruntimeprojectattachments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=apihubruntimeprojectattachments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubruntimeprojectattachments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeProjectRef" is not set; neither 'external' nor 'name' are set

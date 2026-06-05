@@ -33,6 +33,7 @@ type ApihubV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	APIHubAPIsGetter
 	APIHubDeploymentsGetter
+	APIHubPluginsGetter
 	APIHubRuntimeProjectAttachmentsGetter
 }
 
@@ -47,6 +48,10 @@ func (c *ApihubV1alpha1Client) APIHubAPIs(namespace string) APIHubAPIInterface {
 
 func (c *ApihubV1alpha1Client) APIHubDeployments(namespace string) APIHubDeploymentInterface {
 	return newAPIHubDeployments(c, namespace)
+}
+
+func (c *ApihubV1alpha1Client) APIHubPlugins(namespace string) APIHubPluginInterface {
+	return newAPIHubPlugins(c, namespace)
 }
 
 func (c *ApihubV1alpha1Client) APIHubRuntimeProjectAttachments(namespace string) APIHubRuntimeProjectAttachmentInterface {
