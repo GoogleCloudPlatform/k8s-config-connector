@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package bigqueryanalyticshub
+package bigqueryanalyticshublisting
 
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigquery/analyticshub/apiv1"
@@ -35,7 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -82,9 +82,17 @@ func (m *modelListing) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, err
 	}
 
-	if err := resolveOptionalReferences(ctx, reader, obj); err != nil {
-		return nil, err
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
+
+	desired := &bigqueryanalyticshubpb.Listing{}
+	mapCtx := &direct.MapContext{}
+	desired = BigQueryAnalyticsHubListingSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	// Get bigqueryanalyticshub GCP client
 	gcpClient, err := m.client(ctx, id.(*krm.BigQueryAnalyticsHubListingIdentity).Project)
 	if err != nil {
@@ -93,28 +101,8 @@ func (m *modelListing) AdapterForObject(ctx context.Context, op *directbase.Adap
 	return &ListingAdapter{
 		id:        id.(*krm.BigQueryAnalyticsHubListingIdentity),
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
-}
-
-func resolveOptionalReferences(ctx context.Context, reader client.Reader, obj *krm.BigQueryAnalyticsHubListing) error {
-	if obj.Spec.Source != nil && obj.Spec.Source.BigQueryDatasetSource != nil {
-		if ref := obj.Spec.Source.BigQueryDatasetSource.DatasetRef; ref != nil {
-			if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-				return err
-			}
-
-			for _, selectedResource := range obj.Spec.Source.BigQueryDatasetSource.SelectedResources {
-				if ref := selectedResource.TableRef; ref != nil {
-					if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-						return err
-					}
-				}
-			}
-		}
-	}
-
-	return nil
 }
 
 func (m *modelListing) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -125,7 +113,7 @@ func (m *modelListing) AdapterForURL(ctx context.Context, url string) (directbas
 type ListingAdapter struct {
 	id        *krm.BigQueryAnalyticsHubListingIdentity
 	gcpClient *gcp.Client
-	desired   *krm.BigQueryAnalyticsHubListing
+	desired   *bigqueryanalyticshubpb.Listing
 	actual    *bigqueryanalyticshubpb.Listing
 }
 
@@ -151,19 +139,12 @@ func (a *ListingAdapter) Find(ctx context.Context) (bool, error) {
 func (a *ListingAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Listing", "name", a.id.String())
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := BigQueryAnalyticsHubListingSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	parent := fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s", a.id.Project, a.id.Location, a.id.DataExchange)
 	req := &bigqueryanalyticshubpb.CreateListingRequest{
 		Parent:    parent,
-		Listing:   resource,
-		ListingId: a.desired.GetName(),
+		Listing:   a.desired,
+		ListingId: a.id.Listing,
 	}
 	created, err := a.gcpClient.CreateListing(ctx, req)
 	if err != nil {
@@ -172,109 +153,53 @@ func (a *ListingAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	log.V(2).Info("successfully created Listing", "name", a.id.String())
 
-	status := &krm.BigQueryAnalyticsHubListingStatus{}
-	status.ObservedState = BigQueryAnalyticsHubListingObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	return a.updateStatus(ctx, createOp, created)
+}
+
+func compareListing(ctx context.Context, actual, desired *bigqueryanalyticshubpb.Listing) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	var maskedActual *bigqueryanalyticshubpb.Listing
+	{
+		mapCtx := &direct.MapContext{}
+		spec := BigQueryAnalyticsHubListingSpec_FromProto(mapCtx, actual)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
+		maskedActual = BigQueryAnalyticsHubListingSpec_ToProto(mapCtx, spec)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
 	}
-	externalRef := a.id.String()
-	status.ExternalRef = &externalRef
-	return createOp.UpdateStatus(ctx, status, nil)
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
 }
 
 func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Listing", "name", a.id.String())
-	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := BigQueryAnalyticsHubListingSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	diffs, updateMask, err := compareListing(ctx, a.actual, a.desired)
+	if err != nil {
+		return fmt.Errorf("comparing Listing %s: %w", a.id.String(), err)
 	}
 
-	resource.Name = a.id.String()
-
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-
-	updateMask := &fieldmaskpb.FieldMask{}
-	if a.desired.Spec.DisplayName != nil && !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-		report.AddField("display_name", a.actual.DisplayName, a.desired.Spec.DisplayName)
-		updateMask.Paths = append(updateMask.Paths, "display_name")
-	}
-	if a.desired.Spec.Description != nil && !reflect.DeepEqual(a.desired.Spec.Description, a.actual.Description) {
-		report.AddField("description", a.actual.Description, a.desired.Spec.Description)
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
-	if a.desired.Spec.PrimaryContact != nil && !reflect.DeepEqual(a.desired.Spec.PrimaryContact, a.actual.PrimaryContact) {
-		report.AddField("primary_contact", a.actual.PrimaryContact, a.desired.Spec.PrimaryContact)
-		updateMask.Paths = append(updateMask.Paths, "primary_contact")
-	}
-	if a.desired.Spec.Documentation != nil && !reflect.DeepEqual(a.desired.Spec.Documentation, a.actual.Documentation) {
-		report.AddField("documentation", a.actual.Documentation, a.desired.Spec.Documentation)
-		updateMask.Paths = append(updateMask.Paths, "documentation")
-	}
-	if a.desired.Spec.DiscoveryType != nil && !reflect.DeepEqual(a.desired.Spec.DiscoveryType, a.actual.DiscoveryType.String()) {
-		report.AddField("discovery_type", a.actual.DiscoveryType.String(), a.desired.Spec.DiscoveryType)
-		updateMask.Paths = append(updateMask.Paths, "discovery_type")
-	}
-	if a.desired.Spec.RequestAccess != nil && reflect.DeepEqual(a.desired.Spec.RequestAccess, a.actual.RequestAccess) {
-		report.AddField("request_access", a.actual.RequestAccess, a.desired.Spec.RequestAccess)
-		updateMask.Paths = append(updateMask.Paths, "request_access")
-	}
-
-	// NOT YET
-	// if a.desired.Spec.Icon != nil && !reflect.DeepEqual(a.desired.Spec.Icon, a.actual.Icon) {
-	// 	updateMask.Paths = append(updateMask.Paths, "icon")
-	// }
-	if a.desired.Spec.DataProvider != nil {
-		mapCtx := &direct.MapContext{}
-		toProto := DataProvider_ToProto(mapCtx, a.desired.Spec.DataProvider)
-		if mapCtx.Err() != nil {
-			return fmt.Errorf("converting data provider: %w", mapCtx.Err())
-		}
-
-		if !reflect.DeepEqual(toProto, a.actual.DataProvider) {
-			report.AddField("data_provider", a.actual.DataProvider, toProto)
-			updateMask.Paths = append(updateMask.Paths, "data_provider")
-		}
-	}
-
-	if a.desired.Spec.Publisher != nil {
-		mapCtx := &direct.MapContext{}
-		toProto := Publisher_ToProto(mapCtx, a.desired.Spec.Publisher)
-		if mapCtx.Err() != nil {
-			return fmt.Errorf("converting publisher: %w", mapCtx.Err())
-		}
-
-		if !reflect.DeepEqual(toProto, a.actual.Publisher) {
-			report.AddField("publisher", a.actual.Publisher, toProto)
-			updateMask.Paths = append(updateMask.Paths, "publisher")
-		}
-	}
-
-	if a.desired.Spec.Categories != nil {
-		mapCtx := &direct.MapContext{}
-		toProto := Categories_ToProto(mapCtx, a.desired.Spec.Categories)
-		if mapCtx.Err() != nil {
-			return fmt.Errorf("converting categories: %w", mapCtx.Err())
-		}
-		if !reflect.DeepEqual(toProto, a.actual.Categories) {
-			report.AddField("categories", a.actual.Categories, toProto)
-			updateMask.Paths = append(updateMask.Paths, "categories")
-		}
-	}
-
-	if len(updateMask.Paths) == 0 {
+	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		return nil
 	}
 
-	structuredreporting.ReportDiff(ctx, report)
+	// Update the Name field in desired before sending
+	desiredCopy := &bigqueryanalyticshubpb.Listing{}
+	if a.desired != nil {
+		desiredCopy = a.desired
+	}
+	desiredCopy.Name = a.id.String()
 
 	req := &bigqueryanalyticshubpb.UpdateListingRequest{
 		UpdateMask: updateMask,
-		Listing:    resource,
+		Listing:    desiredCopy,
 	}
 	updated, err := a.gcpClient.UpdateListing(ctx, req)
 	if err != nil {
@@ -283,13 +208,19 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	log.V(2).Info("successfully updated Listing", "name", a.id.String())
 
+	return a.updateStatus(ctx, updateOp, updated)
+}
+
+func (a *ListingAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *bigqueryanalyticshubpb.Listing) error {
+	mapCtx := &direct.MapContext{}
 	status := &krm.BigQueryAnalyticsHubListingStatus{}
-	status.ObservedState = BigQueryAnalyticsHubListingObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BigQueryAnalyticsHubListingObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	return updateOp.UpdateStatus(ctx, status, nil)
+	externalRef := a.id.String()
+	status.ExternalRef = &externalRef
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 func (a *ListingAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
