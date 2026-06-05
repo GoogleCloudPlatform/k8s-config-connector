@@ -44,6 +44,7 @@ type streamingInformer struct {
 	resyncPeriod              time.Duration
 
 	hasSynced atomic.Bool
+	synced    chan struct{}
 	objects   objects
 }
 
@@ -125,6 +126,7 @@ func newStreamingInformer(streamingClient *StreamingClient, typeInfo *typeInfo, 
 		typeInfo:           typeInfo,
 		namespace:          namespace,
 		objectTransformers: objectTransformers,
+		synced:             make(chan struct{}),
 	}
 	s.objects = objects{
 		store: make(map[types.NamespacedName]Object),
@@ -169,7 +171,9 @@ func (i *streamingInformer) runOnce(ctx context.Context) error {
 		return err
 	}
 
-	i.hasSynced.Store(true)
+	if i.hasSynced.CompareAndSwap(false, true) {
+		close(i.synced)
+	}
 	watchListener := &watchListener{
 		objects:                   &i.objects,
 		eventHandlerRegistrations: i.eventHandlerRegistrations,
@@ -287,6 +291,34 @@ func (i *streamingInformer) AddEventHandlerWithResyncPeriod(handler toolscache.R
 	return registration, nil
 }
 
+type simpleDoneChecker struct {
+	name string
+	done <-chan struct{}
+}
+
+func (s *simpleDoneChecker) Name() string {
+	return s.name
+}
+
+func (s *simpleDoneChecker) Done() <-chan struct{} {
+	return s.done
+}
+
+func (i *streamingInformer) HasSyncedChecker() toolscache.DoneChecker {
+	return &simpleDoneChecker{
+		name: fmt.Sprintf("streamingInformer-%s/%s", i.typeInfo.gvk.Group, i.typeInfo.gvk.Kind),
+		done: i.synced,
+	}
+}
+
+func (i *streamingInformer) AddEventHandlerWithOptions(handler toolscache.ResourceEventHandler, options toolscache.HandlerOptions) (toolscache.ResourceEventHandlerRegistration, error) {
+	var resyncPeriod time.Duration
+	if options.ResyncPeriod != nil {
+		resyncPeriod = *options.ResyncPeriod
+	}
+	return i.AddEventHandlerWithResyncPeriod(handler, resyncPeriod)
+}
+
 // RemoveEventHandler removes a formerly added event handler given by
 // its registration handle.
 // This function is guaranteed to be idempotent, and thread-safe.
@@ -335,6 +367,10 @@ type eventHandlerRegistration struct {
 // events have been delivered.
 func (i *eventHandlerRegistration) HasSynced() bool {
 	return i.informer.HasSynced()
+}
+
+func (i *eventHandlerRegistration) HasSyncedChecker() toolscache.DoneChecker {
+	return i.informer.HasSyncedChecker()
 }
 
 // Get retrieves an obj for the given object key from the Kubernetes Cluster.
