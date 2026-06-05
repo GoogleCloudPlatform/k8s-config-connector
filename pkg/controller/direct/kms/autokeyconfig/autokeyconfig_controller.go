@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/kms/apiv1"
 
@@ -149,7 +150,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 
-	updated, err := a.updateAutokeyConfig(ctx, resource)
+	updated, err := a.updateAutokeyConfig(ctx, resource, updateOp)
 	if err != nil {
 		return err
 	}
@@ -165,7 +166,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
+func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig, updateOp *directbase.UpdateOperation) (*kmspb.AutokeyConfig, error) {
 	log := klog.FromContext(ctx)
 	// To populate a.actual calling a.Find()
 	isExist, err := a.Find(ctx)
@@ -175,8 +176,12 @@ func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.Autok
 	if err != nil {
 		return nil, err
 	}
+
 	updateMask := &fieldmaskpb.FieldMask{}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	if resource.KeyProject != "" && !reflect.DeepEqual(resource.KeyProject, a.actual.KeyProject) {
+		report.AddField("key_project", a.actual.KeyProject, resource.KeyProject)
 		updateMask.Paths = append(updateMask.Paths, "key_project")
 	}
 
@@ -184,6 +189,9 @@ func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.Autok
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil, nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
+
 	req := &kmspb.UpdateAutokeyConfigRequest{
 		UpdateMask:    updateMask,
 		AutokeyConfig: resource,
@@ -235,7 +243,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	// Keep only spec fields, by round-tripping through KRM
 	tempKrmAutokeyResource := AutokeyConfig_FromProto(mapCtx, a.actual)
 	resource := AutokeyConfig_ToProto(mapCtx, tempKrmAutokeyResource)
-	updated, err := a.updateAutokeyConfig(ctx, resource)
+	updated, err := a.updateAutokeyConfig(ctx, resource, nil)
 	if err != nil {
 		return false, fmt.Errorf("updating AutokeyConfig %s: %w", a.id, err)
 	}
