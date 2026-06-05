@@ -213,7 +213,8 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	structuredreporting.ReportDiff(ctx, report)
 
 	if len(paths) > 0 {
-		return fmt.Errorf("cannot update DiscoveryEngineIdentityMappingStore %q: fields changed: %v; DiscoveryEngineIdentityMappingStores are immutable after creation", a.id.String(), paths.UnsortedList())
+		log.Info("cannot update DiscoveryEngineIdentityMappingStore: fields changed, but the resource is immutable after creation", "name", a.id.String(), "changed_fields", paths.UnsortedList())
+		return nil
 	}
 
 	status := &krm.DiscoveryEngineIdentityMappingStoreStatus{}
