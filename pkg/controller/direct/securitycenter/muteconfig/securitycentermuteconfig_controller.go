@@ -17,7 +17,6 @@ package muteconfig
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 	"time"
 
@@ -31,11 +30,14 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -177,46 +179,44 @@ func (a *securityCenterMuteConfigAdapter) Update(ctx context.Context, updateOp *
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SecurityCenterMuteConfig", "name", a.id.String())
 
-	var paths []string
-	if !reflect.DeepEqual(a.desired.Spec.Description, a.actual.Description) {
-		paths = append(paths, "description")
-	}
-	if !reflect.DeepEqual(a.desired.Spec.Filter, a.actual.Filter) {
-		paths = append(paths, "filter")
-	}
-
-	actualExpiry := ""
-	if a.actual.ExpiryTime != nil {
-		actualExpiry = a.actual.ExpiryTime.AsTime().Format(time.RFC3339Nano)
-	}
-	desiredExpiry := ""
-	if a.desired.Spec.ExpiryTime != nil {
-		desiredExpiry = *a.desired.Spec.ExpiryTime
-	}
-	if desiredExpiry != actualExpiry {
-		paths = append(paths, "expiry_time")
-	}
-
-	if len(paths) == 0 {
-		return nil
-	}
-
 	mapCtx := &direct.MapContext{}
 	desiredProto := SecurityCenterMuteConfigSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredProto.Name = a.id.String()
 
-	updateMuteConfig := &securitycenterpb.MuteConfig{
-		Name:        a.id.String(),
-		Description: desiredProto.Description,
-		Filter:      desiredProto.Filter,
-		ExpiryTime:  desiredProto.ExpiryTime,
+	if a.desired.Spec.Type != nil {
+		desiredType := MuteConfigType_ToProto(a.desired.Spec.Type)
+		if desiredType != a.actual.Type {
+			return fmt.Errorf("type is immutable and cannot be updated from %s to %s", a.actual.Type, desiredType)
+		}
+	} else {
+		desiredProto.Type = a.actual.Type
 	}
 
+	paths, report, err := common.CompareProtoMessageStructuredDiff(desiredProto, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+		status := &krm.SecurityCenterMuteConfigStatus{}
+		status.ObservedState = SecurityCenterMuteConfigObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		status.ExternalRef = direct.PtrTo(a.id.String())
+		return updateOp.UpdateStatus(ctx, status, nil)
+	}
+
+	report.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, report)
+
 	req := &securitycenterpb.UpdateMuteConfigRequest{
-		MuteConfig: updateMuteConfig,
-		UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
+		MuteConfig: desiredProto,
+		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 	}
 
 	updated, err := a.gcpClient.UpdateMuteConfig(ctx, req)
