@@ -25,6 +25,7 @@ import (
 var DataflowJobGVK = GroupVersion.WithKind("DataflowJob")
 
 // DataflowJobSpec defines the desired state of DataflowJob
+// +kcc:spec:proto=google.dataflow.v1beta3.Job
 type DataflowJobSpec struct {
 	/* List of experiments that should be used by the job. An example value is ["enable_stackdriver_agent_metrics"]. */
 	// +optional
@@ -87,6 +88,7 @@ type DataflowJobSpec struct {
 }
 
 // DataflowJobStatus defines the config connector machine state of DataflowJob
+// +kcc:status:proto=google.dataflow.v1beta3.Job
 type DataflowJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataflowJob's current state. */
