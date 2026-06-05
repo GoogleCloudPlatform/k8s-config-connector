@@ -1,5 +1,13 @@
 # CloudSecurityCompliance Journal
 
+### [2026-06-05] Implementation of CloudSecurityComplianceFrameworkDeployment
+- **Context**: Scaffolded Phase 1 skeleton (types, CRD, and IdentityV2) for `CloudSecurityComplianceFrameworkDeployment` under the API group `cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1`.
+- **Problem 1**: Generating multiple resources in the same package sequentially overwrites `types.generated.go` and comments out shared types because each run only considers a single `--resource` as the root.
+- **Solution 1**: Combined both resources in a single generator invocation by supplying multiple `--resource` flags (e.g. `--resource CloudSecurityComplianceCloudControl:CloudControl --resource CloudSecurityComplianceFrameworkDeployment:FrameworkDeployment`).
+- **Problem 2**: The generated nested code inside `types.generated.go` referenced `CloudControlObservedState`, but the generator renamed/skipped it because of the existing `CloudSecurityComplianceCloudControlObservedState` mapped to the top-level resource, leading to a compilation error.
+- **Solution 2**: Added a type alias `type CloudControlObservedState = CloudSecurityComplianceCloudControlObservedState` in `frameworkdeployment_types.go` to bridge the gap and restore type safety and compiler success.
+- **Impact**: Multi-resource packages must be generated together, and custom name mappings may require manually defining type aliases for nested structs to maintain compilation soundness.
+
 ### [2026-06-03] Initial Scaffold of CloudSecurityComplianceCloudControl
 - **Context**: Implementing the Phase 1 skeleton (types, CRD, and IdentityV2) for `CloudSecurityComplianceCloudControl` under the API group `cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1`.
 - **Problem**: The pinned Google APIs SHA (`731d7f2ab6`) in `apis/git.versions` did not contain the proto files for `cloudsecuritycompliance.v1`, which was only introduced on June 2, 2026.
