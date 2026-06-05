@@ -1236,6 +1236,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-datamigration:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datamigration"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-datamigration
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-datamigration
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-dataplex:
     runs-on: ubuntu-latest
     needs: unit-tests
