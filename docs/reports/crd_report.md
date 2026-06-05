@@ -250,6 +250,7 @@
 | dialogflow.cnrm.cloud.google.com              | DialogflowFulfillment                           | True         | False       | False  | Terraform  | False       |
 | dialogflow.cnrm.cloud.google.com              | DialogflowIntent                                | True         | False       | False  | Terraform  | False       |
 | dialogflow.cnrm.cloud.google.com              | DialogflowKnowledgeBase                         | True         | False       | False  | Direct     | True        |
+| discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineConversation                     | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineDataStore                        | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineDataStoreTargetSite              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineEngine                           | True         | False       | False  | Direct     | True        |
