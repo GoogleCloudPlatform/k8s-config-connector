@@ -19,6 +19,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 func TestNilMap(t *testing.T) {
@@ -46,4 +47,55 @@ func TestNewGCPLabelsFromK8sLabelsBasicMap(t *testing.T) {
 	if !reflect.DeepEqual(result, expectedResult) {
 		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
 	}
+}
+
+func TestGCPLabels(t *testing.T) {
+	tests := []struct {
+		name     string
+		labels   map[string]string
+		expected map[string]string
+	}{
+		{
+			name:   "nil labels",
+			labels: nil,
+			expected: map[string]string{
+				"managed-by-cnrm": "true",
+			},
+		},
+		{
+			name: "basic labels with krm style filters",
+			labels: map[string]string{
+				"key1":        "val1",
+				"key2":        "val2",
+				"test.io/foo": "bar",
+			},
+			expected: map[string]string{
+				"key1":            "val1",
+				"key2":            "val2",
+				"managed-by-cnrm": "true",
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			obj := &unstructured.Unstructured{}
+			if tc.labels != nil {
+				obj.SetLabels(tc.labels)
+			}
+			got := label.GCPLabels(obj)
+			if !reflect.DeepEqual(got, tc.expected) {
+				t.Errorf("expected %v, got %v", tc.expected, got)
+			}
+		})
+	}
+
+	t.Run("nil object", func(t *testing.T) {
+		defer func() {
+			if r := recover(); r == nil {
+				t.Errorf("expected GCPLabels(nil) to panic")
+			}
+		}()
+		label.GCPLabels(nil)
+	})
 }

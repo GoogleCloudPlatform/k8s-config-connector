@@ -19,6 +19,7 @@ import (
 	"strings"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // This function should be called if the typed object has `spec.labels` field.
@@ -39,11 +40,17 @@ func ComputeLabels(u *unstructured.Unstructured) error {
 	return unstructured.SetNestedStringMap(u.Object, newLabels, "spec", "labels")
 }
 
+// Deprecated: Use GCPLabels instead.
 func NewGCPLabelsFromK8sLabels(labels map[string]string) map[string]string {
 	res := removeLabelsWithKRMPrefix(labels)
 	// Apply default label.
 	res[CnrmManagedKey] = "true"
 	return res
+}
+
+// GCPLabels computes the labels to be applied to a GCP resource, based on the KRM object.
+func GCPLabels(obj client.Object) map[string]string {
+	return NewGCPLabelsFromK8sLabels(obj.GetLabels())
 }
 
 func removeLabelsWithKRMPrefix(labels map[string]string) map[string]string {
