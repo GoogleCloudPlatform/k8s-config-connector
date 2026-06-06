@@ -194,7 +194,7 @@ func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: UpdateTime
 	// MISSING: KMSKeyName
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
-	// TODO: map type string message for field CleanupPolicies
+	out.CleanupPolicies = CleanupPolicies_FromProto(mapCtx, in.CleanupPolicies)
 	// MISSING: SizeBytes
 	// MISSING: SatisfiesPzs
 	out.CleanupPolicyDryRun = direct.LazyPtr(in.GetCleanupPolicyDryRun())
@@ -234,7 +234,7 @@ found existing non-generated mapping function "ArtifactRegistryRepositorySpec_To
 		// MISSING: UpdateTime
 		// MISSING: KMSKeyName
 		out.Mode = direct.Enum_ToProto[pb.Repository_Mode](mapCtx, in.Mode)
-		// TODO: map type string message for field CleanupPolicies
+		out.CleanupPolicies = CleanupPolicies_ToProto(mapCtx, in.CleanupPolicies)
 		// MISSING: SizeBytes
 		// MISSING: SatisfiesPzs
 		out.CleanupPolicyDryRun = direct.ValueOf(in.CleanupPolicyDryRun)
