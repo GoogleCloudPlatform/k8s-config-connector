@@ -20,6 +20,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -69,27 +70,27 @@ func BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext
 	}
 	return out
 }
-func Status_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
+func DeprecatedStatusWithDetails_v1beta1_ToProto(mapCtx *direct.MapContext, in *common.DeprecatedStatusWithDetails) *statuspb.Status {
 	if in == nil {
 		return nil
 	}
 	out := &statuspb.Status{}
 	out.Code = direct.ValueOf(in.Code)
 	out.Message = direct.ValueOf(in.Message)
-	out.Details = direct.Slice_ToProto(mapCtx, in.Details, Detail_v1beta1_ToProto)
+	out.Details = direct.Slice_ToProto(mapCtx, in.Details, DeprecatedAny_v1beta1_ToProto)
 	return out
 }
-func Status_v1beta1_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
+func DeprecatedStatusWithDetails_v1beta1_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *common.DeprecatedStatusWithDetails {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Status{}
+	out := &common.DeprecatedStatusWithDetails{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
-	out.Details = direct.Slice_FromProto(mapCtx, in.GetDetails(), Detail_v1beta1_FromProto)
+	out.Details = direct.Slice_FromProto(mapCtx, in.GetDetails(), DeprecatedAny_v1beta1_FromProto)
 	return out
 }
-func Detail_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
+func DeprecatedAny_v1beta1_ToProto(mapCtx *direct.MapContext, in *common.DeprecatedAny) *anypb.Any {
 	if in == nil {
 		return nil
 	}
@@ -98,12 +99,36 @@ func Detail_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
 	out.Value = in.Value
 	return out
 }
-func Detail_v1beta1_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krm.Any {
+func DeprecatedAny_v1beta1_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *common.DeprecatedAny {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Any{}
+	out := &common.DeprecatedAny{}
 	out.TypeURL = direct.LazyPtr(in.GetTypeUrl())
 	out.Value = in.GetValue()
+	return out
+}
+
+func RuleConfigInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krm.RuleConfigInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RuleConfigInfoObservedState{}
+	out.RuleID = direct.LazyPtr(in.GetRuleId())
+	out.LastBackupState = direct.Enum_FromProto(mapCtx, in.GetLastBackupState())
+	out.LastBackupError = DeprecatedStatusWithDetails_v1beta1_FromProto(mapCtx, in.GetLastBackupError())
+	out.LastSuccessfulBackupConsistencyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastSuccessfulBackupConsistencyTime())
+	return out
+}
+
+func RuleConfigInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuleConfigInfo{}
+	out.RuleId = direct.ValueOf(in.RuleID)
+	out.LastBackupState = direct.Enum_ToProto[pb.RuleConfigInfo_LastBackupState](mapCtx, in.LastBackupState)
+	out.LastBackupError = DeprecatedStatusWithDetails_v1beta1_ToProto(mapCtx, in.LastBackupError)
+	out.LastSuccessfulBackupConsistencyTime = direct.StringTimestamp_ToProto(mapCtx, in.LastSuccessfulBackupConsistencyTime)
 	return out
 }

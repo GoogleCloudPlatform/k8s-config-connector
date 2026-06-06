@@ -51,5 +51,9 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".cloud_sql_instance_backup_plan_association_properties")
 	f.Unimplemented_NotYetTriaged(".resource_properties")
 
+	f.Unimplemented_NotYetTriaged(".rules_config_info[].last_backup_error.details")
+	f.Unimplemented_NotYetTriaged(".rules_config_info[].last_backup_error.details[].value")
+	f.Unimplemented_NotYetTriaged(".rules_config_info[].last_backup_error.details[].type_url")
+
 	return f
 }
