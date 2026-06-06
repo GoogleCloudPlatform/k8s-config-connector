@@ -147,7 +147,7 @@ func getIdentityFromLoggingLogExclusionSpec(ctx context.Context, reader client.R
 		if err := billingIdentity.FromExternal(billingRef.External); err != nil {
 			return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
 		}
-		identity.BillingAccount = billingIdentity.BillingAccountID
+		identity.BillingAccount = billingIdentity.BillingAccount
 	} else {
 		// Fallback to project ID from namespace
 		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
