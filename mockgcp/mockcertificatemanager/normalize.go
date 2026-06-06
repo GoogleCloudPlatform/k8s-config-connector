@@ -28,8 +28,10 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 	}
 	visitor.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".response.expireTime", mockgcpregistry.PlaceholderTimestamp)
 
 	visitor.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
@@ -37,6 +39,9 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 
 	visitor.ReplacePath(".certificateIssuanceConfigs[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".certificateIssuanceConfigs[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	visitor.ReplacePath(".sanDnsnames", []string{"example.com"})
+	visitor.ReplacePath(".response.sanDnsnames", []string{"example.com"})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, visitor mockgcpregistry.NormalizingVisitor) {

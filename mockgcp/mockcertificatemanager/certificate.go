@@ -57,6 +57,10 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 	obj := proto.CloneOf(req.Certificate)
 	obj.Name = fqn
 
+	now := timestamppb.Now()
+	obj.CreateTime = now
+	obj.UpdateTime = now
+
 	if managed := obj.GetManaged(); managed != nil {
 		if managed.State == pb.Certificate_ManagedCertificate_STATE_UNSPECIFIED {
 			managed.State = pb.Certificate_ManagedCertificate_ACTIVE
@@ -66,10 +70,12 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 				Domain: domain,
 				State:  pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo_AUTHORIZED,
 			})
+			obj.SanDnsnames = append(obj.SanDnsnames, domain)
 		}
 	}
 
-	now := timestamppb.Now()
+	obj.ExpireTime = timestamppb.New(now.AsTime().AddDate(1, 0, 0))
+	obj.PemCertificate = "---BEGIN CERTIFICATE---\nMOCK CERTIFICATE\n---END CERTIFICATE---"
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -85,7 +91,6 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (proto.Message, error) {
 		result := proto.CloneOf(obj)
 		result.Labels = nil
-		lroMetadata.RequestedCancellation = false
 		return result, nil
 	})
 }
@@ -121,11 +126,14 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
 	}
+
+	now := timestamppb.Now()
+	obj.UpdateTime = now
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	now := timestamppb.Now()
 	lroMetadata := &pb.OperationMetadata{
 		ApiVersion:            "v1",
 		CreateTime:            now,
@@ -137,7 +145,6 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		result := proto.CloneOf(obj)
-		result.CreateTime = now
 		result.Labels = nil
 		return result, nil
 	})

@@ -17,6 +17,7 @@ package mockcertificatemanager
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
@@ -27,6 +28,7 @@ import (
 	"k8s.io/klog/v2"
 
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 func (s *CertificateManagerV1) GetCertificateMapEntry(ctx context.Context, req *pb.GetCertificateMapEntryRequest) (*pb.CertificateMapEntry, error) {
@@ -58,6 +60,8 @@ func (s *CertificateManagerV1) CreateCertificateMapEntry(ctx context.Context, re
 	obj.Name = fqn
 	now := timestamppb.Now()
 	obj.CreateTime = now
+	obj.UpdateTime = now
+	obj.State = pb.ServingState_ACTIVE
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -73,7 +77,6 @@ func (s *CertificateManagerV1) CreateCertificateMapEntry(ctx context.Context, re
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		result := proto.CloneOf(obj)
 		result.Labels = nil
-		lroMetadata.RequestedCancellation = false
 		return result, nil
 	})
 }
@@ -104,14 +107,23 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 			obj.Description = req.GetCertificateMapEntry().GetDescription()
 		case "labels":
 			obj.Labels = req.GetCertificateMapEntry().GetLabels()
+		case "certificates":
+			obj.Certificates = req.GetCertificateMapEntry().GetCertificates()
+		case "matcher":
+			obj.Match = req.GetCertificateMapEntry().Match
+		case "hostname":
+			obj.Match = req.GetCertificateMapEntry().Match
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
 	}
+
+	now := timestamppb.Now()
+	obj.UpdateTime = now
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	now := timestamppb.Now()
 	lroMetadata := &pb.OperationMetadata{
 		ApiVersion:            "v1",
 		CreateTime:            now,
@@ -126,6 +138,30 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 		result.Labels = nil
 		return result, nil
 	})
+}
+
+func (s *CertificateManagerV1) ListCertificateMapEntries(ctx context.Context, req *pb.ListCertificateMapEntriesRequest) (*pb.ListCertificateMapEntriesResponse, error) {
+	objs := []*pb.CertificateMapEntry{}
+	kind := (&pb.CertificateMapEntry{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
+		objs = append(objs, obj.(*pb.CertificateMapEntry))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// Filter by parent (CertificateMap)
+	filtered := []*pb.CertificateMapEntry{}
+	for _, obj := range objs {
+		if strings.HasPrefix(obj.Name, req.Parent) {
+			filtered = append(filtered, obj)
+		}
+	}
+	objs = filtered
+
+	return &pb.ListCertificateMapEntriesResponse{
+		CertificateMapEntries: objs,
+	}, nil
 }
 
 func (s *CertificateManagerV1) DeleteCertificateMapEntry(ctx context.Context, req *pb.DeleteCertificateMapEntryRequest) (*longrunning.Operation, error) {

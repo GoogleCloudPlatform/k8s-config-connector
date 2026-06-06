@@ -305,7 +305,9 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.Certificate",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "sample managed cert for kcc",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
     "managed": {
       "authorizationAttemptInfo": [
         {
@@ -328,7 +330,12 @@ X-Xss-Protection: 0
       "state": "ACTIVE"
     },
     "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
-    "scope": "EDGE_CACHE"
+    "pemCertificate": "---BEGIN CERTIFICATE---\nMOCK CERTIFICATE\n---END CERTIFICATE---",
+    "sanDnsnames": [
+      "example.com"
+    ],
+    "scope": "EDGE_CACHE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -349,7 +356,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "sample managed cert for kcc",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -377,7 +386,12 @@ X-Xss-Protection: 0
     "state": "ACTIVE"
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
-  "scope": "EDGE_CACHE"
+  "pemCertificate": "---BEGIN CERTIFICATE---\nMOCK CERTIFICATE\n---END CERTIFICATE---",
+  "sanDnsnames": [
+    "example.com"
+  ],
+  "scope": "EDGE_CACHE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -446,6 +460,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.Certificate",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "updated description of a managed cert for kcc",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
     "managed": {
       "authorizationAttemptInfo": [
         {
@@ -468,7 +483,12 @@ X-Xss-Protection: 0
       "state": "ACTIVE"
     },
     "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
-    "scope": "EDGE_CACHE"
+    "pemCertificate": "---BEGIN CERTIFICATE---\nMOCK CERTIFICATE\n---END CERTIFICATE---",
+    "sanDnsnames": [
+      "example.com"
+    ],
+    "scope": "EDGE_CACHE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -489,7 +509,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "updated description of a managed cert for kcc",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-two",
@@ -517,7 +539,12 @@ X-Xss-Protection: 0
     "state": "ACTIVE"
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
-  "scope": "EDGE_CACHE"
+  "pemCertificate": "---BEGIN CERTIFICATE---\nMOCK CERTIFICATE\n---END CERTIFICATE---",
+  "sanDnsnames": [
+    "example.com"
+  ],
+  "scope": "EDGE_CACHE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

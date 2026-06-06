@@ -92,7 +92,9 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.Certificate",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "sample managed certificate for kcc",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
     "managed": {
       "authorizationAttemptInfo": [
         {
@@ -117,7 +119,12 @@ X-Xss-Protection: 0
       "state": "ACTIVE"
     },
     "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}",
-    "scope": "ALL_REGIONS"
+    "pemCertificate": "---BEGIN CERTIFICATE---\nMOCK CERTIFICATE\n---END CERTIFICATE---",
+    "sanDnsnames": [
+      "example.com"
+    ],
+    "scope": "ALL_REGIONS",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -138,7 +145,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "sample managed certificate for kcc",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -167,7 +176,12 @@ X-Xss-Protection: 0
     "state": "ACTIVE"
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}",
-  "scope": "ALL_REGIONS"
+  "pemCertificate": "---BEGIN CERTIFICATE---\nMOCK CERTIFICATE\n---END CERTIFICATE---",
+  "sanDnsnames": [
+    "example.com"
+  ],
+  "scope": "ALL_REGIONS",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
