@@ -26,6 +26,7 @@ package apihub
 import (
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -51,6 +52,46 @@ func APIHubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AP
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Attributes
+	return out
+}
+func APIHubRuntimeProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.APIHubRuntimeProjectAttachmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubRuntimeProjectAttachmentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func APIHubRuntimeProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubRuntimeProjectAttachmentObservedState) *pb.RuntimeProjectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuntimeProjectAttachment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func APIHubRuntimeProjectAttachmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.APIHubRuntimeProjectAttachmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubRuntimeProjectAttachmentSpec{}
+	// MISSING: Name
+	if in.GetRuntimeProject() != "" {
+		out.RuntimeProjectRef = &refsv1beta1.ProjectRef{External: in.GetRuntimeProject()}
+	}
+	return out
+}
+func APIHubRuntimeProjectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubRuntimeProjectAttachmentSpec) *pb.RuntimeProjectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuntimeProjectAttachment{}
+	// MISSING: Name
+	if in.RuntimeProjectRef != nil {
+		out.RuntimeProject = in.RuntimeProjectRef.External
+	}
 	return out
 }
 func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
