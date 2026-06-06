@@ -245,6 +245,60 @@ found existing non-generated mapping function "ArtifactRegistryRepositorySpec_To
 		return out
 	}
 */
+func ArtifactRegistryRepositoryStatus_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositoryStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryStatus{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
+}
+func ArtifactRegistryRepositoryStatus_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryStatus) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
+}
 func ArtifactRegistryRepositoryUpstreamPolicy_FromProto(mapCtx *direct.MapContext, in *pb.UpstreamPolicy) *krm.ArtifactRegistryRepositoryUpstreamPolicy {
 	if in == nil {
 		return nil

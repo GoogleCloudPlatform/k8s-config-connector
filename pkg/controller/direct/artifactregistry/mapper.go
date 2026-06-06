@@ -130,27 +130,3 @@ func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.A
 	}
 	return out
 }
-
-func ArtifactRegistryRepositoryStatus_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositoryStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ArtifactRegistryRepositoryStatus{}
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Name = direct.LazyPtr(in.GetName())
-	return out
-}
-
-func ArtifactRegistryRepositoryStatus_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryStatus) *pb.Repository {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Repository{}
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	if in.Name != nil {
-		out.Name = *in.Name
-	}
-	return out
-}

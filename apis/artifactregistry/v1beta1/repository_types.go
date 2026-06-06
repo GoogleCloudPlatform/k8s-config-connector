@@ -79,6 +79,7 @@ type ArtifactRegistryRepositorySpec struct {
 	VirtualRepositoryConfig *ArtifactRegistryRepositoryVirtualRepositoryConfig `json:"virtualRepositoryConfig,omitempty"`
 }
 
+// +kcc:status:proto=google.devtools.artifactregistry.v1.Repository
 // ArtifactRegistryRepositoryStatus defines the config connector machine state of ArtifactRegistryRepository
 type ArtifactRegistryRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
