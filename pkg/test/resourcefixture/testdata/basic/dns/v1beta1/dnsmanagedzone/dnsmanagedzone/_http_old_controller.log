@@ -68,7 +68,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json&prettyPrint=false
+GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
+Content-Type: application/json
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -97,7 +98,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones?alt=json&prettyPrint=false
+POST https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones?alt=json
 Content-Type: application/json
 
 {
@@ -162,7 +163,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json&prettyPrint=false
+GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -207,18 +209,27 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json&prettyPrint=false
+PUT https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
 Content-Type: application/json
 
 {
+  "cloudLoggingConfig": {},
+  "creationTime": "2024-04-01T12:34:56.123456Z",
   "description": "Example updated DNS zone",
   "dnsName": "cnrm-dns-example-${uniqueId}.com.",
+  "id": "000000000000000000000",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "dnsmanagedzone-${uniqueId}",
+  "nameServers": [
+    "ns-cloud-a1.googledomains.com.",
+    "ns-cloud-a2.googledomains.com.",
+    "ns-cloud-a3.googledomains.com.",
+    "ns-cloud-a4.googledomains.com."
+  ],
   "privateVisibilityConfig": {
     "networks": [
       {
@@ -312,7 +323,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json&prettyPrint=false
+GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -357,7 +369,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
