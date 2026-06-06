@@ -467,13 +467,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						useSliceFromProtoFunction = ""
 					} else {
 						useSliceFromProtoFunction = ""
-						customFunc := krmFieldName + "_FromProto"
-						if v.findFuncDeclaration(customFunc, srcDir, true) != nil {
-							useCustomMethod = customFunc
-						} else {
-							fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-							continue
-						}
+						useCustomMethod = krmFieldName + "_FromProto"
 					}
 				}
 
@@ -774,13 +768,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						useSliceToProtoFunction = ""
 					} else {
 						useSliceToProtoFunction = ""
-						customFunc := krmFieldName + "_ToProto"
-						if v.findFuncDeclaration(customFunc, srcDir, true) != nil {
-							useCustomMethod = customFunc
-						} else {
-							fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-							continue
-						}
+						useCustomMethod = krmFieldName + "_ToProto"
 					}
 				}
 
