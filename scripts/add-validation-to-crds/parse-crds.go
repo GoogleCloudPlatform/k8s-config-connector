@@ -340,6 +340,18 @@ oneOf:
     - required: [folderRef]
     - required: [organizationRef]
 `
+		} else if signature == "displayName,folderRef,organizationRef,resourceID" && kind == "Folder" {
+			// Folder allows either folderRef or organizationRef (or neither).
+			// This oneOf is necessary for backwards compatibility with the existing CRD.
+			ruleYAML = `
+oneOf:
+- required: [folderRef]
+- required: [organizationRef]
+- not:
+    anyOf:
+    - required: [folderRef]
+    - required: [organizationRef]
+`
 		} else if (kind == "LoggingLogView" || kind == "LoggingLogBucket" || kind == "LoggingLogExclusion") && fieldPath == ".spec" {
 			ruleYAML = `
 oneOf:
