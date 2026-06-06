@@ -91,6 +91,7 @@ spec:
                   - storageBucketRef
                 properties:
                   bigQueryDatasetRef:
+                    description: DatasetRef is a reference to a BigQueryDataset.
                     oneOf:
                     - not:
                         required:
@@ -107,15 +108,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: string of the format `bigquery.googleapis.com/projects/{{project}}/datasets/{{value}}`,
-                          where {{value}} is the `name` field of a `BigQueryDataset`
-                          resource.'
+                        description: A reference to an externally-managed BigQueryDataset
+                          resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name of a BigQueryDataset resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace of a BigQueryDataset resource.
                         type: string
                     type: object
                   loggingLogBucketRef:
@@ -147,6 +147,7 @@ spec:
                         type: string
                     type: object
                   pubSubTopicRef:
+                    description: PubSubTopicRef is a reference to a PubSubTopic.
                     oneOf:
                     - not:
                         required:
@@ -163,17 +164,18 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: string of the format `pubsub.googleapis.com/projects/{{project}}/topics/{{value}}`,
-                          where {{value}} is the `name` field of a `PubSubTopic` resource.'
+                        description: A reference to an externally managed PubSubTopic
+                          resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name of a PubSubTopic resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace of a PubSubTopic resource.
                         type: string
                     type: object
                   storageBucketRef:
+                    description: StorageBucketRef is a reference to a StorageBucket.
                     oneOf:
                     - not:
                         required:
@@ -190,15 +192,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: string of the format `storage.googleapis.com/{{value}}`,
-                          where {{value}} is the `name` field of a `StorageBucket`
-                          resource.'
+                        description: A reference to an externally-managed StorageBucket
+                          resource.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name of a StorageBucket resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace of a StorageBucket resource.
                         type: string
                     type: object
                 type: object

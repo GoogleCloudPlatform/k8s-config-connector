@@ -44,6 +44,7 @@ type LogsinkBigqueryOptions struct {
 }
 
 type LogsinkDestination struct {
+	/* DatasetRef is a reference to a BigQueryDataset. */
 	// +optional
 	BigQueryDatasetRef *v1alpha1.ResourceRef `json:"bigQueryDatasetRef,omitempty"`
 
@@ -51,9 +52,11 @@ type LogsinkDestination struct {
 	// +optional
 	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
+	/* PubSubTopicRef is a reference to a PubSubTopic. */
 	// +optional
 	PubSubTopicRef *v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
 
+	/* StorageBucketRef is a reference to a StorageBucket. */
 	// +optional
 	StorageBucketRef *v1alpha1.ResourceRef `json:"storageBucketRef,omitempty"`
 }
