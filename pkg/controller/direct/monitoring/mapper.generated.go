@@ -20,6 +20,7 @@
 // krm.group: monitoring.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.monitoring.v3
+// proto.service: google.api
 
 package monitoring
 
@@ -27,8 +28,34 @@ import (
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	monitoredrespb "google.golang.org/genproto/googleapis/api/monitoredres"
 )
 
+/* found existing non-generated mapping function "MonitoredResource_FromProto", skipping
+func MonitoredResource_FromProto(mapCtx *direct.MapContext, in *monitoredrespb.MonitoredResource) *krm.MonitoredResource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoredResource{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Labels = in.Labels
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "MonitoredResource_ToProto", skipping
+
+	func MonitoredResource_ToProto(mapCtx *direct.MapContext, in *krm.MonitoredResource) *monitoredrespb.MonitoredResource {
+		if in == nil {
+			return nil
+		}
+		out := &monitoredrespb.MonitoredResource{}
+		out.Type = direct.ValueOf(in.Type)
+		out.Labels = in.Labels
+		return out
+	}
+*/
 func MonitoringNotificationChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krm.MonitoringNotificationChannelSpec {
 	if in == nil {
 		return nil
@@ -191,5 +218,23 @@ func MonitoringUptimeCheckConfigStatus_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: IsInternal
 	// MISSING: InternalCheckers
 	// MISSING: UserLabels
+	return out
+}
+func UptimeCheckConfig_MonitoredResource_FromProto(mapCtx *direct.MapContext, in *monitoredrespb.MonitoredResource) *krm.UptimeCheckConfig_MonitoredResource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UptimeCheckConfig_MonitoredResource{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Labels = in.Labels
+	return out
+}
+func UptimeCheckConfig_MonitoredResource_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_MonitoredResource) *monitoredrespb.MonitoredResource {
+	if in == nil {
+		return nil
+	}
+	out := &monitoredrespb.MonitoredResource{}
+	out.Type = direct.ValueOf(in.Type)
+	out.Labels = in.Labels
 	return out
 }

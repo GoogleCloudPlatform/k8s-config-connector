@@ -41,8 +41,17 @@ When defining the KRM Go type in `<kind>_types.go`, you must ensure it matches t
 - **Match Field Formats**: Ensure date/time strings have `// +kubebuilder:validation:Format=date-time` to match original formats.
 - **Keep Legacy Reconciler Labels**: You must retain existing labels such as `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"` (or `tf2crd=true` for Terraform-based resources) on the struct definition in `<kind>_types.go`. Removing these labels will prevent the corresponding legacy controllers from being registered correctly for the resource during the transition phase.
 - **Validation**: No new fields should be introduced under status (e.g. do not add `observedState` or `externalRef` yet if they weren't in the original CRD).
+- **Matching Go struct field names to Proto field names**: The mapping generator automatically matches KRM Go struct fields to Proto fields by mapping Go camel-case names to proto snake_case/camel-case field names. If a KRM field is named differently in the CRD (e.g., `filterLabels`), we can rename the Go struct field to match the proto name exactly (e.g., renaming the Go field name to `Labels` while preserving the JSON tag `json:"filterLabels,omitempty"` so that there is absolutely no schema change). This allows us to fully leverage automatic mapper generation and completely avoid writing hand-coded mappers. If the mapped type is defined in a different package (like `google.api.MonitoredResource`), we can also specify multiple services to the `--service` flag of `generate-mapper` (e.g. `--service google.monitoring.v3,google.api`) to enable automatic traversal and generation for that shared type.
 
-### 3. Verification & Acceptance Criteria
+### 3. Fuzzer Best Practices
+When writing a KRM round-trip fuzzer, do not call `f.SpecFields.Insert` or `f.UnimplementedFields.Insert` directly on sets. Instead, use the type-safe helper methods defined on the `KRMTypedFuzzer` struct:
+- Use `f.SpecField(fieldPath)` to mark a field as round-tripping to/from the Spec.
+- Use `f.StatusField(fieldPath)` to mark a field as round-tripping to/from the Status.
+- Use `f.Unimplemented_Identity(fieldPath)` for identity/URL fields like `.name`.
+- Use `f.Unimplemented_NotYetTriaged(fieldPath)` for fields that are not implemented or under development.
+- Use `f.Unimplemented_LabelsAnnotations(fieldPath)` for labels or annotations.
+
+### 4. Verification & Acceptance Criteria
 - Run `dev/tasks/diff-crds` to verify there are absolutely no unintended schema changes.
 - Since we are transitioning an existing type, we do not need a fuzzer yet. The primary acceptance criterion is "does it generate the same CRD schema".
 - Once the schema is identical, run `make ready-pr` to regenerate Go clients (and compile-check the changes, run custom linters, format the files, and regenerate static configs).

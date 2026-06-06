@@ -34,40 +34,40 @@ func monitoringUptimeCheckConfigFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	// Spec fields
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".period")
-	f.SpecFields.Insert(".timeout")
-	f.SpecFields.Insert(".content_matchers")
-	f.SpecFields.Insert(".selected_regions")
+	f.SpecField(".display_name")
+	f.SpecField(".period")
+	f.SpecField(".timeout")
+	f.SpecField(".content_matchers")
+	f.SpecField(".selected_regions")
 
 	// Resource (oneof)
-	f.SpecFields.Insert(".monitored_resource")
-	f.SpecFields.Insert(".resource_group")
+	f.SpecField(".monitored_resource")
+	f.SpecField(".resource_group")
 
 	// CheckRequestType (oneof)
-	f.SpecFields.Insert(".http_check")
-	f.SpecFields.Insert(".tcp_check")
+	f.SpecField(".http_check")
+	f.SpecField(".tcp_check")
 
 	// Unimplemented / ignored top-level fields
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".checker_type")
-	f.UnimplementedFields.Insert(".is_internal")
-	f.UnimplementedFields.Insert(".internal_checkers")
-	f.UnimplementedFields.Insert(".user_labels")
-	f.UnimplementedFields.Insert(".synthetic_monitor")
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_NotYetTriaged(".checker_type")
+	f.Unimplemented_NotYetTriaged(".is_internal")
+	f.Unimplemented_NotYetTriaged(".internal_checkers")
+	f.Unimplemented_NotYetTriaged(".user_labels")
+	f.Unimplemented_NotYetTriaged(".synthetic_monitor")
 
 	// Unimplemented nested fields in HTTPCheck
-	f.UnimplementedFields.Insert(".http_check.accepted_response_status_codes")
-	f.UnimplementedFields.Insert(".http_check.ping_config")
-	f.UnimplementedFields.Insert(".http_check.service_agent_authentication")
-	f.UnimplementedFields.Insert(".http_check.custom_content_type")
-	f.UnimplementedFields.Insert(".http_check.auth_info.password")
+	f.Unimplemented_NotYetTriaged(".http_check.accepted_response_status_codes")
+	f.Unimplemented_NotYetTriaged(".http_check.ping_config")
+	f.Unimplemented_NotYetTriaged(".http_check.service_agent_authentication")
+	f.Unimplemented_NotYetTriaged(".http_check.custom_content_type")
+	f.Unimplemented_NotYetTriaged(".http_check.auth_info.password")
 
 	// Unimplemented nested fields in TCPCheck
-	f.UnimplementedFields.Insert(".tcp_check.ping_config")
+	f.Unimplemented_NotYetTriaged(".tcp_check.ping_config")
 
 	// Unimplemented nested fields in ContentMatchers
-	f.UnimplementedFields.Insert(".content_matchers[].json_path_matcher")
+	f.Unimplemented_NotYetTriaged(".content_matchers[].json_path_matcher")
 
 	return f
 }

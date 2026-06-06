@@ -72,10 +72,11 @@ type UptimeCheckConfig_HTTPCheck struct {
 	ValidateSsl *bool `json:"validateSsl,omitempty"`
 }
 
+// +kcc:proto=google.api.MonitoredResource
 type UptimeCheckConfig_MonitoredResource struct {
 	// Immutable.
 	// +required
-	FilterLabels map[string]string `json:"filterLabels,omitempty"`
+	Labels map[string]string `json:"filterLabels,omitempty"`
 	// Immutable.
 	// +required
 	Type *string `json:"type,omitempty"`

@@ -18,28 +18,7 @@ import (
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	monitoredres "google.golang.org/genproto/googleapis/api/monitoredres"
 )
-
-func UptimeCheckConfig_MonitoredResource_FromProto(mapCtx *direct.MapContext, in *monitoredres.MonitoredResource) *krm.UptimeCheckConfig_MonitoredResource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UptimeCheckConfig_MonitoredResource{}
-	out.Type = direct.LazyPtr(in.GetType())
-	out.FilterLabels = in.GetLabels()
-	return out
-}
-
-func UptimeCheckConfig_MonitoredResource_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_MonitoredResource) *monitoredres.MonitoredResource {
-	if in == nil {
-		return nil
-	}
-	out := &monitoredres.MonitoredResource{}
-	out.Type = direct.ValueOf(in.Type)
-	out.Labels = in.FilterLabels
-	return out
-}
 
 func UptimeCheckConfig_ResourceGroup_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_ResourceGroup) *krm.UptimeCheckConfig_ResourceGroup {
 	if in == nil {
