@@ -343,32 +343,6 @@ type ModelDataStats struct {
 	ValidationDataItemsCount *int64 `json:"validationDataItemsCount,omitempty"`
 }
 
-type ModelEncodedBaselines struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-}
-
 type ModelEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
@@ -402,7 +376,7 @@ type ModelExamples struct {
 
 	/* The full configuration for the generated index, the semantics are the same as [metadata][google.cloud.aiplatform.v1.Index.metadata] and should match [NearestNeighborSearchConfig](https://cloud.google.com/vertex-ai/docs/explainable-ai/configuring-explanations-example-based#nearest-neighbor-search-config). */
 	// +optional
-	NearestNeighborSearchConfig *ModelNearestNeighborSearchConfig `json:"nearestNeighborSearchConfig,omitempty"`
+	NearestNeighborSearchConfig apiextensionsv1.JSON `json:"nearestNeighborSearchConfig,omitempty"`
 
 	/* The number of neighbors to return when querying for examples. */
 	// +optional
@@ -570,58 +544,6 @@ type ModelHttpHeaders struct {
 	Value *string `json:"value,omitempty"`
 }
 
-type ModelIndexDisplayNameMapping struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-}
-
-type ModelInputBaselines struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-}
-
 type ModelInputs struct {
 	/* Specifies the shape of the values of the input if the input is a sparse representation. Refer to Tensorflow documentation for more details: https://www.tensorflow.org/api_docs/python/tf/sparse/SparseTensor. */
 	// +optional
@@ -633,7 +555,7 @@ type ModelInputs struct {
 	If a scalar is provided, Vertex AI broadcasts to the same shape as the
 	encoded tensor. */
 	// +optional
-	EncodedBaselines []ModelEncodedBaselines `json:"encodedBaselines,omitempty"`
+	EncodedBaselines []apiextensionsv1.JSON `json:"encodedBaselines,omitempty"`
 
 	/* Encoded tensor is a transformation of the input tensor. Must be provided
 	if choosing
@@ -687,7 +609,7 @@ type ModelInputs struct {
 	[PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
 	[instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri]. */
 	// +optional
-	InputBaselines []ModelInputBaselines `json:"inputBaselines,omitempty"`
+	InputBaselines []apiextensionsv1.JSON `json:"inputBaselines,omitempty"`
 
 	/* Name of the input tensor for this feature. Required and is only applicable to Vertex AI-provided images for Tensorflow. */
 	// +optional
@@ -728,12 +650,6 @@ type ModelIntegratedGradientsAttribution struct {
 	Valid range of its value is [1, 100], inclusively. */
 	// +optional
 	StepCount *int32 `json:"stepCount,omitempty"`
-}
-
-type ModelListValue struct {
-	/* Repeated field of dynamically typed values. */
-	// +optional
-	Values []apiextensionsv1.JSON `json:"values,omitempty"`
 }
 
 type ModelLivenessProbe struct {
@@ -790,29 +706,43 @@ type ModelLivenessProbe struct {
 }
 
 type ModelMetadata struct {
-	/* Represents a boolean value. */
+	/* Points to a YAML file stored on Google Cloud Storage describing the format of the [feature attributions][google.cloud.aiplatform.v1.Attribution.feature_attributions]. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML tabular Models always have this field populated by Vertex AI. Note: The URI given on output may be different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
 	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
+	FeatureAttributionsSchemaURI *string `json:"featureAttributionsSchemaURI,omitempty"`
 
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
+	/* Required. Map from feature names to feature input metadata. Keys are the
+	name of the features. Values are the specification of the feature.
 
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
+	An empty InputMetadata is valid. It describes a text feature which has the
+	name specified as the key in
+	[ExplanationMetadata.inputs][google.cloud.aiplatform.v1.ExplanationMetadata.inputs].
+	The baseline of the empty feature is chosen by Vertex AI.
 
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
+	For Vertex AI-provided Tensorflow images, the key can be any friendly
+	name of the feature. Once specified,
+	[featureAttributions][google.cloud.aiplatform.v1.Attribution.feature_attributions]
+	are keyed by this key (if not grouped with another feature).
 
-	/* Represents a string value. */
+	For custom images, the key must match with the key in
+	[instance][google.cloud.aiplatform.v1.ExplainRequest.instances]. */
 	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
+	Inputs map[string]ModelInputs `json:"inputs,omitempty"`
 
-	/* Represents a structured value. */
+	/* Name of the source to generate embeddings for example based explanations. */
 	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+	LatentSpaceSource *string `json:"latentSpaceSource,omitempty"`
+
+	/* Required. Map from output names to output metadata.
+
+	For Vertex AI-provided Tensorflow images, keys can be any user defined
+	string that consists of any UTF-8 characters.
+
+	For custom images, keys are the name of the output field in the prediction
+	to be explained.
+
+	Currently only one key is allowed. */
+	// +optional
+	Outputs map[string]ModelOutputs `json:"outputs,omitempty"`
 }
 
 type ModelModelGardenSource struct {
@@ -829,32 +759,6 @@ type ModelModelGardenSource struct {
 	VersionID *string `json:"versionID,omitempty"`
 }
 
-type ModelNearestNeighborSearchConfig struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-}
-
 type ModelNoiseSigma struct {
 	/* The name of the input feature for which noise sigma is provided. The features are defined in [explanation metadata inputs][google.cloud.aiplatform.v1.ExplanationMetadata.inputs]. */
 	// +optional
@@ -863,12 +767,6 @@ type ModelNoiseSigma struct {
 	/* This represents the standard deviation of the Gaussian kernel that will be used to add noise to the feature prior to computing gradients. Similar to [noise_sigma][google.cloud.aiplatform.v1.SmoothGradConfig.noise_sigma] but represents the noise added to the current feature. Defaults to 0.1. */
 	// +optional
 	Sigma *float64 `json:"sigma,omitempty"`
-}
-
-type ModelOutputIndices struct {
-	/* Repeated field of dynamically typed values. */
-	// +optional
-	Values []apiextensionsv1.JSON `json:"values,omitempty"`
 }
 
 type ModelOutputs struct {
@@ -898,7 +796,7 @@ type ModelOutputs struct {
 	is populated by locating in the mapping with
 	[Attribution.output_index][google.cloud.aiplatform.v1.Attribution.output_index]. */
 	// +optional
-	IndexDisplayNameMapping *ModelIndexDisplayNameMapping `json:"indexDisplayNameMapping,omitempty"`
+	IndexDisplayNameMapping apiextensionsv1.JSON `json:"indexDisplayNameMapping,omitempty"`
 
 	/* Name of the output tensor. Required and is only applicable to Vertex AI provided images for Tensorflow. */
 	// +optional
@@ -927,7 +825,7 @@ type ModelParameters struct {
 	Only applicable to Models that predict multiple outputs (e,g, multi-class
 	Models that predict multiple classes). */
 	// +optional
-	OutputIndices *ModelOutputIndices `json:"outputIndices,omitempty"`
+	OutputIndices apiextensionsv1.JSON `json:"outputIndices,omitempty"`
 
 	/* An attribution method that approximates Shapley values for features that contribute to the label being predicted. A sampling strategy is used to approximate the value rather than considering all subsets of features. Refer to this paper for model details: https://arxiv.org/abs/1306.4265. */
 	// +optional
@@ -1224,7 +1122,7 @@ type AIPlatformModelSpec struct {
 
 	/* Immutable. An additional information about the Model; the schema of the metadata can be found in [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri]. Unset if the Model does not have any additional information. */
 	// +optional
-	Metadata *ModelMetadata `json:"metadata,omitempty"`
+	Metadata ModelMetadata `json:"metadata,omitempty"`
 
 	/* Immutable. Points to a YAML file stored on Google Cloud Storage describing additional information about the Model, that is specific to it. Unset if the Model does not have any additional information. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML Models always have this field populated by Vertex AI, if no additional metadata is needed, this field is set to an empty string. Note: The URI given on output will be immutable and probably different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
 	// +optional

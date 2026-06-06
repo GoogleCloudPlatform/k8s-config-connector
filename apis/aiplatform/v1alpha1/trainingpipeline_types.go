@@ -18,6 +18,7 @@ import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -66,7 +67,7 @@ type VertexAITrainingPipelineSpec struct {
 	//  [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]'s
 	//  `inputs`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TrainingPipeline.training_task_inputs
-	TrainingTaskInputs *Value `json:"trainingTaskInputs,omitempty"`
+	TrainingTaskInputs *apiextensionsv1.JSON `json:"trainingTaskInputs,omitempty"`
 
 	// Describes the Model that may be uploaded (via
 	//  [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel])
@@ -153,7 +154,7 @@ type VertexAITrainingPipelineObservedState struct {
 	//  [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]
 	//  contains `metadata` object.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TrainingPipeline.training_task_metadata
-	TrainingTaskMetadata *Value `json:"trainingTaskMetadata,omitempty"`
+	TrainingTaskMetadata *apiextensionsv1.JSON `json:"trainingTaskMetadata,omitempty"`
 
 	// Describes the Model that may be uploaded (via
 	//  [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel])

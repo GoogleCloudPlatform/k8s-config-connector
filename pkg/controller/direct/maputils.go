@@ -653,3 +653,27 @@ func JSON_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Value 
 	}
 	return out
 }
+
+func ListValue_FromProto(mapCtx *MapContext, in *structpb.ListValue) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := protojson.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("marshalling structpb.ListValue to JSON: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
+}
+
+func ListValue_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.ListValue {
+	if in == nil || in.Raw == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	if err := protojson.Unmarshal(in.Raw, out); err != nil {
+		mapCtx.Errorf("unmarshalling JSON to structpb.ListValue: %v", err)
+		return nil
+	}
+	return out
+}

@@ -1244,32 +1244,7 @@ spec:
                                      If a scalar is provided, Vertex AI broadcasts to the same shape as the
                                      encoded tensor.
                                   items:
-                                    properties:
-                                      boolValue:
-                                        description: Represents a boolean value.
-                                        type: boolean
-                                      listValue:
-                                        description: Represents a repeated `Value`.
-                                        properties:
-                                          values:
-                                            description: Repeated field of dynamically
-                                              typed values.
-                                            items: {}
-                                            type: array
-                                        type: object
-                                      nullValue:
-                                        description: Represents a null value.
-                                        type: string
-                                      numberValue:
-                                        description: Represents a double value.
-                                        type: number
-                                      stringValue:
-                                        description: Represents a string value.
-                                        type: string
-                                      structValue:
-                                        description: Represents a structured value.
-                                        x-kubernetes-preserve-unknown-fields: true
-                                    type: object
+                                    x-kubernetes-preserve-unknown-fields: true
                                   type: array
                                 encodedTensorName:
                                   description: |-
@@ -1357,32 +1332,7 @@ spec:
                                      [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
                                      [instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri].
                                   items:
-                                    properties:
-                                      boolValue:
-                                        description: Represents a boolean value.
-                                        type: boolean
-                                      listValue:
-                                        description: Represents a repeated `Value`.
-                                        properties:
-                                          values:
-                                            description: Repeated field of dynamically
-                                              typed values.
-                                            items: {}
-                                            type: array
-                                        type: object
-                                      nullValue:
-                                        description: Represents a null value.
-                                        type: string
-                                      numberValue:
-                                        description: Represents a double value.
-                                        type: number
-                                      stringValue:
-                                        description: Represents a string value.
-                                        type: string
-                                      structValue:
-                                        description: Represents a structured value.
-                                        x-kubernetes-preserve-unknown-fields: true
-                                    type: object
+                                    x-kubernetes-preserve-unknown-fields: true
                                   type: array
                                 inputTensorName:
                                   description: Name of the input tensor for this feature.
@@ -1498,32 +1448,7 @@ spec:
                                      [Attribution.output_display_name][google.cloud.aiplatform.v1.Attribution.output_display_name]
                                      is populated by locating in the mapping with
                                      [Attribution.output_index][google.cloud.aiplatform.v1.Attribution.output_index].
-                                  properties:
-                                    boolValue:
-                                      description: Represents a boolean value.
-                                      type: boolean
-                                    listValue:
-                                      description: Represents a repeated `Value`.
-                                      properties:
-                                        values:
-                                          description: Repeated field of dynamically
-                                            typed values.
-                                          items: {}
-                                          type: array
-                                      type: object
-                                    nullValue:
-                                      description: Represents a null value.
-                                      type: string
-                                    numberValue:
-                                      description: Represents a double value.
-                                      type: number
-                                    stringValue:
-                                      description: Represents a string value.
-                                      type: string
-                                    structValue:
-                                      description: Represents a structured value.
-                                      x-kubernetes-preserve-unknown-fields: true
-                                  type: object
+                                  x-kubernetes-preserve-unknown-fields: true
                                 outputTensorName:
                                   description: Name of the output tensor. Required
                                     and is only applicable to Vertex AI provided images
@@ -1576,32 +1501,7 @@ spec:
                                 description: The full configuration for the generated
                                   index, the semantics are the same as [metadata][google.cloud.aiplatform.v1.Index.metadata]
                                   and should match [NearestNeighborSearchConfig](https://cloud.google.com/vertex-ai/docs/explainable-ai/configuring-explanations-example-based#nearest-neighbor-search-config).
-                                properties:
-                                  boolValue:
-                                    description: Represents a boolean value.
-                                    type: boolean
-                                  listValue:
-                                    description: Represents a repeated `Value`.
-                                    properties:
-                                      values:
-                                        description: Repeated field of dynamically
-                                          typed values.
-                                        items: {}
-                                        type: array
-                                    type: object
-                                  nullValue:
-                                    description: Represents a null value.
-                                    type: string
-                                  numberValue:
-                                    description: Represents a double value.
-                                    type: number
-                                  stringValue:
-                                    description: Represents a string value.
-                                    type: string
-                                  structValue:
-                                    description: Represents a structured value.
-                                    x-kubernetes-preserve-unknown-fields: true
-                                type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               neighborCount:
                                 description: The number of neighbors to return when
                                   querying for examples.
@@ -1741,12 +1641,7 @@ spec:
 
                                Only applicable to Models that predict multiple outputs (e,g, multi-class
                                Models that predict multiple classes).
-                            properties:
-                              values:
-                                description: Repeated field of dynamically typed values.
-                                items: {}
-                                type: array
-                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
                           sampledShapleyAttribution:
                             description: 'An attribution method that approximates
                               Shapley values for features that contribute to the label
@@ -1898,31 +1793,7 @@ spec:
                     description: Immutable. An additional information about the Model;
                       the schema of the metadata can be found in [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri].
                       Unset if the Model does not have any additional information.
-                    properties:
-                      boolValue:
-                        description: Represents a boolean value.
-                        type: boolean
-                      listValue:
-                        description: Represents a repeated `Value`.
-                        properties:
-                          values:
-                            description: Repeated field of dynamically typed values.
-                            items: {}
-                            type: array
-                        type: object
-                      nullValue:
-                        description: Represents a null value.
-                        type: string
-                      numberValue:
-                        description: Represents a double value.
-                        type: number
-                      stringValue:
-                        description: Represents a string value.
-                        type: string
-                      structValue:
-                        description: Represents a structured value.
-                        x-kubernetes-preserve-unknown-fields: true
-                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
                   metadataSchemaURI:
                     description: 'Immutable. Points to a YAML file stored on Google
                       Cloud Storage describing additional information about the Model,
@@ -2094,31 +1965,7 @@ spec:
                 description: Required. The training task's parameter(s), as specified
                   in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]'s
                   `inputs`.
-                properties:
-                  boolValue:
-                    description: Represents a boolean value.
-                    type: boolean
-                  listValue:
-                    description: Represents a repeated `Value`.
-                    properties:
-                      values:
-                        description: Repeated field of dynamically typed values.
-                        items: {}
-                        type: array
-                    type: object
-                  nullValue:
-                    description: Represents a null value.
-                    type: string
-                  numberValue:
-                    description: Represents a double value.
-                    type: number
-                  stringValue:
-                    description: Represents a string value.
-                    type: string
-                  structValue:
-                    description: Represents a structured value.
-                    x-kubernetes-preserve-unknown-fields: true
-                type: object
+                x-kubernetes-preserve-unknown-fields: true
             required:
             - location
             - projectRef
@@ -2413,31 +2260,7 @@ spec:
                       this information is populated only at a best effort basis. Only
                       present if the pipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]
                       contains `metadata` object.
-                    properties:
-                      boolValue:
-                        description: Represents a boolean value.
-                        type: boolean
-                      listValue:
-                        description: Represents a repeated `Value`.
-                        properties:
-                          values:
-                            description: Repeated field of dynamically typed values.
-                            items: {}
-                            type: array
-                        type: object
-                      nullValue:
-                        description: Represents a null value.
-                        type: string
-                      numberValue:
-                        description: Represents a double value.
-                        type: number
-                      stringValue:
-                        description: Represents a string value.
-                        type: string
-                      structValue:
-                        description: Represents a structured value.
-                        x-kubernetes-preserve-unknown-fields: true
-                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
                   updateTime:
                     description: Output only. Time when the TrainingPipeline was most
                       recently updated.

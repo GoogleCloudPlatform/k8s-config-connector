@@ -359,32 +359,6 @@ type VertexaitrainingpipelineDataStats struct {
 	ValidationDataItemsCount *int64 `json:"validationDataItemsCount,omitempty"`
 }
 
-type VertexaitrainingpipelineEncodedBaselines struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *VertexaitrainingpipelineListValue `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-}
-
 type VertexaitrainingpipelineEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
@@ -418,7 +392,7 @@ type VertexaitrainingpipelineExamples struct {
 
 	/* The full configuration for the generated index, the semantics are the same as [metadata][google.cloud.aiplatform.v1.Index.metadata] and should match [NearestNeighborSearchConfig](https://cloud.google.com/vertex-ai/docs/explainable-ai/configuring-explanations-example-based#nearest-neighbor-search-config). */
 	// +optional
-	NearestNeighborSearchConfig *VertexaitrainingpipelineNearestNeighborSearchConfig `json:"nearestNeighborSearchConfig,omitempty"`
+	NearestNeighborSearchConfig apiextensionsv1.JSON `json:"nearestNeighborSearchConfig,omitempty"`
 
 	/* The number of neighbors to return when querying for examples. */
 	// +optional
@@ -620,58 +594,6 @@ type VertexaitrainingpipelineHttpHeaders struct {
 	Value *string `json:"value,omitempty"`
 }
 
-type VertexaitrainingpipelineIndexDisplayNameMapping struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *VertexaitrainingpipelineListValue `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-}
-
-type VertexaitrainingpipelineInputBaselines struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *VertexaitrainingpipelineListValue `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-}
-
 type VertexaitrainingpipelineInputDataConfig struct {
 	/* Applicable only to custom training with Datasets that have DataItems and
 	Annotations.
@@ -825,7 +747,7 @@ type VertexaitrainingpipelineInputs struct {
 	If a scalar is provided, Vertex AI broadcasts to the same shape as the
 	encoded tensor. */
 	// +optional
-	EncodedBaselines []VertexaitrainingpipelineEncodedBaselines `json:"encodedBaselines,omitempty"`
+	EncodedBaselines []apiextensionsv1.JSON `json:"encodedBaselines,omitempty"`
 
 	/* Encoded tensor is a transformation of the input tensor. Must be provided
 	if choosing
@@ -879,7 +801,7 @@ type VertexaitrainingpipelineInputs struct {
 	[PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
 	[instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri]. */
 	// +optional
-	InputBaselines []VertexaitrainingpipelineInputBaselines `json:"inputBaselines,omitempty"`
+	InputBaselines []apiextensionsv1.JSON `json:"inputBaselines,omitempty"`
 
 	/* Name of the input tensor for this feature. Required and is only applicable to Vertex AI-provided images for Tensorflow. */
 	// +optional
@@ -920,12 +842,6 @@ type VertexaitrainingpipelineIntegratedGradientsAttribution struct {
 	Valid range of its value is [1, 100], inclusively. */
 	// +optional
 	StepCount *int32 `json:"stepCount,omitempty"`
-}
-
-type VertexaitrainingpipelineListValue struct {
-	/* Repeated field of dynamically typed values. */
-	// +optional
-	Values []apiextensionsv1.JSON `json:"values,omitempty"`
 }
 
 type VertexaitrainingpipelineLivenessProbe struct {
@@ -982,29 +898,43 @@ type VertexaitrainingpipelineLivenessProbe struct {
 }
 
 type VertexaitrainingpipelineMetadata struct {
-	/* Represents a boolean value. */
+	/* Points to a YAML file stored on Google Cloud Storage describing the format of the [feature attributions][google.cloud.aiplatform.v1.Attribution.feature_attributions]. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML tabular Models always have this field populated by Vertex AI. Note: The URI given on output may be different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
 	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
+	FeatureAttributionsSchemaURI *string `json:"featureAttributionsSchemaURI,omitempty"`
 
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *VertexaitrainingpipelineListValue `json:"listValue,omitempty"`
+	/* Required. Map from feature names to feature input metadata. Keys are the
+	name of the features. Values are the specification of the feature.
 
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
+	An empty InputMetadata is valid. It describes a text feature which has the
+	name specified as the key in
+	[ExplanationMetadata.inputs][google.cloud.aiplatform.v1.ExplanationMetadata.inputs].
+	The baseline of the empty feature is chosen by Vertex AI.
 
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
+	For Vertex AI-provided Tensorflow images, the key can be any friendly
+	name of the feature. Once specified,
+	[featureAttributions][google.cloud.aiplatform.v1.Attribution.feature_attributions]
+	are keyed by this key (if not grouped with another feature).
 
-	/* Represents a string value. */
+	For custom images, the key must match with the key in
+	[instance][google.cloud.aiplatform.v1.ExplainRequest.instances]. */
 	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
+	Inputs map[string]VertexaitrainingpipelineInputs `json:"inputs,omitempty"`
 
-	/* Represents a structured value. */
+	/* Name of the source to generate embeddings for example based explanations. */
 	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+	LatentSpaceSource *string `json:"latentSpaceSource,omitempty"`
+
+	/* Required. Map from output names to output metadata.
+
+	For Vertex AI-provided Tensorflow images, keys can be any user defined
+	string that consists of any UTF-8 characters.
+
+	For custom images, keys are the name of the output field in the prediction
+	to be explained.
+
+	Currently only one key is allowed. */
+	// +optional
+	Outputs map[string]VertexaitrainingpipelineOutputs `json:"outputs,omitempty"`
 }
 
 type VertexaitrainingpipelineModelGardenSource struct {
@@ -1102,7 +1032,7 @@ type VertexaitrainingpipelineModelToUpload struct {
 
 	/* Immutable. An additional information about the Model; the schema of the metadata can be found in [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri]. Unset if the Model does not have any additional information. */
 	// +optional
-	Metadata *VertexaitrainingpipelineMetadata `json:"metadata,omitempty"`
+	Metadata VertexaitrainingpipelineMetadata `json:"metadata,omitempty"`
 
 	/* Immutable. Points to a YAML file stored on Google Cloud Storage describing additional information about the Model, that is specific to it. Unset if the Model does not have any additional information. The schema is defined as an OpenAPI 3.0.2 [Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject). AutoML Models always have this field populated by Vertex AI, if no additional metadata is needed, this field is set to an empty string. Note: The URI given on output will be immutable and probably different, including the URI scheme, than the one given on input. The output URI will point to a location where the user only has a read access. */
 	// +optional
@@ -1132,32 +1062,6 @@ type VertexaitrainingpipelineModelToUpload struct {
 	VersionDescription *string `json:"versionDescription,omitempty"`
 }
 
-type VertexaitrainingpipelineNearestNeighborSearchConfig struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *VertexaitrainingpipelineListValue `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-}
-
 type VertexaitrainingpipelineNoiseSigma struct {
 	/* The name of the input feature for which noise sigma is provided. The features are defined in [explanation metadata inputs][google.cloud.aiplatform.v1.ExplanationMetadata.inputs]. */
 	// +optional
@@ -1166,12 +1070,6 @@ type VertexaitrainingpipelineNoiseSigma struct {
 	/* This represents the standard deviation of the Gaussian kernel that will be used to add noise to the feature prior to computing gradients. Similar to [noise_sigma][google.cloud.aiplatform.v1.SmoothGradConfig.noise_sigma] but represents the noise added to the current feature. Defaults to 0.1. */
 	// +optional
 	Sigma *float64 `json:"sigma,omitempty"`
-}
-
-type VertexaitrainingpipelineOutputIndices struct {
-	/* Repeated field of dynamically typed values. */
-	// +optional
-	Values []apiextensionsv1.JSON `json:"values,omitempty"`
 }
 
 type VertexaitrainingpipelineOutputs struct {
@@ -1201,7 +1099,7 @@ type VertexaitrainingpipelineOutputs struct {
 	is populated by locating in the mapping with
 	[Attribution.output_index][google.cloud.aiplatform.v1.Attribution.output_index]. */
 	// +optional
-	IndexDisplayNameMapping *VertexaitrainingpipelineIndexDisplayNameMapping `json:"indexDisplayNameMapping,omitempty"`
+	IndexDisplayNameMapping apiextensionsv1.JSON `json:"indexDisplayNameMapping,omitempty"`
 
 	/* Name of the output tensor. Required and is only applicable to Vertex AI provided images for Tensorflow. */
 	// +optional
@@ -1230,7 +1128,7 @@ type VertexaitrainingpipelineParameters struct {
 	Only applicable to Models that predict multiple outputs (e,g, multi-class
 	Models that predict multiple classes). */
 	// +optional
-	OutputIndices *VertexaitrainingpipelineOutputIndices `json:"outputIndices,omitempty"`
+	OutputIndices apiextensionsv1.JSON `json:"outputIndices,omitempty"`
 
 	/* An attribution method that approximates Shapley values for features that contribute to the label being predicted. A sampling strategy is used to approximate the value rather than considering all subsets of features. Refer to this paper for model details: https://arxiv.org/abs/1306.4265. */
 	// +optional
@@ -1423,32 +1321,6 @@ type VertexaitrainingpipelineTimestampSplit struct {
 	ValidationFraction *float64 `json:"validationFraction,omitempty"`
 }
 
-type VertexaitrainingpipelineTrainingTaskInputs struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *VertexaitrainingpipelineListValue `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-}
-
 type VertexaitrainingpipelineVisualization struct {
 	/* Excludes attributions below the specified percentile, from the highlighted areas. Defaults to 62. */
 	// +optional
@@ -1574,7 +1446,7 @@ type VertexAITrainingPipelineSpec struct {
 
 	/* Required. The training task's parameter(s), as specified in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]'s `inputs`. */
 	// +optional
-	TrainingTaskInputs *VertexaitrainingpipelineTrainingTaskInputs `json:"trainingTaskInputs,omitempty"`
+	TrainingTaskInputs apiextensionsv1.JSON `json:"trainingTaskInputs,omitempty"`
 }
 
 type VertexaitrainingpipelineDeployedModelsStatus struct {
@@ -1595,12 +1467,6 @@ type VertexaitrainingpipelineErrorStatus struct {
 	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
 	// +optional
 	Message *string `json:"message,omitempty"`
-}
-
-type VertexaitrainingpipelineListValueStatus struct {
-	/* Repeated field of dynamically typed values. */
-	// +optional
-	Values []apiextensionsv1.JSON `json:"values,omitempty"`
 }
 
 type VertexaitrainingpipelineModelSourceInfoStatus struct {
@@ -1790,7 +1656,7 @@ type VertexaitrainingpipelineObservedStateStatus struct {
 
 	/* Output only. The metadata information as specified in the [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition]'s `metadata`. This metadata is an auxiliary runtime and final information about the training task. While the pipeline is running this information is populated only at a best effort basis. Only present if the pipeline's [training_task_definition][google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition] contains `metadata` object. */
 	// +optional
-	TrainingTaskMetadata *VertexaitrainingpipelineTrainingTaskMetadataStatus `json:"trainingTaskMetadata,omitempty"`
+	TrainingTaskMetadata apiextensionsv1.JSON `json:"trainingTaskMetadata,omitempty"`
 
 	/* Output only. Time when the TrainingPipeline was most recently updated. */
 	// +optional
@@ -1801,32 +1667,6 @@ type VertexaitrainingpipelineOriginalModelInfoStatus struct {
 }
 
 type VertexaitrainingpipelineSupportedExportFormatsStatus struct {
-}
-
-type VertexaitrainingpipelineTrainingTaskMetadataStatus struct {
-	/* Represents a boolean value. */
-	// +optional
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *VertexaitrainingpipelineListValueStatus `json:"listValue,omitempty"`
-
-	/* Represents a null value. */
-	// +optional
-	NullValue *string `json:"nullValue,omitempty"`
-
-	/* Represents a double value. */
-	// +optional
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	/* Represents a string value. */
-	// +optional
-	StringValue *string `json:"stringValue,omitempty"`
-
-	/* Represents a structured value. */
-	// +optional
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
 }
 
 type VertexAITrainingPipelineStatus struct {

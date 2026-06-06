@@ -119,7 +119,7 @@ func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Example
 	}
 	out := &krm.Examples{}
 	out.ExampleGCSSource = Examples_ExampleGCSSource_FromProto(mapCtx, in.GetExampleGcsSource())
-	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
+	out.NearestNeighborSearchConfig = direct.ValueOf(direct.JSON_FromProto(mapCtx, in.GetNearestNeighborSearchConfig()))
 	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
 	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
 	return out
@@ -132,7 +132,7 @@ func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples 
 	if oneof := Examples_ExampleGCSSource_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
 		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
 	}
-	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
+	if oneof := direct.JSON_ToProto(mapCtx, &in.NearestNeighborSearchConfig); oneof != nil {
 		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
 	}
 	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
@@ -169,7 +169,7 @@ func ExplanationParameters_FromProto(mapCtx *direct.MapContext, in *pb.Explanati
 	out.XraiAttribution = XraiAttribution_FromProto(mapCtx, in.GetXraiAttribution())
 	out.Examples = Examples_FromProto(mapCtx, in.GetExamples())
 	out.TopK = direct.LazyPtr(in.GetTopK())
-	out.OutputIndices = ListValue_FromProto(mapCtx, in.GetOutputIndices())
+	out.OutputIndices = direct.ValueOf(direct.ListValue_FromProto(mapCtx, in.GetOutputIndices()))
 	return out
 }
 func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationParameters) *pb.ExplanationParameters {
@@ -190,7 +190,7 @@ func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.Explanatio
 		out.Method = &pb.ExplanationParameters_Examples{Examples: oneof}
 	}
 	out.TopK = direct.ValueOf(in.TopK)
-	out.OutputIndices = ListValue_ToProto(mapCtx, in.OutputIndices)
+	out.OutputIndices = direct.ListValue_ToProto(mapCtx, &in.OutputIndices)
 	return out
 }
 func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpec {
@@ -863,7 +863,7 @@ func VertexAITrainingPipelineObservedState_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krm.VertexAITrainingPipelineObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.TrainingTaskMetadata = Value_FromProto(mapCtx, in.GetTrainingTaskMetadata())
+	out.TrainingTaskMetadata = direct.JSON_FromProto(mapCtx, in.GetTrainingTaskMetadata())
 	out.ModelToUpload = AIPlatformModelObservedState_FromProto(mapCtx, in.GetModelToUpload())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
@@ -879,7 +879,7 @@ func VertexAITrainingPipelineObservedState_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.TrainingPipeline{}
 	out.Name = direct.ValueOf(in.Name)
-	out.TrainingTaskMetadata = Value_ToProto(mapCtx, in.TrainingTaskMetadata)
+	out.TrainingTaskMetadata = direct.JSON_ToProto(mapCtx, in.TrainingTaskMetadata)
 	out.ModelToUpload = AIPlatformModelObservedState_ToProto(mapCtx, in.ModelToUpload)
 	out.State = direct.Enum_ToProto[pb.PipelineState](mapCtx, in.State)
 	out.Error = direct.Status_ToProto(mapCtx, in.Error)
@@ -897,7 +897,7 @@ func VertexAITrainingPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tr
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.InputDataConfig = InputDataConfig_FromProto(mapCtx, in.GetInputDataConfig())
 	out.TrainingTaskDefinition = direct.LazyPtr(in.GetTrainingTaskDefinition())
-	out.TrainingTaskInputs = Value_FromProto(mapCtx, in.GetTrainingTaskInputs())
+	out.TrainingTaskInputs = direct.JSON_FromProto(mapCtx, in.GetTrainingTaskInputs())
 	out.ModelToUpload = AIPlatformModelSpec_FromProto(mapCtx, in.GetModelToUpload())
 	out.ModelID = direct.LazyPtr(in.GetModelId())
 	out.ParentModel = direct.LazyPtr(in.GetParentModel())
@@ -913,7 +913,7 @@ func VertexAITrainingPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ver
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.InputDataConfig = InputDataConfig_ToProto(mapCtx, in.InputDataConfig)
 	out.TrainingTaskDefinition = direct.ValueOf(in.TrainingTaskDefinition)
-	out.TrainingTaskInputs = Value_ToProto(mapCtx, in.TrainingTaskInputs)
+	out.TrainingTaskInputs = direct.JSON_ToProto(mapCtx, in.TrainingTaskInputs)
 	out.ModelToUpload = AIPlatformModelSpec_ToProto(mapCtx, in.ModelToUpload)
 	out.ModelId = direct.ValueOf(in.ModelID)
 	out.ParentModel = direct.ValueOf(in.ParentModel)

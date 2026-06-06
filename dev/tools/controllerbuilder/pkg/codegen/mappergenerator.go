@@ -523,10 +523,13 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 				}
 
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				rhs := fmt.Sprintf("%s(mapCtx, in.%s)", functionName, protoAccessor)
+				if krmField.Type == "apiextensionsv1.JSON" {
+					rhs = fmt.Sprintf("direct.ValueOf(%s)", rhs)
+				}
+				fmt.Fprintf(out, "\tout.%s = %s\n",
 					krmFieldName,
-					functionName,
-					protoAccessor,
+					rhs,
 				)
 			case protoreflect.EnumKind:
 				functionName := "direct.Enum_FromProto"
@@ -820,11 +823,16 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = krmToProtoFunctionName(protoField, krmField.Name)
 				}
 
+				argName := "in." + krmFieldName
+				if krmField.Type == "apiextensionsv1.JSON" {
+					argName = "&" + argName
+				}
+
 				oneof := protoField.ContainingOneof()
 				if oneof != nil && !protoField.HasOptionalKeyword() {
-					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
+					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, %s); oneof != nil {\n",
 						functionName,
-						krmFieldName,
+						argName,
 					)
 
 					oneofFieldName := ToGoFieldName(oneof.Name())
@@ -839,10 +847,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, %s)\n",
 					protoFieldName,
 					functionName,
-					krmFieldName,
+					argName,
 				)
 			case protoreflect.EnumKind:
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
@@ -1112,6 +1120,10 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_FromProto"
+	case "google.protobuf.Value":
+		return "direct.JSON_FromProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
@@ -1146,6 +1158,10 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_ToProto"
+	case "google.protobuf.Value":
+		return "direct.JSON_ToProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":
