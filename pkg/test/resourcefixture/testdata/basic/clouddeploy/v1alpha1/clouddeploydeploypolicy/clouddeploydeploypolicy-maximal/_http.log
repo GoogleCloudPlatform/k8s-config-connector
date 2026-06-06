@@ -48,7 +48,12 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
                 "month": 12,
                 "year": 2026
               },
-              "endTime": {},
+              "endTime": {
+                "hours": 23,
+                "minutes": 59,
+                "nanos": 999,
+                "seconds": 59
+              },
               "startDate": {
                 "day": 25,
                 "month": 12,
@@ -66,7 +71,9 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
               ],
               "endTime": {
                 "hours": 23,
-                "minutes": 59
+                "minutes": 59,
+                "nanos": 999,
+                "seconds": 59
               },
               "startTime": {}
             }
@@ -78,7 +85,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "selectors": [
     {
       "deliveryPipeline": {
-        "id": "pipeline-*"
+        "id": "pipeline-*",
+        "labels": {
+          "team": "backend"
+        }
       },
       "target": {
         "id": "prod-*",
@@ -162,7 +172,12 @@ X-Xss-Protection: 0
                   "month": 12,
                   "year": 2026
                 },
-                "endTime": {},
+                "endTime": {
+                  "hours": 23,
+                  "minutes": 59,
+                  "nanos": 999,
+                  "seconds": 59
+                },
                 "startDate": {
                   "day": 25,
                   "month": 12,
@@ -180,7 +195,9 @@ X-Xss-Protection: 0
                 ],
                 "endTime": {
                   "hours": 23,
-                  "minutes": 59
+                  "minutes": 59,
+                  "nanos": 999,
+                  "seconds": 59
                 },
                 "startTime": {}
               }
@@ -192,7 +209,10 @@ X-Xss-Protection: 0
     "selectors": [
       {
         "deliveryPipeline": {
-          "id": "pipeline-*"
+          "id": "pipeline-*",
+          "labels": {
+            "team": "backend"
+          }
         },
         "target": {
           "id": "prod-*",
@@ -246,7 +266,12 @@ X-Xss-Protection: 0
                 "month": 12,
                 "year": 2026
               },
-              "endTime": {},
+              "endTime": {
+                "hours": 23,
+                "minutes": 59,
+                "nanos": 999,
+                "seconds": 59
+              },
               "startDate": {
                 "day": 25,
                 "month": 12,
@@ -264,7 +289,9 @@ X-Xss-Protection: 0
               ],
               "endTime": {
                 "hours": 23,
-                "minutes": 59
+                "minutes": 59,
+                "nanos": 999,
+                "seconds": 59
               },
               "startTime": {}
             }
@@ -276,7 +303,10 @@ X-Xss-Protection: 0
   "selectors": [
     {
       "deliveryPipeline": {
-        "id": "pipeline-*"
+        "id": "pipeline-*",
+        "labels": {
+          "team": "backend"
+        }
       },
       "target": {
         "id": "prod-*",
@@ -318,7 +348,12 @@ X-Goog-Request-Params: deploy_policy.name=projects%2F${projectId}%2Flocations%2F
                 "month": 12,
                 "year": 2026
               },
-              "endTime": {},
+              "endTime": {
+                "hours": 23,
+                "minutes": 59,
+                "nanos": 999,
+                "seconds": 59
+              },
               "startDate": {
                 "day": 25,
                 "month": 12,
@@ -336,7 +371,9 @@ X-Goog-Request-Params: deploy_policy.name=projects%2F${projectId}%2Flocations%2F
               ],
               "endTime": {
                 "hours": 23,
-                "minutes": 59
+                "minutes": 59,
+                "nanos": 999,
+                "seconds": 59
               },
               "startTime": {}
             }
@@ -348,7 +385,10 @@ X-Goog-Request-Params: deploy_policy.name=projects%2F${projectId}%2Flocations%2F
   "selectors": [
     {
       "deliveryPipeline": {
-        "id": "pipeline-*"
+        "id": "pipeline-*",
+        "labels": {
+          "team": "backend"
+        }
       },
       "target": {
         "id": "prod-*",
@@ -433,7 +473,12 @@ X-Xss-Protection: 0
                   "month": 12,
                   "year": 2026
                 },
-                "endTime": {},
+                "endTime": {
+                  "hours": 23,
+                  "minutes": 59,
+                  "nanos": 999,
+                  "seconds": 59
+                },
                 "startDate": {
                   "day": 25,
                   "month": 12,
@@ -451,7 +496,9 @@ X-Xss-Protection: 0
                 ],
                 "endTime": {
                   "hours": 23,
-                  "minutes": 59
+                  "minutes": 59,
+                  "nanos": 999,
+                  "seconds": 59
                 },
                 "startTime": {}
               }
@@ -463,7 +510,10 @@ X-Xss-Protection: 0
     "selectors": [
       {
         "deliveryPipeline": {
-          "id": "pipeline-*"
+          "id": "pipeline-*",
+          "labels": {
+            "team": "backend"
+          }
         },
         "target": {
           "id": "prod-*",
@@ -518,7 +568,12 @@ X-Xss-Protection: 0
                 "month": 12,
                 "year": 2026
               },
-              "endTime": {},
+              "endTime": {
+                "hours": 23,
+                "minutes": 59,
+                "nanos": 999,
+                "seconds": 59
+              },
               "startDate": {
                 "day": 25,
                 "month": 12,
@@ -536,7 +591,9 @@ X-Xss-Protection: 0
               ],
               "endTime": {
                 "hours": 23,
-                "minutes": 59
+                "minutes": 59,
+                "nanos": 999,
+                "seconds": 59
               },
               "startTime": {}
             }
@@ -548,7 +605,10 @@ X-Xss-Protection: 0
   "selectors": [
     {
       "deliveryPipeline": {
-        "id": "pipeline-*"
+        "id": "pipeline-*",
+        "labels": {
+          "team": "backend"
+        }
       },
       "target": {
         "id": "prod-*",

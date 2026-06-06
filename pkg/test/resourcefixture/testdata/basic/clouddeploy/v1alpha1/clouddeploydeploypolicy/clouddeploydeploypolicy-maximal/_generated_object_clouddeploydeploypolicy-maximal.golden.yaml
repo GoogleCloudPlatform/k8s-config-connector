@@ -28,13 +28,19 @@ spec:
             month: 12
             year: 2026
           endTime:
-            hours: 0
+            hours: 23
+            minutes: 59
+            nanos: 999
+            seconds: 59
           startDate:
             day: 25
             month: 12
             year: 2026
           startTime:
             hours: 0
+            minutes: 0
+            nanos: 0
+            seconds: 0
         timeZone: America/New_York
         weeklyWindows:
         - daysOfWeek:
@@ -43,12 +49,18 @@ spec:
           endTime:
             hours: 23
             minutes: 59
+            nanos: 999
+            seconds: 59
           startTime:
             hours: 0
             minutes: 0
+            nanos: 0
+            seconds: 0
   selectors:
   - deliveryPipeline:
       id: pipeline-*
+      labels:
+        team: backend
     target:
       labels:
         env: prod

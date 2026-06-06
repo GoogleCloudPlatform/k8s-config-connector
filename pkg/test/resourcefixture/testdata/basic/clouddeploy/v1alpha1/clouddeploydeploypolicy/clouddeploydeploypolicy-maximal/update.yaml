@@ -16,6 +16,8 @@ spec:
         env: prod
     deliveryPipeline:
       id: "pipeline-*"
+      labels:
+        team: "backend"
   rules:
   - rolloutRestriction:
       id: "max-rollout-rule"
@@ -32,9 +34,13 @@ spec:
           startTime:
             hours: 0
             minutes: 0
+            seconds: 0
+            nanos: 0
           endTime:
             hours: 23
             minutes: 59
+            seconds: 59
+            nanos: 999
         oneTimeWindows:
         - startDate:
             year: 2026
@@ -42,9 +48,15 @@ spec:
             day: 25
           startTime:
             hours: 0
+            minutes: 0
+            seconds: 0
+            nanos: 0
           endDate:
             year: 2026
             month: 12
             day: 26
           endTime:
-            hours: 0
+            hours: 23
+            minutes: 59
+            seconds: 59
+            nanos: 999
