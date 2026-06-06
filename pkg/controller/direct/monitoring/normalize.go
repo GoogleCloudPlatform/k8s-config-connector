@@ -77,11 +77,32 @@ func normalizeWidget(ctx context.Context, projectMapper *projects.ProjectMapper,
 
 	if alertChart := widget.GetAlertChart(); alertChart != nil {
 		if alertChart.Name != "" {
-			if strings.HasPrefix(alertChart.Name, "alertPolicies/") {
+			parts := strings.Split(alertChart.Name, "/")
+			if len(parts) == 2 && parts[0] == "alertPolicies" {
 				alertChart.Name = "projects/" + dashboardProject + "/" + alertChart.Name
-			} else if strings.HasPrefix(alertChart.Name, "projects/") {
-				parts := strings.Split(alertChart.Name, "/")
-				if len(parts) >= 4 && parts[2] == "alertPolicies" {
+			} else if len(parts) >= 4 && parts[0] == "projects" && parts[2] == "alertPolicies" {
+				p1, err := projectMapper.ReplaceProjectNumberWithID(ctx, parts[1])
+				if err != nil {
+					return err
+				}
+				p2, err := projectMapper.ReplaceProjectNumberWithID(ctx, dashboardProject)
+				if err != nil {
+					return err
+				}
+				if p1 != p2 {
+					return fmt.Errorf("alertPolicy reference project %q does not match dashboard project %q", parts[1], dashboardProject)
+				}
+				parts[1] = dashboardProject
+				alertChart.Name = strings.Join(parts, "/")
+			}
+		}
+	}
+
+	if incidentList := widget.GetIncidentList(); incidentList != nil {
+		for idx, policyName := range incidentList.PolicyNames {
+			if policyName != "" {
+				parts := strings.Split(policyName, "/")
+				if len(parts) >= 4 && parts[0] == "projects" && parts[2] == "alertPolicies" {
 					p1, err := projectMapper.ReplaceProjectNumberWithID(ctx, parts[1])
 					if err != nil {
 						return err
@@ -91,34 +112,9 @@ func normalizeWidget(ctx context.Context, projectMapper *projects.ProjectMapper,
 						return err
 					}
 					if p1 != p2 {
-						return fmt.Errorf("alertPolicy reference project %q does not match dashboard project %q", parts[1], dashboardProject)
+						return fmt.Errorf("incidentList alertPolicy reference project %q does not match dashboard project %q", parts[1], dashboardProject)
 					}
-					parts[1] = dashboardProject
-					alertChart.Name = strings.Join(parts, "/")
-				}
-			}
-		}
-	}
-
-	if incidentList := widget.GetIncidentList(); incidentList != nil {
-		for idx, policyName := range incidentList.PolicyNames {
-			if policyName != "" {
-				if strings.HasPrefix(policyName, "projects/") {
-					parts := strings.Split(policyName, "/")
-					if len(parts) >= 4 && parts[2] == "alertPolicies" {
-						p1, err := projectMapper.ReplaceProjectNumberWithID(ctx, parts[1])
-						if err != nil {
-							return err
-						}
-						p2, err := projectMapper.ReplaceProjectNumberWithID(ctx, dashboardProject)
-						if err != nil {
-							return err
-						}
-						if p1 != p2 {
-							return fmt.Errorf("incidentList alertPolicy reference project %q does not match dashboard project %q", parts[1], dashboardProject)
-						}
-						incidentList.PolicyNames[idx] = strings.Join(parts[2:], "/")
-					}
+					incidentList.PolicyNames[idx] = strings.Join(parts[2:], "/")
 				}
 			}
 		}

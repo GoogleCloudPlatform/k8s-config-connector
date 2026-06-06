@@ -25,8 +25,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	monitoringprojects "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
