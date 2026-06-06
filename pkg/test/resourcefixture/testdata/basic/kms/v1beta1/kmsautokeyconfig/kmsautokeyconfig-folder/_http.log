@@ -422,6 +422,8 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "etag": "abcdef0123A=",
+  "name": "folders/${folderID}/autokeyConfig",
   "state": 3
 }
 
@@ -433,6 +435,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 {
+  "etag": "abcdef0123A=",
   "keyProject": "projects/project-${uniqueId}",
   "name": "folders/${folderID}/autokeyConfig"
 }
@@ -448,6 +451,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "etag": "abcdef0123A=",
   "keyProject": "projects/project-${uniqueId}",
   "name": "folders/${folderID}/autokeyConfig",
   "state": 1
@@ -471,6 +475,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "etag": "abcdef0123A=",
   "keyProject": "projects/project-${uniqueId}",
   "name": "folders/${folderID}/autokeyConfig",
   "state": 1
@@ -484,6 +489,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 {
+  "etag": "abcdef0123A=",
   "keyProject": "projects/project2-${uniqueId}",
   "name": "folders/${folderID}/autokeyConfig"
 }
@@ -499,6 +505,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "etag": "abcdef0123A=",
   "keyProject": "projects/project2-${uniqueId}",
   "name": "folders/${folderID}/autokeyConfig",
   "state": 1
@@ -522,9 +529,40 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "etag": "abcdef0123A=",
   "keyProject": "projects/project2-${uniqueId}",
   "name": "folders/${folderID}/autokeyConfig",
   "state": 1
+}
+
+---
+
+PATCH https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint&updateMask=keyProject%2CkeyProjectResolutionMode
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
+
+{
+  "etag": "abcdef0123A=",
+  "keyProjectResolutionMode": 3,
+  "name": "folders/${folderID}/autokeyConfig"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "keyProjectResolutionMode": 3,
+  "name": "folders/${folderID}/autokeyConfig",
+  "state": 3
 }
 
 ---
