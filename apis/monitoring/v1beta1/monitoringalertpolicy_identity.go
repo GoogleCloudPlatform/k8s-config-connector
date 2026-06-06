@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -42,6 +43,15 @@ func (i *MonitoringAlertPolicyIdentity) String() string {
 }
 
 func (i *MonitoringAlertPolicyIdentity) FromExternal(ref string) error {
+	if strings.HasPrefix(ref, "alertPolicies/") {
+		parts := strings.Split(ref, "/")
+		if len(parts) == 2 && parts[1] != "" {
+			i.Project = ""
+			i.AlertPolicy = parts[1]
+			return nil
+		}
+	}
+
 	parsed, match, err := MonitoringAlertPolicyIdentityFormat.Parse(ref)
 	if err != nil {
 		return fmt.Errorf("format of MonitoringAlertPolicy external=%q was not known (use %s): %w", ref, MonitoringAlertPolicyIdentityFormat.CanonicalForm(), err)

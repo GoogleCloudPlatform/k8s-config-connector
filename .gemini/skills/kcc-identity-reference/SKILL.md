@@ -71,9 +71,10 @@ Create or update the file to match the canonical example. Key requirements:
 ### Step 5: Verify
 
 1. **Write Unit Tests**:
-   - Write comprehensive tests for both the Identity and Reference (e.g., `_identity_test.go`, `_reference_test.go`).
-   - Use `github.com/google/go-cmp/cmp` (with the `cmp.Diff` function) when comparing multiple fields in tests.
-   - Always use the "got/want" format in case of failures (e.g. `(-want +got):\n%s`).
+   - Write comprehensive unit tests for the Identity (e.g., `<kind>_identity_test.go`).
+   - **Do NOT** create a separate `<kind>_reference_test.go` file (as it typically duplicates the parsing and formatting tests of the identity). Instead, add any validation or format test cases directly to the identity unit tests.
+   - You MUST use `github.com/google/go-cmp/cmp` (with the `cmp.Diff` function) when comparing structs or multiple fields in tests, to ensure precise, clear diff outputs on failures.
+   - Always use the standard got/want mismatch format for failures, e.g. `(-want +got):\n%s`.
 
 2. **Run Compilations and Linters**:
    - Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.

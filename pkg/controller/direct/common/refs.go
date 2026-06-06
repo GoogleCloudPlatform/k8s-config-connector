@@ -16,10 +16,7 @@ package common
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -54,39 +51,6 @@ type refNormalizer struct {
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
-	if alertChart, ok := v.(*krm.AlertChart); ok {
-		if alertChart.AlertPolicyRef != nil {
-			if r.project == nil {
-				return fmt.Errorf("must specify project for alertChart references")
-			}
-			if err := alertChart.AlertPolicyRef.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
-				return err
-			}
-			refined, err := r.RefineMonitoringAlertPolicyRefForAlertChart(alertChart.AlertPolicyRef.External)
-			if err != nil {
-				return err
-			}
-			alertChart.AlertPolicyRef.External = refined
-		}
-	}
-
-	if alertChart, ok := v.(*krm.IncidentList); ok {
-		for i := range alertChart.PolicyRefs {
-			if r.project == nil {
-				return fmt.Errorf("must specify project for policyRef references")
-			}
-			policyRef := &alertChart.PolicyRefs[i]
-			if err := policyRef.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
-				return err
-			}
-			refined, err := r.RefineMonitoringAlertPolicyRefForIncidentList(policyRef.External)
-			if err != nil {
-				return err
-			}
-			policyRef.External = refined
-		}
-	}
-
 	if projectRef, ok := v.(*refs.ProjectRef); ok {
 		if ref, err := normalizeProjectRef(r.ctx, r.kube, r.src, projectRef); err != nil {
 			return err
@@ -102,43 +66,4 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 	}
 
 	return nil
-}
-
-// RefineMonitoringAlertPolicyRefForAlertChart refine the alertPolicy format because MonitoringDashboard's AlertChart has a specific format requirement:
-// "The format is: projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]"
-func (r *refNormalizer) RefineMonitoringAlertPolicyRefForAlertChart(external string) (string, error) {
-	// External formats could be alertPolicies/{{alertPolicyId}} or projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
-	// Verify project and refine `alertPolicies/{{alertPolicyId}}` to the required format `projects/{{projectId}}/alertPolicies/{{alertPolicyId}}`
-	tokens := strings.Split(external, "/")
-	projectID := r.project.ProjectID
-	// alertPolicies/{{alertPolicyId}}
-	if len(tokens) == 2 && tokens[0] == "alertPolicies" {
-		return fmt.Sprintf("projects/%s/%s", projectID, external), nil
-	} else {
-		// projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
-		if tokens[1] != projectID {
-			return "", fmt.Errorf("resolve alertPolicy (%q) in incidentList was not in same project", external)
-		}
-	}
-	return external, nil
-}
-
-// RefineMonitoringAlertPolicyRefForIncidentList refine the alertPolicy format because MonitoringDashboard's IncidentList has a specific format requirement:
-// "Don't include the project ID prefix in the policy name. For example, use `alertPolicies/utilization`."
-func (r *refNormalizer) RefineMonitoringAlertPolicyRefForIncidentList(external string) (string, error) {
-	// External formats could be alertPolicies/{{alertPolicyId}} or projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
-	// Verify project and refine `projects/{{projectId}}/alertPolicies/{{alertPolicyId}}` to the required format `alertPolicies/{{alertPolicyId}}`
-	tokens := strings.Split(external, "/")
-	projectID := r.project.ProjectID
-	// alertPolicies/{{alertPolicyId}}
-	if len(tokens) == 2 && tokens[0] == "alertPolicies" {
-		return external, nil
-	} else {
-		// projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
-		if tokens[1] != projectID {
-			return "", fmt.Errorf("resolve alertPolicy (%q) in incidentList was not in same project", external)
-		}
-	}
-	prefix := fmt.Sprintf("projects/%s/", r.project.ProjectID)
-	return strings.TrimPrefix(external, prefix), nil
 }

@@ -270,7 +270,14 @@ func IncidentList_ToProto(mapCtx *direct.MapContext, in *krm.IncidentList) *pb.I
 	out := &pb.IncidentList{}
 	out.MonitoredResources = direct.Slice_ToProto(mapCtx, in.MonitoredResources, MonitoredResource_ToProto)
 	for _, policyRef := range in.PolicyRefs {
-		out.PolicyNames = append(out.PolicyNames, policyRef.External)
+		external := policyRef.External
+		if external != "" {
+			parts := strings.Split(external, "/")
+			if len(parts) == 4 && parts[0] == "projects" && parts[2] == "alertPolicies" {
+				external = strings.Join(parts[2:], "/")
+			}
+		}
+		out.PolicyNames = append(out.PolicyNames, external)
 	}
 	return out
 }

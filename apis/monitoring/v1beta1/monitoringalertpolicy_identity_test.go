@@ -16,6 +16,8 @@ package v1beta1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMonitoringAlertPolicyIdentity_FromExternal(t *testing.T) {
@@ -30,6 +32,14 @@ func TestMonitoringAlertPolicyIdentity_FromExternal(t *testing.T) {
 			ref:  "projects/my-project/alertPolicies/my-policy",
 			want: &MonitoringAlertPolicyIdentity{
 				Project:     "my-project",
+				AlertPolicy: "my-policy",
+			},
+		},
+		{
+			name: "relative reference",
+			ref:  "alertPolicies/my-policy",
+			want: &MonitoringAlertPolicyIdentity{
+				Project:     "",
 				AlertPolicy: "my-policy",
 			},
 		},
@@ -57,11 +67,8 @@ func TestMonitoringAlertPolicyIdentity_FromExternal(t *testing.T) {
 				return
 			}
 			if !tt.wantErr {
-				if i.Project != tt.want.Project {
-					t.Errorf("Project = %v, want %v", i.Project, tt.want.Project)
-				}
-				if i.AlertPolicy != tt.want.AlertPolicy {
-					t.Errorf("AlertPolicy = %v, want %v", i.AlertPolicy, tt.want.AlertPolicy)
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})
