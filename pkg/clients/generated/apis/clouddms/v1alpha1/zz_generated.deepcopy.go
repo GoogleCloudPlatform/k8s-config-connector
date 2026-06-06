@@ -98,6 +98,11 @@ func (in *CloudDMSConversionWorkspaceSpec) DeepCopyInto(out *CloudDMSConversionW
 		*out = new(ConversionworkspaceDestination)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.DestinationProvider != nil {
+		in, out := &in.DestinationProvider, &out.DestinationProvider
+		*out = new(string)
+		**out = **in
+	}
 	if in.DisplayName != nil {
 		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)
@@ -120,6 +125,11 @@ func (in *CloudDMSConversionWorkspaceSpec) DeepCopyInto(out *CloudDMSConversionW
 		in, out := &in.Source, &out.Source
 		*out = new(ConversionworkspaceSource)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.SourceProvider != nil {
+		in, out := &in.SourceProvider, &out.SourceProvider
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
