@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+function on_error() {
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/build-images' to fix.</hint_for_agent>"
+}
+trap on_error ERR
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+if [[ -z "${IMAGE_PREFIX:-}" ]]; then
+  IMAGE_PREFIX=""
+fi
+
+if [[ -z "${IMAGE_TAG:-}" ]]; then
+  EXACT_TAG=$(git describe --tags --exact-match 2>/dev/null || true)
+  if [[ -n "${EXACT_TAG}" ]]; then
+    IMAGE_TAG="${EXACT_TAG}"
+    # If there is a github/ prefix (as there is in our internal mirror), remove it
+    IMAGE_TAG=${IMAGE_TAG#github/}
+    # Remove the prefixed "v" if it exists
+    IMAGE_TAG=${IMAGE_TAG#v}
+  else
+    IMAGE_TAG=$(git rev-parse --short=7 HEAD)
+  fi
+fi
+export IMAGE_TAG
+echo "Building images with tag: ${IMAGE_TAG} in CI (FAST MODE)"
+
+export BUILDER_IMG=${IMAGE_PREFIX}builder:${IMAGE_TAG}
+export CONTROLLER_IMG=${IMAGE_PREFIX}controller:${IMAGE_TAG}
+export RECORDER_IMG=${IMAGE_PREFIX}recorder:${IMAGE_TAG}
+export WEBHOOK_IMG=${IMAGE_PREFIX}webhook:${IMAGE_TAG}
+export DELETION_DEFENDER_IMG=${IMAGE_PREFIX}deletiondefender:${IMAGE_TAG}
+export UNMANAGED_DETECTOR_IMG=${IMAGE_PREFIX}unmanageddetector:${IMAGE_TAG}
+export CONFIG_CONNECTOR_IMG=${IMAGE_PREFIX}config-connector-cli:${IMAGE_TAG}
+
+export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
+
+# Prepare build directories
+mkdir -p .build/bin
+mkdir -p .build/operator
+
+# 1. Compile all main binaries on the host (FAST with go build cache)
+echo "Compiling controller binaries on host..."
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
+
+# 2. Compile operator binaries on the host
+echo "Compiling operator binaries on host..."
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o .build/operator/manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o .build/operator/gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
+
+# 3. Generate third-party licenses on the host
+echo "Generating third-party licenses on host..."
+go mod vendor -o temp-vendor
+go run scripts/generate-third-party-licenses/main.go
+rm -rf temp-vendor
+
+# 4. Generate operator channels on the host
+echo "Generating operator channels on host..."
+dev/tasks/generate-channels
+
+# 5. Build and tag the builder image from the host prebuilt files
+echo "Building builder image ${BUILDER_IMG}..."
+cat <<EOF | docker build -f - -t ${BUILDER_IMG} .
+FROM golang:1.26.4
+WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
+COPY .build/bin/deletiondefender deletiondefender
+COPY .build/bin/webhook webhook
+COPY .build/bin/recorder recorder
+COPY .build/bin/unmanageddetector unmanageddetector
+COPY .build/bin/manager manager
+COPY .build/bin/config-connector config-connector
+COPY THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
+COPY MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
+EOF
+
+# 6. Build and tag the operator builder image from the host prebuilt files
+export OPERATOR_BUILDER_IMG=operator-builder:${IMAGE_TAG}
+echo "Building operator-builder image ${OPERATOR_BUILDER_IMG}..."
+cat <<EOF | docker build -f - -t ${OPERATOR_BUILDER_IMG} .
+FROM golang:1.26.4
+WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
+COPY .build/operator/manager manager
+COPY .build/operator/gke_addon_poststart gke_addon_poststart
+COPY operator/channels/ operator/channels/
+COPY operator/autopilot-channels/ operator/autopilot-channels/
+COPY THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
+COPY MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
+EOF
+
+# 7. Run the make targets to build individual final images
+echo "Building final KCC controller images..."
+make docker-build
+
+echo "Building final operator image..."
+make -C operator docker-build OPERATOR_BUILDER_IMG=${OPERATOR_BUILDER_IMG}
+
+# Clean up local images and files
+docker image rm ${BUILDER_IMG}
+docker image rm ${OPERATOR_BUILDER_IMG}
+rm -rf .build/bin .build/operator
+echo "Fast CI build of images completed successfully!"

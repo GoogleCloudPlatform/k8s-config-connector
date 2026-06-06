@@ -37,6 +37,27 @@ on:
 
 jobs:
 
+  build-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/build-images"
+        run: |
+          ./dev/ci/presubmits/build-images
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-build-images
+          path: /tmp/artifacts/
+
+
   capture-pprof:
     runs-on: ubuntu-latest
     timeout-minutes: 60

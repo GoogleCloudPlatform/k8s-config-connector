@@ -14,9 +14,10 @@
 
 # This Dockefile builds a thin image containing the manager binary
 ARG GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
+ARG OPERATOR_BUILDER_IMG=golang:1.26.4
 
 # Build the manager binary
-FROM golang:1.26.4 AS builder
+FROM ${OPERATOR_BUILDER_IMG} AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector

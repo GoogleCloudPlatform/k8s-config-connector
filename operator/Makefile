@@ -88,10 +88,12 @@ install: manifests
 uninstall: manifests
 	$(KUSTOMIZE) build config/crd | kubectl delete -f -
 
+OPERATOR_BUILDER_IMG ?= golang:1.26.4
+
 # Build the docker image
 .PHONY: docker-build
 docker-build:
-	docker build .. -f Dockerfile -t ${OPERATOR_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
+	docker build .. -f Dockerfile -t ${OPERATOR_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} --build-arg OPERATOR_BUILDER_IMG=${OPERATOR_BUILDER_IMG}
 	@echo "updating kustomize image patch file for manager"
 	cp config/manager/manager_image_patch_template.yaml config/manager/manager_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/manager/manager_image_patch.yaml
