@@ -92,6 +92,7 @@ import (
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1beta1"
+	datamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datamigration/v1alpha1"
 	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1alpha1"
 	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1alpha1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
@@ -276,6 +277,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	dataflowv1beta1.AddToScheme,
 	dataformv1beta1.AddToScheme,
 	datafusionv1beta1.AddToScheme,
+	datamigrationv1alpha1.AddToScheme,
 	dataplexv1alpha1.AddToScheme,
 	dataprocv1alpha1.AddToScheme,
 	dataprocv1beta1.AddToScheme,

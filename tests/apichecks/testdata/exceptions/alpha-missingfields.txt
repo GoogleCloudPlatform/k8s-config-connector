@@ -1028,6 +1028,14 @@
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.remediation" is not set in unstructured objects
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceUri" is not set in unstructured objects
+[missing_field] crd=databasemigrationconversionworkspaces.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.destination.engine" is not set in unstructured objects
+[missing_field] crd=databasemigrationconversionworkspaces.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.destination.version" is not set in unstructured objects
+[missing_field] crd=databasemigrationconversionworkspaces.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=databasemigrationconversionworkspaces.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.globalSettings" is not set in unstructured objects
+[missing_field] crd=databasemigrationconversionworkspaces.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=databasemigrationconversionworkspaces.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=databasemigrationconversionworkspaces.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.engine" is not set in unstructured objects
+[missing_field] crd=databasemigrationconversionworkspaces.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.version" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.businessContext.contacts.people[].designation" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.businessContext.contacts.people[].email" is not set in unstructured objects
 [missing_field] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.businessContext.entryOverview.overview" is not set in unstructured objects
