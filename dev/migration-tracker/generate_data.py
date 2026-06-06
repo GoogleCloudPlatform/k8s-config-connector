@@ -80,16 +80,6 @@ def find_direct_controllers(repo_root):
             
     return controllers, fuzzers
 
-def find_test_fixtures(repo_root):
-    test_kinds = set()
-    basic_dir = os.path.join(repo_root, 'pkg', 'test', 'resourcefixture', 'testdata', 'basic')
-    if not os.path.exists(basic_dir):
-        return test_kinds
-    for root, dirs, files in os.walk(basic_dir):
-        if 'create.yaml' in files:
-            grandparent = os.path.basename(os.path.dirname(root))
-            test_kinds.add(grandparent.lower())
-    return test_kinds
 
 def build_dependency_graph(crds_dir="../../config/crds/resources"):
     known_kinds = {}
@@ -172,7 +162,6 @@ def parse_data(config_file_path, apis_dir, crds_dir, repo_root):
     dependencies, known_kinds = build_dependency_graph(crds_dir)
     implemented_types = get_implemented_types(apis_dir)
     direct_controllers, fuzzers = find_direct_controllers(repo_root)
-    test_fixtures = find_test_fixtures(repo_root)
 
     for line in config_lines:
         line = line.strip()
@@ -223,7 +212,6 @@ def parse_data(config_file_path, apis_dir, crds_dir, repo_root):
 
             has_controller = kind in direct_controllers
             has_fuzzer = kind in fuzzers
-            has_tests = kind.lower() in test_fixtures
 
             # Update steps (merging with existing)
             res['steps']['gen-types'] = res['steps'].get('gen-types', False) or has_types
