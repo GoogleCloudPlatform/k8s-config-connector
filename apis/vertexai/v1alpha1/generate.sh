@@ -31,7 +31,8 @@ go run . generate-types \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
-    --resource VertexAIDataLabelingJob:DataLabelingJob
+    --resource VertexAIDataLabelingJob:google.cloud.aiplatform.v1.DataLabelingJob \
+    --resource VertexAIReasoningEngine:google.cloud.aiplatform.v1.ReasoningEngine
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
