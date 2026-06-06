@@ -97,3 +97,99 @@ func MonitoringNotificationChannelStatus_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: MutationRecords
 	return out
 }
+func MonitoringUptimeCheckConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig) *krm.MonitoringUptimeCheckConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringUptimeCheckConfigSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.MonitoredResource = UptimeCheckConfig_MonitoredResource_FromProto(mapCtx, in.GetMonitoredResource())
+	out.ResourceGroup = UptimeCheckConfig_ResourceGroup_FromProto(mapCtx, in.GetResourceGroup())
+	// MISSING: SyntheticMonitor
+	out.HTTPCheck = UptimeCheckConfig_HTTPCheck_FromProto(mapCtx, in.GetHttpCheck())
+	out.TCPCheck = UptimeCheckConfig_TCPCheck_FromProto(mapCtx, in.GetTcpCheck())
+	out.Period = direct.StringDuration_FromProto(mapCtx, in.GetPeriod())
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.ContentMatchers = direct.Slice_FromProto(mapCtx, in.ContentMatchers, UptimeCheckConfig_ContentMatcher_FromProto)
+	// MISSING: CheckerType
+	out.SelectedRegions = direct.EnumSlice_FromProto(mapCtx, in.SelectedRegions)
+	// MISSING: IsInternal
+	// MISSING: InternalCheckers
+	// MISSING: UserLabels
+	return out
+}
+func MonitoringUptimeCheckConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringUptimeCheckConfigSpec) *pb.UptimeCheckConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UptimeCheckConfig{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if oneof := UptimeCheckConfig_MonitoredResource_ToProto(mapCtx, in.MonitoredResource); oneof != nil {
+		out.Resource = &pb.UptimeCheckConfig_MonitoredResource{MonitoredResource: oneof}
+	}
+	if oneof := UptimeCheckConfig_ResourceGroup_ToProto(mapCtx, in.ResourceGroup); oneof != nil {
+		out.Resource = &pb.UptimeCheckConfig_ResourceGroup_{ResourceGroup: oneof}
+	}
+	// MISSING: SyntheticMonitor
+	if oneof := UptimeCheckConfig_HTTPCheck_ToProto(mapCtx, in.HTTPCheck); oneof != nil {
+		out.CheckRequestType = &pb.UptimeCheckConfig_HttpCheck_{HttpCheck: oneof}
+	}
+	if oneof := UptimeCheckConfig_TCPCheck_ToProto(mapCtx, in.TCPCheck); oneof != nil {
+		out.CheckRequestType = &pb.UptimeCheckConfig_TcpCheck_{TcpCheck: oneof}
+	}
+	out.Period = direct.StringDuration_ToProto(mapCtx, in.Period)
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.ContentMatchers = direct.Slice_ToProto(mapCtx, in.ContentMatchers, UptimeCheckConfig_ContentMatcher_ToProto)
+	// MISSING: CheckerType
+	out.SelectedRegions = direct.EnumSlice_ToProto[pb.UptimeCheckRegion](mapCtx, in.SelectedRegions)
+	// MISSING: IsInternal
+	// MISSING: InternalCheckers
+	// MISSING: UserLabels
+	return out
+}
+func MonitoringUptimeCheckConfigStatus_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig) *krm.MonitoringUptimeCheckConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringUptimeCheckConfigStatus{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: MonitoredResource
+	// MISSING: ResourceGroup
+	// MISSING: SyntheticMonitor
+	// MISSING: HTTPCheck
+	// MISSING: TCPCheck
+	// MISSING: Period
+	// MISSING: Timeout
+	// MISSING: ContentMatchers
+	// MISSING: CheckerType
+	// MISSING: SelectedRegions
+	// MISSING: IsInternal
+	// MISSING: InternalCheckers
+	// MISSING: UserLabels
+	return out
+}
+func MonitoringUptimeCheckConfigStatus_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringUptimeCheckConfigStatus) *pb.UptimeCheckConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UptimeCheckConfig{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: MonitoredResource
+	// MISSING: ResourceGroup
+	// MISSING: SyntheticMonitor
+	// MISSING: HTTPCheck
+	// MISSING: TCPCheck
+	// MISSING: Period
+	// MISSING: Timeout
+	// MISSING: ContentMatchers
+	// MISSING: CheckerType
+	// MISSING: SelectedRegions
+	// MISSING: IsInternal
+	// MISSING: InternalCheckers
+	// MISSING: UserLabels
+	return out
+}

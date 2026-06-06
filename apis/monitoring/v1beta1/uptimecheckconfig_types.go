@@ -95,6 +95,7 @@ type UptimeCheckConfig_TCPCheck struct {
 }
 
 // MonitoringUptimeCheckConfigSpec defines the desired state of MonitoringUptimeCheckConfig
+// +kcc:spec:proto=google.monitoring.v3.UptimeCheckConfig
 type MonitoringUptimeCheckConfigSpec struct {
 	// A human-friendly name for the Uptime check configuration. The display name should be unique within a Stackdriver Workspace in order to make it easier to identify; however, uniqueness is not enforced. Required.
 	// +required
@@ -134,6 +135,7 @@ type MonitoringUptimeCheckConfigSpec struct {
 }
 
 // MonitoringUptimeCheckConfigStatus defines the config connector machine state of MonitoringUptimeCheckConfig
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig
 type MonitoringUptimeCheckConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
