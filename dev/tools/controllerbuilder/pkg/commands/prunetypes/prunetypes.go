@@ -90,16 +90,21 @@ func isGeneratedFile(filePath string, file *ast.File) bool {
 }
 
 func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
-	stat, err := os.Stat(o.Target)
+	targetAbs, err := filepath.Abs(o.Target)
 	if err != nil {
-		return fmt.Errorf("stat %s: %w", o.Target, err)
+		return fmt.Errorf("getting absolute path of %s: %w", o.Target, err)
+	}
+
+	stat, err := os.Stat(targetAbs)
+	if err != nil {
+		return fmt.Errorf("stat %s: %w", targetAbs, err)
 	}
 
 	var pkgDir string
 	var targetFiles []string
 
 	if stat.IsDir() {
-		pkgDir = o.Target
+		pkgDir = targetAbs
 		entries, err := os.ReadDir(pkgDir)
 		if err != nil {
 			return fmt.Errorf("reading dir %s: %w", pkgDir, err)
@@ -117,8 +122,8 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 			return fmt.Errorf("no *.generated.go files found in %s", pkgDir)
 		}
 	} else {
-		pkgDir = filepath.Dir(o.Target)
-		targetFiles = []string{o.Target}
+		pkgDir = filepath.Dir(targetAbs)
+		targetFiles = []string{targetAbs}
 	}
 
 	cfg := &packages.Config{
@@ -135,7 +140,7 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 	pkg := pkgs[0]
 
 	fset := pkg.Fset
-	
+
 	typeToFile := make(map[*types.TypeName]string)
 	typeToDecl := make(map[*types.TypeName]*ast.GenDecl)
 	fileToTypes := make(map[string][]*types.TypeName)
@@ -145,7 +150,7 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 	// Map AST GenDecls to their TypeNames
 	for _, astFile := range pkg.Syntax {
 		filePath := fset.File(astFile.Pos()).Name()
-		
+
 		for _, decl := range astFile.Decls {
 			genDecl, ok := decl.(*ast.GenDecl)
 			if !ok || genDecl.Tok != token.TYPE {
@@ -170,7 +175,7 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 	for _, astFile := range pkg.Syntax {
 		filePath := fset.File(astFile.Pos()).Name()
 		isGen := isGeneratedFile(filePath, astFile)
-		
+
 		ast.Inspect(astFile, func(n ast.Node) bool {
 			if ident, ok := n.(*ast.Ident); ok {
 				if obj := pkg.TypesInfo.Uses[ident]; obj != nil {
