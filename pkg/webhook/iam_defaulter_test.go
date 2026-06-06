@@ -101,7 +101,7 @@ func TestDefaultAPIVersionForIAMResourceRef(t *testing.T) {
 				"name": "resource-name",
 			},
 			resourceRefNew: map[string]interface{}{
-				"apiVersion": "billing.cnrm.cloud.google.com/v1beta1",
+				"apiVersion": "billing.cnrm.cloud.google.com/v1alpha1",
 				"kind":       "BillingAccount",
 				"name":       "resource-name",
 			},
