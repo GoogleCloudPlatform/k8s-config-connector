@@ -26,8 +26,8 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &BigQueryConnectionConnectionIdentity{}
-	_ identity.Resource   = &BigQueryConnectionConnection{}
+	_ identity.ServerGeneratedIdentity = &BigQueryConnectionConnectionIdentity{}
+	_ identity.Resource                = &BigQueryConnectionConnection{}
 )
 
 var BigQueryConnectionConnectionIdentityFormat = gcpurls.Template[BigQueryConnectionConnectionIdentity]("bigqueryconnection.googleapis.com", "projects/{project}/locations/{location}/connections/{connection}")
@@ -38,6 +38,10 @@ type BigQueryConnectionConnectionIdentity struct {
 	Project    string
 	Location   string
 	Connection string
+}
+
+func (i *BigQueryConnectionConnectionIdentity) HasIdentitySpecified() bool {
+	return i.Connection != ""
 }
 
 func (i *BigQueryConnectionConnectionIdentity) String() string {
@@ -94,6 +98,10 @@ func (obj *BigQueryConnectionConnection) GetIdentity(ctx context.Context, reader
 		statusIdentity := &BigQueryConnectionConnectionIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if specIdentity.Connection == "" {
+			specIdentity.Connection = statusIdentity.Connection
 		}
 
 		if statusIdentity.String() != specIdentity.String() {

@@ -34,6 +34,11 @@ type IdentityV2 interface {
 	Host() string
 }
 
+type ServerGeneratedIdentity interface {
+	IdentityV2
+	HasIdentitySpecified() bool
+}
+
 type Resource interface {
 	// GetIdentity gets the identity of a resource.
 	GetIdentity(ctx context.Context, reader client.Reader) (Identity, error)
