@@ -67,6 +67,8 @@ func (r *MonitoringAlertPolicyRef) GetExternal() string {
 
 func (r *MonitoringAlertPolicyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *MonitoringAlertPolicyRef) ValidateExternal(ref string) error {
