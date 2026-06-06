@@ -46,7 +46,7 @@ type BudgetAllUpdatesRule struct {
 	// +optional
 	MonitoringNotificationChannels []v1alpha1.ResourceRef `json:"monitoringNotificationChannels,omitempty"`
 
-	/* PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field holds the GCP identifier for the KRM object. */
+	/* PubSubTopicRef is a reference to a PubSubTopic. */
 	// +optional
 	PubsubTopicRef *v1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
 
