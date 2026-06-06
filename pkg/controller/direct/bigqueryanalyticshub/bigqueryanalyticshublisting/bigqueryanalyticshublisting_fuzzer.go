@@ -73,5 +73,11 @@ func bigQueryAnalyticsHubListingFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".stored_procedure_config.allowed_stored_procedure_types")
 	f.Unimplemented_NotYetTriaged(".stored_procedure_config.enabled")
 
+	f.FilterSpec = func(in *pb.Listing) {
+		if in.DiscoveryType != nil && *in.DiscoveryType == pb.DiscoveryType_DISCOVERY_TYPE_UNSPECIFIED {
+			in.DiscoveryType = nil
+		}
+	}
+
 	return f
 }

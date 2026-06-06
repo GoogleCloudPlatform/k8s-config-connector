@@ -194,8 +194,10 @@ func BigQueryAnalyticsHubListingSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.RequestAccess = direct.ValueOf(in.RequestAccess)
 	// MISSING: RestrictedExportConfig // not yet
 
-	dtype := direct.Enum_ToProto[pb.DiscoveryType](mapCtx, in.DiscoveryType)
-	out.DiscoveryType = &dtype
+	if in.DiscoveryType != nil {
+		dtype := direct.Enum_ToProto[pb.DiscoveryType](mapCtx, in.DiscoveryType)
+		out.DiscoveryType = &dtype
+	}
 
 	if in.Source != nil {
 		// TODO(team): in the future we may have a BigQueryDataset source or a PubsubTopicSource
