@@ -130,6 +130,7 @@ notification:
     useDeviceLocale: boolean
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 quota:
@@ -324,11 +325,7 @@ signIn:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The default cloud parent org or folder that the tenant project should be created under. The parent resource name should be in the format of "<type>/<number>", such as "folders/123" or "organizations/456". If the value is not set, the tenant will be created under the same organization or folder as the agent project.
-
-Allowed values:
-* The Google Cloud resource name of a `Folder` resource (format: `folders/{{name}}`).
-* The Google Cloud resource name of a Google Cloud Organization (format: `organizations/{{name}}`).</p>
+            <p>The default cloud parent org or folder that the tenant project should be created under. The parent resource name should be in the format of "<type>/<number>", such as "folders/123" or "organizations/456". If the value is not set, the tenant will be created under the same organization or folder as the agent project.</p>
         </td>
     </tr>
     <tr>
@@ -348,8 +345,7 @@ Allowed values:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
-Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
         </td>
     </tr>
     <tr>
@@ -869,9 +865,17 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project of the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
         </td>
     </tr>
     <tr>
@@ -881,7 +885,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -891,7 +895,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1129,7 +1133,7 @@ subtype: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the IdentityPlatformConfig's current state.</p>
         </td>
     </tr>
     <tr>
