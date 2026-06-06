@@ -31,7 +31,8 @@ go run . generate-types \
     --resource LoggingLink:Link \
     --resource LoggingLogView:LogView \
     --resource LoggingLogBucket:LogBucket \
-    --resource LoggingLogExclusion:LogExclusion
+    --resource LoggingLogExclusion:LogExclusion \
+    --resource LoggingLogSink:LogSink
 
 go run . generate-mapper \
     --service google.logging.v2 \

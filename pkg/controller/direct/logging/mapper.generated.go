@@ -144,18 +144,64 @@ func LoggingLogExclusionSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogExcl
 }
 */
 
-/*
-found existing non-generated mapping function "LoggingLogExclusionSpec_ToProto", skipping
+/* found existing non-generated mapping function "LoggingLogExclusionSpec_ToProto", skipping
+func LoggingLogExclusionSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogExclusionSpec) *pb.LogExclusion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogExclusion{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Filter = LoggingLogExclusionSpec_Filter_ToProto(mapCtx, in.Filter)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+*/
 
-	func LoggingLogExclusionSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogExclusionSpec) *pb.LogExclusion {
+/* found existing non-generated mapping function "LoggingLogSinkSpec_FromProto", skipping
+func LoggingLogSinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogSink) *krm.LoggingLogSinkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLogSinkSpec{}
+	// MISSING: Name
+	out.Destination = in.GetDestination()
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.Exclusions = direct.Slice_FromProto(mapCtx, in.Exclusions, LogSinkExclusions_FromProto)
+	// MISSING: OutputVersionFormat
+	// MISSING: WriterIdentity
+	out.IncludeChildren = direct.LazyPtr(in.GetIncludeChildren())
+	out.BigqueryOptions = LogSinkBigQueryOptions_FromProto(mapCtx, in.GetBigqueryOptions())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "LoggingLogSinkSpec_ToProto", skipping
+
+	func LoggingLogSinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogSinkSpec) *pb.LogSink {
 		if in == nil {
 			return nil
 		}
-		out := &pb.LogExclusion{}
+		out := &pb.LogSink{}
 		// MISSING: Name
+		out.Destination = LoggingLogSinkSpec_Destination_ToProto(mapCtx, in.Destination)
+		out.Filter = direct.ValueOf(in.Filter)
 		out.Description = direct.ValueOf(in.Description)
-		out.Filter = LoggingLogExclusionSpec_Filter_ToProto(mapCtx, in.Filter)
 		out.Disabled = direct.ValueOf(in.Disabled)
+		out.Exclusions = direct.Slice_ToProto(mapCtx, in.Exclusions, LogSinkExclusions_ToProto)
+		// MISSING: OutputVersionFormat
+		// MISSING: WriterIdentity
+		out.IncludeChildren = direct.ValueOf(in.IncludeChildren)
+		if oneof := LogSinkBigQueryOptions_ToProto(mapCtx, in.BigqueryOptions); oneof != nil {
+			out.Options = &pb.LogSink_BigqueryOptions{BigqueryOptions: oneof}
+		}
 		// MISSING: CreateTime
 		// MISSING: UpdateTime
 		return out
