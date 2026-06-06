@@ -234,7 +234,6 @@ def parse_data(config_file_path, apis_dir, crds_dir, repo_root):
             
             if 'Direct' in supported:
                 res['steps']['mocks'] = res['steps'].get('mocks', True)
-                res['steps']['tests'] = res['steps'].get('tests', True) or has_tests
                 # A completed resource should have these true
                 res['state'] = 'Completed'
             else:
