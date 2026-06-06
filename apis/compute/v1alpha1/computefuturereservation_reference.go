@@ -17,8 +17,10 @@ package v1alpha1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -29,7 +31,7 @@ var _ refs.Ref = &ComputeFutureReservationRef{}
 // ComputeFutureReservationRef is a reference to a ComputeFutureReservation.
 type ComputeFutureReservationRef struct {
 	// A reference to an externally managed ComputeFutureReservation resource.
-	// Should be in the format "projects/{project}/zones/{zone}/futureReservations/{futureReservation}".
+	// Should be in the format "projects/{{projectID}}/zones/{{zone}}/futureReservations/{{futureReservation}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeFutureReservation resource.
@@ -81,5 +83,16 @@ func (r *ComputeFutureReservationRef) ParseExternalToIdentity() (identity.Identi
 }
 
 func (r *ComputeFutureReservationRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refs.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*ComputeFutureReservation](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromComputeFutureReservationSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
