@@ -47,6 +47,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudbuild"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/clouddeploy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/clouddeploy/clouddeploydeploypolicy"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/clouddms/clouddmsconversionworkspace"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudidentity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudquota"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudtasks"
