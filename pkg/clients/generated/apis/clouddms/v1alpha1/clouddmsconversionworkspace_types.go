@@ -63,6 +63,10 @@ type CloudDMSConversionWorkspaceSpec struct {
 	// +optional
 	Destination *ConversionworkspaceDestination `json:"destination,omitempty"`
 
+	/* Optional. The database provider for the destination database. */
+	// +optional
+	DestinationProvider *string `json:"destinationProvider,omitempty"`
+
 	/* Optional. The display name for the workspace. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
@@ -84,6 +88,10 @@ type CloudDMSConversionWorkspaceSpec struct {
 	/* Required. The source engine details. */
 	// +optional
 	Source *ConversionworkspaceSource `json:"source,omitempty"`
+
+	/* Optional. The database provider for the source database. */
+	// +optional
+	SourceProvider *string `json:"sourceProvider,omitempty"`
 }
 
 type ConversionworkspaceObservedStateStatus struct {
