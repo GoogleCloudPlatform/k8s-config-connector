@@ -47,7 +47,7 @@ type LogsinkDestination struct {
 	// +optional
 	BigQueryDatasetRef *v1alpha1.ResourceRef `json:"bigQueryDatasetRef,omitempty"`
 
-	/* Only `external` field is supported to configure the reference. */
+	/* LoggingLogBucketRef is a reference to a LoggingLogBucket. */
 	// +optional
 	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
@@ -75,7 +75,6 @@ type LogsinkExclusions struct {
 }
 
 type LoggingLogSinkSpec struct {
-	/* Options that affect sinks exporting data to BigQuery. */
 	// +optional
 	BigqueryOptions *LogsinkBigqueryOptions `json:"bigqueryOptions,omitempty"`
 
@@ -97,8 +96,7 @@ type LoggingLogSinkSpec struct {
 	// +optional
 	Filter *string `json:"filter,omitempty"`
 
-	/* The folder in which to create the sink. Only one of projectRef,
-	folderRef, or organizationRef may be specified. */
+	/* Immutable. The folder in which to create the sink. Only one of projectRef, folderRef, or organizationRef may be specified. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
@@ -106,13 +104,11 @@ type LoggingLogSinkSpec struct {
 	// +optional
 	IncludeChildren *bool `json:"includeChildren,omitempty"`
 
-	/* The organization in which to create the sink. Only one of projectRef,
-	folderRef, or organizationRef may be specified. */
+	/* Immutable. The organization in which to create the sink. Only one of projectRef, folderRef, or organizationRef may be specified. */
 	// +optional
 	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
-	/* The project in which to create the sink. Only one of projectRef,
-	folderRef, or organizationRef may be specified. */
+	/* Immutable. The project in which to create the sink. Only one of projectRef, folderRef, or organizationRef may be specified. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
