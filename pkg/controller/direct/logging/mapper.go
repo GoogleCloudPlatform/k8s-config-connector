@@ -18,7 +18,10 @@ import (
 	"strings"
 
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -154,13 +157,13 @@ func LoggingLogSinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogSink) *kr
 	dest := in.GetDestination()
 	if dest != "" {
 		if strings.HasPrefix(dest, "bigquery.googleapis.com/") {
-			out.Destination.BigQueryDatasetRef = &krm.BigQueryDatasetRef{External: dest}
+			out.Destination.BigQueryDatasetRef = &bigqueryv1beta1.DatasetRef{External: dest}
 		} else if strings.HasPrefix(dest, "logging.googleapis.com/") {
 			out.Destination.LoggingLogBucketRef = &krm.LoggingLogBucketRef{External: dest}
 		} else if strings.HasPrefix(dest, "pubsub.googleapis.com/") {
-			out.Destination.PubSubTopicRef = &krm.PubSubTopicRef{External: dest}
+			out.Destination.PubSubTopicRef = &pubsubv1beta1.PubSubTopicRef{External: dest}
 		} else if strings.HasPrefix(dest, "storage.googleapis.com/") {
-			out.Destination.StorageBucketRef = &krm.StorageBucketRef{External: dest}
+			out.Destination.StorageBucketRef = &storagev1beta1.StorageBucketRef{External: dest}
 		}
 	}
 

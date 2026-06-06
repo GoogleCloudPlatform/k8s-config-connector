@@ -15,7 +15,10 @@
 package v1beta1
 
 import (
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -27,60 +30,18 @@ type LogSinkBigQueryOptions struct {
 	UsePartitionedTables bool `json:"usePartitionedTables"`
 }
 
-type BigQueryDatasetRef struct {
-	/* Allowed value: string of the format `bigquery.googleapis.com/projects/{{project}}/datasets/{{value}}`, where {{value}} is the `name` field of a `BigQueryDataset` resource. */
-	// +optional
-	External string `json:"external,omitempty"`
-
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	// +optional
-	Name string `json:"name,omitempty"`
-
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type PubSubTopicRef struct {
-	/* Allowed value: string of the format `pubsub.googleapis.com/projects/{{project}}/topics/{{value}}`, where {{value}} is the `name` field of a `PubSubTopic` resource. */
-	// +optional
-	External string `json:"external,omitempty"`
-
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	// +optional
-	Name string `json:"name,omitempty"`
-
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type StorageBucketRef struct {
-	/* Allowed value: string of the format `storage.googleapis.com/{{value}}`, where {{value}} is the `name` field of a `StorageBucket` resource. */
-	// +optional
-	External string `json:"external,omitempty"`
-
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	// +optional
-	Name string `json:"name,omitempty"`
-
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
 type LogSinkDestination struct {
 	// +optional
-	BigQueryDatasetRef *BigQueryDatasetRef `json:"bigQueryDatasetRef,omitempty"`
+	BigQueryDatasetRef *bigqueryv1beta1.DatasetRef `json:"bigQueryDatasetRef,omitempty"`
 
 	// +optional
 	LoggingLogBucketRef *LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
 
 	// +optional
-	PubSubTopicRef *PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
+	PubSubTopicRef *pubsubv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
 
 	// +optional
-	StorageBucketRef *StorageBucketRef `json:"storageBucketRef,omitempty"`
+	StorageBucketRef *storagev1beta1.StorageBucketRef `json:"storageBucketRef,omitempty"`
 }
 
 type LogSinkExclusions struct {
