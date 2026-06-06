@@ -466,8 +466,14 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 						useSliceFromProtoFunction = ""
 					} else {
-						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-						continue
+						useSliceFromProtoFunction = ""
+						customFunc := krmFieldName + "_FromProto"
+						if v.findFuncDeclaration(customFunc, srcDir, true) != nil {
+							useCustomMethod = customFunc
+						} else {
+							fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
+							continue
+						}
 					}
 				}
 
@@ -767,8 +773,14 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 						useSliceToProtoFunction = ""
 					} else {
-						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-						continue
+						useSliceToProtoFunction = ""
+						customFunc := krmFieldName + "_ToProto"
+						if v.findFuncDeclaration(customFunc, srcDir, true) != nil {
+							useCustomMethod = customFunc
+						} else {
+							fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
+							continue
+						}
 					}
 				}
 
