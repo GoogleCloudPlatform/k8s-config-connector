@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"testing"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -145,6 +146,56 @@ func TestPrivilegedAccessManagerEntitlementIdentity_String(t *testing.T) {
 			got := tt.id.String()
 			if got != tt.want {
 				t.Errorf("String() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestPrivilegedAccessManagerEntitlementIdentity_GetIdentityValidation(t *testing.T) {
+	tests := []struct {
+		name    string
+		obj     *PrivilegedAccessManagerEntitlement
+		wantErr bool
+	}{
+		{
+			name: "only projectRef",
+			obj: &PrivilegedAccessManagerEntitlement{
+				Spec: PrivilegedAccessManagerEntitlementSpec{
+					ProjectRef: &refs.ProjectRef{External: "projects/my-project"},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "projectRef and folderRef",
+			obj: &PrivilegedAccessManagerEntitlement{
+				Spec: PrivilegedAccessManagerEntitlementSpec{
+					ProjectRef: &refs.ProjectRef{External: "projects/my-project"},
+					FolderRef:  &refs.FolderRef{External: "folders/123456"},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "projectRef, folderRef and organizationRef",
+			obj: &PrivilegedAccessManagerEntitlement{
+				Spec: PrivilegedAccessManagerEntitlementSpec{
+					ProjectRef:      &refs.ProjectRef{External: "projects/my-project"},
+					FolderRef:       &refs.FolderRef{External: "folders/123456"},
+					OrganizationRef: &refs.OrganizationRef{External: "organizations/789012"},
+				},
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Give it a metadata name so refs.GetResourceID has something
+			tt.obj.SetName("my-entitlement")
+			_, err := getIdentityFromPrivilegedAccessManagerEntitlementSpec(nil, nil, tt.obj)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getIdentityFromPrivilegedAccessManagerEntitlementSpec() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

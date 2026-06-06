@@ -332,12 +332,14 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	if strings.HasPrefix(a.id.Container(), "projects") {
+	if strings.HasPrefix(a.id.Container(), "projects/") {
 		obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Container()}
-	} else if strings.HasPrefix(a.id.Container(), "folders") {
+	} else if strings.HasPrefix(a.id.Container(), "folders/") {
 		obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Container()}
-	} else {
+	} else if strings.HasPrefix(a.id.Container(), "organizations/") {
 		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Container()}
+	} else {
+		return nil, fmt.Errorf("invalid container format for %q", a.id.Container())
 	}
 
 	obj.Spec.Location = &a.id.Location

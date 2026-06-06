@@ -122,6 +122,21 @@ func getIdentityFromPrivilegedAccessManagerEntitlementSpec(ctx context.Context, 
 		Location:    location,
 	}
 
+	// Verify that at most one parent reference is set
+	parentCount := 0
+	if obj.Spec.ProjectRef != nil {
+		parentCount++
+	}
+	if obj.Spec.FolderRef != nil {
+		parentCount++
+	}
+	if obj.Spec.OrganizationRef != nil {
+		parentCount++
+	}
+	if parentCount > 1 {
+		return nil, fmt.Errorf("at most one of spec.projectRef, spec.folderRef and spec.organizationRef can be set")
+	}
+
 	// Resolve parent references
 	if obj.Spec.ProjectRef != nil {
 		projectID, err := refs.ResolveProjectID(ctx, reader, obj)
