@@ -52,10 +52,10 @@ func certificateFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_LabelsAnnotations(".labels")
 	f.Unimplemented_Internal(".create_time")
 	f.Unimplemented_Internal(".update_time")
-	f.UnimplementedFields.Insert(".san_dnsnames")
-	f.UnimplementedFields.Insert(".pem_certificate")
-	f.UnimplementedFields.Insert(".expire_time")
-	f.UnimplementedFields.Insert(".type")
+	f.Unimplemented_NotYetTriaged(".san_dnsnames")
+	f.Unimplemented_NotYetTriaged(".pem_certificate")
+	f.Unimplemented_NotYetTriaged(".expire_time")
+	f.Unimplemented_NotYetTriaged(".type")
 
 	f.FilterSpec = func(in *pb.Certificate) {
 		if in.GetSelfManaged() != nil {
