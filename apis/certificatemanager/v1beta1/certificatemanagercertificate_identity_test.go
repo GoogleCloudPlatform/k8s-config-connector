@@ -18,38 +18,65 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
-func TestCertificateManagerCertificateRef_ValidateExternal(t *testing.T) {
+func TestCertificateManagerCertificateIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
+		want    *CertificateManagerCertificateIdentity
 	}{
 		{
-			name:    "valid external reference",
-			ref:     "projects/my-project/locations/global/certificates/my-cert",
-			wantErr: false,
+			name: "valid reference",
+			ref:  "projects/my-project/locations/global/certificates/my-cert",
+			want: &CertificateManagerCertificateIdentity{
+				Project:     "my-project",
+				Location:    "global",
+				Certificate: "my-cert",
+			},
 		},
 		{
-			name:    "valid external reference with domain prefix",
-			ref:     "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert",
-			wantErr: false,
-		},
-		{
-			name:    "invalid external reference",
-			ref:     "https://www.googleapis.com/projects/my-project/locations/global/certificates/my-cert",
+			name:    "invalid reference format",
+			ref:     "invalid/format",
 			wantErr: true,
 		},
+		{
+			name: "full url",
+			ref:  "https://certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert",
+			want: &CertificateManagerCertificateIdentity{
+				Project:     "my-project",
+				Location:    "global",
+				Certificate: "my-cert",
+			},
+		},
+		{
+			name: "url with domain prefix",
+			ref:  "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificates/my-cert",
+			want: &CertificateManagerCertificateIdentity{
+				Project:     "my-project",
+				Location:    "global",
+				Certificate: "my-cert",
+			},
+		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &CertificateManagerCertificateRef{}
-			if err := r.ValidateExternal(tt.ref); (err != nil) != tt.wantErr {
-				t.Errorf("ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
+			i := &CertificateManagerCertificateIdentity{}
+			err := i.FromExternal(tt.ref)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
+				}
 			}
 		})
 	}
@@ -119,8 +146,10 @@ func TestCertificateManagerCertificateRef_Normalize(t *testing.T) {
 				t.Errorf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if tt.ref.External != tt.want {
-				t.Errorf("Normalize() got = %v, want %v", tt.ref.External, tt.want)
+			if !tt.wantErr {
+				if tt.ref.External != tt.want {
+					t.Errorf("Normalize() got = %v, want %v", tt.ref.External, tt.want)
+				}
 			}
 		})
 	}
