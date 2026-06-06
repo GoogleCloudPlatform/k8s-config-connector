@@ -163,7 +163,7 @@ require (
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
 	github.com/google/cel-go v0.23.2 // indirect
 	github.com/google/flatbuffers v24.3.25+incompatible // indirect
-	github.com/google/gnostic-models v0.6.9 // indirect
+	github.com/google/gnostic-models v0.7.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
@@ -325,7 +325,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/cli-runtime v0.32.1 // indirect
 	k8s.io/component-base v0.33.10 // indirect
-	k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff
+	k8s.io/kube-openapi v0.0.0-20250710124328-f3f2b991d03b
 	k8s.io/kubectl v0.32.1 // indirect
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
