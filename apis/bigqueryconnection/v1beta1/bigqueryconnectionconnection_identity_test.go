@@ -27,10 +27,11 @@ import (
 
 func TestBigQueryConnectionConnectionIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name    string
-		ref     string
-		wantErr bool
-		want    *BigQueryConnectionConnectionIdentity
+		name                 string
+		ref                  string
+		wantErr              bool
+		want                 *BigQueryConnectionConnectionIdentity
+		wantIdentitySpecified bool
 	}{
 		{
 			name: "valid reference",
@@ -40,6 +41,7 @@ func TestBigQueryConnectionConnectionIdentity_FromExternal(t *testing.T) {
 				Location:   "us-central1",
 				Connection: "my-connection",
 			},
+			wantIdentitySpecified: true,
 		},
 		{
 			name:    "invalid reference format",
@@ -54,6 +56,7 @@ func TestBigQueryConnectionConnectionIdentity_FromExternal(t *testing.T) {
 				Location:   "us-central1",
 				Connection: "my-connection",
 			},
+			wantIdentitySpecified: true,
 		},
 	}
 
@@ -69,34 +72,9 @@ func TestBigQueryConnectionConnectionIdentity_FromExternal(t *testing.T) {
 				if diff := cmp.Diff(tt.want, i); diff != "" {
 					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 				}
-			}
-		})
-	}
-}
-
-func TestBigQueryConnectionConnectionIdentity_HasIdentitySpecified(t *testing.T) {
-	tests := []struct {
-		name       string
-		connection string
-		want       bool
-	}{
-		{
-			name:       "specified",
-			connection: "my-connection",
-			want:       true,
-		},
-		{
-			name:       "not specified",
-			connection: "",
-			want:       false,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			i := &BigQueryConnectionConnectionIdentity{Connection: tt.connection}
-			if got := i.HasIdentitySpecified(); got != tt.want {
-				t.Errorf("HasIdentitySpecified() = %v, want %v", got, tt.want)
+				if got := i.HasIdentitySpecified(); got != tt.wantIdentitySpecified {
+					t.Errorf("HasIdentitySpecified() = %v, want %v", got, tt.wantIdentitySpecified)
+				}
 			}
 		})
 	}
@@ -109,10 +87,11 @@ func TestBigQueryConnectionConnection_GetIdentity(t *testing.T) {
 	fakeClient := fake.NewClientBuilder().WithScheme(scheme).Build()
 
 	tests := []struct {
-		name    string
-		obj     *BigQueryConnectionConnection
-		wantErr bool
-		want    *BigQueryConnectionConnectionIdentity
+		name                 string
+		obj                  *BigQueryConnectionConnection
+		wantErr              bool
+		want                 *BigQueryConnectionConnectionIdentity
+		wantIdentitySpecified bool
 	}{
 		{
 			name: "GetIdentity with specified resourceID",
@@ -132,6 +111,7 @@ func TestBigQueryConnectionConnection_GetIdentity(t *testing.T) {
 				Location:   "us-central1",
 				Connection: "my-connection",
 			},
+			wantIdentitySpecified: true,
 		},
 		{
 			name: "GetIdentity with server-generated identity (empty spec resourceID, defaulted from status)",
@@ -153,6 +133,26 @@ func TestBigQueryConnectionConnection_GetIdentity(t *testing.T) {
 				Location:   "us-central1",
 				Connection: "server-generated-id",
 			},
+			wantIdentitySpecified: true,
+		},
+		{
+			name: "GetIdentity with no spec resourceID and empty status (not yet created)",
+			obj: &BigQueryConnectionConnection{
+				Spec: BigQueryConnectionConnectionSpec{
+					Parent: Parent{
+						ProjectRef: &refs.ProjectRef{
+							External: "my-project",
+						},
+						Location: "us-central1",
+					},
+				},
+			},
+			want: &BigQueryConnectionConnectionIdentity{
+				Project:    "my-project",
+				Location:   "us-central1",
+				Connection: "",
+			},
+			wantIdentitySpecified: false,
 		},
 		{
 			name: "GetIdentity with server-generated identity conflict with spec resourceID",
@@ -188,6 +188,9 @@ func TestBigQueryConnectionConnection_GetIdentity(t *testing.T) {
 				}
 				if diff := cmp.Diff(tt.want, got); diff != "" {
 					t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
+				}
+				if gotSpecified := got.HasIdentitySpecified(); gotSpecified != tt.wantIdentitySpecified {
+					t.Errorf("got.HasIdentitySpecified() = %v, want %v", gotSpecified, tt.wantIdentitySpecified)
 				}
 			}
 		})

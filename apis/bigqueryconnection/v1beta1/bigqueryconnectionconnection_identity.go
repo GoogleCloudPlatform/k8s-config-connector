@@ -48,6 +48,10 @@ func (i *BigQueryConnectionConnectionIdentity) String() string {
 	return BigQueryConnectionConnectionIdentityFormat.ToString(*i)
 }
 
+func (i *BigQueryConnectionConnectionIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *BigQueryConnectionConnectionIdentity) FromExternal(ref string) error {
 	parsed, match, err := BigQueryConnectionConnectionIdentityFormat.Parse(ref)
 	if err != nil {
