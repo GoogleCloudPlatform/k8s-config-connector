@@ -73,6 +73,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                         true,
 		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                    true,
 		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/clusters/{}/backups/{}":            true,
+		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/tables/{}/authorizedViews/{}":      true,
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}":   true,
 		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                       true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,
