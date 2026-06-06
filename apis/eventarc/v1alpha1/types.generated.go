@@ -20,6 +20,7 @@
 // resource: EventarcChannel:Channel
 // resource: EventarcGoogleChannelConfig:GoogleChannelConfig
 // resource: EventarcEnrollment:Enrollment
+// resource: EventarcChannelConnection:ChannelConnection
 
 package v1alpha1
 
@@ -47,6 +48,29 @@ type Channel struct {
 	//  `projects/* /locations/* /keyRings/* /cryptoKeys/*`.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.crypto_key_name
 	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.eventarc.v1.ChannelConnection", skipping
+
+// +kcc:proto=google.cloud.eventarc.v1.ChannelConnection
+type ChannelConnection struct {
+	// Required. The name of the connection.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The name of the connected subscriber Channel.
+	//  This is a weak reference to avoid cross project and cross accounts
+	//  references. This must be in
+	//  `projects/{project}/location/{location}/channels/{channel_id}` format.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.channel
+	Channel *string `json:"channel,omitempty"`
+
+	// Input only. Activation token for the channel. The token will be used
+	//  during the creation of ChannelConnection to bind the channel with the
+	//  provider project. This field will not be stored in the provider resource.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.activation_token
+	ActivationToken *string `json:"activationToken,omitempty"`
 }
 */
 
@@ -146,6 +170,25 @@ type ChannelObservedState struct {
 	//  physical zone separation
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.satisfies_pzs
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.eventarc.v1.ChannelConnection", skipping
+
+// +kcc:observedstate:proto=google.cloud.eventarc.v1.ChannelConnection
+type ChannelConnectionObservedState struct {
+	// Output only. Server assigned ID of the resource.
+	//  The server guarantees uniqueness and immutability until deleted.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The creation time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last-modified time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 

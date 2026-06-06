@@ -271,6 +271,7 @@
 | edgenetwork.cnrm.cloud.google.com             | EdgeNetworkNetwork                              | False        | True        | False  | Terraform  | False       |
 | edgenetwork.cnrm.cloud.google.com             | EdgeNetworkSubnet                               | False        | True        | False  | Terraform  | False       |
 | essentialcontacts.cnrm.cloud.google.com       | EssentialContactsContact                        | True         | True        | False  | Direct     | True        |
+| eventarc.cnrm.cloud.google.com                | EventarcChannelConnection                       | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcChannel                                 | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcEnrollment                              | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                | EventarcGoogleChannelConfig                     | True         | False       | False  | Direct     | True        |

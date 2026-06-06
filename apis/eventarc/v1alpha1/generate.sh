@@ -29,7 +29,8 @@ go run . generate-types \
   --include-skipped-output \
   --resource EventarcChannel:Channel \
   --resource EventarcGoogleChannelConfig:GoogleChannelConfig \
-  --resource EventarcEnrollment:Enrollment
+  --resource EventarcEnrollment:Enrollment \
+  --resource EventarcChannelConnection:ChannelConnection
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
