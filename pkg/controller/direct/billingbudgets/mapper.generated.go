@@ -147,7 +147,7 @@ func BudgetFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *k
 	out.CreditTypesTreatment = direct.Enum_FromProto(mapCtx, in.GetCreditTypesTreatment())
 	out.Services = in.Services
 	out.Subaccounts = BudgetFilter_Subaccounts_FromProto(mapCtx, in.Subaccounts)
-	// TODO: map type string message for field Labels
+	out.Labels = Labels_FromProto(mapCtx, in.Labels)
 	out.CalendarPeriod = direct.Enum_FromProto(mapCtx, in.GetCalendarPeriod())
 	out.CustomPeriod = BudgetCustomPeriod_v1beta1_FromProto(mapCtx, in.GetCustomPeriod())
 	return out
@@ -166,7 +166,7 @@ func BudgetFilter_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetFilte
 	out.CreditTypesTreatment = direct.Enum_ToProto[pb.Filter_CreditTypesTreatment](mapCtx, in.CreditTypesTreatment)
 	out.Services = in.Services
 	out.Subaccounts = BudgetFilter_Subaccounts_ToProto(mapCtx, in.Subaccounts)
-	// TODO: map type string message for field Labels
+	out.Labels = Labels_ToProto(mapCtx, in.Labels)
 	if oneof := BudgetFilter_CalendarPeriod_ToProto(mapCtx, in.CalendarPeriod); oneof != nil {
 		out.UsagePeriod = oneof
 	}

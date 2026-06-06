@@ -15,6 +15,8 @@
 package artifactregistry
 
 import (
+	"sort"
+
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -43,5 +45,39 @@ func ArtifactRegistryRepositoryRef_ToProto(mapCtx *direct.MapContext, in *krm.Ar
 	}
 	out := &pb.Repository{}
 	out.Name = in.External
+	return out
+}
+
+func CleanupPolicies_FromProto(mapCtx *direct.MapContext, in map[string]*pb.CleanupPolicy) []krm.CleanupPolicy {
+	if in == nil {
+		return nil
+	}
+	var out []krm.CleanupPolicy
+	for id, policy := range in {
+		p := CleanupPolicy_FromProto(mapCtx, policy)
+		if p != nil {
+			p.ID = direct.LazyPtr(id)
+			out = append(out, *p)
+		}
+	}
+	// Sort by ID to ensure deterministic order
+	sort.Slice(out, func(i, j int) bool {
+		return direct.ValueOf(out[i].ID) < direct.ValueOf(out[j].ID)
+	})
+	return out
+}
+
+func CleanupPolicies_ToProto(mapCtx *direct.MapContext, in []krm.CleanupPolicy) map[string]*pb.CleanupPolicy {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*pb.CleanupPolicy)
+	for _, policy := range in {
+		id := direct.ValueOf(policy.ID)
+		p := CleanupPolicy_ToProto(mapCtx, &policy)
+		if p != nil {
+			out[id] = p
+		}
+	}
 	return out
 }

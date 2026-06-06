@@ -279,7 +279,7 @@ func ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	}
 	out := &krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupObservedState{}
 	// MISSING: Name
-	// TODO: map type string message for field Topics
+	out.Topics = Topics_FromProto(mapCtx, in.Topics)
 	return out
 }
 */
@@ -291,7 +291,7 @@ func ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	}
 	out := &pb.ConsumerGroup{}
 	// MISSING: Name
-	// TODO: map type string message for field Topics
+	out.Topics = Topics_ToProto(mapCtx, in.Topics)
 	return out
 }
 */
