@@ -327,6 +327,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					forceDirect = false
 				case "FirestoreIndex":
 					forceDirect = true
+				case "Service":
+					forceDirect = true
 				default:
 					forceDirect = false
 				}

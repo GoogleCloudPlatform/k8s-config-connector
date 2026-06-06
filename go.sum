@@ -1286,6 +1286,8 @@ cloud.google.com/go/serviceusage v1.3.0/go.mod h1:Hya1cozXM4SeSKTAgGXgj97GlqUvF5
 cloud.google.com/go/serviceusage v1.4.0/go.mod h1:SB4yxXSaYVuUBYUml6qklyONXNLt83U0Rb+CXyhjEeU=
 cloud.google.com/go/serviceusage v1.5.0/go.mod h1:w8U1JvqUqwJNPEOTQjrMHkw3IaIFLoLsPLvsE3xueec=
 cloud.google.com/go/serviceusage v1.6.0/go.mod h1:R5wwQcbOWsyuOfbP9tGdAnCAc6B9DRwPG1xtWMDeuPA=
+cloud.google.com/go/serviceusage v1.9.6 h1:Nk4cj5gK37sQtXg36WSDSKmQ6Gg/obkMz2Q0L5kj0WA=
+cloud.google.com/go/serviceusage v1.9.6/go.mod h1:psLDUyHimbNm8A3VuQ5VqdPXckhuIaQHlgqQ0P7gtuk=
 cloud.google.com/go/shell v1.3.0/go.mod h1:VZ9HmRjZBsjLGXusm7K5Q5lzzByZmJHf1d0IWHEN5X4=
 cloud.google.com/go/shell v1.4.0/go.mod h1:HDxPzZf3GkDdhExzD/gs8Grqk+dmYcEjGShZgYa9URw=
 cloud.google.com/go/shell v1.6.0/go.mod h1:oHO8QACS90luWgxP3N9iZVuEiSF84zNyLytb+qE2f9A=
