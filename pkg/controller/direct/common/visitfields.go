@@ -74,7 +74,16 @@ func (w *visitorWalker) visitAny(path string, v reflect.Value) {
 	case reflect.Slice:
 		elemType := v.Type().Elem()
 		switch elemType.Kind() {
-		case reflect.Struct, reflect.String:
+		case reflect.Struct:
+			for i := 0; i < v.Len(); i++ {
+				elem := v.Index(i)
+				if elem.CanAddr() {
+					w.visitAny(path+"[]", elem.Addr())
+				} else {
+					w.visitAny(path+"[]", elem)
+				}
+			}
+		case reflect.String:
 			for i := 0; i < v.Len(); i++ {
 				w.visitAny(path+"[]", v.Index(i))
 			}
