@@ -500,6 +500,62 @@ func DataprocSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdata
 	out.SessionTemplate = direct.ValueOf(in.SessionTemplate)
 	return out
 }
+func DataprocSessionTemplateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SessionTemplate) *krmdataprocv1alpha1.DataprocSessionTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.DataprocSessionTemplateObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Uuid = direct.LazyPtr(in.GetUuid())
+	return out
+}
+func DataprocSessionTemplateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocSessionTemplateObservedState) *pb.SessionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SessionTemplate{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Uuid = direct.ValueOf(in.Uuid)
+	return out
+}
+func DataprocSessionTemplateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SessionTemplate) *krmdataprocv1alpha1.DataprocSessionTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.DataprocSessionTemplateSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.JupyterSession = JupyterConfig_v1alpha1_FromProto(mapCtx, in.GetJupyterSession())
+	out.SparkConnectSession = SparkConnectConfig_v1alpha1_FromProto(mapCtx, in.GetSparkConnectSession())
+	out.Labels = in.Labels
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_FromProto(mapCtx, in.GetEnvironmentConfig())
+	return out
+}
+func DataprocSessionTemplateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.DataprocSessionTemplateSpec) *pb.SessionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SessionTemplate{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := JupyterConfig_v1alpha1_ToProto(mapCtx, in.JupyterSession); oneof != nil {
+		out.SessionConfig = &pb.SessionTemplate_JupyterSession{JupyterSession: oneof}
+	}
+	if oneof := SparkConnectConfig_v1alpha1_ToProto(mapCtx, in.SparkConnectSession); oneof != nil {
+		out.SessionConfig = &pb.SessionTemplate_SparkConnectSession{SparkConnectSession: oneof}
+	}
+	out.Labels = in.Labels
+	out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
+	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
+	return out
+}
 
 /* found existing non-generated mapping function "DiskConfig_v1alpha1_FromProto", skipping
 func DiskConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krmdataprocv1alpha1.DiskConfig {
@@ -1725,6 +1781,20 @@ func SparkBatch_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.Spa
 		return nil
 	}
 	return &pb.SparkBatch_MainClass{MainClass: *in}
+}
+func SparkConnectConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SparkConnectConfig) *krmdataprocv1alpha1.SparkConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.SparkConnectConfig{}
+	return out
+}
+func SparkConnectConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.SparkConnectConfig) *pb.SparkConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SparkConnectConfig{}
+	return out
 }
 
 /* found existing non-generated mapping function "SparkHistoryServerConfig_v1alpha1_FromProto", skipping
