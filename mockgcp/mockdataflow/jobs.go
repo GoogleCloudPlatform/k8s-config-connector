@@ -58,8 +58,61 @@ func findJobByJobName(ctx context.Context, jobStore storage.Storage, projectID s
 	if len(matches) == 1 {
 		return matches[0], nil
 	}
-	// Probably need to filter by state
-	return nil, fmt.Errorf("multiple matches for jobName %q", jobName)
+	// Return the latest created job
+	var latest *pb.Job
+	for _, job := range matches {
+		if latest == nil || job.GetCreateTime().AsTime().After(latest.GetCreateTime().AsTime()) {
+			latest = job
+		}
+	}
+	return latest, nil
+}
+
+func (r *jobsServer) ListJobs(ctx context.Context, req *pb.ListJobsRequest) (*pb.ListJobsResponse, error) {
+	project, err := r.Projects.GetProjectByID(req.GetProjectId())
+	if err != nil {
+		return nil, err
+	}
+
+	var jobs []*pb.Job
+	prefix := fmt.Sprintf("projects/%s/locations/%s/jobs/", project.ID, req.GetLocation())
+	findKind := (&pb.Job{}).ProtoReflect().Descriptor()
+	if err := r.storage.List(ctx, findKind, storage.ListOptions{
+		Prefix: prefix,
+	}, func(obj proto.Message) error {
+		job := obj.(*pb.Job)
+		jobs = append(jobs, job)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListJobsResponse{
+		Jobs: jobs,
+	}, nil
+}
+
+func (r *jobsServer) AggregatedListJobs(ctx context.Context, req *pb.ListJobsRequest) (*pb.ListJobsResponse, error) {
+	project, err := r.Projects.GetProjectByID(req.GetProjectId())
+	if err != nil {
+		return nil, err
+	}
+
+	var jobs []*pb.Job
+	findKind := (&pb.Job{}).ProtoReflect().Descriptor()
+	if err := r.storage.List(ctx, findKind, storage.ListOptions{}, func(obj proto.Message) error {
+		job := obj.(*pb.Job)
+		if job.ProjectId == project.ID {
+			jobs = append(jobs, job)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListJobsResponse{
+		Jobs: jobs,
+	}, nil
 }
 
 func (r *jobsServer) GetJob(ctx context.Context, req *pb.GetJobRequest) (*pb.Job, error) {

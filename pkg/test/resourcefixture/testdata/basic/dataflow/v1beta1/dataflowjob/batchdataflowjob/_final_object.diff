@@ -1,0 +1,16 @@
+6d5
+<     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"ipConfiguration":"WORKER_IP_PUBLIC","parameters":{"inputFile":"gs://dataflow-samples/shakespeare/various.txt","output":"gs://storagebucket-${uniqueId}/output"}}}'
+9d7
+<     cnrm.cloud.google.com/state-into-spec: absent
+13c11
+<   generation: 2
+---
+>   generation: 1
+30d27
+<   resourceID: dataflowjob-${uniqueId}
+46,47c43,44
+<   observedGeneration: 2
+<   state: JOB_STATE_QUEUED
+---
+>   observedGeneration: 1
+>   state: JOB_STATE_RUNNING

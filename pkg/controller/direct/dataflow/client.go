@@ -49,6 +49,18 @@ func (m *gcpClient) newFlexTemplatesClient(ctx context.Context) (*api.FlexTempla
 	return client, err
 }
 
+func (m *gcpClient) newTemplatesClient(ctx context.Context) (*api.TemplatesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewTemplatesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataflow templates client: %w", err)
+	}
+	return client, err
+}
+
 func (m *gcpClient) newJobsClient(ctx context.Context) (*api.JobsV1Beta3Client, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {

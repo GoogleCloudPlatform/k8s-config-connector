@@ -61,6 +61,90 @@ func (r *MockService) StopJob(fqn string) error {
 	return nil
 }
 
+func (r *MockService) StartClassicJob(fqn string, project *projects.ProjectData, req *pb.CreateJobFromTemplateRequest) error {
+	ctx := context.TODO()
+
+	for i := 0; i < 3; i++ {
+		now := time.Now()
+
+		job := &pb.Job{}
+		if err := r.storage.Get(ctx, fqn, job); err != nil {
+			return fmt.Errorf("error getting job %q: %w", fqn, err)
+		}
+
+		if job.CurrentState == pb.JobState_JOB_STATE_UNKNOWN {
+			job.CurrentState = pb.JobState_JOB_STATE_QUEUED
+			job.CurrentStateTime = timestamppb.New(now)
+
+			env := req.GetEnvironment()
+			if env == nil {
+				env = &pb.RuntimeEnvironment{}
+			}
+			job.Environment = &pb.Environment{
+				ServiceKmsKeyName:   env.KmsKeyName,
+				ServiceAccountEmail: env.ServiceAccountEmail,
+				WorkerRegion:        env.WorkerRegion,
+				WorkerZone:          env.Zone,
+				TempStoragePrefix:   env.TempLocation,
+				WorkerPools: []*pb.WorkerPool{
+					{
+						Kind:            "harness",
+						MachineType:     env.MachineType,
+						Network:         env.Network,
+						Subnetwork:      env.Subnetwork,
+						IpConfiguration: env.IpConfiguration,
+					},
+				},
+			}
+
+			pipelineOptions := map[string]any{
+				"options": map[string]any{
+					"templateLocation":    req.GetGcsPath(),
+					"tempLocation":        env.TempLocation,
+					"machineType":         env.MachineType,
+					"maxNumWorkers":       env.MaxWorkers,
+					"network":             env.Network,
+					"subnetwork":          env.Subnetwork,
+					"serviceAccountEmail": env.ServiceAccountEmail,
+					"zone":                env.Zone,
+					"ipConfiguration":     env.IpConfiguration.String(),
+					"experiments":         env.AdditionalExperiments,
+				},
+			}
+			pipelineOptionsVal, err := buildStruct(pipelineOptions)
+			if err == nil {
+				job.Environment.SdkPipelineOptions = pipelineOptionsVal
+			}
+
+			if err := r.storage.Update(ctx, fqn, job); err != nil {
+				return fmt.Errorf("error updating job %q: %v", fqn, err)
+			}
+			time.Sleep(1 * time.Second)
+			continue
+		}
+
+		if job.CurrentState == pb.JobState_JOB_STATE_QUEUED {
+			job.CurrentState = pb.JobState_JOB_STATE_PENDING
+			job.CurrentStateTime = timestamppb.New(now)
+			if err := r.storage.Update(ctx, fqn, job); err != nil {
+				return fmt.Errorf("error updating job %q: %v", fqn, err)
+			}
+			time.Sleep(1 * time.Second)
+			continue
+		}
+
+		if job.CurrentState == pb.JobState_JOB_STATE_PENDING {
+			job.CurrentState = pb.JobState_JOB_STATE_RUNNING
+			job.CurrentStateTime = timestamppb.New(now)
+			if err := r.storage.Update(ctx, fqn, job); err != nil {
+				return fmt.Errorf("error updating job %q: %v", fqn, err)
+			}
+			return nil
+		}
+	}
+	return nil
+}
+
 func (r *MockService) StartJob(fqn string, project *projects.ProjectData, req *pb.LaunchFlexTemplateRequest) error {
 	ctx := context.TODO()
 

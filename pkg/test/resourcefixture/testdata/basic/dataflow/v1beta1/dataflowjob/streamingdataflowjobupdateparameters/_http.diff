@@ -1,0 +1,1344 @@
+999,1015c999
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {}
+< 
+< ---
+< 
+< POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates?alt=json&prettyPrint=false
+---
+> POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1-a/templates?%24alt=json%3Benum-encoding%3Dint
+1025,1026c1009
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+---
+>       "label-one": "value-one"
+1029c1012
+<     "ipConfiguration": "WORKER_IP_PUBLIC",
+---
+>     "ipConfiguration": 1,
+1032,1033c1015
+<     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+---
+>     "network": "projects/${projectId}/global/networks/${subnetworkID}",
+1039a1022
+>   "location": "us-central1-a",
+1043c1026,1027
+<   }
+---
+>   },
+>   "projectId": "${projectId}"
+1069,1070c1053,1054
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+---
+>         "network": "projects/${projectId}/global/networks/${subnetworkID}",
+>         "serviceAccountEmail": "",
+1077d1060
+<     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+1085,1086c1068
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+---
+>     "label-one": "value-one"
+1088c1070
+<   "location": "us-central1",
+---
+>   "location": "us-central1-a",
+1092,1157c1074
+<   "type": "JOB_TYPE_STREAMING"
+< }
+< 
+< ---
+< 
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "jobs": [
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_QUEUED",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     }
+<   ]
+---
+>   "type": 2
+1162,1227c1079
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "jobs": [
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_QUEUED",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     }
+<   ]
+< }
+< 
+< ---
+< 
+< POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates:launch?alt=json&gcsPath=gs%3A%2F%2Fdataflow-templates%2F2020-02-03-01_RC00%2FPubSub_to_BigQuery&prettyPrint=false
+---
+> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1-a/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+1230,1956d1081
+< {
+<   "environment": {
+<     "additionalExperiments": [
+<       "enable_stackdriver_agent_metrics"
+<     ],
+<     "additionalUserLabels": {
+<       "cnrm-test": "true",
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+<     },
+<     "enableStreamingEngine": true,
+<     "ipConfiguration": "WORKER_IP_PUBLIC",
+<     "machineType": "n1-standard-1",
+<     "maxWorkers": 3,
+<     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<     "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<     "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<     "zone": "us-central1-a"
+<   },
+<   "jobName": "dataflowjob-${uniqueId}",
+<   "parameters": {
+<     "inputTopic": "projects/${projectId}/topics/pubsubtopic1-${uniqueId}",
+<     "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}"
+<   },
+<   "update": true
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "job": {
+<     "createTime": "2024-04-01T12:34:56.123456Z",
+<     "currentStateTime": "1970-01-01T00:00:00Z",
+<     "environment": {
+<       "sdkPipelineOptions": {
+<         "options": {
+<           "enableStreamingEngine": true,
+<           "experiments": [
+<             "enable_stackdriver_agent_metrics"
+<           ],
+<           "ipConfiguration": "WORKER_IP_PUBLIC",
+<           "machineType": "n1-standard-1",
+<           "maxNumWorkers": 3,
+<           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<           "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<           "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<           "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<           "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<           "zone": "us-central1-a"
+<         }
+<       },
+<       "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<       "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<       "workerPools": [
+<         {
+<           "ipConfiguration": "WORKER_IP_PUBLIC",
+<           "kind": "harness",
+<           "machineType": "n1-standard-1",
+<           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<           "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<         }
+<       ],
+<       "workerZone": "us-central1-a"
+<     },
+<     "id": "${jobID}",
+<     "labels": {
+<       "cnrm-test": "true",
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+<     },
+<     "location": "us-central1",
+<     "name": "dataflowjob-${uniqueId}",
+<     "projectId": "${projectId}",
+<     "replaceJobId": "${jobID}",
+<     "startTime": "2024-04-01T12:34:56.123456Z",
+<     "type": "JOB_TYPE_STREAMING"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "jobs": [
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_QUEUED",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_QUEUED",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     }
+<   ]
+< }
+< 
+< ---
+< 
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "jobs": [
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_QUEUED",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_QUEUED",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     }
+<   ]
+< }
+< 
+< ---
+< 
+< POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates:launch?alt=json&gcsPath=gs%3A%2F%2Fdataflow-templates%2F2020-02-03-01_RC00%2FPubSub_to_BigQuery&prettyPrint=false
+< Content-Type: application/json
+< 
+< {
+<   "environment": {
+<     "additionalExperiments": [
+<       "enable_stackdriver_agent_metrics"
+<     ],
+<     "additionalUserLabels": {
+<       "cnrm-test": "true",
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+<     },
+<     "enableStreamingEngine": true,
+<     "ipConfiguration": "WORKER_IP_PUBLIC",
+<     "machineType": "n1-standard-1",
+<     "maxWorkers": 3,
+<     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<     "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<     "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<     "zone": "us-central1-a"
+<   },
+<   "jobName": "dataflowjob-${uniqueId}",
+<   "parameters": {
+<     "inputTopic": "projects/${projectId}/topics/pubsubtopic2-${uniqueId}",
+<     "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}"
+<   },
+<   "update": true
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "job": {
+<     "createTime": "2024-04-01T12:34:56.123456Z",
+<     "currentStateTime": "1970-01-01T00:00:00Z",
+<     "environment": {
+<       "sdkPipelineOptions": {
+<         "options": {
+<           "enableStreamingEngine": true,
+<           "experiments": [
+<             "enable_stackdriver_agent_metrics"
+<           ],
+<           "ipConfiguration": "WORKER_IP_PUBLIC",
+<           "machineType": "n1-standard-1",
+<           "maxNumWorkers": 3,
+<           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<           "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<           "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<           "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<           "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<           "zone": "us-central1-a"
+<         }
+<       },
+<       "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<       "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<       "workerPools": [
+<         {
+<           "ipConfiguration": "WORKER_IP_PUBLIC",
+<           "kind": "harness",
+<           "machineType": "n1-standard-1",
+<           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<           "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<         }
+<       ],
+<       "workerZone": "us-central1-a"
+<     },
+<     "id": "${jobID}",
+<     "labels": {
+<       "cnrm-test": "true",
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+<     },
+<     "location": "us-central1",
+<     "name": "dataflowjob-${uniqueId}",
+<     "projectId": "${projectId}",
+<     "replaceJobId": "${jobID}",
+<     "startTime": "2024-04-01T12:34:56.123456Z",
+<     "type": "JOB_TYPE_STREAMING"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "jobs": [
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_PENDING",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_QUEUED",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_QUEUED",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     }
+<   ]
+< }
+< 
+< ---
+< 
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "jobs": [
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_RUNNING",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_PENDING",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_PENDING",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     }
+<   ]
+< }
+< 
+< ---
+< 
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+< 
+1969c1094
+<   "currentState": "JOB_STATE_RUNNING",
+---
+>   "currentState": 2,
+1980,1981c1105,1106
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+---
+>         "network": "projects/${projectId}/global/networks/${subnetworkID}",
+>         "serviceAccountEmail": "",
+1988d1112
+<     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+1996,1997c1120
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+---
+>     "label-one": "value-one"
+1999c1122
+<   "location": "us-central1",
+---
+>   "location": "us-central1-a",
+2003c1126
+<   "type": "JOB_TYPE_STREAMING"
+---
+>   "type": 2
+2008c1131
+< PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false
+---
+> PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1-a/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+2012c1135
+<   "requestedState": "JOB_STATE_CANCELLED"
+---
+>   "requestedState": 5
+2026c1149
+<   "type": "JOB_TYPE_BATCH"
+---
+>   "type": 1
+2031,2191c1154,1155
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "jobs": [
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_CANCELLING",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "requestedState": "JOB_STATE_CANCELLED",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_RUNNING",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_RUNNING",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     }
+<   ]
+< }
+< 
+< ---
+< 
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+---
+> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1-a/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+> Content-Type: application/json
+2205c1169
+<   "currentState": "JOB_STATE_CANCELLING",
+---
+>   "currentState": 10,
+2216,2217c1180,1181
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+---
+>         "network": "projects/${projectId}/global/networks/${subnetworkID}",
+>         "serviceAccountEmail": "",
+2224d1187
+<     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+2232,2233c1195
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+---
+>     "label-one": "value-one"
+2235c1197
+<   "location": "us-central1",
+---
+>   "location": "us-central1-a",
+2238c1200
+<   "requestedState": "JOB_STATE_CANCELLED",
+---
+>   "requestedState": 5,
+2240c1202
+<   "type": "JOB_TYPE_STREAMING"
+---
+>   "type": 2
+2245,2404c1207,1208
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "jobs": [
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_CANCELLED",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_RUNNING",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     },
+<     {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "currentState": "JOB_STATE_RUNNING",
+<       "currentStateTime": "2024-04-01T12:34:56.123456Z",
+<       "environment": {
+<         "sdkPipelineOptions": {
+<           "options": {
+<             "experiments": [
+<               "enable_stackdriver_agent_metrics"
+<             ],
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "machineType": "n1-standard-1",
+<             "maxNumWorkers": 3,
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<             "tempLocation": "gs://storagebucket-${uniqueId}/tmp",
+<             "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery",
+<             "zone": "us-central1-a"
+<           }
+<         },
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<         "tempStoragePrefix": "gs://storagebucket-${uniqueId}/tmp",
+<         "workerPools": [
+<           {
+<             "ipConfiguration": "WORKER_IP_PUBLIC",
+<             "kind": "harness",
+<             "machineType": "n1-standard-1",
+<             "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<             "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<           }
+<         ],
+<         "workerZone": "us-central1-a"
+<       },
+<       "id": "${jobID}",
+<       "labels": {
+<         "cnrm-test": "true",
+<         "label-one": "value-one",
+<         "managed-by-cnrm": "true"
+<       },
+<       "location": "us-central1",
+<       "name": "dataflowjob-${uniqueId}",
+<       "projectId": "${projectId}",
+<       "replaceJobId": "${jobID}",
+<       "startTime": "2024-04-01T12:34:56.123456Z",
+<       "type": "JOB_TYPE_STREAMING"
+<     }
+<   ]
+< }
+< 
+< ---
+< 
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+---
+> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1-a/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+> Content-Type: application/json
+2418c1222
+<   "currentState": "JOB_STATE_CANCELLED",
+---
+>   "currentState": 5,
+2429,2430c1233,1234
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+---
+>         "network": "projects/${projectId}/global/networks/${subnetworkID}",
+>         "serviceAccountEmail": "",
+2437d1240
+<     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+2445,2446c1248
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+---
+>     "label-one": "value-one"
+2448c1250
+<   "location": "us-central1",
+---
+>   "location": "us-central1-a",
+2452c1254
+<   "type": "JOB_TYPE_STREAMING"
+---
+>   "type": 2
