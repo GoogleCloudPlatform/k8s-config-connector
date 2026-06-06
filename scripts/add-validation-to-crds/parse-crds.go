@@ -348,6 +348,14 @@ oneOf:
 - required: [organizationRef]
 - required: [projectRef]
 `
+		} else if signature == "bigQueryDatasetRef,loggingLogBucketRef,pubSubTopicRef,storageBucketRef" && kind == "LoggingLogSink" {
+			ruleYAML = `
+oneOf:
+- required: [bigQueryDatasetRef]
+- required: [loggingLogBucketRef]
+- required: [pubSubTopicRef]
+- required: [storageBucketRef]
+`
 		} else if signature == "external,kind,name,namespace" {
 			ruleYAML = refRuleWithKind
 			// kind is optional for projectRef (and maybe in future other well-known ref types)
