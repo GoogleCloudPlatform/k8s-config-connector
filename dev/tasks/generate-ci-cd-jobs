@@ -73,7 +73,7 @@ EOF
 
   chmod +x ${REPO_ROOT}/dev/ci/periodics/e2e-service-${short}
 
-  if [[ "${short}" == "compute" ]]; then
+  if [[ "${short}" == "compute" || "${short}" == "gkehub" ]]; then
     cat > ${REPO_ROOT}/dev/ci/presubmits/tests-e2e-fixtures-${short} <<EOF
 #!/usr/bin/env bash
 # Copyright 2025 Google LLC
@@ -116,9 +116,9 @@ time go test -c -o \${PREBUILT_TEST_BINARY} ./tests/e2e
 echo "Building paralleltestrunner..."
 time go build -o \${REPO_ROOT}/.build/paralleltestrunner \${REPO_ROOT}/dev/tools/paralleltestrunner
 
-echo "Running compute fixtures tests in parallel..."
+echo "Running ${short} fixtures tests in parallel..."
 \${REPO_ROOT}/.build/paralleltestrunner \\
-    -list-file="\${REPO_ROOT}/tests/e2e/testdata/fixtures-compute-list.txt" \\
+    -list-file="\${REPO_ROOT}/tests/e2e/testdata/fixtures-${short}-list.txt" \\
     -j=4 \\
     -base-test="TestAllInSeries/fixtures" \\
     -check-unchanged=true \\
