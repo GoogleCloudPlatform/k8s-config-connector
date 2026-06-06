@@ -4,7 +4,7 @@ This skill guides an automated agent through adding a missing field to a GCP res
 
 ## Pre-requisites
 - Know the KCC API Group and Resource name.
-- Identify the missing field from the issue description or fuzzer output (e.g. `f.UnimplementedFields.Insert(".cross_instance_replication_config")`).
+- Identify the missing field from the issue description or fuzzer output (e.g. `f.Unimplemented_NotYetTriaged(".cross_instance_replication_config")`).
 
 ## Steps
 
