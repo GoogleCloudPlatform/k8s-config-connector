@@ -20,6 +20,7 @@ package muteconfig
 
 import (
 	securitycenterpb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securitycenter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -29,8 +30,8 @@ func init() {
 
 func securityCenterMuteConfigFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&securitycenterpb.MuteConfig{},
-		SecurityCenterMuteConfigSpec_FromProto, SecurityCenterMuteConfigSpec_ToProto,
-		SecurityCenterMuteConfigObservedState_FromProto, SecurityCenterMuteConfigObservedState_ToProto,
+		securitycenter.SecurityCenterMuteConfigSpec_FromProto, securitycenter.SecurityCenterMuteConfigSpec_ToProto,
+		securitycenter.SecurityCenterMuteConfigObservedState_FromProto, securitycenter.SecurityCenterMuteConfigObservedState_ToProto,
 	)
 
 	f.IdentityField(".name")

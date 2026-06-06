@@ -18,13 +18,11 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	gcp "cloud.google.com/go/securitycenter/apiv1"
 	securitycenterpb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
@@ -33,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securitycenter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -148,7 +147,7 @@ func (a *securityCenterMuteConfigAdapter) Create(ctx context.Context, createOp *
 	log.V(2).Info("creating SecurityCenterMuteConfig", "name", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	muteConfig := SecurityCenterMuteConfigSpec_ToProto(mapCtx, &a.desired.Spec)
+	muteConfig := securitycenter.SecurityCenterMuteConfigSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -167,7 +166,7 @@ func (a *securityCenterMuteConfigAdapter) Create(ctx context.Context, createOp *
 	log.V(2).Info("successfully created SecurityCenterMuteConfig", "name", a.id.String())
 
 	status := &krm.SecurityCenterMuteConfigStatus{}
-	status.ObservedState = SecurityCenterMuteConfigObservedState_FromProto(mapCtx, created)
+	status.ObservedState = securitycenter.SecurityCenterMuteConfigObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -180,14 +179,14 @@ func (a *securityCenterMuteConfigAdapter) Update(ctx context.Context, updateOp *
 	log.V(2).Info("updating SecurityCenterMuteConfig", "name", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	desiredProto := SecurityCenterMuteConfigSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredProto := securitycenter.SecurityCenterMuteConfigSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	desiredProto.Name = a.id.String()
 
 	if a.desired.Spec.Type != nil {
-		desiredType := MuteConfigType_ToProto(a.desired.Spec.Type)
+		desiredType := direct.Enum_ToProto[securitycenterpb.MuteConfig_MuteConfigType](mapCtx, a.desired.Spec.Type)
 		if desiredType != a.actual.Type {
 			return fmt.Errorf("type is immutable and cannot be updated from %s to %s", a.actual.Type, desiredType)
 		}
@@ -203,7 +202,7 @@ func (a *securityCenterMuteConfigAdapter) Update(ctx context.Context, updateOp *
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.SecurityCenterMuteConfigStatus{}
-		status.ObservedState = SecurityCenterMuteConfigObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = securitycenter.SecurityCenterMuteConfigObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -225,7 +224,7 @@ func (a *securityCenterMuteConfigAdapter) Update(ctx context.Context, updateOp *
 	}
 
 	status := &krm.SecurityCenterMuteConfigStatus{}
-	status.ObservedState = SecurityCenterMuteConfigObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = securitycenter.SecurityCenterMuteConfigObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -240,7 +239,7 @@ func (a *securityCenterMuteConfigAdapter) Export(ctx context.Context) (*unstruct
 	u := &unstructured.Unstructured{}
 
 	mapCtx := &direct.MapContext{}
-	spec := SecurityCenterMuteConfigSpec_FromProto(mapCtx, a.actual)
+	spec := securitycenter.SecurityCenterMuteConfigSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -277,107 +276,4 @@ func (a *securityCenterMuteConfigAdapter) Delete(ctx context.Context, deleteOp *
 	}
 	log.V(2).Info("successfully deleted SecurityCenterMuteConfig", "name", a.id.String())
 	return true, nil
-}
-
-func MuteConfigType_ToProto(s *string) securitycenterpb.MuteConfig_MuteConfigType {
-	if s == nil {
-		return securitycenterpb.MuteConfig_MUTE_CONFIG_TYPE_UNSPECIFIED
-	}
-	switch *s {
-	case "STATIC":
-		return securitycenterpb.MuteConfig_STATIC
-	case "DYNAMIC":
-		return securitycenterpb.MuteConfig_DYNAMIC
-	default:
-		return securitycenterpb.MuteConfig_MUTE_CONFIG_TYPE_UNSPECIFIED
-	}
-}
-
-func MuteConfigType_FromProto(t securitycenterpb.MuteConfig_MuteConfigType) *string {
-	var s string
-	switch t {
-	case securitycenterpb.MuteConfig_STATIC:
-		s = "STATIC"
-	case securitycenterpb.MuteConfig_DYNAMIC:
-		s = "DYNAMIC"
-	default:
-		s = "MUTE_CONFIG_TYPE_UNSPECIFIED"
-	}
-	return &s
-}
-
-func SecurityCenterMuteConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecurityCenterMuteConfigSpec) *securitycenterpb.MuteConfig {
-	if in == nil {
-		return nil
-	}
-	out := &securitycenterpb.MuteConfig{}
-	if in.Description != nil {
-		out.Description = *in.Description
-	}
-	if in.Filter != nil {
-		out.Filter = *in.Filter
-	}
-	out.Type = MuteConfigType_ToProto(in.Type)
-	if in.ExpiryTime != nil {
-		out.ExpiryTime = StringTimestamp_ToProto(mapCtx, in.ExpiryTime)
-	}
-	return out
-}
-
-func SecurityCenterMuteConfigSpec_FromProto(mapCtx *direct.MapContext, in *securitycenterpb.MuteConfig) *krm.SecurityCenterMuteConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecurityCenterMuteConfigSpec{}
-	out.Description = &in.Description
-	out.Filter = &in.Filter
-	out.Type = MuteConfigType_FromProto(in.Type)
-	out.ExpiryTime = StringTimestamp_FromProto(mapCtx, in.ExpiryTime)
-	return out
-}
-
-func SecurityCenterMuteConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecurityCenterMuteConfigObservedState) *securitycenterpb.MuteConfig {
-	if in == nil {
-		return nil
-	}
-	out := &securitycenterpb.MuteConfig{}
-	out.CreateTime = StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	if in.MostRecentEditor != nil {
-		out.MostRecentEditor = *in.MostRecentEditor
-	}
-	return out
-}
-
-func SecurityCenterMuteConfigObservedState_FromProto(mapCtx *direct.MapContext, in *securitycenterpb.MuteConfig) *krm.SecurityCenterMuteConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecurityCenterMuteConfigObservedState{}
-	out.CreateTime = StringTimestamp_FromProto(mapCtx, in.CreateTime)
-	out.UpdateTime = StringTimestamp_FromProto(mapCtx, in.UpdateTime)
-	if in.MostRecentEditor != "" {
-		out.MostRecentEditor = &in.MostRecentEditor
-	}
-	return out
-}
-
-func StringTimestamp_FromProto(mapCtx *direct.MapContext, ts *timestamppb.Timestamp) *string {
-	if ts == nil {
-		return nil
-	}
-	formatted := ts.AsTime().Format(time.RFC3339Nano)
-	return &formatted
-}
-
-func StringTimestamp_ToProto(mapCtx *direct.MapContext, s *string) *timestamppb.Timestamp {
-	if s == nil {
-		return nil
-	}
-	t, err := time.Parse(time.RFC3339Nano, *s)
-	if err != nil {
-		mapCtx.Errorf("invalid timestamp %q", *s)
-	}
-	ts := timestamppb.New(t)
-	return ts
 }
