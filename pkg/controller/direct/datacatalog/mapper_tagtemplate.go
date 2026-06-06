@@ -79,3 +79,11 @@ func DataCatalogTagTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
 	return out
 }
+
+func DataCatalogTagTemplateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krmv1alpha1.DataCatalogTagTemplateSpec {
+	return DataCatalogTagTemplateSpec_FromProto(mapCtx, in)
+}
+
+func DataCatalogTagTemplateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagTemplateSpec) *pb.TagTemplate {
+	return DataCatalogTagTemplateSpec_ToProto(mapCtx, in)
+}
