@@ -213,6 +213,56 @@ func DatabaseMigrationMigrationJobSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.PerformanceConfig = MigrationJob_PerformanceConfig_ToProto(mapCtx, in.PerformanceConfig)
 	return out
 }
+func DatabaseMigrationPrivateConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.DatabaseMigrationPrivateConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatabaseMigrationPrivateConnectionObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	// MISSING: VPCPeeringConfig
+	return out
+}
+func DatabaseMigrationPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseMigrationPrivateConnectionObservedState) *pb.PrivateConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateConnection{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.PrivateConnection_State](mapCtx, in.State)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	// MISSING: VPCPeeringConfig
+	return out
+}
+func DatabaseMigrationPrivateConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.DatabaseMigrationPrivateConnectionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatabaseMigrationPrivateConnectionSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: VPCPeeringConfig
+	// (near miss): "VPCPeeringConfig" vs "VpcPeeringConfig"
+	return out
+}
+func DatabaseMigrationPrivateConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseMigrationPrivateConnectionSpec) *pb.PrivateConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateConnection{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: VPCPeeringConfig
+	// (near miss): "VPCPeeringConfig" vs "VpcPeeringConfig"
+	return out
+}
 func DatabaseType_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseType) *krm.DatabaseType {
 	if in == nil {
 		return nil
@@ -343,5 +393,23 @@ func VPCPeeringConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.VPCPeerin
 	if in.VPCRef != nil {
 		out.Vpc = in.VPCRef.External
 	}
+	return out
+}
+func VpcPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConfig) *krm.VpcPeeringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VpcPeeringConfig{}
+	// MISSING: VPCName
+	out.Subnet = direct.LazyPtr(in.GetSubnet())
+	return out
+}
+func VpcPeeringConfig_ToProto(mapCtx *direct.MapContext, in *krm.VpcPeeringConfig) *pb.VpcPeeringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpcPeeringConfig{}
+	// MISSING: VPCName
+	out.Subnet = direct.ValueOf(in.Subnet)
 	return out
 }

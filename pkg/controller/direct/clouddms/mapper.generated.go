@@ -27,7 +27,6 @@ import (
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddms/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	krmdatamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datamigration/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -228,56 +227,6 @@ func DatabaseEngineInfo_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseEngin
 	out := &pb.DatabaseEngineInfo{}
 	out.Engine = direct.Enum_ToProto[pb.DatabaseEngine](mapCtx, in.Engine)
 	out.Version = direct.ValueOf(in.Version)
-	return out
-}
-func DatabaseMigrationPrivateConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krmdatamigrationv1alpha1.DatabaseMigrationPrivateConnectionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmdatamigrationv1alpha1.DatabaseMigrationPrivateConnectionObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
-	// MISSING: VPCPeeringConfig
-	return out
-}
-func DatabaseMigrationPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.DatabaseMigrationPrivateConnectionObservedState) *pb.PrivateConnection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrivateConnection{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.State = direct.Enum_ToProto[pb.PrivateConnection_State](mapCtx, in.State)
-	out.Error = direct.Status_ToProto(mapCtx, in.Error)
-	// MISSING: VPCPeeringConfig
-	return out
-}
-func DatabaseMigrationPrivateConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krmdatamigrationv1alpha1.DatabaseMigrationPrivateConnectionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmdatamigrationv1alpha1.DatabaseMigrationPrivateConnectionSpec{}
-	// MISSING: Name
-	out.Labels = in.Labels
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: VPCPeeringConfig
-	// (near miss): "VPCPeeringConfig" vs "VpcPeeringConfig"
-	return out
-}
-func DatabaseMigrationPrivateConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krmdatamigrationv1alpha1.DatabaseMigrationPrivateConnectionSpec) *pb.PrivateConnection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrivateConnection{}
-	// MISSING: Name
-	out.Labels = in.Labels
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: VPCPeeringConfig
-	// (near miss): "VPCPeeringConfig" vs "VpcPeeringConfig"
 	return out
 }
 func DatabaseType_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseType) *krm.DatabaseType {

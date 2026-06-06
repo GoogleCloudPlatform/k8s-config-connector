@@ -33,6 +33,7 @@ type DatamigrationV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DatabaseMigrationConversionWorkspacesGetter
 	DatabaseMigrationMigrationJobsGetter
+	DatabaseMigrationPrivateConnectionsGetter
 }
 
 // DatamigrationV1alpha1Client is used to interact with features provided by the datamigration.cnrm.cloud.google.com group.
@@ -46,6 +47,10 @@ func (c *DatamigrationV1alpha1Client) DatabaseMigrationConversionWorkspaces(name
 
 func (c *DatamigrationV1alpha1Client) DatabaseMigrationMigrationJobs(namespace string) DatabaseMigrationMigrationJobInterface {
 	return newDatabaseMigrationMigrationJobs(c, namespace)
+}
+
+func (c *DatamigrationV1alpha1Client) DatabaseMigrationPrivateConnections(namespace string) DatabaseMigrationPrivateConnectionInterface {
+	return newDatabaseMigrationPrivateConnections(c, namespace)
 }
 
 // NewForConfig creates a new DatamigrationV1alpha1Client for the given config.

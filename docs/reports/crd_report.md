@@ -216,6 +216,7 @@
 | contentwarehouse.cnrm.cloud.google.com        | ContentWarehouseSchema                          | True         | False       | False  | Direct     | True        |
 | datamigration.cnrm.cloud.google.com           | DatabaseMigrationConversionWorkspace            | True         | False       | False  | Direct     | True        |
 | datamigration.cnrm.cloud.google.com           | DatabaseMigrationMigrationJob                   | True         | False       | False  | Direct     | True        |
+| datamigration.cnrm.cloud.google.com           | DatabaseMigrationPrivateConnection              | True         | False       | False  | Direct     | True        |
 | datacatalog.cnrm.cloud.google.com             | DataCatalogEntry                                | True         | False       | False  | Direct     | True        |
 | datacatalog.cnrm.cloud.google.com             | DataCatalogEntryGroup                           | True         | False       | False  | Direct     | True        |
 | datacatalog.cnrm.cloud.google.com             | DataCatalogPolicyTag                            | False        | True        | False  | Terraform  | True        |
