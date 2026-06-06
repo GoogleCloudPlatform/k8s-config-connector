@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -48,6 +48,7 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 	// +required
 	Location *string `json:"location"`
 
+	// Immutable.
 	// The PrivilegedAccessManagerEntitlement name. If not given, the
 	// 'metadata.name' will be used.
 	// +optional
@@ -107,7 +108,7 @@ type PrivilegedAccessManagerEntitlementStatus struct {
 
 // PrivilegedAccessManagerEntitlementSpec defines the desired state of
 // PrivilegedAccessManagerEntitlement.
-// +kcc:observedstate:proto=google.privilegedaccessmanager.v1.Entitlement
+// +kcc:observedstate:proto=google.cloud.privilegedaccessmanager.v1.Entitlement
 type PrivilegedAccessManagerEntitlementObservedState struct {
 	// Output only. Create time stamp.
 	// +optional
@@ -145,6 +146,8 @@ type PrivilegedAccessManagerEntitlementObservedState struct {
 // PrivilegedAccessManagerEntitlement is the Schema for the
 // PrivilegedAccessManagerEntitlement API.
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type PrivilegedAccessManagerEntitlement struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
