@@ -28,7 +28,7 @@ import (
 var _ identity.Identity = &TableIdentity{}
 
 const (
-	TableIDURL = krmv1alpha1.CatalogIDURL + "/tables/{{tableID}}"
+	TableIDURL = "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}/tables/{{tableID}}"
 )
 
 // TableIdentity is the identity of a BigLakeTable.
