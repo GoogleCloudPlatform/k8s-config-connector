@@ -592,7 +592,6 @@
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.httpsHealthCheck.requestPath" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.httpsHealthCheck.response" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.enable" is not set in unstructured objects
-[missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceRegions[]" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sslHealthCheck.port" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sslHealthCheck.portName" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sslHealthCheck.portSpecification" is not set in unstructured objects
