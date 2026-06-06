@@ -19,7 +19,6 @@ import (
 
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -79,54 +78,6 @@ func CleanupPolicies_ToProto(mapCtx *direct.MapContext, in []krm.CleanupPolicy) 
 		if p != nil {
 			out[id] = p
 		}
-	}
-	return out
-}
-
-func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositorySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ArtifactRegistryRepositorySpec{}
-	out.MavenConfig = Repository_MavenRepositoryConfig_FromProto(mapCtx, in.GetMavenConfig())
-	out.DockerConfig = Repository_DockerRepositoryConfig_FromProto(mapCtx, in.GetDockerConfig())
-	out.VirtualRepositoryConfig = ArtifactRegistryRepositoryVirtualRepositoryConfig_FromProto(mapCtx, in.GetVirtualRepositoryConfig())
-	out.RemoteRepositoryConfig = ArtifactRegistryRepositoryRemoteRepositoryConfig_FromProto(mapCtx, in.GetRemoteRepositoryConfig())
-	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
-	out.CleanupPolicies = CleanupPolicies_FromProto(mapCtx, in.GetCleanupPolicies())
-	out.CleanupPolicyDryRun = direct.LazyPtr(in.GetCleanupPolicyDryRun())
-	if in.GetKmsKeyName() != "" {
-		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
-	}
-	return out
-}
-
-func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositorySpec) *pb.Repository {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Repository{}
-	if oneof := Repository_MavenRepositoryConfig_ToProto(mapCtx, in.MavenConfig); oneof != nil {
-		out.FormatConfig = &pb.Repository_MavenConfig{MavenConfig: oneof}
-	}
-	if oneof := Repository_DockerRepositoryConfig_ToProto(mapCtx, in.DockerConfig); oneof != nil {
-		out.FormatConfig = &pb.Repository_DockerConfig{DockerConfig: oneof}
-	}
-	if oneof := ArtifactRegistryRepositoryVirtualRepositoryConfig_ToProto(mapCtx, in.VirtualRepositoryConfig); oneof != nil {
-		out.ModeConfig = &pb.Repository_VirtualRepositoryConfig{VirtualRepositoryConfig: oneof}
-	}
-	if oneof := ArtifactRegistryRepositoryRemoteRepositoryConfig_ToProto(mapCtx, in.RemoteRepositoryConfig); oneof != nil {
-		out.ModeConfig = &pb.Repository_RemoteRepositoryConfig{RemoteRepositoryConfig: oneof}
-	}
-	out.Format = direct.Enum_ToProto[pb.Repository_Format](mapCtx, in.Format)
-	out.Description = direct.ValueOf(in.Description)
-	out.Mode = direct.Enum_ToProto[pb.Repository_Mode](mapCtx, in.Mode)
-	out.CleanupPolicies = CleanupPolicies_ToProto(mapCtx, in.CleanupPolicies)
-	out.CleanupPolicyDryRun = direct.ValueOf(in.CleanupPolicyDryRun)
-	if in.KmsKeyRef != nil {
-		out.KmsKeyName = in.KmsKeyRef.External
 	}
 	return out
 }
