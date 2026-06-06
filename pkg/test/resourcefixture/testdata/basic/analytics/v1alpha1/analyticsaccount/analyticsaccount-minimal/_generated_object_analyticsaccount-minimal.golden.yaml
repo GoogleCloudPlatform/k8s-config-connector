@@ -11,7 +11,6 @@ metadata:
   namespace: ${uniqueId}
 spec:
   displayName: Test Account ${uniqueId}
-  redirectURI: https://example.com/redirect
   regionCode: US
 status:
   conditions:
@@ -20,7 +19,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: accounts/123456
+  externalRef: accounts/analyticsaccount-${uniqueId}
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"

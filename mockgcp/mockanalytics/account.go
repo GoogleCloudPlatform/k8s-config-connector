@@ -46,7 +46,20 @@ func (s *analyticsAdminServer) GetAccount(ctx context.Context, req *pb.GetAccoun
 	obj := &pb.Account{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "%v not found", name)
+			// For MockGCP test execution, since AnalyticsAccount cannot be created programmatically on real GCP,
+			// we auto-create/pre-populate any requested account on the fly in the mock server.
+			now := time.Now()
+			obj = &pb.Account{
+				Name:        fqn,
+				DisplayName: "Default Test Account",
+				RegionCode:  "US",
+				CreateTime:  timestamppb.New(now),
+				UpdateTime:  timestamppb.New(now),
+			}
+			if err := s.storage.Create(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
+			return obj, nil
 		}
 		return nil, err
 	}

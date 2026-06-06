@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -30,32 +30,36 @@ var (
 	_ identity.Resource   = &AnalyticsAccount{}
 )
 
-var AccountIdentityFormat = gcpurls.Template[AccountIdentity]("analyticsadmin.googleapis.com", "accounts/{account}")
-
 // +k8s:deepcopy-gen=false
 type AccountIdentity struct {
 	Account string
 }
 
 func (i *AccountIdentity) String() string {
-	return AccountIdentityFormat.ToString(*i)
+	if i.Account == "" {
+		return ""
+	}
+	if strings.HasPrefix(i.Account, "accounts/") {
+		return i.Account
+	}
+	return "accounts/" + i.Account
 }
 
 func (i *AccountIdentity) FromExternal(ref string) error {
-	parsed, match, err := AccountIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of AnalyticsAccount external=%q was not known (use %s): %w", ref, AccountIdentityFormat.CanonicalForm(), err)
+	if !strings.HasPrefix(ref, "accounts/") {
+		return fmt.Errorf("format of AnalyticsAccount external=%q was not known (use accounts/{{accountID}})", ref)
 	}
-	if !match {
-		return fmt.Errorf("format of AnalyticsAccount external=%q was not known (use %s)", ref, AccountIdentityFormat.CanonicalForm())
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != 2 || tokens[0] != "accounts" || tokens[1] == "" {
+		return fmt.Errorf("format of AnalyticsAccount external=%q was not known (use accounts/{{accountID}})", ref)
 	}
 
-	*i = *parsed
+	i.Account = tokens[1]
 	return nil
 }
 
 func (i *AccountIdentity) Host() string {
-	return AccountIdentityFormat.Host()
+	return "analyticsadmin.googleapis.com"
 }
 
 func (i *AccountIdentity) ExternalIdentifier() *string {

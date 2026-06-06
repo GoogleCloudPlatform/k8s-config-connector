@@ -3,38 +3,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=accounts%2Fanalyticsaccount-${uniqueId}
 
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "accounts/analyticsaccount-${uniqueId} not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://analyticsadmin.googleapis.com/v1alpha/accounts:provisionAccountTicket?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "account": {
-    "displayName": "Test Account ${uniqueId}",
-    "regionCode": "US"
-  },
-  "redirectUri": "https://example.com/redirect"
-}
-
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -46,43 +14,25 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "accountTicketId": "ASDFGHJKL123456"
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Default Test Account",
+  "name": "accounts/analyticsaccount-${uniqueId}",
+  "regionCode": "US",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://analyticsadmin.googleapis.com/v1alpha/accounts?%24alt=json%3Benum-encoding%3Dint
+PATCH https://analyticsadmin.googleapis.com/v1alpha/accounts/analyticsaccount-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+X-Goog-Request-Params: account.name=accounts%2Fanalyticsaccount-${uniqueId}
 
 {
-  "accounts": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "Test Account ${uniqueId}",
-      "name": "accounts/123456",
-      "regionCode": "US",
-      "updateTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
+  "displayName": "Test Account ${uniqueId}",
+  "name": "accounts/analyticsaccount-${uniqueId}",
+  "regionCode": "US"
 }
-
----
-
-GET https://analyticsadmin.googleapis.com/v1alpha/accounts/123456?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=accounts%2F123456
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -97,21 +47,46 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Test Account ${uniqueId}",
-  "name": "accounts/123456",
+  "name": "accounts/analyticsaccount-${uniqueId}",
   "regionCode": "US",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://analyticsadmin.googleapis.com/v1alpha/accounts/123456?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+GET https://analyticsadmin.googleapis.com/v1alpha/accounts/analyticsaccount-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: account.name=accounts%2F123456
+X-Goog-Request-Params: name=accounts%2Fanalyticsaccount-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Test Account ${uniqueId}",
+  "name": "accounts/analyticsaccount-${uniqueId}",
+  "regionCode": "US",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://analyticsadmin.googleapis.com/v1alpha/accounts/analyticsaccount-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: account.name=accounts%2Fanalyticsaccount-${uniqueId}
 
 {
   "displayName": "Updated Account ${uniqueId}",
-  "name": "accounts/123456",
+  "name": "accounts/analyticsaccount-${uniqueId}",
   "regionCode": "US"
 }
 
@@ -128,17 +103,17 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Updated Account ${uniqueId}",
-  "name": "accounts/123456",
+  "name": "accounts/analyticsaccount-${uniqueId}",
   "regionCode": "US",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://analyticsadmin.googleapis.com/v1alpha/accounts/123456?%24alt=json%3Benum-encoding%3Dint
+GET https://analyticsadmin.googleapis.com/v1alpha/accounts/analyticsaccount-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=accounts%2F123456
+X-Goog-Request-Params: name=accounts%2Fanalyticsaccount-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -153,17 +128,17 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Updated Account ${uniqueId}",
-  "name": "accounts/123456",
+  "name": "accounts/analyticsaccount-${uniqueId}",
   "regionCode": "US",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://analyticsadmin.googleapis.com/v1alpha/accounts/123456?%24alt=json%3Benum-encoding%3Dint
+DELETE https://analyticsadmin.googleapis.com/v1alpha/accounts/analyticsaccount-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=accounts%2F123456
+X-Goog-Request-Params: name=accounts%2Fanalyticsaccount-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

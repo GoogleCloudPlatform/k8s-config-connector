@@ -65,13 +65,6 @@ spec:
               displayName:
                 description: Required. Human-readable display name for this account.
                 type: string
-              redirectURI:
-                description: Redirect URI where the user will be sent after accepting
-                  Terms of Service.
-                type: string
-                x-kubernetes-validations:
-                - message: RedirectURI field is immutable
-                  rule: self == oldSelf
               regionCode:
                 description: Country of business. Must be a Unicode CLDR region code.
                 type: string
@@ -82,7 +75,6 @@ spec:
                 type: string
             required:
             - displayName
-            - redirectURI
             - regionCode
             type: object
           status:

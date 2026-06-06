@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,15 +37,6 @@ type AnalyticsAccountSpec struct {
 	// +kcc:proto:field=google.analytics.admin.v1beta.Account.region_code
 	// +required
 	RegionCode *string `json:"regionCode,omitempty"`
-
-	// Got the following error if 'redirect_uri' field is empty when provisioning the ticket for account creation:
-	// rpc error: code = InvalidArgument desc = The value for the 'redirect_uri' field was empty, but must be provided.
-
-	// Redirect URI where the user will be sent after accepting Terms of Service.
-	// +kcc:proto:field=google.analytics.admin.v1beta.ProvisionAccountTicketRequest.redirect_uri
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="RedirectURI field is immutable"
-	// +required
-	RedirectURI *string `json:"redirectURI,omitempty"`
 }
 
 // AnalyticsAccountStatus defines the config connector machine state of AnalyticsAccount

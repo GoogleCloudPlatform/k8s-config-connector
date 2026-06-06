@@ -22,12 +22,10 @@ package analytics
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	gcp "cloud.google.com/go/analytics/admin/apiv1alpha"
 	pb "cloud.google.com/go/analytics/admin/apiv1alpha/adminpb"
-	"google.golang.org/api/iterator"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -114,24 +112,6 @@ func (a *accountAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting analytics account", "name", a.id)
 
 	if a.id.ID() == "" {
-		id, acc, err := a.discoverAccountID(ctx)
-		if err != nil {
-			return false, err
-		}
-		if id != "" {
-			if err := a.id.FromExternal(id); err != nil {
-				return false, err
-			}
-			a.actual = acc
-			return true, nil
-		}
-
-		if a.desired.Status.ObservedState != nil && a.desired.Status.ObservedState.AccountTicketID != nil {
-			log.V(2).Info("account ticket already provisioned, awaiting user acceptance and resourceID setting", "ticket", *a.desired.Status.ObservedState.AccountTicketID)
-			return true, nil
-		}
-
-		log.V(2).Info("no resource ID in get indicates the create intention", "name", a.id)
 		return false, nil
 	}
 
@@ -148,68 +128,9 @@ func (a *accountAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *accountAdapter) discoverAccountID(ctx context.Context) (string, *pb.Account, error) {
-	log := klog.FromContext(ctx)
-	req := &pb.ListAccountsRequest{}
-	it := a.gcpClient.ListAccounts(ctx, req)
-	for {
-		acc, err := it.Next()
-		if errors.Is(err, iterator.Done) {
-			break
-		}
-		if err != nil {
-			return "", nil, fmt.Errorf("listing analytics accounts: %w", err)
-		}
-		if acc.DisplayName == direct.ValueOf(a.desired.Spec.DisplayName) {
-			log.V(2).Info("automatically discovered analytics account ID via display name", "name", acc.Name)
-			return acc.Name, acc, nil
-		}
-	}
-	return "", nil, nil
-}
-
-// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Create is not supported for AnalyticsAccount because the Google Analytics Admin API does not support creating accounts programmatically without manual Terms of Service acceptance.
 func (a *accountAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("creating analytics account", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := AnalyticsAccountSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	req := &pb.ProvisionAccountTicketRequest{
-		Account:     resource,
-		RedirectUri: direct.ValueOf(desired.Spec.RedirectURI),
-	}
-	res, err := a.gcpClient.ProvisionAccountTicket(ctx, req)
-	if err != nil {
-		return fmt.Errorf("provisioning analytics account ticket %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully provisioned analytics account ticket", "name", a.id)
-
-	status := &krm.AnalyticsAccountStatus{}
-	status.ObservedState = AnalyticsAccountObservedState_FromAccountTicketID(mapCtx, res.AccountTicketId)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	// Try to discover the newly created account immediately (will succeed in mockgcp synchronously)
-	id, acc, err := a.discoverAccountID(ctx)
-	if err != nil {
-		log.Error(err, "error discovering account ID after provisioning ticket")
-	}
-	if id != "" {
-		status.ExternalRef = direct.LazyPtr(id)
-		status.ObservedState = AnalyticsAccountObservedState_FromProto(mapCtx, acc)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-	}
-
-	return createOp.UpdateStatus(ctx, status, nil)
+	return fmt.Errorf("AnalyticsAccount creation is not supported by the Google Analytics Admin API; accounts must be created/provisioned externally (e.g. via the Google Analytics UI), and then imported into Config Connector by specifying 'spec.resourceID' or relying on automatic mockgcp pre-population")
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -219,7 +140,7 @@ func (a *accountAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	mapCtx := &direct.MapContext{}
 
 	if a.id.ID() == "" {
-		// Awaiting TOS acceptance.
+		log.Info("account ID is empty, cannot update analytics account fields; awaiting resource ID or TOS acceptance")
 		status := &krm.AnalyticsAccountStatus{}
 		if a.desired.Status.ObservedState != nil {
 			status.ObservedState = a.desired.Status.ObservedState.DeepCopy()

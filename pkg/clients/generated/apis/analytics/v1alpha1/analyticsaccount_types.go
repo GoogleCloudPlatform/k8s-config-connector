@@ -42,9 +42,6 @@ type AnalyticsAccountSpec struct {
 	/* Required. Human-readable display name for this account. */
 	DisplayName string `json:"displayName"`
 
-	/* Redirect URI where the user will be sent after accepting Terms of Service. */
-	RedirectURI string `json:"redirectURI"`
-
 	/* Country of business. Must be a Unicode CLDR region code. */
 	RegionCode string `json:"regionCode"`
 
