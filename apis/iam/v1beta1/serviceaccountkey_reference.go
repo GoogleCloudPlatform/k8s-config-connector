@@ -63,6 +63,8 @@ func (r *ServiceAccountKeyRef) GetExternal() string {
 
 func (r *ServiceAccountKeyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ServiceAccountKeyRef) ValidateExternal(ref string) error {

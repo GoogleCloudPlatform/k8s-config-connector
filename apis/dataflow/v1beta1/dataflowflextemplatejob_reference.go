@@ -62,6 +62,8 @@ func (r *DataflowFlexTemplateJobRef) GetExternal() string {
 
 func (r *DataflowFlexTemplateJobRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *DataflowFlexTemplateJobRef) ValidateExternal(ref string) error {

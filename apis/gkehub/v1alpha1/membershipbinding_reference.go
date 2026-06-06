@@ -61,6 +61,8 @@ func (r *GKEHubMembershipBindingRef) GetExternal() string {
 
 func (r *GKEHubMembershipBindingRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *GKEHubMembershipBindingRef) ValidateExternal(ref string) error {

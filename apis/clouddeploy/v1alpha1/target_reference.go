@@ -55,6 +55,8 @@ func (r *CloudDeployTargetRef) GetExternal() string {
 
 func (r *CloudDeployTargetRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudDeployTargetRef) ValidateExternal(external string) error {

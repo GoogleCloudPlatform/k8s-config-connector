@@ -65,6 +65,8 @@ func (r *ComputeURLMapRef) GetExternal() string {
 
 func (r *ComputeURLMapRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeURLMapRef) ValidateExternal(ref string) error {

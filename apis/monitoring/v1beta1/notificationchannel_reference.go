@@ -61,6 +61,8 @@ func (r *MonitoringNotificationChannelRef) GetExternal() string {
 
 func (r *MonitoringNotificationChannelRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *MonitoringNotificationChannelRef) ValidateExternal(ref string) error {

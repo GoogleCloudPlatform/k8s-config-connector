@@ -64,6 +64,8 @@ func (r *RunServiceRef) GetExternal() string {
 
 func (r *RunServiceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *RunServiceRef) ValidateExternal(ref string) error {

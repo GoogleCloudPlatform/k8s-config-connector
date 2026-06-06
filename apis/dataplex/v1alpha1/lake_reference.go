@@ -61,6 +61,8 @@ func (r *LakeRef) GetExternal() string {
 
 func (r *LakeRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *LakeRef) ValidateExternal(ref string) error {

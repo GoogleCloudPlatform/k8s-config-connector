@@ -77,6 +77,8 @@ func (r *ComputeNetworkRef) GetExternal() string {
 
 func (r *ComputeNetworkRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeNetworkRef) ValidateExternal(ref string) error {

@@ -55,6 +55,8 @@ func (r *LoggingLinkRef) GetExternal() string {
 
 func (r *LoggingLinkRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *LoggingLinkRef) ValidateExternal(ref string) error {

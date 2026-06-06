@@ -61,6 +61,8 @@ func (r *NetworkServicesMeshRef) GetExternal() string {
 
 func (r *NetworkServicesMeshRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkServicesMeshRef) ValidateExternal(ref string) error {

@@ -67,6 +67,8 @@ func (r *BigQueryTableRef) GetExternal() string {
 // SetExternal sets the external reference.
 func (r *BigQueryTableRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 // ValidateExternal validates the external reference format.

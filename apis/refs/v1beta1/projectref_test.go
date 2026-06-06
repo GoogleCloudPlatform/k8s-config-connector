@@ -189,3 +189,20 @@ func TestResolveProject(t *testing.T) {
 		})
 	}
 }
+
+func TestProjectRef_SetExternal(t *testing.T) {
+	r := &ProjectRef{
+		Name:      "my-name",
+		Namespace: "my-namespace",
+	}
+	r.SetExternal("projects/my-project")
+	if r.External != "projects/my-project" {
+		t.Errorf("expected External to be %q, got %q", "projects/my-project", r.External)
+	}
+	if r.Name != "" {
+		t.Errorf("expected Name to be cleared, got %q", r.Name)
+	}
+	if r.Namespace != "" {
+		t.Errorf("expected Namespace to be cleared, got %q", r.Namespace)
+	}
+}

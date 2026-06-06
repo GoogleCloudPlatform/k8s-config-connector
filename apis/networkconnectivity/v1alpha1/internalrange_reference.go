@@ -61,6 +61,8 @@ func (r *InternalRangeRef) GetExternal() string {
 
 func (r *InternalRangeRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *InternalRangeRef) ValidateExternal(ref string) error {

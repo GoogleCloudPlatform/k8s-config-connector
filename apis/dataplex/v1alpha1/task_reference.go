@@ -62,6 +62,8 @@ func (r *TaskRef) GetExternal() string {
 
 func (r *TaskRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *TaskRef) ValidateExternal(ref string) error {

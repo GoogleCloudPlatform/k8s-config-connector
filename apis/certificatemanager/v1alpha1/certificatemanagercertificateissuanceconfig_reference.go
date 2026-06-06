@@ -61,6 +61,8 @@ func (r *CertificateManagerCertificateIssuanceConfigRef) GetExternal() string {
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) ValidateExternal(ref string) error {

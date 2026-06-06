@@ -64,6 +64,8 @@ func (r *SecurityCenterMuteConfigRef) GetExternal() string {
 
 func (r *SecurityCenterMuteConfigRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *SecurityCenterMuteConfigRef) ValidateExternal(external string) error {

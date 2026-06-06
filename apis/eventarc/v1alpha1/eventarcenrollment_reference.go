@@ -51,6 +51,8 @@ func (r *EventarcMessageBusRef) GetExternal() string {
 
 func (r *EventarcMessageBusRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *EventarcMessageBusRef) ValidateExternal(ref string) error {
@@ -97,6 +99,8 @@ func (r *EventarcPipelineRef) GetExternal() string {
 
 func (r *EventarcPipelineRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *EventarcPipelineRef) ValidateExternal(ref string) error {

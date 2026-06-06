@@ -60,6 +60,8 @@ func (r *JobRef) GetExternal() string {
 
 func (r *JobRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *JobRef) ValidateExternal(ref string) error {

@@ -57,6 +57,8 @@ func (r *ProjectRef) GetExternal() string {
 
 func (r *ProjectRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {

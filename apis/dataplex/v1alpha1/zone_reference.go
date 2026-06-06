@@ -62,6 +62,8 @@ func (r *ZoneRef) GetExternal() string {
 
 func (r *ZoneRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ZoneRef) ValidateExternal(ref string) error {

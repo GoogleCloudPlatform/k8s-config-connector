@@ -61,6 +61,8 @@ func (r *ClusterRef) GetExternal() string {
 
 func (r *ClusterRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ClusterRef) ValidateExternal(ref string) error {

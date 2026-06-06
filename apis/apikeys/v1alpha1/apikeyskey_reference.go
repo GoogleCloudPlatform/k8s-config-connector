@@ -61,6 +61,8 @@ func (r *APIKeysKeyRef) GetExternal() string {
 
 func (r *APIKeysKeyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *APIKeysKeyRef) ValidateExternal(ref string) error {

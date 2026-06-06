@@ -61,6 +61,8 @@ func (r *EntryGroupRef) GetExternal() string {
 
 func (r *EntryGroupRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *EntryGroupRef) ValidateExternal(ref string) error {

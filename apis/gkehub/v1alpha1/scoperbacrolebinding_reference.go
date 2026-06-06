@@ -70,6 +70,8 @@ func (r *GKEHubScopeRBACRoleBindingRef) GetExternal() string {
 // SetExternal sets the external string.
 func (r *GKEHubScopeRBACRoleBindingRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 // ValidateExternal validates the external string.

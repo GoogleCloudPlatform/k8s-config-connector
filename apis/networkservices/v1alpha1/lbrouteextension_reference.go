@@ -61,6 +61,8 @@ func (r *NetworkServicesLBRouteExtensionRef) GetExternal() string {
 
 func (r *NetworkServicesLBRouteExtensionRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkServicesLBRouteExtensionRef) ValidateExternal(ref string) error {

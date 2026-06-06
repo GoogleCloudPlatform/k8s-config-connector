@@ -56,6 +56,8 @@ func (r *BillingAccountRef) GetExternal() string {
 
 func (r *BillingAccountRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BillingAccountRef) ValidateExternal(ref string) error {

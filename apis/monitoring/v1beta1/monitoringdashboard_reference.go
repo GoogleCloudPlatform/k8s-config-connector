@@ -61,6 +61,8 @@ func (r *MonitoringDashboardRef) GetExternal() string {
 
 func (r *MonitoringDashboardRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *MonitoringDashboardRef) ValidateExternal(ref string) error {

@@ -67,6 +67,8 @@ func (r *CloudSecurityComplianceCloudControlRef) GetExternal() string {
 
 func (r *CloudSecurityComplianceCloudControlRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudSecurityComplianceCloudControlRef) ValidateExternal(ref string) error {

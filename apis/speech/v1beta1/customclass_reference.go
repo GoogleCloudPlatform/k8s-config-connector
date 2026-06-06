@@ -60,6 +60,8 @@ func (r *CustomClassRef) GetExternal() string {
 
 func (r *CustomClassRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CustomClassRef) ValidateExternal(ref string) error {

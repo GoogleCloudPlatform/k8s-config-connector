@@ -64,6 +64,8 @@ func (r *SecureSourceManagerInstanceRef) GetExternal() string {
 
 func (r *SecureSourceManagerInstanceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *SecureSourceManagerInstanceRef) ValidateExternal(ref string) error {

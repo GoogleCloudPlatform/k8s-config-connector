@@ -61,6 +61,8 @@ func (r *BigtableAppProfileRef) GetExternal() string {
 
 func (r *BigtableAppProfileRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BigtableAppProfileRef) ValidateExternal(ref string) error {

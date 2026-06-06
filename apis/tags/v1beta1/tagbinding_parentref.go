@@ -71,6 +71,8 @@ func (r *TagsTagBindingParentRef) GetExternal() string {
 
 func (r *TagsTagBindingParentRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *TagsTagBindingParentRef) ValidateExternal(ref string) error {
