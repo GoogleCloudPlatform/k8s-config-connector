@@ -157,13 +157,17 @@ func LoggingLogSinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogSink) *kr
 	dest := in.GetDestination()
 	if dest != "" {
 		if strings.HasPrefix(dest, "bigquery.googleapis.com/") {
-			out.Destination.BigQueryDatasetRef = &bigqueryv1beta1.DatasetRef{External: dest}
+			val := strings.TrimPrefix(dest, "bigquery.googleapis.com/")
+			out.Destination.BigQueryDatasetRef = &bigqueryv1beta1.DatasetRef{External: val}
 		} else if strings.HasPrefix(dest, "logging.googleapis.com/") {
-			out.Destination.LoggingLogBucketRef = &krm.LoggingLogBucketRef{External: dest}
+			val := strings.TrimPrefix(dest, "logging.googleapis.com/")
+			out.Destination.LoggingLogBucketRef = &krm.LoggingLogBucketRef{External: val}
 		} else if strings.HasPrefix(dest, "pubsub.googleapis.com/") {
-			out.Destination.PubSubTopicRef = &pubsubv1beta1.PubSubTopicRef{External: dest}
+			val := strings.TrimPrefix(dest, "pubsub.googleapis.com/")
+			out.Destination.PubSubTopicRef = &pubsubv1beta1.PubSubTopicRef{External: val}
 		} else if strings.HasPrefix(dest, "storage.googleapis.com/") {
-			out.Destination.StorageBucketRef = &storagev1beta1.StorageBucketRef{External: dest}
+			val := strings.TrimPrefix(dest, "storage.googleapis.com/")
+			out.Destination.StorageBucketRef = &storagev1beta1.StorageBucketRef{External: val}
 		}
 	}
 
@@ -201,13 +205,29 @@ func LoggingLogSinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogSin
 	}
 
 	if in.Destination.BigQueryDatasetRef != nil && in.Destination.BigQueryDatasetRef.External != "" {
-		out.Destination = in.Destination.BigQueryDatasetRef.External
+		ext := in.Destination.BigQueryDatasetRef.External
+		if !strings.HasPrefix(ext, "bigquery.googleapis.com/") {
+			ext = "bigquery.googleapis.com/" + ext
+		}
+		out.Destination = ext
 	} else if in.Destination.LoggingLogBucketRef != nil && in.Destination.LoggingLogBucketRef.External != "" {
-		out.Destination = in.Destination.LoggingLogBucketRef.External
+		ext := in.Destination.LoggingLogBucketRef.External
+		if !strings.HasPrefix(ext, "logging.googleapis.com/") {
+			ext = "logging.googleapis.com/" + ext
+		}
+		out.Destination = ext
 	} else if in.Destination.PubSubTopicRef != nil && in.Destination.PubSubTopicRef.External != "" {
-		out.Destination = in.Destination.PubSubTopicRef.External
+		ext := in.Destination.PubSubTopicRef.External
+		if !strings.HasPrefix(ext, "pubsub.googleapis.com/") {
+			ext = "pubsub.googleapis.com/" + ext
+		}
+		out.Destination = ext
 	} else if in.Destination.StorageBucketRef != nil && in.Destination.StorageBucketRef.External != "" {
-		out.Destination = in.Destination.StorageBucketRef.External
+		ext := in.Destination.StorageBucketRef.External
+		if !strings.HasPrefix(ext, "storage.googleapis.com/") {
+			ext = "storage.googleapis.com/" + ext
+		}
+		out.Destination = ext
 	}
 
 	if len(in.Exclusions) > 0 {
