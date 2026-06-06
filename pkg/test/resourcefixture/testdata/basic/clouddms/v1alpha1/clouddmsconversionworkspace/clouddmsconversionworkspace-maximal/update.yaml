@@ -1,0 +1,17 @@
+apiVersion: clouddms.cnrm.cloud.google.com/v1alpha1
+kind: CloudDMSConversionWorkspace
+metadata:
+  name: conversionworkspace-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  source:
+    engine: MYSQL
+    version: '5.7'
+  destination:
+    engine: POSTGRESQL
+    version: '15'
+  displayName: "Updated Conversion Workspace"
+  globalSettings:
+    convert_foreign_key_to_interleave: "false"

@@ -1,0 +1,14 @@
+apiVersion: clouddms.cnrm.cloud.google.com/v1alpha1
+kind: CloudDMSConversionWorkspace
+metadata:
+  name: conversionworkspace-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  source:
+    engine: MYSQL
+    version: '5.7'
+  destination:
+    engine: POSTGRESQL
+    version: '14'

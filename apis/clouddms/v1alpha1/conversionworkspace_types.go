@@ -55,6 +55,14 @@ type CloudDMSConversionWorkspaceSpec struct {
 	// Optional. The display name for the workspace.
 	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.display_name
 	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The database provider for the source database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.source_provider
+	SourceProvider *string `json:"sourceProvider,omitempty"`
+
+	// Optional. The database provider for the destination database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.destination_provider
+	DestinationProvider *string `json:"destinationProvider,omitempty"`
 }
 
 // CloudDMSConversionWorkspaceStatus defines the config connector machine state of CloudDMSConversionWorkspace
