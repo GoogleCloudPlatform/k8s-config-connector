@@ -27,12 +27,12 @@ import (
 var _ identity.Identity = &DatabaseIdentity{}
 
 const (
-	DatabaseIDURL = CatalogIDURL + "/databases/{{databaseID}}"
+	DatabaseIDURL = "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}/databases/{{databaseID}}"
 )
 
 // DatabaseIdentity is the identity of a BigLakeDatabase.
 type DatabaseIdentity struct {
-	parent *CatalogIdentity
+	parent *BigLakeCatalogIdentity
 	id     string
 }
 
@@ -44,7 +44,7 @@ func (i *DatabaseIdentity) ID() string {
 	return i.id
 }
 
-func (i *DatabaseIdentity) Parent() *CatalogIdentity {
+func (i *DatabaseIdentity) Parent() *BigLakeCatalogIdentity {
 	return i.parent
 }
 
@@ -53,7 +53,7 @@ func (i *DatabaseIdentity) FromExternal(ref string) error {
 	if len(tokens) != 2 {
 		return fmt.Errorf("format of BigLakeDatabase external=%q was not known (use %s)", ref, DatabaseIDURL)
 	}
-	i.parent = &CatalogIdentity{}
+	i.parent = &BigLakeCatalogIdentity{}
 	if err := i.parent.FromExternal(tokens[0]); err != nil {
 		return err
 	}
@@ -73,7 +73,7 @@ func (obj *BigLakeDatabase) GetIdentity(ctx context.Context, reader client.Reade
 	if err := obj.Spec.ParentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-	newIdentity.parent = &CatalogIdentity{}
+	newIdentity.parent = &BigLakeCatalogIdentity{}
 	if err := newIdentity.parent.FromExternal(obj.Spec.ParentRef.GetExternal()); err != nil {
 		return nil, fmt.Errorf("parsing parentRef.external=%q: %w", obj.Spec.ParentRef.GetExternal(), err)
 	}

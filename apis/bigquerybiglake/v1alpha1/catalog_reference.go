@@ -17,13 +17,16 @@ package v1alpha1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &BigQueryBigLakeCatalogRef{}
+var _ refs.Ref = &BigQueryBigLakeCatalogRef{}
 
 // BigQueryBigLakeCatalogRef is a reference to a BigQueryBigLakeCatalog resource.
 type BigQueryBigLakeCatalogRef struct {
@@ -36,6 +39,10 @@ type BigQueryBigLakeCatalogRef struct {
 
 	// The namespace of a BigQueryBigLakeCatalog resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&BigQueryBigLakeCatalogRef{})
 }
 
 func (r *BigQueryBigLakeCatalogRef) GetGVK() schema.GroupVersionKind {
@@ -60,13 +67,32 @@ func (r *BigQueryBigLakeCatalogRef) SetExternal(ref string) {
 }
 
 func (r *BigQueryBigLakeCatalogRef) ValidateExternal(ref string) error {
-	id := &CatalogIdentity{}
+	id := &BigLakeCatalogIdentity{}
 	if err := id.FromExternal(r.GetExternal()); err != nil {
 		return err
 	}
 	return nil
 }
 
+func (r *BigQueryBigLakeCatalogRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &BigLakeCatalogIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
 func (r *BigQueryBigLakeCatalogRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*BigLakeCatalog](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromBigLakeCatalogSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
