@@ -111,6 +111,12 @@ spec:
                             to be health checked. These can be specified along with
                             `rrdatas` within this item.
                           properties:
+                            externalEndpoints:
+                              description: The Internet IP addresses to be health
+                                checked.
+                              items:
+                                type: string
+                              type: array
                             internalLoadBalancers:
                               description: The list of internal load balancers to
                                 health check.
@@ -262,8 +268,6 @@ spec:
                                 - projectRef
                                 type: object
                               type: array
-                          required:
-                          - internalLoadBalancers
                           type: object
                         location:
                           description: The location name defined in Google Cloud.
@@ -306,6 +310,33 @@ spec:
                       - location
                       type: object
                     type: array
+                  healthCheckRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeHealthCheck`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   primaryBackup:
                     description: The configuration for a primary-backup policy with
                       global to regional failover. Queries are responded to with the
@@ -322,6 +353,12 @@ spec:
                                 targets to be health checked. These can be specified
                                 along with `rrdatas` within this item.
                               properties:
+                                externalEndpoints:
+                                  description: The Internet IP addresses to be health
+                                    checked.
+                                  items:
+                                    type: string
+                                  type: array
                                 internalLoadBalancers:
                                   description: The list of internal load balancers
                                     to health check.
@@ -475,8 +512,6 @@ spec:
                                     - projectRef
                                     type: object
                                   type: array
-                              required:
-                              - internalLoadBalancers
                               type: object
                             location:
                               description: The location name defined in Google Cloud.
@@ -528,6 +563,11 @@ spec:
                         description: The list of global primary targets to be health
                           checked.
                         properties:
+                          externalEndpoints:
+                            description: The Internet IP addresses to be health checked.
+                            items:
+                              type: string
+                            type: array
                           internalLoadBalancers:
                             description: The list of internal load balancers to health
                               check.
@@ -676,8 +716,6 @@ spec:
                               - projectRef
                               type: object
                             type: array
-                        required:
-                        - internalLoadBalancers
                         type: object
                       trickleRatio:
                         description: Specifies the percentage of traffic to send to
@@ -697,6 +735,12 @@ spec:
                             that if DNSSEC is enabled for this zone, only one of `rrdatas`
                             or `health_checked_targets` can be set.
                           properties:
+                            externalEndpoints:
+                              description: The Internet IP addresses to be health
+                                checked.
+                              items:
+                                type: string
+                              type: array
                             internalLoadBalancers:
                               description: The list of internal load balancers to
                                 health check.
@@ -848,8 +892,6 @@ spec:
                                 - projectRef
                                 type: object
                               type: array
-                          required:
-                          - internalLoadBalancers
                           type: object
                         rrdatasRefs:
                           items:

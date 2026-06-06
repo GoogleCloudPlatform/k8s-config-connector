@@ -1,0 +1,579 @@
+GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "managedZone \"projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "managedZone \"projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Managed by Config Connector",
+  "dnsName": "cnrm-dns-example-${uniqueId}.com.",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "dnsmanagedzone-${uniqueId}",
+  "privateVisibilityConfig": {
+    "networks": []
+  },
+  "visibility": "public"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudLoggingConfig": {
+    "kind": "dns#managedZoneCloudLoggingConfig"
+  },
+  "creationTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Managed by Config Connector",
+  "dnsName": "cnrm-dns-example-${uniqueId}.com.",
+  "id": "000000000000000000000",
+  "kind": "dns#managedZone",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "dnsmanagedzone-${uniqueId}",
+  "nameServers": [
+    "ns-cloud-a1.googledomains.com.",
+    "ns-cloud-a2.googledomains.com.",
+    "ns-cloud-a3.googledomains.com.",
+    "ns-cloud-a4.googledomains.com."
+  ],
+  "privateVisibilityConfig": {},
+  "visibility": "public"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudLoggingConfig": {
+    "kind": "dns#managedZoneCloudLoggingConfig"
+  },
+  "creationTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Managed by Config Connector",
+  "dnsName": "cnrm-dns-example-${uniqueId}.com.",
+  "id": "000000000000000000000",
+  "kind": "dns#managedZone",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "dnsmanagedzone-${uniqueId}",
+  "nameServers": [
+    "ns-cloud-a1.googledomains.com.",
+    "ns-cloud-a2.googledomains.com.",
+    "ns-cloud-a3.googledomains.com.",
+    "ns-cloud-a4.googledomains.com."
+  ],
+  "privateVisibilityConfig": {},
+  "visibility": "public"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/rrsets?alt=json&name=cnrm-dns-example-${uniqueId}.com.&prettyPrint=false&type=AAAA
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "dns#resourceRecordSetsListResponse"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/rrsets?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "dns#resourceRecordSetsListResponse",
+  "rrsets": [
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "ns-cloud-c1.googledomains.com.",
+        "ns-cloud-c2.googledomains.com.",
+        "ns-cloud-c3.googledomains.com.",
+        "ns-cloud-c4.googledomains.com."
+      ],
+      "ttl": 21600,
+      "type": "NS"
+    },
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "ns-cloud-c1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "ttl": 21600,
+      "type": "SOA"
+    }
+  ]
+}
+
+---
+
+POST https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "additions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "7777:7777:7777:7777::",
+        "8888:8888:8888:8888::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "7777:7777:7777:7777::",
+        "8888:8888:8888:8888::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "dns#change",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "7777:7777:7777:7777::",
+        "8888:8888:8888:8888::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "dns#change",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/rrsets?alt=json&name=cnrm-dns-example-${uniqueId}.com.&prettyPrint=false&type=AAAA
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "dns#resourceRecordSetsListResponse",
+  "rrsets": [
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "7777:7777:7777:7777::",
+        "8888:8888:8888:8888::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ]
+}
+
+---
+
+POST https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "additions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8888:8888:8888:8888::",
+        "9999:9999:9999:9999::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ],
+  "deletions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "7777:7777:7777:7777::",
+        "8888:8888:8888:8888::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8888:8888:8888:8888::",
+        "9999:9999:9999:9999::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ],
+  "deletions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "7777:7777:7777:7777::",
+        "8888:8888:8888:8888::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "dns#change",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8888:8888:8888:8888::",
+        "9999:9999:9999:9999::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ],
+  "deletions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "7777:7777:7777:7777::",
+        "8888:8888:8888:8888::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "dns#change",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/rrsets?alt=json&name=cnrm-dns-example-${uniqueId}.com.&prettyPrint=false&type=AAAA
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "dns#resourceRecordSetsListResponse",
+  "rrsets": [
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8888:8888:8888:8888::",
+        "9999:9999:9999:9999::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ]
+}
+
+---
+
+POST https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "deletions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8888:8888:8888:8888::",
+        "9999:9999:9999:9999::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deletions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8888:8888:8888:8888::",
+        "9999:9999:9999:9999::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "dns#change",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deletions": [
+    {
+      "name": "cnrm-dns-example-${uniqueId}.com.",
+      "rrdatas": [
+        "8888:8888:8888:8888::",
+        "9999:9999:9999:9999::"
+      ],
+      "ttl": 300,
+      "type": "AAAA"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "dns#change",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudLoggingConfig": {
+    "kind": "dns#managedZoneCloudLoggingConfig"
+  },
+  "creationTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Managed by Config Connector",
+  "dnsName": "cnrm-dns-example-${uniqueId}.com.",
+  "id": "000000000000000000000",
+  "kind": "dns#managedZone",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "dnsmanagedzone-${uniqueId}",
+  "nameServers": [
+    "ns-cloud-a1.googledomains.com.",
+    "ns-cloud-a2.googledomains.com.",
+    "ns-cloud-a3.googledomains.com.",
+    "ns-cloud-a4.googledomains.com."
+  ],
+  "privateVisibilityConfig": {},
+  "visibility": "public"
+}
+
+---
+
+DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

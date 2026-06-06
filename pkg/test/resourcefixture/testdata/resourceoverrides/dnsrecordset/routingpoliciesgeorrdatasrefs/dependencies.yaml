@@ -18,11 +18,9 @@ metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  name: default
+  name: network-${uniqueId}
 spec:
-  description: Default network for the project
+  description: A test network for dns recordset E2E
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
@@ -39,7 +37,7 @@ spec:
   purpose: VPC_PEERING
   prefixLength: 16
   networkRef:
-    name: default
+    name: network-${uniqueId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
@@ -56,7 +54,7 @@ spec:
   purpose: VPC_PEERING
   prefixLength: 16
   networkRef:
-    name: default
+    name: network-${uniqueId}
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
@@ -71,4 +69,4 @@ spec:
   privateVisibilityConfig:
     networks:
       - networkRef:
-          name: default
+          name: network-${uniqueId}

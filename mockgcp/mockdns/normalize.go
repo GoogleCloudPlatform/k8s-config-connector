@@ -15,6 +15,7 @@
 package mockdns
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -41,6 +42,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.ReplacePath(".zoneContext.newValue.creationTime", mockgcpregistry.PlaceholderTimestamp)
 		replacements.ReplacePath(".zoneContext.oldValue.creationTime", mockgcpregistry.PlaceholderTimestamp)
 	}
+
+	// DNS Change
+	{
+		replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".changes[].startTime", mockgcpregistry.PlaceholderTimestamp)
+	}
 }
 
 func isDNSAPI(url string) bool {
@@ -52,6 +59,29 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		return
 	}
 
+	u := event.URL()
+	// Extract changeId from URL path (e.g., .../changes/<changeId>)
+	var changeId string
+	if strings.Contains(u, "/changes/") {
+		tokens := strings.Split(strings.Split(u, "?")[0], "/")
+		for i, token := range tokens {
+			if token == "changes" && i+1 < len(tokens) {
+				tokenVal := tokens[i+1]
+				if tokenVal != "" && tokenVal != "000000000000000000000" {
+					changeId = tokenVal
+				}
+			}
+		}
+	}
+
+	if changeId != "" {
+		replacements.TransformString("{url}", func(s string) string {
+			re := regexp.MustCompile(`/changes/` + regexp.QuoteMeta(changeId) + `([/?:]|$)`)
+			return re.ReplaceAllString(s, `/changes/${changeId}$1`)
+		})
+		replacements.ReplaceStringValue(changeId, "${changeId}")
+	}
+
 	parentToKind := make(map[string]string)
 
 	event.VisitResponseStringValues(func(path string, value string) {
@@ -61,6 +91,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		}
 	})
 
+	var responseChangeId string
 	event.VisitResponseStringValues(func(path string, value string) {
 		if strings.HasSuffix(path, ".id") {
 			parent := strings.TrimSuffix(path, ".id")
@@ -74,7 +105,14 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				if kind == "dns#responsePolicy" {
 					replacements.ReplaceStringValue(value, "${dnsResponsePolicyId}")
 				}
+				if kind == "dns#change" && value != "000000000000000000000" {
+					responseChangeId = value
+				}
 			}
 		}
 	})
+
+	if responseChangeId != "" {
+		replacements.ReplaceStringValue(responseChangeId, "${changeId}")
+	}
 }
