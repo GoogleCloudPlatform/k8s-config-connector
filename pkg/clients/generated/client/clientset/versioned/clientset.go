@@ -86,6 +86,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
+	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1"
@@ -268,6 +269,7 @@ type Interface interface {
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
 	ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface
 	ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface
+	ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1alpha1() containeranalysisv1alpha1.ContaineranalysisV1alpha1Interface
 	ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface
@@ -448,6 +450,7 @@ type Clientset struct {
 	computeV1beta1                  *computev1beta1.ComputeV1beta1Client
 	configcontrollerV1beta1         *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
 	configdeliveryV1alpha1          *configdeliveryv1alpha1.ConfigdeliveryV1alpha1Client
+	contactcenterinsightsV1alpha1   *contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Client
 	containerV1beta1                *containerv1beta1.ContainerV1beta1Client
 	containeranalysisV1alpha1       *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
 	containeranalysisV1beta1        *containeranalysisv1beta1.ContaineranalysisV1beta1Client
@@ -867,6 +870,11 @@ func (c *Clientset) ConfigcontrollerV1beta1() configcontrollerv1beta1.Configcont
 // ConfigdeliveryV1alpha1 retrieves the ConfigdeliveryV1alpha1Client
 func (c *Clientset) ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface {
 	return c.configdeliveryV1alpha1
+}
+
+// ContactcenterinsightsV1alpha1 retrieves the ContactcenterinsightsV1alpha1Client
+func (c *Clientset) ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface {
+	return c.contactcenterinsightsV1alpha1
 }
 
 // ContainerV1beta1 retrieves the ContainerV1beta1Client
@@ -1727,6 +1735,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.contactcenterinsightsV1alpha1, err = contactcenterinsightsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.containerV1beta1, err = containerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2265,6 +2277,7 @@ func New(c rest.Interface) *Clientset {
 	cs.computeV1beta1 = computev1beta1.New(c)
 	cs.configcontrollerV1beta1 = configcontrollerv1beta1.New(c)
 	cs.configdeliveryV1alpha1 = configdeliveryv1alpha1.New(c)
+	cs.contactcenterinsightsV1alpha1 = contactcenterinsightsv1alpha1.New(c)
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1alpha1 = containeranalysisv1alpha1.New(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.New(c)

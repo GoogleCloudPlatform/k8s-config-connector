@@ -2760,6 +2760,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - contactcenterinsights.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - container.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4351,6 +4363,14 @@ rules:
   - watch
 - apiGroups:
   - configdelivery.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - contactcenterinsights.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

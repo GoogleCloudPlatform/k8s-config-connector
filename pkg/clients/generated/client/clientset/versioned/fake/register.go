@@ -83,6 +83,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configdelivery/v1alpha1"
+	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containeranalysis/v1alpha1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containeranalysis/v1beta1"
@@ -269,6 +270,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	computev1beta1.AddToScheme,
 	configcontrollerv1beta1.AddToScheme,
 	configdeliveryv1alpha1.AddToScheme,
+	contactcenterinsightsv1alpha1.AddToScheme,
 	containerv1beta1.AddToScheme,
 	containeranalysisv1alpha1.AddToScheme,
 	containeranalysisv1beta1.AddToScheme,
