@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,16 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package common
+package refs
 
 import (
 	"fmt"
 	"testing"
 )
 
-// TestFixStaleComputeExternalFormat tests the possible external formats
-// that the function is expected to handle.
-func TestFixStaleComputeExternalFormat(t *testing.T) {
+func TestTrimComputeURIPrefix(t *testing.T) {
 	const relativePath = "projects/projectId/location/us/resources/resourceId"
 
 	tests := []struct {
@@ -50,19 +48,14 @@ func TestFixStaleComputeExternalFormat(t *testing.T) {
 			expected: relativePath,
 		},
 		{
-			// Test passes with warning:
-			// WARNING: received Compute selfLink with unknown version otherVersion, accepted versions are v1, v1beta1 and beta.
-			// The output looks like `otherVersion/projects/projectId/location/us/resources/resourceId` and will fail the compute external format validation later.
 			name:     "external is full url(otherVersion)",
 			input:    fmt.Sprintf("https://www.googleapis.com/compute/otherVersion/%s", relativePath),
 			expected: fmt.Sprintf("otherVersion/%s", relativePath),
 		},
 		{
-			// Test passes.
-			// The output looks like `https://www.googleapis.com/storage/v1/bucket` and will fail the compute external format validation later.
 			name:     "external is full url but not compute",
 			input:    "https://www.googleapis.com/storage/v1/bucket",
-			expected: "https://www.googleapis.com/storage/v1/bucket",
+			expected: "storage/v1/bucket",
 		},
 		{
 			name:     "external is relative path with leading slash",
@@ -74,11 +67,31 @@ func TestFixStaleComputeExternalFormat(t *testing.T) {
 			input:    relativePath,
 			expected: relativePath,
 		},
+		{
+			name:     "external is compute.googleapis.com v1 url",
+			input:    fmt.Sprintf("https://compute.googleapis.com/compute/v1/%s", relativePath),
+			expected: relativePath,
+		},
+		{
+			name:     "external is http compute.googleapis.com v1 url",
+			input:    fmt.Sprintf("http://compute.googleapis.com/compute/v1/%s", relativePath),
+			expected: relativePath,
+		},
+		{
+			name:     "external is schematic double slash url",
+			input:    fmt.Sprintf("//compute.googleapis.com/compute/v1/%s", relativePath),
+			expected: relativePath,
+		},
+		{
+			name:     "external has compute/v1 prefix",
+			input:    fmt.Sprintf("compute/v1/%s", relativePath),
+			expected: relativePath,
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := FixStaleComputeExternalFormat(tt.input)
+			got := TrimComputeURIPrefix(tt.input)
 
 			if got != tt.expected {
 				t.Errorf("got: %q; want: %q", got, tt.expected)

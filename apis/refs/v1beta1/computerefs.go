@@ -24,22 +24,17 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-// fixStaleExternalFormat converts the "External" reference field to the right format if a SelfLink value is used.
-// This guarantees the backward compatibility for Compute Beta resources.
-func fixStaleExternalFormat(external string) string {
-	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1/")
-	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1beta1/")
-	external = strings.TrimPrefix(external, "/")
-	return external
-}
 
 // TrimComputeURIPrefix trims known GCP Compute Engine URL and URI prefixes
 // to normalize the resource path to projects/{{project}}/... format.
 // This is robust and ensures unknown values/prefixes are not silently ignored.
+//
+// Deprecated: use refs.TrimComputeURIPrefix instead.
 func TrimComputeURIPrefix(ref string) string {
+	// Standard compute prefixes
 	prefixes := []string{
 		"https://compute.googleapis.com/compute/v1/",
 		"https://compute.googleapis.com/compute/beta/",
@@ -68,12 +63,28 @@ func TrimComputeURIPrefix(ref string) string {
 		"compute/v1/",
 		"compute/beta/",
 		"compute/v1beta1/",
-		"/",
+		"/compute.googleapis.com/",
 	}
 	for _, prefix := range prefixes {
 		ref = strings.TrimPrefix(ref, prefix)
 	}
-	return ref
+
+	// Support the special handling from FixStaleComputeExternalFormat for unknown compute versions with warning
+	// For instance: https://www.googleapis.com/compute/otherVersion/projects/...
+	// If the string starts with compute/ (e.g. after trimming http://www.googleapis.com/ or https://www.googleapis.com/ etc.)
+	// "https://www.googleapis.com/" gets trimmed, leaving "compute/otherVersion/..."
+	tokens := strings.Split(ref, "/")
+	if len(tokens) > 1 && tokens[0] == "compute" {
+		version := tokens[1]
+		if version == "v1" || version == "v1beta1" || version == "beta" {
+			ref = strings.Join(tokens[2:], "/")
+		} else {
+			klog.Warningf("received Compute selfLink with unknown version %s, accepted versions are v1, v1beta1 and beta.", version)
+			ref = strings.Join(tokens[1:], "/")
+		}
+	}
+
+	return strings.TrimPrefix(ref, "/")
 }
 
 type ComputeSubnetworkRef struct {
@@ -94,7 +105,7 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 		if ref.Name != "" {
 			return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
 		}
-		ref.External = fixStaleExternalFormat(ref.External)
+		ref.External = TrimComputeURIPrefix(ref.External)
 
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
@@ -216,7 +227,7 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 		}
 	}
 
-	ref.External = fixStaleExternalFormat(ref.External)
+	ref.External = TrimComputeURIPrefix(ref.External)
 
 	tokens := strings.Split(ref.External, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "addresses" {
