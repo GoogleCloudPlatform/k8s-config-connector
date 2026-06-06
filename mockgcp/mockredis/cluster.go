@@ -198,6 +198,15 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 	if obj.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
 		obj.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
 	}
+	if obj.AutomatedBackupConfig != nil {
+		if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+			obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
+		}
+		if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_DISABLED {
+			obj.AutomatedBackupConfig.Schedule = nil
+			obj.AutomatedBackupConfig.Retention = nil
+		}
+	}
 	return nil
 }
 
@@ -251,6 +260,8 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.PersistenceConfig = req.Cluster.PersistenceConfig
 		case "redisConfigs":
 			obj.RedisConfigs = req.Cluster.RedisConfigs
+		case "automatedBackupConfig":
+			obj.AutomatedBackupConfig = req.Cluster.AutomatedBackupConfig
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)

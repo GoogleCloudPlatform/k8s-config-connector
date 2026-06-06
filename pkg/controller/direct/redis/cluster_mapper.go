@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cluster
+package redis
 
 import (
 	"time"
@@ -22,6 +22,7 @@ import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	timeofdaypb "google.golang.org/genproto/googleapis/type/timeofday"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -78,5 +79,29 @@ func PscConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.PscConfigSpec) *pb
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}
+	return out
+}
+
+func TimeOfDay_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *krm.TimeOfDay {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeOfDay{}
+	out.Hours = direct.LazyPtr(in.GetHours())
+	out.Minutes = direct.LazyPtr(in.GetMinutes())
+	out.Seconds = direct.LazyPtr(in.GetSeconds())
+	out.Nanos = direct.LazyPtr(in.GetNanos())
+	return out
+}
+
+func TimeOfDay_ToProto(mapCtx *direct.MapContext, in *krm.TimeOfDay) *timeofdaypb.TimeOfDay {
+	if in == nil {
+		return nil
+	}
+	out := &timeofdaypb.TimeOfDay{}
+	out.Hours = direct.ValueOf(in.Hours)
+	out.Minutes = direct.ValueOf(in.Minutes)
+	out.Seconds = direct.ValueOf(in.Seconds)
+	out.Nanos = direct.ValueOf(in.Nanos)
 	return out
 }

@@ -46,3 +46,6 @@ This skill guides an automated agent through adding a missing field to a GCP res
 7. **Update mockgcp (If Needed)**
    - If the tests fail because mockgcp doesn't support the field, you might need to implement a stub in mockgcp.
    - This stub just needs to behave reasonably so tests pass; full realgcp parity will be checked in separate E2E testing.
+
+8. **Regenerate Go Client**
+   - Please run 'make ready-pr' or 'make generate-go-client ensure fmt'.

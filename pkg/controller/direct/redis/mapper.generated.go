@@ -21,7 +21,7 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.redis.cluster.v1
 
-package cluster
+package redis
 
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
@@ -29,6 +29,44 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AutomatedBackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig) *krm.AutomatedBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedBackupConfig{}
+	out.FixedFrequencySchedule = AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx, in.GetFixedFrequencySchedule())
+	out.AutomatedBackupMode = direct.Enum_FromProto(mapCtx, in.GetAutomatedBackupMode())
+	out.Retention = direct.StringDuration_FromProto(mapCtx, in.GetRetention())
+	return out
+}
+func AutomatedBackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig) *pb.AutomatedBackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomatedBackupConfig{}
+	if oneof := AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx, in.FixedFrequencySchedule); oneof != nil {
+		out.Schedule = &pb.AutomatedBackupConfig_FixedFrequencySchedule_{FixedFrequencySchedule: oneof}
+	}
+	out.AutomatedBackupMode = direct.Enum_ToProto[pb.AutomatedBackupConfig_AutomatedBackupMode](mapCtx, in.AutomatedBackupMode)
+	out.Retention = direct.StringDuration_ToProto(mapCtx, in.Retention)
+	return out
+}
+func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig_FixedFrequencySchedule) *krm.AutomatedBackupConfig_FixedFrequencySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedBackupConfig_FixedFrequencySchedule{}
+	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	return out
+}
+func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig_FixedFrequencySchedule) *pb.AutomatedBackupConfig_FixedFrequencySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
+	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+	return out
+}
 func ClusterPersistenceConfig_FromProto(mapCtx *direct.MapContext, in *pb.ClusterPersistenceConfig) *krm.ClusterPersistenceConfig {
 	if in == nil {
 		return nil
@@ -208,7 +246,6 @@ func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clust
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
 	// MISSING: KMSKey
-	// MISSING: AutomatedBackupConfig
 	// MISSING: EncryptionInfo
 	return out
 }
@@ -235,7 +272,6 @@ func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisC
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
 	// MISSING: KMSKey
-	// MISSING: AutomatedBackupConfig
 	// MISSING: EncryptionInfo
 	return out
 }
@@ -264,7 +300,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
 	// MISSING: KMSKey
-	// MISSING: AutomatedBackupConfig
+	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
 	// MISSING: EncryptionInfo
 	return out
 }
@@ -293,7 +329,7 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
 	// MISSING: KMSKey
-	// MISSING: AutomatedBackupConfig
+	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
 	// MISSING: EncryptionInfo
 	return out
 }

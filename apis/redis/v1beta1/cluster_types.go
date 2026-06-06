@@ -72,6 +72,9 @@ type RedisClusterSpec struct {
 
 	// Optional. The delete operation will fail when the value is set to true.
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+
+	// Optional. The automated backup config for the cluster.
+	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
 }
 
 type PscConfigSpec struct {

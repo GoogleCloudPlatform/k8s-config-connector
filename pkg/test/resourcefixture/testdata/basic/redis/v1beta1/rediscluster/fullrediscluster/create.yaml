@@ -38,3 +38,12 @@ spec:
     aofConfig:
       appendFsync: EVERYSEC
   deletionProtectionEnabled: true
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    retention: 2592000s
+    fixedFrequencySchedule:
+      startTime:
+        hours: 14
+        minutes: 0
+        seconds: 0
+        nanos: 0

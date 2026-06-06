@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cluster
+package redis
 
 import (
 	"context"
@@ -344,6 +344,16 @@ func populateDefaults(cluster *pb.Cluster) *pb.Cluster {
 	}
 	if cluster.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
 		cluster.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
+	}
+
+	if cluster.AutomatedBackupConfig != nil {
+		if cluster.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+			cluster.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
+		}
+		if cluster.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_DISABLED {
+			cluster.AutomatedBackupConfig.Schedule = nil
+			cluster.AutomatedBackupConfig.Retention = nil
+		}
 	}
 
 	// clear pscConfig as it's not included in the response

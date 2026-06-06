@@ -16,7 +16,7 @@
 // proto.message: google.cloud.redis.cluster.v1.Cluster
 // api.group: redis.cnrm.cloud.google.com
 
-package cluster
+package redis
 
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
@@ -44,7 +44,6 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".kms_key")
 	f.UnimplementedFields.Insert(".maintenance_policy")
 	f.UnimplementedFields.Insert(".maintenance_schedule")
-	f.UnimplementedFields.Insert(".automated_backup_config")
 	f.UnimplementedFields.Insert(".encryption_info")
 	f.UnimplementedFields.Insert(".gcs_source")
 	f.UnimplementedFields.Insert(".cluster_endpoints")
@@ -61,7 +60,6 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".kms_key")
 	f.UnimplementedFields.Insert(".maintenance_policy")
 	f.UnimplementedFields.Insert(".maintenance_schedule")
-	f.UnimplementedFields.Insert(".automated_backup_config")
 	f.UnimplementedFields.Insert(".encryption_info")
 	f.UnimplementedFields.Insert(".gcs_source")
 	f.UnimplementedFields.Insert(".cluster_endpoints")
@@ -77,6 +75,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".replica_count")
 	f.SpecFields.Insert(".zone_distribution_config")
 	f.SpecFields.Insert(".deletion_protection_enabled")
+	f.SpecFields.Insert(".automated_backup_config")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".state")
