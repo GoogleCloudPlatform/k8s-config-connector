@@ -18,6 +18,7 @@
 // krm.version: v1beta1
 // proto.service: google.container.v1
 // resource: ContainerCluster:Cluster
+// resource: ContainerNodePool:NodePool
 
 package v1beta1
 
@@ -2994,7 +2995,8 @@ type NodePoolAutoConfig struct {
 }
 */
 
-/* unreachable type NodePoolAutoscaling
+/* found existing non-generated go type "NodePoolAutoscaling", skipping
+
 // +kcc:proto=google.container.v1.NodePoolAutoscaling
 type NodePoolAutoscaling struct {
 	// Is autoscaling enabled for this node pool.

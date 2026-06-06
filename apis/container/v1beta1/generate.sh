@@ -26,7 +26,9 @@ go run . generate-types \
     --service google.container.v1 \
     --api-version container.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
-    --resource ContainerCluster:Cluster
+    --skip-scaffold-files \
+    --resource ContainerCluster:Cluster \
+    --resource ContainerNodePool:NodePool
 
 go run . generate-mapper \
     --service google.container.v1 \

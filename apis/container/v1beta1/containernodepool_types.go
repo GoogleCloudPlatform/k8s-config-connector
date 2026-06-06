@@ -1,0 +1,622 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var ContainerNodePoolGVK = GroupVersion.WithKind("ContainerNodePool")
+
+// ContainerNodePoolSpec defines the desired state of ContainerNodePool
+type ContainerNodePoolSpec struct {
+	// Configuration required by cluster autoscaler to adjust
+	// the size of the node pool to the current cluster usage. To disable
+	// autoscaling, set minNodeCount and maxNodeCount to 0.
+	Autoscaling *NodePoolAutoscaling `json:"autoscaling,omitempty"`
+
+	// +required
+	ClusterRef *ContainerClusterRef `json:"clusterRef"`
+
+	// Immutable. The initial number of nodes for the pool.
+	// In regional or multi-zonal clusters, this is the number of nodes
+	// per zone. Changing this will force recreation of the resource.
+	InitialNodeCount *int32 `json:"initialNodeCount,omitempty"`
+
+	// Immutable. The location (region or zone) of the cluster.
+	// +required
+	Location string `json:"location"`
+
+	// Node management configuration, wherein auto-repair and
+	// auto-upgrade is configured.
+	Management *NodePoolManagement `json:"management,omitempty"`
+
+	// Immutable. The maximum number of pods per node in this
+	// node pool. Note that this does not work on node pools which are
+	// "route-based" - that is, node pools belonging to clusters that do
+	// not have IP Aliasing enabled.
+	MaxPodsPerNode *int32 `json:"maxPodsPerNode,omitempty"`
+
+	// Immutable. Creates a unique name for the node pool beginning
+	// with the specified prefix. Conflicts with name.
+	NamePrefix *string `json:"namePrefix,omitempty"`
+
+	// Networking configuration for this NodePool. If specified,
+	// it overrides the cluster-level defaults.
+	NetworkConfig *NodePoolNetworkConfig `json:"networkConfig,omitempty"`
+
+	// Immutable. The configuration of the nodepool.
+	NodeConfig *NodePoolNodeConfig `json:"nodeConfig,omitempty"`
+
+	// The number of nodes per instance group. This field can
+	// be used to update the number of nodes per instance group but should
+	// not be used alongside autoscaling.
+	NodeLocations []string `json:"nodeLocations,omitempty"`
+
+	// The list of zones in which the node pool's nodes should
+	// be located. Nodes must be in the region of their regional cluster
+	// or in the same region as their cluster's zone for zonal clusters.
+	// If unspecified, the cluster-level node_locations will be used.
+	NodeCount *int32 `json:"nodeCount,omitempty"`
+
+	// Immutable. Specifies the node placement policy.
+	PlacementPolicy *NodePoolPlacementPolicy `json:"placementPolicy,omitempty"`
+
+	// Immutable. Optional. The name of the resource. Used for
+	// creation and acquisition. When unset, the value of `metadata.name`
+	// is used as the default.
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Specify node upgrade settings to change how many nodes
+	// GKE attempts to upgrade at once. The number of nodes upgraded simultaneously
+	// is the sum of max_surge and max_unavailable. The maximum number
+	// of nodes upgraded simultaneously is limited to 20.
+	UpgradeSettings *NodePoolUpgradeSettings `json:"upgradeSettings,omitempty"`
+
+	// +optional
+	Version *string `json:"version,omitempty"`
+}
+
+type NodePoolAutoscaling struct {
+	// Location policy specifies the algorithm used when
+	// scaling-up the node pool. "BALANCED" - Is a best effort policy
+	// that aims to balance the sizes of available zones. "ANY" - Instructs
+	// the cluster autoscaler to prioritize utilization of unused reservations,
+	// and reduces preemption risk for Spot VMs.
+	LocationPolicy *string `json:"locationPolicy,omitempty"`
+
+	// Maximum number of nodes per zone in the node pool.
+	// Must be >= min_node_count. Cannot be used with total limits.
+	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
+
+	// Minimum number of nodes per zone in the node pool.
+	// Must be >=0 and <= max_node_count. Cannot be used with total
+	// limits.
+	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
+
+	// Maximum number of all nodes in the node pool. Must
+	// be >= total_min_node_count. Cannot be used with per zone limits.
+	TotalMaxNodeCount *int32 `json:"totalMaxNodeCount,omitempty"`
+
+	// Minimum number of all nodes in the node pool. Must
+	// be >=0 and <= total_max_node_count. Cannot be used with per
+	// zone limits.
+	TotalMinNodeCount *int32 `json:"totalMinNodeCount,omitempty"`
+}
+
+type NodePoolManagement struct {
+	// Whether the nodes will be automatically repaired.
+	AutoRepair *bool `json:"autoRepair,omitempty"`
+
+	// Whether the nodes will be automatically upgraded.
+	AutoUpgrade *bool `json:"autoUpgrade,omitempty"`
+}
+
+type NodePoolNetworkConfig struct {
+	// Immutable. We specify the additional node networks
+	// for this node pool using this list. Each node network corresponds
+	// to an additional interface.
+	AdditionalNodeNetworkConfigs []NodePoolAdditionalNodeNetworkConfigs `json:"additionalNodeNetworkConfigs,omitempty"`
+
+	// Immutable. We specify the additional pod networks
+	// for this node pool using this list. Each pod network corresponds
+	// to an additional alias IP range for the node.
+	AdditionalPodNetworkConfigs []NodePoolAdditionalPodNetworkConfigs `json:"additionalPodNetworkConfigs,omitempty"`
+
+	// Immutable. Whether to create a new range for pod
+	// IPs in this node pool. Defaults are provided for pod_range and
+	// pod_ipv4_cidr_block if they are not specified.
+	CreatePodRange *bool `json:"createPodRange,omitempty"`
+
+	// Whether nodes have internal IP addresses only.
+	EnablePrivateNodes *bool `json:"enablePrivateNodes,omitempty"`
+
+	// Immutable. Configuration for node-pool level pod
+	// cidr overprovision. If not set, the cluster level setting will
+	// be inherited.
+	PodCidrOverprovisionConfig *NodePoolPodCidrOverprovisionConfig `json:"podCidrOverprovisionConfig,omitempty"`
+
+	// Immutable. The IP address range for pod IPs in this
+	// node pool. Only applicable if create_pod_range is true. Set
+	// to blank to have a range chosen with the default size. Set to
+	// /netmask (e.g. /14) to have a range chosen with a specific netmask.
+	// Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific
+	// range to use.
+	PodIpv4CidrBlock *string `json:"podIpv4CidrBlock,omitempty"`
+
+	// Immutable. The ID of the secondary range for pod
+	// IPs. If create_pod_range is true, this ID is used for the new
+	// range. If create_pod_range is false, uses an existing secondary
+	// range with this ID.
+	PodRange *string `json:"podRange,omitempty"`
+
+	// Immutable. The subnetwork path for the node pool.
+	// Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}.
+	// If not set, the provider/API will choose the subnetwork (e.g.
+	// based on IP utilization) and report it here.
+	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+}
+
+type NodePoolAdditionalNodeNetworkConfigs struct {
+	// Immutable. Name of the VPC where the additional interface belongs.
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+
+	// Immutable. Name of the subnetwork where the additional interface belongs.
+	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+}
+
+type NodePoolAdditionalPodNetworkConfigs struct {
+	// Immutable. The maximum number of pods per node which use this pod network.
+	MaxPodsPerNode *int32 `json:"maxPodsPerNode,omitempty"`
+
+	// Immutable. The name of the secondary range on the subnet which provides IP address for this pod range.
+	SecondaryPodRange *string `json:"secondaryPodRange,omitempty"`
+
+	// Immutable. Name of the subnetwork where the additional pod network belongs.
+	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+}
+
+type NodePoolPodCidrOverprovisionConfig struct {
+	// +required
+	Disabled bool `json:"disabled"`
+}
+
+type NodePoolNodeConfig struct {
+	// Immutable. Specifies options for controlling advanced machine features.
+	AdvancedMachineFeatures *NodePoolAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
+
+	// +optional
+	BootDiskKMSCryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
+
+	// Immutable. Configuration for the confidential nodes
+	// feature, which makes nodes run on confidential VMs. Warning:
+	// This configuration can't be changed (or added/removed) after
+	// pool creation without deleting and recreating the entire pool.
+	ConfidentialNodes *NodePoolConfidentialNodes `json:"confidentialNodes,omitempty"`
+
+	// Immutable. Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB.
+	DiskSizeGb *int32 `json:"diskSizeGb,omitempty"`
+
+	// Immutable. Type of the disk attached to each node. Such as pd-standard, pd-balanced or pd-ssd.
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.
+	EphemeralStorageConfig *NodePoolEphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
+
+	// Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.
+	EphemeralStorageLocalSsdConfig *NodePoolEphemeralStorageLocalSsdConfig `json:"ephemeralStorageLocalSsdConfig,omitempty"`
+
+	// Enable or disable NCCL Fast Socket in the node pool.
+	FastSocket *NodePoolFastSocket `json:"fastSocket,omitempty"`
+
+	// Immutable. GCFS configuration for this node.
+	GcfsConfig *NodePoolGcfsConfig `json:"gcfsConfig,omitempty"`
+
+	// Immutable. List of the type and count of accelerator cards attached to the instance.
+	GuestAccelerator []NodePoolGuestAccelerator `json:"guestAccelerator,omitempty"`
+
+	// Immutable. Enable or disable gvnic in the node pool.
+	Gvnic *NodePoolGvnic `json:"gvnic,omitempty"`
+
+	// Immutable. The maintenance policy for the hosts on which the GKE VMs run on.
+	HostMaintenancePolicy *NodePoolHostMaintenancePolicy `json:"hostMaintenancePolicy,omitempty"`
+
+	// The image type to use for this node. Note that for a given image type, the latest version of it will be used.
+	ImageType *string `json:"imageType,omitempty"`
+
+	// Node kubelet configs.
+	KubeletConfig *NodePoolKubeletConfig `json:"kubeletConfig,omitempty"`
+
+	// The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node.
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Parameters that can be configured on Linux nodes.
+	LinuxNodeConfig *NodePoolLinuxNodeConfig `json:"linuxNodeConfig,omitempty"`
+
+	// Immutable. Parameters for raw-block local NVMe SSDs.
+	LocalNvmeSsdBlockConfig *NodePoolLocalNvmeSsdBlockConfig `json:"localNvmeSsdBlockConfig,omitempty"`
+
+	// Immutable. The number of local SSD disks to be attached to the node.
+	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
+
+	// Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT.
+	LoggingVariant *string `json:"loggingVariant,omitempty"`
+
+	// Immutable. The name of a Google Compute Engine machine type.
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Immutable. The metadata key/value pairs assigned to instances in the cluster.
+	Metadata map[string]string `json:"metadata,omitempty"`
+
+	// Immutable. Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform.
+	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
+
+	// Immutable. Setting this field will assign instances
+	// of this pool to run on the specified node group. This is useful
+	// for running workloads on sole tenant nodes.
+	NodeGroupRef *computev1beta1.ComputeNodeGroupRef `json:"nodeGroupRef,omitempty"`
+
+	// Immutable. The set of Google API scopes to be made available on all of the node VMs.
+	OauthScopes []string `json:"oauthScopes,omitempty"`
+
+	// Immutable. Whether the nodes are created as preemptible VM instances.
+	Preemptible *bool `json:"preemptible,omitempty"`
+
+	// Immutable. The reservation affinity configuration for the node pool.
+	ReservationAffinity *NodePoolReservationAffinity `json:"reservationAffinity,omitempty"`
+
+	// The GCE resource labels (a map of key/value pairs) to be applied to the node pool.
+	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
+
+	// Immutable. Sandbox configuration for this node.
+	SandboxConfig *NodePoolSandboxConfig `json:"sandboxConfig,omitempty"`
+
+	// +optional
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+
+	// Immutable. Shielded Instance options.
+	ShieldedInstanceConfig *NodePoolShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
+	// Immutable. Node affinity options for sole tenant node pools.
+	SoleTenantConfig *NodePoolSoleTenantConfig `json:"soleTenantConfig,omitempty"`
+
+	// Immutable. Whether the nodes are created as spot VM instances.
+	Spot *bool `json:"spot,omitempty"`
+
+	// The list of instance tags applied to all nodes.
+	Tags []string `json:"tags,omitempty"`
+
+	// List of Kubernetes taints to be applied to each node.
+	Taint []NodePoolTaint `json:"taint,omitempty"`
+
+	// Parameters that can be configured on Windows nodes.
+	WindowsNodeConfig *NodePoolWindowsNodeConfig `json:"windowsNodeConfig,omitempty"`
+
+	// The workload metadata configuration for this node.
+	WorkloadMetadataConfig *NodePoolWorkloadMetadataConfig `json:"workloadMetadataConfig,omitempty"`
+}
+
+type NodePoolAdvancedMachineFeatures struct {
+	// Immutable. Whether or not to enable nested virtualization (defaults to false).
+	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
+
+	// Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.
+	ThreadsPerCore *int32 `json:"threadsPerCore,omitempty"`
+}
+
+type NodePoolConfidentialNodes struct {
+	// Immutable. Defines the type of technology used by the confidential node.
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
+
+	// Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool.
+	// +required
+	Enabled bool `json:"enabled"`
+}
+
+type NodePoolEphemeralStorageConfig struct {
+	// Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size.
+	// +required
+	LocalSsdCount int32 `json:"localSsdCount"`
+}
+
+type NodePoolEphemeralStorageLocalSsdConfig struct {
+	// Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces.
+	DataCacheCount *int32 `json:"dataCacheCount,omitempty"`
+
+	// Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size.
+	// +required
+	LocalSsdCount int32 `json:"localSsdCount"`
+}
+
+type NodePoolFastSocket struct {
+	// Whether or not NCCL Fast Socket is enabled.
+	// +required
+	Enabled bool `json:"enabled"`
+}
+
+type NodePoolGcfsConfig struct {
+	// Immutable. Whether or not GCFS is enabled.
+	// +required
+	Enabled bool `json:"enabled"`
+}
+
+type NodePoolGuestAccelerator struct {
+	// Immutable. The number of the accelerator cards exposed to an instance.
+	// +required
+	Count int32 `json:"count"`
+
+	// Immutable. Configuration for auto installation of GPU driver.
+	GpuDriverInstallationConfig *NodePoolGpuDriverInstallationConfig `json:"gpuDriverInstallationConfig,omitempty"`
+
+	// Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA mig user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
+	// Immutable. Configuration for GPU sharing.
+	GpuSharingConfig *NodePoolGpuSharingConfig `json:"gpuSharingConfig,omitempty"`
+
+	// Immutable. The accelerator type resource name.
+	// +required
+	Type string `json:"type"`
+}
+
+type NodePoolGpuDriverInstallationConfig struct {
+	// Immutable. Mode for how the GPU driver is installed.
+	// +required
+	GpuDriverVersion string `json:"gpuDriverVersion"`
+}
+
+type NodePoolGpuSharingConfig struct {
+	// Immutable. The type of GPU sharing strategy to enable on the GPU node. Possible values are described in the API package (https://pkg.go.dev/google.golang.org/api/container/v1#GPUSharingConfig).
+	// +required
+	GpuSharingStrategy string `json:"gpuSharingStrategy"`
+
+	// Immutable. The maximum number of containers that can share a GPU.
+	// +required
+	MaxSharedClientsPerGpu int32 `json:"maxSharedClientsPerGpu"`
+}
+
+type NodePoolGvnic struct {
+	// Immutable. Whether or not gvnic is enabled.
+	// +required
+	Enabled bool `json:"enabled"`
+}
+
+type NodePoolHostMaintenancePolicy struct {
+	// Immutable. .
+	// +required
+	MaintenanceInterval string `json:"maintenanceInterval"`
+}
+
+type NodePoolKubeletConfig struct {
+	// Enable CPU CFS quota enforcement for containers that specify CPU limits.
+	CpuCfsQuota *bool `json:"cpuCfsQuota,omitempty"`
+
+	// Set the CPU CFS quota period value 'cpu.cfs_period_us'.
+	CpuCfsQuotaPeriod *string `json:"cpuCfsQuotaPeriod,omitempty"`
+
+	// Control the CPU management policy on the node.
+	// +required
+	CpuManagerPolicy string `json:"cpuManagerPolicy"`
+
+	// Controls the maximum number of processes allowed to run in a pod.
+	PodPidsLimit *int32 `json:"podPidsLimit,omitempty"`
+}
+
+type NodePoolLinuxNodeConfig struct {
+	// cgroupMode specifies the cgroup mode to be used on the node.
+	CgroupMode *string `json:"cgroupMode,omitempty"`
+
+	// The Linux kernel parameters to be applied to the nodes and all pods running on the nodes.
+	Sysctls map[string]string `json:"sysctls,omitempty"`
+}
+
+type NodePoolLocalNvmeSsdBlockConfig struct {
+	// Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size.
+	// +required
+	LocalSsdCount int32 `json:"localSsdCount"`
+}
+
+type NodePoolReservationAffinity struct {
+	// Immutable. Corresponds to the type of reservation consumption.
+	// +required
+	ConsumeReservationType string `json:"consumeReservationType"`
+
+	// Immutable. The label key of a reservation resource.
+	Key *string `json:"key,omitempty"`
+
+	// Immutable. The label values of the reservation resource.
+	Values []string `json:"values,omitempty"`
+}
+
+type NodePoolSandboxConfig struct {
+	// Type of the sandbox to use for the node (e.g. 'gvisor').
+	// +required
+	SandboxType string `json:"sandboxType"`
+}
+
+type NodePoolShieldedInstanceConfig struct {
+	// Immutable. Defines whether the instance has integrity monitoring enabled.
+	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring,omitempty"`
+
+	// Immutable. Defines whether the instance has Secure Boot enabled.
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+}
+
+type NodePoolSoleTenantConfig struct {
+	// Immutable. .
+	// +required
+	NodeAffinity []NodePoolNodeAffinity `json:"nodeAffinity"`
+}
+
+type NodePoolNodeAffinity struct {
+	// Immutable. .
+	// +required
+	Key string `json:"key"`
+
+	// Immutable. .
+	// +required
+	Operator string `json:"operator"`
+
+	// Immutable. .
+	// +required
+	Values []string `json:"values"`
+}
+
+type NodePoolTaint struct {
+	// Effect for taint.
+	// +required
+	Effect string `json:"effect"`
+
+	// Key for taint.
+	// +required
+	Key string `json:"key"`
+
+	// Value for taint.
+	// +required
+	Value string `json:"value"`
+}
+
+type NodePoolWindowsNodeConfig struct {
+	// os_version specifies the Windows Server release version to be used on the node.
+	OsVersion *string `json:"osVersion,omitempty"`
+}
+
+type NodePoolWorkloadMetadataConfig struct {
+	// Mode is the configuration for how to expose metadata to workloads running on the node.
+	Mode *string `json:"mode,omitempty"`
+
+	// DEPRECATED. Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node.
+	NodeMetadata *string `json:"nodeMetadata,omitempty"`
+}
+
+type NodePoolPlacementPolicy struct {
+	// Immutable. If set, refers to the name of a custom
+	// resource policy supplied by the user. The resource policy must
+	// be in the same project and region as the node pool. If not found,
+	// InvalidArgument error is returned.
+	PolicyNameRef *computev1beta1.ComputeResourcePolicyRef `json:"policyNameRef,omitempty"`
+
+	// TPU placement topology for pod slice node pool. https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies.
+	TpuTopology *string `json:"tpuTopology,omitempty"`
+
+	// Type defines the type of placement policy.
+	// +required
+	Type string `json:"type"`
+}
+
+type NodePoolUpgradeSettings struct {
+	// Settings for BlueGreen node pool upgrade.
+	BlueGreenSettings *NodePoolBlueGreenSettings `json:"blueGreenSettings,omitempty"`
+
+	// The number of additional nodes that can be added
+	// to the node pool during an upgrade. Increasing max_surge raises
+	// the number of nodes that can be upgraded simultaneously. Can
+	// be set to 0 or greater.
+	MaxSurge *int32 `json:"maxSurge,omitempty"`
+
+	// The number of nodes that can be simultaneously unavailable
+	// during an upgrade. Increasing max_unavailable raises the number
+	// of nodes that can be upgraded in parallel. Can be set to 0 or
+	// greater.
+	MaxUnavailable *int32 `json:"maxUnavailable,omitempty"`
+
+	// Update strategy for the given nodepool.
+	Strategy *string `json:"strategy,omitempty"`
+}
+
+type NodePoolBlueGreenSettings struct {
+	// Time needed after draining entire blue pool. After this period, blue pool will be cleaned up.
+	NodePoolSoakDuration *string `json:"nodePoolSoakDuration,omitempty"`
+
+	// Standard rollout policy is the default policy for blue-green.
+	// +required
+	StandardRolloutPolicy NodePoolStandardRolloutPolicy `json:"standardRolloutPolicy"`
+}
+
+type NodePoolStandardRolloutPolicy struct {
+	// Number of blue nodes to drain in a batch.
+	BatchNodeCount *int32 `json:"batchNodeCount,omitempty"`
+
+	// Percentage of the blue pool nodes to drain in a batch.
+	BatchPercentage *float64 `json:"batchPercentage,omitempty"`
+
+	// Soak time after each batch gets drained.
+	BatchSoakDuration *string `json:"batchSoakDuration,omitempty"`
+}
+
+// ContainerNodePoolStatus defines the config connector machine state of ContainerNodePool
+type ContainerNodePoolStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// The resource URLs of the managed instance groups associated with this node pool.
+	InstanceGroupUrls []string `json:"instanceGroupUrls,omitempty"`
+
+	// List of instance group URLs which have been assigned to this node pool.
+	ManagedInstanceGroupUrls []string `json:"managedInstanceGroupUrls,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *ContainerNodePoolObservedState `json:"observedState,omitempty"`
+
+	Operation *string `json:"operation,omitempty"`
+}
+
+// ContainerNodePoolObservedState is the state of the ContainerNodePool resource as most recently observed in GCP.
+type ContainerNodePoolObservedState struct {
+	Version *string `json:"version,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcontainernodepool;gcpcontainernodepools
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// ContainerNodePool is the Schema for the ContainerNodePool API
+// +k8s:openapi-gen=true
+type ContainerNodePool struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   ContainerNodePoolSpec   `json:"spec,omitempty"`
+	Status ContainerNodePoolStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// ContainerNodePoolList contains a list of ContainerNodePool
+type ContainerNodePoolList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ContainerNodePool `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ContainerNodePool{}, &ContainerNodePoolList{})
+}
