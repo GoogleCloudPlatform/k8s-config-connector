@@ -61,6 +61,8 @@ func (r *ComputeReservationRef) GetExternal() string {
 
 func (r *ComputeReservationRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeReservationRef) ValidateExternal(ref string) error {

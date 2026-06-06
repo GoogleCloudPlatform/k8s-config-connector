@@ -61,6 +61,8 @@ func (r *FirestoreBackupScheduleRef) GetExternal() string {
 
 func (r *FirestoreBackupScheduleRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *FirestoreBackupScheduleRef) ValidateExternal(ref string) error {

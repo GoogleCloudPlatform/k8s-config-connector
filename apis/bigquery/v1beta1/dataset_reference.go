@@ -65,6 +65,8 @@ func (r *DatasetRef) GetExternal() string {
 
 func (r *DatasetRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *DatasetRef) ValidateExternal(ref string) error {

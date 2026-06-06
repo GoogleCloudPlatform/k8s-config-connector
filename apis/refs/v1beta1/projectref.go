@@ -71,6 +71,8 @@ func (r *ProjectRef) GetExternal() string {
 
 func (r *ProjectRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 // AsProjectRef converts a generic ResourceRef into a ProjectRef
@@ -127,6 +129,8 @@ func (r *ExtendedProjectRef) GetExternal() string {
 
 func (r *ExtendedProjectRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ExtendedProjectRef) ValidateExternal(ref string) error {

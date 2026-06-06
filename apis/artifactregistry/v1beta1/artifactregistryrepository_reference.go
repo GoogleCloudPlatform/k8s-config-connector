@@ -68,6 +68,8 @@ func (r *ArtifactRegistryRepositoryRef) GetExternal() string {
 
 func (r *ArtifactRegistryRepositoryRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ArtifactRegistryRepositoryRef) ValidateExternal(ref string) error {

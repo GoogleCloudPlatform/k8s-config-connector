@@ -61,6 +61,8 @@ func (r *NetworkSecurityBackendAuthenticationConfigRef) GetExternal() string {
 
 func (r *NetworkSecurityBackendAuthenticationConfigRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkSecurityBackendAuthenticationConfigRef) ValidateExternal(ref string) error {

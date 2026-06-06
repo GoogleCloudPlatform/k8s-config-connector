@@ -61,6 +61,8 @@ func (r *AIPlatformModelRef) GetExternal() string {
 
 func (r *AIPlatformModelRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *AIPlatformModelRef) ValidateExternal(ref string) error {

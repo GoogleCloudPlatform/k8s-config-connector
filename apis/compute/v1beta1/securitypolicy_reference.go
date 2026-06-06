@@ -68,6 +68,8 @@ func (r *ComputeSecurityPolicyRef) GetExternal() string {
 
 func (r *ComputeSecurityPolicyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeSecurityPolicyRef) ValidateExternal(ref string) error {

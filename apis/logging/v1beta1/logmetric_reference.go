@@ -61,6 +61,8 @@ func (r *LoggingLogMetricRef) GetExternal() string {
 
 func (r *LoggingLogMetricRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *LoggingLogMetricRef) ValidateExternal(ref string) error {

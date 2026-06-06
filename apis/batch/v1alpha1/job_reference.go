@@ -40,6 +40,8 @@ type BatchJobRef struct {
 
 func (r *BatchJobRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BatchJobRef) ValidateExternal(ref string) error {

@@ -63,6 +63,8 @@ func (r *StorageBucketRef) GetExternal() string {
 
 func (r *StorageBucketRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *StorageBucketRef) ValidateExternal(ref string) error {

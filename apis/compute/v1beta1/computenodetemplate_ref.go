@@ -56,6 +56,8 @@ func (r *ComputeNodeTemplateRef) GetExternal() string {
 
 func (r *ComputeNodeTemplateRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeNodeTemplateRef) ValidateExternal(ref string) error {

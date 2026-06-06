@@ -61,6 +61,8 @@ func (r *VertexAIExampleStoreRef) GetExternal() string {
 
 func (r *VertexAIExampleStoreRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *VertexAIExampleStoreRef) ValidateExternal(ref string) error {

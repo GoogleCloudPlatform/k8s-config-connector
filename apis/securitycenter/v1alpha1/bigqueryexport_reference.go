@@ -63,6 +63,8 @@ func (r *SecurityCenterBigQueryExportRef) GetExternal() string {
 
 func (r *SecurityCenterBigQueryExportRef) SetExternal(external string) {
 	r.External = external
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *SecurityCenterBigQueryExportRef) ValidateExternal(external string) error {

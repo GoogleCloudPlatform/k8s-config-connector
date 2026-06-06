@@ -59,6 +59,8 @@ func (r *ApigeeEnvironmentRef) GetExternal() string {
 
 func (r *ApigeeEnvironmentRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ApigeeEnvironmentRef) ValidateExternal(ref string) error {

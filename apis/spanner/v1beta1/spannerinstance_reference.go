@@ -61,6 +61,8 @@ func (r *SpannerInstanceRef) GetExternal() string {
 
 func (r *SpannerInstanceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *SpannerInstanceRef) ValidateExternal(ref string) error {

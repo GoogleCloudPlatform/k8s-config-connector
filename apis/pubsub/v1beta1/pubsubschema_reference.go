@@ -61,6 +61,8 @@ func (r *PubSubSchemaRef) GetExternal() string {
 
 func (r *PubSubSchemaRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *PubSubSchemaRef) ValidateExternal(ref string) error {

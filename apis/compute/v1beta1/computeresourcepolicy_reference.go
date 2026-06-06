@@ -61,6 +61,8 @@ func (r *ComputeResourcePolicyRef) GetExternal() string {
 
 func (r *ComputeResourcePolicyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeResourcePolicyRef) ValidateExternal(ref string) error {

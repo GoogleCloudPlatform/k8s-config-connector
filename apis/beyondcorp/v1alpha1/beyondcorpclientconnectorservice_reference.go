@@ -61,6 +61,8 @@ func (r *BeyondCorpClientConnectorServiceRef) GetExternal() string {
 
 func (r *BeyondCorpClientConnectorServiceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *BeyondCorpClientConnectorServiceRef) ValidateExternal(ref string) error {

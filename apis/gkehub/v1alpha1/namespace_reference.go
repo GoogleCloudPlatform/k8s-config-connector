@@ -62,6 +62,8 @@ func (r *GKEHubNamespaceRef) GetExternal() string {
 
 func (r *GKEHubNamespaceRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *GKEHubNamespaceRef) ValidateExternal(ref string) error {

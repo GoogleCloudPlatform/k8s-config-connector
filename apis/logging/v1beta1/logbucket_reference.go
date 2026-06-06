@@ -63,6 +63,8 @@ func (r *LoggingLogBucketRef) GetExternal() string {
 
 func (r *LoggingLogBucketRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *LoggingLogBucketRef) ValidateExternal(ref string) error {

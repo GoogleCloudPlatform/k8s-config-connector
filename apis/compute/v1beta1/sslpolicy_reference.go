@@ -64,6 +64,8 @@ func (r *ComputeSSLPolicyRef) GetExternal() string {
 
 func (r *ComputeSSLPolicyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeSSLPolicyRef) ValidateExternal(ref string) error {

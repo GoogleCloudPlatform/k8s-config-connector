@@ -62,6 +62,8 @@ func (r *DNSManagedZoneRef) GetExternal() string {
 
 func (r *DNSManagedZoneRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *DNSManagedZoneRef) ValidateExternal(ref string) error {

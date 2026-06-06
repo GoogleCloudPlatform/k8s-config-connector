@@ -57,6 +57,8 @@ func (r *AccessLevelRef) GetExternal() string {
 
 func (r *AccessLevelRef) SetExternal(ref string) {
 	r.External = direct.LazyPtr(ref)
+	r.Name = nil
+	r.Namespace = nil
 }
 
 func (r *AccessLevelRef) ValidateExternal(ref string) error {

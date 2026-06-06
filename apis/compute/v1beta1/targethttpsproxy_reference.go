@@ -54,6 +54,8 @@ func (r *ComputeTargetHTTPSProxyRef) GetExternal() string {
 
 func (r *ComputeTargetHTTPSProxyRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeTargetHTTPSProxyRef) ValidateExternal(ref string) error {

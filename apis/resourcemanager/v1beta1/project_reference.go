@@ -62,6 +62,8 @@ func (r *ProjectRef) GetExternal() string {
 
 func (r *ProjectRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ProjectRef) ValidateExternal(ref string) error {

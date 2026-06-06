@@ -62,6 +62,8 @@ func (r *ForwardingRuleRef) GetExternal() string {
 
 func (r *ForwardingRuleRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ForwardingRuleRef) ValidateExternal(ref string) error {

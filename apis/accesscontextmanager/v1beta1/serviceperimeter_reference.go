@@ -61,6 +61,8 @@ func (r *AccessContextManagerServicePerimeterRef) GetExternal() string {
 
 func (r *AccessContextManagerServicePerimeterRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *AccessContextManagerServicePerimeterRef) ValidateExternal(ref string) error {

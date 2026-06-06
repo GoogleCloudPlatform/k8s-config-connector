@@ -62,6 +62,8 @@ func (r *CloudBuildTriggerRef) GetExternal() string {
 
 func (r *CloudBuildTriggerRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CloudBuildTriggerRef) ValidateExternal(ref string) error {
