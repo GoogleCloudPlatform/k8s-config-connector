@@ -19,6 +19,8 @@ set -o pipefail
 
 function on_error() {
   echo "<hint_for_agent>Run 'dev/ci/presubmits/build-images' to fix.</hint_for_agent>"
+  # Ensure vendor directory cleanup even on failure
+  rm -rf "${REPO_ROOT}/vendor"
 }
 trap on_error ERR
 
@@ -42,7 +44,7 @@ if [[ -z "${IMAGE_TAG:-}" ]]; then
   fi
 fi
 export IMAGE_TAG
-echo "Building images with tag: ${IMAGE_TAG} in CI (FAST MODE)"
+echo "Building images with tag: ${IMAGE_TAG} in CI (FAST MODE via Host-Vendored caching)"
 
 export BUILDER_IMG=${IMAGE_PREFIX}builder:${IMAGE_TAG}
 export CONTROLLER_IMG=${IMAGE_PREFIX}controller:${IMAGE_TAG}
@@ -54,72 +56,20 @@ export CONFIG_CONNECTOR_IMG=${IMAGE_PREFIX}config-connector-cli:${IMAGE_TAG}
 
 export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 
-# Prepare build directories
-mkdir -p .build/bin
-mkdir -p .build/operator
+# 1. Create vendor folder on host using the warmed Go module cache.
+# We set GOWORK=off to avoid workspace mode errors during vendoring.
+echo "Vendoring Go modules on host..."
+GOWORK=off go mod vendor
 
-# 1. Compile all main binaries on the host (FAST with go build cache)
-echo "Compiling controller binaries on host..."
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o .build/bin/config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
-
-# 2. Compile operator binaries on the host
-echo "Compiling operator binaries on host..."
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o .build/operator/manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o .build/operator/gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
-
-# 3. Generate third-party licenses on the host
-echo "Generating third-party licenses on host..."
-go mod vendor -o temp-vendor
-go run scripts/generate-third-party-licenses/main.go
-rm -rf temp-vendor
-
-# 4. Generate operator channels on the host
-echo "Generating operator channels on host..."
-dev/tasks/generate-channels
-
-# 5. Build and tag the builder image from the host prebuilt files
-echo "Building builder image ${BUILDER_IMG}..."
-cat <<EOF | docker build -f - -t ${BUILDER_IMG} .
-FROM golang:1.26.4
-WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
-COPY .build/bin/deletiondefender deletiondefender
-COPY .build/bin/webhook webhook
-COPY .build/bin/recorder recorder
-COPY .build/bin/unmanageddetector unmanageddetector
-COPY .build/bin/manager manager
-COPY .build/bin/config-connector config-connector
-COPY THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
-COPY MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
-EOF
-
-# 6. Build and tag the operator builder image from the host prebuilt files
-export OPERATOR_BUILDER_IMG=operator-builder:${IMAGE_TAG}
-echo "Building operator-builder image ${OPERATOR_BUILDER_IMG}..."
-cat <<EOF | docker build -f - -t ${OPERATOR_BUILDER_IMG} .
-FROM golang:1.26.4
-WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
-COPY .build/operator/manager manager
-COPY .build/operator/gke_addon_poststart gke_addon_poststart
-COPY operator/channels/ operator/channels/
-COPY operator/autopilot-channels/ operator/autopilot-channels/
-COPY THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
-COPY MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
-EOF
-
-# 7. Run the make targets to build individual final images
-echo "Building final KCC controller images..."
+# 2. Run the actual Dockerfile builds, verifying their correctness
+echo "Building main KCC controller images using actual Dockerfiles..."
 make docker-build
 
-echo "Building final operator image..."
-make -C operator docker-build OPERATOR_BUILDER_IMG=${OPERATOR_BUILDER_IMG}
+echo "Building operator image using actual Dockerfile..."
+make -C operator docker-build
 
-# Clean up local images and files
-docker image rm ${BUILDER_IMG}
-docker image rm ${OPERATOR_BUILDER_IMG}
-rm -rf .build/bin .build/operator
-echo "Fast CI build of images completed successfully!"
+# 3. Clean up the local vendor directory on the host so the repository remains clean
+echo "Cleaning up host vendor directory..."
+rm -rf vendor
+
+echo "CI build of images completed successfully!"

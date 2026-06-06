@@ -14,10 +14,9 @@
 
 # This Dockefile builds a thin image containing the manager binary
 ARG GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
-ARG OPERATOR_BUILDER_IMG=golang:1.26.4
 
 # Build the manager binary
-FROM ${OPERATOR_BUILDER_IMG} AS builder
+FROM golang:1.26.4 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
@@ -38,6 +37,9 @@ COPY scripts/ scripts/
 COPY go.mod  go.mod
 COPY go.sum  go.sum
 
+# Optionally copy vendor folder if it exists on the host
+COPY vendo[r]/ vendor/
+
 # Generate channel manifests
 RUN dev/tasks/generate-channels
 
@@ -46,9 +48,9 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager github.com/Goog
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
 
 # Generate licenses
-RUN go mod vendor -o temp-vendor # So we can load license files
-RUN go run scripts/generate-third-party-licenses/main.go
-RUN rm -rf temp-vendor
+RUN if [ ! -d "vendor" ]; then go mod vendor -o temp-vendor; else cp -r vendor temp-vendor; fi && \
+    go run scripts/generate-third-party-licenses/main.go && \
+    rm -rf temp-vendor
 
 # Prepare a directory containing the binaries and other artifacts, and
 # configure any required permissions
