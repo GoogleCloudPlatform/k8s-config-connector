@@ -246,18 +246,16 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 			fixture := fixture
 			group := fixture.GVK.Group
 
-			skipTestReason := ""
-
 			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
 				skippedGroups := strings.Split(s, ",")
 				if slice.StringSliceContains(skippedGroups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.TestKey, group, s)
+					continue
 				}
 			}
 			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 				groups := strings.Split(s, ",")
 				if !slice.StringSliceContains(groups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.TestKey, group, s)
+					continue
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
@@ -268,9 +266,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 			t.Run(testName, func(t *testing.T) {
 				if os.Getenv("SKIP_ALL") != "" {
 					t.Skip("SKIP_ALL is set")
-				}
-				if skipTestReason != "" {
-					t.Skip(skipTestReason)
 				}
 
 				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
