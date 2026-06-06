@@ -27,10 +27,10 @@ import (
 
 func TestBigQueryConnectionConnectionIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name                 string
-		ref                  string
-		wantErr              bool
-		want                 *BigQueryConnectionConnectionIdentity
+		name                  string
+		ref                   string
+		wantErr               bool
+		want                  *BigQueryConnectionConnectionIdentity
 		wantIdentitySpecified bool
 	}{
 		{
@@ -87,10 +87,10 @@ func TestBigQueryConnectionConnection_GetIdentity(t *testing.T) {
 	fakeClient := fake.NewClientBuilder().WithScheme(scheme).Build()
 
 	tests := []struct {
-		name                 string
-		obj                  *BigQueryConnectionConnection
-		wantErr              bool
-		want                 *BigQueryConnectionConnectionIdentity
+		name                  string
+		obj                   *BigQueryConnectionConnection
+		wantErr               bool
+		want                  *BigQueryConnectionConnectionIdentity
 		wantIdentitySpecified bool
 	}{
 		{
