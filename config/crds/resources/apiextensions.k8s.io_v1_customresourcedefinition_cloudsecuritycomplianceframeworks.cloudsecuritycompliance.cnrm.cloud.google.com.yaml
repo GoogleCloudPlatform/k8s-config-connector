@@ -74,15 +74,42 @@ spec:
                   added without any grouping in the framework.
                 items:
                   properties:
+                    cloudControlRef:
+                      description: 'Required. The name of the CloudControl in the
+                        format: “organizations/{organization}/locations/{location}/
+                        cloudControls/{cloud-control}”'
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed CloudSecurityComplianceCloudControl
+                            resource. Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".
+                          type: string
+                        name:
+                          description: The name of a CloudSecurityComplianceCloudControl
+                            resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a CloudSecurityComplianceCloudControl
+                            resource.
+                          type: string
+                      type: object
                     majorRevisionID:
                       description: Required. Major revision of cloudcontrol
                       format: int64
                       type: integer
-                    name:
-                      description: 'Required. The name of the CloudControl in the
-                        format: “organizations/{organization}/locations/{location}/
-                        cloudControls/{cloud-control}”'
-                      type: string
                     parameters:
                       description: 'Optional. Parameters is a key-value pair that
                         is required by the CloudControl. The specification of these
@@ -114,15 +141,43 @@ spec:
                             to be referred to in the framework.
                           items:
                             properties:
+                              cloudControlRef:
+                                description: 'Required. The name of the CloudControl
+                                  in the format: “organizations/{organization}/locations/{location}/
+                                  cloudControls/{cloud-control}”'
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      CloudSecurityComplianceCloudControl resource.
+                                      Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a CloudSecurityComplianceCloudControl
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a CloudSecurityComplianceCloudControl
+                                      resource.
+                                    type: string
+                                type: object
                               majorRevisionID:
                                 description: Required. Major revision of cloudcontrol
                                 format: int64
                                 type: integer
-                              name:
-                                description: 'Required. The name of the CloudControl
-                                  in the format: “organizations/{organization}/locations/{location}/
-                                  cloudControls/{cloud-control}”'
-                                type: string
                               parameters:
                                 description: 'Optional. Parameters is a key-value
                                   pair that is required by the CloudControl. The specification
@@ -142,14 +197,73 @@ spec:
                                 type: array
                             type: object
                           type: array
-                        control:
-                          description: Optional. The industry-defined Control assciated
-                            with the cloud controls in this group. organizations/{organization}/locations/{location}/controls/{control_id}
-                          type: string
+                        cloudControlGroupRef:
+                          description: 'Required. The name of the cloud control group
+                            in the format: “organizations/{organization}/locations/{location}/
+                            cloudControlGroups/{cloud-control-group}”'
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed CloudSecurityComplianceCloudControlGroup
+                                resource. Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControlGroups/{{cloudControlGroupID}}".
+                              type: string
+                            name:
+                              description: The name of a CloudSecurityComplianceCloudControlGroup
+                                resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a CloudSecurityComplianceCloudControlGroup
+                                resource.
+                              type: string
+                          type: object
                         controlID:
                           description: Optional. The control identifier used to fetch
                             the findings. This is same as the control report name.
                           type: string
+                        controlRef:
+                          description: Optional. The industry-defined Control assciated
+                            with the cloud controls in this group. organizations/{organization}/locations/{location}/controls/{control_id}
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed CloudSecurityComplianceControl
+                                resource. Should be in the format "organizations/{{organizationID}}/locations/{{location}}/controls/{{controlID}}".
+                              type: string
+                            name:
+                              description: The name of a CloudSecurityComplianceControl
+                                resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a CloudSecurityComplianceControl
+                                resource.
+                              type: string
+                          type: object
                         description:
                           description: Optional. The description of the cloud control
                             group.The maximum length is 2000 characters.
@@ -159,11 +273,6 @@ spec:
                             group.
                           format: int64
                           type: integer
-                        name:
-                          description: 'Required. The name of the cloud control group
-                            in the format: “organizations/{organization}/locations/{location}/
-                            cloudControlGroups/{cloud-control-group}”'
-                          type: string
                       type: object
                   type: object
                 type: array

@@ -39,13 +39,13 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type FrameworkCloudControlDetails struct {
+	/* Required. The name of the CloudControl in the format: “organizations/{organization}/locations/{location}/ cloudControls/{cloud-control}” */
+	// +optional
+	CloudControlRef *v1alpha1.ResourceRef `json:"cloudControlRef,omitempty"`
+
 	/* Required. Major revision of cloudcontrol */
 	// +optional
 	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
-
-	/* Required. The name of the CloudControl in the format: “organizations/{organization}/locations/{location}/ cloudControls/{cloud-control}” */
-	// +optional
-	Name *string `json:"name,omitempty"`
 
 	/* Optional. Parameters is a key-value pair that is required by the CloudControl. The specification of these parameters will be present in cloudcontrol.Eg: { "name": "location","value": "us-west-1"}. */
 	// +optional
@@ -57,13 +57,17 @@ type FrameworkCloudControlGroup struct {
 	// +optional
 	CloudControlDetails []FrameworkCloudControlDetails `json:"cloudControlDetails,omitempty"`
 
-	/* Optional. The industry-defined Control assciated with the cloud controls in this group. organizations/{organization}/locations/{location}/controls/{control_id} */
+	/* Required. The name of the cloud control group in the format: “organizations/{organization}/locations/{location}/ cloudControlGroups/{cloud-control-group}” */
 	// +optional
-	Control *string `json:"control,omitempty"`
+	CloudControlGroupRef *v1alpha1.ResourceRef `json:"cloudControlGroupRef,omitempty"`
 
 	/* Optional. The control identifier used to fetch the findings. This is same as the control report name. */
 	// +optional
 	ControlID *string `json:"controlID,omitempty"`
+
+	/* Optional. The industry-defined Control assciated with the cloud controls in this group. organizations/{organization}/locations/{location}/controls/{control_id} */
+	// +optional
+	ControlRef *v1alpha1.ResourceRef `json:"controlRef,omitempty"`
 
 	/* Optional. The description of the cloud control group.The maximum length is 2000 characters. */
 	// +optional
@@ -72,10 +76,6 @@ type FrameworkCloudControlGroup struct {
 	/* Optional. Major revision of the cloud control group. */
 	// +optional
 	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
-
-	/* Required. The name of the cloud control group in the format: “organizations/{organization}/locations/{location}/ cloudControlGroups/{cloud-control-group}” */
-	// +optional
-	Name *string `json:"name,omitempty"`
 }
 
 type FrameworkCloudControlGroupDetails struct {

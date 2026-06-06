@@ -108,6 +108,8 @@ type CloudControl struct {
 }
 */
 
+/* found existing non-generated go type "CloudControlDetails", skipping
+
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails
 type CloudControlDetails struct {
 	// Required. The name of the CloudControl in the format:
@@ -126,6 +128,9 @@ type CloudControlDetails struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails.parameters
 	Parameters []Parameter `json:"parameters,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "CloudControlGroup", skipping
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
 type CloudControlGroup struct {
@@ -160,6 +165,7 @@ type CloudControlGroup struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.control
 	Control *string `json:"control,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.Framework", skipping
 
@@ -387,6 +393,8 @@ type CloudControlObservedState struct {
 }
 */
 
+/* found existing non-generated go type "CloudControlGroupObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
 type CloudControlGroupObservedState struct {
 	// Optional. Output only. The type of the cloud control group. Default is
@@ -394,6 +402,7 @@ type CloudControlGroupObservedState struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.type
 	Type *string `json:"type,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.Framework", skipping
 
