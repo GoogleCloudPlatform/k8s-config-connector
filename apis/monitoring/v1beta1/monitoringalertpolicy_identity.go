@@ -43,6 +43,10 @@ func (i *MonitoringAlertPolicyIdentity) String() string {
 }
 
 func (i *MonitoringAlertPolicyIdentity) FromExternal(ref string) error {
+	// This relative format is a very special case and unusual for a GCP API.
+	// For example, the IncidentList resource under Monitoring Dashboard explicitly
+	// asks that we do NOT pass the project in the policy name (e.g. use alertPolicies/utilization).
+	// Reference: https://docs.cloud.google.com/monitoring/api/ref_v3/rest/v1/projects.dashboards#incidentlist
 	if strings.HasPrefix(ref, "alertPolicies/") {
 		parts := strings.Split(ref, "/")
 		if len(parts) == 2 && parts[1] != "" {
