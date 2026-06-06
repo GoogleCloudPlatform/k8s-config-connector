@@ -39,9 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type CertificateAuthorizationAttemptInfo struct {
-	/* Human readable explanation for reaching the state. Provided to help
-	address the configuration issues.
-	Not guaranteed to be stable. For programmatic access use 'failure_reason' field. */
+	/* Human readable explanation for reaching the state. Provided to help address the configuration issues. Not guaranteed to be stable. For programmatic access use 'failure_reason' field. */
 	// +optional
 	Details *string `json:"details,omitempty"`
 
@@ -69,22 +67,21 @@ type CertificateCertificatePem struct {
 }
 
 type CertificateManaged struct {
-	/* Detailed state of the latest authorization attempt for each domain
-	specified for this Managed Certificate. */
+	/* Detailed state of the latest authorization attempt for each domain specified for this Managed Certificate. */
 	// +optional
 	AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfo `json:"authorizationAttemptInfo,omitempty"`
 
+	/* Immutable. Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specified, but not both. */
 	// +optional
 	DnsAuthorizationsRefs []v1alpha1.ResourceRef `json:"dnsAuthorizationsRefs,omitempty"`
 
-	/* Immutable. The domains for which a managed SSL certificate will be generated.
-	Wildcard domains are only supported with DNS challenge resolution. */
+	/* Immutable. The domains for which a managed SSL certificate will be generated. Wildcard domains are only supported with DNS challenge resolution. */
 	// +optional
 	Domains []string `json:"domains,omitempty"`
 
 	/* Only the `external` field is supported to configure the reference.
 
-	Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/* /locations/* /certificateIssuanceConfigs/*.
+	Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/{{project}}/locations/{{location}}/certificateIssuanceConfigs/{{name}}.
 	If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
 	Either issuanceConfig or dnsAuthorizations should be specified, but not both. */
 	// +optional
@@ -120,9 +117,7 @@ type CertificatePrivateKeyPem struct {
 }
 
 type CertificateProvisioningIssue struct {
-	/* Human readable explanation about the issue. Provided to help address
-	the configuration issues.
-	Not guaranteed to be stable. For programmatic access use 'reason' field. */
+	/* Human readable explanation about the issue. Provided to help address the configuration issues. Not guaranteed to be stable. For programmatic access use 'reason' field. */
 	// +optional
 	Details *string `json:"details,omitempty"`
 
@@ -167,9 +162,7 @@ type CertificateManagerCertificateSpec struct {
 	/* Immutable. The Certificate Manager location. If not specified, "global" is used. */
 	Location string `json:"location"`
 
-	/* Immutable. Configuration and state of a Managed Certificate.
-	Certificate Manager provisions and renews Managed Certificates
-	automatically, for as long as it's authorized to do so. */
+	/* Immutable. Configuration and state of a Managed Certificate. Certificate Manager provisions and renews Managed Certificates automatically, for as long as it's authorized to do so. */
 	// +optional
 	Managed *CertificateManaged `json:"managed,omitempty"`
 
@@ -193,17 +186,13 @@ type CertificateManagerCertificateSpec struct {
 	// +optional
 	Scope *string `json:"scope,omitempty"`
 
-	/* Immutable. Certificate data for a SelfManaged Certificate.
-	SelfManaged Certificates are uploaded by the user. Updating such
-	certificates before they expire remains the user's responsibility. */
+	/* Immutable. Certificate data for a SelfManaged Certificate. SelfManaged Certificates are uploaded by the user. Updating such certificates before they expire remains the user's responsibility. */
 	// +optional
 	SelfManaged *CertificateSelfManaged `json:"selfManaged,omitempty"`
 }
 
 type CertificateAuthorizationAttemptInfoStatus struct {
-	/* Human readable explanation for reaching the state. Provided to help
-	address the configuration issues.
-	Not guaranteed to be stable. For programmatic access use 'failure_reason' field. */
+	/* Human readable explanation for reaching the state. Provided to help address the configuration issues. Not guaranteed to be stable. For programmatic access use 'failure_reason' field. */
 	// +optional
 	Details *string `json:"details,omitempty"`
 
@@ -221,8 +210,7 @@ type CertificateAuthorizationAttemptInfoStatus struct {
 }
 
 type CertificateManagedStatus struct {
-	/* Detailed state of the latest authorization attempt for each domain
-	specified for this Managed Certificate. */
+	/* Detailed state of the latest authorization attempt for each domain specified for this Managed Certificate. */
 	// +optional
 	AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfoStatus `json:"authorizationAttemptInfo,omitempty"`
 
@@ -236,17 +224,13 @@ type CertificateManagedStatus struct {
 }
 
 type CertificateObservedStateStatus struct {
-	/* Immutable. Configuration and state of a Managed Certificate.
-	Certificate Manager provisions and renews Managed Certificates
-	automatically, for as long as it's authorized to do so. */
+	/* Immutable. Configuration and state of a Managed Certificate. Certificate Manager provisions and renews Managed Certificates automatically, for as long as it's authorized to do so. */
 	// +optional
 	Managed *CertificateManagedStatus `json:"managed,omitempty"`
 }
 
 type CertificateProvisioningIssueStatus struct {
-	/* Human readable explanation about the issue. Provided to help address
-	the configuration issues.
-	Not guaranteed to be stable. For programmatic access use 'reason' field. */
+	/* Human readable explanation about the issue. Provided to help address the configuration issues. Not guaranteed to be stable. For programmatic access use 'reason' field. */
 	// +optional
 	Details *string `json:"details,omitempty"`
 
