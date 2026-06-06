@@ -81,7 +81,7 @@ func getIdentityFromBillingBudgetsBudgetSpec(ctx context.Context, reader client.
 	if err := billingIdentity.FromExternal(billingRef.External); err != nil {
 		return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
 	}
-	billingAccount := billingIdentity.BillingAccountID
+	billingAccount := billingIdentity.BillingAccount
 
 	identity := &BillingBudgetsBudgetIdentity{
 		BillingAccount: billingAccount,
