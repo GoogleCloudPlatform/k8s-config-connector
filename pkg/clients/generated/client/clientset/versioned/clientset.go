@@ -102,6 +102,7 @@ import (
 	datastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastore/v1alpha1"
 	datastreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastream/v1alpha1"
 	deploymentmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/deploymentmanager/v1alpha1"
+	developerconnectv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/developerconnect/v1alpha1"
 	devicestreamingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/devicestreaming/v1alpha1"
 	dialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflow/v1alpha1"
 	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
@@ -283,6 +284,7 @@ type Interface interface {
 	DatastoreV1alpha1() datastorev1alpha1.DatastoreV1alpha1Interface
 	DatastreamV1alpha1() datastreamv1alpha1.DatastreamV1alpha1Interface
 	DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Interface
+	DeveloperconnectV1alpha1() developerconnectv1alpha1.DeveloperconnectV1alpha1Interface
 	DevicestreamingV1alpha1() devicestreamingv1alpha1.DevicestreamingV1alpha1Interface
 	DialogflowV1alpha1() dialogflowv1alpha1.DialogflowV1alpha1Interface
 	DialogflowcxV1alpha1() dialogflowcxv1alpha1.DialogflowcxV1alpha1Interface
@@ -462,6 +464,7 @@ type Clientset struct {
 	datastoreV1alpha1               *datastorev1alpha1.DatastoreV1alpha1Client
 	datastreamV1alpha1              *datastreamv1alpha1.DatastreamV1alpha1Client
 	deploymentmanagerV1alpha1       *deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Client
+	developerconnectV1alpha1        *developerconnectv1alpha1.DeveloperconnectV1alpha1Client
 	devicestreamingV1alpha1         *devicestreamingv1alpha1.DevicestreamingV1alpha1Client
 	dialogflowV1alpha1              *dialogflowv1alpha1.DialogflowV1alpha1Client
 	dialogflowcxV1alpha1            *dialogflowcxv1alpha1.DialogflowcxV1alpha1Client
@@ -944,6 +947,11 @@ func (c *Clientset) DatastreamV1alpha1() datastreamv1alpha1.DatastreamV1alpha1In
 // DeploymentmanagerV1alpha1 retrieves the DeploymentmanagerV1alpha1Client
 func (c *Clientset) DeploymentmanagerV1alpha1() deploymentmanagerv1alpha1.DeploymentmanagerV1alpha1Interface {
 	return c.deploymentmanagerV1alpha1
+}
+
+// DeveloperconnectV1alpha1 retrieves the DeveloperconnectV1alpha1Client
+func (c *Clientset) DeveloperconnectV1alpha1() developerconnectv1alpha1.DeveloperconnectV1alpha1Interface {
+	return c.developerconnectV1alpha1
 }
 
 // DevicestreamingV1alpha1 retrieves the DevicestreamingV1alpha1Client
@@ -1783,6 +1791,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.developerconnectV1alpha1, err = developerconnectv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.devicestreamingV1alpha1, err = devicestreamingv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2269,6 +2281,7 @@ func New(c rest.Interface) *Clientset {
 	cs.datastoreV1alpha1 = datastorev1alpha1.New(c)
 	cs.datastreamV1alpha1 = datastreamv1alpha1.New(c)
 	cs.deploymentmanagerV1alpha1 = deploymentmanagerv1alpha1.New(c)
+	cs.developerconnectV1alpha1 = developerconnectv1alpha1.New(c)
 	cs.devicestreamingV1alpha1 = devicestreamingv1alpha1.New(c)
 	cs.dialogflowV1alpha1 = dialogflowv1alpha1.New(c)
 	cs.dialogflowcxV1alpha1 = dialogflowcxv1alpha1.New(c)
