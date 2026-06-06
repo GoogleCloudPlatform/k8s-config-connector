@@ -55,34 +55,35 @@ type refNormalizer struct {
 
 func (r *refNormalizer) VisitField(path string, v any) error {
 	if alertChart, ok := v.(*krm.AlertChart); ok {
-		if r.project == nil {
-			return fmt.Errorf("must specify project for alertChart references")
+		if alertChart.AlertPolicyRef != nil {
+			if r.project == nil {
+				return fmt.Errorf("must specify project for alertChart references")
+			}
+			if err := alertChart.AlertPolicyRef.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
+				return err
+			}
+			refined, err := r.RefineMonitoringAlertPolicyRefForAlertChart(alertChart.AlertPolicyRef.External)
+			if err != nil {
+				return err
+			}
+			alertChart.AlertPolicyRef.External = refined
 		}
-		external, err := alertChart.AlertPolicyRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
-		if err != nil {
-			return err
-		}
-		refined, err := r.RefineMonitoringAlertPolicyRefForAlertChart(external)
-		if err != nil {
-			return err
-		}
-		alertChart.AlertPolicyRef.External = refined
 	}
 
 	if alertChart, ok := v.(*krm.IncidentList); ok {
-		for i, policyRef := range alertChart.PolicyRefs {
+		for i := range alertChart.PolicyRefs {
 			if r.project == nil {
 				return fmt.Errorf("must specify project for policyRef references")
 			}
-			external, err := policyRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
+			policyRef := &alertChart.PolicyRefs[i]
+			if err := policyRef.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
+				return err
+			}
+			refined, err := r.RefineMonitoringAlertPolicyRefForIncidentList(policyRef.External)
 			if err != nil {
 				return err
 			}
-			refined, err := r.RefineMonitoringAlertPolicyRefForIncidentList(external)
-			if err != nil {
-				return err
-			}
-			alertChart.PolicyRefs[i].External = refined
+			policyRef.External = refined
 		}
 	}
 

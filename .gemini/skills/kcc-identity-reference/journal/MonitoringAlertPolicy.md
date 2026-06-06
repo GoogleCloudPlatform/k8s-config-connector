@@ -1,0 +1,5 @@
+When implementing MonitoringAlertPolicy, I found:
+1. `MonitoringAlertPolicy` is a pure Terraform-based resource, so its types are defined under the generated package (`pkg/clients/generated/apis/monitoring/v1beta1`) and not in the `apis/monitoring/v1beta1` package.
+2. Because its KRM type is generated elsewhere, we implemented `getIdentityFromMonitoringAlertPolicySpec` to take `client.Object` (which `*unstructured.Unstructured` implements) rather than a typed pointer, avoiding any circular dependency between packages while remaining fully compatible with `refs.NormalizeWithFallback`.
+3. The legacy reference helper used `NormalizedExternal` on `MonitoringAlertPolicyRef`. We updated the reference struct to implement the modern `refs.Ref` interface and simplified the normalization logic in `pkg/controller/direct/common/refs.go` to call the standard `Normalize()` method.
+4. We deleted the old files `alertpolicy_identity.go` and `alertpolicy_reference.go` and created `monitoringalertpolicy_identity.go` and `monitoringalertpolicy_reference.go` to consistently match the lowercase kind naming convention.
