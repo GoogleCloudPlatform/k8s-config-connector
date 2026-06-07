@@ -130,8 +130,7 @@ Vary: X-Origin
 
 ---
 
-GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -153,11 +152,11 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://logging.googleapis.com/v2/organizations/${organizationID}/sinks?%24alt=json%3Benum-encoding%3Dint
+POST https://logging.googleapis.com/v2/organizations/${organizationID}/sinks?alt=json&prettyPrint=false&uniqueWriterIdentity=true
 Content-Type: application/json
 
 {
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}"
 }
@@ -174,7 +173,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -183,8 +182,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -198,7 +196,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -207,13 +205,14 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter
+PATCH https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
 Content-Type: application/json
 
 {
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+  "disabled": false,
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
-  "name": "orgsink-${uniqueId}"
+  "includeChildren": false
 }
 
 200 OK
@@ -228,7 +227,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -237,8 +236,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -252,7 +250,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -261,8 +259,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+DELETE https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
