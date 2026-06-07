@@ -2271,18 +2271,12 @@
 [missing_field] crd=vertexaiexamplestores.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.exampleStoreConfig.vertexEmbeddingModel" is not set in unstructured objects
 [missing_field] crd=vertexaiexamplestores.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaiexamplestores.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigtable.autoScaling.cpuUtilizationTarget" is not set in unstructured objects
-[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigtable.autoScaling.maxNodeCount" is not set in unstructured objects
-[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigtable.autoScaling.minNodeCount" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.enablePrivateServiceConnect" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.projectAllowlist[]" is not set in unstructured objects
-[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].network" is not set in unstructured objects
+[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].projectID" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
-[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.optimized" is not set in unstructured objects
-[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.entitytype" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.valueType" is not set in unstructured objects
