@@ -46,12 +46,16 @@ When defining the KRM Go type in `<kind>_types.go`, you must ensure it matches t
 - **Matching Go struct field names to Proto field names**: The mapping generator automatically matches KRM Go struct fields to Proto fields by mapping Go camel-case names to proto snake_case/camel-case field names. If a KRM field is named differently in the CRD (e.g., `filterLabels`), we can rename the Go struct field to match the proto name exactly (e.g., renaming the Go field name to `Labels` while preserving the JSON tag `json:"filterLabels,omitempty"` so that there is absolutely no schema change). This allows us to fully leverage automatic mapper generation and completely avoid writing hand-coded mappers. If the mapped type is defined in a different package (like `google.api.MonitoredResource`), we can also specify multiple services to the `--service` flag of `generate-mapper` (e.g. `--service google.monitoring.v3,google.api`) to enable automatic traversal and generation for that shared type.
 
 ### 3. Fuzzer Best Practices
-When writing a KRM round-trip fuzzer, do not call `f.SpecFields.Insert` or `f.UnimplementedFields.Insert` directly on sets. Instead, use the type-safe helper methods defined on the `KRMTypedFuzzer` struct:
-- Use `f.SpecField(fieldPath)` to mark a field as round-tripping to/from the Spec.
-- Use `f.StatusField(fieldPath)` to mark a field as round-tripping to/from the Status.
-- Use `f.Unimplemented_Identity(fieldPath)` for identity/URL fields like `.name`.
-- Use `f.Unimplemented_NotYetTriaged(fieldPath)` for fields that are not implemented or under development.
-- Use `f.Unimplemented_LabelsAnnotations(fieldPath)` for labels or annotations.
+When writing a KRM round-trip fuzzer, or if a fuzzer already exists:
+- **File Naming**: Ensure the fuzzer is named `<kind>_fuzzer.go` (e.g., `entitlement_fuzzer.go`) in lowercase. Do not use generic names like `fuzzers.go`.
+- **Use Type-Safe Helpers**: Do not call `f.SpecFields.Insert`, `f.StatusFields.Insert`, or `f.UnimplementedFields.Insert` directly on sets. Instead, use the type-safe helper methods defined on the `KRMTypedFuzzer` struct:
+  - Use `f.SpecField(fieldPath)` to mark a field as round-tripping to/from the Spec.
+  - Use `f.StatusField(fieldPath)` to mark a field as round-tripping to/from the Status.
+  - Use `f.Unimplemented_Identity(fieldPath)` for identity/URL fields like `.name`.
+  - Use `f.Unimplemented_Internal(fieldPath)` for internal service-only/hidden implementation details (e.g., resource fields that are duplicates of KRM metadata or parent references).
+  - Use `f.Unimplemented_NotYetTriaged(fieldPath)` for fields that are not implemented or under development.
+  - Use `f.Unimplemented_LabelsAnnotations(fieldPath)` for labels or annotations.
+- **Move Hand-Coded Mappers**: Ensure all hand-coded mapper functions reside in a file called `mappers.go` within the direct controller package to distinguish them from the generated mapper file `mapper.generated.go`.
 
 ### 4. Verification & Acceptance Criteria
 - Run `dev/tasks/diff-crds` to verify there are absolutely no unintended schema changes.

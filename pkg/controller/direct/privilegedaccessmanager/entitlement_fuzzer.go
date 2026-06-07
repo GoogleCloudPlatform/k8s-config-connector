@@ -36,21 +36,21 @@ func fuzzEntitlement() fuzztesting.KRMFuzzer {
 		PrivilegedAccessManagerEntitlementObservedState_FromProto, PrivilegedAccessManagerEntitlementObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")                                           // special field
-	f.UnimplementedFields.Insert(".privileged_access.gcp_iam_access.resource_type") // hidden duplicate field
-	f.UnimplementedFields.Insert(".privileged_access.gcp_iam_access.resource")      // hidden duplicate field
+	f.Unimplemented_Identity(".name")                                           // special field
+	f.Unimplemented_Internal(".privileged_access.gcp_iam_access.resource_type") // hidden duplicate field
+	f.Unimplemented_Internal(".privileged_access.gcp_iam_access.resource")      // hidden duplicate field
 
-	f.SpecFields.Insert(".eligible_users")
-	f.SpecFields.Insert(".approval_workflow")
-	f.SpecFields.Insert(".max_request_duration")
-	f.SpecFields.Insert(".privileged_access")
-	f.SpecFields.Insert(".requester_justification_config")
-	f.SpecFields.Insert(".additional_notification_targets")
+	f.SpecField(".eligible_users")
+	f.SpecField(".approval_workflow")
+	f.SpecField(".max_request_duration")
+	f.SpecField(".privileged_access")
+	f.SpecField(".requester_justification_config")
+	f.SpecField(".additional_notification_targets")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".etag")
-	f.StatusFields.Insert(".state")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".etag")
+	f.StatusField(".state")
 	return f
 }
 
