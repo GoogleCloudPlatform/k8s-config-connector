@@ -30,34 +30,43 @@ var (
 	_ identity.Resource   = &NetworkSecurityInterceptEndpointGroup{}
 )
 
-var NetworkSecurityInterceptEndpointGroupIdentityFormat = gcpurls.Template[NetworkSecurityInterceptEndpointGroupIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/interceptEndpointGroups/{interceptendpointgroup}")
+var (
+	ProjectInterceptEndpointGroupIdentityFormat      = gcpurls.Template[NetworkSecurityInterceptEndpointGroupIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/interceptEndpointGroups/{interceptendpointgroup}")
+	OrganizationInterceptEndpointGroupIdentityFormat = gcpurls.Template[NetworkSecurityInterceptEndpointGroupIdentity]("networksecurity.googleapis.com", "organizations/{organization}/locations/{location}/interceptEndpointGroups/{interceptendpointgroup}")
+)
 
 // +k8s:deepcopy-gen=false
 type NetworkSecurityInterceptEndpointGroupIdentity struct {
 	Project                string
+	Organization           string
 	Location               string
 	Interceptendpointgroup string
 }
 
 func (i *NetworkSecurityInterceptEndpointGroupIdentity) String() string {
-	return NetworkSecurityInterceptEndpointGroupIdentityFormat.ToString(*i)
+	if i.Project != "" {
+		return ProjectInterceptEndpointGroupIdentityFormat.ToString(*i)
+	}
+	if i.Organization != "" {
+		return OrganizationInterceptEndpointGroupIdentityFormat.ToString(*i)
+	}
+	return ""
 }
 
 func (i *NetworkSecurityInterceptEndpointGroupIdentity) FromExternal(ref string) error {
-	parsed, match, err := NetworkSecurityInterceptEndpointGroupIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of NetworkSecurityInterceptEndpointGroup external=%q was not known (use %s): %w", ref, NetworkSecurityInterceptEndpointGroupIdentityFormat.CanonicalForm(), err)
+	if parsed, match, _ := ProjectInterceptEndpointGroupIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-	if !match {
-		return fmt.Errorf("format of NetworkSecurityInterceptEndpointGroup external=%q was not known (use %s)", ref, NetworkSecurityInterceptEndpointGroupIdentityFormat.CanonicalForm())
+	if parsed, match, _ := OrganizationInterceptEndpointGroupIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-
-	*i = *parsed
-	return nil
+	return fmt.Errorf("format of NetworkSecurityInterceptEndpointGroup external=%q was not known (use %s or %s)", ref, ProjectInterceptEndpointGroupIdentityFormat.CanonicalForm(), OrganizationInterceptEndpointGroupIdentityFormat.CanonicalForm())
 }
 
 func (i *NetworkSecurityInterceptEndpointGroupIdentity) Host() string {
-	return NetworkSecurityInterceptEndpointGroupIdentityFormat.Host()
+	return "networksecurity.googleapis.com"
 }
 
 func getIdentityFromNetworkSecurityInterceptEndpointGroupSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkSecurityInterceptEndpointGroupIdentity, error) {
@@ -103,4 +112,12 @@ func (obj *NetworkSecurityInterceptEndpointGroup) GetIdentity(ctx context.Contex
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier returns the GCP external identifier (the GCP URL).
+func (obj *NetworkSecurityInterceptEndpointGroup) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
 }
