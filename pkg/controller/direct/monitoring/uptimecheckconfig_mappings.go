@@ -17,15 +17,23 @@ package monitoring
 import (
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+// UptimeCheckConfig_HTTPCheck_BasicAuthentication is hand-coded because the Password field of type
+// *refsv1beta1secret.Legacy is a write-only secret reference which cannot be automatically mapped to a proto string.
 func UptimeCheckConfig_HTTPCheck_BasicAuthentication_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_HttpCheck_BasicAuthentication) *krm.UptimeCheckConfig_HTTPCheck_BasicAuthentication {
 	if in == nil {
 		return nil
 	}
 	out := &krm.UptimeCheckConfig_HTTPCheck_BasicAuthentication{}
 	out.Username = direct.LazyPtr(in.GetUsername())
+	if in.GetPassword() != "" {
+		out.Password = &refsv1beta1secret.Legacy{
+			Value: direct.LazyPtr(in.GetPassword()),
+		}
+	}
 	return out
 }
 
@@ -41,6 +49,9 @@ func UptimeCheckConfig_HTTPCheck_BasicAuthentication_ToProto(mapCtx *direct.MapC
 	return out
 }
 
+// UptimeCheckConfig_HTTPCheck is hand-coded because:
+// - It has an AuthInfo nested field of type UptimeCheckConfig_HTTPCheck_BasicAuthentication which contains a secret reference.
+// - It has a Body field which maps a string pointer (*string) in KRM to a byte slice ([]byte) in proto.
 func UptimeCheckConfig_HTTPCheck_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_HttpCheck) *krm.UptimeCheckConfig_HTTPCheck {
 	if in == nil {
 		return nil
