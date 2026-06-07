@@ -27,16 +27,19 @@ go run . generate-types \
   --service google.apps.cloudidentity.devices.v1alpha1 \
   --api-version cloudidentity.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
+  --overlay "${REPO_ROOT}/apis/cloudidentity/v1alpha1/overlay.proto" \
   --resource CloudIdentityDevice:Device || \
 go run . generate-types \
   --service google.apps.cloudidentity.v1alpha1 \
   --api-version cloudidentity.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
+  --overlay "${REPO_ROOT}/apis/cloudidentity/v1alpha1/overlay.proto" \
   --resource CloudIdentityDevice:Device || \
 go run . generate-types \
   --service google.apps.cloudidentity.v1beta1 \
   --api-version cloudidentity.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
+  --overlay "${REPO_ROOT}/apis/cloudidentity/v1alpha1/overlay.proto" \
   --resource CloudIdentityDevice:Device
 
 cd ${REPO_ROOT}

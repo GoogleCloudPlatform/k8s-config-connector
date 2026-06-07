@@ -73,9 +73,6 @@ type BrowserAttributes struct {
 
 // +kcc:proto=google.apps.cloudidentity.v1beta1.BrowserInfo
 type BrowserInfo struct {
-	// Output only. Browser's management state.
-	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.BrowserInfo.browser_management_state
-	BrowserManagementState *string `json:"browserManagementState,omitempty"`
 
 	// Version of the request initiating browser. E.g. `91.0.4442.4`.
 	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.BrowserInfo.browser_version
@@ -124,10 +121,6 @@ type BrowserInfo struct {
 	// Current state of [password protection trigger](https://chromeenterprise.google/policies/#PasswordProtectionWarningTrigger).
 	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.BrowserInfo.password_protection_warning_trigger
 	PasswordProtectionWarningTrigger *string `json:"passwordProtectionWarningTrigger,omitempty"`
-
-	// Output only. Chrome policies information for the browser as can be seen in chrome://policy. Full possibilities of policies can be consulted in [Chrome Enterprise Policy List](https://chromeenterprise.google/policies/).
-	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.BrowserInfo.policies
-	Policies []ChromePolicy `json:"policies,omitempty"`
 
 	// Current state of [Safe Browsing protection level](https://chromeenterprise.google/policies/#SafeBrowsingProtectionLevel).
 	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.BrowserInfo.safe_browsing_protection_level
@@ -418,5 +411,46 @@ type Any struct {
 	// Must be a valid serialized protocol buffer of the above specified type.
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.apps.cloudidentity.v1beta1.BrowserAttributes
+type BrowserAttributesObservedState struct {
+	// Represents the current state of the [Chrome browser attributes](https://cloud.google.com/access-context-manager/docs/browser-attributes) sent by the clients on the device, such as [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.BrowserAttributes.chrome_browser_info
+	ChromeBrowserInfo *BrowserInfoObservedState `json:"chromeBrowserInfo,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.apps.cloudidentity.v1beta1.BrowserInfo
+type BrowserInfoObservedState struct {
+	// Output only. Browser's management state.
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.BrowserInfo.browser_management_state
+	BrowserManagementState *string `json:"browserManagementState,omitempty"`
+
+	// Output only. Chrome policies information for the browser as can be seen in chrome://policy. Full possibilities of policies can be consulted in [Chrome Enterprise Policy List](https://chromeenterprise.google/policies/).
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.BrowserInfo.policies
+	Policies []ChromePolicy `json:"policies,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.apps.cloudidentity.v1beta1.Device", skipping
+
+// +kcc:observedstate:proto=google.apps.cloudidentity.v1beta1.Device
+type DeviceObservedState struct {
+	// Browser profiles on the device. This is a copy of the BrowserAttributes message defined in EndpointVerificationSpecificAttributes. We are replicating it here since EndpointVerification isn't the only client reporting browser profiles.
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.Device.browser_profiles
+	BrowserProfiles []BrowserAttributesObservedState `json:"browserProfiles,omitempty"`
+
+	// Output only. Attributes specific to [Endpoint Verification](https://cloud.google.com/endpoint-verification/docs/overview) devices.
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.Device.endpoint_verification_specific_attributes
+	EndpointVerificationSpecificAttributes *EndpointVerificationSpecificAttributesObservedState `json:"endpointVerificationSpecificAttributes,omitempty"`
+}
+*/
+
+/* unreachable type EndpointVerificationSpecificAttributesObservedState
+// +kcc:observedstate:proto=google.apps.cloudidentity.v1beta1.EndpointVerificationSpecificAttributes
+type EndpointVerificationSpecificAttributesObservedState struct {
+	// Details of browser profiles reported by Endpoint Verification.
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.EndpointVerificationSpecificAttributes.browser_attributes
+	BrowserAttributes []BrowserAttributesObservedState `json:"browserAttributes,omitempty"`
 }
 */

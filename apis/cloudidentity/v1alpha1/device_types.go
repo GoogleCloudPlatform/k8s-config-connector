@@ -60,6 +60,10 @@ type CloudIdentityDeviceSpec struct {
 	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.Device.wifi_mac_addresses
 	WifiMacAddresses []string `json:"wifiMacAddresses,omitempty"`
 
+	// Immutable. Optional. The Customer ID of the device. If not specified, defaults to "customers/my_customer".
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.CreateDeviceRequest.customer
+	Customer *string `json:"customer,omitempty"`
+
 	// The CloudIdentityDevice name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -83,6 +87,10 @@ type CloudIdentityDeviceStatus struct {
 // CloudIdentityDeviceObservedState is the state of the CloudIdentityDevice resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.apps.cloudidentity.v1beta1.Device
 type CloudIdentityDeviceObservedState struct {
+
+	// Output only. Browser profiles on the device.
+	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.Device.browser_profiles
+	BrowserProfiles []BrowserAttributesObservedState `json:"browserProfiles,omitempty"`
 
 	// Output only. Attributes specific to Android devices.
 	// +kcc:proto:field=google.apps.cloudidentity.v1beta1.Device.android_specific_attributes
@@ -190,6 +198,7 @@ type CloudIdentityDeviceObservedState struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudidentitydevice;gcpcloudidentitydevices
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

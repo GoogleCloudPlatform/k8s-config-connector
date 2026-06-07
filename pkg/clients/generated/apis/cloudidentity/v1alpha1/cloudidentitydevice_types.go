@@ -53,10 +53,6 @@ type DeviceBrowserProfiles struct {
 }
 
 type DeviceChromeBrowserInfo struct {
-	/* Output only. Browser's management state. */
-	// +optional
-	BrowserManagementState *string `json:"browserManagementState,omitempty"`
-
 	/* Version of the request initiating browser. E.g. `91.0.4442.4`. */
 	// +optional
 	BrowserVersion *string `json:"browserVersion,omitempty"`
@@ -105,49 +101,9 @@ type DeviceChromeBrowserInfo struct {
 	// +optional
 	PasswordProtectionWarningTrigger *string `json:"passwordProtectionWarningTrigger,omitempty"`
 
-	/* Output only. Chrome policies information for the browser as can be seen in chrome://policy. Full possibilities of policies can be consulted in [Chrome Enterprise Policy List](https://chromeenterprise.google/policies/). */
-	// +optional
-	Policies []DevicePolicies `json:"policies,omitempty"`
-
 	/* Current state of [Safe Browsing protection level](https://chromeenterprise.google/policies/#SafeBrowsingProtectionLevel). */
 	// +optional
 	SafeBrowsingProtectionLevel *string `json:"safeBrowsingProtectionLevel,omitempty"`
-}
-
-type DeviceConflicts struct {
-	/* Output only. The scope at which this lower-priority policy is set (USER or MACHINE). */
-	// +optional
-	Scope *string `json:"scope,omitempty"`
-
-	/* Output only. The source from which this lower-priority policy value originated. */
-	// +optional
-	Source *string `json:"source,omitempty"`
-
-	/* Output only. The policy value from this lower-priority source. */
-	// +optional
-	Value *string `json:"value,omitempty"`
-}
-
-type DevicePolicies struct {
-	/* Output only. A list of other policy values for the same policy name that were not applied due to lower precedence. This field is empty if there were no conflicts. */
-	// +optional
-	Conflicts []DeviceConflicts `json:"conflicts,omitempty"`
-
-	/* Output only. The unique name of the Chrome policy. These names correspond to the policy names listed in [Chrome Enterprise Policy List](https://chromeenterprise.google/policies/) */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
-	/* Output only. The scope at which the *applied* policy value is set (USER or MACHINE). */
-	// +optional
-	Scope *string `json:"scope,omitempty"`
-
-	/* Output only. The source from which the *applied* policy value originated. */
-	// +optional
-	Source *string `json:"source,omitempty"`
-
-	/* Output only. The currently applied value of the policy. The format depends on the policy type (e.g., boolean, string, JSON array/object). */
-	// +optional
-	Value *string `json:"value,omitempty"`
 }
 
 type CloudIdentityDeviceSpec struct {
@@ -162,6 +118,10 @@ type CloudIdentityDeviceSpec struct {
 	/* List of the clients the device is reporting to. */
 	// +optional
 	ClientTypes []string `json:"clientTypes,omitempty"`
+
+	/* Immutable. Optional. The Customer ID of the device. If not specified, defaults to "customers/my_customer". */
+	// +optional
+	Customer *string `json:"customer,omitempty"`
 
 	/* Unique identifier for the device. */
 	// +optional
@@ -240,6 +200,12 @@ type DeviceBrowserAttributesStatus struct {
 	LastProfileSyncTime *string `json:"lastProfileSyncTime,omitempty"`
 }
 
+type DeviceBrowserProfilesStatus struct {
+	/* Represents the current state of the [Chrome browser attributes](https://cloud.google.com/access-context-manager/docs/browser-attributes) sent by the clients on the device, such as [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1). */
+	// +optional
+	ChromeBrowserInfo *DeviceChromeBrowserInfoStatus `json:"chromeBrowserInfo,omitempty"`
+}
+
 type DeviceCertificateAttributesStatus struct {
 	/* The X.509 extension for CertificateTemplate. */
 	// +optional
@@ -293,10 +259,6 @@ type DeviceCertificateTemplateStatus struct {
 }
 
 type DeviceChromeBrowserInfoStatus struct {
-	/* Output only. Browser's management state. */
-	// +optional
-	BrowserManagementState *string `json:"browserManagementState,omitempty"`
-
 	/* Version of the request initiating browser. E.g. `91.0.4442.4`. */
 	// +optional
 	BrowserVersion *string `json:"browserVersion,omitempty"`
@@ -345,10 +307,6 @@ type DeviceChromeBrowserInfoStatus struct {
 	// +optional
 	PasswordProtectionWarningTrigger *string `json:"passwordProtectionWarningTrigger,omitempty"`
 
-	/* Output only. Chrome policies information for the browser as can be seen in chrome://policy. Full possibilities of policies can be consulted in [Chrome Enterprise Policy List](https://chromeenterprise.google/policies/). */
-	// +optional
-	Policies []DevicePoliciesStatus `json:"policies,omitempty"`
-
 	/* Current state of [Safe Browsing protection level](https://chromeenterprise.google/policies/#SafeBrowsingProtectionLevel). */
 	// +optional
 	SafeBrowsingProtectionLevel *string `json:"safeBrowsingProtectionLevel,omitempty"`
@@ -394,6 +352,10 @@ type DeviceObservedStateStatus struct {
 	/* Output only. Device brand. Example: Samsung. */
 	// +optional
 	Brand *string `json:"brand,omitempty"`
+
+	/* Output only. Browser profiles on the device. */
+	// +optional
+	BrowserProfiles []DeviceBrowserProfilesStatus `json:"browserProfiles,omitempty"`
 
 	/* Output only. Build number of the device. */
 	// +optional
@@ -524,6 +486,7 @@ type CloudIdentityDeviceStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudidentitydevice;gcpcloudidentitydevices
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

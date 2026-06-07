@@ -18,6 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1alpha1"
@@ -28,6 +29,7 @@ import (
 
 	api "google.golang.org/api/cloudidentity/v1beta1"
 	"google.golang.org/api/option"
+	htransport "google.golang.org/api/transport/http"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -60,6 +62,19 @@ func (m *modelDevice) client(ctx context.Context) (*api.Service, error) {
 	return gcpClient, err
 }
 
+func (m *modelDevice) httpClient(ctx context.Context) (*http.Client, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	httpClient, _, err := htransport.NewClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building cloudidentity HTTP client: %w", err)
+	}
+	return httpClient, nil
+}
+
 func (m *modelDevice) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -76,10 +91,15 @@ func (m *modelDevice) AdapterForObject(ctx context.Context, op *directbase.Adapt
 	if err != nil {
 		return nil, err
 	}
+	httpClient, err := m.httpClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &DeviceAdapter{
-		id:        id.(*krm.CloudIdentityDeviceIdentity),
-		inner:     obj,
-		gcpClient: gcpClient,
+		id:         id.(*krm.CloudIdentityDeviceIdentity),
+		inner:      obj,
+		gcpClient:  gcpClient,
+		httpClient: httpClient,
 	}, nil
 }
 
@@ -88,10 +108,11 @@ func (m *modelDevice) AdapterForURL(ctx context.Context, url string) (directbase
 }
 
 type DeviceAdapter struct {
-	id        *krm.CloudIdentityDeviceIdentity
-	inner     *krm.CloudIdentityDevice
-	gcpClient *api.Service
-	actual    *api.Device
+	id         *krm.CloudIdentityDeviceIdentity
+	inner      *krm.CloudIdentityDevice
+	gcpClient  *api.Service
+	httpClient *http.Client
+	actual     *api.Device
 }
 
 var _ directbase.Adapter = &DeviceAdapter{}
@@ -120,9 +141,14 @@ func (a *DeviceAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	desired := a.inner.DeepCopy()
 	resource := CloudIdentityDeviceSpec_ToAPI(&desired.Spec)
 
+	customer := "customers/my_customer"
+	if desired.Spec.Customer != nil {
+		customer = *desired.Spec.Customer
+	}
+
 	req := a.gcpClient.Devices.Create(&api.CreateDeviceRequest{
 		Device:   resource,
-		Customer: "customers/my_customer", // As per API docs, this can be used for your own org.
+		Customer: customer,
 	})
 
 	op, err := req.Context(ctx).Do()
@@ -130,7 +156,7 @@ func (a *DeviceAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 		return fmt.Errorf("creating CloudIdentityDevice %q: %w", a.id.String(), err)
 	}
 
-	if err := WaitForCloudIdentityOp(ctx, op); err != nil {
+	if err := WaitForCloudIdentityOpWithClient(ctx, a.httpClient, op); err != nil {
 		return fmt.Errorf("waiting for create operation for CloudIdentityDevice %q: %w", a.id.String(), err)
 	}
 
@@ -197,8 +223,13 @@ func (a *DeviceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting CloudIdentityDevice", "name", a.id.String())
 
+	customer := "customers/my_customer"
+	if a.inner.Spec.Customer != nil {
+		customer = *a.inner.Spec.Customer
+	}
+
 	req := a.gcpClient.Devices.Delete(a.id.String())
-	req.Customer("customers/my_customer") // We need to specify customer
+	req.Customer(customer)
 
 	op, err := req.Context(ctx).Do()
 	if err != nil {
@@ -208,7 +239,7 @@ func (a *DeviceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 		return false, fmt.Errorf("deleting CloudIdentityDevice %q: %w", a.id.String(), err)
 	}
 
-	if err := WaitForCloudIdentityOp(ctx, op); err != nil {
+	if err := WaitForCloudIdentityOpWithClient(ctx, a.httpClient, op); err != nil {
 		return false, fmt.Errorf("waiting for delete operation for CloudIdentityDevice %q: %w", a.id.String(), err)
 	}
 

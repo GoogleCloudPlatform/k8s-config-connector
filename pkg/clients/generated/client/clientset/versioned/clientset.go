@@ -73,6 +73,7 @@ import (
 	clouddmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddms/v1alpha1"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1"
 	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1"
+	cloudidentityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1alpha1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
@@ -256,6 +257,7 @@ type Interface interface {
 	ClouddmsV1alpha1() clouddmsv1alpha1.ClouddmsV1alpha1Interface
 	CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface
 	Cloudfunctions2V1alpha1() cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Interface
+	CloudidentityV1alpha1() cloudidentityv1alpha1.CloudidentityV1alpha1Interface
 	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
 	CloudidsV1beta1() cloudidsv1beta1.CloudidsV1beta1Interface
 	CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interface
@@ -437,6 +439,7 @@ type Clientset struct {
 	clouddmsV1alpha1                *clouddmsv1alpha1.ClouddmsV1alpha1Client
 	cloudfunctionsV1beta1           *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
 	cloudfunctions2V1alpha1         *cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Client
+	cloudidentityV1alpha1           *cloudidentityv1alpha1.CloudidentityV1alpha1Client
 	cloudidentityV1beta1            *cloudidentityv1beta1.CloudidentityV1beta1Client
 	cloudidsV1beta1                 *cloudidsv1beta1.CloudidsV1beta1Client
 	cloudiotV1alpha1                *cloudiotv1alpha1.CloudiotV1alpha1Client
@@ -805,6 +808,11 @@ func (c *Clientset) CloudfunctionsV1beta1() cloudfunctionsv1beta1.Cloudfunctions
 // Cloudfunctions2V1alpha1 retrieves the Cloudfunctions2V1alpha1Client
 func (c *Clientset) Cloudfunctions2V1alpha1() cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Interface {
 	return c.cloudfunctions2V1alpha1
+}
+
+// CloudidentityV1alpha1 retrieves the CloudidentityV1alpha1Client
+func (c *Clientset) CloudidentityV1alpha1() cloudidentityv1alpha1.CloudidentityV1alpha1Interface {
+	return c.cloudidentityV1alpha1
 }
 
 // CloudidentityV1beta1 retrieves the CloudidentityV1beta1Client
@@ -1683,6 +1691,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.cloudidentityV1alpha1, err = cloudidentityv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudidentityV1beta1, err = cloudidentityv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2264,6 +2276,7 @@ func New(c rest.Interface) *Clientset {
 	cs.clouddmsV1alpha1 = clouddmsv1alpha1.New(c)
 	cs.cloudfunctionsV1beta1 = cloudfunctionsv1beta1.New(c)
 	cs.cloudfunctions2V1alpha1 = cloudfunctions2v1alpha1.New(c)
+	cs.cloudidentityV1alpha1 = cloudidentityv1alpha1.New(c)
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)
 	cs.cloudidsV1beta1 = cloudidsv1beta1.New(c)
 	cs.cloudiotV1alpha1 = cloudiotv1alpha1.New(c)
