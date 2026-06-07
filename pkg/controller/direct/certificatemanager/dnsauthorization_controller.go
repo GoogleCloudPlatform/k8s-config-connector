@@ -136,7 +136,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredProto := CertificateManagerDNSAuthorizationSpec_ToProto(mapCtx, &obj.Spec)
+	desiredProto := CertificateManagerDNSAuthorizationSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -203,7 +203,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created DnsAuthorization", "name", a.id.FullyQualifiedName())
 
-	status := CertificateManagerDNSAuthorizationStatus_FromProto(mapCtx, created)
+	status := CertificateManagerDNSAuthorizationStatus_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -250,7 +250,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	log.V(2).Info("successfully updated DnsAuthorization", "name", a.id.FullyQualifiedName())
 
-	status := CertificateManagerDNSAuthorizationStatus_FromProto(mapCtx, updated)
+	status := CertificateManagerDNSAuthorizationStatus_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -265,7 +265,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.CertificateManagerDNSAuthorization{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(CertificateManagerDNSAuthorizationSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(CertificateManagerDNSAuthorizationSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
