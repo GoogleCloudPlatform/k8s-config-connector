@@ -74,18 +74,33 @@ func TestConfigConnectorContextE2E(t *testing.T) {
 		t.Fatalf("failed to create ConfigConnectorContext: %v", err)
 	}
 
-	// TODO: Replace with a poll for status/observedGeneration
-	time.Sleep(15 * time.Second)
+	// Poll for status/observedGeneration
+	var healthy bool
+	var errors []string
+	var ok bool
+	for i := 0; i < 30; i++ {
+		newCCC := &corev1beta1.ConfigConnectorContext{}
+		if err := c.Get(ctx, nn, newCCC); err != nil {
+			t.Logf("error getting ConfigConnectorContext: %v", err)
+		} else {
+			s := newCCC.GetCommonStatus()
+			healthy = s.Healthy
+			errors = s.Errors
+			ok = true
+			if s.ObservedGeneration == newCCC.Generation && s.Healthy {
+				break
+			}
+		}
+		time.Sleep(2 * time.Second)
+	}
 
-	newCCC := &corev1beta1.ConfigConnectorContext{}
-	if err := c.Get(ctx, nn, newCCC); err != nil {
-		t.Errorf("failed to get ConfigConnectorContext: %v", err)
+	if !ok {
+		t.Fatalf("failed to get ConfigConnectorContext status")
 	}
-	status := newCCC.GetCommonStatus()
-	if got, want := status.Healthy, true; got != want {
-		t.Errorf("unexpected value for status.healthy: got '%v', want '%v'", got, want)
+	if got, want := healthy, true; got != want {
+		t.Errorf("unexpected value for status.healthy: got '%v', want '%v'. Errors: %v", got, want, errors)
 	}
-	if len(status.Errors) != 0 {
-		t.Errorf("unexpected number of errors in status.errors: got %v, want 0. Got errors: %v", len(status.Errors), status.Errors)
+	if len(errors) != 0 {
+		t.Errorf("unexpected number of errors in status.errors: got %v, want 0. Got errors: %v", len(errors), errors)
 	}
 }
