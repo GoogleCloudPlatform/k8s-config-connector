@@ -57,12 +57,9 @@ func (e *Engine) PopulateNewProject(ctx context.Context, projectID string) error
 		Project:         projectID,
 		NetworkResource: network,
 	}
-	op, err := networksClient.Insert(ctx, req)
+	_, err = networksClient.Insert(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating network: %w", err)
-	}
-	if err := op.Wait(ctx); err != nil {
-		return fmt.Errorf("waiting for network creation: %w", err)
 	}
 
 	return nil

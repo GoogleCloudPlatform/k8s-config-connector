@@ -59,12 +59,9 @@ func (e *Engine) CreateComputeNetworkSubnetworks(ctx context.Context, projectID 
 			Region:             region.Name,
 			SubnetworkResource: subnet,
 		}
-		op, err := subnetsClient.Insert(ctx, req)
+		_, err := subnetsClient.Insert(ctx, req)
 		if err != nil {
 			return fmt.Errorf("creating automatic subnet %v: %w", req, err)
-		}
-		if err := op.Wait(ctx); err != nil {
-			return fmt.Errorf("waiting for subnet creation: %w", err)
 		}
 	}
 

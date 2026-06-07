@@ -69,12 +69,9 @@ func (e *Engine) CreateComputeNetworkRoutes(ctx context.Context, projectID strin
 			Project:       projectID,
 			RouteResource: route,
 		}
-		op, err := routesClient.Insert(ctx, req)
+		_, err := routesClient.Insert(ctx, req)
 		if err != nil {
 			return fmt.Errorf("creating automatic default route %v: %w", req, err)
-		}
-		if err := op.Wait(ctx); err != nil {
-			return fmt.Errorf("waiting for route creation: %w", err)
 		}
 	}
 
@@ -104,12 +101,9 @@ func (e *Engine) CreateComputeNetworkRoutes(ctx context.Context, projectID strin
 				Project:       projectID,
 				RouteResource: route,
 			}
-			op, err := routesClient.Insert(ctx, req)
+			_, err := routesClient.Insert(ctx, req)
 			if err != nil {
 				return fmt.Errorf("creating automatic route for subnet %v %v: %w", subnet, req, err)
-			}
-			if err := op.Wait(ctx); err != nil {
-				return fmt.Errorf("waiting for route creation: %w", err)
 			}
 		}
 	}
