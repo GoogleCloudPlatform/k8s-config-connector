@@ -860,6 +860,70 @@ type BatchJobSpec struct {
 	TaskGroups []JobTaskGroups `json:"taskGroups,omitempty"`
 }
 
+type JobBootDiskStatus struct {
+	/* Local SSDs are available through both "SCSI" and "NVMe" interfaces. If not indicated, "NVMe" will be the default one for local ssds. This field is ignored for persistent disks as the interface is chosen automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface. */
+	// +optional
+	DiskInterface *string `json:"diskInterface,omitempty"`
+
+	/* URL for a VM image to use as the data source for this disk.
+	For example, the following are all valid URLs:
+
+	* Specify the image by its family name:
+	projects/{project}/global/images/family/{image_family}
+	* Specify the image version:
+	projects/{project}/global/images/{image_version} */
+	// +optional
+	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+
+	/* Disk size in GB.
+
+	**Non-Boot Disk**:
+	If the `type` specifies a persistent disk, this field
+	is ignored if `data_source` is set as `image` or `snapshot`.
+	If the `type` specifies a local SSD, this field should be a multiple of
+	375 GB, otherwise, the final size will be the next greater multiple of
+	375 GB.
+
+	**Boot Disk**:
+	Batch will calculate the boot disk size based on source
+	image and task requirements if you do not speicify the size.
+	If both this field and the `boot_disk_mib` field in task spec's
+	`compute_resource` are defined, Batch will only honor this field.
+	Also, this field should be no smaller than the source disk's
+	size when the `data_source` is set as `snapshot` or `image`.
+	For example, if you set an image as the `data_source` field and the
+	image's default disk size 30 GB, you can only use this field to make the
+	disk larger or equal to 30 GB. */
+	// +optional
+	SizeGB *int64 `json:"sizeGB,omitempty"`
+
+	/* Name of a snapshot used as the data source. Snapshot is not supported as boot disk now. */
+	// +optional
+	Snapshot *string `json:"snapshot,omitempty"`
+
+	/* Disk type as shown in `gcloud compute disk-types list`. For example, local SSD uses type "local-ssd". Persistent disks and boot disks use "pd-balanced", "pd-extreme", "pd-ssd" or "pd-standard". If not specified, "pd-standard" will be used as the default type for non-boot disks, "pd-balanced" will be used as the default type for boot disks. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type JobInstancesStatus struct {
+	/* The VM boot disk. */
+	// +optional
+	BootDisk *JobBootDiskStatus `json:"bootDisk,omitempty"`
+
+	/* The Compute Engine machine type. */
+	// +optional
+	MachineType *string `json:"machineType,omitempty"`
+
+	/* The VM instance provisioning model. */
+	// +optional
+	ProvisioningModel *string `json:"provisioningModel,omitempty"`
+
+	/* The max number of tasks can be assigned to this instance type. */
+	// +optional
+	TaskPack *int64 `json:"taskPack,omitempty"`
+}
+
 type JobObservedStateStatus struct {
 	/* Output only. When the Job was created. */
 	// +optional
@@ -920,6 +984,10 @@ type JobStatusStatus struct {
 	/* Job status events */
 	// +optional
 	StatusEvents []JobStatusEventsStatus `json:"statusEvents,omitempty"`
+
+	/* Aggregated task status for each TaskGroup in the Job. The map key is TaskGroup ID. */
+	// +optional
+	TaskGroups map[string]JobTaskGroupsStatus `json:"taskGroups,omitempty"`
 }
 
 type JobTaskExecutionStatus struct {

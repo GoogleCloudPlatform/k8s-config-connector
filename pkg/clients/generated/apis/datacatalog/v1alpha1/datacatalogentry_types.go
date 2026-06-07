@@ -174,6 +174,12 @@ type EntryColumns struct {
 	Type string `json:"type"`
 }
 
+type EntryCommonUsageWithinTimeRange struct {
+	/* View count in source system. */
+	// +optional
+	ViewCount *int64 `json:"viewCount,omitempty"`
+}
+
 type EntryContacts struct {
 	/* The list of contact people for the entry. */
 	// +optional
@@ -486,6 +492,12 @@ type EntryThrift struct {
 }
 
 type EntryUsageSignal struct {
+	/* Common usage statistics over each of the predefined time ranges.
+
+	Supported time ranges are `{"24H", "7D", "30D", "Lifetime"}`. */
+	// +optional
+	CommonUsageWithinTimeRange map[string]EntryCommonUsageWithinTimeRange `json:"commonUsageWithinTimeRange,omitempty"`
+
 	/* Favorite count in the source system. */
 	// +optional
 	FavoriteCount *int64 `json:"favoriteCount,omitempty"`
@@ -976,6 +988,30 @@ type EntryThriftStatus struct {
 }
 
 type EntryUsageSignalStatus struct {
+	/* Output only. BigQuery usage statistics over each of the predefined time
+	ranges.
+
+	Supported time ranges are `{"24H", "7D", "30D"}`. */
+	// +optional
+	UsageWithinTimeRange map[string]EntryUsageWithinTimeRangeStatus `json:"usageWithinTimeRange,omitempty"`
+}
+
+type EntryUsageWithinTimeRangeStatus struct {
+	/* The number of cancelled attempts to use the underlying entry. */
+	// +optional
+	TotalCancellations *float64 `json:"totalCancellations,omitempty"`
+
+	/* The number of successful uses of the underlying entry. */
+	// +optional
+	TotalCompletions *float64 `json:"totalCompletions,omitempty"`
+
+	/* Total time spent only on successful uses, in milliseconds. */
+	// +optional
+	TotalExecutionTimeForCompletionsMillis *float64 `json:"totalExecutionTimeForCompletionsMillis,omitempty"`
+
+	/* The number of failed attempts to use the underlying entry. */
+	// +optional
+	TotalFailures *float64 `json:"totalFailures,omitempty"`
 }
 
 type EntryViewSpecStatus struct {
