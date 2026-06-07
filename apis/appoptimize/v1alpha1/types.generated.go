@@ -21,7 +21,6 @@
 
 package v1alpha1
 
-/* unreachable type Scope
 // +kcc:proto=google.cloud.appoptimize.v1beta.Scope
 type Scope struct {
 	// Required. A Google Cloud Platform project to fetch data from.
@@ -37,4 +36,3 @@ type Scope struct {
 	// +kcc:proto:field=google.cloud.appoptimize.v1beta.Scope.application
 	Application *string `json:"application,omitempty"`
 }
-*/

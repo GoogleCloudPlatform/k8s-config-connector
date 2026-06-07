@@ -38,9 +38,34 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type ReportScopes struct {
+	/* Required. An App Hub Application to fetch data from.
+
+	Format:
+	`"projects/{project}/locations/{location}/applications/{application}"`. */
+	// +optional
+	Application *string `json:"application,omitempty"`
+
+	/* Required. A Google Cloud Platform project to fetch data from.
+
+	Format: `"projects/{project}"`. */
+	// +optional
+	Project *string `json:"project,omitempty"`
+}
+
 type AppOptimizeReportSpec struct {
-	/* The location of this resource. */
+	/* Required. A list of dimensions to include in the report. Supported values: * `project` * `application` * `service_or_workload` * `resource` * `resource_type` * `location` * `product_display_name` * `sku` * `month` * `day` * `hour` */
+	Dimensions []string `json:"dimensions"`
+
+	/* Optional. A Common Expression Language (CEL) expression used to filter the data for the report. */
+	// +optional
+	Filter *string `json:"filter,omitempty"`
+
+	/* Immutable. The location of this resource. */
 	Location string `json:"location"`
+
+	/* Required. A list of metrics to include in the report. Supported values: * `cost` * `cpu_mean_utilization` * `cpu_usage_core_seconds` * `cpu_allocation_core_seconds` * `cpu_p95_utilization` * `memory_mean_utilization` * `memory_usage_byte_seconds` * `memory_allocation_byte_seconds` * `memory_p95_utilization` */
+	Metrics []string `json:"metrics"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -48,9 +73,16 @@ type AppOptimizeReportSpec struct {
 	/* The AppOptimizeReport name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Optional. The resource containers for which to fetch data. Default is the project specified in the report's parent. */
+	// +optional
+	Scopes []ReportScopes `json:"scopes,omitempty"`
 }
 
 type ReportObservedStateStatus struct {
+	/* Output only. Timestamp in UTC of when this report expires. Once the report expires, it will no longer be accessible and the report's underlying data will be deleted. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 }
 
 type AppOptimizeReportStatus struct {
@@ -75,6 +107,7 @@ type AppOptimizeReportStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpappoptimizereport;gcpappoptimizereports
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

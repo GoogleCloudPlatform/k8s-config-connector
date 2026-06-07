@@ -17,100 +17,100 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AppOptimizeReportIdentity defines the resource reference to AppOptimizeReport, which "External" field
-// holds the GCP identifier for the KRM object.
+var (
+	_ identity.IdentityV2 = &AppOptimizeReportIdentity{}
+	_ identity.Resource   = &AppOptimizeReport{}
+)
+
+var AppOptimizeReportIdentityFormat = gcpurls.Template[AppOptimizeReportIdentity]("appoptimize.googleapis.com", "projects/{project}/locations/{location}/reports/{report}")
+
+// AppOptimizeReportIdentity is the identity of a GCP AppOptimizeReport resource.
+// +k8s:deepcopy-gen=false
 type AppOptimizeReportIdentity struct {
-	parent *AppOptimizeReportParent
-	id     string
+	Project  string
+	Location string
+	Report   string
 }
 
 func (i *AppOptimizeReportIdentity) String() string {
-	return i.parent.String() + "/reports/" + i.id
+	return AppOptimizeReportIdentityFormat.ToString(*i)
 }
 
-func (i *AppOptimizeReportIdentity) ID() string {
-	return i.id
+func (i *AppOptimizeReportIdentity) FromExternal(ref string) error {
+	parsed, match, err := AppOptimizeReportIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of AppOptimizeReport external=%q was not known (use %s): %w", ref, AppOptimizeReportIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of AppOptimizeReport external=%q was not known (use %s)", ref, AppOptimizeReportIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
-func (i *AppOptimizeReportIdentity) Parent() *AppOptimizeReportParent {
-	return i.parent
+func (i *AppOptimizeReportIdentity) Host() string {
+	return AppOptimizeReportIdentityFormat.Host()
 }
 
-type AppOptimizeReportParent struct {
-	ProjectID string
-	Location  string
+func getIdentityFromAppOptimizeReportSpec(ctx context.Context, reader client.Reader, obj *AppOptimizeReport) (*AppOptimizeReportIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &AppOptimizeReportIdentity{
+		Project:  projectID,
+		Location: location,
+		Report:   resourceID,
+	}
+	return identity, nil
 }
 
-func (p *AppOptimizeReportParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds an AppOptimizeReportIdentity from the Config Connector AppOptimizeReport object.
-func NewAppOptimizeReportIdentity(ctx context.Context, reader client.Reader, obj *AppOptimizeReport) (*AppOptimizeReportIdentity, error) {
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (obj *AppOptimizeReport) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAppOptimizeReportSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseAppOptimizeReportExternal(externalRef)
-		if err != nil {
+		statusIdentity := &AppOptimizeReportIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change AppOptimizeReport identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-	return &AppOptimizeReportIdentity{
-		parent: &AppOptimizeReportParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
+
+	return specIdentity, nil
 }
 
-func ParseAppOptimizeReportExternal(external string) (parent *AppOptimizeReportParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "reports" {
-		return nil, "", fmt.Errorf("format of AppOptimizeReport external=%q was not known (use projects/{{projectID}}/locations/{{location}}/reports/{{reportID}})", external)
+func (obj *AppOptimizeReport) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
 	}
-	parent = &AppOptimizeReportParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return nil
 }

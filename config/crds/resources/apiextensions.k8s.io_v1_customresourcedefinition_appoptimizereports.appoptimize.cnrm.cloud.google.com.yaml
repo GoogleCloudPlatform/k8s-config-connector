@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: appoptimizereports.appoptimize.cnrm.cloud.google.com
 spec:
@@ -61,9 +62,33 @@ spec:
           spec:
             description: AppOptimizeReportSpec defines the desired state of AppOptimizeReport
             properties:
-              location:
-                description: The location of this resource.
+              dimensions:
+                description: 'Required. A list of dimensions to include in the report.
+                  Supported values: * `project` * `application` * `service_or_workload`
+                  * `resource` * `resource_type` * `location` * `product_display_name`
+                  * `sku` * `month` * `day` * `hour`'
+                items:
+                  type: string
+                type: array
+              filter:
+                description: Optional. A Common Expression Language (CEL) expression
+                  used to filter the data for the report.
                 type: string
+              location:
+                description: Immutable. The location of this resource.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              metrics:
+                description: 'Required. A list of metrics to include in the report.
+                  Supported values: * `cost` * `cpu_mean_utilization` * `cpu_usage_core_seconds`
+                  * `cpu_allocation_core_seconds` * `cpu_p95_utilization` * `memory_mean_utilization`
+                  * `memory_usage_byte_seconds` * `memory_allocation_byte_seconds`
+                  * `memory_p95_utilization`'
+                items:
+                  type: string
+                type: array
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -100,8 +125,30 @@ spec:
                 description: The AppOptimizeReport name. If not given, the metadata.name
                   will be used.
                 type: string
+              scopes:
+                description: Optional. The resource containers for which to fetch
+                  data. Default is the project specified in the report's parent.
+                items:
+                  properties:
+                    application:
+                      description: |-
+                        Required. An App Hub Application to fetch data from.
+
+                         Format:
+                         `"projects/{project}/locations/{location}/applications/{application}"`.
+                      type: string
+                    project:
+                      description: |-
+                        Required. A Google Cloud Platform project to fetch data from.
+
+                         Format: `"projects/{project}"`.
+                      type: string
+                  type: object
+                type: array
             required:
+            - dimensions
             - location
+            - metrics
             - projectRef
             type: object
           status:
@@ -149,6 +196,12 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  expireTime:
+                    description: Output only. Timestamp in UTC of when this report
+                      expires. Once the report expires, it will no longer be accessible
+                      and the report's underlying data will be deleted.
+                    type: string
                 type: object
             type: object
         required:

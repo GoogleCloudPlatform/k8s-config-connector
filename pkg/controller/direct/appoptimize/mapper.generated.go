@@ -34,12 +34,8 @@ func AppOptimizeReportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.AppOptimizeReportObservedState{}
-	// MISSING: ExpireTime
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	// MISSING: Name
-	// MISSING: Dimensions
-	// MISSING: Metrics
-	// MISSING: Scopes
-	// MISSING: Filter
 	return out
 }
 func AppOptimizeReportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppOptimizeReportObservedState) *pb.Report {
@@ -47,12 +43,10 @@ func AppOptimizeReportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.A
 		return nil
 	}
 	out := &pb.Report{}
-	// MISSING: ExpireTime
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime); oneof != nil {
+		out.Expiration = &pb.Report_ExpireTime{ExpireTime: oneof}
+	}
 	// MISSING: Name
-	// MISSING: Dimensions
-	// MISSING: Metrics
-	// MISSING: Scopes
-	// MISSING: Filter
 	return out
 }
 func AppOptimizeReportSpec_FromProto(mapCtx *direct.MapContext, in *pb.Report) *krm.AppOptimizeReportSpec {
@@ -60,12 +54,11 @@ func AppOptimizeReportSpec_FromProto(mapCtx *direct.MapContext, in *pb.Report) *
 		return nil
 	}
 	out := &krm.AppOptimizeReportSpec{}
-	// MISSING: ExpireTime
 	// MISSING: Name
-	// MISSING: Dimensions
-	// MISSING: Metrics
-	// MISSING: Scopes
-	// MISSING: Filter
+	out.Dimensions = in.Dimensions
+	out.Metrics = in.Metrics
+	out.Scopes = direct.Slice_FromProto(mapCtx, in.Scopes, Scope_FromProto)
+	out.Filter = direct.LazyPtr(in.GetFilter())
 	return out
 }
 func AppOptimizeReportSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppOptimizeReportSpec) *pb.Report {
@@ -73,11 +66,44 @@ func AppOptimizeReportSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppOptimiz
 		return nil
 	}
 	out := &pb.Report{}
-	// MISSING: ExpireTime
 	// MISSING: Name
-	// MISSING: Dimensions
-	// MISSING: Metrics
-	// MISSING: Scopes
-	// MISSING: Filter
+	out.Dimensions = in.Dimensions
+	out.Metrics = in.Metrics
+	out.Scopes = direct.Slice_ToProto(mapCtx, in.Scopes, Scope_ToProto)
+	out.Filter = direct.ValueOf(in.Filter)
 	return out
+}
+func Scope_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.Scope {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Scope{}
+	out.Project = direct.LazyPtr(in.GetProject())
+	out.Application = direct.LazyPtr(in.GetApplication())
+	return out
+}
+func Scope_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *pb.Scope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Scope{}
+	if oneof := Scope_Project_ToProto(mapCtx, in.Project); oneof != nil {
+		out.Scope = oneof
+	}
+	if oneof := Scope_Application_ToProto(mapCtx, in.Application); oneof != nil {
+		out.Scope = oneof
+	}
+	return out
+}
+func Scope_Project_ToProto(mapCtx *direct.MapContext, in *string) *pb.Scope_Project {
+	if in == nil {
+		return nil
+	}
+	return &pb.Scope_Project{Project: *in}
+}
+func Scope_Application_ToProto(mapCtx *direct.MapContext, in *string) *pb.Scope_Application {
+	if in == nil {
+		return nil
+	}
+	return &pb.Scope_Application{Application: *in}
 }
