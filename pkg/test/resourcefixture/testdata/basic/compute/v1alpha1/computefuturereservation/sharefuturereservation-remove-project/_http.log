@@ -202,37 +202,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a/futureReservations/${futureReservationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=shared-reservations-project&zone=us-central1-a&future_reservation=${futureReservationID}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The resource 'projects/shared-reservations-project/zones/us-central1-a/futureReservations/${futureReservationID}' was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The resource 'projects/shared-reservations-project/zones/us-central1-a/futureReservations/${futureReservationID}' was not found"
-  }
-}
-
----
-
 GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -285,6 +254,37 @@ X-Xss-Protection: 0
   "parent": "organizations/${organizationID}",
   "projectId": "project-${uniqueId}",
   "state": 1
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/shared-reservations-project/zones/us-central1-a/futureReservations/${futureReservationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=shared-reservations-project&zone=us-central1-a&future_reservation=${futureReservationID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/shared-reservations-project/zones/us-central1-a/futureReservations/${futureReservationID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/shared-reservations-project/zones/us-central1-a/futureReservations/${futureReservationID}' was not found"
+  }
 }
 
 ---
