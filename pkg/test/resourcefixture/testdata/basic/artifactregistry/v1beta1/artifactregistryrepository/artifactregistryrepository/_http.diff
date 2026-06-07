@@ -1,0 +1,196 @@
+1c1
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arrepository-${uniqueId}-2
+---
+> POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}-2
+28,34c28
+<   "format": "DOCKER",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-two",
+<     "managed-by-cnrm": "true"
+<   },
+<   "mode": "STANDARD_REPOSITORY"
+---
+>   "format": 1
+56c50
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+78,82d71
+<     "labels": {
+<       "cnrm-test": "true",
+<       "label-one": "value-two",
+<       "managed-by-cnrm": "true"
+<     },
+96,131c85
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "format": "DOCKER",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-two",
+<     "managed-by-cnrm": "true"
+<   },
+<   "mode": "STANDARD_REPOSITORY",
+<   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
+<   "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}-2",
+<   "satisfiesPzi": true,
+<   "updateTime": "2024-04-01T12:34:56.123456Z",
+<   "vulnerabilityScanningConfig": {
+<     "enablementState": "SCANNING_DISABLED",
+<     "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+<     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+154c108
+< POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arrepository-${uniqueId}
+---
+> POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}
+159,165c113,114
+<   "format": "DOCKER",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+<   "mode": "VIRTUAL_REPOSITORY",
+---
+>   "format": 1,
+>   "mode": 2,
+196c145
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+219,223d167
+<     "labels": {
+<       "cnrm-test": "true",
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+<     },
+246c190
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+262,268c206,207
+<   "format": "DOCKER",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+<   "mode": "VIRTUAL_REPOSITORY",
+---
+>   "format": 1,
+>   "mode": 2,
+283c222
+<     "enablementState": "SCANNING_UNSUPPORTED",
+---
+>     "enablementState": 1,
+291c230
+< PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json&updateMask=description
+---
+> PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+295d233
+<   "cleanupPolicies": {},
+297,301c235,237
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+---
+>   "format": 1,
+>   "mode": 2,
+>   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+326,332c262,263
+<   "format": "DOCKER",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+<   "mode": "VIRTUAL_REPOSITORY",
+---
+>   "format": 1,
+>   "mode": 2,
+346c277
+<     "enablementState": "SCANNING_UNSUPPORTED",
+---
+>     "enablementState": 1,
+354c285
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+370,376c301,302
+<   "format": "DOCKER",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+<   "mode": "VIRTUAL_REPOSITORY",
+---
+>   "format": 1,
+>   "mode": 2,
+391c317
+<     "enablementState": "SCANNING_UNSUPPORTED",
+---
+>     "enablementState": 1,
+399c325
+< DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+421c347
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+447c373
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+462,468c388,389
+<   "format": "DOCKER",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-two",
+<     "managed-by-cnrm": "true"
+<   },
+<   "mode": "STANDARD_REPOSITORY",
+---
+>   "format": 1,
+>   "mode": 1,
+474c395
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+482c403
+< DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
+---
+> DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+504c425
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}

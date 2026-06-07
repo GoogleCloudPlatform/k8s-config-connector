@@ -326,6 +326,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					forceDirect = true
 				case "LoggingLogBucket":
 					forceDirect = true
+				case "ArtifactRegistryRepository":
+					forceDirect = true
 				case "TagsLocationTagBinding":
 					forceDirect = false
 				case "FirestoreIndex":
