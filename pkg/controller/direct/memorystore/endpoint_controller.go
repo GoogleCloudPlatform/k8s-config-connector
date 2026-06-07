@@ -176,7 +176,7 @@ func (a *EndpointAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	mapCtx := &direct.MapContext{}
 	status := &krm.MemorystoreInstanceEndpointStatus{}
-	status.ObservedState = MemorystoreInstanceEndpointObservedState_FromProto(mapCtx, actual)
+	status.ObservedState = MemorystoreInstanceEndpointObservedState_v1alpha1_FromProto(mapCtx, actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -199,7 +199,7 @@ func (a *EndpointAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	mapCtx := &direct.MapContext{}
 	status := &krm.MemorystoreInstanceEndpointStatus{}
-	status.ObservedState = MemorystoreInstanceEndpointObservedState_FromProto(mapCtx, actual)
+	status.ObservedState = MemorystoreInstanceEndpointObservedState_v1alpha1_FromProto(mapCtx, actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -258,7 +258,7 @@ func (a *EndpointAdapter) updateConnections(ctx context.Context, userCreated []k
 		}
 	}
 	for _, uc := range userCreated {
-		endpoints = append(endpoints, Endpoint_ToProto(mapCtx, &uc))
+		endpoints = append(endpoints, Endpoint_v1alpha1_ToProto(mapCtx, &uc))
 	}
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()

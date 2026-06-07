@@ -26,11 +26,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krm.Endpoint {
+func Endpoint_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krm.Endpoint {
 	if in == nil {
 		return nil
 	}
-	connections := slice_FromProto(mapCtx, in.Connections, Endpoint_ConnectionDetail_FromProto)
+	connections := slice_v1alpha1_FromProto(mapCtx, in.Connections, Endpoint_ConnectionDetail_v1alpha1_FromProto)
 	if connections == nil {
 		return nil
 	}
@@ -38,19 +38,19 @@ func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpo
 	out.Connections = connections
 	return out
 }
-func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Instance_InstanceEndpoint {
+func Endpoint_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Instance_InstanceEndpoint {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance_InstanceEndpoint{}
-	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Endpoint_ConnectionDetail_ToProto)
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Endpoint_ConnectionDetail_v1alpha1_ToProto)
 	return out
 }
-func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krm.EndpointObservedState {
+func EndpointObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krm.EndpointObservedState {
 	if in == nil {
 		return nil
 	}
-	connections := slice_FromProto(mapCtx, in.Connections, Endpoint_ConnectionDetailObservedState_FromProto)
+	connections := slice_v1alpha1_FromProto(mapCtx, in.Connections, Endpoint_ConnectionDetailObservedState_v1alpha1_FromProto)
 	if connections == nil {
 		return nil
 	}
@@ -58,15 +58,15 @@ func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_
 	out.Connections = connections
 	return out
 }
-func EndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EndpointObservedState) *pb.Instance_InstanceEndpoint {
+func EndpointObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.EndpointObservedState) *pb.Instance_InstanceEndpoint {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance_InstanceEndpoint{}
-	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Endpoint_ConnectionDetailObservedState_ToProto)
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Endpoint_ConnectionDetailObservedState_v1alpha1_ToProto)
 	return out
 }
-func Endpoint_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krm.Endpoint_ConnectionDetail {
+func Endpoint_ConnectionDetail_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krm.Endpoint_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
@@ -75,20 +75,20 @@ func Endpoint_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.Insta
 		return nil
 	}
 	out := &krm.Endpoint_ConnectionDetail{}
-	out.PscConnection = PscConnection_FromProto(mapCtx, userConnection)
+	out.PscConnection = PscConnection_v1alpha1_FromProto(mapCtx, userConnection)
 	return out
 }
-func Endpoint_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint_ConnectionDetail) *pb.Instance_ConnectionDetail {
+func Endpoint_ConnectionDetail_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint_ConnectionDetail) *pb.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance_ConnectionDetail{}
-	if oneof := PscConnection_ToProto(mapCtx, in.PscConnection); oneof != nil {
+	if oneof := PscConnection_v1alpha1_ToProto(mapCtx, in.PscConnection); oneof != nil {
 		out.Connection = &pb.Instance_ConnectionDetail_PscConnection{PscConnection: oneof}
 	}
 	return out
 }
-func Endpoint_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krm.Endpoint_ConnectionDetailObservedState {
+func Endpoint_ConnectionDetailObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krm.Endpoint_ConnectionDetailObservedState {
 	if in == nil {
 		return nil
 	}
@@ -100,7 +100,7 @@ func Endpoint_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext,
 	out.PscConnection = PscConnectionObservedState_v1alpha1_FromProto(mapCtx, userConnection)
 	return out
 }
-func Endpoint_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint_ConnectionDetailObservedState) *pb.Instance_ConnectionDetail {
+func Endpoint_ConnectionDetailObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint_ConnectionDetailObservedState) *pb.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
@@ -110,39 +110,39 @@ func Endpoint_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, i
 	}
 	return out
 }
-func MemorystoreInstanceEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemorystoreInstanceEndpointObservedState {
+func MemorystoreInstanceEndpointObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemorystoreInstanceEndpointObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.MemorystoreInstanceEndpointObservedState{}
-	out.Endpoints = slice_FromProto(mapCtx, in.Endpoints, EndpointObservedState_FromProto)
+	out.Endpoints = slice_v1alpha1_FromProto(mapCtx, in.Endpoints, EndpointObservedState_v1alpha1_FromProto)
 	return out
 }
-func MemorystoreInstanceEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceEndpointObservedState) *pb.Instance {
+func MemorystoreInstanceEndpointObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceEndpointObservedState) *pb.Instance {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance{}
-	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, EndpointObservedState_ToProto)
+	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, EndpointObservedState_v1alpha1_ToProto)
 	return out
 }
-func MemorystoreInstanceEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemorystoreInstanceEndpointSpec {
+func MemorystoreInstanceEndpointSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemorystoreInstanceEndpointSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.MemorystoreInstanceEndpointSpec{}
-	out.Endpoints = slice_FromProto(mapCtx, in.Endpoints, Endpoint_FromProto)
+	out.Endpoints = slice_v1alpha1_FromProto(mapCtx, in.Endpoints, Endpoint_v1alpha1_FromProto)
 	return out
 }
-func MemorystoreInstanceEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceEndpointSpec) *pb.Instance {
+func MemorystoreInstanceEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceEndpointSpec) *pb.Instance {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance{}
-	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Endpoint_ToProto)
+	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Endpoint_v1alpha1_ToProto)
 	return out
 }
-func PscConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PscConnection {
+func PscConnection_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PscConnection {
 	if in == nil {
 		return nil
 	}
@@ -153,7 +153,7 @@ func PscConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *k
 	out.ForwardingRuleRef = &computev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
 	return out
 }
-func PscConnection_ToProto(mapCtx *direct.MapContext, in *krm.PscConnection) *pb.PscConnection {
+func PscConnection_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.PscConnection) *pb.PscConnection {
 	if in == nil {
 		return nil
 	}
@@ -186,7 +186,7 @@ func PscConnectionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
 	return out
 }
-func slice_FromProto[T, U any](mapCtx *direct.MapContext, in []*T, mapper func(mapCtx *direct.MapContext, in *T) *U) []U {
+func slice_v1alpha1_FromProto[T, U any](mapCtx *direct.MapContext, in []*T, mapper func(mapCtx *direct.MapContext, in *T) *U) []U {
 	if in == nil {
 		return nil
 	}

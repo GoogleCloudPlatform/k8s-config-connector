@@ -29,8 +29,8 @@ func init() {
 
 func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Instance{},
-		MemorystoreInstanceSpec_FromProto, MemorystoreInstanceSpec_ToProto,
-		MemorystoreInstanceObservedState_FromProto, MemorystoreInstanceObservedState_ToProto,
+		MemorystoreInstanceSpec_v1beta1_FromProto, MemorystoreInstanceSpec_v1beta1_ToProto,
+		MemorystoreInstanceObservedState_v1beta1_FromProto, MemorystoreInstanceObservedState_v1beta1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name") // Special field: resource name

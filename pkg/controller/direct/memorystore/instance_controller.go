@@ -92,7 +92,7 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := MemorystoreInstanceSpec_ToProto(mapCtx, &obj.Spec)
+	desired := MemorystoreInstanceSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -183,7 +183,7 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 func (a *InstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *memorystorepb.Instance) error {
 	mapCtx := &direct.MapContext{}
 	status := &krm.MemorystoreInstanceStatus{}
-	status.ObservedState = MemorystoreInstanceObservedState_FromProto(mapCtx, latest)
+	status.ObservedState = MemorystoreInstanceObservedState_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -311,11 +311,11 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 	{
 		// A "trick" to only compare spec fields - round trip via the spec
 		mapCtx := &direct.MapContext{}
-		spec := MemorystoreInstanceSpec_FromProto(mapCtx, actual)
+		spec := MemorystoreInstanceSpec_v1beta1_FromProto(mapCtx, actual)
 		if mapCtx.Err() != nil {
 			return nil, mapCtx.Err()
 		}
-		maskedActual = MemorystoreInstanceSpec_ToProto(mapCtx, spec)
+		maskedActual = MemorystoreInstanceSpec_v1beta1_ToProto(mapCtx, spec)
 		if mapCtx.Err() != nil {
 			return nil, mapCtx.Err()
 		}
@@ -340,7 +340,7 @@ func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 
 	obj := &krm.MemorystoreInstance{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(MemorystoreInstanceSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(MemorystoreInstanceSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

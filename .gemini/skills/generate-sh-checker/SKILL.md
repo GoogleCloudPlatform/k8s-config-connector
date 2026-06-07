@@ -61,15 +61,12 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
       [--resource <KIND2>:<PROTO_MESSAGE2> ...]
 
     go run . generate-mapper \
+      --multiversion \
       --service <PROTO_SERVICE> \
       --api-version <GROUP>/<VERSION> \
       --include-skipped-output
-
-    cd ${REPO_ROOT}
-    dev/tasks/generate-crds
-
-    go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/<SERVICE_NAME>/
-    ```
+```
+Note: Always use `--multiversion` if the service has multiple versions (e.g., both `v1alpha1` and `v1beta1`) to avoid mapper function name conflicts. When using `--multiversion`, manual mappers in `pkg/controller/direct/<SERVICE>/` should include the version in their name (e.g., `Foo_v1beta1_FromProto`). Also, only run `generate-mapper` in one version (by convention, we run it in `v1beta1/generate.sh` and omit it from `v1alpha1/generate.sh`).
 
 4.  **Special Handling (Multi-version & Promotion/Consolidation)**:
     -   **File Naming**: `generate-types` expects the main types file to be named `<lowercase_proto_message_name>_types.go`. If the existing file has a different name (e.g., `cluster_types.go` instead of `attachedcluster_types.go`), rename it before running the generator.

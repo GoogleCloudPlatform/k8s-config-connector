@@ -15,18 +15,19 @@
 package memorystore
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
+	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	timeofdaypb "google.golang.org/genproto/googleapis/type/timeofday"
 )
 
 // Mappers that are not automatically generated
 
-func TimeOfDay_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *krm.TimeOfDay {
+func TimeOfDay_v1beta1_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *krmv1beta1.TimeOfDay {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TimeOfDay{}
+	out := &krmv1beta1.TimeOfDay{}
 	out.Hours = direct.LazyPtr(in.GetHours())
 	out.Minutes = direct.LazyPtr(in.GetMinutes())
 	out.Seconds = direct.LazyPtr(in.GetSeconds())
@@ -34,7 +35,7 @@ func TimeOfDay_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *
 	return out
 }
 
-func TimeOfDay_ToProto(mapCtx *direct.MapContext, in *krm.TimeOfDay) *timeofdaypb.TimeOfDay {
+func TimeOfDay_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.TimeOfDay) *timeofdaypb.TimeOfDay {
 	if in == nil {
 		return nil
 	}
@@ -44,4 +45,12 @@ func TimeOfDay_ToProto(mapCtx *direct.MapContext, in *krm.TimeOfDay) *timeofdayp
 	out.Seconds = direct.ValueOf(in.Seconds)
 	out.Nanos = direct.ValueOf(in.Nanos)
 	return out
+}
+
+func Instance_StateInfo_UpdateInfoObservedState_TargetNodeType_ToProto(mapCtx *direct.MapContext, in *string) *pb.Instance_NodeType {
+	if in == nil {
+		return nil
+	}
+	val := direct.Enum_ToProto[pb.Instance_NodeType](mapCtx, in)
+	return &val
 }
