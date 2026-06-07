@@ -112,8 +112,6 @@
 [schema_violation] file=iam/iampartialpolicy/resources/bigquerytable-conditions gvk=bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryTable: [].spec: Invalid value: "tableId": spec.tableId in body is a forbidden property
 [schema_violation] file=iam/iampartialpolicy/resources/bigtabletable gvk=bigtable.cnrm.cloud.google.com/v1beta1, Kind=BigtableTable: [].spec: Invalid value: "tableId": spec.tableId in body is a forbidden property
 [schema_violation] file=iam/iampartialpolicy/resources/bigtabletable-conditions gvk=bigtable.cnrm.cloud.google.com/v1beta1, Kind=BigtableTable: [].spec: Invalid value: "tableId": spec.tableId in body is a forbidden property
-[schema_violation] file=iam/iampartialpolicy/resources/binaryauthorizationpolicy gvk=binaryauthorization.cnrm.cloud.google.com/v1beta1, Kind=BinaryAuthorizationPolicy: [].spec.projectRef: Required value
-[schema_violation] file=iam/iampartialpolicy/resources/binaryauthorizationpolicy-conditions gvk=binaryauthorization.cnrm.cloud.google.com/v1beta1, Kind=BinaryAuthorizationPolicy: [].spec.projectRef: Required value
 [schema_violation] file=iam/iampartialpolicy/resources/cloudfunctionsfunction gvk=cloudfunctions.cnrm.cloud.google.com/v1beta1, Kind=CloudFunctionsFunction: [].spec.projectRef: Required value
 [schema_violation] file=iam/iampartialpolicy/resources/cloudfunctionsfunction gvk=cloudfunctions.cnrm.cloud.google.com/v1beta1, Kind=CloudFunctionsFunction: [].spec.region: Required value
 [schema_violation] file=iam/iampartialpolicy/resources/cloudfunctionsfunction-conditions gvk=cloudfunctions.cnrm.cloud.google.com/v1beta1, Kind=CloudFunctionsFunction: [].spec.projectRef: Required value
