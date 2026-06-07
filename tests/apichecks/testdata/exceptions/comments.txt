@@ -1,1 +1,2 @@
 apis/compute/v1beta1/instance_identity.go:49: comment contains 'a InstanceIdentity', should be 'an InstanceIdentity'
+apis/networksecurity/v1beta1/authorizationpolicy_identity.go:55: comment contains 'a AuthorizationPolicyIdentity', should be 'an AuthorizationPolicyIdentity'
