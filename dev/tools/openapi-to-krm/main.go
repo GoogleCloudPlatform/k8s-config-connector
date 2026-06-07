@@ -47,10 +47,21 @@ type Schema struct {
 	AdditionalProperties *Schema            `json:"additionalProperties"`
 }
 
+type resourceList []string
+
+func (r *resourceList) String() string {
+	return strings.Join(*r, ",")
+}
+
+func (r *resourceList) Set(value string) error {
+	*r = append(*r, value)
+	return nil
+}
+
 type Options struct {
 	SchemaFile    string
 	APIVersion    string
-	Resource      string
+	Resource      []string
 	OutputFile    string
 	IgnoreFields  []string
 	RequireFields []string
@@ -60,16 +71,19 @@ func main() {
 	var opt Options
 	var ignoreFieldsStr string
 	var requireFieldsStr string
+	var rList resourceList
 
 	flag.StringVar(&opt.SchemaFile, "schema-file", "", "Path to the Discovery API / OpenAPI JSON file")
 	flag.StringVar(&opt.APIVersion, "api-version", "", "KRM API Version (e.g., dns.cnrm.cloud.google.com/v1beta1)")
-	flag.StringVar(&opt.Resource, "resource", "", "Resource mapping (e.g., DNSManagedZone:ManagedZone)")
+	flag.Var(&rList, "resource", "Resource mapping (e.g., DNSManagedZone:ManagedZone)")
 	flag.StringVar(&opt.OutputFile, "output-file", "", "Output file path")
 	flag.StringVar(&ignoreFieldsStr, "ignore-field", "", "Comma-separated or repeated field to ignore (e.g., *:kind,ManagedZone:labels)")
 	flag.StringVar(&requireFieldsStr, "require-field", "", "Comma-separated or repeated field to mark as required (e.g., *:dnsName,ManagedZone:dnsName)")
 	flag.Parse()
 
-	if opt.SchemaFile == "" || opt.APIVersion == "" || opt.Resource == "" || opt.OutputFile == "" {
+	opt.Resource = rList
+
+	if opt.SchemaFile == "" || opt.APIVersion == "" || len(opt.Resource) == 0 || opt.OutputFile == "" {
 		log.Fatalf("Flags (-schema-file, -api-version, -resource, -output-file) are required")
 	}
 
@@ -88,13 +102,6 @@ func main() {
 }
 
 func Run(ctx context.Context, opt Options) error {
-	parts := strings.Split(opt.Resource, ":")
-	if len(parts) != 2 {
-		return fmt.Errorf("invalid resource format, expected Kind:OpenAPIType")
-	}
-	krmKind := parts[0]
-	rootType := parts[1]
-
 	// Read and parse schema file
 	content, err := os.ReadFile(opt.SchemaFile)
 	if err != nil {
@@ -107,7 +114,18 @@ func Run(ctx context.Context, opt Options) error {
 	}
 
 	visited := make(map[string]bool)
-	findReachable(doc.Schemas, rootType, visited)
+	var resourceHeaders []string
+
+	for _, res := range opt.Resource {
+		parts := strings.Split(res, ":")
+		if len(parts) != 2 {
+			return fmt.Errorf("invalid resource format, expected Kind:OpenAPIType, got %s", res)
+		}
+		krmKind := parts[0]
+		rootType := parts[1]
+		resourceHeaders = append(resourceHeaders, fmt.Sprintf("%s:%s", krmKind, rootType))
+		findReachable(doc.Schemas, rootType, visited)
+	}
 
 	outDir := filepath.Dir(opt.OutputFile)
 	handCodedIDs, err := findHandCodedOpenAPIIDs(outDir)
@@ -139,7 +157,10 @@ func Run(ctx context.Context, opt Options) error {
 	buf.WriteString("// +generated:types\n")
 	fmt.Fprintf(&buf, "// krm.group: %s\n", strings.Split(opt.APIVersion, "/")[0])
 	fmt.Fprintf(&buf, "// krm.version: %s\n", strings.Split(opt.APIVersion, "/")[1])
-	fmt.Fprintf(&buf, "// resource: %s:%s\n\n", krmKind, rootType)
+	for _, rh := range resourceHeaders {
+		fmt.Fprintf(&buf, "// resource: %s\n", rh)
+	}
+	buf.WriteString("\n")
 	fmt.Fprintf(&buf, "package %s\n\n", strings.Split(opt.APIVersion, "/")[1])
 
 	for _, id := range sortedSchemas {

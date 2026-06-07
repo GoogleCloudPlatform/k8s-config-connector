@@ -118,6 +118,66 @@ func DNSManagedZoneStatus_ToAPI(mapCtx *direct.MapContext, in *krm.DNSManagedZon
 }
 */
 
+func DNSPolicySpec_FromAPI(mapCtx *direct.MapContext, in *api.Policy) *krm.DNSPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSPolicySpec{}
+	out.AlternativeNameServerConfig = PolicyAlternativeNameServerConfig_FromAPI(mapCtx, in.AlternativeNameServerConfig)
+	out.Description = direct.LazyPtr(in.Description)
+	out.EnableInboundForwarding = direct.LazyPtr(in.EnableInboundForwarding)
+	out.EnableLogging = direct.LazyPtr(in.EnableLogging)
+	out.Networks = direct.Slice_FromProto(mapCtx, in.Networks, PolicyNetworks_FromAPI)
+	out.ResourceID = direct.LazyPtr(in.Name)
+	return out
+}
+
+func DNSPolicySpec_ToAPI(mapCtx *direct.MapContext, in *krm.DNSPolicySpec) *api.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &api.Policy{}
+	out.AlternativeNameServerConfig = PolicyAlternativeNameServerConfig_ToAPI(mapCtx, in.AlternativeNameServerConfig)
+	out.Description = direct.ValueOf(in.Description)
+	out.EnableInboundForwarding = direct.ValueOf(in.EnableInboundForwarding)
+	out.EnableLogging = direct.ValueOf(in.EnableLogging)
+	out.Networks = direct.Slice_ToProto(mapCtx, in.Networks, PolicyNetworks_ToAPI)
+	// MISSING: Dns64Config
+	// MISSING: Id
+	out.Name = direct.ValueOf(in.ResourceID)
+	// MISSING: HTTPStatusCode
+	// MISSING: Header
+	return out
+}
+
+func DNSPolicyStatus_FromAPI(mapCtx *direct.MapContext, in *api.Policy) *krm.DNSPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSPolicyStatus{}
+	// MISSING: Conditions
+	// MISSING: ObservedGeneration
+	return out
+}
+
+func DNSPolicyStatus_ToAPI(mapCtx *direct.MapContext, in *krm.DNSPolicyStatus) *api.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &api.Policy{}
+	// MISSING: AlternativeNameServerConfig
+	// MISSING: Description
+	// MISSING: Dns64Config
+	// MISSING: EnableInboundForwarding
+	// MISSING: EnableLogging
+	// MISSING: Id
+	// MISSING: Name
+	// MISSING: Networks
+	// MISSING: HTTPStatusCode
+	// MISSING: Header
+	return out
+}
+
 func ManagedZoneCloudLoggingConfig_FromAPI(mapCtx *direct.MapContext, in *api.ManagedZoneCloudLoggingConfig) *krm.ManagedZoneCloudLoggingConfig {
 	if in == nil {
 		return nil
@@ -231,6 +291,42 @@ func ManagedZoneServiceDirectoryConfig_ToAPI(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &api.ManagedZoneServiceDirectoryConfig{}
 	out.Namespace = ManagedZoneServiceDirectoryConfigNamespace_ToAPI(mapCtx, in.Namespace)
+	return out
+}
+
+func PolicyAlternativeNameServerConfig_FromAPI(mapCtx *direct.MapContext, in *api.PolicyAlternativeNameServerConfig) *krm.PolicyAlternativeNameServerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PolicyAlternativeNameServerConfig{}
+	out.TargetNameServers = direct.Slice_FromProto(mapCtx, in.TargetNameServers, PolicyTargetNameServers_FromAPI)
+	return out
+}
+
+func PolicyAlternativeNameServerConfig_ToAPI(mapCtx *direct.MapContext, in *krm.PolicyAlternativeNameServerConfig) *api.PolicyAlternativeNameServerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &api.PolicyAlternativeNameServerConfig{}
+	out.TargetNameServers = direct.Slice_ToProto(mapCtx, in.TargetNameServers, PolicyTargetNameServers_ToAPI)
+	return out
+}
+
+func PolicyNetworks_FromAPI(mapCtx *direct.MapContext, in *api.PolicyNetwork) *krm.PolicyNetworks {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PolicyNetworks{}
+	out.NetworkRef.External = in.NetworkUrl
+	return out
+}
+
+func PolicyNetworks_ToAPI(mapCtx *direct.MapContext, in *krm.PolicyNetworks) *api.PolicyNetwork {
+	if in == nil {
+		return nil
+	}
+	out := &api.PolicyNetwork{}
+	out.NetworkUrl = in.NetworkRef.External
 	return out
 }
 
@@ -351,5 +447,26 @@ func ManagedZoneServiceDirectoryConfigNamespace_ToAPI(mapCtx *direct.MapContext,
 	out := &api.ManagedZoneServiceDirectoryConfigNamespace{}
 	out.NamespaceUrl = in.NamespaceUrl
 	// MISSING: DeletionTime
+	return out
+}
+
+func PolicyTargetNameServers_FromAPI(mapCtx *direct.MapContext, in *api.PolicyAlternativeNameServerConfigTargetNameServer) *krm.PolicyTargetNameServers {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PolicyTargetNameServers{}
+	out.ForwardingPath = direct.LazyPtr(in.ForwardingPath)
+	out.Ipv4Address = in.Ipv4Address
+	return out
+}
+
+func PolicyTargetNameServers_ToAPI(mapCtx *direct.MapContext, in *krm.PolicyTargetNameServers) *api.PolicyAlternativeNameServerConfigTargetNameServer {
+	if in == nil {
+		return nil
+	}
+	out := &api.PolicyAlternativeNameServerConfigTargetNameServer{}
+	out.ForwardingPath = direct.ValueOf(in.ForwardingPath)
+	out.Ipv4Address = in.Ipv4Address
+	// MISSING: Ipv6Address
 	return out
 }

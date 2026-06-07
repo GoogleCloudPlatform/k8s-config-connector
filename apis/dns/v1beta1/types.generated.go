@@ -17,6 +17,7 @@
 // krm.group: dns.cnrm.cloud.google.com
 // krm.version: v1beta1
 // resource: DNSManagedZone:ManagedZone
+// resource: DNSPolicy:Policy
 
 package v1beta1
 
@@ -249,6 +250,101 @@ type ManagedZoneServiceDirectoryConfigNamespace struct {
 	// be
 	// `https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace}`
 	NamespaceURL *string `json:"namespaceUrl,omitempty"`
+
+}
+*/
+
+/* found existing non-generated go type with openapi tag "Policy", skipping
+
+// +openapi:Policy
+type Policy struct {
+	// Sets an alternative name server for the associated networks. When specified,
+	// all DNS queries are forwarded to a name server that you choose. Names such as
+	// .internal are not available when an alternative name server is specified.
+	AlternativeNameServerConfig *PolicyAlternativeNameServerConfig `json:"alternativeNameServerConfig,omitempty"`
+
+	// A mutable string of at most 1024 characters associated with this resource for
+	// the user's convenience. Has no effect on the policy's function.
+	Description *string `json:"description,omitempty"`
+
+	// Configurations related to DNS64 for this policy.
+	DNS64Config *PolicyDns64Config `json:"dns64Config,omitempty"`
+
+	// Allows networks bound to this policy to receive DNS queries sent by VMs or
+	// applications over VPN connections. When enabled, a virtual IP address is
+	// allocated from each of the subnetworks that are bound to this policy.
+	EnableInboundForwarding *bool `json:"enableInboundForwarding,omitempty"`
+
+	// Controls whether logging is enabled for the networks bound to this policy.
+	// Defaults to no logging if not set.
+	EnableLogging *bool `json:"enableLogging,omitempty"`
+
+	// Unique identifier for the resource; defined by the server (output only).
+	ID *uint64 `json:"id,omitempty"`
+
+	// User-assigned name for this policy.
+	Name *string `json:"name,omitempty"`
+
+	// List of network names specifying networks to which this policy is applied.
+	Networks []PolicyNetwork `json:"networks,omitempty"`
+
+}
+*/
+
+/* found existing non-generated go type with openapi tag "PolicyAlternativeNameServerConfig", skipping
+
+// +openapi:PolicyAlternativeNameServerConfig
+type PolicyAlternativeNameServerConfig struct {
+	// Sets an alternative name server for the associated networks. When specified,
+	// all DNS queries are forwarded to a name server that you choose. Names such as
+	// .internal are not available when an alternative name server is specified.
+	TargetNameServers []PolicyAlternativeNameServerConfigTargetNameServer `json:"targetNameServers,omitempty"`
+
+}
+*/
+
+/* found existing non-generated go type with openapi tag "PolicyAlternativeNameServerConfigTargetNameServer", skipping
+
+// +openapi:PolicyAlternativeNameServerConfigTargetNameServer
+type PolicyAlternativeNameServerConfigTargetNameServer struct {
+	// Forwarding path for this TargetNameServer. If unset or set to DEFAULT, Cloud
+	// DNS makes forwarding decisions based on address ranges; that is, RFC1918
+	// addresses go to the VPC network, non-RFC1918 addresses go to the internet. When
+	// set to PRIVATE, Cloud DNS always sends queries through the VPC network for this
+	// target.
+	ForwardingPath *string `json:"forwardingPath,omitempty"`
+
+	// IPv4 address to forward queries to.
+	Ipv4Address *string `json:"ipv4Address,omitempty"`
+
+	// IPv6 address to forward to. Does not accept both fields (ipv4 & ipv6) being
+	// populated. Public preview as of November 2022.
+	Ipv6Address *string `json:"ipv6Address,omitempty"`
+
+}
+*/
+
+// +openapi:PolicyDns64Config
+type PolicyDns64Config struct {
+	// The scope to which DNS64 config will be applied to.
+	Scope *PolicyDns64ConfigScope `json:"scope,omitempty"`
+}
+
+// +openapi:PolicyDns64ConfigScope
+type PolicyDns64ConfigScope struct {
+	// Controls whether DNS64 is enabled globally for all networks bound to the
+	// policy.
+	AllQueries *bool `json:"allQueries,omitempty"`
+}
+
+/* found existing non-generated go type with openapi tag "PolicyNetwork", skipping
+
+// +openapi:PolicyNetwork
+type PolicyNetwork struct {
+	// The fully qualified URL of the VPC network to bind to. This should be formatted
+	// like
+	// https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}
+	NetworkURL *string `json:"networkUrl,omitempty"`
 
 }
 */
