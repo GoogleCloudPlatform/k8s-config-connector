@@ -83,10 +83,6 @@
 [refs] crd=tagstagkeys.tags.cnrm.cloud.google.com version=v1beta1: field ".spec.parent" should be a reference
 [refs] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" should be a reference
 [refs] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.model" should be a reference
-[refs] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].dataStore" should be a reference
-[refs] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.datastore" should be a reference
-[refs] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.engine" should be a reference
-[refs] crd=vertexaicachedcontents.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragResources[].ragCorpus" should be a reference
 [refs] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.entitytype" should be a reference
 [refs] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.featurestore" should be a reference
 [refs] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" should be a reference

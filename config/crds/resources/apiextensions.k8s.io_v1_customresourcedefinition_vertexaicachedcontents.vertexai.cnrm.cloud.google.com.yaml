@@ -596,10 +596,38 @@ spec:
                                 be set if engine is used.
                               items:
                                 properties:
-                                  dataStore:
+                                  dataStoreRef:
                                     description: 'Full resource name of DataStore,
                                       such as Format: `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`'
-                                    type: string
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: A reference to an externally
+                                          managed DiscoveryEngineDataStore resource.
+                                          Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                                        type: string
+                                      name:
+                                        description: The name of a DiscoveryEngineDataStore
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The namespace of a DiscoveryEngineDataStore
+                                          resource.
+                                        type: string
+                                    type: object
                                   filter:
                                     description: Optional. Filter specification to
                                       filter documents in the data store specified
@@ -608,14 +636,70 @@ spec:
                                     type: string
                                 type: object
                               type: array
-                            datastore:
+                            datastoreRef:
                               description: 'Optional. Fully-qualified Vertex AI Search
                                 data store resource ID. Format: `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`'
-                              type: string
-                            engine:
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    DiscoveryEngineDataStore resource. Should be in
+                                    the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                                  type: string
+                                name:
+                                  description: The name of a DiscoveryEngineDataStore
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a DiscoveryEngineDataStore
+                                    resource.
+                                  type: string
+                              type: object
+                            engineRef:
                               description: 'Optional. Fully-qualified Vertex AI Search
                                 engine resource ID. Format: `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}`'
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    DiscoveryEngineEngine resource. Should be in the
+                                    format "projects/{{projectID}}/locations/{{location}}/engines/{{engineID}}".
+                                  type: string
+                                name:
+                                  description: The name of a DiscoveryEngineEngine
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a DiscoveryEngineEngine
+                                    resource.
+                                  type: string
+                              type: object
                             filter:
                               description: Optional. Filter strings to be passed to
                                 the search API.
@@ -639,11 +723,39 @@ spec:
                                 corpora support.
                               items:
                                 properties:
-                                  ragCorpus:
+                                  ragCorpusRef:
                                     description: 'Optional. RagCorpora resource name.
                                       Format: `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`'
-                                    type: string
-                                  ragFileIds:
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: A reference to an externally
+                                          managed Vertex AI RagCorpus resource. Should
+                                          be in the format "projects/{{projectID}}/locations/{{location}}/ragCorpora/{{ragCorpusID}}".
+                                        type: string
+                                      name:
+                                        description: The name of a Vertex AI RagCorpus
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The namespace of a Vertex AI
+                                          RagCorpus resource.
+                                        type: string
+                                    type: object
+                                  ragFileIDs:
                                     description: Optional. rag_file_id. The files
                                       should be in the same rag_corpus set in rag_corpus
                                       field.

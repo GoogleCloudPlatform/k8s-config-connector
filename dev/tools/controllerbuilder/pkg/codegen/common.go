@@ -79,7 +79,7 @@ var Acronyms = []string{
 	"FS", "FQDN",
 	"GCE", "GB", "GCS", "GKE",
 	"HTML", "HTTP", "HTTPS",
-	"IAM", "IAP", "ID", "IP", "IPV4", "IPV6",
+	"IAM", "IAP", "ID", "IDS", "IP", "IPV4", "IPV6",
 	"KMS",
 	"MiB",
 	"NAT",
