@@ -65,6 +65,20 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 	// Exceptions for templates that are known not to match CAI or are not in CAI.
 	// We use the normalized format for the key.
+	//
+	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
+	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
+	// - Bigtable AppProfile, Cluster Backup, and Table AuthorizedView:
+	//   We registered their KCC templates with the host "bigtableadmin.googleapis.com", e.g.:
+	//     "//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}"
+	//     "//bigtableadmin.googleapis.com/projects/{}/instances/{}/clusters/{}/backups/{}"
+	//     "//bigtableadmin.googleapis.com/projects/{}/instances/{}/tables/{}/authorizedViews/{}"
+	//   However, Cloud Asset Inventory (CAI) added support for these assets using the host "bigtable.googleapis.com", e.g.:
+	//     "//bigtable.googleapis.com/projects/{{PROJECT_ID}}/instances/{{INSTANCE}}/appProfiles/{{APP_PROFILE}}"
+	//     "//bigtable.googleapis.com/projects/{{PROJECT_ID}}/instances/{{INSTANCE}}/clusters/{{CLUSTER}}/backups/{{BACKUP}}"
+	//     "//bigtable.googleapis.com/projects/{{PROJECT_ID}}/instances/{{INSTANCE}}/tables/{{TABLE}}/authorizedViews/{{AUTHORIZED_VIEW}}"
+	//   We must keep these in ignoredTemplates because changing KCC's registered templates now could break existing resources/references.
+	//   We will need to plan and execute a careful migration/deprecation strategy before changing these URL templates.
 	ignoredTemplates := map[string]bool{
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
@@ -81,9 +95,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}":                    true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}":        true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":                   true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/deploymentResourcePools/{}":           true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                     true,
-		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":        true,
 		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}":                           true,
 		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}":                     true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":        true,
@@ -97,8 +109,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//logging.googleapis.com/billingAccounts/{}/exclusions/{}":                                 true,
 		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}":                             true,
 		"//bigqueryconnection.googleapis.com/projects/{}/locations/{}/connections/{}":               true,
-		"//securitycenter.googleapis.com/organizations/{}/locations/{}/bigQueryExports/{}":          true,
-		"//securitycenter.googleapis.com/organizations/{}/muteConfigs/{}":                           true,
 		"//privilegedaccessmanager.googleapis.com/projects/{}/locations/{}/entitlements/{}":         true,
 		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":          true,
 		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}":    true,
