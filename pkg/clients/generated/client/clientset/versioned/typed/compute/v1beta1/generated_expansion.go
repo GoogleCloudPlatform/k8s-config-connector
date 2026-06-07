@@ -79,6 +79,10 @@ type ComputePacketMirroringExpansion interface{}
 
 type ComputeProjectMetadataExpansion interface{}
 
+type ComputePublicAdvertisedPrefixExpansion interface{}
+
+type ComputePublicDelegatedPrefixExpansion interface{}
+
 type ComputeRegionNetworkEndpointGroupExpansion interface{}
 
 type ComputeReservationExpansion interface{}

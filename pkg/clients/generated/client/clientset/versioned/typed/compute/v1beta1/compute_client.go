@@ -60,6 +60,8 @@ type ComputeV1beta1Interface interface {
 	ComputeNodeTemplatesGetter
 	ComputePacketMirroringsGetter
 	ComputeProjectMetadatasGetter
+	ComputePublicAdvertisedPrefixesGetter
+	ComputePublicDelegatedPrefixesGetter
 	ComputeRegionNetworkEndpointGroupsGetter
 	ComputeReservationsGetter
 	ComputeResourcePoliciesGetter
@@ -208,6 +210,14 @@ func (c *ComputeV1beta1Client) ComputePacketMirrorings(namespace string) Compute
 
 func (c *ComputeV1beta1Client) ComputeProjectMetadatas(namespace string) ComputeProjectMetadataInterface {
 	return newComputeProjectMetadatas(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputePublicAdvertisedPrefixes(namespace string) ComputePublicAdvertisedPrefixInterface {
+	return newComputePublicAdvertisedPrefixes(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputePublicDelegatedPrefixes(namespace string) ComputePublicDelegatedPrefixInterface {
+	return newComputePublicDelegatedPrefixes(c, namespace)
 }
 
 func (c *ComputeV1beta1Client) ComputeRegionNetworkEndpointGroups(namespace string) ComputeRegionNetworkEndpointGroupInterface {

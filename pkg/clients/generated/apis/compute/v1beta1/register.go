@@ -227,6 +227,18 @@ var (
 		Kind:    reflect.TypeOf(ComputeProjectMetadata{}).Name(),
 	}
 
+	ComputePublicAdvertisedPrefixGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputePublicAdvertisedPrefix{}).Name(),
+	}
+
+	ComputePublicDelegatedPrefixGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputePublicDelegatedPrefix{}).Name(),
+	}
+
 	ComputeRegionNetworkEndpointGroupGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

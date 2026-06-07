@@ -147,6 +147,14 @@ func (c *FakeComputeV1beta1) ComputeProjectMetadatas(namespace string) v1beta1.C
 	return newFakeComputeProjectMetadatas(c, namespace)
 }
 
+func (c *FakeComputeV1beta1) ComputePublicAdvertisedPrefixes(namespace string) v1beta1.ComputePublicAdvertisedPrefixInterface {
+	return newFakeComputePublicAdvertisedPrefixes(c, namespace)
+}
+
+func (c *FakeComputeV1beta1) ComputePublicDelegatedPrefixes(namespace string) v1beta1.ComputePublicDelegatedPrefixInterface {
+	return newFakeComputePublicDelegatedPrefixes(c, namespace)
+}
+
 func (c *FakeComputeV1beta1) ComputeRegionNetworkEndpointGroups(namespace string) v1beta1.ComputeRegionNetworkEndpointGroupInterface {
 	return newFakeComputeRegionNetworkEndpointGroups(c, namespace)
 }
