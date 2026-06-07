@@ -29,6 +29,7 @@ import (
 	"google.golang.org/api/transport/grpc"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
@@ -41,7 +42,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 )
 
 func init() {
@@ -169,7 +172,9 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.Info("updating batch resource allowance", "name", a.id)
 
 	desiredpb := proto.Clone(a.desired).(*pb.ResourceAllowance)
-	paths, err := common.CompareProtoMessage(desiredpb, a.actual, common.BasicDiff)
+	desiredpb.Name = a.id.String()
+
+	paths, report, err := common.CompareProtoMessageStructuredDiff(desiredpb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -181,10 +186,15 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
+	report.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, report)
+
 	req := &pb.UpdateResourceAllowanceRequest{
 		ResourceAllowance: desiredpb,
+		UpdateMask: &fieldmaskpb.FieldMask{
+			Paths: sets.List(paths),
+		},
 	}
-	desiredpb.Name = a.id.String()
 
 	updated, err := a.gcpClient.UpdateResourceAllowance(ctx, req)
 	if err != nil {

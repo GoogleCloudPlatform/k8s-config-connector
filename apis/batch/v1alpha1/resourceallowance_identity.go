@@ -59,6 +59,10 @@ func (i *ResourceAllowanceIdentity) Host() string {
 	return ResourceAllowanceIdentityFormat.Host()
 }
 
+func (i *ResourceAllowanceIdentity) ExternalIdentifier() *string {
+	return &i.ResourceAllowance
+}
+
 func getIdentityFromResourceAllowanceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ResourceAllowanceIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

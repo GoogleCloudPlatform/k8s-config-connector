@@ -114,7 +114,16 @@ func (s *BatchV1) CreateJob(ctx context.Context, req *pb.CreateJobRequest) (*pb.
 	taskObj := &pb.Task{}
 	taskObjName := fqn + "/taskGroups/group0/tasks/0"
 	taskObj.Name = taskObjName
-	taskObj.Status = &pb.TaskStatus{}
+	taskObj.Status = &pb.TaskStatus{
+		State: pb.TaskStatus_SUCCEEDED,
+		StatusEvents: []*pb.StatusEvent{
+			{
+				Type:        "STATE_CHANGED",
+				Description: "Task state changed to SUCCEEDED",
+				TaskState:   pb.TaskStatus_SUCCEEDED,
+			},
+		},
+	}
 	if err := s.storage.Create(ctx, taskObjName, taskObj); err != nil {
 		return nil, err
 	}
