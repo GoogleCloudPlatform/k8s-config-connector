@@ -23,6 +23,7 @@ package kms
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 
@@ -219,6 +220,13 @@ func (a *cryptoKeyAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	paths.Delete("destroy_scheduled_duration")
 	// NextRotationTime is not supported for update through UpdateCryptoKey
 	paths.Delete("next_rotation_time")
+
+	// Primary is output only
+	for path := range paths {
+		if path == "primary" || strings.HasPrefix(path, "primary.") {
+			paths.Delete(path)
+		}
+	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
