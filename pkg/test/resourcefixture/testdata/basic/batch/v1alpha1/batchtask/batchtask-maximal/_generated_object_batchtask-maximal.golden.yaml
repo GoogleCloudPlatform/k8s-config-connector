@@ -30,4 +30,9 @@ status:
   name: projects/${projectId}/locations/us-west2/jobs/batchjob-max-${uniqueId}/taskGroups/group0/tasks/0
   observedGeneration: 1
   observedState:
-    status: {}
+    status:
+      state: SUCCEEDED
+      statusEvents:
+      - description: Task state changed to SUCCEEDED
+        taskState: SUCCEEDED
+        type: STATE_CHANGED

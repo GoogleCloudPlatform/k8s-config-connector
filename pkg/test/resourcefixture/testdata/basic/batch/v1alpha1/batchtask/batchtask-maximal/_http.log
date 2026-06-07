@@ -131,7 +131,16 @@ X-Xss-Protection: 0
 
 {
   "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-max-${uniqueId}/taskGroups/group0/tasks/0",
-  "status": {}
+  "status": {
+    "state": 5,
+    "statusEvents": [
+      {
+        "description": "Task state changed to SUCCEEDED",
+        "taskState": 5,
+        "type": "STATE_CHANGED"
+      }
+    ]
+  }
 }
 
 ---
