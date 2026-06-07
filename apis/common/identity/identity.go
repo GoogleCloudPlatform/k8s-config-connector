@@ -34,6 +34,7 @@ type IdentityV2 interface {
 	Host() string
 }
 
+// ServerGeneratedIdentity is implemented by Identity types for resources that have a server-generated ID.
 type ServerGeneratedIdentity interface {
 	IdentityV2
 	HasIdentitySpecified() bool

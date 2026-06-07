@@ -197,10 +197,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
-	fqn := ""
-	if a.id.HasIdentitySpecified() {
-		fqn = a.id.String()
-	}
+	fqn := a.id.String()
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Connection", "name", fqn)
@@ -217,15 +214,9 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	parent := a.id.ParentString()
 	req := &pb.CreateConnectionRequest{
-		Parent:     parent,
-		Connection: resource,
-	}
-	if a.id.HasIdentitySpecified() { // during "Create", this means user has specified connection ID in `spec.ResourceID` field.
-		req = &pb.CreateConnectionRequest{
-			Parent:       parent,
-			ConnectionId: a.id.Connection,
-			Connection:   resource,
-		}
+		Parent:       parent,
+		Connection:   resource,
+		ConnectionId: a.id.Connection,
 	}
 	created, err := a.gcpClient.CreateConnection(ctx, req)
 	if err != nil {

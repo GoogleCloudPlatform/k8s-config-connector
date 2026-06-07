@@ -49,6 +49,11 @@ func TestBigQueryConnectionConnectionIdentity_FromExternal(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name:    "empty connection segment",
+			ref:     "projects/my-project/locations/us-central1/connections/",
+			wantErr: true,
+		},
+		{
 			name: "full url",
 			ref:  "https://bigqueryconnection.googleapis.com/projects/my-project/locations/us-central1/connections/my-connection",
 			want: &BigQueryConnectionConnectionIdentity{
