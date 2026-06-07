@@ -257,9 +257,8 @@ spec:
                   requestMirrorPolicy:
                     properties:
                       backendServiceRef:
-                        description: ComputeBackendServiceRef defines the resource
-                          reference to ComputeBackendService, which "External" field
-                          holds the GCP identifier for the KRM object.
+                        description: ComputeBackendServiceRef is a reference to a
+                          ComputeBackendService.
                         oneOf:
                         - not:
                             required:
@@ -403,9 +402,8 @@ spec:
                     items:
                       properties:
                         backendServiceRef:
-                          description: ComputeBackendServiceRef defines the resource
-                            reference to ComputeBackendService, which "External" field
-                            holds the GCP identifier for the KRM object.
+                          description: ComputeBackendServiceRef is a reference to
+                            a ComputeBackendService.
                           oneOf:
                           - not:
                               required:
@@ -908,9 +906,8 @@ spec:
                         requestMirrorPolicy:
                           properties:
                             backendServiceRef:
-                              description: ComputeBackendServiceRef defines the resource
-                                reference to ComputeBackendService, which "External"
-                                field holds the GCP identifier for the KRM object.
+                              description: ComputeBackendServiceRef is a reference
+                                to a ComputeBackendService.
                               oneOf:
                               - not:
                                   required:
@@ -1065,10 +1062,8 @@ spec:
                           items:
                             properties:
                               backendServiceRef:
-                                description: ComputeBackendServiceRef defines the
-                                  resource reference to ComputeBackendService, which
-                                  "External" field holds the GCP identifier for the
-                                  KRM object.
+                                description: ComputeBackendServiceRef is a reference
+                                  to a ComputeBackendService.
                                 oneOf:
                                 - not:
                                     required:
@@ -1561,10 +1556,8 @@ spec:
                               requestMirrorPolicy:
                                 properties:
                                   backendServiceRef:
-                                    description: ComputeBackendServiceRef defines
-                                      the resource reference to ComputeBackendService,
-                                      which "External" field holds the GCP identifier
-                                      for the KRM object.
+                                    description: ComputeBackendServiceRef is a reference
+                                      to a ComputeBackendService.
                                     oneOf:
                                     - not:
                                         required:
@@ -1726,10 +1719,8 @@ spec:
                                 items:
                                   properties:
                                     backendServiceRef:
-                                      description: ComputeBackendServiceRef defines
-                                        the resource reference to ComputeBackendService,
-                                        which "External" field holds the GCP identifier
-                                        for the KRM object.
+                                      description: ComputeBackendServiceRef is a reference
+                                        to a ComputeBackendService.
                                       oneOf:
                                       - not:
                                           required:
@@ -2493,10 +2484,8 @@ spec:
                               requestMirrorPolicy:
                                 properties:
                                   backendServiceRef:
-                                    description: ComputeBackendServiceRef defines
-                                      the resource reference to ComputeBackendService,
-                                      which "External" field holds the GCP identifier
-                                      for the KRM object.
+                                    description: ComputeBackendServiceRef is a reference
+                                      to a ComputeBackendService.
                                     oneOf:
                                     - not:
                                         required:
@@ -2658,10 +2647,8 @@ spec:
                                 items:
                                   properties:
                                     backendServiceRef:
-                                      description: ComputeBackendServiceRef defines
-                                        the resource reference to ComputeBackendService,
-                                        which "External" field holds the GCP identifier
-                                        for the KRM object.
+                                      description: ComputeBackendServiceRef is a reference
+                                        to a ComputeBackendService.
                                       oneOf:
                                       - not:
                                           required:
