@@ -121,12 +121,39 @@ spec:
                           Online Inference(Prediction) only.
                         items:
                           properties:
-                            network:
+                            networkRef:
                               description: 'Required. The full name of the Google
                                 Compute Engine [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks).
                                 [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/get):
                                 `projects/{project}/global/networks/{network}`.'
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: The value of an externally managed
+                                    ComputeNetwork resource. Should be in the format
+                                    "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
+                                    or "projects/{{projectId}}/global/networks/{{networkId}}"
+                                  type: string
+                                name:
+                                  description: The name of a ComputeNetwork resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a ComputeNetwork resource.
+                                  type: string
+                              type: object
                             projectID:
                               description: Required. Project id used to create forwarding
                                 rule.

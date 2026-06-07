@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/aiplatform/apiv1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
@@ -31,6 +32,7 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -99,6 +101,7 @@ type Adapter struct {
 	id        *krm.FeatureOnlineStoreIdentity
 	gcpClient *gcp.FeatureOnlineStoreAdminClient
 	desired   *krm.VertexAIFeatureOnlineStore
+	actual    *pb.FeatureOnlineStore
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -118,6 +121,8 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		}
 		return false, fmt.Errorf("getting VertexAIFeatureOnlineStore %q: %w", a.id.String(), err)
 	}
+
+	a.actual = featureOnlineStorepb
 
 	mapCtx := &direct.MapContext{}
 	observedState := aiplatform.VertexAIFeatureOnlineStoreObservedState_FromProto(mapCtx, featureOnlineStorepb)
@@ -176,10 +181,38 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	featureOnlineStorepb.Name = a.id.String()
 
-	updateMask := &fieldmaskpb.FieldMask{}
-
+	paths := make(sets.Set[string])
 	if a.desired.Spec.Labels != nil {
-		updateMask.Paths = append(updateMask.Paths, "labels")
+		actualLabels := a.actual.GetLabels()
+		desiredLabels := featureOnlineStorepb.GetLabels()
+		labelsChanged := false
+		if len(actualLabels) != len(desiredLabels) {
+			labelsChanged = true
+		} else {
+			for k, v := range desiredLabels {
+				if actualLabels[k] != v {
+					labelsChanged = true
+					break
+				}
+			}
+		}
+		if labelsChanged {
+			paths.Insert("labels")
+		}
+	}
+
+	if len(paths) == 0 {
+		return nil
+	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: sets.List(paths),
 	}
 
 	req := &pb.UpdateFeatureOnlineStoreRequest{
