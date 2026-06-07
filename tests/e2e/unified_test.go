@@ -332,6 +332,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					forceDirect = true
 				case "PubSubSchema":
 					forceDirect = true
+				case "MonitoringUptimeCheckConfig":
+					forceDirect = true
 				case "TagsLocationTagBinding":
 					forceDirect = false
 				case "FirestoreIndex":
