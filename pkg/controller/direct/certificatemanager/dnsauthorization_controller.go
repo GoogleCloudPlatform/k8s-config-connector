@@ -227,8 +227,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
-		report.AddField("labels", a.actual.Labels, a.desired.Labels)
-		updateMask.Paths = append(updateMask.Paths, "labels")
+		if labelsOnlyDifferByCnrm(a.actual.Labels, a.desired.Labels) {
+			// Suppress diff to prevent operational reconciliation storms
+		} else {
+			report.AddField("labels", a.actual.Labels, a.desired.Labels)
+			updateMask.Paths = append(updateMask.Paths, "labels")
+		}
 	}
 
 	if len(updateMask.Paths) == 0 {
@@ -320,4 +324,20 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	u.Object["status"] = status
 
 	return nil
+}
+
+func labelsOnlyDifferByCnrm(actual, desired map[string]string) bool {
+	// Check if desired has all keys from actual with same values
+	for k, v := range actual {
+		if desired[k] != v {
+			return false
+		}
+	}
+	// Check if desired has any new keys other than managed-by-cnrm
+	for k := range desired {
+		if _, ok := actual[k]; !ok && k != "managed-by-cnrm" {
+			return false
+		}
+	}
+	return true
 }
