@@ -77,7 +77,7 @@ type KeyWafSettings struct {
 }
 
 type KeyWebSettings struct {
-	/* If set to true, it means allowed_domains will not be enforced. */
+	/* If set to true, it means allowed_domains are not enforced. */
 	// +optional
 	AllowAllDomains *bool `json:"allowAllDomains,omitempty"`
 
@@ -109,7 +109,7 @@ type RecaptchaEnterpriseKeySpec struct {
 	// +optional
 	IosSettings *KeyIosSettings `json:"iosSettings,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
+	/* Immutable. The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
@@ -129,6 +129,12 @@ type RecaptchaEnterpriseKeySpec struct {
 	WebSettings *KeyWebSettings `json:"webSettings,omitempty"`
 }
 
+type KeyObservedStateStatus struct {
+	/* The timestamp corresponding to the creation of this Key. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+}
+
 type RecaptchaEnterpriseKeyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   RecaptchaEnterpriseKey's current state. */
@@ -137,9 +143,17 @@ type RecaptchaEnterpriseKeyStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
+	/* A unique specifier for the RecaptchaEnterpriseKey resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *KeyObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
