@@ -35,6 +35,7 @@ var ComputeFutureReservationIdentityFormat = gcpurls.Template[ComputeFutureReser
 	"projects/{project}/zones/{zone}/futureReservations/{futureReservation}",
 )
 
+// ComputeFutureReservationIdentity is the identity of a GCP ComputeFutureReservation resource.
 // +k8s:deepcopy-gen=false
 type ComputeFutureReservationIdentity struct {
 	Project           string
@@ -63,7 +64,7 @@ func (i *ComputeFutureReservationIdentity) Host() string {
 	return ComputeFutureReservationIdentityFormat.Host()
 }
 
-func getIdentityFromComputeFutureReservationSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ComputeFutureReservationIdentity, error) {
+func getIdentityFromComputeFutureReservationSpec(ctx context.Context, reader client.Reader, obj *ComputeFutureReservation) (*ComputeFutureReservationIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")

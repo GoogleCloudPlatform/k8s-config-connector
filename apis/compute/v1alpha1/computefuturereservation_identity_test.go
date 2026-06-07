@@ -24,6 +24,54 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
+func TestComputeFutureReservationIdentity_FromExternal(t *testing.T) {
+	tests := []struct {
+		name    string
+		ref     string
+		wantErr bool
+		want    *ComputeFutureReservationIdentity
+	}{
+		{
+			name: "valid reference",
+			ref:  "projects/my-project/zones/us-central1-a/futureReservations/my-fr",
+			want: &ComputeFutureReservationIdentity{
+				Project:           "my-project",
+				Zone:              "us-central1-a",
+				FutureReservation: "my-fr",
+			},
+		},
+		{
+			name:    "invalid reference format",
+			ref:     "invalid/format",
+			wantErr: true,
+		},
+		{
+			name: "full url",
+			ref:  "https://compute.googleapis.com/projects/my-project/zones/us-central1-a/futureReservations/my-fr",
+			want: &ComputeFutureReservationIdentity{
+				Project:           "my-project",
+				Zone:              "us-central1-a",
+				FutureReservation: "my-fr",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			i := &ComputeFutureReservationIdentity{}
+			err := i.FromExternal(tt.ref)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
+				}
+			}
+		})
+	}
+}
+
 func TestComputeFutureReservationRef_ValidateExternal(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -148,24 +196,24 @@ func TestComputeFutureReservationRef_Normalize(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			s := runtime.NewScheme()
 			s.AddKnownTypes(GroupVersion, &unstructured.Unstructured{})
-			fakeClient := fake.NewClientBuilder().WithScheme(s).WithRuntimeObjects(tc.objects...).Build()
+			s.AddKnownTypes(GroupVersion, &ComputeFutureReservation{})
+			cl := fake.NewClientBuilder().WithScheme(s).WithRuntimeObjects(tc.objects...).Build()
 
-			err := tc.ref.Normalize(context.TODO(), fakeClient, tc.otherNamespace)
+			err := tc.ref.Normalize(context.TODO(), cl, "default")
 			if tc.wantErr != "" {
 				if err == nil {
-					t.Fatalf("got nil error, want %q", tc.wantErr)
+					t.Fatalf("Normalize() expected error %q, got nil", tc.wantErr)
 				}
-				if !cmp.Equal(err.Error(), tc.wantErr) {
-					t.Errorf("got error %q, want %q", err.Error(), tc.wantErr)
+				if err.Error() != tc.wantErr {
+					t.Errorf("Normalize() error = %q, want %q", err.Error(), tc.wantErr)
 				}
 				return
 			}
 			if err != nil {
-				t.Fatalf("got unexpected error: %v", err)
+				t.Fatalf("Normalize() unexpected error: %v", err)
 			}
-			gotExternal := tc.ref.External
-			if gotExternal != tc.wantExternal {
-				t.Errorf("got external %q, want %q", gotExternal, tc.wantExternal)
+			if tc.ref.External != tc.wantExternal {
+				t.Errorf("Normalize() external = %q, want %q", tc.ref.External, tc.wantExternal)
 			}
 		})
 	}
