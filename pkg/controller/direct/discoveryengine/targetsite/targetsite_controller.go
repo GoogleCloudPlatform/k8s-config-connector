@@ -228,7 +228,14 @@ func (a *targetSiteAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	if !hasChanges {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-		return nil
+		status := &krm.DiscoveryEngineDataStoreTargetSiteStatus{}
+		mapCtx := &direct.MapContext{}
+		status.ObservedState = discoveryengine.DiscoveryEngineDataStoreTargetSiteObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		status.ExternalRef = direct.PtrTo(a.id.String())
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
 	structuredreporting.ReportDiff(ctx, report)
