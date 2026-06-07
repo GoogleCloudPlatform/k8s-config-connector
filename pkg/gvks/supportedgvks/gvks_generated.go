@@ -30,8 +30,9 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		Version: "v1beta1",
 		Kind:    "AccessContextManagerAccessLevelCondition",
 	}: {
-		Terraform: true,
-		DCL:       false,
+		Terraform:   true,
+		DCL:         false,
+		SupportsIAM: false,
 	},
 	{
 		Group:   "accesscontextmanager.cnrm.cloud.google.com",
