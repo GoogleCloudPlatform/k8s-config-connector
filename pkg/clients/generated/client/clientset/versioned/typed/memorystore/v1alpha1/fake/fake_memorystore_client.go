@@ -22,22 +22,22 @@
 package fake
 
 import (
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeMemorystoreV1beta1 struct {
+type FakeMemorystoreV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeMemorystoreV1beta1) MemorystoreInstances(namespace string) v1beta1.MemorystoreInstanceInterface {
-	return newFakeMemorystoreInstances(c, namespace)
+func (c *FakeMemorystoreV1alpha1) MemorystoreInstanceEndpoints(namespace string) v1alpha1.MemorystoreInstanceEndpointInterface {
+	return newFakeMemorystoreInstanceEndpoints(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeMemorystoreV1beta1) RESTClient() rest.Interface {
+func (c *FakeMemorystoreV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

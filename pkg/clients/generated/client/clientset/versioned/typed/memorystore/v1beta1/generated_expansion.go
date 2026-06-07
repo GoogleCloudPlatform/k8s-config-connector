@@ -22,5 +22,3 @@
 package v1beta1
 
 type MemorystoreInstanceExpansion interface{}
-
-type MemorystoreInstanceEndpointExpansion interface{}

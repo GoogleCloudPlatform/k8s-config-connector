@@ -136,6 +136,7 @@ import (
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1alpha1"
 	managedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1beta1"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
+	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1"
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
@@ -311,6 +312,7 @@ type Interface interface {
 	ManagedkafkaV1alpha1() managedkafkav1alpha1.ManagedkafkaV1alpha1Interface
 	ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta1Interface
 	MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface
+	MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha1Interface
 	MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface
 	MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface
 	MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface
@@ -484,6 +486,7 @@ type Clientset struct {
 	managedkafkaV1alpha1           *managedkafkav1alpha1.ManagedkafkaV1alpha1Client
 	managedkafkaV1beta1            *managedkafkav1beta1.ManagedkafkaV1beta1Client
 	memcacheV1beta1                *memcachev1beta1.MemcacheV1beta1Client
+	memorystoreV1alpha1            *memorystorev1alpha1.MemorystoreV1alpha1Client
 	memorystoreV1beta1             *memorystorev1beta1.MemorystoreV1beta1Client
 	metastoreV1alpha1              *metastorev1alpha1.MetastoreV1alpha1Client
 	metastoreV1beta1               *metastorev1beta1.MetastoreV1beta1Client
@@ -1096,6 +1099,11 @@ func (c *Clientset) ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta
 // MemcacheV1beta1 retrieves the MemcacheV1beta1Client
 func (c *Clientset) MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface {
 	return c.memcacheV1beta1
+}
+
+// MemorystoreV1alpha1 retrieves the MemorystoreV1alpha1Client
+func (c *Clientset) MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha1Interface {
+	return c.memorystoreV1alpha1
 }
 
 // MemorystoreV1beta1 retrieves the MemorystoreV1beta1Client
@@ -1871,6 +1879,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.memorystoreV1alpha1, err = memorystorev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.memorystoreV1beta1, err = memorystorev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2231,6 +2243,7 @@ func New(c rest.Interface) *Clientset {
 	cs.managedkafkaV1alpha1 = managedkafkav1alpha1.New(c)
 	cs.managedkafkaV1beta1 = managedkafkav1beta1.New(c)
 	cs.memcacheV1beta1 = memcachev1beta1.New(c)
+	cs.memorystoreV1alpha1 = memorystorev1alpha1.New(c)
 	cs.memorystoreV1beta1 = memorystorev1beta1.New(c)
 	cs.metastoreV1alpha1 = metastorev1alpha1.New(c)
 	cs.metastoreV1beta1 = metastorev1beta1.New(c)

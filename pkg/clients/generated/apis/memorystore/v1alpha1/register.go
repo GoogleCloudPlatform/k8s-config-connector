@@ -28,13 +28,13 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package v1beta1 contains API Schema definitions for the memorystore v1beta1 API group.
+// Package v1alpha1 contains API Schema definitions for the memorystore v1alpha1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/memorystore
 // +k8s:defaulter-gen=TypeMeta
 // +groupName=memorystore.cnrm.cloud.google.com
-package v1beta1
+package v1alpha1
 
 import (
 	"reflect"
@@ -45,7 +45,7 @@ import (
 
 var (
 	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "memorystore.cnrm.cloud.google.com", Version: "v1beta1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: "memorystore.cnrm.cloud.google.com", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
@@ -53,10 +53,10 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	MemorystoreInstanceGVK = schema.GroupVersionKind{
+	MemorystoreInstanceEndpointGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MemorystoreInstance{}).Name(),
+		Kind:    reflect.TypeOf(MemorystoreInstanceEndpoint{}).Name(),
 	}
 
 	memorystoreAPIVersion = SchemeGroupVersion.String()
