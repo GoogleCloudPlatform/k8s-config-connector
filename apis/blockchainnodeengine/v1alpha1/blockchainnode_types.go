@@ -26,10 +26,12 @@ var BlockchainNodeEngineBlockchainNodeGVK = GroupVersion.WithKind("BlockchainNod
 // +kcc:spec:proto=google.cloud.blockchainnodeengine.v1.BlockchainNode
 type BlockchainNodeEngineBlockchainNodeSpec struct {
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef refsv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	/* Immutable. The location of this resource. */
-	Location string `json:"location"`
+	// +required
+	Location *string `json:"location"`
 
 	/* Immutable. Optional. The BlockchainNode name. If not given, the metadata.name will be used. */
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -101,7 +103,6 @@ type BlockchainNodeEngineBlockchainNodeObservedState struct {
 	State *string `json:"state,omitempty"`
 }
 
-// +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpblockchainnodeengineblockchainnode;gcpblockchainnodeengineblockchainnodes
 // +kubebuilder:subresource:status

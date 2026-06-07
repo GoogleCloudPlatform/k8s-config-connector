@@ -105,3 +105,10 @@ func (obj *BlockchainNodeEngineBlockchainNode) GetIdentity(ctx context.Context, 
 
 	return specIdentity, nil
 }
+
+func (obj *BlockchainNodeEngineBlockchainNode) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
+}

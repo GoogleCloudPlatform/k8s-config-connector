@@ -130,9 +130,37 @@ type BlockchainNodeEngineBlockchainNodeSpec struct {
 }
 
 type BlockchainnodeAdditionalEndpointsStatus struct {
+	/* Output only. The assigned URL for the node's Beacon API endpoint. */
+	// +optional
+	BeaconAPIEndpoint *string `json:"beaconAPIEndpoint,omitempty"`
+
+	/* Output only. The assigned URL for the node's Beacon Prometheus metrics endpoint. See [Prometheus Metrics](https://lighthouse-book.sigmaprime.io/advanced_metrics.html) for more details. */
+	// +optional
+	BeaconPrometheusMetricsAPIEndpoint *string `json:"beaconPrometheusMetricsAPIEndpoint,omitempty"`
+
+	/* Output only. The assigned URL for the node's execution client's Prometheus metrics endpoint. */
+	// +optional
+	ExecutionClientPrometheusMetricsAPIEndpoint *string `json:"executionClientPrometheusMetricsAPIEndpoint,omitempty"`
 }
 
 type BlockchainnodeConnectionInfoStatus struct {
+	/* Output only. The endpoint information through which to interact with a blockchain node. */
+	// +optional
+	EndpointInfo *BlockchainnodeEndpointInfoStatus `json:"endpointInfo,omitempty"`
+
+	/* Output only. A service attachment that exposes a node, and has the following format: projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name} */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+type BlockchainnodeEndpointInfoStatus struct {
+	/* Output only. The assigned URL for the node JSON-RPC API endpoint. */
+	// +optional
+	JsonRpcAPIEndpoint *string `json:"jsonRpcAPIEndpoint,omitempty"`
+
+	/* Output only. The assigned URL for the node WebSockets API endpoint. */
+	// +optional
+	WebsocketsAPIEndpoint *string `json:"websocketsAPIEndpoint,omitempty"`
 }
 
 type BlockchainnodeEthereumDetailsStatus struct {
