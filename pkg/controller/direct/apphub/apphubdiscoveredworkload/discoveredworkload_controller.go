@@ -69,10 +69,11 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewDiscoveredWorkloadIdentity(ctx, reader, obj)
+	idRaw, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idRaw.(*krm.DiscoveredWorkloadIdentity)
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -120,6 +121,8 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		return true, fmt.Errorf("mapping to AppHubDiscoveredWorkloadObservedState: %w", mapCtx.Err())
 	}
 
+	a.inner.Status.ExternalRef = direct.LazyPtr(a.id.String())
+
 	return true, nil
 }
 
@@ -137,7 +140,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating DiscoveredWorkload", "name", a.id.String())
 
 	// DiscoveredWorkload is read-only and immutable. Spec cannot be updated, so Update is a no-op.
-	return nil
+	// But we still must call updateOp.UpdateStatus with the latest status.
+	status := &krm.AppHubDiscoveredWorkloadStatus{}
+	status.ObservedState = a.inner.Status.ObservedState
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
