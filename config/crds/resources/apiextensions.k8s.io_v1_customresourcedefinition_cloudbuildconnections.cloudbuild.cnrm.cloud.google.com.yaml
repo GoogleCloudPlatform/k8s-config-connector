@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: cloudbuildconnections.cloudbuild.cnrm.cloud.google.com
 spec:
@@ -777,6 +778,33 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  bitbucketCloudConfig:
+                    description: Configuration for connections to Bitbucket Cloud.
+                    properties:
+                      authorizerCredential:
+                        description: Required. An access token with the `webhook`,
+                          `repository`, `repository:admin` and `pullrequest` scope
+                          access. It can be either a workspace, project or repository
+                          access token. It's recommended to use a system account to
+                          generate these credentials.
+                        properties:
+                          username:
+                            description: Output only. The username associated to this
+                              token.
+                            type: string
+                        type: object
+                      readAuthorizerCredential:
+                        description: Required. An access token with the `repository`
+                          access. It can be either a workspace, project or repository
+                          access token. It's recommended to use a system account to
+                          generate the credentials.
+                        properties:
+                          username:
+                            description: Output only. The username associated to this
+                              token.
+                            type: string
+                        type: object
+                    type: object
                   bitbucketDataCenterConfig:
                     description: Configuration for connections to Bitbucket Data Center.
                     properties:

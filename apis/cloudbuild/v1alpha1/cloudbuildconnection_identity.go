@@ -106,3 +106,10 @@ func (obj *CloudBuildConnection) GetIdentity(ctx context.Context, reader client.
 
 	return specIdentity, nil
 }
+
+func (obj *CloudBuildConnection) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
+}

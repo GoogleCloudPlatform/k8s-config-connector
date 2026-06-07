@@ -103,6 +103,7 @@
 | cloudasset.cnrm.cloud.google.com              | CloudAssetOrganizationFeed                      | True         | False       | False  | Terraform  | False       |
 | cloudasset.cnrm.cloud.google.com              | CloudAssetProjectFeed                           | True         | False       | False  | Terraform  | False       |
 | batch.cnrm.cloud.google.com                   | CloudBatchResourceAllowance                     | True         | False       | False  | Direct     | True        |
+| cloudbuild.cnrm.cloud.google.com              | CloudBuildConnection                            | True         | False       | False  | Direct     | True        |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildTrigger                               | False        | True        | False  | Terraform  | True        |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildWorkerPool                            | True         | True        | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployAutomation                           | True         | False       | False  | Direct     | True        |

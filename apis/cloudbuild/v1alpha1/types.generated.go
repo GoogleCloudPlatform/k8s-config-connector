@@ -275,10 +275,37 @@ type UserCredential struct {
 }
 */
 
+/* found existing non-generated go type "BitbucketCloudConfigObservedState", skipping
+
+// +kcc:observedstate:proto=google.devtools.cloudbuild.v2.BitbucketCloudConfig
+type BitbucketCloudConfigObservedState struct {
+	// Required. An access token with the `repository` access. It can be either a
+	//  workspace, project or repository access token. It's recommended to use a
+	//  system account to generate the credentials.
+	// +kcc:proto:field=google.devtools.cloudbuild.v2.BitbucketCloudConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredentialObservedState `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. An access token with the `webhook`, `repository`,
+	//  `repository:admin` and `pullrequest` scope access. It can be either a
+	//  workspace, project or repository access token. It's recommended to use a
+	//  system account to generate these credentials.
+	// +kcc:proto:field=google.devtools.cloudbuild.v2.BitbucketCloudConfig.authorizer_credential
+	AuthorizerCredential *UserCredentialObservedState `json:"authorizerCredential,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "BitbucketDataCenterConfigObservedState", skipping
 
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v2.BitbucketDataCenterConfig
 type BitbucketDataCenterConfigObservedState struct {
+	// Required. A http access token with the `REPO_READ` access.
+	// +kcc:proto:field=google.devtools.cloudbuild.v2.BitbucketDataCenterConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredentialObservedState `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. A http access token with the `REPO_ADMIN` scope access.
+	// +kcc:proto:field=google.devtools.cloudbuild.v2.BitbucketDataCenterConfig.authorizer_credential
+	AuthorizerCredential *UserCredentialObservedState `json:"authorizerCredential,omitempty"`
+
 	// Output only. Version of the Bitbucket Data Center running on the
 	//  `host_uri`.
 	// +kcc:proto:field=google.devtools.cloudbuild.v2.BitbucketDataCenterConfig.server_version
@@ -315,9 +342,13 @@ type ConnectionObservedState struct {
 	// +kcc:proto:field=google.devtools.cloudbuild.v2.Connection.bitbucket_data_center_config
 	BitbucketDataCenterConfig *BitbucketDataCenterConfigObservedState `json:"bitbucketDataCenterConfig,omitempty"`
 
+	// Configuration for connections to Bitbucket Cloud.
+	// +kcc:proto:field=google.devtools.cloudbuild.v2.Connection.bitbucket_cloud_config
+	BitbucketCloudConfig *BitbucketCloudConfigObservedState `json:"bitbucketCloudConfig,omitempty"`
+
 	// Output only. Installation state of the Connection.
 	// +kcc:proto:field=google.devtools.cloudbuild.v2.Connection.installation_state
-	InstallationState *InstallationState `json:"installationState,omitempty"`
+	InstallationState *InstallationStateObservedState `json:"installationState,omitempty"`
 
 	// Output only. Set to true when the connection is being set up or updated in
 	//  the background.
@@ -353,6 +384,10 @@ type GitLabConfigObservedState struct {
 	//  access.
 	// +kcc:proto:field=google.devtools.cloudbuild.v2.GitLabConfig.read_authorizer_credential
 	ReadAuthorizerCredential *UserCredentialObservedState `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. A GitLab personal access token with the `api` scope access.
+	// +kcc:proto:field=google.devtools.cloudbuild.v2.GitLabConfig.authorizer_credential
+	AuthorizerCredential *UserCredentialObservedState `json:"authorizerCredential,omitempty"`
 
 	// Output only. Version of the GitLab Enterprise server running on the
 	//  `host_uri`.

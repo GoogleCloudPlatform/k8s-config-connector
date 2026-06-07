@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ type CloudBuildConnectionSpec struct {
 
 	// The location of this resource.
 	// +kubebuilder:validation:Required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The CloudBuildConnection name. If not given, the metadata.name will be used.
 	// +kubebuilder:validation:Optional
@@ -113,6 +113,9 @@ type CloudBuildConnectionObservedState struct {
 	// Configuration for connections to Bitbucket Data Center.
 	BitbucketDataCenterConfig *BitbucketDataCenterConfigObservedState `json:"bitbucketDataCenterConfig,omitempty"`
 
+	// Configuration for connections to Bitbucket Cloud.
+	BitbucketCloudConfig *BitbucketCloudConfigObservedState `json:"bitbucketCloudConfig,omitempty"`
+
 	// Output only. Installation state of the Connection.
 	InstallationState *InstallationStateObservedState `json:"installationState,omitempty"`
 
@@ -127,6 +130,7 @@ type CloudBuildConnectionObservedState struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
@@ -386,4 +390,20 @@ type GitLabConfigObservedState struct {
 	//  `host_uri`.
 	// +kcc:proto:field=google.devtools.cloudbuild.v2.GitLabConfig.server_version
 	ServerVersion *string `json:"serverVersion,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.devtools.cloudbuild.v2.BitbucketCloudConfig
+type BitbucketCloudConfigObservedState struct {
+	// Required. An access token with the `repository` access. It can be either a
+	//  workspace, project or repository access token. It's recommended to use a
+	//  system account to generate the credentials.
+	// +kcc:proto:field=google.devtools.cloudbuild.v2.BitbucketCloudConfig.read_authorizer_credential
+	ReadAuthorizerCredential *UserCredentialObservedState `json:"readAuthorizerCredential,omitempty"`
+
+	// Required. An access token with the `webhook`, `repository`,
+	//  `repository:admin` and `pullrequest` scope access. It can be either a
+	//  workspace, project or repository access token. It's recommended to use a
+	//  system account to generate these credentials.
+	// +kcc:proto:field=google.devtools.cloudbuild.v2.BitbucketCloudConfig.authorizer_credential
+	AuthorizerCredential *UserCredentialObservedState `json:"authorizerCredential,omitempty"`
 }
