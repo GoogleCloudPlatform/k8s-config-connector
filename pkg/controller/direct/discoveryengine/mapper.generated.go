@@ -452,6 +452,7 @@ func DiscoveryEngineDataStoreObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.DefaultSchemaID = direct.LazyPtr(in.GetDefaultSchemaId())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// MISSING: AdvancedSiteSearchConfig
+	// MISSING: NaturalLanguageQueryUnderstandingConfig
 	// MISSING: KMSKeyName
 	// MISSING: CmekConfig
 	out.BillingEstimation = DataStore_BillingEstimation_FromProto(mapCtx, in.GetBillingEstimation())
@@ -471,6 +472,7 @@ func DiscoveryEngineDataStoreObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.DefaultSchemaId = direct.ValueOf(in.DefaultSchemaID)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// MISSING: AdvancedSiteSearchConfig
+	// MISSING: NaturalLanguageQueryUnderstandingConfig
 	// MISSING: KMSKeyName
 	// MISSING: CmekConfig
 	out.BillingEstimation = DataStore_BillingEstimation_ToProto(mapCtx, in.BillingEstimation)
@@ -492,6 +494,7 @@ func DiscoveryEngineDataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Da
 	out.SolutionTypes = direct.EnumSlice_FromProto(mapCtx, in.SolutionTypes)
 	out.ContentConfig = direct.Enum_FromProto(mapCtx, in.GetContentConfig())
 	// MISSING: AdvancedSiteSearchConfig
+	// MISSING: NaturalLanguageQueryUnderstandingConfig
 	// MISSING: KMSKeyName
 	// MISSING: CmekConfig
 	// MISSING: AclEnabled
@@ -513,6 +516,7 @@ func DiscoveryEngineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dis
 	out.SolutionTypes = direct.EnumSlice_ToProto[pb.SolutionType](mapCtx, in.SolutionTypes)
 	out.ContentConfig = direct.Enum_ToProto[pb.DataStore_ContentConfig](mapCtx, in.ContentConfig)
 	// MISSING: AdvancedSiteSearchConfig
+	// MISSING: NaturalLanguageQueryUnderstandingConfig
 	// MISSING: KMSKeyName
 	// MISSING: CmekConfig
 	// MISSING: AclEnabled

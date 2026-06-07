@@ -83,7 +83,9 @@ python3 -c "import sys; f=open(sys.argv[1], 'r+'); content=f.read().replace('pac
 go run . generate-types  \
     --service google.bigtable.admin.v2 \
     --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
-    --resource BigtableInstance:Instance
+    --resource BigtableInstance:Instance \
+    --resource BigtableTable:Table \
+    --resource BigtableAppProfile:AppProfile
 
 go run . generate-mapper \
     --service google.bigtable.admin.v2 \
@@ -165,6 +167,7 @@ go run . generate-mapper \
 go run main.go generate-types \
      --service google.cloud.secretmanager.v1 \
      --resource SecretManagerSecret:Secret \
+     --resource SecretManagerSecretVersion:SecretVersion \
      --api-version "secretmanager.cnrm.cloud.google.com/v1beta1"
 
 go run . generate-mapper \
