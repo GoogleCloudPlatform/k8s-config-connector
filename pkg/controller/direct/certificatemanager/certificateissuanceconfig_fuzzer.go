@@ -29,8 +29,8 @@ func init() {
 
 func certificateIssuanceConfigFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.CertificateIssuanceConfig{},
-		CertificateManagerCertificateIssuanceConfigSpec_FromProto, CertificateManagerCertificateIssuanceConfigSpec_ToProto,
-		CertificateManagerCertificateIssuanceConfigObservedState_FromProto, CertificateManagerCertificateIssuanceConfigObservedState_ToProto,
+		CertificateManagerCertificateIssuanceConfigSpec_v1alpha1_FromProto, CertificateManagerCertificateIssuanceConfigSpec_v1alpha1_ToProto,
+		CertificateManagerCertificateIssuanceConfigObservedState_v1alpha1_FromProto, CertificateManagerCertificateIssuanceConfigObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecField(".description")

@@ -26,8 +26,8 @@ func init() {
 func dnsAuthorizationFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer := fuzztesting.NewKRMTypedSpecFuzzer(
 		&pb.DnsAuthorization{},
-		CertificateManagerDNSAuthorizationSpec_FromProto,
-		CertificateManagerDNSAuthorizationSpec_ToProto,
+		CertificateManagerDNSAuthorizationSpec_v1beta1_FromProto,
+		CertificateManagerDNSAuthorizationSpec_v1beta1_ToProto,
 	)
 
 	fuzzer.UnimplementedFields.Insert(".dns_resource_record")

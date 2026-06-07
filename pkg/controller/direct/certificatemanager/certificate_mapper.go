@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func CertificateSelfManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_SelfManagedCertificate) *krm.CertificateSelfManaged {
+func CertificateSelfManaged_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_SelfManagedCertificate) *krm.CertificateSelfManaged {
 	if in == nil {
 		return nil
 	}
@@ -32,7 +32,7 @@ func CertificateSelfManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certific
 	return out
 }
 
-func CertificateSelfManaged_ToProto(mapCtx *direct.MapContext, in *krm.CertificateSelfManaged) *pb.Certificate_SelfManagedCertificate {
+func CertificateSelfManaged_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateSelfManaged) *pb.Certificate_SelfManagedCertificate {
 	if in == nil {
 		return nil
 	}
@@ -50,7 +50,7 @@ func CertificateSelfManaged_ToProto(mapCtx *direct.MapContext, in *krm.Certifica
 	return out
 }
 
-func CertificateManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate) *krm.CertificateManaged {
+func CertificateManaged_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate) *krm.CertificateManaged {
 	if in == nil {
 		return nil
 	}
@@ -68,7 +68,7 @@ func CertificateManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_
 	return out
 }
 
-func CertificateManaged_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManaged) *pb.Certificate_ManagedCertificate {
+func CertificateManaged_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManaged) *pb.Certificate_ManagedCertificate {
 	if in == nil {
 		return nil
 	}
@@ -86,30 +86,30 @@ func CertificateManaged_ToProto(mapCtx *direct.MapContext, in *krm.CertificateMa
 	return out
 }
 
-func CertificateManagedStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate) *krm.CertificateManagedStatus {
+func CertificateManagedStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate) *krm.CertificateManagedStatus {
 	if in == nil {
 		return nil
 	}
 	out := &krm.CertificateManagedStatus{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	if v := in.GetProvisioningIssue(); v != nil {
-		if issue := CertificateProvisioningIssueStatus_FromProto(mapCtx, v); issue != nil {
+		if issue := CertificateProvisioningIssueStatus_v1beta1_FromProto(mapCtx, v); issue != nil {
 			out.ProvisioningIssue = []krm.CertificateProvisioningIssueStatus{*issue}
 		}
 	}
-	out.AuthorizationAttemptInfo = direct.Slice_FromProto(mapCtx, in.AuthorizationAttemptInfo, CertificateAuthorizationAttemptInfoStatus_FromProto)
+	out.AuthorizationAttemptInfo = direct.Slice_FromProto(mapCtx, in.AuthorizationAttemptInfo, CertificateAuthorizationAttemptInfoStatus_v1beta1_FromProto)
 	return out
 }
 
-func CertificateManagedStatus_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagedStatus) *pb.Certificate_ManagedCertificate {
+func CertificateManagedStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagedStatus) *pb.Certificate_ManagedCertificate {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Certificate_ManagedCertificate{}
 	out.State = direct.Enum_ToProto[pb.Certificate_ManagedCertificate_State](mapCtx, in.State)
 	if len(in.ProvisioningIssue) > 0 {
-		out.ProvisioningIssue = CertificateProvisioningIssueStatus_ToProto(mapCtx, &in.ProvisioningIssue[0])
+		out.ProvisioningIssue = CertificateProvisioningIssueStatus_v1beta1_ToProto(mapCtx, &in.ProvisioningIssue[0])
 	}
-	out.AuthorizationAttemptInfo = direct.Slice_ToProto(mapCtx, in.AuthorizationAttemptInfo, CertificateAuthorizationAttemptInfoStatus_ToProto)
+	out.AuthorizationAttemptInfo = direct.Slice_ToProto(mapCtx, in.AuthorizationAttemptInfo, CertificateAuthorizationAttemptInfoStatus_v1beta1_ToProto)
 	return out
 }
