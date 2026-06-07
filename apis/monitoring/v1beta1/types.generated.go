@@ -208,7 +208,8 @@ type SyntheticMonitorTarget_CloudFunctionV2Target struct {
 }
 */
 
-/* unreachable type UptimeCheckConfig
+/* found existing non-generated go type with proto tag "google.monitoring.v3.UptimeCheckConfig", skipping
+
 // +kcc:proto=google.monitoring.v3.UptimeCheckConfig
 type UptimeCheckConfig struct {
 	// Identifier. A unique resource name for this Uptime check configuration. The
@@ -564,7 +565,8 @@ type SyntheticMonitorTarget_CloudFunctionV2TargetObservedState struct {
 }
 */
 
-/* unreachable type UptimeCheckConfigObservedState
+/* found existing non-generated go type with proto tag "google.monitoring.v3.UptimeCheckConfig", skipping
+
 // +kcc:observedstate:proto=google.monitoring.v3.UptimeCheckConfig
 type UptimeCheckConfigObservedState struct {
 	// Specifies a Synthetic Monitor to invoke.

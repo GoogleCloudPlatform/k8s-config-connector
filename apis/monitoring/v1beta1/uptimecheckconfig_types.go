@@ -32,6 +32,7 @@ type MonitoringGroupRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.ContentMatcher
 type UptimeCheckConfig_ContentMatcher struct {
 	// String, regex or JSON content to match. Maximum 1024 bytes. An empty `content` string indicates no content matching is to be performed.
 	// +required
@@ -40,6 +41,7 @@ type UptimeCheckConfig_ContentMatcher struct {
 	Matcher *string `json:"matcher,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck.BasicAuthentication
 type UptimeCheckConfig_HTTPCheck_BasicAuthentication struct {
 	// The password to use when authenticating with the HTTP server.
 	// +required
@@ -49,6 +51,7 @@ type UptimeCheckConfig_HTTPCheck_BasicAuthentication struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck
 type UptimeCheckConfig_HTTPCheck struct {
 	// The authentication information. Optional when creating an HTTP check; defaults to empty. Do not set both `auth_method` and `auth_info`.
 	AuthInfo *UptimeCheckConfig_HTTPCheck_BasicAuthentication `json:"authInfo,omitempty"`
@@ -67,34 +70,38 @@ type UptimeCheckConfig_HTTPCheck struct {
 	// Immutable. The HTTP request method to use for the check. If set to `METHOD_UNSPECIFIED` then `request_method` defaults to `GET`.
 	RequestMethod *string `json:"requestMethod,omitempty"`
 	// If `true`, use HTTPS instead of HTTP to run the check.
-	UseSsl *bool `json:"useSsl,omitempty"`
+	UseSSL *bool `json:"useSsl,omitempty"`
 	// Boolean specifying whether to include SSL certificate validation as a part of the Uptime check. Only applies to checks where `monitored_resource` is set to `uptime_url`. If `use_ssl` is `false`, setting `validate_ssl` to `true` has no effect.
-	ValidateSsl *bool `json:"validateSsl,omitempty"`
+	ValidateSSL *bool `json:"validateSsl,omitempty"`
 }
 
+// +kcc:proto=google.api.MonitoredResource
 type UptimeCheckConfig_MonitoredResource struct {
 	// Immutable.
 	// +required
-	FilterLabels map[string]string `json:"filterLabels,omitempty"`
+	Labels map[string]string `json:"filterLabels,omitempty"`
 	// Immutable.
 	// +required
 	Type *string `json:"type,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.ResourceGroup
 type UptimeCheckConfig_ResourceGroup struct {
 	// Immutable. The group resource associated with the configuration.
-	GroupRef *MonitoringGroupRef `json:"groupRef,omitempty"`
+	GroupIDRef *MonitoringGroupRef `json:"groupRef,omitempty"`
 	// Immutable. The resource type of the group members. Possible values: RESOURCE_TYPE_UNSPECIFIED, INSTANCE, AWS_ELB_LOAD_BALANCER
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.TcpCheck
 type UptimeCheckConfig_TCPCheck struct {
 	// The TCP port on the server against which to run the check. Will be combined with host (specified within the `monitored_resource`) to construct the full URL. Required.
 	// +required
-	Port *int64 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 }
 
 // MonitoringUptimeCheckConfigSpec defines the desired state of MonitoringUptimeCheckConfig
+// +kcc:spec:proto=google.monitoring.v3.UptimeCheckConfig
 type MonitoringUptimeCheckConfigSpec struct {
 	// A human-friendly name for the Uptime check configuration. The display name should be unique within a Stackdriver Workspace in order to make it easier to identify; however, uniqueness is not enforced. Required.
 	// +required
@@ -134,6 +141,7 @@ type MonitoringUptimeCheckConfigSpec struct {
 }
 
 // MonitoringUptimeCheckConfigStatus defines the config connector machine state of MonitoringUptimeCheckConfig
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig
 type MonitoringUptimeCheckConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
