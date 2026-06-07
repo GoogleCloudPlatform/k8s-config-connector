@@ -204,7 +204,7 @@
 | containeranalysis.cnrm.cloud.google.com       | ContainerAnalysisOccurrence                     | True         | False       | False  | Terraform  | False       |
 | containerattached.cnrm.cloud.google.com       | ContainerAttachedCluster                        | False        | True        | False  | Terraform  | True        |
 | container.cnrm.cloud.google.com               | ContainerCluster                                | False        | True        | False  | Terraform  | True        |
-| container.cnrm.cloud.google.com               | ContainerNodePool                               | False        | True        | False  | Terraform  | False       |
+| container.cnrm.cloud.google.com               | ContainerNodePool                               | False        | True        | False  | Terraform  | True        |
 | datacatalog.cnrm.cloud.google.com             | DataCatalogEntry                                | True         | False       | False  | Direct     | True        |
 | datacatalog.cnrm.cloud.google.com             | DataCatalogEntryGroup                           | True         | False       | False  | Direct     | True        |
 | datacatalog.cnrm.cloud.google.com             | DataCatalogPolicyTag                            | False        | True        | False  | Terraform  | True        |
