@@ -278,6 +278,10 @@ type CertificateManagerCertificateStatus struct {
 	/* The observed state of the underlying GCP resource. */
 	// +optional
 	ObservedState *CertificateObservedStateStatus `json:"observedState,omitempty"`
+
+	/* A unique specifier for the CertificateManagerCertificate resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 }
 
 // +genclient
