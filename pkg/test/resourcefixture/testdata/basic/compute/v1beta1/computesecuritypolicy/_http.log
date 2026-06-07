@@ -1,0 +1,499 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&security_policy=${securityPolicyID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/securityPolicies/${securityPolicyID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/securityPolicies/${securityPolicyID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}
+
+{
+  "adaptiveProtectionConfig": {
+    "layer7DdosDefenseConfig": {
+      "enable": true,
+      "ruleVisibility": "STANDARD"
+    }
+  },
+  "name": "${securityPolicyID}",
+  "rules": [
+    {
+      "action": "deny(403)",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 2147483647
+    },
+    {
+      "action": "allow",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "16.0.0.0/4",
+            "115.128.0.0/9",
+            "62.48.212.0/24"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": true,
+      "priority": 1000000000
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&security_policy=${securityPolicyID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "adaptiveProtectionConfig": {
+    "layer7DdosDefenseConfig": {
+      "enable": true,
+      "ruleVisibility": "STANDARD"
+    }
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#securityPolicy",
+  "name": "${securityPolicyID}",
+  "rules": [
+    {
+      "action": "deny(403)",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 2147483647
+    },
+    {
+      "action": "allow",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "16.0.0.0/4",
+            "115.128.0.0/9",
+            "62.48.212.0/24"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": true,
+      "priority": 1000000000
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&security_policy=${securityPolicyID}
+
+{
+  "adaptiveProtectionConfig": {
+    "layer7DdosDefenseConfig": {
+      "enable": true,
+      "ruleVisibility": "STANDARD"
+    }
+  },
+  "fingerprint": "abcdef0123A=",
+  "name": "${securityPolicyID}",
+  "rules": [
+    {
+      "action": "allow",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 2147483647
+    },
+    {
+      "action": "deny(502)",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "60.0.0.0/6"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 111111111
+    },
+    {
+      "action": "allow",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "63.0.0.0/8",
+            "61.128.0.0/10"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 555
+    },
+    {
+      "action": "deny(403)",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "145.4.56.4/30",
+            "63.63.63.63/32",
+            "4.5.4.0/24"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 0
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&security_policy=${securityPolicyID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "adaptiveProtectionConfig": {
+    "layer7DdosDefenseConfig": {
+      "enable": true,
+      "ruleVisibility": "STANDARD"
+    }
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#securityPolicy",
+  "name": "${securityPolicyID}",
+  "rules": [
+    {
+      "action": "deny(403)",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 2147483647
+    },
+    {
+      "action": "allow",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "16.0.0.0/4",
+            "115.128.0.0/9",
+            "62.48.212.0/24"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": true,
+      "priority": 1000000000
+    },
+    {
+      "action": "allow",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 2147483647
+    },
+    {
+      "action": "deny(502)",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "60.0.0.0/6"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 111111111
+    },
+    {
+      "action": "allow",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "63.0.0.0/8",
+            "61.128.0.0/10"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 555
+    },
+    {
+      "action": "deny(403)",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "145.4.56.4/30",
+            "63.63.63.63/32",
+            "4.5.4.0/24"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 0
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&security_policy=${securityPolicyID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
