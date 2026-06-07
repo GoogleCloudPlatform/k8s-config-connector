@@ -26,6 +26,7 @@ package aiplatform
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -555,7 +556,9 @@ func PSCAutomationConfig_FromProto(mapCtx *direct.MapContext, in *pb.PSCAutomati
 	}
 	out := &krm.PSCAutomationConfig{}
 	out.ProjectID = direct.LazyPtr(in.GetProjectId())
-	out.Network = direct.LazyPtr(in.GetNetwork())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
 	// MISSING: IPAddress
 	// MISSING: ForwardingRule
 	// MISSING: State
@@ -568,7 +571,9 @@ func PSCAutomationConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutomatio
 	}
 	out := &pb.PSCAutomationConfig{}
 	out.ProjectId = direct.ValueOf(in.ProjectID)
-	out.Network = direct.ValueOf(in.Network)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	// MISSING: IPAddress
 	// MISSING: ForwardingRule
 	// MISSING: State
