@@ -220,6 +220,26 @@ func MonitoringUptimeCheckConfigStatus_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: UserLabels
 	return out
 }
+func UptimeCheckConfig_ContentMatcher_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_ContentMatcher) *krm.UptimeCheckConfig_ContentMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UptimeCheckConfig_ContentMatcher{}
+	out.Content = direct.LazyPtr(in.GetContent())
+	out.Matcher = direct.Enum_FromProto(mapCtx, in.GetMatcher())
+	// MISSING: JsonPathMatcher
+	return out
+}
+func UptimeCheckConfig_ContentMatcher_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_ContentMatcher) *pb.UptimeCheckConfig_ContentMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UptimeCheckConfig_ContentMatcher{}
+	out.Content = direct.ValueOf(in.Content)
+	out.Matcher = direct.Enum_ToProto[pb.UptimeCheckConfig_ContentMatcher_ContentMatcherOption](mapCtx, in.Matcher)
+	// MISSING: JsonPathMatcher
+	return out
+}
 func UptimeCheckConfig_MonitoredResource_FromProto(mapCtx *direct.MapContext, in *monitoredrespb.MonitoredResource) *krm.UptimeCheckConfig_MonitoredResource {
 	if in == nil {
 		return nil

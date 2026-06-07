@@ -128,23 +128,3 @@ func UptimeCheckConfig_TCPCheck_ToProto(mapCtx *direct.MapContext, in *krm.Uptim
 	out.Port = int32(direct.ValueOf(in.Port))
 	return out
 }
-
-func UptimeCheckConfig_ContentMatcher_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_ContentMatcher) *krm.UptimeCheckConfig_ContentMatcher {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UptimeCheckConfig_ContentMatcher{}
-	out.Content = direct.LazyPtr(in.GetContent())
-	out.Matcher = direct.Enum_FromProto(mapCtx, in.GetMatcher())
-	return out
-}
-
-func UptimeCheckConfig_ContentMatcher_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_ContentMatcher) *pb.UptimeCheckConfig_ContentMatcher {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UptimeCheckConfig_ContentMatcher{}
-	out.Content = direct.ValueOf(in.Content)
-	out.Matcher = direct.Enum_ToProto[pb.UptimeCheckConfig_ContentMatcher_ContentMatcherOption](mapCtx, in.Matcher)
-	return out
-}

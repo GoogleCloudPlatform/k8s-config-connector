@@ -32,6 +32,7 @@ type MonitoringGroupRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.ContentMatcher
 type UptimeCheckConfig_ContentMatcher struct {
 	// String, regex or JSON content to match. Maximum 1024 bytes. An empty `content` string indicates no content matching is to be performed.
 	// +required
