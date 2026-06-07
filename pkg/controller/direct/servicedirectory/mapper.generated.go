@@ -77,3 +77,55 @@ func ServiceDirectoryNamespaceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Se
 	// MISSING: Uid
 	return out
 }
+func ServiceDirectoryServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ServiceDirectoryServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceDirectoryServiceObservedState{}
+	// MISSING: Name
+	// MISSING: Metadata
+	// MISSING: Endpoints
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	return out
+}
+func ServiceDirectoryServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryServiceObservedState) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	// MISSING: Metadata
+	// MISSING: Endpoints
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	return out
+}
+func ServiceDirectoryServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ServiceDirectoryServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceDirectoryServiceSpec{}
+	// MISSING: Name
+	// MISSING: Metadata
+	// MISSING: Endpoints
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	return out
+}
+func ServiceDirectoryServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryServiceSpec) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	// MISSING: Metadata
+	// MISSING: Endpoints
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	return out
+}
