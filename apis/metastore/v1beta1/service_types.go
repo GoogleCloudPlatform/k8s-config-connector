@@ -250,3 +250,7 @@ type MetastoreServiceList struct {
 func init() {
 	SchemeBuilder.Register(&MetastoreService{}, &MetastoreServiceList{})
 }
+
+var _ *AuxiliaryVersionConfig = nil
+var _ *MetadataExport = nil
+var _ *Restore = nil
