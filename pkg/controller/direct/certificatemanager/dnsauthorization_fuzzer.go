@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:fuzz-gen
+// proto.message: google.cloud.certificatemanager.v1.DnsAuthorization
+// api.group: certificatemanager.cnrm.cloud.google.com
+
 package certificatemanager
 
 import (
@@ -20,23 +24,27 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(dnsAuthorizationFuzzer())
+	fuzztesting.RegisterKRMFuzzer(dnsAuthorizationFuzzer())
 }
 
 func dnsAuthorizationFuzzer() fuzztesting.KRMFuzzer {
-	fuzzer := fuzztesting.NewKRMTypedSpecFuzzer(
-		&pb.DnsAuthorization{},
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.DnsAuthorization{},
 		CertificateManagerDNSAuthorizationSpec_v1beta1_FromProto,
 		CertificateManagerDNSAuthorizationSpec_v1beta1_ToProto,
+		CertificateManagerDNSAuthorizationStatus_v1beta1_FromProto,
+		CertificateManagerDNSAuthorizationStatus_v1beta1_ToProto,
 	)
 
-	fuzzer.UnimplementedFields.Insert(".dns_resource_record")
-	fuzzer.UnimplementedFields.Insert(".name")
-	fuzzer.Unimplemented_LabelsAnnotations(".labels")
-	fuzzer.UnimplementedFields.Insert(".type")
+	f.SpecField(".description")
+	f.SpecField(".domain")
 
-	fuzzer.StatusFields.Insert(".create_time")
-	fuzzer.StatusFields.Insert(".update_time")
+	f.StatusField(".dns_resource_record")
 
-	return fuzzer
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
+	f.Unimplemented_Internal(".create_time")
+	f.Unimplemented_Internal(".update_time")
+	f.Unimplemented_NotYetTriaged(".type")
+
+	return f
 }
