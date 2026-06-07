@@ -15,78 +15,60 @@
 package v1alpha1
 
 import (
-	"reflect"
 	"testing"
 )
 
-func TestParseDiscoveredWorkloadExternal(t *testing.T) {
+func TestDiscoveredWorkloadIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name           string
-		external       string
-		wantParent     *DiscoveredWorkloadParent
-		wantResourceID string
-		wantErr        bool
+		name    string
+		ref     string
+		wantErr bool
+		want    *DiscoveredWorkloadIdentity
 	}{
 		{
-			name:     "valid external",
-			external: "projects/p1/locations/l1/discoveredworkloads/w1",
-			wantParent: &DiscoveredWorkloadParent{
-				ProjectID: "p1",
-				Location:  "l1",
+			name: "valid reference (camelCase)",
+			ref:  "projects/my-project/locations/us-central1/discoveredWorkloads/my-workload",
+			want: &DiscoveredWorkloadIdentity{
+				Project:            "my-project",
+				Location:           "us-central1",
+				DiscoveredWorkload: "my-workload",
 			},
-			wantResourceID: "w1",
-			wantErr:        false,
 		},
 		{
-			name:     "invalid format",
-			external: "invalid/format",
-			wantErr:  true,
+			name:    "invalid reference format",
+			ref:     "invalid/format",
+			wantErr: true,
 		},
 		{
-			name:     "wrong service prefix",
-			external: "projects/p1/locations/l1/wrongresource/w1",
-			wantErr:  true,
+			name: "full url",
+			ref:  "https://apphub.googleapis.com/projects/my-project/locations/us-central1/discoveredWorkloads/my-workload",
+			want: &DiscoveredWorkloadIdentity{
+				Project:            "my-project",
+				Location:           "us-central1",
+				DiscoveredWorkload: "my-workload",
+			},
 		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotParent, gotResourceID, err := ParseDiscoveredWorkloadExternal(tt.external)
+			i := &DiscoveredWorkloadIdentity{}
+			err := i.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ParseDiscoveredWorkloadExternal() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr {
-				if !reflect.DeepEqual(gotParent, tt.wantParent) {
-					t.Errorf("ParseDiscoveredWorkloadExternal() gotParent = %v, want %v", gotParent, tt.wantParent)
+				if i.Project != tt.want.Project {
+					t.Errorf("Project = %v, want %v", i.Project, tt.want.Project)
 				}
-				if gotResourceID != tt.wantResourceID {
-					t.Errorf("ParseDiscoveredWorkloadExternal() gotResourceID = %v, want %v", gotResourceID, tt.wantResourceID)
+				if i.Location != tt.want.Location {
+					t.Errorf("Location = %v, want %v", i.Location, tt.want.Location)
+				}
+				if i.DiscoveredWorkload != tt.want.DiscoveredWorkload {
+					t.Errorf("DiscoveredWorkload = %v, want %v", i.DiscoveredWorkload, tt.want.DiscoveredWorkload)
 				}
 			}
 		})
-	}
-}
-
-func TestDiscoveredWorkloadIdentity_Methods(t *testing.T) {
-	parent := &DiscoveredWorkloadParent{
-		ProjectID: "p1",
-		Location:  "l1",
-	}
-	id := &DiscoveredWorkloadIdentity{
-		parent: parent,
-		id:     "w1",
-	}
-
-	if id.ID() != "w1" {
-		t.Errorf("ID() = %v, want %v", id.ID(), "w1")
-	}
-
-	if !reflect.DeepEqual(id.Parent(), parent) {
-		t.Errorf("Parent() = %v, want %v", id.Parent(), parent)
-	}
-
-	expectedString := "projects/p1/locations/l1/discoveredworkloads/w1"
-	if id.String() != expectedString {
-		t.Errorf("String() = %v, want %v", id.String(), expectedString)
 	}
 }
