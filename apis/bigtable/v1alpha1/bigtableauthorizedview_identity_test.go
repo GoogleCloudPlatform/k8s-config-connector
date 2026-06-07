@@ -105,7 +105,7 @@ func TestBigtableAuthorizedViewIdentity_FromExternal(t *testing.T) {
 		},
 		{
 			name: "full url",
-			ref:  "https://bigtableadmin.googleapis.com/projects/my-project/instances/my-instance/tables/my-table/authorizedViews/my-view",
+			ref:  "https://bigtable.googleapis.com/projects/my-project/instances/my-instance/tables/my-table/authorizedViews/my-view",
 			want: &AuthorizedViewIdentity{
 				Project:        "my-project",
 				Instance:       "my-instance",

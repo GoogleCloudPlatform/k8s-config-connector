@@ -34,7 +34,7 @@ var (
 	_ identity.Resource   = &BigtableBackup{}
 )
 
-var BackupIdentityFormat = gcpurls.Template[BackupIdentity]("bigtableadmin.googleapis.com", "projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}")
+var BackupIdentityFormat = gcpurls.Template[BackupIdentity]("bigtable.googleapis.com", "projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}")
 
 // +k8s:deepcopy-gen=false
 type BackupIdentity struct {
