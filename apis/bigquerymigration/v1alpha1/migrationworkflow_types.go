@@ -85,6 +85,70 @@ type BigQueryMigrationWorkflowObservedState struct {
 	// Time when the workflow was last updated.
 	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationWorkflow.last_update_time
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+
+	// The tasks in a workflow in a named map, containing status/observed details.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationWorkflow.tasks
+	Tasks map[string]MigrationTaskObservedState `json:"tasks,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.migration.v2.MigrationTask
+type MigrationTask struct {
+	// Task configuration for CW Batch/Offline SQL Translation.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.translation_config_details
+	TranslationConfigDetails *TranslationConfigDetails `json:"translationConfigDetails,omitempty"`
+
+	// Task details for unified SQL Translation.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.translation_details
+	TranslationDetails *TranslationDetails `json:"translationDetails,omitempty"`
+
+	// The type of the task. This must be one of the supported task types:
+	//  Translation_Teradata2BQ, Translation_Redshift2BQ, Translation_Bteq2BQ,
+	//  Translation_Oracle2BQ, Translation_HiveQL2BQ, Translation_SparkSQL2BQ,
+	//  Translation_Snowflake2BQ, Translation_Netezza2BQ,
+	//  Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
+	//  Translation_SQLServer2BQ, Translation_Presto2BQ, Translation_MySQL2BQ,
+	//  Translation_Postgresql2BQ, Translation_SQLite2BQ, Translation_Greenplum2BQ.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.migration.v2.MigrationTask
+type MigrationTaskObservedState struct {
+	// Task configuration for CW Batch/Offline SQL Translation.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.translation_config_details
+	TranslationConfigDetails *TranslationConfigDetails `json:"translationConfigDetails,omitempty"`
+
+	// Task details for unified SQL Translation.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.translation_details
+	TranslationDetails *TranslationDetails `json:"translationDetails,omitempty"`
+
+	// The type of the task.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.type
+	Type *string `json:"type,omitempty"`
+
+	// Time when the task was created.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Time when the task was last updated.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.last_update_time
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+
+	// The number of resources with errors.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.resource_error_count
+	ResourceErrorCount *int32 `json:"resourceErrorCount,omitempty"`
+
+	// The metrics for the task.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.metrics
+	Metrics []TimeSeries `json:"metrics,omitempty"`
+
+	// Count of all the processing errors in this task and its subtasks.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.total_processing_error_count
+	TotalProcessingErrorCount *int32 `json:"totalProcessingErrorCount,omitempty"`
+
+	// Count of all the resource errors in this task and its subtasks.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.total_resource_error_count
+	TotalResourceErrorCount *int32 `json:"totalResourceErrorCount,omitempty"`
 }
 
 // +genclient

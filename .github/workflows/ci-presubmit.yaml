@@ -261,17 +261,15 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-aistreams"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-aistreams
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-aistreams
@@ -363,17 +361,15 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apihub"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-apihub
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-apihub
@@ -685,17 +681,15 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerymigration"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigquerymigration
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigquerymigration
