@@ -5,7 +5,7 @@
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessLevelCondition        | True         | False       | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessLevel                 | False        | True        | False  | Terraform  | True        |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessPolicy                | False        | True        | False  | Terraform  | True        |
-| accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerGCPUserAccessBinding        | True         | False       | False  | Terraform  | False       |
+| accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerGCPUserAccessBinding        | False        | True        | False  | Direct     | True        |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeterResource    | True         | True        | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeter            | False        | True        | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com              | AIPlatformModel                                 | True         | False       | False  | Direct     | True        |

@@ -1048,33 +1048,34 @@ func TestCRDObjectTypes(t *testing.T) {
 	// We want to eventually fix these, but for now we allowlist them so the test passes.
 	// This allows us to detect new regressions.
 	knownInvalidCRDs := map[string]bool{
-		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
-		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
-		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
-		"apigeeorganizations.apigee.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
-		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":        true, // spec.cloudResource is an empty object
-		"bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
-		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":        true, // spec.scheduleOptionsV2.manualSchedule is an empty object
-		"bigquerytables.bigquery.cnrm.cloud.google.com":                                 true, // status.observedState is an empty object
-		"bigtableauthorizedviews.bigtable.cnrm.cloud.google.com":                        true, // status.observedState is an empty object
-		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
-		"bigtablematerializedviews.bigtable.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
-		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                          true, // spec.staticIPConnectivity and status.observedState are empty objects
-		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
-		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
-		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
-		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                   true, // spec.pysparkJob.loggingConfig is an empty object
-		"dataprocnodegroups.dataproc.cnrm.cloud.google.com":                             true, // status.observedState.nodeGroupConfig.managedGroupConfig is an empty object
-		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object
-		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
-		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                      true, // spec.dailyRecurrence is an empty object
-		"firestorefields.firestore.cnrm.cloud.google.com":                               true, // spec.indexConfig.indexes[].fields[].vectorConfig.flat is an empty object
-		"iamdenypolicies.iam.cnrm.cloud.google.com":                                     true, // status.observedState is an empty object
-		"monitoringdashboards.monitoring.cnrm.cloud.google.com":                         true, // spec.rowLayout.rows[].widgets[].singleViewGroup is an empty object
-		"recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com": true, // spec.actions[].allow/block/redirect are empty objects
-		"servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com":     true, // status.observedState is an empty object
-		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                          true, // spec.fullBackupSpec is an empty object
-		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
+		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":          true, // status.observedState is an empty object
+		"accesscontextmanagergcpuseraccessbindings.accesscontextmanager.cnrm.cloud.google.com": true, // status.observedState is an empty object
+		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                                    true, // status.observedState.supportedExportFormats[] is an empty object
+		"apigeeenvironments.apigee.cnrm.cloud.google.com":                                      true, // status.observedState is an empty object
+		"apigeeorganizations.apigee.cnrm.cloud.google.com":                                     true, // status.observedState is an empty object
+		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":               true, // spec.cloudResource is an empty object
+		"bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com":                        true, // status.observedState is an empty object
+		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":               true, // spec.scheduleOptionsV2.manualSchedule is an empty object
+		"bigquerytables.bigquery.cnrm.cloud.google.com":                                        true, // status.observedState is an empty object
+		"bigtableauthorizedviews.bigtable.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
+		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                                  true, // status.observedState is an empty object
+		"bigtablematerializedviews.bigtable.cnrm.cloud.google.com":                             true, // status.observedState is an empty object
+		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                                 true, // spec.staticIPConnectivity and status.observedState are empty objects
+		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                                 true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
+		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
+		"dataformrepositories.dataform.cnrm.cloud.google.com":                                  true, // status.observedState is an empty object
+		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                          true, // spec.pysparkJob.loggingConfig is an empty object
+		"dataprocnodegroups.dataproc.cnrm.cloud.google.com":                                    true, // status.observedState.nodeGroupConfig.managedGroupConfig is an empty object
+		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                        true, // spec.staticServiceIPConnectivity is an empty object
+		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                         true, // status.observedState is an empty object
+		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                             true, // spec.dailyRecurrence is an empty object
+		"firestorefields.firestore.cnrm.cloud.google.com":                                      true, // spec.indexConfig.indexes[].fields[].vectorConfig.flat is an empty object
+		"iamdenypolicies.iam.cnrm.cloud.google.com":                                            true, // status.observedState is an empty object
+		"monitoringdashboards.monitoring.cnrm.cloud.google.com":                                true, // spec.rowLayout.rows[].widgets[].singleViewGroup is an empty object
+		"recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com":        true, // spec.actions[].allow/block/redirect are empty objects
+		"servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com":            true, // status.observedState is an empty object
+		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                                 true, // spec.fullBackupSpec is an empty object
+		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                       true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
 
 	}
 
