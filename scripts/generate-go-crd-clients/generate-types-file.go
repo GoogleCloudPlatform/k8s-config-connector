@@ -44,9 +44,7 @@ var handwrittenIAMTypes = []string{
 	iamv1beta1.IAMAuditConfigGVK.Kind,
 }
 
-var skipGeneratedClients = sets.NewString(
-	"networksecuritypartnerssegateway",
-)
+var skipGeneratedClients = sets.NewString()
 
 type fieldProperties struct {
 	Name        string
