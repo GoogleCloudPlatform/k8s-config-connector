@@ -29,7 +29,7 @@ func UserOwnedGrafeasNote_FromProto(mapCtx *direct.MapContext, in *pb.UserOwnedG
 	if in.GetNoteReference() != "" {
 		out.NoteRef = &containeranalysisv1beta1.ContainerAnalysisNoteRef{External: in.GetNoteReference()}
 	}
-	out.PublicKeys = direct.Slice_FromProto(mapCtx, in.PublicKeys, AttestorPublicKey_FromProto)
+	out.PublicKeys = direct.Slice_FromProto(mapCtx, in.PublicKeys, AttestorPublicKey_v1beta1_FromProto)
 	return out
 }
 
@@ -41,6 +41,6 @@ func UserOwnedGrafeasNote_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.User
 	if in.NoteRef != nil {
 		out.NoteReference = in.NoteRef.External
 	}
-	out.PublicKeys = direct.Slice_ToProto(mapCtx, in.PublicKeys, AttestorPublicKey_ToProto)
+	out.PublicKeys = direct.Slice_ToProto(mapCtx, in.PublicKeys, AttestorPublicKey_v1beta1_ToProto)
 	return out
 }

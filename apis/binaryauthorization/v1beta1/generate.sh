@@ -32,4 +32,7 @@ rm -f ${REPO_ROOT}/apis/binaryauthorization/v1beta1/attestor_types.go
 
 go run . generate-mapper \
   --service google.cloud.binaryauthorization.v1 \
-  --api-version binaryauthorization.cnrm.cloud.google.com/v1beta1
+  --api-version binaryauthorization.cnrm.cloud.google.com/v1beta1 \
+  --api-dir ${REPO_ROOT}/apis/binaryauthorization/v1beta1 \
+  --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis/binaryauthorization/v1beta1 \
+  --multiversion
