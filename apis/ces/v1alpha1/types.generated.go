@@ -21,7 +21,10 @@
 
 package v1alpha1
 
-/* unreachable type AmbientSoundConfig
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
 // +kcc:proto=google.cloud.ces.v1beta.AmbientSoundConfig
 type AmbientSoundConfig struct {
 	// Optional. Deprecated: `prebuilt_ambient_noise` is deprecated in favor of
@@ -67,7 +70,6 @@ type AmbientSoundConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.AmbientSoundConfig.volume_gain_db
 	VolumeGainDb *float64 `json:"volumeGainDb,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.App", skipping
 
@@ -180,7 +182,6 @@ type App struct {
 }
 */
 
-/* unreachable type App_VariableDeclaration
 // +kcc:proto=google.cloud.ces.v1beta.App.VariableDeclaration
 type App_VariableDeclaration struct {
 	// Required. The name of the variable. The name must start with a letter or
@@ -196,9 +197,7 @@ type App_VariableDeclaration struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.App.VariableDeclaration.schema
 	Schema *Schema `json:"schema,omitempty"`
 }
-*/
 
-/* unreachable type AudioProcessingConfig
 // +kcc:proto=google.cloud.ces.v1beta.AudioProcessingConfig
 type AudioProcessingConfig struct {
 
@@ -219,9 +218,7 @@ type AudioProcessingConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.AudioProcessingConfig.ambient_sound_config
 	AmbientSoundConfig *AmbientSoundConfig `json:"ambientSoundConfig,omitempty"`
 }
-*/
 
-/* unreachable type AudioRecordingConfig
 // +kcc:proto=google.cloud.ces.v1beta.AudioRecordingConfig
 type AudioRecordingConfig struct {
 	// Optional. The [Cloud Storage](https://cloud.google.com/storage) bucket to
@@ -251,9 +248,7 @@ type AudioRecordingConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.AudioRecordingConfig.gcs_path_prefix
 	GCSPathPrefix *string `json:"gcsPathPrefix,omitempty"`
 }
-*/
 
-/* unreachable type BargeInConfig
 // +kcc:proto=google.cloud.ces.v1beta.BargeInConfig
 type BargeInConfig struct {
 	// Optional. Disables user barge-in while the agent is speaking. If true, user
@@ -272,9 +267,7 @@ type BargeInConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.BargeInConfig.barge_in_awareness
 	BargeInAwareness *bool `json:"bargeInAwareness,omitempty"`
 }
-*/
 
-/* unreachable type BigQueryExportSettings
 // +kcc:proto=google.cloud.ces.v1beta.BigQueryExportSettings
 type BigQueryExportSettings struct {
 	// Optional. Indicates whether the BigQuery export is enabled.
@@ -293,9 +286,7 @@ type BigQueryExportSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.BigQueryExportSettings.dataset
 	Dataset *string `json:"dataset,omitempty"`
 }
-*/
 
-/* unreachable type ChannelProfile
 // +kcc:proto=google.cloud.ces.v1beta.ChannelProfile
 type ChannelProfile struct {
 	// Optional. The unique identifier of the channel profile.
@@ -330,18 +321,14 @@ type ChannelProfile struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.ChannelProfile.noise_suppression_level
 	NoiseSuppressionLevel *string `json:"noiseSuppressionLevel,omitempty"`
 }
-*/
 
-/* unreachable type ChannelProfile_PersonaProperty
 // +kcc:proto=google.cloud.ces.v1beta.ChannelProfile.PersonaProperty
 type ChannelProfile_PersonaProperty struct {
 	// Optional. The persona of the channel.
 	// +kcc:proto:field=google.cloud.ces.v1beta.ChannelProfile.PersonaProperty.persona
 	Persona *string `json:"persona,omitempty"`
 }
-*/
 
-/* unreachable type ChannelProfile_WebWidgetConfig
 // +kcc:proto=google.cloud.ces.v1beta.ChannelProfile.WebWidgetConfig
 type ChannelProfile_WebWidgetConfig struct {
 	// Optional. The modality of the web widget.
@@ -360,9 +347,7 @@ type ChannelProfile_WebWidgetConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.ChannelProfile.WebWidgetConfig.security_settings
 	SecuritySettings *ChannelProfile_WebWidgetConfig_SecuritySettings `json:"securitySettings,omitempty"`
 }
-*/
 
-/* unreachable type ChannelProfile_WebWidgetConfig_SecuritySettings
 // +kcc:proto=google.cloud.ces.v1beta.ChannelProfile.WebWidgetConfig.SecuritySettings
 type ChannelProfile_WebWidgetConfig_SecuritySettings struct {
 	// Optional. Indicates whether public access to the web widget is enabled.
@@ -391,9 +376,7 @@ type ChannelProfile_WebWidgetConfig_SecuritySettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.ChannelProfile.WebWidgetConfig.SecuritySettings.enable_recaptcha
 	EnableRecaptcha *bool `json:"enableRecaptcha,omitempty"`
 }
-*/
 
-/* unreachable type ClientCertificateSettings
 // +kcc:proto=google.cloud.ces.v1beta.ClientCertificateSettings
 type ClientCertificateSettings struct {
 	// Required. The TLS certificate encoded in PEM format. This string must
@@ -414,18 +397,14 @@ type ClientCertificateSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.ClientCertificateSettings.passphrase
 	Passphrase *string `json:"passphrase,omitempty"`
 }
-*/
 
-/* unreachable type CloudLoggingSettings
 // +kcc:proto=google.cloud.ces.v1beta.CloudLoggingSettings
 type CloudLoggingSettings struct {
 	// Optional. Whether to enable Cloud Logging for the sessions.
 	// +kcc:proto:field=google.cloud.ces.v1beta.CloudLoggingSettings.enable_cloud_logging
 	EnableCloudLogging *bool `json:"enableCloudLogging,omitempty"`
 }
-*/
 
-/* unreachable type ConversationLoggingSettings
 // +kcc:proto=google.cloud.ces.v1beta.ConversationLoggingSettings
 type ConversationLoggingSettings struct {
 	// Optional. Whether to disable conversation logging for the sessions.
@@ -437,13 +416,10 @@ type ConversationLoggingSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.ConversationLoggingSettings.retention_window
 	RetentionWindow *string `json:"retentionWindow,omitempty"`
 }
-*/
 
-/* unreachable type DataStoreSettings
 // +kcc:proto=google.cloud.ces.v1beta.DataStoreSettings
 type DataStoreSettings struct {
 }
-*/
 
 /* unreachable type DataStoreSettings_Engine
 // +kcc:proto=google.cloud.ces.v1beta.DataStoreSettings.Engine
@@ -451,7 +427,6 @@ type DataStoreSettings_Engine struct {
 }
 */
 
-/* unreachable type ErrorHandlingSettings
 // +kcc:proto=google.cloud.ces.v1beta.ErrorHandlingSettings
 type ErrorHandlingSettings struct {
 	// Optional. The strategy to use for error handling.
@@ -467,9 +442,7 @@ type ErrorHandlingSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.ErrorHandlingSettings.end_session_config
 	EndSessionConfig *ErrorHandlingSettings_EndSessionConfig `json:"endSessionConfig,omitempty"`
 }
-*/
 
-/* unreachable type ErrorHandlingSettings_EndSessionConfig
 // +kcc:proto=google.cloud.ces.v1beta.ErrorHandlingSettings.EndSessionConfig
 type ErrorHandlingSettings_EndSessionConfig struct {
 	// Optional. Whether to escalate the session in
@@ -482,9 +455,7 @@ type ErrorHandlingSettings_EndSessionConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.ErrorHandlingSettings.EndSessionConfig.escalate_session
 	EscalateSession *bool `json:"escalateSession,omitempty"`
 }
-*/
 
-/* unreachable type ErrorHandlingSettings_FallbackResponseConfig
 // +kcc:proto=google.cloud.ces.v1beta.ErrorHandlingSettings.FallbackResponseConfig
 type ErrorHandlingSettings_FallbackResponseConfig struct {
 	// Optional. The fallback messages in case of system errors (e.g. LLM
@@ -498,9 +469,7 @@ type ErrorHandlingSettings_FallbackResponseConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.ErrorHandlingSettings.FallbackResponseConfig.max_fallback_attempts
 	MaxFallbackAttempts *int32 `json:"maxFallbackAttempts,omitempty"`
 }
-*/
 
-/* unreachable type EvaluationMetricsThresholds
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsThresholds
 type EvaluationMetricsThresholds struct {
 	// Optional. The golden evaluation metrics thresholds.
@@ -520,9 +489,7 @@ type EvaluationMetricsThresholds struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsThresholds.scenario_hallucination_metric_behavior
 	ScenarioHallucinationMetricBehavior *string `json:"scenarioHallucinationMetricBehavior,omitempty"`
 }
-*/
 
-/* unreachable type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds
 type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds struct {
 	// Optional. The turn level metrics thresholds.
@@ -539,9 +506,7 @@ type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.tool_matching_settings
 	ToolMatchingSettings *EvaluationMetricsThresholds_ToolMatchingSettings `json:"toolMatchingSettings,omitempty"`
 }
-*/
 
-/* unreachable type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.ExpectationLevelMetricsThresholds
 type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds struct {
 	// Optional. The success threshold for individual tool invocation
@@ -549,9 +514,7 @@ type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLe
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.ExpectationLevelMetricsThresholds.tool_invocation_parameter_correctness_threshold
 	ToolInvocationParameterCorrectnessThreshold *float32 `json:"toolInvocationParameterCorrectnessThreshold,omitempty"`
 }
-*/
 
-/* unreachable type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.TurnLevelMetricsThresholds
 type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds struct {
 	// Optional. The success threshold for semantic similarity. Must be an
@@ -568,9 +531,7 @@ type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetr
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.TurnLevelMetricsThresholds.semantic_similarity_channel
 	SemanticSimilarityChannel *string `json:"semanticSimilarityChannel,omitempty"`
 }
-*/
 
-/* unreachable type EvaluationMetricsThresholds_ToolMatchingSettings
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsThresholds.ToolMatchingSettings
 type EvaluationMetricsThresholds_ToolMatchingSettings struct {
 	// Optional. Behavior for extra tool calls.
@@ -578,9 +539,7 @@ type EvaluationMetricsThresholds_ToolMatchingSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationMetricsThresholds.ToolMatchingSettings.extra_tool_call_behavior
 	ExtraToolCallBehavior *string `json:"extraToolCallBehavior,omitempty"`
 }
-*/
 
-/* unreachable type EvaluationPersona
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationPersona
 type EvaluationPersona struct {
 	// Required. The unique identifier of the persona.
@@ -605,9 +564,7 @@ type EvaluationPersona struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationPersona.speech_config
 	SpeechConfig *EvaluationPersona_SpeechConfig `json:"speechConfig,omitempty"`
 }
-*/
 
-/* unreachable type EvaluationPersona_SpeechConfig
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationPersona.SpeechConfig
 type EvaluationPersona_SpeechConfig struct {
 	// Optional. The speaking rate. 1.0 is normal.
@@ -625,9 +582,7 @@ type EvaluationPersona_SpeechConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationPersona.SpeechConfig.voice_id
 	VoiceID *string `json:"voiceID,omitempty"`
 }
-*/
 
-/* unreachable type EvaluationSettings
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationSettings
 type EvaluationSettings struct {
 	// Optional. Who starts the conversation in a scenario evaluation.
@@ -649,9 +604,7 @@ type EvaluationSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationSettings.scenario_evaluation_tool_call_behaviour
 	ScenarioEvaluationToolCallBehaviour *string `json:"scenarioEvaluationToolCallBehaviour,omitempty"`
 }
-*/
 
-/* unreachable type LanguageSettings
 // +kcc:proto=google.cloud.ces.v1beta.LanguageSettings
 type LanguageSettings struct {
 	// Optional. The default language code of the app.
@@ -684,9 +637,7 @@ type LanguageSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.LanguageSettings.fallback_action
 	FallbackAction *string `json:"fallbackAction,omitempty"`
 }
-*/
 
-/* unreachable type LoggingSettings
 // +kcc:proto=google.cloud.ces.v1beta.LoggingSettings
 type LoggingSettings struct {
 	// Optional. Configuration for how sensitive data should be redacted.
@@ -722,9 +673,7 @@ type LoggingSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.LoggingSettings.metric_analysis_settings
 	MetricAnalysisSettings *MetricAnalysisSettings `json:"metricAnalysisSettings,omitempty"`
 }
-*/
 
-/* unreachable type MetricAnalysisSettings
 // +kcc:proto=google.cloud.ces.v1beta.MetricAnalysisSettings
 type MetricAnalysisSettings struct {
 	// Optional. Whether to collect conversation data for llm analysis metrics. If
@@ -733,9 +682,7 @@ type MetricAnalysisSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.MetricAnalysisSettings.llm_metrics_opted_out
 	LlmMetricsOptedOut *bool `json:"llmMetricsOptedOut,omitempty"`
 }
-*/
 
-/* unreachable type ModelSettings
 // +kcc:proto=google.cloud.ces.v1beta.ModelSettings
 type ModelSettings struct {
 	// Optional. The LLM model that the agent should use.
@@ -750,9 +697,7 @@ type ModelSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.ModelSettings.temperature
 	Temperature *float64 `json:"temperature,omitempty"`
 }
-*/
 
-/* unreachable type RedactionConfig
 // +kcc:proto=google.cloud.ces.v1beta.RedactionConfig
 type RedactionConfig struct {
 	// Optional. If true, redaction will be applied in various logging scenarios,
@@ -776,9 +721,7 @@ type RedactionConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.RedactionConfig.deidentify_template
 	DeidentifyTemplate *string `json:"deidentifyTemplate,omitempty"`
 }
-*/
 
-/* unreachable type Schema
 // +kcc:proto=google.cloud.ces.v1beta.Schema
 type Schema struct {
 	// Required. The type of the data.
@@ -883,7 +826,6 @@ type Schema struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.maximum
 	Maximum *float64 `json:"maximum,omitempty"`
 }
-*/
 
 /* unreachable type SynthesizeSpeechConfig
 // +kcc:proto=google.cloud.ces.v1beta.SynthesizeSpeechConfig
@@ -906,7 +848,6 @@ type SynthesizeSpeechConfig struct {
 }
 */
 
-/* unreachable type TimeZoneSettings
 // +kcc:proto=google.cloud.ces.v1beta.TimeZoneSettings
 type TimeZoneSettings struct {
 	// Optional. The time zone of the app from the [time zone
@@ -915,18 +856,14 @@ type TimeZoneSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.TimeZoneSettings.time_zone
 	TimeZone *string `json:"timeZone,omitempty"`
 }
-*/
 
-/* unreachable type ListValue
 // +kcc:proto=google.protobuf.ListValue
 type ListValue struct {
 	// Repeated field of dynamically typed values.
 	// +kcc:proto:field=google.protobuf.ListValue.values
 	Values []Value `json:"values,omitempty"`
 }
-*/
 
-/* unreachable type Value
 // +kcc:proto=google.protobuf.Value
 type Value struct {
 	// Represents a null value.
@@ -953,7 +890,6 @@ type Value struct {
 	// +kcc:proto:field=google.protobuf.Value.list_value
 	ListValue *ListValue `json:"listValue,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.App", skipping
 
@@ -987,16 +923,13 @@ type AppObservedState struct {
 }
 */
 
-/* unreachable type DataStoreSettingsObservedState
 // +kcc:observedstate:proto=google.cloud.ces.v1beta.DataStoreSettings
 type DataStoreSettingsObservedState struct {
 	// Output only. The engines for the app.
 	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreSettings.engines
-	Engines []DataStoreSettings_Engine `json:"engines,omitempty"`
+	Engines []DataStoreSettings_EngineObservedState `json:"engines,omitempty"`
 }
-*/
 
-/* unreachable type DataStoreSettings_EngineObservedState
 // +kcc:observedstate:proto=google.cloud.ces.v1beta.DataStoreSettings.Engine
 type DataStoreSettings_EngineObservedState struct {
 	// Output only. The resource name of the engine.
@@ -1009,4 +942,3 @@ type DataStoreSettings_EngineObservedState struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreSettings.Engine.type
 	Type *string `json:"type,omitempty"`
 }
-*/

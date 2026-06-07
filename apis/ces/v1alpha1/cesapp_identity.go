@@ -106,3 +106,10 @@ func (obj *CESApp) GetIdentity(ctx context.Context, reader client.Reader) (ident
 
 	return specIdentity, nil
 }
+
+func (obj *CESApp) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
+}
