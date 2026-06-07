@@ -26,9 +26,13 @@ var BigQueryReservationReservationGroupGVK = GroupVersion.WithKind("BigQueryRese
 // +kcc:spec:proto=google.cloud.bigquery.reservation.v1.ReservationGroup
 type BigQueryReservationReservationGroupSpec struct {
 	// The project that this resource belongs to.
+	// +required
+	// +kubebuilder:validation:Required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
+	// +required
+	// +kubebuilder:validation:Required
 	Location *string `json:"location"`
 
 	// The BigQueryReservationReservationGroup name. If not given, the metadata.name will be used.

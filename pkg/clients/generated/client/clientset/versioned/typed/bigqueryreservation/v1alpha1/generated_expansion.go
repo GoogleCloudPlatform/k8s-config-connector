@@ -22,3 +22,5 @@
 package v1alpha1
 
 type BigQueryReservationCapacityCommitmentExpansion interface{}
+
+type BigQueryReservationReservationGroupExpansion interface{}

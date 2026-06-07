@@ -14,21 +14,21 @@
 
 syntax = "proto3";
 
-package google.cloud.bigquery.reservation.v1;
+package mockgcp.cloud.bigquery.reservation.v1;
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/iam/v1/iam_policy.proto";
-import "google/iam/v1/policy.proto";
+import "mockgcp/iam/v1/iam_policy.proto";
+import "mockgcp/iam/v1/policy.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
 option csharp_namespace = "Google.Cloud.BigQuery.Reservation.V1";
-option go_package = "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb;reservationpb";
+option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/reservation/v1;reservationpb";
 option java_multiple_files = true;
 option java_outer_classname = "ReservationProto";
 option java_package = "com.google.cloud.bigquery.reservation.v1";
@@ -419,8 +419,8 @@ service ReservationService {
   //
   // - `bigqueryreservation.reservations.getIamPolicy` to get policies on
   // reservations.
-  rpc GetIamPolicy(google.iam.v1.GetIamPolicyRequest)
-      returns (google.iam.v1.Policy) {
+  rpc GetIamPolicy(mockgcp.iam.v1.GetIamPolicyRequest)
+      returns (mockgcp.iam.v1.Policy) {
     option (google.api.http) = {
       get: "/v1/{resource=projects/*/locations/*/reservations/*}:getIamPolicy"
       additional_bindings {
@@ -440,8 +440,8 @@ service ReservationService {
   //
   // - `bigqueryreservation.reservations.setIamPolicy` to set policies on
   // reservations.
-  rpc SetIamPolicy(google.iam.v1.SetIamPolicyRequest)
-      returns (google.iam.v1.Policy) {
+  rpc SetIamPolicy(mockgcp.iam.v1.SetIamPolicyRequest)
+      returns (mockgcp.iam.v1.Policy) {
     option (google.api.http) = {
       post: "/v1/{resource=projects/*/locations/*/reservations/*}:setIamPolicy"
       body: "*"
@@ -460,8 +460,8 @@ service ReservationService {
   // - Reservations
   //
   // No Google IAM permissions are required to call this method.
-  rpc TestIamPermissions(google.iam.v1.TestIamPermissionsRequest)
-      returns (google.iam.v1.TestIamPermissionsResponse) {
+  rpc TestIamPermissions(mockgcp.iam.v1.TestIamPermissionsRequest)
+      returns (mockgcp.iam.v1.TestIamPermissionsResponse) {
     option (google.api.http) = {
       post: "/v1/{resource=projects/*/locations/*/reservations/*}:testIamPermissions"
       body: "*"

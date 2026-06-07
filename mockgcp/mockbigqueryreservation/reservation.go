@@ -201,6 +201,126 @@ func (s *MockService) parseReservationName(name string) (*reservationName, error
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
+type reservationGroupName struct {
+	Project    *projects.ProjectData
+	Location   string
+	ResourceID string
+}
+
+func (n *reservationGroupName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/reservationGroups/" + n.ResourceID
+}
+
+// parseReservationGroupName parses a string into a reservationGroupName.
+// The expected form is projects/<projectId>/locations/<location>/reservationGroups/<reservationGroupID>
+func (s *MockService) parseReservationGroupName(name string) (*reservationGroupName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "reservationGroups" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &reservationGroupName{
+			Project:    project,
+			Location:   tokens[3],
+			ResourceID: tokens[5],
+		}
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func (s *ReservationV1) CreateReservationGroup(ctx context.Context, req *pb.CreateReservationGroupRequest) (*pb.ReservationGroup, error) {
+	var reqName string
+	if req.ReservationGroupId != "" {
+		reqName = req.Parent + "/reservationGroups/" + req.ReservationGroupId
+	} else if req.ReservationGroup.Name != "" {
+		reqName = req.ReservationGroup.Name
+	} else {
+		reqName = req.Parent + "/reservationGroups/" + "bqresgroup-test"
+	}
+
+	name, err := s.parseReservationGroupName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.ReservationGroup).(*pb.ReservationGroup)
+	obj.Name = fqn
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *ReservationV1) GetReservationGroup(ctx context.Context, req *pb.GetReservationGroupRequest) (*pb.ReservationGroup, error) {
+	name, err := s.parseReservationGroupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.ReservationGroup{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: ReservationGroup %s", fqn)
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *ReservationV1) DeleteReservationGroup(ctx context.Context, req *pb.DeleteReservationGroupRequest) (*emptypb.Empty, error) {
+	name, err := s.parseReservationGroupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	oldObj := &pb.ReservationGroup{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
+}
+
+func (s *ReservationV1) ListReservationGroups(ctx context.Context, req *pb.ListReservationGroupsRequest) (*pb.ListReservationGroupsResponse, error) {
+	parent, err := s.parseReservationGroupName(req.GetParent() + "/reservationGroups/dummy")
+	if err != nil {
+		return nil, err
+	}
+
+	response := &pb.ListReservationGroupsResponse{}
+
+	kind := (&pb.ReservationGroup{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
+		resGroup := obj.(*pb.ReservationGroup)
+		var name *reservationGroupName
+		name, err = s.parseReservationGroupName(resGroup.Name)
+		if err != nil {
+			return err
+		}
+		if name.Project.ID == parent.Project.ID && name.Location == parent.Location {
+			response.ReservationGroups = append(response.ReservationGroups, resGroup)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
 // For Enterprise_plus, user can switch between failover and non-failover reservations
 // by setting or unsetting the secondary_location.
 // When user unsets the secondary_location, setFieldfailoverNonFailover removes
