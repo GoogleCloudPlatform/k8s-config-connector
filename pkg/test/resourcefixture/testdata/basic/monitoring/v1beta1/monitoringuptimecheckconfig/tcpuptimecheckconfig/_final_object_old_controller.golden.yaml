@@ -3,10 +3,13 @@ kind: MonitoringUptimeCheckConfig
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: monitoringuptimecheckconfig-${uniqueId}
@@ -19,6 +22,7 @@ spec:
     groupRef:
       name: monitoringgroup-${uniqueId}
     resourceType: INSTANCE
+  resourceID: ${uptimeCheckConfigId}
   tcpCheck:
     port: 80
   timeout: 45s
@@ -29,4 +33,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 3

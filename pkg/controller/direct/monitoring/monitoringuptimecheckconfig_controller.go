@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 )
@@ -244,18 +245,9 @@ func (a *UptimeCheckAdapter) fullyQualifiedName() string {
 }
 
 func compareUptimeCheckConfig(ctx context.Context, actual, desired *pb.UptimeCheckConfig) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	var maskedActual *pb.UptimeCheckConfig
-	{
-		// A "trick" to only compare spec fields - round trip via the spec
-		mapCtx := &direct.MapContext{}
-		spec := MonitoringUptimeCheckConfigSpec_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
-		maskedActual = MonitoringUptimeCheckConfigSpec_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
+	maskedActual, err := mappers.OnlySpecFields(actual, MonitoringUptimeCheckConfigSpec_FromProto, MonitoringUptimeCheckConfigSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
