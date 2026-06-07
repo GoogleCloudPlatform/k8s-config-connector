@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -125,8 +126,12 @@ func getIdentityFromLoggingLogSinkSpec(ctx context.Context, reader client.Reader
 		}
 		identity.Project = projectID
 	} else if obj.Spec.FolderRef != nil {
+		external := obj.Spec.FolderRef.External
+		if external != "" && !strings.HasPrefix(external, "folders/") {
+			external = "folders/" + external
+		}
 		folderRef := &refsv1beta1.FolderRef{
-			External:  obj.Spec.FolderRef.External,
+			External:  external,
 			Name:      obj.Spec.FolderRef.Name,
 			Namespace: obj.Spec.FolderRef.Namespace,
 		}
@@ -136,8 +141,12 @@ func getIdentityFromLoggingLogSinkSpec(ctx context.Context, reader client.Reader
 		}
 		identity.Folder = folder.FolderID
 	} else if obj.Spec.OrganizationRef != nil {
+		external := obj.Spec.OrganizationRef.External
+		if external != "" && !strings.HasPrefix(external, "organizations/") {
+			external = "organizations/" + external
+		}
 		orgRef := &refsv1beta1.OrganizationRef{
-			External: obj.Spec.OrganizationRef.External,
+			External: external,
 		}
 		org, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, orgRef)
 		if err != nil {
