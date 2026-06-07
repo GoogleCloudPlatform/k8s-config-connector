@@ -119,3 +119,7 @@ func NewBeyondCorpClientConnectorServiceIdentity(ctx context.Context, reader cli
 	}
 	return identity.(*BeyondCorpClientConnectorServiceIdentity), nil
 }
+
+func (obj *BeyondCorpClientConnectorService) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
+}
