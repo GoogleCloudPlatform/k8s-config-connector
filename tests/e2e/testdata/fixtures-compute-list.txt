@@ -52,6 +52,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeforwardingrule/re
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeforwardingrule/regionalcomputeforwardingruletcp
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeforwardingrule/regionalcomputeforwardingruletcp-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/globalcomputehealthcheck
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/globalcomputehealthchecksourceregions
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck/regionalcomputehealthcheck
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttphealthcheck
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttpshealthcheck
