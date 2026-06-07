@@ -1664,9 +1664,39 @@ type VertexaitrainingpipelineObservedStateStatus struct {
 }
 
 type VertexaitrainingpipelineOriginalModelInfoStatus struct {
+	/* Output only. The resource name of the Model this Model is a copy of, including the revision. Format: `projects/{project}/locations/{location}/models/{model_id}@{version_id}` */
+	// +optional
+	Model *string `json:"model,omitempty"`
 }
 
 type VertexaitrainingpipelineSupportedExportFormatsStatus struct {
+	/* Output only. The content of this Model that may be exported. */
+	// +optional
+	ExportableContents []string `json:"exportableContents,omitempty"`
+
+	/* Output only. The ID of the export format.
+	The possible format IDs are:
+
+	* `tflite`
+	Used for Android mobile devices.
+
+	* `edgetpu-tflite`
+	Used for [Edge TPU](https://cloud.google.com/edge-tpu/) devices.
+
+	* `tf-saved-model`
+	A tensorflow model in SavedModel format.
+
+	* `tf-js`
+	A [TensorFlow.js](https://www.tensorflow.org/js) model that can be used
+	in the browser and in Node.js using JavaScript.
+
+	* `core-ml`
+	Used for iOS mobile devices.
+
+	* `custom-trained`
+	A Model that was uploaded or trained by custom code. */
+	// +optional
+	Id *string `json:"id,omitempty"`
 }
 
 type VertexAITrainingPipelineStatus struct {

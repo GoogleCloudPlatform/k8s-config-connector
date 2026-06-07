@@ -738,13 +738,17 @@ type Model_DataStats struct {
 	TestAnnotationsCount *int64 `json:"testAnnotationsCount,omitempty"`
 }
 
+/* unreachable type Model_ExportFormat
 // +kcc:proto=google.cloud.aiplatform.v1.Model.ExportFormat
 type Model_ExportFormat struct {
 }
+*/
 
+/* unreachable type Model_OriginalModelInfo
 // +kcc:proto=google.cloud.aiplatform.v1.Model.OriginalModelInfo
 type Model_OriginalModelInfo struct {
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.ModelContainerSpec
 type ModelContainerSpec struct {
@@ -1379,7 +1383,6 @@ type XraiAttribution struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 
-/* unreachable type Model_ExportFormatObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.Model.ExportFormat
 type Model_ExportFormatObservedState struct {
 	// Output only. The ID of the export format.
@@ -1410,9 +1413,7 @@ type Model_ExportFormatObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.ExportFormat.exportable_contents
 	ExportableContents []string `json:"exportableContents,omitempty"`
 }
-*/
 
-/* unreachable type Model_OriginalModelInfoObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.Model.OriginalModelInfo
 type Model_OriginalModelInfoObservedState struct {
 	// Output only. The resource name of the Model this Model is a copy of,
@@ -1421,4 +1422,3 @@ type Model_OriginalModelInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.OriginalModelInfo.model
 	Model *string `json:"model,omitempty"`
 }
-*/

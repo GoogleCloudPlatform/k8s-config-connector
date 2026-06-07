@@ -533,38 +533,38 @@ func Model_DataStats_ToProto(mapCtx *direct.MapContext, in *krm.Model_DataStats)
 	out.TestAnnotationsCount = direct.ValueOf(in.TestAnnotationsCount)
 	return out
 }
-func Model_ExportFormat_FromProto(mapCtx *direct.MapContext, in *pb.Model_ExportFormat) *krm.Model_ExportFormat {
+func Model_ExportFormatObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model_ExportFormat) *krm.Model_ExportFormatObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Model_ExportFormat{}
-	// MISSING: ID
-	// MISSING: ExportableContents
+	out := &krm.Model_ExportFormatObservedState{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.ExportableContents = direct.EnumSlice_FromProto(mapCtx, in.ExportableContents)
 	return out
 }
-func Model_ExportFormat_ToProto(mapCtx *direct.MapContext, in *krm.Model_ExportFormat) *pb.Model_ExportFormat {
+func Model_ExportFormatObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Model_ExportFormatObservedState) *pb.Model_ExportFormat {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Model_ExportFormat{}
-	// MISSING: ID
-	// MISSING: ExportableContents
+	out.Id = direct.ValueOf(in.ID)
+	out.ExportableContents = direct.EnumSlice_ToProto[pb.Model_ExportFormat_ExportableContent](mapCtx, in.ExportableContents)
 	return out
 }
-func Model_OriginalModelInfo_FromProto(mapCtx *direct.MapContext, in *pb.Model_OriginalModelInfo) *krm.Model_OriginalModelInfo {
+func Model_OriginalModelInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model_OriginalModelInfo) *krm.Model_OriginalModelInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Model_OriginalModelInfo{}
-	// MISSING: Model
+	out := &krm.Model_OriginalModelInfoObservedState{}
+	out.Model = direct.LazyPtr(in.GetModel())
 	return out
 }
-func Model_OriginalModelInfo_ToProto(mapCtx *direct.MapContext, in *krm.Model_OriginalModelInfo) *pb.Model_OriginalModelInfo {
+func Model_OriginalModelInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Model_OriginalModelInfoObservedState) *pb.Model_OriginalModelInfo {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Model_OriginalModelInfo{}
-	// MISSING: Model
+	out.Model = direct.ValueOf(in.Model)
 	return out
 }
 func Port_FromProto(mapCtx *direct.MapContext, in *pb.Port) *krm.Port {

@@ -2097,6 +2097,12 @@ spec:
                       originalModelInfo:
                         description: Output only. If this Model is a copy of another
                           Model, this contains info about the original.
+                        properties:
+                          model:
+                            description: 'Output only. The resource name of the Model
+                              this Model is a copy of, including the revision. Format:
+                              `projects/{project}/locations/{location}/models/{model_id}@{version_id}`'
+                            type: string
                         type: object
                       satisfiesPzi:
                         description: Output only. Reserved for future use.
@@ -2125,6 +2131,37 @@ spec:
                           may be exported. If empty, this Model is not available for
                           export.
                         items:
+                          properties:
+                            exportableContents:
+                              description: Output only. The content of this Model
+                                that may be exported.
+                              items:
+                                type: string
+                              type: array
+                            id:
+                              description: |-
+                                Output only. The ID of the export format.
+                                 The possible format IDs are:
+
+                                 * `tflite`
+                                 Used for Android mobile devices.
+
+                                 * `edgetpu-tflite`
+                                 Used for [Edge TPU](https://cloud.google.com/edge-tpu/) devices.
+
+                                 * `tf-saved-model`
+                                 A tensorflow model in SavedModel format.
+
+                                 * `tf-js`
+                                 A [TensorFlow.js](https://www.tensorflow.org/js) model that can be used
+                                 in the browser and in Node.js using JavaScript.
+
+                                 * `core-ml`
+                                 Used for iOS mobile devices.
+
+                                 * `custom-trained`
+                                 A Model that was uploaded or trained by custom code.
+                              type: string
                           type: object
                         type: array
                       supportedInputStorageFormats:
