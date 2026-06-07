@@ -27,6 +27,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"google.golang.org/api/option"
@@ -34,7 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -92,12 +93,12 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 		return nil, mapCtx.Err()
 	}
 
+	desiredPb.Labels = label.GCPLabels(obj)
+
 	return &ArtifactRegistryRepositoryAdapter{
-		id:           id.(*krm.ArtifactRegistryRepositoryIdentity),
-		gcpClient:    gcpClient,
-		reader:       reader,
-		desired:      obj,
-		desiredProto: desiredPb,
+		id:        id.(*krm.ArtifactRegistryRepositoryIdentity),
+		gcpClient: gcpClient,
+		desired:   desiredPb,
 	}, nil
 }
 
@@ -107,12 +108,10 @@ func (m *modelArtifactRegistryRepository) AdapterForURL(ctx context.Context, url
 }
 
 type ArtifactRegistryRepositoryAdapter struct {
-	id           *krm.ArtifactRegistryRepositoryIdentity
-	gcpClient    *gcp.Client
-	reader       client.Reader
-	desired      *krm.ArtifactRegistryRepository
-	desiredProto *pb.Repository
-	actual       *pb.Repository
+	id        *krm.ArtifactRegistryRepositoryIdentity
+	gcpClient *gcp.Client
+	desired   *pb.Repository
+	actual    *pb.Repository
 }
 
 var _ directbase.Adapter = &ArtifactRegistryRepositoryAdapter{}
@@ -137,21 +136,13 @@ func (a *ArtifactRegistryRepositoryAdapter) Find(ctx context.Context) (bool, err
 func (a *ArtifactRegistryRepositoryAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ArtifactRegistryRepository", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-
-	resource := ArtifactRegistryRepositorySpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 	repositoryID := a.id.Repository
 
 	req := &pb.CreateRepositoryRequest{
 		Parent:       parent,
-		Repository:   resource,
+		Repository:   a.desired,
 		RepositoryId: repositoryID,
 	}
 	op, err := a.gcpClient.CreateRepository(ctx, req)
@@ -171,7 +162,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Update(ctx context.Context, updateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ArtifactRegistryRepository", "name", a.id.String())
 
-	diffs, updateMask, err := compareRepository(ctx, a.actual, a.desiredProto)
+	diffs, updateMask, err := compareRepository(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
@@ -182,7 +173,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Update(ctx context.Context, updateOp
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		req := &pb.UpdateRepositoryRequest{
-			Repository: a.desiredProto,
+			Repository: a.desired,
 			UpdateMask: updateMask,
 		}
 		req.Repository.Name = a.id.String()
@@ -252,18 +243,9 @@ func (a *ArtifactRegistryRepositoryAdapter) Delete(ctx context.Context, deleteOp
 }
 
 func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	var maskedActual *pb.Repository
-	{
-		// A "trick" to only compare spec fields - round trip via the spec
-		mapCtx := &direct.MapContext{}
-		spec := ArtifactRegistryRepositorySpec_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
-		maskedActual = ArtifactRegistryRepositorySpec_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
+	maskedActual, err := mappers.OnlySpecFields(actual, ArtifactRegistryRepositorySpec_FromProto, ArtifactRegistryRepositorySpec_ToProto)
+	if err != nil {
+		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())

@@ -25,7 +25,12 @@ POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/
 Content-Type: application/json
 
 {
-  "format": 1
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  }
 }
 
 200 OK
@@ -69,6 +74,11 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
     "format": "DOCKER",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-two",
+      "managed-by-cnrm": "true"
+    },
     "mode": "STANDARD_REPOSITORY",
     "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
     "satisfiesPzi": true,
@@ -111,6 +121,11 @@ Content-Type: application/json
 {
   "description": "test repository description",
   "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "mode": 2,
   "virtualRepositoryConfig": {
     "upstreamPolicies": [
@@ -165,6 +180,11 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
     "description": "test repository description",
     "format": "DOCKER",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    },
     "mode": "VIRTUAL_REPOSITORY",
     "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
     "satisfiesPzi": true,
@@ -204,6 +224,11 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "test repository description",
   "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "mode": 2,
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
   "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
@@ -227,12 +252,17 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
 Content-Type: application/json
 
 {
   "description": "test repository description 2",
   "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "mode": 2,
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
   "virtualRepositoryConfig": {
@@ -260,6 +290,11 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "test repository description 2",
   "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "mode": 2,
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
   "satisfiesPzi": true,
@@ -299,6 +334,11 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "test repository description 2",
   "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "mode": 2,
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
   "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
@@ -386,6 +426,11 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
   "mode": 1,
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
   "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}-2",

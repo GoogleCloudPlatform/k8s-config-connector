@@ -6,27 +6,20 @@
 < POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arrepository-${uniqueId}-2
 ---
 > POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}-2
-28,34c28
+28c28
 <   "format": "DOCKER",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-two",
-<     "managed-by-cnrm": "true"
+---
+>   "format": 1,
+33,34c33
 <   },
 <   "mode": "STANDARD_REPOSITORY"
 ---
->   "format": 1
-56c50
+>   }
+56c55
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
-78,82d71
-<     "labels": {
-<       "cnrm-test": "true",
-<       "label-one": "value-two",
-<       "managed-by-cnrm": "true"
-<     },
-96,131c85
+96,131c95
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
 < Content-Type: application/json
 < 
@@ -65,132 +58,106 @@
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-154c108
+154c118
 < POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arrepository-${uniqueId}
 ---
 > POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}
-159,165c113,114
+159c123
 <   "format": "DOCKER",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
-<   },
-<   "mode": "VIRTUAL_REPOSITORY",
 ---
 >   "format": 1,
+165c129
+<   "mode": "VIRTUAL_REPOSITORY",
+---
 >   "mode": 2,
-196c145
+196c160
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
-219,223d167
-<     "labels": {
-<       "cnrm-test": "true",
-<       "label-one": "value-one",
-<       "managed-by-cnrm": "true"
-<     },
-246c190
+246c210
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-262,268c206,207
+262c226
 <   "format": "DOCKER",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
-<   },
-<   "mode": "VIRTUAL_REPOSITORY",
 ---
 >   "format": 1,
+268c232
+<   "mode": "VIRTUAL_REPOSITORY",
+---
 >   "mode": 2,
-283c222
+283c247
 <     "enablementState": "SCANNING_UNSUPPORTED",
 ---
 >     "enablementState": 1,
-291c230
+291c255
 < PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json&updateMask=description
 ---
-> PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
-295d233
+> PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
+295d258
 <   "cleanupPolicies": {},
-297,301c235,237
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
-<   },
----
+296a260
 >   "format": 1,
+301a266,267
 >   "mode": 2,
 >   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
-326,332c262,263
+326c292
 <   "format": "DOCKER",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
-<   },
-<   "mode": "VIRTUAL_REPOSITORY",
 ---
 >   "format": 1,
+332c298
+<   "mode": "VIRTUAL_REPOSITORY",
+---
 >   "mode": 2,
-346c277
+346c312
 <     "enablementState": "SCANNING_UNSUPPORTED",
 ---
 >     "enablementState": 1,
-354c285
+354c320
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-370,376c301,302
+370c336
 <   "format": "DOCKER",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
-<   },
-<   "mode": "VIRTUAL_REPOSITORY",
 ---
 >   "format": 1,
+376c342
+<   "mode": "VIRTUAL_REPOSITORY",
+---
 >   "mode": 2,
-391c317
+391c357
 <     "enablementState": "SCANNING_UNSUPPORTED",
 ---
 >     "enablementState": 1,
-399c325
+399c365
 < DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 ---
 > DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-421c347
+421c387
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
-447c373
+447c413
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
-462,468c388,389
+462c428
 <   "format": "DOCKER",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-two",
-<     "managed-by-cnrm": "true"
-<   },
-<   "mode": "STANDARD_REPOSITORY",
 ---
 >   "format": 1,
+468c434
+<   "mode": "STANDARD_REPOSITORY",
+---
 >   "mode": 1,
-474c395
+474c440
 <     "enablementState": "SCANNING_DISABLED",
 ---
 >     "enablementState": 2,
-482c403
+482c448
 < DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
 ---
 > DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
-504c425
+504c470
 < GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 ---
 > GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
