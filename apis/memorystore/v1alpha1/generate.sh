@@ -25,16 +25,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
   --service google.cloud.memorystore.v1 \
-  --api-version memorystore.cnrm.cloud.google.com/v1beta1 \
+  --api-version memorystore.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource MemorystoreInstance:Instance
-
-go run . generate-mapper \
-  --service google.cloud.memorystore.v1 \
-  --api-version memorystore.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --resource MemorystoreInstanceEndpoint:Instance
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
-
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/memorystore/
