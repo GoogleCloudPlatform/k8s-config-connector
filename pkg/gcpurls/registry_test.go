@@ -68,26 +68,12 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	//
 	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
 	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
-	// - Bigtable AppProfile, Cluster Backup, and Table AuthorizedView:
-	//   We registered their KCC templates with the host "bigtableadmin.googleapis.com", e.g.:
-	//     "//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}"
-	//     "//bigtableadmin.googleapis.com/projects/{}/instances/{}/clusters/{}/backups/{}"
-	//     "//bigtableadmin.googleapis.com/projects/{}/instances/{}/tables/{}/authorizedViews/{}"
-	//   However, Cloud Asset Inventory (CAI) added support for these assets using the host "bigtable.googleapis.com", e.g.:
-	//     "//bigtable.googleapis.com/projects/{{PROJECT_ID}}/instances/{{INSTANCE}}/appProfiles/{{APP_PROFILE}}"
-	//     "//bigtable.googleapis.com/projects/{{PROJECT_ID}}/instances/{{INSTANCE}}/clusters/{{CLUSTER}}/backups/{{BACKUP}}"
-	//     "//bigtable.googleapis.com/projects/{{PROJECT_ID}}/instances/{{INSTANCE}}/tables/{{TABLE}}/authorizedViews/{{AUTHORIZED_VIEW}}"
-	//   We must keep these in ignoredTemplates because changing KCC's registered templates now could break existing resources/references.
-	//   We will need to plan and execute a careful migration/deprecation strategy before changing these URL templates.
 	ignoredTemplates := map[string]bool{
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}":                              true,
 		"//storage.googleapis.com/projects/{}/buckets/{}":                                           true,
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                         true,
-		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                    true,
-		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/clusters/{}/backups/{}":            true,
-		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/tables/{}/authorizedViews/{}":      true,
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}":   true,
 		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":                       true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":                         true,

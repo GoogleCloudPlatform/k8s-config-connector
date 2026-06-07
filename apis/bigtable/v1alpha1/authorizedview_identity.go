@@ -31,7 +31,7 @@ var (
 	_ identity.Resource   = &BigtableAuthorizedView{}
 )
 
-var AuthorizedViewIdentityFormat = gcpurls.Template[AuthorizedViewIdentity]("bigtableadmin.googleapis.com", "projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorizedview}")
+var AuthorizedViewIdentityFormat = gcpurls.Template[AuthorizedViewIdentity]("bigtable.googleapis.com", "projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorizedview}")
 
 // AuthorizedViewIdentity is the identity of a BigtableAuthorizedView.
 // +k8s:deepcopy-gen=false
