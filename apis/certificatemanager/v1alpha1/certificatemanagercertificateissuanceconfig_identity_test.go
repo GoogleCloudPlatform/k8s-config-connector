@@ -126,7 +126,7 @@ func TestCertificateManagerCertificateIssuanceConfigIdentity_GetIdentity(t *test
 					Namespace: "my-namespace",
 				},
 				Spec: CertificateManagerCertificateIssuanceConfigSpec{
-					ParentRef: &parent.ProjectAndLocationRef{
+					ProjectAndLocationRef: &parent.ProjectAndLocationRef{
 						ProjectRef: &refs.ProjectRef{
 							External: "my-project",
 						},
@@ -144,7 +144,7 @@ func TestCertificateManagerCertificateIssuanceConfigIdentity_GetIdentity(t *test
 					Namespace: "my-namespace",
 				},
 				Spec: CertificateManagerCertificateIssuanceConfigSpec{
-					ParentRef: &parent.ProjectAndLocationRef{
+					ProjectAndLocationRef: &parent.ProjectAndLocationRef{
 						ProjectRef: &refs.ProjectRef{
 							External: "my-project",
 						},
@@ -163,7 +163,7 @@ func TestCertificateManagerCertificateIssuanceConfigIdentity_GetIdentity(t *test
 					Namespace: "my-namespace",
 				},
 				Spec: CertificateManagerCertificateIssuanceConfigSpec{
-					ParentRef: &parent.ProjectAndLocationRef{
+					ProjectAndLocationRef: &parent.ProjectAndLocationRef{
 						ProjectRef: &refs.ProjectRef{
 							Name: "my-project-name",
 						},
@@ -181,7 +181,7 @@ func TestCertificateManagerCertificateIssuanceConfigIdentity_GetIdentity(t *test
 					Namespace: "my-namespace",
 				},
 				Spec: CertificateManagerCertificateIssuanceConfigSpec{
-					ParentRef: &parent.ProjectAndLocationRef{
+					ProjectAndLocationRef: &parent.ProjectAndLocationRef{
 						ProjectRef: &refs.ProjectRef{
 							External: "my-project",
 						},
@@ -228,7 +228,7 @@ func TestCertificateManagerCertificateIssuanceConfigRef_Normalize(t *testing.T) 
 			Namespace: "my-ns",
 		},
 		Spec: CertificateManagerCertificateIssuanceConfigSpec{
-			ParentRef: &parent.ProjectAndLocationRef{
+			ProjectAndLocationRef: &parent.ProjectAndLocationRef{
 				ProjectRef: &refs.ProjectRef{
 					External: "my-project",
 				},

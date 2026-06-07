@@ -61,16 +61,16 @@ func (i *CertificateManagerCertificateIssuanceConfigIdentity) Host() string {
 }
 
 func getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx context.Context, reader client.Reader, obj *CertificateManagerCertificateIssuanceConfig) (*CertificateManagerCertificateIssuanceConfigIdentity, error) {
-	if obj.Spec.ParentRef == nil {
-		return nil, fmt.Errorf("spec.parentRef or inline projectRef/location must be specified")
+	if obj.Spec.ProjectAndLocationRef == nil {
+		return nil, fmt.Errorf("inline projectRef/location must be specified")
 	}
-	if obj.Spec.ParentRef.ProjectRef == nil {
+	if obj.Spec.ProjectAndLocationRef.ProjectRef == nil {
 		return nil, fmt.Errorf("spec.projectRef must be specified")
 	}
 
 	// Resolve user-configured Parent (project and location)
 	p := &parent.ProjectAndLocationParent{}
-	if err := obj.Spec.ParentRef.Build(ctx, reader, obj.GetNamespace(), p); err != nil {
+	if err := obj.Spec.ProjectAndLocationRef.Build(ctx, reader, obj.GetNamespace(), p); err != nil {
 		return nil, err
 	}
 
