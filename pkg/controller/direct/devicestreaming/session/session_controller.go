@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/devicestreaming/apiv1"
 	devicestreamingpb "cloud.google.com/go/devicestreaming/apiv1/devicestreamingpb"
@@ -172,7 +173,7 @@ func (a *DeviceSessionAdapter) Update(ctx context.Context, updateOp *directbase.
 		return mapCtx.Err()
 	}
 
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, report, err := common.CompareProtoMessageStructuredDiff(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -185,6 +186,9 @@ func (a *DeviceSessionAdapter) Update(ctx context.Context, updateOp *directbase.
 		updateMask := &fieldmaskpb.FieldMask{
 			Paths: sets.List(paths),
 		}
+
+		report.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, report)
 
 		desiredPb.Name = a.id.String()
 		req := &devicestreamingpb.UpdateDeviceSessionRequest{
