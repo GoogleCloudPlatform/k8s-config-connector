@@ -118,6 +118,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargettcpproxy/re
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetvpngateway
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmap
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/regionalcomputeurlmap
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/urlmaprouterules
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computevpngateway
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computevpntunnel
 pkg/test/resourcefixture/testdata/externalref/externalwithpartialuri
