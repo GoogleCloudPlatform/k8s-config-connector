@@ -17,9 +17,12 @@ package v1alpha1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -83,7 +86,43 @@ func (r *CertificateManagerCertificateIssuanceConfigRef) ParseExternalToIdentity
 
 func (r *CertificateManagerCertificateIssuanceConfigRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx, reader, u)
+		obj, err := common.ToStructuredType[*CertificateManagerCertificateIssuanceConfig](u)
+		if err != nil {
+			return ""
+		}
+		// Manually populate obj.Spec.ParentRef if it was lost during conversion because of ',inline' tag on a pointer.
+		if obj.Spec.ParentRef == nil || obj.Spec.ParentRef.ProjectRef == nil {
+			projectRefVal, found, _ := unstructured.NestedMap(u.Object, "spec", "projectRef")
+			if !found {
+				projectRefVal, found, _ = unstructured.NestedMap(u.Object, "spec", "parentRef", "projectRef")
+			}
+			if !found {
+				projectRefVal, found, _ = unstructured.NestedMap(u.Object, "spec", "ParentRef", "projectRef")
+			}
+			if found {
+				var projRef refs.ProjectRef
+				if err := runtime.DefaultUnstructuredConverter.FromUnstructured(projectRefVal, &projRef); err == nil {
+					if obj.Spec.ParentRef == nil {
+						obj.Spec.ParentRef = &parent.ProjectAndLocationRef{}
+					}
+					obj.Spec.ParentRef.ProjectRef = &projRef
+				}
+			}
+			locationVal, found, _ := unstructured.NestedString(u.Object, "spec", "location")
+			if !found {
+				locationVal, found, _ = unstructured.NestedString(u.Object, "spec", "parentRef", "location")
+			}
+			if !found {
+				locationVal, found, _ = unstructured.NestedString(u.Object, "spec", "ParentRef", "location")
+			}
+			if found {
+				if obj.Spec.ParentRef == nil {
+					obj.Spec.ParentRef = &parent.ProjectAndLocationRef{}
+				}
+				obj.Spec.ParentRef.Location = locationVal
+			}
+		}
+		identity, err := getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx, reader, obj)
 		if err != nil {
 			return ""
 		}

@@ -20,7 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -60,25 +60,32 @@ func (i *CertificateManagerCertificateIssuanceConfigIdentity) Host() string {
 	return CertificateManagerCertificateIssuanceConfigIdentityFormat.Host()
 }
 
-func getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CertificateManagerCertificateIssuanceConfigIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
+func getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx context.Context, reader client.Reader, obj *CertificateManagerCertificateIssuanceConfig) (*CertificateManagerCertificateIssuanceConfigIdentity, error) {
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef or inline projectRef/location must be specified")
+	}
+	if obj.Spec.ParentRef.ProjectRef == nil {
+		return nil, fmt.Errorf("spec.projectRef must be specified")
+	}
+
+	// Resolve user-configured Parent (project and location)
+	p := &parent.ProjectAndLocationParent{}
+	if err := obj.Spec.ParentRef.Build(ctx, reader, obj.GetNamespace(), p); err != nil {
+		return nil, err
+	}
+
+	// Resolve user-configured ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
 	identity := &CertificateManagerCertificateIssuanceConfigIdentity{
-		Project:                   projectID,
-		Location:                  location,
+		Project:                   p.ProjectID,
+		Location:                  p.Location,
 		CertificateIssuanceConfig: resourceID,
 	}
 	return identity, nil
