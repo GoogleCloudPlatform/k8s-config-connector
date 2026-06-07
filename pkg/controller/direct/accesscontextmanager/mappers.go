@@ -123,3 +123,19 @@ func Condition_Members_ToProto(mapCtx *direct.MapContext, in []acm.Member) []str
 	}
 	return out
 }
+
+func AccessContextManagerAccessLevelConditionSpec_RequiredAccessLevels_FromProto(mapCtx *direct.MapContext, input []string) []acm.AccessLevelRef {
+	return Condition_RequiredAccessLevels_FromProto(mapCtx, input)
+}
+
+func AccessContextManagerAccessLevelConditionSpec_RequiredAccessLevels_ToProto(mapCtx *direct.MapContext, in []acm.AccessLevelRef) []string {
+	return Condition_RequiredAccessLevels_ToProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessLevelConditionSpec_Members_FromProto(mapCtx *direct.MapContext, in []string) []acm.Member {
+	return Condition_Members_FromProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessLevelConditionSpec_Members_ToProto(mapCtx *direct.MapContext, in []acm.Member) []string {
+	return Condition_Members_ToProto(mapCtx, in)
+}
