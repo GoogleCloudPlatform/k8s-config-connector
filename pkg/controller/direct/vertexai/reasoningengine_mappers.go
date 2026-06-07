@@ -56,8 +56,11 @@ func VertexAIReasoningEngineSpec_ReasoningEngineSpec_FromProto(mapCtx *direct.Ma
 	out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_FromProto(mapCtx, in.GetDeploymentSpec())
 	out.ClassMethods = direct.Slice_FromProto(mapCtx, in.GetClassMethods(), direct.Struct_FromProto)
 	out.AgentFramework = direct.LazyPtr(in.GetAgentFramework())
-	// source_code_spec is handled via a separate field in KRM
-	// TODO: implement mapping for source_code_spec if available in proto
+	if in.GetSourceCodeSpec() != nil {
+		out.SourceCodeSpec = ReasoningEngineSpec_SourceCodeSpec_FromProto(mapCtx, in.GetSourceCodeSpec())
+	} else if src, ok := in.GetDeploymentSource().(*pb.ReasoningEngineSpec_SourceCodeSpec_); ok && src != nil {
+		out.SourceCodeSpec = ReasoningEngineSpec_SourceCodeSpec_FromProto(mapCtx, src.SourceCodeSpec)
+	}
 	return out
 }
 
@@ -71,6 +74,11 @@ func VertexAIReasoningEngineSpec_ReasoningEngineSpec_ToProto(mapCtx *direct.MapC
 	out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_ToProto(mapCtx, in.DeploymentSpec)
 	out.ClassMethods = direct.Slice_ToProto(mapCtx, in.ClassMethods, direct.Struct_ToProto)
 	out.AgentFramework = direct.ValueOf(in.AgentFramework)
+	if in.SourceCodeSpec != nil {
+		out.DeploymentSource = &pb.ReasoningEngineSpec_SourceCodeSpec_{
+			SourceCodeSpec: ReasoningEngineSpec_SourceCodeSpec_ToProto(mapCtx, in.SourceCodeSpec),
+		}
+	}
 	return out
 }
 
@@ -367,5 +375,136 @@ func VertexAIReasoningEngineObservedState_ToProto(mapCtx *direct.MapContext, in 
 	out := &pb.ReasoningEngine{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec_SourceCodeSpec) *krm.ReasoningEngineSpec_SourceCodeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec_SourceCodeSpec{}
+	if in.GetInlineSource() != nil {
+		out.InlineSource = ReasoningEngineSpec_SourceCodeSpec_InlineSource_FromProto(mapCtx, in.GetInlineSource())
+	} else if src, ok := in.GetSource().(*pb.ReasoningEngineSpec_SourceCodeSpec_InlineSource_); ok && src != nil {
+		out.InlineSource = ReasoningEngineSpec_SourceCodeSpec_InlineSource_FromProto(mapCtx, src.InlineSource)
+	}
+
+	if in.GetDeveloperConnectSource() != nil {
+		out.DeveloperConnectSource = ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource_FromProto(mapCtx, in.GetDeveloperConnectSource())
+	} else if src, ok := in.GetSource().(*pb.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource_); ok && src != nil {
+		out.DeveloperConnectSource = ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource_FromProto(mapCtx, src.DeveloperConnectSource)
+	}
+
+	if in.GetPythonSpec() != nil {
+		out.PythonSpec = ReasoningEngineSpec_SourceCodeSpec_PythonSpec_FromProto(mapCtx, in.GetPythonSpec())
+	} else if spec, ok := in.GetLanguageSpec().(*pb.ReasoningEngineSpec_SourceCodeSpec_PythonSpec_); ok && spec != nil {
+		out.PythonSpec = ReasoningEngineSpec_SourceCodeSpec_PythonSpec_FromProto(mapCtx, spec.PythonSpec)
+	}
+
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec_SourceCodeSpec) *pb.ReasoningEngineSpec_SourceCodeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngineSpec_SourceCodeSpec{}
+	if in.InlineSource != nil {
+		out.Source = &pb.ReasoningEngineSpec_SourceCodeSpec_InlineSource_{
+			InlineSource: ReasoningEngineSpec_SourceCodeSpec_InlineSource_ToProto(mapCtx, in.InlineSource),
+		}
+	}
+	if in.DeveloperConnectSource != nil {
+		out.Source = &pb.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource_{
+			DeveloperConnectSource: ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource_ToProto(mapCtx, in.DeveloperConnectSource),
+		}
+	}
+	if in.PythonSpec != nil {
+		out.LanguageSpec = &pb.ReasoningEngineSpec_SourceCodeSpec_PythonSpec_{
+			PythonSpec: ReasoningEngineSpec_SourceCodeSpec_PythonSpec_ToProto(mapCtx, in.PythonSpec),
+		}
+	}
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_InlineSource_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec_SourceCodeSpec_InlineSource) *krm.ReasoningEngineSpec_SourceCodeSpec_InlineSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec_SourceCodeSpec_InlineSource{}
+	out.SourceArchive = in.SourceArchive
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_InlineSource_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec_SourceCodeSpec_InlineSource) *pb.ReasoningEngineSpec_SourceCodeSpec_InlineSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngineSpec_SourceCodeSpec_InlineSource{}
+	out.SourceArchive = in.SourceArchive
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource) *krm.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource{}
+	out.Config = ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig_FromProto(mapCtx, in.GetConfig())
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource) *pb.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectSource{}
+	out.Config = ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig_ToProto(mapCtx, in.Config)
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig) *krm.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig{}
+	out.GitRepositoryLink = direct.LazyPtr(in.GetGitRepositoryLink())
+	out.Dir = direct.LazyPtr(in.GetDir())
+	out.Revision = direct.LazyPtr(in.GetRevision())
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig) *pb.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngineSpec_SourceCodeSpec_DeveloperConnectConfig{}
+	out.GitRepositoryLink = direct.ValueOf(in.GitRepositoryLink)
+	out.Dir = direct.ValueOf(in.Dir)
+	out.Revision = direct.ValueOf(in.Revision)
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_PythonSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec_SourceCodeSpec_PythonSpec) *krm.ReasoningEngineSpec_SourceCodeSpec_PythonSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec_SourceCodeSpec_PythonSpec{}
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.EntrypointModule = direct.LazyPtr(in.GetEntrypointModule())
+	out.EntrypointObject = direct.LazyPtr(in.GetEntrypointObject())
+	out.RequirementsFile = direct.LazyPtr(in.GetRequirementsFile())
+	return out
+}
+
+func ReasoningEngineSpec_SourceCodeSpec_PythonSpec_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec_SourceCodeSpec_PythonSpec) *pb.ReasoningEngineSpec_SourceCodeSpec_PythonSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngineSpec_SourceCodeSpec_PythonSpec{}
+	out.Version = direct.ValueOf(in.Version)
+	out.EntrypointModule = direct.ValueOf(in.EntrypointModule)
+	out.EntrypointObject = direct.ValueOf(in.EntrypointObject)
+	out.RequirementsFile = direct.ValueOf(in.RequirementsFile)
 	return out
 }

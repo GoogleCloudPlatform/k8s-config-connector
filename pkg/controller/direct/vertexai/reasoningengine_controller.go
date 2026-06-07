@@ -179,6 +179,8 @@ func (a *ReasoningEngineAdapter) Update(ctx context.Context, updateOp *directbas
 		return mapCtx.Err()
 	}
 
+	desiredPb.Name = a.id.String() // populate the name field before comparison
+
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -240,12 +242,13 @@ func (a *ReasoningEngineAdapter) Export(ctx context.Context) (*unstructured.Unst
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
 	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.ID())
 	u.SetGroupVersionKind(krm.VertexAIReasoningEngineGVK)
 
 	u.Object = uObj

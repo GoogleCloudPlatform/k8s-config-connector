@@ -65,6 +65,7 @@ func vertexAIReasoningEngineFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.python_spec.entrypoint_module")
 	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.python_spec.entrypoint_object")
 	f.Unimplemented_NotYetTriaged(".spec.source_code_spec.python_spec.requirements_file")
+	f.Unimplemented_NotYetTriaged(".spec.container_spec")
 
 	return f
 }
