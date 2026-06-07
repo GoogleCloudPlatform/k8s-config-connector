@@ -36,6 +36,13 @@ func DataformFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fol
 	}
 	out := &krm.DataformFolderObservedState{}
 	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: InternalMetadata
+	// MISSING: CreatorIAMPrincipal
 	return out
 }
 func DataformFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataformFolderObservedState) *pb.Folder {
@@ -44,6 +51,13 @@ func DataformFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	}
 	out := &pb.Folder{}
 	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: InternalMetadata
+	// MISSING: CreatorIAMPrincipal
 	return out
 }
 func DataformFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.DataformFolderSpec {
@@ -52,6 +66,13 @@ func DataformFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm
 	}
 	out := &krm.DataformFolderSpec{}
 	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: InternalMetadata
+	// MISSING: CreatorIAMPrincipal
 	return out
 }
 func DataformFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataformFolderSpec) *pb.Folder {
@@ -60,6 +81,13 @@ func DataformFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataformFolde
 	}
 	out := &pb.Folder{}
 	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: InternalMetadata
+	// MISSING: CreatorIAMPrincipal
 	return out
 }
 func DataformRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krmdataformv1beta1.DataformRepositoryObservedState {
@@ -68,6 +96,8 @@ func DataformRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krmdataformv1beta1.DataformRepositoryObservedState{}
 	// MISSING: Name
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
 	// MISSING: CreateTime
 	// MISSING: Labels
 	// MISSING: KMSKeyName
@@ -81,6 +111,8 @@ func DataformRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krmd
 	}
 	out := &pb.Repository{}
 	// MISSING: Name
+	// MISSING: ContainingFolder
+	// MISSING: TeamFolderName
 	// MISSING: CreateTime
 	// MISSING: Labels
 	// MISSING: KMSKeyName

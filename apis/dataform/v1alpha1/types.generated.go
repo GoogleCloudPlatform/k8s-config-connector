@@ -20,12 +20,3 @@
 // resource: DataformFolder:Folder
 
 package v1alpha1
-
-/* unreachable type Folder
-// +kcc:proto=google.cloud.dataform.v1beta1.Folder
-type Folder struct {
-	// Required. The name of the folder.
-	// +kcc:proto:field=google.cloud.dataform.v1beta1.Folder.name
-	Name *string `json:"name,omitempty"`
-}
-*/
