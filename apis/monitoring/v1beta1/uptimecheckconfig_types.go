@@ -70,9 +70,9 @@ type UptimeCheckConfig_HTTPCheck struct {
 	// Immutable. The HTTP request method to use for the check. If set to `METHOD_UNSPECIFIED` then `request_method` defaults to `GET`.
 	RequestMethod *string `json:"requestMethod,omitempty"`
 	// If `true`, use HTTPS instead of HTTP to run the check.
-	UseSsl *bool `json:"useSsl,omitempty"`
+	UseSSL *bool `json:"useSsl,omitempty"`
 	// Boolean specifying whether to include SSL certificate validation as a part of the Uptime check. Only applies to checks where `monitored_resource` is set to `uptime_url`. If `use_ssl` is `false`, setting `validate_ssl` to `true` has no effect.
-	ValidateSsl *bool `json:"validateSsl,omitempty"`
+	ValidateSSL *bool `json:"validateSsl,omitempty"`
 }
 
 // +kcc:proto=google.api.MonitoredResource
@@ -97,7 +97,7 @@ type UptimeCheckConfig_ResourceGroup struct {
 type UptimeCheckConfig_TCPCheck struct {
 	// The TCP port on the server against which to run the check. Will be combined with host (specified within the `monitored_resource`) to construct the full URL. Required.
 	// +required
-	Port *int64 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 }
 
 // MonitoringUptimeCheckConfigSpec defines the desired state of MonitoringUptimeCheckConfig

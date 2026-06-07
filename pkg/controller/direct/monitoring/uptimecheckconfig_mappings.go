@@ -58,8 +58,8 @@ func UptimeCheckConfig_HTTPCheck_FromProto(mapCtx *direct.MapContext, in *pb.Upt
 		out.Port = direct.LazyPtr(int64(in.GetPort()))
 	}
 	out.RequestMethod = direct.Enum_FromProto(mapCtx, in.GetRequestMethod())
-	out.UseSsl = direct.LazyPtr(in.GetUseSsl())
-	out.ValidateSsl = direct.LazyPtr(in.GetValidateSsl())
+	out.UseSSL = direct.LazyPtr(in.GetUseSsl())
+	out.ValidateSSL = direct.LazyPtr(in.GetValidateSsl())
 	return out
 }
 
@@ -78,27 +78,7 @@ func UptimeCheckConfig_HTTPCheck_ToProto(mapCtx *direct.MapContext, in *krm.Upti
 	out.Path = direct.ValueOf(in.Path)
 	out.Port = int32(direct.ValueOf(in.Port))
 	out.RequestMethod = direct.Enum_ToProto[pb.UptimeCheckConfig_HttpCheck_RequestMethod](mapCtx, in.RequestMethod)
-	out.UseSsl = direct.ValueOf(in.UseSsl)
-	out.ValidateSsl = direct.ValueOf(in.ValidateSsl)
-	return out
-}
-
-func UptimeCheckConfig_TCPCheck_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_TcpCheck) *krm.UptimeCheckConfig_TCPCheck {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UptimeCheckConfig_TCPCheck{}
-	if in.GetPort() != 0 {
-		out.Port = direct.LazyPtr(int64(in.GetPort()))
-	}
-	return out
-}
-
-func UptimeCheckConfig_TCPCheck_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_TCPCheck) *pb.UptimeCheckConfig_TcpCheck {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UptimeCheckConfig_TcpCheck{}
-	out.Port = int32(direct.ValueOf(in.Port))
+	out.UseSsl = direct.ValueOf(in.UseSSL)
+	out.ValidateSsl = direct.ValueOf(in.ValidateSSL)
 	return out
 }

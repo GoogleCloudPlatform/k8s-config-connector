@@ -1744,13 +1744,13 @@ func (in *UptimeCheckConfig_HTTPCheck) DeepCopyInto(out *UptimeCheckConfig_HTTPC
 		*out = new(string)
 		**out = **in
 	}
-	if in.UseSsl != nil {
-		in, out := &in.UseSsl, &out.UseSsl
+	if in.UseSSL != nil {
+		in, out := &in.UseSSL, &out.UseSSL
 		*out = new(bool)
 		**out = **in
 	}
-	if in.ValidateSsl != nil {
-		in, out := &in.ValidateSsl, &out.ValidateSsl
+	if in.ValidateSSL != nil {
+		in, out := &in.ValidateSSL, &out.ValidateSSL
 		*out = new(bool)
 		**out = **in
 	}
@@ -1848,7 +1848,7 @@ func (in *UptimeCheckConfig_TCPCheck) DeepCopyInto(out *UptimeCheckConfig_TCPChe
 	*out = *in
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 }
