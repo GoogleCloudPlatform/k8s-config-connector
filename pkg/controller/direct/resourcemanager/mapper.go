@@ -58,9 +58,17 @@ func ProjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.ProjectSpec) *pb.Pro
 	out.ProjectId = direct.ValueOf(in.ResourceID)
 
 	if in.FolderRef != nil {
-		out.Parent = in.FolderRef.External
+		parent := in.FolderRef.External
+		if parent != "" && !strings.HasPrefix(parent, "folders/") {
+			parent = "folders/" + parent
+		}
+		out.Parent = parent
 	} else if in.OrganizationRef != nil {
-		out.Parent = in.OrganizationRef.External
+		parent := in.OrganizationRef.External
+		if parent != "" && !strings.HasPrefix(parent, "organizations/") {
+			parent = "organizations/" + parent
+		}
+		out.Parent = parent
 	}
 	return out
 }
@@ -132,9 +140,17 @@ func FolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.FolderSpec) *pb.Folde
 	out.DisplayName = in.DisplayName
 
 	if in.FolderRef != nil {
-		out.Parent = in.FolderRef.External
+		parent := in.FolderRef.External
+		if parent != "" && !strings.HasPrefix(parent, "folders/") {
+			parent = "folders/" + parent
+		}
+		out.Parent = parent
 	} else if in.OrganizationRef != nil {
-		out.Parent = in.OrganizationRef.External
+		parent := in.OrganizationRef.External
+		if parent != "" && !strings.HasPrefix(parent, "organizations/") {
+			parent = "organizations/" + parent
+		}
+		out.Parent = parent
 	}
 
 	return out
