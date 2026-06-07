@@ -18,31 +18,31 @@
 
 // +generated:mapper
 // krm.group: certificatemanager.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.cloud.certificatemanager.v1
 
 package certificatemanager
 
 import (
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
-	krmcertificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
+	krmcertificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
 	krmprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func CertificateAuthorizationAttemptInfo_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo) *krm.CertificateAuthorizationAttemptInfo {
+func CertificateAuthorizationAttemptInfo_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo) *krmcertificatemanagerv1beta1.CertificateAuthorizationAttemptInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateAuthorizationAttemptInfo{}
+	out := &krmcertificatemanagerv1beta1.CertificateAuthorizationAttemptInfo{}
 	out.Domain = direct.LazyPtr(in.GetDomain())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.FailureReason = direct.Enum_FromProto(mapCtx, in.GetFailureReason())
 	out.Details = direct.LazyPtr(in.GetDetails())
 	return out
 }
-func CertificateAuthorizationAttemptInfo_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthorizationAttemptInfo) *pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo {
+func CertificateAuthorizationAttemptInfo_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateAuthorizationAttemptInfo) *pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo {
 	if in == nil {
 		return nil
 	}
@@ -53,18 +53,18 @@ func CertificateAuthorizationAttemptInfo_ToProto(mapCtx *direct.MapContext, in *
 	out.Details = direct.ValueOf(in.Details)
 	return out
 }
-func CertificateAuthorizationAttemptInfoStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo) *krm.CertificateAuthorizationAttemptInfoStatus {
+func CertificateAuthorizationAttemptInfoStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo) *krmcertificatemanagerv1beta1.CertificateAuthorizationAttemptInfoStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateAuthorizationAttemptInfoStatus{}
+	out := &krmcertificatemanagerv1beta1.CertificateAuthorizationAttemptInfoStatus{}
 	out.Domain = direct.LazyPtr(in.GetDomain())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.FailureReason = direct.Enum_FromProto(mapCtx, in.GetFailureReason())
 	out.Details = direct.LazyPtr(in.GetDetails())
 	return out
 }
-func CertificateAuthorizationAttemptInfoStatus_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthorizationAttemptInfoStatus) *pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo {
+func CertificateAuthorizationAttemptInfoStatus_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateAuthorizationAttemptInfoStatus) *pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo {
 	if in == nil {
 		return nil
 	}
@@ -75,15 +75,15 @@ func CertificateAuthorizationAttemptInfoStatus_ToProto(mapCtx *direct.MapContext
 	out.Details = direct.ValueOf(in.Details)
 	return out
 }
-func CertificateIssuanceConfig_CertificateAuthorityConfig_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig_CertificateAuthorityConfig) *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig {
+func CertificateIssuanceConfig_CertificateAuthorityConfig_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig_CertificateAuthorityConfig) *krm.CertificateIssuanceConfig_CertificateAuthorityConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig{}
+	out := &krm.CertificateIssuanceConfig_CertificateAuthorityConfig{}
 	out.CertificateAuthorityServiceConfig = CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_FromProto(mapCtx, in.GetCertificateAuthorityServiceConfig())
 	return out
 }
-func CertificateIssuanceConfig_CertificateAuthorityConfig_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig) *pb.CertificateIssuanceConfig_CertificateAuthorityConfig {
+func CertificateIssuanceConfig_CertificateAuthorityConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateIssuanceConfig_CertificateAuthorityConfig) *pb.CertificateIssuanceConfig_CertificateAuthorityConfig {
 	if in == nil {
 		return nil
 	}
@@ -93,17 +93,17 @@ func CertificateIssuanceConfig_CertificateAuthorityConfig_ToProto(mapCtx *direct
 	}
 	return out
 }
-func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig) *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig {
+func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig) *krm.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig{}
+	out := &krm.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig{}
 	if in.GetCaPool() != "" {
 		out.CAPoolRef = &krmprivatecav1beta1.PrivateCACAPoolRef{External: in.GetCaPool()}
 	}
 	return out
 }
-func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig) *pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig {
+func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig) *pb.CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig {
 	if in == nil {
 		return nil
 	}
@@ -115,19 +115,19 @@ func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthoritySe
 }
 
 /* found existing non-generated mapping function "CertificateManaged_FromProto", skipping
-func CertificateManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate) *krm.CertificateManaged {
+func CertificateManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate) *krmcertificatemanagerv1beta1.CertificateManaged {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateManaged{}
+	out := &krmcertificatemanagerv1beta1.CertificateManaged{}
 	out.Domains = in.Domains
 	// MISSING: DNSAuthorizations
 	if in.GetIssuanceConfig() != "" {
-		out.IssuanceConfigRef = &krm.CertificateIssuanceConfigRef{External: in.GetIssuanceConfig()}
+		out.IssuanceConfigRef = &krmcertificatemanagerv1beta1.CertificateIssuanceConfigRef{External: in.GetIssuanceConfig()}
 	}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	if v := in.GetProvisioningIssue(); v != nil {
-		out.ProvisioningIssue = []krm.CertificateProvisioningIssue{CertificateProvisioningIssue_FromProto(mapCtx, v)}
+		out.ProvisioningIssue = []krmcertificatemanagerv1beta1.CertificateProvisioningIssue{CertificateProvisioningIssue_FromProto(mapCtx, v)}
 	}
 	out.AuthorizationAttemptInfo = direct.Slice_FromProto(mapCtx, in.AuthorizationAttemptInfo, CertificateAuthorizationAttemptInfo_FromProto)
 	return out
@@ -135,7 +135,7 @@ func CertificateManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_
 */
 
 /* found existing non-generated mapping function "CertificateManaged_ToProto", skipping
-func CertificateManaged_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManaged) *pb.Certificate_ManagedCertificate {
+func CertificateManaged_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateManaged) *pb.Certificate_ManagedCertificate {
 	if in == nil {
 		return nil
 	}
@@ -155,17 +155,17 @@ func CertificateManaged_ToProto(mapCtx *direct.MapContext, in *krm.CertificateMa
 */
 
 /* found existing non-generated mapping function "CertificateManagedStatus_FromProto", skipping
-func CertificateManagedStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate) *krm.CertificateManagedStatus {
+func CertificateManagedStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate) *krmcertificatemanagerv1beta1.CertificateManagedStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateManagedStatus{}
+	out := &krmcertificatemanagerv1beta1.CertificateManagedStatus{}
 	// MISSING: Domains
 	// MISSING: DNSAuthorizations
 	// MISSING: IssuanceConfig
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	if v := in.GetProvisioningIssue(); v != nil {
-		out.ProvisioningIssue = []krm.CertificateProvisioningIssueStatus{CertificateProvisioningIssueStatus_FromProto(mapCtx, v)}
+		out.ProvisioningIssue = []krmcertificatemanagerv1beta1.CertificateProvisioningIssueStatus{CertificateProvisioningIssueStatus_FromProto(mapCtx, v)}
 	}
 	out.AuthorizationAttemptInfo = direct.Slice_FromProto(mapCtx, in.AuthorizationAttemptInfo, CertificateAuthorizationAttemptInfoStatus_FromProto)
 	return out
@@ -175,7 +175,7 @@ func CertificateManagedStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certif
 /*
 found existing non-generated mapping function "CertificateManagedStatus_ToProto", skipping
 
-	func CertificateManagedStatus_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagedStatus) *pb.Certificate_ManagedCertificate {
+	func CertificateManagedStatus_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateManagedStatus) *pb.Certificate_ManagedCertificate {
 		if in == nil {
 			return nil
 		}
@@ -191,18 +191,18 @@ found existing non-generated mapping function "CertificateManagedStatus_ToProto"
 		return out
 	}
 */
-func CertificateManagerCertificateIssuanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig) *krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigObservedState {
+func CertificateManagerCertificateIssuanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig) *krm.CertificateManagerCertificateIssuanceConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigObservedState{}
+	out := &krm.CertificateManagerCertificateIssuanceConfigObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	return out
 }
-func CertificateManagerCertificateIssuanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigObservedState) *pb.CertificateIssuanceConfig {
+func CertificateManagerCertificateIssuanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagerCertificateIssuanceConfigObservedState) *pb.CertificateIssuanceConfig {
 	if in == nil {
 		return nil
 	}
@@ -213,11 +213,11 @@ func CertificateManagerCertificateIssuanceConfigObservedState_ToProto(mapCtx *di
 	// MISSING: Labels
 	return out
 }
-func CertificateManagerCertificateIssuanceConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig) *krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigSpec {
+func CertificateManagerCertificateIssuanceConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.CertificateIssuanceConfig) *krm.CertificateManagerCertificateIssuanceConfigSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigSpec{}
+	out := &krm.CertificateManagerCertificateIssuanceConfigSpec{}
 	// MISSING: Name
 	// MISSING: Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -227,7 +227,7 @@ func CertificateManagerCertificateIssuanceConfigSpec_FromProto(mapCtx *direct.Ma
 	out.KeyAlgorithm = direct.Enum_FromProto(mapCtx, in.GetKeyAlgorithm())
 	return out
 }
-func CertificateManagerCertificateIssuanceConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigSpec) *pb.CertificateIssuanceConfig {
+func CertificateManagerCertificateIssuanceConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagerCertificateIssuanceConfigSpec) *pb.CertificateIssuanceConfig {
 	if in == nil {
 		return nil
 	}
@@ -241,11 +241,11 @@ func CertificateManagerCertificateIssuanceConfigSpec_ToProto(mapCtx *direct.MapC
 	out.KeyAlgorithm = direct.Enum_ToProto[pb.CertificateIssuanceConfig_KeyAlgorithm](mapCtx, in.KeyAlgorithm)
 	return out
 }
-func CertificateManagerCertificateSpec_FromProto(mapCtx *direct.MapContext, in *pb.Certificate) *krm.CertificateManagerCertificateSpec {
+func CertificateManagerCertificateSpec_FromProto(mapCtx *direct.MapContext, in *pb.Certificate) *krmcertificatemanagerv1beta1.CertificateManagerCertificateSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateManagerCertificateSpec{}
+	out := &krmcertificatemanagerv1beta1.CertificateManagerCertificateSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: CreateTime
@@ -259,7 +259,7 @@ func CertificateManagerCertificateSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
 	return out
 }
-func CertificateManagerCertificateSpec_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagerCertificateSpec) *pb.Certificate {
+func CertificateManagerCertificateSpec_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateManagerCertificateSpec) *pb.Certificate {
 	if in == nil {
 		return nil
 	}
@@ -281,11 +281,11 @@ func CertificateManagerCertificateSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Scope = direct.Enum_ToProto[pb.Certificate_Scope](mapCtx, in.Scope)
 	return out
 }
-func CertificateManagerDNSAuthorizationSpec_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization) *krm.CertificateManagerDNSAuthorizationSpec {
+func CertificateManagerDNSAuthorizationSpec_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization) *krmcertificatemanagerv1beta1.CertificateManagerDNSAuthorizationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateManagerDNSAuthorizationSpec{}
+	out := &krmcertificatemanagerv1beta1.CertificateManagerDNSAuthorizationSpec{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
@@ -296,7 +296,7 @@ func CertificateManagerDNSAuthorizationSpec_FromProto(mapCtx *direct.MapContext,
 	// MISSING: Type
 	return out
 }
-func CertificateManagerDNSAuthorizationSpec_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagerDNSAuthorizationSpec) *pb.DnsAuthorization {
+func CertificateManagerDNSAuthorizationSpec_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateManagerDNSAuthorizationSpec) *pb.DnsAuthorization {
 	if in == nil {
 		return nil
 	}
@@ -311,11 +311,11 @@ func CertificateManagerDNSAuthorizationSpec_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: Type
 	return out
 }
-func CertificateManagerDNSAuthorizationStatus_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization) *krm.CertificateManagerDNSAuthorizationStatus {
+func CertificateManagerDNSAuthorizationStatus_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization) *krmcertificatemanagerv1beta1.CertificateManagerDNSAuthorizationStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateManagerDNSAuthorizationStatus{}
+	out := &krmcertificatemanagerv1beta1.CertificateManagerDNSAuthorizationStatus{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
@@ -323,12 +323,12 @@ func CertificateManagerDNSAuthorizationStatus_FromProto(mapCtx *direct.MapContex
 	// MISSING: Description
 	// MISSING: Domain
 	if v := in.GetDnsResourceRecord(); v != nil {
-		out.DNSResourceRecord = []*krm.DNSAuthorization_DNSResourceRecordObservedState{DNSAuthorization_DNSResourceRecordObservedState_FromProto(mapCtx, v)}
+		out.DNSResourceRecord = []*krmcertificatemanagerv1beta1.DNSAuthorization_DNSResourceRecordObservedState{DNSAuthorization_DNSResourceRecordObservedState_FromProto(mapCtx, v)}
 	}
 	// MISSING: Type
 	return out
 }
-func CertificateManagerDNSAuthorizationStatus_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagerDNSAuthorizationStatus) *pb.DnsAuthorization {
+func CertificateManagerDNSAuthorizationStatus_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateManagerDNSAuthorizationStatus) *pb.DnsAuthorization {
 	if in == nil {
 		return nil
 	}
@@ -345,11 +345,11 @@ func CertificateManagerDNSAuthorizationStatus_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Type
 	return out
 }
-func CertificateObservedStateStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate) *krm.CertificateObservedStateStatus {
+func CertificateObservedStateStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate) *krmcertificatemanagerv1beta1.CertificateObservedStateStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateObservedStateStatus{}
+	out := &krmcertificatemanagerv1beta1.CertificateObservedStateStatus{}
 	// MISSING: Name
 	// MISSING: Description
 	// MISSING: CreateTime
@@ -363,7 +363,7 @@ func CertificateObservedStateStatus_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Scope
 	return out
 }
-func CertificateObservedStateStatus_ToProto(mapCtx *direct.MapContext, in *krm.CertificateObservedStateStatus) *pb.Certificate {
+func CertificateObservedStateStatus_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateObservedStateStatus) *pb.Certificate {
 	if in == nil {
 		return nil
 	}
@@ -383,16 +383,16 @@ func CertificateObservedStateStatus_ToProto(mapCtx *direct.MapContext, in *krm.C
 	// MISSING: Scope
 	return out
 }
-func CertificateProvisioningIssue_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate_ProvisioningIssue) *krm.CertificateProvisioningIssue {
+func CertificateProvisioningIssue_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate_ProvisioningIssue) *krmcertificatemanagerv1beta1.CertificateProvisioningIssue {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateProvisioningIssue{}
+	out := &krmcertificatemanagerv1beta1.CertificateProvisioningIssue{}
 	out.Reason = direct.Enum_FromProto(mapCtx, in.GetReason())
 	out.Details = direct.LazyPtr(in.GetDetails())
 	return out
 }
-func CertificateProvisioningIssue_ToProto(mapCtx *direct.MapContext, in *krm.CertificateProvisioningIssue) *pb.Certificate_ManagedCertificate_ProvisioningIssue {
+func CertificateProvisioningIssue_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateProvisioningIssue) *pb.Certificate_ManagedCertificate_ProvisioningIssue {
 	if in == nil {
 		return nil
 	}
@@ -401,16 +401,16 @@ func CertificateProvisioningIssue_ToProto(mapCtx *direct.MapContext, in *krm.Cer
 	out.Details = direct.ValueOf(in.Details)
 	return out
 }
-func CertificateProvisioningIssueStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate_ProvisioningIssue) *krm.CertificateProvisioningIssueStatus {
+func CertificateProvisioningIssueStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_ManagedCertificate_ProvisioningIssue) *krmcertificatemanagerv1beta1.CertificateProvisioningIssueStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateProvisioningIssueStatus{}
+	out := &krmcertificatemanagerv1beta1.CertificateProvisioningIssueStatus{}
 	out.Reason = direct.Enum_FromProto(mapCtx, in.GetReason())
 	out.Details = direct.LazyPtr(in.GetDetails())
 	return out
 }
-func CertificateProvisioningIssueStatus_ToProto(mapCtx *direct.MapContext, in *krm.CertificateProvisioningIssueStatus) *pb.Certificate_ManagedCertificate_ProvisioningIssue {
+func CertificateProvisioningIssueStatus_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateProvisioningIssueStatus) *pb.Certificate_ManagedCertificate_ProvisioningIssue {
 	if in == nil {
 		return nil
 	}
@@ -421,11 +421,11 @@ func CertificateProvisioningIssueStatus_ToProto(mapCtx *direct.MapContext, in *k
 }
 
 /* found existing non-generated mapping function "CertificateSelfManaged_FromProto", skipping
-func CertificateSelfManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_SelfManagedCertificate) *krm.CertificateSelfManaged {
+func CertificateSelfManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_SelfManagedCertificate) *krmcertificatemanagerv1beta1.CertificateSelfManaged {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CertificateSelfManaged{}
+	out := &krmcertificatemanagerv1beta1.CertificateSelfManaged{}
 	out.PemCertificate = direct.LazyPtr(in.GetPemCertificate())
 	out.PemPrivateKey = direct.LazyPtr(in.GetPemPrivateKey())
 	return out
@@ -435,7 +435,7 @@ func CertificateSelfManaged_FromProto(mapCtx *direct.MapContext, in *pb.Certific
 /*
 found existing non-generated mapping function "CertificateSelfManaged_ToProto", skipping
 
-	func CertificateSelfManaged_ToProto(mapCtx *direct.MapContext, in *krm.CertificateSelfManaged) *pb.Certificate_SelfManagedCertificate {
+	func CertificateSelfManaged_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.CertificateSelfManaged) *pb.Certificate_SelfManagedCertificate {
 		if in == nil {
 			return nil
 		}
@@ -445,17 +445,17 @@ found existing non-generated mapping function "CertificateSelfManaged_ToProto", 
 		return out
 	}
 */
-func DNSAuthorization_DNSResourceRecordObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization_DnsResourceRecord) *krm.DNSAuthorization_DNSResourceRecordObservedState {
+func DNSAuthorization_DNSResourceRecordObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization_DnsResourceRecord) *krmcertificatemanagerv1beta1.DNSAuthorization_DNSResourceRecordObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DNSAuthorization_DNSResourceRecordObservedState{}
+	out := &krmcertificatemanagerv1beta1.DNSAuthorization_DNSResourceRecordObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Type = direct.LazyPtr(in.GetType())
 	out.Data = direct.LazyPtr(in.GetData())
 	return out
 }
-func DNSAuthorization_DNSResourceRecordObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DNSAuthorization_DNSResourceRecordObservedState) *pb.DnsAuthorization_DnsResourceRecord {
+func DNSAuthorization_DNSResourceRecordObservedState_ToProto(mapCtx *direct.MapContext, in *krmcertificatemanagerv1beta1.DNSAuthorization_DNSResourceRecordObservedState) *pb.DnsAuthorization_DnsResourceRecord {
 	if in == nil {
 		return nil
 	}
