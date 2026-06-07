@@ -17,6 +17,7 @@ package workflows
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -42,29 +43,49 @@ func (e *Engine) CreateComputeNetworkSubnetworks(ctx context.Context, projectID 
 		return err
 	}
 
-	for _, region := range regions.GetAllRegions(ctx) {
+	regionsList := regions.GetAllRegions(ctx)
+	errChan := make(chan error, len(regionsList))
+	var wg sync.WaitGroup
+
+	for _, region := range regionsList {
 		if region.DefaultCIDR == "" {
 			continue
 		}
 
-		subnet := &computepb.Subnetwork{
-			Name:        PtrTo(networkID),
-			Region:      PtrTo(region.Name),
-			Network:     PtrTo(fmt.Sprintf("projects/%s/global/networks/%s", projectID, networkID)),
-			IpCidrRange: PtrTo(region.DefaultCIDR),
-		}
+		wg.Add(1)
+		go func(r regions.Region) {
+			defer wg.Done()
 
-		req := &computepb.InsertSubnetworkRequest{
-			Project:            projectID,
-			Region:             region.Name,
-			SubnetworkResource: subnet,
-		}
-		op, err := subnetsClient.Insert(ctx, req)
+			subnet := &computepb.Subnetwork{
+				Name:        PtrTo(networkID),
+				Region:      PtrTo(r.Name),
+				Network:     PtrTo(fmt.Sprintf("projects/%s/global/networks/%s", projectID, networkID)),
+				IpCidrRange: PtrTo(r.DefaultCIDR),
+			}
+
+			req := &computepb.InsertSubnetworkRequest{
+				Project:            projectID,
+				Region:             r.Name,
+				SubnetworkResource: subnet,
+			}
+			op, err := subnetsClient.Insert(ctx, req)
+			if err != nil {
+				errChan <- fmt.Errorf("creating automatic subnet %v: %w", req, err)
+				return
+			}
+			if err := op.Wait(ctx); err != nil {
+				errChan <- fmt.Errorf("waiting for subnet creation: %w", err)
+				return
+			}
+		}(region)
+	}
+
+	wg.Wait()
+	close(errChan)
+
+	for err := range errChan {
 		if err != nil {
-			return fmt.Errorf("creating automatic subnet %v: %w", req, err)
-		}
-		if err := op.Wait(ctx); err != nil {
-			return fmt.Errorf("waiting for subnet creation: %w", err)
+			return err
 		}
 	}
 

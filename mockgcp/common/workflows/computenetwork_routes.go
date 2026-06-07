@@ -20,6 +20,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"strings"
+	"sync"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -78,6 +79,10 @@ func (e *Engine) CreateComputeNetworkRoutes(ctx context.Context, projectID strin
 		}
 	}
 
+	var wg sync.WaitGroup
+	var errs []error
+	var mu sync.Mutex
+
 	// Add subnet routes
 	for scope, err := range subnetsClient.AggregatedList(ctx, &computepb.AggregatedListSubnetworksRequest{
 		Project: projectID,
@@ -91,27 +96,43 @@ func (e *Engine) CreateComputeNetworkRoutes(ctx context.Context, projectID strin
 				continue
 			}
 
-			hash := computeHashSuffix(ValueOf(subnet.SelfLink))
-			route := &computepb.Route{
-				Description:    PtrTo(fmt.Sprintf("Default local route to the subnetwork %s.", ValueOf(subnet.IpCidrRange))),
-				DestRange:      subnet.IpCidrRange,
-				Name:           PtrTo("default-route-r-" + hash),
-				Network:        subnet.Network,
-				NextHopNetwork: subnet.Network,
-				Priority:       PtrTo(uint32(0)),
-			}
-			req := &computepb.InsertRouteRequest{
-				Project:       projectID,
-				RouteResource: route,
-			}
-			op, err := routesClient.Insert(ctx, req)
-			if err != nil {
-				return fmt.Errorf("creating automatic route for subnet %v %v: %w", subnet, req, err)
-			}
-			if err := op.Wait(ctx); err != nil {
-				return fmt.Errorf("waiting for route creation: %w", err)
-			}
+			wg.Add(1)
+			go func(s *computepb.Subnetwork) {
+				defer wg.Done()
+
+				hash := computeHashSuffix(ValueOf(s.SelfLink))
+				route := &computepb.Route{
+					Description:    PtrTo(fmt.Sprintf("Default local route to the subnetwork %s.", ValueOf(s.IpCidrRange))),
+					DestRange:      s.IpCidrRange,
+					Name:           PtrTo("default-route-r-" + hash),
+					Network:        s.Network,
+					NextHopNetwork: s.Network,
+					Priority:       PtrTo(uint32(0)),
+				}
+				req := &computepb.InsertRouteRequest{
+					Project:       projectID,
+					RouteResource: route,
+				}
+				op, err := routesClient.Insert(ctx, req)
+				if err != nil {
+					mu.Lock()
+					errs = append(errs, fmt.Errorf("creating automatic route for subnet %v %v: %w", s, req, err))
+					mu.Unlock()
+					return
+				}
+				if err := op.Wait(ctx); err != nil {
+					mu.Lock()
+					errs = append(errs, fmt.Errorf("waiting for route creation: %w", err))
+					mu.Unlock()
+					return
+				}
+			}(subnet)
 		}
+	}
+
+	wg.Wait()
+	if len(errs) > 0 {
+		return errs[0]
 	}
 
 	return nil
