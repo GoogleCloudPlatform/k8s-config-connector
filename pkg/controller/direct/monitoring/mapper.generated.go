@@ -240,6 +240,84 @@ func UptimeCheckConfig_ContentMatcher_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: JsonPathMatcher
 	return out
 }
+
+/* found existing non-generated mapping function "UptimeCheckConfig_HTTPCheck_FromProto", skipping
+func UptimeCheckConfig_HTTPCheck_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_HttpCheck) *krm.UptimeCheckConfig_HTTPCheck {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UptimeCheckConfig_HTTPCheck{}
+	out.RequestMethod = direct.Enum_FromProto(mapCtx, in.GetRequestMethod())
+	// MISSING: UseSSL
+	// (near miss): "UseSSL" vs "UseSsl"
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.AuthInfo = UptimeCheckConfig_HTTPCheck_BasicAuthentication_FromProto(mapCtx, in.GetAuthInfo())
+	out.MaskHeaders = direct.LazyPtr(in.GetMaskHeaders())
+	out.Headers = in.Headers
+	out.ContentType = direct.Enum_FromProto(mapCtx, in.GetContentType())
+	// MISSING: CustomContentType
+	// MISSING: ValidateSSL
+	// (near miss): "ValidateSSL" vs "ValidateSsl"
+	out.Body = direct.LazyPtr(in.GetBody())
+	// MISSING: AcceptedResponseStatusCodes
+	// MISSING: PingConfig
+	// MISSING: ServiceAgentAuthentication
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UptimeCheckConfig_HTTPCheck_ToProto", skipping
+func UptimeCheckConfig_HTTPCheck_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_HTTPCheck) *pb.UptimeCheckConfig_HttpCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UptimeCheckConfig_HttpCheck{}
+	out.RequestMethod = direct.Enum_ToProto[pb.UptimeCheckConfig_HttpCheck_RequestMethod](mapCtx, in.RequestMethod)
+	// MISSING: UseSSL
+	// (near miss): "UseSSL" vs "UseSsl"
+	out.Path = direct.ValueOf(in.Path)
+	out.Port = direct.ValueOf(in.Port)
+	out.AuthInfo = UptimeCheckConfig_HTTPCheck_BasicAuthentication_ToProto(mapCtx, in.AuthInfo)
+	out.MaskHeaders = direct.ValueOf(in.MaskHeaders)
+	out.Headers = in.Headers
+	out.ContentType = direct.Enum_ToProto[pb.UptimeCheckConfig_HttpCheck_ContentType](mapCtx, in.ContentType)
+	// MISSING: CustomContentType
+	// MISSING: ValidateSSL
+	// (near miss): "ValidateSSL" vs "ValidateSsl"
+	out.Body = in.Body
+	// MISSING: AcceptedResponseStatusCodes
+	// MISSING: PingConfig
+	// MISSING: ServiceAgentAuthentication
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UptimeCheckConfig_HTTPCheck_BasicAuthentication_FromProto", skipping
+func UptimeCheckConfig_HTTPCheck_BasicAuthentication_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_HttpCheck_BasicAuthentication) *krm.UptimeCheckConfig_HTTPCheck_BasicAuthentication {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UptimeCheckConfig_HTTPCheck_BasicAuthentication{}
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "UptimeCheckConfig_HTTPCheck_BasicAuthentication_ToProto", skipping
+
+	func UptimeCheckConfig_HTTPCheck_BasicAuthentication_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_HTTPCheck_BasicAuthentication) *pb.UptimeCheckConfig_HttpCheck_BasicAuthentication {
+		if in == nil {
+			return nil
+		}
+		out := &pb.UptimeCheckConfig_HttpCheck_BasicAuthentication{}
+		out.Username = direct.ValueOf(in.Username)
+		out.Password = UptimeCheckConfig_HTTPCheck_BasicAuthentication_Password_ToProto(mapCtx, in.Password)
+		return out
+	}
+*/
 func UptimeCheckConfig_MonitoredResource_FromProto(mapCtx *direct.MapContext, in *monitoredrespb.MonitoredResource) *krm.UptimeCheckConfig_MonitoredResource {
 	if in == nil {
 		return nil
@@ -258,3 +336,49 @@ func UptimeCheckConfig_MonitoredResource_ToProto(mapCtx *direct.MapContext, in *
 	out.Labels = in.Labels
 	return out
 }
+func UptimeCheckConfig_ResourceGroup_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_ResourceGroup) *krm.UptimeCheckConfig_ResourceGroup {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UptimeCheckConfig_ResourceGroup{}
+	if in.GetGroupId() != "" {
+		out.GroupIDRef = &krm.MonitoringGroupRef{External: in.GetGroupId()}
+	}
+	out.ResourceType = direct.Enum_FromProto(mapCtx, in.GetResourceType())
+	return out
+}
+func UptimeCheckConfig_ResourceGroup_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_ResourceGroup) *pb.UptimeCheckConfig_ResourceGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UptimeCheckConfig_ResourceGroup{}
+	if in.GroupIDRef != nil {
+		out.GroupId = in.GroupIDRef.External
+	}
+	out.ResourceType = direct.Enum_ToProto[pb.GroupResourceType](mapCtx, in.ResourceType)
+	return out
+}
+
+/* found existing non-generated mapping function "UptimeCheckConfig_TCPCheck_FromProto", skipping
+func UptimeCheckConfig_TCPCheck_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_TcpCheck) *krm.UptimeCheckConfig_TCPCheck {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UptimeCheckConfig_TCPCheck{}
+	out.Port = direct.LazyPtr(in.GetPort())
+	// MISSING: PingConfig
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UptimeCheckConfig_TCPCheck_ToProto", skipping
+func UptimeCheckConfig_TCPCheck_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_TCPCheck) *pb.UptimeCheckConfig_TcpCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UptimeCheckConfig_TcpCheck{}
+	out.Port = direct.ValueOf(in.Port)
+	// MISSING: PingConfig
+	return out
+}
+*/

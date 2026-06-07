@@ -41,6 +41,7 @@ type UptimeCheckConfig_ContentMatcher struct {
 	Matcher *string `json:"matcher,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck.BasicAuthentication
 type UptimeCheckConfig_HTTPCheck_BasicAuthentication struct {
 	// The password to use when authenticating with the HTTP server.
 	// +required
@@ -50,6 +51,7 @@ type UptimeCheckConfig_HTTPCheck_BasicAuthentication struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck
 type UptimeCheckConfig_HTTPCheck struct {
 	// The authentication information. Optional when creating an HTTP check; defaults to empty. Do not set both `auth_method` and `auth_info`.
 	AuthInfo *UptimeCheckConfig_HTTPCheck_BasicAuthentication `json:"authInfo,omitempty"`
@@ -83,13 +85,15 @@ type UptimeCheckConfig_MonitoredResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.ResourceGroup
 type UptimeCheckConfig_ResourceGroup struct {
 	// Immutable. The group resource associated with the configuration.
-	GroupRef *MonitoringGroupRef `json:"groupRef,omitempty"`
+	GroupIDRef *MonitoringGroupRef `json:"groupRef,omitempty"`
 	// Immutable. The resource type of the group members. Possible values: RESOURCE_TYPE_UNSPECIFIED, INSTANCE, AWS_ELB_LOAD_BALANCER
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
+// +kcc:proto=google.monitoring.v3.UptimeCheckConfig.TcpCheck
 type UptimeCheckConfig_TCPCheck struct {
 	// The TCP port on the server against which to run the check. Will be combined with host (specified within the `monitored_resource`) to construct the full URL. Required.
 	// +required

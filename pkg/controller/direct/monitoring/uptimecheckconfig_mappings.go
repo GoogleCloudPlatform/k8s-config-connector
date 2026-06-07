@@ -20,32 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func UptimeCheckConfig_ResourceGroup_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_ResourceGroup) *krm.UptimeCheckConfig_ResourceGroup {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UptimeCheckConfig_ResourceGroup{}
-	if in.GetGroupId() != "" {
-		out.GroupRef = &krm.MonitoringGroupRef{
-			External: in.GetGroupId(),
-		}
-	}
-	out.ResourceType = direct.Enum_FromProto(mapCtx, in.GetResourceType())
-	return out
-}
-
-func UptimeCheckConfig_ResourceGroup_ToProto(mapCtx *direct.MapContext, in *krm.UptimeCheckConfig_ResourceGroup) *pb.UptimeCheckConfig_ResourceGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UptimeCheckConfig_ResourceGroup{}
-	if in.GroupRef != nil {
-		out.GroupId = in.GroupRef.External
-	}
-	out.ResourceType = direct.Enum_ToProto[pb.GroupResourceType](mapCtx, in.ResourceType)
-	return out
-}
-
 func UptimeCheckConfig_HTTPCheck_BasicAuthentication_FromProto(mapCtx *direct.MapContext, in *pb.UptimeCheckConfig_HttpCheck_BasicAuthentication) *krm.UptimeCheckConfig_HTTPCheck_BasicAuthentication {
 	if in == nil {
 		return nil
