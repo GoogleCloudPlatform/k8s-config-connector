@@ -214,9 +214,11 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	parent := a.id.ParentString()
 	req := &pb.CreateConnectionRequest{
-		Parent:       parent,
-		Connection:   resource,
-		ConnectionId: a.id.Connection,
+		Parent:     parent,
+		Connection: resource,
+	}
+	if a.id.HasIdentitySpecified() {
+		req.ConnectionId = a.id.Connection
 	}
 	created, err := a.gcpClient.CreateConnection(ctx, req)
 	if err != nil {
