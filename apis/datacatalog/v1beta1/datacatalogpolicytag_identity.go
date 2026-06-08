@@ -78,33 +78,42 @@ func getIdentityFromDataCatalogPolicyTagSpec(ctx context.Context, reader client.
 		return nil, err
 	}
 
-	// Get taxonomy identity
-	u, ok := obj.(*unstructured.Unstructured)
-	if !ok {
-		return nil, fmt.Errorf("object was not unstructured")
+	var taxonomyRef TaxonomyRef
+	switch t := obj.(type) {
+	case *unstructured.Unstructured:
+		taxonomyRefStr, _, err := unstructured.NestedString(t.Object, "spec", "taxonomyRef", "external")
+		if err != nil {
+			return nil, fmt.Errorf("reading spec.taxonomyRef.external: %w", err)
+		}
+		taxonomyRefName, _, err := unstructured.NestedString(t.Object, "spec", "taxonomyRef", "name")
+		if err != nil {
+			return nil, fmt.Errorf("reading spec.taxonomyRef.name: %w", err)
+		}
+		taxonomyRefNamespace, _, err := unstructured.NestedString(t.Object, "spec", "taxonomyRef", "namespace")
+		if err != nil {
+			return nil, fmt.Errorf("reading spec.taxonomyRef.namespace: %w", err)
+		}
+		taxonomyRef = TaxonomyRef{
+			External:  taxonomyRefStr,
+			Name:      taxonomyRefName,
+			Namespace: taxonomyRefNamespace,
+		}
+	case *DataCatalogPolicyTag:
+		taxonomyRef = t.Spec.TaxonomyRef
+	default:
+		return nil, fmt.Errorf("unsupported type %T", obj)
 	}
 
-	taxonomyRefStr, _, err := unstructured.NestedString(u.Object, "spec", "taxonomyRef", "external")
-	if err != nil {
-		return nil, fmt.Errorf("reading spec.taxonomyRef.external: %w", err)
-	}
-
-	if taxonomyRefStr == "" {
-		// Try to resolve it if name/namespace are provided
-		taxonomyRefName, _, _ := unstructured.NestedString(u.Object, "spec", "taxonomyRef", "name")
-		taxonomyRefNamespace, _, _ := unstructured.NestedString(u.Object, "spec", "taxonomyRef", "namespace")
-		if taxonomyRefName != "" {
-			if taxonomyRefNamespace == "" {
-				taxonomyRefNamespace = obj.GetNamespace()
-			}
-			taxonomyRef := &TaxonomyRef{
-				Name:      taxonomyRefName,
-				Namespace: taxonomyRefNamespace,
-			}
-			taxonomyRefStr, err = taxonomyRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-			if err != nil {
-				return nil, err
-			}
+	var taxonomyRefStr string
+	if taxonomyRef.External != "" {
+		taxonomyRefStr = taxonomyRef.External
+	} else if taxonomyRef.Name != "" {
+		if taxonomyRef.Namespace == "" {
+			taxonomyRef.Namespace = obj.GetNamespace()
+		}
+		taxonomyRefStr, err = taxonomyRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return nil, err
 		}
 	}
 

@@ -23,6 +23,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 var _ refs.Ref = &DataCatalogPolicyTagRef{}
@@ -87,6 +88,7 @@ func (r *DataCatalogPolicyTagRef) Normalize(ctx context.Context, reader client.R
 	fallback := func(u *unstructured.Unstructured) string {
 		identity, err := getIdentityFromDataCatalogPolicyTagSpec(ctx, reader, u)
 		if err != nil {
+			log.FromContext(ctx).Error(err, "resolving DataCatalogPolicyTag identity in Normalize fallback")
 			return ""
 		}
 		return identity.String()

@@ -15,7 +15,11 @@
 package v1beta1
 
 import (
+	"context"
 	"testing"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 func TestDataCatalogPolicyTagIdentity_FromExternal(t *testing.T) {
@@ -75,5 +79,54 @@ func TestDataCatalogPolicyTagIdentity_FromExternal(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestDataCatalogPolicyTag_GetIdentity(t *testing.T) {
+	ctx := context.Background()
+
+	// Test GetIdentity (which calls getIdentityFromDataCatalogPolicyTagSpec with typed object)
+	typedObj := &DataCatalogPolicyTag{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "my-policytag",
+			Namespace: "my-namespace",
+		},
+		Spec: DataCatalogPolicyTagSpec{
+			TaxonomyRef: TaxonomyRef{
+				External: "projects/my-project/locations/us-central1/taxonomies/my-taxonomy",
+			},
+		},
+	}
+	identity, err := typedObj.GetIdentity(ctx, nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	want := "projects/my-project/locations/us-central1/taxonomies/my-taxonomy/policyTags/my-policytag"
+	if identity.String() != want {
+		t.Errorf("GetIdentity() = %q, want %q", identity.String(), want)
+	}
+
+	// Test getIdentityFromDataCatalogPolicyTagSpec with unstructured object
+	u := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "datacatalog.cnrm.cloud.google.com/v1beta1",
+			"kind":       "DataCatalogPolicyTag",
+			"metadata": map[string]interface{}{
+				"name":      "my-policytag",
+				"namespace": "my-namespace",
+			},
+			"spec": map[string]interface{}{
+				"taxonomyRef": map[string]interface{}{
+					"external": "projects/my-project/locations/us-central1/taxonomies/my-taxonomy",
+				},
+			},
+		},
+	}
+	specID, err := getIdentityFromDataCatalogPolicyTagSpec(ctx, nil, u)
+	if err != nil {
+		t.Fatalf("unexpected error for unstructured: %v", err)
+	}
+	if specID.String() != want {
+		t.Errorf("getIdentityFromDataCatalogPolicyTagSpec() = %q, want %q", specID.String(), want)
 	}
 }
