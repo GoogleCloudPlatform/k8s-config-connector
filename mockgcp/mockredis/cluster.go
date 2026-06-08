@@ -208,12 +208,6 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 		}
 	}
 	if obj.MaintenancePolicy != nil {
-		if obj.MaintenancePolicy.CreateTime == nil {
-			obj.MaintenancePolicy.CreateTime = timestamppb.New(time.Unix(1717171717, 0))
-		}
-		if obj.MaintenancePolicy.UpdateTime == nil {
-			obj.MaintenancePolicy.UpdateTime = timestamppb.New(time.Unix(1717171717, 0))
-		}
 		if obj.MaintenanceSchedule == nil {
 			obj.MaintenanceSchedule = &pb.ClusterMaintenanceSchedule{
 				StartTime: timestamppb.New(time.Unix(1727272727, 0)),

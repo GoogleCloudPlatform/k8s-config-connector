@@ -49,11 +49,9 @@ spec:
         minutes: 0
         seconds: 0
         nanos: 0
+  # In weeklyMaintenanceWindow.startTime, only hours are supported when running against real GCP.
   maintenancePolicy:
     weeklyMaintenanceWindow:
     - day: MONDAY
       startTime:
         hours: 3
-        minutes: 45
-        seconds: 0
-        nanos: 0

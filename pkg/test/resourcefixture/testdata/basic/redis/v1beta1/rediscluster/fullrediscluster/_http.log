@@ -544,8 +544,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
       {
         "day": 7,
         "startTime": {
-          "hours": 2,
-          "minutes": 30
+          "hours": 2
         }
       }
     ]
@@ -647,14 +646,11 @@ X-Xss-Protection: 0
       }
     ],
     "maintenancePolicy": {
-      "createTime": "2024-05-31T16:08:37Z",
-      "updateTime": "2024-05-31T16:08:37Z",
       "weeklyMaintenanceWindow": [
         {
           "day": "SUNDAY",
           "startTime": {
-            "hours": 2,
-            "minutes": 30
+            "hours": 2
           }
         }
       ]
@@ -744,14 +740,11 @@ X-Xss-Protection: 0
     }
   ],
   "maintenancePolicy": {
-    "createTime": "2024-05-31T16:08:37Z",
-    "updateTime": "2024-05-31T16:08:37Z",
     "weeklyMaintenanceWindow": [
       {
         "day": 7,
         "startTime": {
-          "hours": 2,
-          "minutes": 30
+          "hours": 2
         }
       }
     ]
@@ -824,8 +817,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       {
         "day": 1,
         "startTime": {
-          "hours": 3,
-          "minutes": 45
+          "hours": 3
         }
       }
     ]
@@ -930,14 +922,11 @@ X-Xss-Protection: 0
       }
     ],
     "maintenancePolicy": {
-      "createTime": "2024-05-31T16:08:37Z",
-      "updateTime": "2024-05-31T16:08:37Z",
       "weeklyMaintenanceWindow": [
         {
           "day": "SUNDAY",
           "startTime": {
-            "hours": 2,
-            "minutes": 30
+            "hours": 2
           }
         }
       ]
@@ -1011,8 +1000,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       {
         "day": 1,
         "startTime": {
-          "hours": 3,
-          "minutes": 45
+          "hours": 3
         }
       }
     ]
@@ -1117,14 +1105,11 @@ X-Xss-Protection: 0
       }
     ],
     "maintenancePolicy": {
-      "createTime": "2024-05-31T16:08:37Z",
-      "updateTime": "2024-05-31T16:08:37Z",
       "weeklyMaintenanceWindow": [
         {
           "day": "SUNDAY",
           "startTime": {
-            "hours": 2,
-            "minutes": 30
+            "hours": 2
           }
         }
       ]
@@ -1198,8 +1183,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       {
         "day": 1,
         "startTime": {
-          "hours": 3,
-          "minutes": 45
+          "hours": 3
         }
       }
     ]
@@ -1304,14 +1288,11 @@ X-Xss-Protection: 0
       }
     ],
     "maintenancePolicy": {
-      "createTime": "2024-05-31T16:08:37Z",
-      "updateTime": "2024-05-31T16:08:37Z",
       "weeklyMaintenanceWindow": [
         {
           "day": "MONDAY",
           "startTime": {
-            "hours": 3,
-            "minutes": 45
+            "hours": 3
           }
         }
       ]
@@ -1385,8 +1366,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       {
         "day": 1,
         "startTime": {
-          "hours": 3,
-          "minutes": 45
+          "hours": 3
         }
       }
     ]
@@ -1491,14 +1471,11 @@ X-Xss-Protection: 0
       }
     ],
     "maintenancePolicy": {
-      "createTime": "2024-05-31T16:08:37Z",
-      "updateTime": "2024-05-31T16:08:37Z",
       "weeklyMaintenanceWindow": [
         {
           "day": "MONDAY",
           "startTime": {
-            "hours": 3,
-            "minutes": 45
+            "hours": 3
           }
         }
       ]
@@ -1573,8 +1550,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       {
         "day": 1,
         "startTime": {
-          "hours": 3,
-          "minutes": 45
+          "hours": 3
         }
       }
     ]
@@ -1679,14 +1655,11 @@ X-Xss-Protection: 0
       }
     ],
     "maintenancePolicy": {
-      "createTime": "2024-05-31T16:08:37Z",
-      "updateTime": "2024-05-31T16:08:37Z",
       "weeklyMaintenanceWindow": [
         {
           "day": "MONDAY",
           "startTime": {
-            "hours": 3,
-            "minutes": 45
+            "hours": 3
           }
         }
       ]
@@ -1762,8 +1735,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       {
         "day": 1,
         "startTime": {
-          "hours": 3,
-          "minutes": 45
+          "hours": 3
         }
       }
     ]
@@ -1868,14 +1840,11 @@ X-Xss-Protection: 0
       }
     ],
     "maintenancePolicy": {
-      "createTime": "2024-05-31T16:08:37Z",
-      "updateTime": "2024-05-31T16:08:37Z",
       "weeklyMaintenanceWindow": [
         {
           "day": "MONDAY",
           "startTime": {
-            "hours": 3,
-            "minutes": 45
+            "hours": 3
           }
         }
       ]
@@ -1967,14 +1936,11 @@ X-Xss-Protection: 0
     }
   ],
   "maintenancePolicy": {
-    "createTime": "2024-05-31T16:08:37Z",
-    "updateTime": "2024-05-31T16:08:37Z",
     "weeklyMaintenanceWindow": [
       {
         "day": 1,
         "startTime": {
-          "hours": 3,
-          "minutes": 45
+          "hours": 3
         }
       }
     ]
