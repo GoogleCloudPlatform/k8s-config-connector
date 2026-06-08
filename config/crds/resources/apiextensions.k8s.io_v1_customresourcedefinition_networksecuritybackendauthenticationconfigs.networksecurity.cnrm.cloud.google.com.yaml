@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com
 spec:
@@ -191,6 +192,7 @@ spec:
                 - PUBLIC_ROOTS
                 type: string
             required:
+            - location
             - projectRef
             type: object
           status:
