@@ -1,0 +1,12 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+10c9
+<   generation: 2
+---
+>   generation: 1
+20d18
+<   resourceID: capacitycommitment-minimal-${uniqueId}
+32c30
+<   observedGeneration: 2
+---
+>   observedGeneration: 1

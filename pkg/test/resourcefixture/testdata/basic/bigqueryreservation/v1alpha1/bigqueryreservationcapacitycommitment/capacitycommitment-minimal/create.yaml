@@ -1,0 +1,10 @@
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryReservationCapacityCommitment
+metadata:
+  name: capacitycommitment-minimal-${uniqueId}
+spec:
+  location: us-west1
+  plan: FLEX
+  projectRef:
+    external: ${projectId}
+  slotCount: 100

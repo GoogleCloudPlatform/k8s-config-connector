@@ -1,0 +1,90 @@
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "No capacity commitment found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments?alt=json&capacityCommitmentId=capacitycommitment-minimal-${uniqueId}
+Content-Type: application/json
+
+{
+  "plan": "FLEX",
+  "slotCount": 100
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "commitmentEndTime": "2024-04-01T12:34:56.123456Z",
+  "commitmentStartTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}",
+  "plan": "FLEX",
+  "slotCount": "100",
+  "state": "ACTIVE"
+}
+
+---
+
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "commitmentEndTime": "2024-04-01T12:34:56.123456Z",
+  "commitmentStartTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}",
+  "plan": "FLEX",
+  "slotCount": "100",
+  "state": "ACTIVE"
+}
+
+---
+
+DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

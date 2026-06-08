@@ -1,0 +1,38 @@
+1c1
+< GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}?alt=json
+---
+> GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments?alt=json&capacityCommitmentId=capacitycommitment-minimal-${uniqueId}
+---
+> POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments?%24alt=json%3Benum-encoding%3Dint&capacityCommitmentId=capacitycommitment-minimal-${uniqueId}
+28,29c28,29
+<   "plan": "FLEX",
+<   "slotCount": 100
+---
+>   "plan": 3,
+>   "slotCount": "100"
+46c46
+<   "plan": "FLEX",
+---
+>   "plan": 3,
+48c48
+<   "state": "ACTIVE"
+---
+>   "state": 2
+53c53
+< GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}?alt=json
+---
+> GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+70c70
+<   "plan": "FLEX",
+---
+>   "plan": 3,
+72c72
+<   "state": "ACTIVE"
+---
+>   "state": 2
+77c77
+< DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}?alt=json
+---
+> DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

@@ -1,0 +1,12 @@
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryReservationCapacityCommitment
+metadata:
+  name: capacitycommitment-maximal-${uniqueId}
+spec:
+  edition: ENTERPRISE
+  location: us-west1
+  plan: ANNUAL
+  projectRef:
+    external: ${projectId}
+  renewalPlan: FLEX
+  slotCount: 100

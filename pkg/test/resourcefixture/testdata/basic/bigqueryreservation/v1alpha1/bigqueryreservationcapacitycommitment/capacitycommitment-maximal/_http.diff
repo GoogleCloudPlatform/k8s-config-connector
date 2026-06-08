@@ -1,0 +1,99 @@
+1c1
+< GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?alt=json
+---
+> GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments?alt=json&capacityCommitmentId=capacitycommitment-maximal-${uniqueId}
+---
+> POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments?%24alt=json%3Benum-encoding%3Dint&capacityCommitmentId=capacitycommitment-maximal-${uniqueId}
+28,31c28,31
+<   "edition": "ENTERPRISE",
+<   "plan": "ANNUAL",
+<   "renewalPlan": "ANNUAL",
+<   "slotCount": 100
+---
+>   "edition": 2,
+>   "plan": 4,
+>   "renewalPlan": 4,
+>   "slotCount": "100"
+47c47
+<   "edition": "ENTERPRISE",
+---
+>   "edition": 2,
+49,50c49,50
+<   "plan": "ANNUAL",
+<   "renewalPlan": "ANNUAL",
+---
+>   "plan": 4,
+>   "renewalPlan": 4,
+52c52
+<   "state": "ACTIVE"
+---
+>   "state": 2
+57c57
+< GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?alt=json
+---
+> GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+73c73
+<   "edition": "ENTERPRISE",
+---
+>   "edition": 2,
+75,76c75,76
+<   "plan": "ANNUAL",
+<   "renewalPlan": "ANNUAL",
+---
+>   "plan": 4,
+>   "renewalPlan": 4,
+78c78
+<   "state": "ACTIVE"
+---
+>   "state": 2
+83c83
+< PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?alt=json&updateMask=renewalPlan
+---
+> PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=renewalPlan
+87,88c87,91
+<   "plan": "ANNUAL",
+<   "renewalPlan": "FLEX"
+---
+>   "edition": 2,
+>   "name": "projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}",
+>   "plan": 4,
+>   "renewalPlan": 3,
+>   "slotCount": "100"
+104c107
+<   "edition": "ENTERPRISE",
+---
+>   "edition": 2,
+106,107c109,110
+<   "plan": "ANNUAL",
+<   "renewalPlan": "FLEX",
+---
+>   "plan": 4,
+>   "renewalPlan": 3,
+109c112
+<   "state": "ACTIVE"
+---
+>   "state": 2
+114c117
+< GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?alt=json
+---
+> GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+130c133
+<   "edition": "ENTERPRISE",
+---
+>   "edition": 2,
+132,133c135,136
+<   "plan": "ANNUAL",
+<   "renewalPlan": "FLEX",
+---
+>   "plan": 4,
+>   "renewalPlan": 3,
+135c138
+<   "state": "ACTIVE"
+---
+>   "state": 2
+140c143
+< DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?alt=json
+---
+> DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west1/capacityCommitments/capacitycommitment-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

@@ -119,6 +119,8 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
+	visitor.replacePaths[".status.commitmentStartTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.commitmentEndTime"] = mockgcpregistry.PlaceholderTime
 
 	// Specific to Dataflow
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
