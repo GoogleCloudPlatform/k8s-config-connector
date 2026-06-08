@@ -254,6 +254,28 @@ func DiscoveryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
 	return out
 }
+func EncryptionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionInfoObservedState{}
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	out.KMSKeyVersions = in.KmsKeyVersions
+	out.KMSKeyPrimaryState = direct.Enum_FromProto(mapCtx, in.GetKmsKeyPrimaryState())
+	out.LastUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUpdateTime())
+	return out
+}
+func EncryptionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfoObservedState) *pb.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_Type](mapCtx, in.EncryptionType)
+	out.KmsKeyVersions = in.KMSKeyVersions
+	out.KmsKeyPrimaryState = direct.Enum_ToProto[pb.EncryptionInfo_KmsKeyState](mapCtx, in.KMSKeyPrimaryState)
+	out.LastUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.LastUpdateTime)
+	return out
+}
 func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
 	if in == nil {
 		return nil
@@ -322,8 +344,7 @@ func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clust
 	// MISSING: PSCServiceAttachments
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
-	// MISSING: KMSKey
-	// MISSING: EncryptionInfo
+	out.EncryptionInfo = EncryptionInfoObservedState_FromProto(mapCtx, in.GetEncryptionInfo())
 	return out
 }
 func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterObservedState) *pb.Cluster {
@@ -348,10 +369,11 @@ func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisC
 	// MISSING: PSCServiceAttachments
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
-	// MISSING: KMSKey
-	// MISSING: EncryptionInfo
+	out.EncryptionInfo = EncryptionInfoObservedState_ToProto(mapCtx, in.EncryptionInfo)
 	return out
 }
+
+/* found existing non-generated mapping function "RedisClusterSpec_FromProto", skipping
 func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.RedisClusterSpec {
 	if in == nil {
 		return nil
@@ -375,39 +397,47 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	// MISSING: PSCServiceAttachments
 	// MISSING: ClusterEndpoints
 	// MISSING: BackupCollection
-	// MISSING: KMSKey
-	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
-	// MISSING: EncryptionInfo
-	return out
-}
-func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpec) *pb.Cluster {
-	if in == nil {
-		return nil
+	if in.GetKmsKey() != "" {
+		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
-	out := &pb.Cluster{}
-	// MISSING: GCSSource
-	// MISSING: ManagedBackupSource
-	// MISSING: Name
-	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_ToProto[pb.AuthorizationMode](mapCtx, in.AuthorizationMode)
-	out.TransitEncryptionMode = direct.Enum_ToProto[pb.TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
-	out.ShardCount = in.ShardCount
-	out.PscConfigs = direct.Slice_ToProto(mapCtx, in.PSCConfigs, PscConfigSpec_ToProto)
-	out.NodeType = direct.Enum_ToProto[pb.NodeType](mapCtx, in.NodeType)
-	out.PersistenceConfig = ClusterPersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
-	out.RedisConfigs = in.RedisConfigs
-	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
-	// MISSING: CrossClusterReplicationConfig
-	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	out.MaintenancePolicy = ClusterMaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
-	// MISSING: PSCServiceAttachments
-	// MISSING: ClusterEndpoints
-	// MISSING: BackupCollection
-	// MISSING: KMSKey
-	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
-	// MISSING: EncryptionInfo
+	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
 	return out
 }
+*/
+
+/*
+found existing non-generated mapping function "RedisClusterSpec_ToProto", skipping
+
+	func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpec) *pb.Cluster {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Cluster{}
+		// MISSING: GCSSource
+		// MISSING: ManagedBackupSource
+		// MISSING: Name
+		out.ReplicaCount = in.ReplicaCount
+		out.AuthorizationMode = direct.Enum_ToProto[pb.AuthorizationMode](mapCtx, in.AuthorizationMode)
+		out.TransitEncryptionMode = direct.Enum_ToProto[pb.TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
+		out.ShardCount = in.ShardCount
+		out.PscConfigs = direct.Slice_ToProto(mapCtx, in.PSCConfigs, PscConfigSpec_ToProto)
+		out.NodeType = direct.Enum_ToProto[pb.NodeType](mapCtx, in.NodeType)
+		out.PersistenceConfig = ClusterPersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
+		out.RedisConfigs = in.RedisConfigs
+		out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
+		// MISSING: CrossClusterReplicationConfig
+		out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+		out.MaintenancePolicy = ClusterMaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
+		// MISSING: PSCServiceAttachments
+		// MISSING: ClusterEndpoints
+		// MISSING: BackupCollection
+		if in.KMSKeyRef != nil {
+			out.KmsKey = in.KMSKeyRef.External
+		}
+		out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
+		return out
+	}
+*/
 func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfig {
 	if in == nil {
 		return nil

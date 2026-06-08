@@ -30,6 +30,7 @@ import (
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -104,6 +105,14 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 
 	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	if obj.Spec.KMSKeyRef != nil {
+		resolvedKMSKey, err := refs.ResolveKMSCryptoKeyRef(ctx, kube, obj, obj.Spec.KMSKeyRef)
+		if err != nil {
+			return nil, fmt.Errorf("resolving KMSKeyRef: %w", err)
+		}
+		obj.Spec.KMSKeyRef = resolvedKMSKey
 	}
 
 	mapCtx := &direct.MapContext{}
