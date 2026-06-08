@@ -165,6 +165,8 @@ import (
 	fakedataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1/fake"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	fakedatafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1/fake"
+	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalabeling/v1alpha1"
+	fakedatalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalabeling/v1alpha1/fake"
 	datamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datamigration/v1alpha1"
 	fakedatamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datamigration/v1alpha1/fake"
 	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataplex/v1alpha1"
@@ -801,6 +803,11 @@ func (c *Clientset) DataformV1beta1() dataformv1beta1.DataformV1beta1Interface {
 // DatafusionV1beta1 retrieves the DatafusionV1beta1Client
 func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface {
 	return &fakedatafusionv1beta1.FakeDatafusionV1beta1{Fake: &c.Fake}
+}
+
+// DatalabelingV1alpha1 retrieves the DatalabelingV1alpha1Client
+func (c *Clientset) DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface {
+	return &fakedatalabelingv1alpha1.FakeDatalabelingV1alpha1{Fake: &c.Fake}
 }
 
 // DatamigrationV1alpha1 retrieves the DatamigrationV1alpha1Client
