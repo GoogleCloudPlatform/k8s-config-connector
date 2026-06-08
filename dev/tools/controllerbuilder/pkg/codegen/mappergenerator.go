@@ -171,7 +171,21 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	parentFile := msg.ParentFile()
 	protoGoPackage := GoPackageForProto(parentFile)
 
+	var targetGroupShort string
+	if v.generatedFileAnnotation != nil {
+		groupAttr := v.generatedFileAnnotation.Attributes["krm.group"]
+		if len(groupAttr) > 0 {
+			targetGroupShort = strings.TrimSuffix(groupAttr[0], ".cnrm.cloud.google.com")
+		}
+	}
+
 	for _, goType := range goTypes {
+		if targetGroupShort != "" {
+			expectedPathSegment := "/apis/" + targetGroupShort + "/"
+			if !strings.Contains(goType.GoPackage, expectedPathSegment) {
+				continue
+			}
+		}
 		v.typePairs = append(v.typePairs, typePair{
 			ProtoPackage:   msg.ParentFile().Package(),
 			ProtoGoPackage: protoGoPackage,
