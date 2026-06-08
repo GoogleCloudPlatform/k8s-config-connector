@@ -32,6 +32,30 @@ func StorageBucketFuzzer() fuzztesting.KRMFuzzer {
 		StorageBucketSpec_FromProto, StorageBucketSpec_ToProto,
 	)
 
+	// Comparison of KRM StorageBucketSpec fields with google.storage.v1.Bucket proto fields:
+	//
+	// Mapped KRM Spec fields:
+	// - Autoclass (StorageBucketAutoclass)              -> f.SpecField(".autoclass")
+	// - Cors ([]StorageBucketCors)                      -> f.SpecField(".cors")
+	// - DefaultEventBasedHold (*bool)                    -> f.SpecField(".default_event_based_hold")
+	// - Encryption (*StorageBucketEncryption)           -> f.SpecField(".encryption")
+	// - Location (*string)                              -> f.SpecField(".location")
+	// - Logging (*StorageBucketLogging)                 -> f.SpecField(".logging")
+	// - ResourceID (*string)                            -> f.Unimplemented_Identity(".name") / f.Unimplemented_Identity(".id")
+	// - RetentionPolicy (*StorageBucketRetentionPolicy) -> f.SpecField(".retention_policy")
+	// - StorageClass (*string)                          -> f.SpecField(".storage_class")
+	// - Versioning (*StorageBucketVersioning)           -> f.SpecField(".versioning")
+	// - Website (*StorageBucketWebsite)                 -> f.SpecField(".website")
+	//
+	// Unmapped KRM Spec fields:
+	// - BucketPolicyOnly (*bool)                         -> Unmapped/Deprecated (corresponds to iam_configuration.bucket_policy_only in proto, which is untriaged)
+	// - CustomPlacementConfig (*StorageBucketCustomPlacementConfig) -> Unmapped in KCC direct mapper (no corresponding field in google.storage.v1.Bucket proto)
+	// - LifecycleRule ([]StorageBucketLifecycleRule)    -> f.Unimplemented_NotYetTriaged(".lifecycle")
+	// - PublicAccessPrevention (*string)                 -> f.Unimplemented_NotYetTriaged(".iam_configuration")
+	// - RequesterPays (*bool)                           -> f.Unimplemented_NotYetTriaged(".billing")
+	// - SoftDeletePolicy (*StorageBucketSoftDeletePolicy) -> Unmapped in direct mapper (no corresponding field in google.storage.v1.Bucket proto)
+	// - UniformBucketLevelAccess (*bool)                -> f.Unimplemented_NotYetTriaged(".iam_configuration")
+
 	f.SpecField(".cors")
 	f.SpecField(".location")
 	f.SpecField(".storage_class")

@@ -41,6 +41,7 @@ This skill guides an automated agent through the process of implementing a round
      - **Status Fields:** Call `f.StatusField(".proto_field_name")` for fields mapped in Status/Observed State. The fuzzer will ignore them during the Spec round-trip.
      - **Unimplemented/Identity Fields:** Call `f.Unimplemented_Identity(".name")` for the resource name/ID GCP fields that are not part of the standard KCC resource's Spec or Status.
      - **Not Yet Triaged/Unimplemented Fields:** Call `f.Unimplemented_NotYetTriaged(".field_name")` or other unimplemented helpers for fields that are not yet implemented by KCC.
+   - **Document Field Comparison**: Always add detailed comparison comments in the fuzzer file (just above `f.SpecField` calls) that explicitly compare the KRM Spec type fields with their corresponding fuzzer/proto field mapping status. This helps reviewers verify that every field in the KRM Spec was accounted for, especially when fields map to nested untriaged proto structures (e.g. `lifecycleRule` maps to `f.Unimplemented_NotYetTriaged(".lifecycle")`).
    - **CRITICAL - Helper Wrappers Only**: Always use the wrapper helper functions (such as `f.SpecField()`, `f.StatusField()`, `f.Unimplemented_Identity()`) instead of directly manipulating the fields sets via `.Insert()` (e.g. do NOT use `f.SpecFields.Insert()`, `f.StatusFields.Insert()`, or `f.UnimplementedFields.Insert()`). This maintains clean api patterns and safety checks.
 
 5. **Verify with Fuzzer Tests**
