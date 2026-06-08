@@ -113,16 +113,20 @@ func TestE2EScript(t *testing.T) {
 
 				var eventsByStep []*SkippableLogEntries
 				eventsBefore := h.Events.HTTPEvents
-				captureHTTPLogEvents := func(skip bool) {
+				captureHTTPLogEvents := func(skip bool, deferCapture bool) {
 					var stepEvents []*test.LogEntry
-					for i := len(eventsBefore); i < len(h.Events.HTTPEvents); i++ {
-						stepEvents = append(stepEvents, h.Events.HTTPEvents[i])
+					if !deferCapture {
+						for i := len(eventsBefore); i < len(h.Events.HTTPEvents); i++ {
+							stepEvents = append(stepEvents, h.Events.HTTPEvents[i])
+						}
 					}
 					eventsByStep = append(eventsByStep, &SkippableLogEntries{
-						SkipCheck: skip,
+						SkipCheck: skip || deferCapture,
 						Entries:   stepEvents,
 					})
-					eventsBefore = h.Events.HTTPEvents
+					if !deferCapture {
+						eventsBefore = h.Events.HTTPEvents
+					}
 				}
 
 				// tracks all applied objects (in order, to avoid deletion dependency-ordering issues)
@@ -141,6 +145,12 @@ func TestE2EScript(t *testing.T) {
 
 					t.Logf("***/Step %d: %s %s %s/%s", i, testCommand, obj.GroupVersionKind().Kind, obj.GetNamespace(), obj.GetName())
 
+					deferHTTPLog := false
+					v, ok = obj.Object["DEFER-HTTP-LOG"]
+					if ok {
+						deferHTTPLog = v.(bool)
+					}
+
 					if obj.GroupVersionKind().Kind == "RunCLI" {
 						argsObjects := obj.Object["args"].([]any)
 						var args []string
@@ -149,7 +159,7 @@ func TestE2EScript(t *testing.T) {
 						}
 						baseOutputPath := filepath.Join(script.SourceDir, fmt.Sprintf("_cli-%d-", i))
 						runCLI(h, args, uniqueID, baseOutputPath)
-						captureHTTPLogEvents(true)
+						captureHTTPLogEvents(true, deferHTTPLog)
 						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
@@ -166,7 +176,7 @@ func TestE2EScript(t *testing.T) {
 							t.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
 						}
 
-						captureHTTPLogEvents(false)
+						captureHTTPLogEvents(false, deferHTTPLog)
 						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
@@ -211,7 +221,7 @@ func TestE2EScript(t *testing.T) {
 							time.Sleep(waitTimeout)
 						}
 
-						captureHTTPLogEvents(true)
+						captureHTTPLogEvents(true, deferHTTPLog)
 						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
@@ -459,7 +469,7 @@ func TestE2EScript(t *testing.T) {
 						}
 					}
 
-					captureHTTPLogEvents(false)
+					captureHTTPLogEvents(false, deferHTTPLog)
 					t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 				}
 
@@ -527,6 +537,7 @@ func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured
 	delete(o.Object, "TEST")
 	delete(o.Object, "VALUE_PRESENT")
 	delete(o.Object, "WRITE-KUBE-OBJECT")
+	delete(o.Object, "DEFER-HTTP-LOG")
 	delete(o.Object, "TARGET_STEP_FOR_READ_AND_COMPARE")
 
 	return o
