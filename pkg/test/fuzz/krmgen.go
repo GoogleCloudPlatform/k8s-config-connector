@@ -51,6 +51,9 @@ func (rf *RandomFiller) Fill(t *testing.T, obj interface{}) {
 }
 
 func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field reflect.Value) {
+	if !field.CanSet() {
+		return
+	}
 	if field.Kind() == reflect.Ptr {
 		if field.IsNil() {
 			field.Set(reflect.New(field.Type().Elem()))
@@ -132,6 +135,9 @@ func (rf *ClearNonProtoFields) Fill(t *testing.T, obj interface{}) {
 }
 
 func (rf *ClearNonProtoFields) fillWithClear(t *testing.T, fieldName string, field reflect.Value) {
+	if !field.CanSet() {
+		return
+	}
 	if rf.fieldOverrides != nil {
 		if override, ok := rf.fieldOverrides[fieldName]; ok {
 			override(t, fieldName, field)
