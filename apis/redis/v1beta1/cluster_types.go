@@ -78,6 +78,10 @@ type RedisClusterSpec struct {
 
 	// Optional. ClusterMaintenancePolicy determines when to allow or deny updates.
 	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	// Optional. The KMS key name to encrypt data at rest.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.kms_key
+	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 type PscConfigSpec struct {
@@ -144,6 +148,9 @@ type RedisClusterObservedState struct {
 
 	// Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule.
 	MaintenanceSchedule *ClusterMaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
+
+	// Output only. Encryption information for the client to retrieve.
+	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
 }
 
 // +genclient

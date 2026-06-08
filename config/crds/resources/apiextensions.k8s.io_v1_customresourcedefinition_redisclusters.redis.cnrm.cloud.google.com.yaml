@@ -115,6 +115,34 @@ spec:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
                 type: boolean
+              kmsKeyRef:
+                description: Optional. The KMS key name to encrypt data at rest.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               location:
                 description: Immutable. Location of the resource.
                 type: string
@@ -384,6 +412,29 @@ spec:
                           type: object
                       type: object
                     type: array
+                  encryptionInfo:
+                    description: Output only. Encryption information for the client
+                      to retrieve.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary version
+                          of the KMS key perceived by the system. This field is not
+                          populated in backups.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the data at-rest.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. The most recent time when the encryption
+                          info was updated.
+                        type: string
+                    type: object
                   maintenancePolicy:
                     description: Optional. ClusterMaintenancePolicy determines when
                       to allow or deny updates.
@@ -572,6 +623,34 @@ spec:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
                 type: boolean
+              kmsKeyRef:
+                description: Optional. The KMS key name to encrypt data at rest.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               location:
                 description: Immutable. Location of the resource.
                 type: string
@@ -841,6 +920,29 @@ spec:
                           type: object
                       type: object
                     type: array
+                  encryptionInfo:
+                    description: Output only. Encryption information for the client
+                      to retrieve.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary version
+                          of the KMS key perceived by the system. This field is not
+                          populated in backups.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the data at-rest.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. The most recent time when the encryption
+                          info was updated.
+                        type: string
+                    type: object
                   maintenancePolicy:
                     description: Optional. ClusterMaintenancePolicy determines when
                       to allow or deny updates.

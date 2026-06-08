@@ -150,6 +150,10 @@ type RedisClusterSpec struct {
 	// +optional
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 
+	/* Optional. The KMS key name to encrypt data at rest. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Immutable. Location of the resource. */
 	Location string `json:"location"`
 
@@ -211,6 +215,24 @@ type ClusterDiscoveryEndpointsStatus struct {
 	PscConfig *ClusterPscConfigStatus `json:"pscConfig,omitempty"`
 }
 
+type ClusterEncryptionInfoStatus struct {
+	/* Output only. Type of encryption. */
+	// +optional
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	/* Output only. The state of the primary version of the KMS key perceived by the system. This field is not populated in backups. */
+	// +optional
+	KmsKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
+
+	/* Output only. KMS key versions that are being used to protect the data at-rest. */
+	// +optional
+	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+
+	/* Output only. The most recent time when the encryption info was updated. */
+	// +optional
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+
 type ClusterMaintenancePolicyStatus struct {
 	/* Output only. The time when the policy was created i.e. Maintenance Window or Deny Period was assigned. */
 	// +optional
@@ -239,6 +261,10 @@ type ClusterObservedStateStatus struct {
 	/* Output only. Endpoints created on each given network, for Redis clients to connect to the cluster. Currently only one discovery endpoint is supported. */
 	// +optional
 	DiscoveryEndpoints []ClusterDiscoveryEndpointsStatus `json:"discoveryEndpoints,omitempty"`
+
+	/* Output only. Encryption information for the client to retrieve. */
+	// +optional
+	EncryptionInfo *ClusterEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
 
 	/* Optional. ClusterMaintenancePolicy determines when to allow or deny updates. */
 	// +optional
