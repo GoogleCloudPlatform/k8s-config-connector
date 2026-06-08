@@ -56,7 +56,7 @@ type LogsinkDestination struct {
 	// +optional
 	PubSubTopicRef *v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
 
-	/* StorageBucketRef is a reference to a StorageBucket. */
+	/* StorageBucketRef is a reference to a GCP StorageBucket. */
 	// +optional
 	StorageBucketRef *v1alpha1.ResourceRef `json:"storageBucketRef,omitempty"`
 }
