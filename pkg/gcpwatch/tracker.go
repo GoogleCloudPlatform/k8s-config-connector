@@ -34,7 +34,7 @@ const (
 type DependencyTracker struct {
 	fetcher Fetcher
 
-	gcpResources map[gcpResouceKey]*dependenciesByResource
+	gcpResources map[gcpResourceKey]*dependenciesByResource
 
 	controllersMutex sync.Mutex
 	controllers      map[string]*ControllerRegistration
@@ -65,7 +65,7 @@ func (t *DependencyTracker) RegisterController(key string, queue chan event.Gene
 	return registration
 }
 
-type gcpResouceKey struct {
+type gcpResourceKey struct {
 	Kind     string
 	External string
 }
@@ -96,7 +96,7 @@ func NewDependencyTracker(fetcher Fetcher) *DependencyTracker {
 	tracker := &DependencyTracker{
 		fetcher:      fetcher,
 		controllers:  make(map[string]*ControllerRegistration),
-		gcpResources: make(map[gcpResouceKey]*dependenciesByResource),
+		gcpResources: make(map[gcpResourceKey]*dependenciesByResource),
 	}
 
 	return tracker
@@ -130,18 +130,18 @@ func (t *DependencyTracker) PollForever(ctx context.Context, pc *PollConfig) {
 	}
 }
 
-func (t *DependencyTracker) copyKeysUnderLock() []gcpResouceKey {
+func (t *DependencyTracker) copyKeysUnderLock() []gcpResourceKey {
 	t.controllersMutex.Lock()
 	defer t.controllersMutex.Unlock()
 
-	keys := make([]gcpResouceKey, 0, len(t.gcpResources))
+	keys := make([]gcpResourceKey, 0, len(t.gcpResources))
 	for key := range t.gcpResources {
 		keys = append(keys, key)
 	}
 	return keys
 }
 
-func (t *DependencyTracker) getGCPResourcesUnderLock(key gcpResouceKey) *dependenciesByResource {
+func (t *DependencyTracker) getGCPResourcesUnderLock(key gcpResourceKey) *dependenciesByResource {
 	t.controllersMutex.Lock()
 	defer t.controllersMutex.Unlock()
 
@@ -172,7 +172,7 @@ func (t *DependencyTracker) pollOnce(ctx context.Context) error {
 	return nil
 }
 
-func maybeNotifyDependenciesUnderLock(ctx context.Context, gcpResource *dependenciesByResource, key gcpResouceKey, latest *ResourceInfo) {
+func maybeNotifyDependenciesUnderLock(ctx context.Context, gcpResource *dependenciesByResource, key gcpResourceKey, latest *ResourceInfo) {
 	log := klog.FromContext(ctx)
 
 	gcpResource.dependenciesMutex.Lock()
@@ -255,7 +255,7 @@ func (t *DependencyTracker) getTarget(kind string, external string) *dependencie
 	t.controllersMutex.Lock()
 	defer t.controllersMutex.Unlock()
 
-	key := gcpResouceKey{
+	key := gcpResourceKey{
 		Kind:     kind,
 		External: external,
 	}
