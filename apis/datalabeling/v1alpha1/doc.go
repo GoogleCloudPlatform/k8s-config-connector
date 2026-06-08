@@ -12,5 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +kcc:proto=google.cloud.datalabeling.v1beta1
+// +k8s:openapi-gen=true
+// +k8s:deepcopy-gen=package,register
+// +groupName=datalabeling.cnrm.cloud.google.com
+
 package v1alpha1
