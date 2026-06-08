@@ -148,7 +148,7 @@ func (in *AccessContextManagerAccessLevelConditionStatus) DeepCopyInto(out *Acce
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 }
