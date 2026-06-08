@@ -13,3 +13,7 @@
      - Implement the standard round-tripping `compareCertificateManagerDNSAuthorization` pattern using `tags.DiffForTopLevelFields`.
      - Replace the custom `setStatus` function with the standard `op.UpdateStatus(ctx, status, nil)` mechanism.
 - **Impact**: Cleaned up the DNSAuthorization codebase by aligning it with the latest direct controller guidelines, improved the core direct-reconciliation reflection helper to support pointer slice structures, and successfully validated all CertificateManager E2E fixtures (including DNSAuthorization) against mockgcp.
+
+### 2026-06-08 Addressing Code Review Feedback
+- **Feedback**: A reviewer suggested using `mappers.OnlySpecFields` to simplify and clean up the spec-masking/round-tripping logic in `compareCertificateManagerDNSAuthorization`.
+- **Solution**: Imported `github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers` and refactored the round-tripping spec-only comparison in `compareCertificateManagerDNSAuthorization` to utilize `mappers.OnlySpecFields`.

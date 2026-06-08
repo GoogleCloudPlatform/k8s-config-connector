@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	certificatemanagerpb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
@@ -299,18 +300,9 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 }
 
 func compareCertificateManagerDNSAuthorization(ctx context.Context, actual, desired *certificatemanagerpb.DnsAuthorization) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	var maskedActual *certificatemanagerpb.DnsAuthorization
-	{
-		// A "trick" to only compare spec fields - round trip via the spec
-		mapCtx := &direct.MapContext{}
-		spec := CertificateManagerDNSAuthorizationSpec_v1beta1_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
-		maskedActual = CertificateManagerDNSAuthorizationSpec_v1beta1_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
+	maskedActual, err := mappers.OnlySpecFields(actual, CertificateManagerDNSAuthorizationSpec_v1beta1_FromProto, CertificateManagerDNSAuthorizationSpec_v1beta1_ToProto)
+	if err != nil {
+		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
