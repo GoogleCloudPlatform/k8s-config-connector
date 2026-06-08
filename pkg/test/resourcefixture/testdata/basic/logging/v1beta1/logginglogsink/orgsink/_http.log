@@ -1,5 +1,4 @@
 GET https://storage.googleapis.com/storage/v1/b/orgsink-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -26,7 +25,6 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -89,7 +87,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/orgsink-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -133,8 +130,8 @@ Vary: X-Origin
 
 ---
 
-GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -156,12 +153,11 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://logging.googleapis.com/v2/organizations/${organizationID}/sinks?alt=json&prettyPrint=false&uniqueWriterIdentity=true
+POST https://logging.googleapis.com/v2/organizations/${organizationID}/sinks?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}"
 }
@@ -178,7 +174,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -187,39 +183,37 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
-  "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
-  "name": "orgsink-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "writerIdentity": "serviceAccount:service-org-${organizationID}@gcp-sa-logging.iam.gserviceaccount.com"
-}
-
----
-
-PATCH https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
+GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
-  "disabled": false,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
+  "name": "orgsink-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "writerIdentity": "serviceAccount:service-org-${organizationID}@gcp-sa-logging.iam.gserviceaccount.com"
+}
+
+---
+
+PUT https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter
+Content-Type: application/json
+
+{
+  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
-  "includeChildren": false
+  "name": "orgsink-${uniqueId}"
 }
 
 200 OK
@@ -234,7 +228,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -243,8 +237,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -258,7 +252,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -267,8 +261,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+DELETE https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -285,7 +279,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/orgsink-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -330,7 +323,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/orgsink-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -349,7 +341,6 @@ Vary: X-Origin
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/orgsink-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json
