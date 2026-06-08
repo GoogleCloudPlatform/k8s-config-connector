@@ -316,7 +316,8 @@ type EncryptionInfo struct {
 }
 */
 
-/* unreachable type PSCAutoConnection
+/* found existing non-generated go type "PSCAutoConnection", skipping
+
 // +kcc:proto=google.cloud.redis.cluster.v1.PscAutoConnection
 type PSCAutoConnection struct {
 
@@ -340,6 +341,8 @@ type PSCConfig struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConfig.network
 	Network *string `json:"network,omitempty"`
 }
+
+/* found existing non-generated go type "PSCConnection", skipping
 
 // +kcc:proto=google.cloud.redis.cluster.v1.PscConnection
 type PSCConnection struct {
@@ -375,6 +378,7 @@ type PSCConnection struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.service_attachment
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
+*/
 
 /* unreachable type PSCServiceAttachment
 // +kcc:proto=google.cloud.redis.cluster.v1.PscServiceAttachment
@@ -491,7 +495,6 @@ type ClusterObservedState struct {
 }
 */
 
-/* unreachable type ClusterEndpointObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterEndpoint
 type ClusterEndpointObservedState struct {
 	// A group of PSC connections. They are created in the same VPC network, one
@@ -499,7 +502,6 @@ type ClusterEndpointObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterEndpoint.connections
 	Connections []ConnectionDetailObservedState `json:"connections,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicyObservedState struct {
@@ -527,7 +529,6 @@ type ClusterMaintenanceScheduleObservedState struct {
 	EndTime *string `json:"endTime,omitempty"`
 }
 
-/* unreachable type ConnectionDetailObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ConnectionDetail
 type ConnectionDetailObservedState struct {
 	// Detailed information of a PSC connection that is created through
@@ -540,7 +541,6 @@ type ConnectionDetailObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ConnectionDetail.psc_connection
 	PSCConnection *PSCConnectionObservedState `json:"pscConnection,omitempty"`
 }
-*/
 
 /* unreachable type CrossClusterReplicationConfigObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig
@@ -646,7 +646,8 @@ type EncryptionInfoObservedState struct {
 }
 */
 
-/* unreachable type PSCAutoConnectionObservedState
+/* found existing non-generated go type "PSCAutoConnectionObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscAutoConnection
 type PSCAutoConnectionObservedState struct {
 	// Output only. The PSC connection id of the forwarding rule connected to the
@@ -683,7 +684,8 @@ type PSCAutoConnectionObservedState struct {
 }
 */
 
-/* unreachable type PSCConnectionObservedState
+/* found existing non-generated go type "PSCConnectionObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscConnection
 type PSCConnectionObservedState struct {
 	// Output only. The status of the PSC connection.
@@ -699,7 +701,6 @@ type PSCConnectionObservedState struct {
 }
 */
 
-/* unreachable type PSCServiceAttachmentObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscServiceAttachment
 type PSCServiceAttachmentObservedState struct {
 	// Output only. Service attachment URI which your self-created PscConnection
@@ -711,4 +712,3 @@ type PSCServiceAttachmentObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscServiceAttachment.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
-*/

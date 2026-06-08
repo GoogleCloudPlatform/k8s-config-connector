@@ -588,6 +588,24 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_DISABLED",
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_PRIMARY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/ssc-auto-sa-abcde"
+            }
+          }
+        ]
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -608,17 +626,23 @@ X-Xss-Protection: 0
     "pscConnections": [
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_PRIMARY",
+        "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/ssc-auto-sa-abcde"
       }
     ],
     "replicaCount": 0,
@@ -652,6 +676,24 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 2,
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscConnection": {
+            "address": "10.11.12.13",
+            "connectionType": 2,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/ssc-auto-sa-abcde"
+          }
+        }
+      ]
+    }
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
   "discoveryEndpoints": [
@@ -672,17 +714,23 @@ X-Xss-Protection: 0
   "pscConnections": [
     {
       "address": "10.11.12.13",
-      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
     },
     {
       "address": "10.11.12.13",
-      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 2,
+      "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/ssc-auto-sa-abcde"
     }
   ],
   "replicaCount": 0,
@@ -765,6 +813,24 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_DISABLED",
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_PRIMARY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/ssc-auto-sa-abcde"
+            }
+          }
+        ]
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -785,17 +851,23 @@ X-Xss-Protection: 0
     "pscConnections": [
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_PRIMARY",
+        "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/ssc-auto-sa-abcde"
       }
     ],
     "replicaCount": 0,
@@ -829,6 +901,24 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 2,
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscConnection": {
+            "address": "10.11.12.13",
+            "connectionType": 2,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/ssc-auto-sa-abcde"
+          }
+        }
+      ]
+    }
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
   "discoveryEndpoints": [
@@ -849,17 +939,23 @@ X-Xss-Protection: 0
   "pscConnections": [
     {
       "address": "10.11.12.13",
-      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
     },
     {
       "address": "10.11.12.13",
-      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/ssc-auto-fr-abcde",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 2,
+      "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/ssc-auto-sa-abcde"
     }
   ],
   "replicaCount": 0,

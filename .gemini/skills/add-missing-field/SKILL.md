@@ -13,6 +13,7 @@ This skill guides an automated agent through adding a missing field to a GCP res
    - Add the field to the `Spec` (for inputs) or `ObservedState` (for outputs) struct as appropriate.
    - If the type relies on autogeneration, you can use `types.generated.go` as a reference. Note that `types.generated.go` includes generated code for all types if `--include-skipped-output` is passed to the generate commands.
    - **Important:** If the field represents a GCP URI or URI fragment (e.g., the path to another resource), you should use a KCC reference field (e.g., `InstanceRef *refs.MemorystoreInstanceRef`) instead of a simple string.
+   - **Tip on Shared Proto Types:** If your field references a proto message that has both `Spec` and `ObservedState` versions (e.g. `PscConnection`), KCC's generator might get confused and skip one of them in `types.generated.go` because they share the same underlying proto message. If this happens, define both types manually in `_types.go` to prevent any compilation or generation issues.
    - Follow KRM naming conventions (camelCase in Go, etc.).
 
 2. **Update the Fuzzer**

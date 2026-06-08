@@ -197,6 +197,22 @@ type RedisClusterSpec struct {
 	ZoneDistributionConfig *ClusterZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
 }
 
+type ClusterClusterEndpointsStatus struct {
+	/* A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
+	// +optional
+	Connections []ClusterConnectionsStatus `json:"connections,omitempty"`
+}
+
+type ClusterConnectionsStatus struct {
+	/* Detailed information of a PSC connection that is created through service connectivity automation. */
+	// +optional
+	PscAutoConnection *ClusterPscAutoConnectionStatus `json:"pscAutoConnection,omitempty"`
+
+	/* Detailed information of a PSC connection that is created by the customer who owns the cluster. */
+	// +optional
+	PscConnection *ClusterPscConnectionStatus `json:"pscConnection,omitempty"`
+}
+
 type ClusterDiscoveryEndpointsStatus struct {
 	/* Output only. Address of the exposed Redis endpoint used by clients to connect to the service. The address could be either IP or hostname. */
 	// +optional
@@ -232,6 +248,10 @@ type ClusterMaintenanceScheduleStatus struct {
 }
 
 type ClusterObservedStateStatus struct {
+	/* Output only. A list of cluster endpoints. */
+	// +optional
+	ClusterEndpoints []ClusterClusterEndpointsStatus `json:"clusterEndpoints,omitempty"`
+
 	/* Output only. The timestamp associated with the cluster creation request. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -256,6 +276,10 @@ type ClusterObservedStateStatus struct {
 	// +optional
 	PscConnections []ClusterPscConnectionsStatus `json:"pscConnections,omitempty"`
 
+	/* Output only. Service attachment details to configure Psc connections */
+	// +optional
+	PscServiceAttachments []ClusterPscServiceAttachmentsStatus `json:"pscServiceAttachments,omitempty"`
+
 	/* Output only. Redis memory size in GB for the entire cluster rounded up to the next integer. */
 	// +optional
 	SizeGb *int32 `json:"sizeGb,omitempty"`
@@ -273,10 +297,78 @@ type ClusterObservedStateStatus struct {
 	Uid *string `json:"uid,omitempty"`
 }
 
+type ClusterPscAutoConnectionStatus struct {
+	/* Output only. The IP allocated on the consumer network for the PSC forwarding rule. */
+	// +optional
+	Address *string `json:"address,omitempty"`
+
+	/* Output only. Type of the PSC connection. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* Output only. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}. */
+	// +optional
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	/* Output only. The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}. */
+	// +optional
+	Network *string `json:"network,omitempty"`
+
+	/* Output only. Project ID of the consumer project where the forwarding rule is created in. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
+
+	/* Output only. The PSC connection id of the forwarding rule connected to the service attachment. */
+	// +optional
+	PscConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	/* Output only. The status of the PSC connection. Please note that this value is updated periodically. Please use Private Service Connect APIs for the latest status. */
+	// +optional
+	PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+
+	/* Output only. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
 type ClusterPscConfigStatus struct {
 	/* Required. The network where the IP address of the discovery endpoint will be reserved, in the form of projects/{network_project}/global/networks/{network_id}. */
 	// +optional
 	Network *string `json:"network,omitempty"`
+}
+
+type ClusterPscConnectionStatus struct {
+	/* Output only. The IP allocated on the consumer network for the PSC forwarding rule. */
+	// +optional
+	Address *string `json:"address,omitempty"`
+
+	/* Output only. Type of the PSC connection. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* Output only. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}. */
+	// +optional
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	/* Output only. The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}. */
+	// +optional
+	Network *string `json:"network,omitempty"`
+
+	/* Output only. Project ID of the consumer project where the forwarding rule is created in. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
+
+	/* Output only. The PSC connection id of the forwarding rule connected to the service attachment. */
+	// +optional
+	PscConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	/* Output only. The status of the PSC connection. Please note that this value is updated periodically. Please use Private Service Connect APIs for the latest status. */
+	// +optional
+	PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+
+	/* Output only. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 
 type ClusterPscConnectionsStatus struct {
@@ -301,6 +393,16 @@ type ClusterPscConnectionsStatus struct {
 	PscConnectionID *string `json:"pscConnectionID,omitempty"`
 
 	/* Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+type ClusterPscServiceAttachmentsStatus struct {
+	/* Output only. Type of a PSC connection targeting this service attachment. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* Output only. Service attachment URI which your self-created PscConnection should use as target */
 	// +optional
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }

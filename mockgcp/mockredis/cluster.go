@@ -159,6 +159,45 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 		}
 	}
 
+	if obj.PscServiceAttachments == nil {
+		for range obj.PscConfigs {
+			attachment := &pb.PscServiceAttachment{
+				ServiceAttachment: fmt.Sprintf("projects/%s/regions/%s/serviceAttachments/ssc-auto-sa-%x", name.Project.ID, name.Location, rand.IntN(100000)),
+				ConnectionType:    pb.ConnectionType_CONNECTION_TYPE_PRIMARY,
+			}
+			obj.PscServiceAttachments = append(obj.PscServiceAttachments, attachment)
+		}
+	}
+
+	if obj.ClusterEndpoints == nil {
+		for _, pscConfig := range obj.PscConfigs {
+			connections := []*pb.ConnectionDetail{}
+			network, err := s.parseNetworkName(pscConfig.Network)
+			if err != nil {
+				return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", pscConfig.Network)
+			}
+			pscConnectionID := time.Now().UnixNano() + int64(rand.IntN(1000))
+			forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
+			connections = append(connections, &pb.ConnectionDetail{
+				Connection: &pb.ConnectionDetail_PscConnection{
+					PscConnection: &pb.PscConnection{
+						Address:             fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
+						ForwardingRule:      fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
+						Network:             pscConfig.Network,
+						ProjectId:           network.Project.ID,
+						PscConnectionId:     fmt.Sprintf("%d", pscConnectionID),
+						ServiceAttachment:   fmt.Sprintf("projects/%s/regions/%s/serviceAttachments/ssc-auto-sa-%x", name.Project.ID, name.Location, rand.IntN(100000)),
+						ConnectionType:      pb.ConnectionType_CONNECTION_TYPE_PRIMARY,
+						PscConnectionStatus: pb.PscConnectionStatus_PSC_CONNECTION_STATUS_ACTIVE,
+					},
+				},
+			})
+			obj.ClusterEndpoints = append(obj.ClusterEndpoints, &pb.ClusterEndpoint{
+				Connections: connections,
+			})
+		}
+	}
+
 	if obj.PersistenceConfig == nil {
 		obj.PersistenceConfig = &pb.ClusterPersistenceConfig{}
 	}

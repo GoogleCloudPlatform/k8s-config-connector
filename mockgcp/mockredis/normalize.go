@@ -30,8 +30,33 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
 	replacements.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
 	replacements.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
+	replacements.ReplacePath(".clusterEndpoints[].connections[].pscConnection.address", "10.11.12.13")
+	replacements.ReplacePath(".response.clusterEndpoints[].connections[].pscConnection.address", "10.11.12.13")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
+	if !strings.Contains(event.URL(), "redis.googleapis.com") {
+		return
+	}
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasSuffix(path, "pscConnectionId") || strings.HasSuffix(path, "pscConnectionID") {
+			replacements.ReplaceStringValue(value, "${pscConnectionID}")
+		}
+		if strings.Contains(value, "serviceAttachments/ssc-auto-sa-") {
+			tokens := strings.Split(value, "/")
+			for _, token := range tokens {
+				if strings.HasPrefix(token, "ssc-auto-sa-") {
+					replacements.ReplaceStringValue(token, "ssc-auto-sa-abcde")
+				}
+			}
+		}
+		if strings.Contains(value, "forwardingRules/ssc-auto-fr-") {
+			tokens := strings.Split(value, "/")
+			for _, token := range tokens {
+				if strings.HasPrefix(token, "ssc-auto-fr-") {
+					replacements.ReplaceStringValue(token, "ssc-auto-fr-abcde")
+				}
+			}
+		}
+	})
 }

@@ -144,6 +144,16 @@ type RedisClusterObservedState struct {
 
 	// Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule.
 	MaintenanceSchedule *ClusterMaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
+
+	// Output only. Service attachment details to configure Psc connections
+	// +optional
+	// +listType=atomic
+	PSCServiceAttachments []PSCServiceAttachmentObservedState `json:"pscServiceAttachments,omitempty"`
+
+	// Output only. A list of cluster endpoints.
+	// +optional
+	// +listType=atomic
+	ClusterEndpoints []ClusterEndpointObservedState `json:"clusterEndpoints,omitempty"`
 }
 
 // +genclient
@@ -180,4 +190,142 @@ type RedisClusterList struct {
 
 func init() {
 	SchemeBuilder.Register(&RedisCluster{}, &RedisClusterList{})
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.PscConnection
+type PSCConnection struct {
+	// Required. The PSC connection id of the forwarding rule connected to the
+	//  service attachment.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.psc_connection_id
+	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	// Required. The IP allocated on the consumer network for the PSC forwarding
+	//  rule.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.address
+	Address *string `json:"address,omitempty"`
+
+	// Required. The URI of the consumer side forwarding rule.
+	//  Example:
+	//  projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.forwarding_rule
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	// Optional. Project ID of the consumer project where the forwarding rule is
+	//  created in.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Required. The consumer network where the IP address resides, in the form of
+	//  projects/{project_id}/global/networks/{network_id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.network
+	Network *string `json:"network,omitempty"`
+
+	// Required. The service attachment which is the target of the PSC connection,
+	//  in the form of
+	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.service_attachment
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscConnection
+type PSCConnectionObservedState struct {
+	// Output only. The PSC connection id of the forwarding rule connected to the
+	//  service attachment.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.psc_connection_id
+	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	// Output only. The IP allocated on the consumer network for the PSC
+	//  forwarding rule.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.address
+	Address *string `json:"address,omitempty"`
+
+	// Output only. The URI of the consumer side forwarding rule.
+	//  Example:
+	//  projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.forwarding_rule
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	// Output only. Project ID of the consumer project where the forwarding rule is
+	//  created in.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Output only. The consumer network where the IP address resides, in the form of
+	//  projects/{project_id}/global/networks/{network_id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.network
+	Network *string `json:"network,omitempty"`
+
+	// Output only. The service attachment which is the target of the PSC connection,
+	//  in the form of
+	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.service_attachment
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+
+	// Output only. The status of the PSC connection.
+	//  Please note that this value is updated periodically.
+	//  Please use Private Service Connect APIs for the latest status.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.psc_connection_status
+	PSCConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+
+	// Output only. Type of the PSC connection.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.connection_type
+	ConnectionType *string `json:"connectionType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.redis.cluster.v1.PscAutoConnection
+type PSCAutoConnection struct {
+	// Required. The consumer project_id where the forwarding rule is created
+	//  from.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Required. The consumer network where the IP address resides, in the form of
+	//  projects/{project_id}/global/networks/{network_id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.network
+	Network *string `json:"network,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscAutoConnection
+type PSCAutoConnectionObservedState struct {
+	// Output only. The PSC connection id of the forwarding rule connected to the
+	//  service attachment.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.psc_connection_id
+	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	// Output only. The IP allocated on the consumer network for the PSC
+	//  forwarding rule.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.address
+	Address *string `json:"address,omitempty"`
+
+	// Output only. The URI of the consumer side forwarding rule.
+	//  Example:
+	//  projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.forwarding_rule
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	// Output only. Project ID of the consumer project where the forwarding rule is
+	//  created in.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Output only. The consumer network where the IP address resides, in the form of
+	//  projects/{project_id}/global/networks/{network_id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.network
+	Network *string `json:"network,omitempty"`
+
+	// Output only. The service attachment which is the target of the PSC
+	//  connection, in the form of
+	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.service_attachment
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+
+	// Output only. The status of the PSC connection.
+	//  Please note that this value is updated periodically.
+	//  Please use Private Service Connect APIs for the latest status.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.psc_connection_status
+	PSCConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+
+	// Output only. Type of the PSC connection.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.connection_type
+	ConnectionType *string `json:"connectionType,omitempty"`
 }
