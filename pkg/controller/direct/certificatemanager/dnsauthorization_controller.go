@@ -17,7 +17,6 @@ package certificatemanager
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
 	gcp "cloud.google.com/go/certificatemanager/apiv1"
@@ -25,9 +24,12 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	certificatemanagerpb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
@@ -78,6 +80,11 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	obj := &krm.CertificateManagerDNSAuthorization{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	// Get ResourceID
@@ -182,11 +189,8 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
-
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating DnsAuthorization", "name", a.id.FullyQualifiedName())
-	mapCtx := &direct.MapContext{}
 
 	req := &certificatemanagerpb.CreateDnsAuthorizationRequest{
 		Parent:             a.id.Parent.String(),
@@ -203,58 +207,49 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created DnsAuthorization", "name", a.id.FullyQualifiedName())
 
-	status := CertificateManagerDNSAuthorizationStatus_v1beta1_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return setStatus(u, status)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	u := updateOp.GetUnstructured()
-
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating DnsAuthorization", "name", a.id.FullyQualifiedName())
+
+	diffs, updateMask, err := compareCertificateManagerDNSAuthorization(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
+	}
+
+	latest := a.actual
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+
+		req := &certificatemanagerpb.UpdateDnsAuthorizationRequest{
+			UpdateMask:       updateMask,
+			DnsAuthorization: &certificatemanagerpb.DnsAuthorization{Description: a.desired.Description, Labels: a.desired.Labels, Name: a.id.FullyQualifiedName()},
+		}
+		op, err := a.gcpClient.UpdateDnsAuthorization(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating DnsAuthorization %s: %w", a.id.FullyQualifiedName(), err)
+		}
+		updated, err := op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("DnsAuthorization %s waiting update: %w", a.id.FullyQualifiedName(), err)
+		}
+		log.V(2).Info("successfully updated DnsAuthorization", "name", a.id.FullyQualifiedName())
+		latest = updated
+	}
+
+	return a.updateStatus(ctx, updateOp, latest)
+}
+
+func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *certificatemanagerpb.DnsAuthorization) error {
 	mapCtx := &direct.MapContext{}
-
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-
-	updateMask := &fieldmaskpb.FieldMask{}
-
-	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
-		report.AddField("description", a.actual.Description, a.desired.Description)
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
-
-	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
-		report.AddField("labels", a.actual.Labels, a.desired.Labels)
-		updateMask.Paths = append(updateMask.Paths, "labels")
-	}
-
-	if len(updateMask.Paths) == 0 {
-		return nil
-	}
-	structuredreporting.ReportDiff(ctx, report)
-
-	req := &certificatemanagerpb.UpdateDnsAuthorizationRequest{
-		UpdateMask:       updateMask,
-		DnsAuthorization: &certificatemanagerpb.DnsAuthorization{Description: a.desired.Description, Labels: a.desired.Labels, Name: a.id.FullyQualifiedName()},
-	}
-	op, err := a.gcpClient.UpdateDnsAuthorization(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating DnsAuthorization %s: %w", a.id.FullyQualifiedName(), err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("DnsAuthorization %s waiting update: %w", a.id.FullyQualifiedName(), err)
-	}
-	log.V(2).Info("successfully updated DnsAuthorization", "name", a.id.FullyQualifiedName())
-
-	status := CertificateManagerDNSAuthorizationStatus_v1beta1_FromProto(mapCtx, updated)
+	status := CertificateManagerDNSAuthorizationStatus_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return setStatus(u, status)
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -304,20 +299,15 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	return true, nil
 }
 
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+func compareCertificateManagerDNSAuthorization(ctx context.Context, actual, desired *certificatemanagerpb.DnsAuthorization) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, CertificateManagerDNSAuthorizationSpec_v1beta1_FromProto, CertificateManagerDNSAuthorizationSpec_v1beta1_ToProto)
 	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
+		return nil, nil, err
 	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
+	maskedActual.Name = desired.Name
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
 	}
-
-	u.Object["status"] = status
-
-	return nil
+	return diffs, updateMask, nil
 }
