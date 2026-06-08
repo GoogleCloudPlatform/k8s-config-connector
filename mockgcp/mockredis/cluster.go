@@ -262,6 +262,8 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.RedisConfigs = req.Cluster.RedisConfigs
 		case "automatedBackupConfig":
 			obj.AutomatedBackupConfig = req.Cluster.AutomatedBackupConfig
+		case "maintenancePolicy":
+			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)

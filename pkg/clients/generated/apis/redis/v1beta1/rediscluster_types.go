@@ -64,6 +64,12 @@ type ClusterFixedFrequencySchedule struct {
 	StartTime *ClusterStartTime `json:"startTime,omitempty"`
 }
 
+type ClusterMaintenancePolicy struct {
+	/* Optional. Maintenance window that is applied to resources covered by this policy. Minimum 1. For the current version, the maximum number of weekly_maintenance_window is expected to be one. */
+	// +optional
+	WeeklyMaintenanceWindow []ClusterWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
+}
+
 type ClusterPersistenceConfig struct {
 	/* Optional. AOF configuration. This field will be ignored if mode is not AOF. */
 	// +optional
@@ -111,6 +117,16 @@ type ClusterStartTime struct {
 	Seconds *int32 `json:"seconds,omitempty"`
 }
 
+type ClusterWeeklyMaintenanceWindow struct {
+	/* Allows to define schedule that runs specified day of the week. */
+	// +optional
+	Day *string `json:"day,omitempty"`
+
+	/* Start time of the window in UTC. */
+	// +optional
+	StartTime *ClusterStartTime `json:"startTime,omitempty"`
+}
+
 type ClusterZoneDistributionConfig struct {
 	/* Optional. The mode of zone distribution. Defaults to MULTI_ZONE, when not specified. */
 	// +optional
@@ -136,6 +152,10 @@ type RedisClusterSpec struct {
 
 	/* Immutable. Location of the resource. */
 	Location string `json:"location"`
+
+	/* Optional. ClusterMaintenancePolicy determines when to allow or deny updates. */
+	// +optional
+	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
 	/* Optional. The type of a redis node in the cluster. NodeType determines the underlying machine-type of a redis node. */
 	// +optional
@@ -191,6 +211,26 @@ type ClusterDiscoveryEndpointsStatus struct {
 	PscConfig *ClusterPscConfigStatus `json:"pscConfig,omitempty"`
 }
 
+type ClusterMaintenancePolicyStatus struct {
+	/* Output only. The time when the policy was created i.e. Maintenance Window or Deny Period was assigned. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. The time when the policy was updated i.e. Maintenance Window or Deny Period was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type ClusterMaintenanceScheduleStatus struct {
+	/* Output only. The end time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Output only. The start time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+}
+
 type ClusterObservedStateStatus struct {
 	/* Output only. The timestamp associated with the cluster creation request. */
 	// +optional
@@ -199,6 +239,14 @@ type ClusterObservedStateStatus struct {
 	/* Output only. Endpoints created on each given network, for Redis clients to connect to the cluster. Currently only one discovery endpoint is supported. */
 	// +optional
 	DiscoveryEndpoints []ClusterDiscoveryEndpointsStatus `json:"discoveryEndpoints,omitempty"`
+
+	/* Optional. ClusterMaintenancePolicy determines when to allow or deny updates. */
+	// +optional
+	MaintenancePolicy *ClusterMaintenancePolicyStatus `json:"maintenancePolicy,omitempty"`
+
+	/* Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule. */
+	// +optional
+	MaintenanceSchedule *ClusterMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
 
 	/* Output only. Precise value of redis memory size in GB for the entire cluster. */
 	// +optional

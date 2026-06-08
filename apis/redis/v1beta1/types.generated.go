@@ -189,7 +189,6 @@ type ClusterEndpoint struct {
 }
 */
 
-/* unreachable type ClusterMaintenancePolicy
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicy struct {
 
@@ -199,7 +198,6 @@ type ClusterMaintenancePolicy struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy.weekly_maintenance_window
 	WeeklyMaintenanceWindow []ClusterWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
 }
-*/
 
 /* unreachable type ClusterMaintenanceSchedule
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenanceSchedule
@@ -242,7 +240,6 @@ type ClusterPersistenceConfig_RdbConfig struct {
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
 }
 
-/* unreachable type ClusterWeeklyMaintenanceWindow
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterWeeklyMaintenanceWindow
 type ClusterWeeklyMaintenanceWindow struct {
 	// Allows to define schedule that runs specified day of the week.
@@ -253,7 +250,6 @@ type ClusterWeeklyMaintenanceWindow struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterWeeklyMaintenanceWindow.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
-*/
 
 /* unreachable type ConnectionDetail
 // +kcc:proto=google.cloud.redis.cluster.v1.ConnectionDetail
@@ -505,7 +501,6 @@ type ClusterEndpointObservedState struct {
 }
 */
 
-/* unreachable type ClusterMaintenancePolicyObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicyObservedState struct {
 	// Output only. The time when the policy was created i.e. Maintenance Window
@@ -518,9 +513,7 @@ type ClusterMaintenancePolicyObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
-*/
 
-/* unreachable type ClusterMaintenanceScheduleObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterMaintenanceSchedule
 type ClusterMaintenanceScheduleObservedState struct {
 	// Output only. The start time of any upcoming scheduled maintenance for this
@@ -533,7 +526,6 @@ type ClusterMaintenanceScheduleObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterMaintenanceSchedule.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
-*/
 
 /* unreachable type ConnectionDetailObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ConnectionDetail
