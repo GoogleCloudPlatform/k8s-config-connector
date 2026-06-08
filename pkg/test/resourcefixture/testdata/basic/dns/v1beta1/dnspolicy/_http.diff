@@ -1,0 +1,75 @@
+71,72c71
+< GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GET https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
+101c100
+< POST https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies?alt=json
+---
+> POST https://dns.googleapis.com/dns/v1/projects/${projectId}/policies?alt=json&prettyPrint=false
+105d103
+<   "description": "Managed by Config Connector",
+125d122
+<   "description": "Managed by Config Connector",
+139,140c136
+< GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GET https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
+153d148
+<   "description": "Managed by Config Connector",
+167c162
+< PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+---
+> PUT https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
+178,180c173
+<   "description": "Managed by Config Connector",
+<   "enableInboundForwarding": false,
+<   "enableLogging": false,
+---
+>   "name": "dnspolicy-test-${uniqueId}",
+209,211d201
+<     "description": "Managed by Config Connector",
+<     "enableInboundForwarding": false,
+<     "enableLogging": false,
+226,227c216
+< GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GET https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
+249,251d237
+<   "description": "Managed by Config Connector",
+<   "enableInboundForwarding": false,
+<   "enableLogging": false,
+265,293c251
+< PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< {
+<   "networks": null
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "policy": {
+<     "id": "1234567890",
+<     "kind": "dns#policy",
+<     "name": "dnspolicy-test-${uniqueId}"
+<   }
+< }
+< 
+< ---
+< 
+< DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> DELETE https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
