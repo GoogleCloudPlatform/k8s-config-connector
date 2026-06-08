@@ -27,6 +27,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"google.golang.org/api/option"
@@ -92,6 +94,9 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, mapCtx.Err()
 	}
 
+	// Support labels on Metadata
+	desired.Metadata = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
+
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -120,7 +125,7 @@ var _ directbase.Adapter = &ServiceDirectoryServiceAdapter{}
 
 func (a *ServiceDirectoryServiceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	fqn := fmt.Sprintf("projects/%s/locations/%s/namespaces/%s/services/%s", a.id.Project, a.id.Location, a.id.Namespace, a.id.Service)
+	fqn := a.id.String()
 	log.V(2).Info("getting ServiceDirectoryService", "name", fqn)
 
 	req := &pb.GetServiceRequest{
@@ -140,8 +145,9 @@ func (a *ServiceDirectoryServiceAdapter) Find(ctx context.Context) (bool, error)
 
 func (a *ServiceDirectoryServiceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	parent := fmt.Sprintf("projects/%s/locations/%s/namespaces/%s", a.id.Project, a.id.Location, a.id.Namespace)
-	log.V(2).Info("creating ServiceDirectoryService", "parent", parent, "serviceId", a.id.Service)
+	parent := a.id.ParentString()
+	fqn := a.id.String()
+	log.V(2).Info("creating ServiceDirectoryService", "name", fqn)
 
 	req := &pb.CreateServiceRequest{
 		Parent:    parent,
@@ -159,7 +165,7 @@ func (a *ServiceDirectoryServiceAdapter) Create(ctx context.Context, createOp *d
 
 func (a *ServiceDirectoryServiceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	fqn := fmt.Sprintf("projects/%s/locations/%s/namespaces/%s/services/%s", a.id.Project, a.id.Location, a.id.Namespace, a.id.Service)
+	fqn := a.id.String()
 	log.V(2).Info("updating ServiceDirectoryService", "name", fqn)
 
 	diffs, updateMask, err := compareService(ctx, a.actual, a.desired)
@@ -222,7 +228,7 @@ func (a *ServiceDirectoryServiceAdapter) Export(ctx context.Context) (*unstructu
 
 func (a *ServiceDirectoryServiceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	fqn := fmt.Sprintf("projects/%s/locations/%s/namespaces/%s/services/%s", a.id.Project, a.id.Location, a.id.Namespace, a.id.Service)
+	fqn := a.id.String()
 	log.V(2).Info("deleting ServiceDirectoryService", "name", fqn)
 
 	req := &pb.DeleteServiceRequest{Name: fqn}
@@ -239,19 +245,12 @@ func (a *ServiceDirectoryServiceAdapter) Delete(ctx context.Context, deleteOp *d
 }
 
 func compareService(ctx context.Context, actual, desired *pb.Service) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	var maskedActual *pb.Service
-	{
-		mapCtx := &direct.MapContext{}
-		spec := ServiceDirectoryServiceSpec_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
-		maskedActual = ServiceDirectoryServiceSpec_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
+	maskedActual, err := mappers.OnlySpecFields(actual, ServiceDirectoryServiceSpec_FromProto, ServiceDirectoryServiceSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
+	maskedActual.Metadata = desired.Metadata
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
