@@ -39,6 +39,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -76,7 +77,7 @@ func (m *modelBackendAuthenticationConfig) AdapterForObject(ctx context.Context,
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewBackendAuthenticationConfigIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -87,9 +88,10 @@ func (m *modelBackendAuthenticationConfig) AdapterForObject(ctx context.Context,
 		return nil, err
 	}
 	return &BackendAuthenticationConfigAdapter{
-		id:        id,
+		id:        id.(*krm.NetworkSecurityBackendAuthenticationConfigIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -98,10 +100,11 @@ func (m *modelBackendAuthenticationConfig) AdapterForURL(ctx context.Context, ur
 }
 
 type BackendAuthenticationConfigAdapter struct {
-	id        *krm.BackendAuthenticationConfigIdentity
+	id        *krm.NetworkSecurityBackendAuthenticationConfigIdentity
 	gcpClient *api.Service
 	desired   *krm.NetworkSecurityBackendAuthenticationConfig
 	actual    *pb.BackendAuthenticationConfig
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &BackendAuthenticationConfigAdapter{}
@@ -133,6 +136,17 @@ func (a *BackendAuthenticationConfigAdapter) Create(ctx context.Context, createO
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if desired.Spec.ClientCertificateRef != nil {
+		if err := desired.Spec.ClientCertificateRef.Normalize(ctx, a.reader, desired.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	if desired.Spec.TrustConfigRef != nil {
+		if err := desired.Spec.TrustConfigRef.Normalize(ctx, a.reader, desired.GetNamespace()); err != nil {
+			return err
+		}
+	}
+
 	resource := NetworkSecurityBackendAuthenticationConfigSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -177,7 +191,19 @@ func (a *BackendAuthenticationConfigAdapter) Update(ctx context.Context, updateO
 	log.V(2).Info("updating BackendAuthenticationConfig", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := NetworkSecurityBackendAuthenticationConfigSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desired := a.desired.DeepCopy()
+	if desired.Spec.ClientCertificateRef != nil {
+		if err := desired.Spec.ClientCertificateRef.Normalize(ctx, a.reader, desired.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	if desired.Spec.TrustConfigRef != nil {
+		if err := desired.Spec.TrustConfigRef.Normalize(ctx, a.reader, desired.GetNamespace()); err != nil {
+			return err
+		}
+	}
+
+	desiredPb := NetworkSecurityBackendAuthenticationConfigSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

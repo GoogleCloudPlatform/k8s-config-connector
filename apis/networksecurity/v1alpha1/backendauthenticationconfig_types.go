@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,9 +26,13 @@ var NetworkSecurityBackendAuthenticationConfigGVK = GroupVersion.WithKind("Netwo
 // +kcc:spec:proto=google.cloud.networksecurity.v1.BackendAuthenticationConfig
 type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	// The project that this resource belongs to.
+	// +required
+	// +kubebuilder:validation:Required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
+	// +required
+	// +kubebuilder:validation:Required
 	Location *string `json:"location,omitempty"`
 
 	// The NetworkSecurityBackendAuthenticationConfig name. If not given, the metadata.name will be used.
@@ -107,6 +111,7 @@ type NetworkSecurityBackendAuthenticationConfigObservedState struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

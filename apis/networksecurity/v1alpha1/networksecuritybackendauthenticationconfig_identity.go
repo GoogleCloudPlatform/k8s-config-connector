@@ -110,3 +110,31 @@ func (obj *NetworkSecurityBackendAuthenticationConfig) GetIdentity(ctx context.C
 
 	return specIdentity, nil
 }
+
+// ExternalIdentifier returns the GCP external identifier (the GCP URL).
+func (obj *NetworkSecurityBackendAuthenticationConfig) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
+}
+
+type NetworkSecurityBackendAuthenticationConfigParent struct {
+	ProjectID string
+	Location  string
+}
+
+func (p *NetworkSecurityBackendAuthenticationConfigParent) String() string {
+	return "projects/" + p.ProjectID + "/locations/" + p.Location
+}
+
+func (i *NetworkSecurityBackendAuthenticationConfigIdentity) Parent() *NetworkSecurityBackendAuthenticationConfigParent {
+	return &NetworkSecurityBackendAuthenticationConfigParent{
+		ProjectID: i.Project,
+		Location:  i.Location,
+	}
+}
+
+func (i *NetworkSecurityBackendAuthenticationConfigIdentity) ID() string {
+	return i.BackendAuthenticationConfig
+}
