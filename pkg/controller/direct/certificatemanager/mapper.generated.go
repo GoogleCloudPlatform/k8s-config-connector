@@ -123,7 +123,7 @@ func CertificateManaged_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Cert
 	out.Domains = in.Domains
 	// MISSING: DNSAuthorizations
 	if in.GetIssuanceConfig() != "" {
-		out.IssuanceConfigRef = &krm.CertificateIssuanceConfigRef{External: in.GetIssuanceConfig()}
+		out.IssuanceConfigRef = &krmcertificatemanagerv1alpha1.CertificateManagerCertificateIssuanceConfigRef{External: in.GetIssuanceConfig()}
 	}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	if v := in.GetProvisioningIssue(); v != nil {
