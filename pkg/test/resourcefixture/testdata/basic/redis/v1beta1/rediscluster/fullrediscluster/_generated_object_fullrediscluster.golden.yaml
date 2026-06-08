@@ -27,6 +27,9 @@ spec:
     - day: MONDAY
       startTime:
         hours: 3
+        minutes: 0
+        nanos: 0
+        seconds: 0
   nodeType: REDIS_STANDARD_SMALL
   persistenceConfig:
     aofConfig:
