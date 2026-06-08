@@ -47,10 +47,6 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".cluster_endpoints")
 	f.UnimplementedFields.Insert(".labels")
 
-	// Output-only fields inside maintenance_policy (which belongs to Spec but create/update times are Status only)
-	f.UnimplementedFields.Insert(".maintenance_policy.create_time")
-	f.UnimplementedFields.Insert(".maintenance_policy.update_time")
-
 	f.SpecFields.Insert(".authorization_mode")
 	f.SpecFields.Insert(".transit_encryption_mode")
 	f.SpecFields.Insert(".shard_count")
@@ -62,7 +58,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".zone_distribution_config")
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".automated_backup_config")
-	f.SpecFields.Insert(".maintenance_policy")
+	f.SpecFields.Insert(".maintenance_policy.weekly_maintenance_window")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".state")
@@ -73,6 +69,8 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state_info")
 	f.StatusFields.Insert(".precise_size_gb")
 	f.StatusFields.Insert(".maintenance_schedule")
+	f.StatusFields.Insert(".maintenance_policy.create_time")
+	f.StatusFields.Insert(".maintenance_policy.update_time")
 
 	return f
 }

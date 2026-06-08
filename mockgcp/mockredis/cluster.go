@@ -207,14 +207,6 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 			obj.AutomatedBackupConfig.Retention = nil
 		}
 	}
-	if obj.MaintenancePolicy != nil {
-		if obj.MaintenanceSchedule == nil {
-			obj.MaintenanceSchedule = &pb.ClusterMaintenanceSchedule{
-				StartTime: timestamppb.New(time.Unix(1727272727, 0)),
-				EndTime:   timestamppb.New(time.Unix(1727282727, 0)),
-			}
-		}
-	}
 	return nil
 }
 

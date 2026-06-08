@@ -655,10 +655,6 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "maintenanceSchedule": {
-      "endTime": "2024-09-25T16:45:27Z",
-      "startTime": "2024-09-25T13:58:47Z"
-    },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
@@ -748,10 +744,6 @@ X-Xss-Protection: 0
         }
       }
     ]
-  },
-  "maintenanceSchedule": {
-    "endTime": "2024-09-25T16:45:27Z",
-    "startTime": "2024-09-25T13:58:47Z"
   },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
@@ -930,10 +922,6 @@ X-Xss-Protection: 0
           }
         }
       ]
-    },
-    "maintenanceSchedule": {
-      "endTime": "2024-09-25T16:45:27Z",
-      "startTime": "2024-09-25T13:58:47Z"
     },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
@@ -1114,10 +1102,6 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "maintenanceSchedule": {
-      "endTime": "2024-09-25T16:45:27Z",
-      "startTime": "2024-09-25T13:58:47Z"
-    },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
@@ -1296,10 +1280,6 @@ X-Xss-Protection: 0
           }
         }
       ]
-    },
-    "maintenanceSchedule": {
-      "endTime": "2024-09-25T16:45:27Z",
-      "startTime": "2024-09-25T13:58:47Z"
     },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
@@ -1480,10 +1460,6 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "maintenanceSchedule": {
-      "endTime": "2024-09-25T16:45:27Z",
-      "startTime": "2024-09-25T13:58:47Z"
-    },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
@@ -1663,10 +1639,6 @@ X-Xss-Protection: 0
           }
         }
       ]
-    },
-    "maintenanceSchedule": {
-      "endTime": "2024-09-25T16:45:27Z",
-      "startTime": "2024-09-25T13:58:47Z"
     },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
@@ -1849,10 +1821,6 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "maintenanceSchedule": {
-      "endTime": "2024-09-25T16:45:27Z",
-      "startTime": "2024-09-25T13:58:47Z"
-    },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
@@ -1944,10 +1912,6 @@ X-Xss-Protection: 0
         }
       }
     ]
-  },
-  "maintenanceSchedule": {
-    "endTime": "2024-09-25T16:45:27Z",
-    "startTime": "2024-09-25T13:58:47Z"
   },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,

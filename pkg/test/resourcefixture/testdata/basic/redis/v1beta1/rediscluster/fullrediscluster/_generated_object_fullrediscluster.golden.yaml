@@ -66,9 +66,6 @@ status:
       pscConfig:
         network: projects/${projectId}/global/networks/${networkID}
     maintenancePolicy: {}
-    maintenanceSchedule:
-      endTime: "2024-09-25T16:45:27Z"
-      startTime: "2024-09-25T13:58:47Z"
     preciseSizeGb: 39
     pscConnections:
     - address: 10.11.12.13
