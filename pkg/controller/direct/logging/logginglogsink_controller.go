@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/logging/apiv2"
@@ -95,6 +96,8 @@ func (m *modelLoggingLogSink) AdapterForObject(ctx context.Context, op *directba
 	// Logging LogSink name in proto is the ID
 	desiredPb.Name = id.(*krm.LoggingLogSinkIdentity).ID()
 
+	// uniqueWriterIdentity is not part of the GCP resource state representation (loggingpb.LogSink)
+	// but is instead passed as a query parameter / request field to create and update API calls.
 	uniqueWriterIdentity := false
 	if obj.Spec.UniqueWriterIdentity != nil {
 		uniqueWriterIdentity = *obj.Spec.UniqueWriterIdentity
@@ -243,18 +246,9 @@ func (a *LoggingLogSinkAdapter) Delete(ctx context.Context, deleteOp *directbase
 }
 
 func compareSink(ctx context.Context, actual, desired *loggingpb.LogSink) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	var maskedActual *loggingpb.LogSink
-	{
-		// A "trick" to only compare spec fields - round trip via the spec
-		mapCtx := &direct.MapContext{}
-		spec := LoggingLogSinkSpec_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
-		maskedActual = LoggingLogSinkSpec_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
+	maskedActual, err := mappers.OnlySpecFields(actual, LoggingLogSinkSpec_FromProto, LoggingLogSinkSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
