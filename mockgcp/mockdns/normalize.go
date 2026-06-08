@@ -65,4 +65,12 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			}
 		})
 	}
+	if kind == "dns#policy" {
+		event.VisitResponseStringValues(func(path string, value string) {
+			switch path {
+			case ".id":
+				replacements.ReplaceStringValue(value, "${policyId}")
+			}
+		})
+	}
 }
