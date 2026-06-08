@@ -38,63 +38,233 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type IndexendpointEncryptionSpec struct {
+	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
+	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+}
+
+type IndexendpointPrivateServiceConnectConfig struct {
+	/* Required. If true, expose the IndexEndpoint via private service connect. */
+	// +optional
+	EnablePrivateServiceConnect *bool `json:"enablePrivateServiceConnect,omitempty"`
+
+	/* A list of Projects from which the forwarding rule will target the service attachment. */
+	// +optional
+	ProjectAllowlist []string `json:"projectAllowlist,omitempty"`
+
+	/* Optional. List of projects and networks where the PSC endpoints will be created. This field is used by Online Inference(Prediction) only. */
+	// +optional
+	PscAutomationConfigs []IndexendpointPscAutomationConfigs `json:"pscAutomationConfigs,omitempty"`
+}
+
+type IndexendpointPscAutomationConfigs struct {
+	/* Required. The full name of the Google Compute Engine [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks). [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/get): `projects/{project}/global/networks/{network}`. */
+	// +optional
+	Network *string `json:"network,omitempty"`
+
+	/* Required. Project id used to create forwarding rule. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
+}
+
 type VertexAIIndexEndpointSpec struct {
-	/* The description of the Index. */
+	/* The description of the IndexEndpoint. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The display name of the Index. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
+	/* Required. The display name of the IndexEndpoint. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
 	DisplayName string `json:"displayName"`
 
-	/* Immutable. The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) to which the index endpoint should be peered.
-	Private services access must already be configured for the network. If left unspecified, the index endpoint is not peered with any network.
-	[Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert): 'projects/{project}/global/networks/{network}'.
-	Where '{project}' is a project number, as in '12345', and '{network}' is network name. */
+	/* Immutable. Customer-managed encryption key spec for an IndexEndpoint. If set, this IndexEndpoint and all sub-resources of this IndexEndpoint will be secured by this key. */
 	// +optional
-	Network *string `json:"network,omitempty"`
+	EncryptionSpec *IndexendpointEncryptionSpec `json:"encryptionSpec,omitempty"`
+
+	/* The labels with user-defined metadata to organize your IndexEndpoints. Label keys and values can be no longer than 64 characters (Unicode codepoints), can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* The location of this resource. */
+	Location string `json:"location"`
+
+	/* Optional. The full name of the Google Compute Engine [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks) to which the IndexEndpoint should be peered. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
+	/* Optional. Configuration for private service connect. */
+	// +optional
+	PrivateServiceConnectConfig *IndexendpointPrivateServiceConnectConfig `json:"privateServiceConnectConfig,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. If true, the deployed index will be accessible through public endpoint. */
+	/* Optional. If true, the deployed index will be accessible through public endpoint. */
 	// +optional
 	PublicEndpointEnabled *bool `json:"publicEndpointEnabled,omitempty"`
 
-	/* Immutable. The region of the index endpoint. eg us-central1. */
-	Region string `json:"region"`
-
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* The VertexAIIndexEndpoint name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type IndexendpointAuthProviderStatus struct {
+	/* A list of allowed JWT audiences. Each entry must be a valid Google
+	service account, in the following format:
+
+	`service-account-name@project-id.iam.gserviceaccount.com` */
+	// +optional
+	AllowedIssuers []string `json:"allowedIssuers,omitempty"`
+
+	/* A list of allowed JWT issuers. Each entry must be a valid Google
+	service account, in the following format:
+
+	`service-account-name@project-id.iam.gserviceaccount.com` */
+	// +optional
+	Audiences []string `json:"audiences,omitempty"`
+}
+
+type IndexendpointDeployedIndexAuthConfigStatus struct {
+	/* Defines the authentication provider that the DeployedIndex uses. */
+	// +optional
+	AuthProvider *IndexendpointAuthProviderStatus `json:"authProvider,omitempty"`
+}
+
+type IndexendpointDeployedIndexesStatus struct {
+	/* Output only. Timestamp when the DeployedIndex was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Optional. If set, the authentication is enabled for the private endpoint. Please specify the configuration for the deployed index. */
+	// +optional
+	DeployedIndexAuthConfig *IndexendpointDeployedIndexAuthConfigStatus `json:"deployedIndexAuthConfig,omitempty"`
+
+	/* Optional. The deployment group can be no longer than 64 characters (eg:
+	'test', 'prod'). If not set, we will use the 'default' deployment group.
+
+	Creating `deployment_groups` with `reserved_ip_ranges` is a recommended
+	practice when the peered network has multiple peering ranges. This creates
+	your deployments from predictable IP spaces for easier traffic
+	administration. Also, one deployment_group (except 'default') can only be
+	used with the same reserved_ip_ranges which means if the deployment_group
+	has been used with reserved_ip_ranges: [a, b, c], using it with [a, b] or
+	[d, e] is disallowed.
+
+	Note: we only support up to 5 deployment groups(not including 'default'). */
+	// +optional
+	DeploymentGroup *string `json:"deploymentGroup,omitempty"`
+
+	/* The display name of the DeployedIndex. If not provided upon creation, the Index's display_name is used. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Optional. If true, private endpoint's access logs are sent to Cloud Logging.
+
+	These logs are like standard server access logs, containing
+	information like timestamp and latency for each MatchRequest.
+
+	Note that logs may incur a cost, especially if the deployed
+	index receives a high queries per second rate (QPS).
+	Estimate your costs before enabling this option. */
+	// +optional
+	EnableAccessLogging *bool `json:"enableAccessLogging,omitempty"`
+
+	/* Required. The user specified ID of the DeployedIndex. The field is used to identify the index deployment. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+
+	/* Required. The name of the Index this is the deployment of. We may refer to this Index as the DeployedIndex's "original" Index. */
+	// +optional
+	Index *string `json:"index,omitempty"`
+
+	/* Output only. The DeployedIndex may depend on various data on its original Index. Additionally when certain changes to the original Index are being done (e.g. when what the Index contains is being changed) the DeployedIndex may be asynchronously updated in the background to reflect these changes. If this timestamp's value is at least the [Index.update_time][google.cloud.aiplatform.v1.Index.update_time] of the original Index, it means that this DeployedIndex and the original Index are in sync. If this timestamp is older, then to see which updates this DeployedIndex already contains (and which it does not), one must [read][google.longrunning.Operations.GetOperation] IndexEndpoint.update_time or Index.update_time. In such a case if that are not synchronous should result in empty result. */
+	// +optional
+	IndexSyncTime *string `json:"indexSyncTime,omitempty"`
+
+	/* Output only. Provides paths for users to send requests directly to the deployed index services running on Cloud via private services access. This field is populated if [network][google.cloud.aiplatform.v1.IndexEndpoint.network] is configured. */
+	// +optional
+	PrivateEndpoints *IndexendpointPrivateEndpointsStatus `json:"privateEndpoints,omitempty"`
+
+	/* Optional. A list of Projects from which the forwarding rule will target the service attachment. */
+	// +optional
+	PscAutomationConfigs []IndexendpointPscAutomationConfigsStatus `json:"pscAutomationConfigs,omitempty"`
+
+	/* Optional. A list of reserved ip ranges under the VPC network that can be
+	used for this DeployedIndex.
+
+	If set, we will deploy the index within the provided ip ranges. Otherwise,
+	the index might be deployed to any ip ranges under the provided VPC
+	network.
+
+	The value should be the name of the address
+	(https://cloud.google.com/compute/docs/reference/rest/v1/addresses)
+	Example: ['vertex-ai-ip-range'].
+
+	For more information about subnets and network IP ranges, please see
+	https://cloud.google.com/vpc/docs/subnets#manually_created_subnet_ip_ranges. */
+	// +optional
+	ReservedIPRanges []string `json:"reservedIPRanges,omitempty"`
+}
+
+type IndexendpointObservedStateStatus struct {
+	/* Output only. Timestamp when this IndexEndpoint was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. The indexes deployed in this endpoint. */
+	// +optional
+	DeployedIndexes []IndexendpointDeployedIndexesStatus `json:"deployedIndexes,omitempty"`
+
+	/* Output only. If [public_endpoint_enabled][google.cloud.aiplatform.v1.IndexEndpoint.public_endpoint_enabled] is true, this field will be populated with the domain name to use for this index endpoint. */
+	// +optional
+	PublicEndpointDomainName *string `json:"publicEndpointDomainName,omitempty"`
+
+	/* Output only. Reserved for future use. */
+	// +optional
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	/* Output only. Reserved for future use. */
+	// +optional
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	/* Output only. Timestamp when this IndexEndpoint was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type IndexendpointPrivateEndpointsStatus struct {
+	/* Output only. The ip address used to send match gRPC requests. */
+	// +optional
+	MatchGRPCAddress *string `json:"matchGRPCAddress,omitempty"`
+
+	/* Output only. The name of the service attachment resource. Populated if private service connect is enabled. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+type IndexendpointPscAutomationConfigsStatus struct {
+	/* Required. The full name of the Google Compute Engine [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks). [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/get): `projects/{project}/global/networks/{network}`. */
+	// +optional
+	Network *string `json:"network,omitempty"`
+
+	/* Required. Project id used to create forwarding rule. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
 }
 
 type VertexAIIndexEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIIndexEndpoint's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The timestamp of when the Index was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	/* A unique specifier for the VertexAIIndexEndpoint resource in GCP. */
 	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
-
-	/* Used to perform consistent read-modify-write updates. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
-
-	/* The resource name of the Index. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* If publicEndpointEnabled is true, this field will be populated with the domain name to use for this index endpoint. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	PublicEndpointDomainName *string `json:"publicEndpointDomainName,omitempty"`
-
-	/* The timestamp of when the Index was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	ObservedState *IndexendpointObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -104,7 +274,6 @@ type VertexAIIndexEndpointStatus struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
