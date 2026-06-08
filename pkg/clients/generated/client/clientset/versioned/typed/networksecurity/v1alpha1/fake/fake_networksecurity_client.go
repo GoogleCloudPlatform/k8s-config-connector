@@ -51,6 +51,10 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringEndpointGroups(nam
 	return newFakeNetworkSecurityMirroringEndpointGroups(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityPartnerSSERealms(namespace string) v1alpha1.NetworkSecurityPartnerSSERealmInterface {
+	return newFakeNetworkSecurityPartnerSSERealms(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecuritySACRealms(namespace string) v1alpha1.NetworkSecuritySACRealmInterface {
 	return newFakeNetworkSecuritySACRealms(c, namespace)
 }
