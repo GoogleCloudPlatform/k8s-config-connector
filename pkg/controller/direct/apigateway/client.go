@@ -23,6 +23,7 @@ import (
 
 	api "cloud.google.com/go/apigateway/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	apigatewayapi "google.golang.org/api/apigateway/v1"
 )
 
 type gcpClient struct {
@@ -44,6 +45,18 @@ func (m *gcpClient) newApiGatewayClient(ctx context.Context) (*api.Client, error
 	client, err := api.NewRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building apigateway client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newAPIGatewayService(ctx context.Context) (*apigatewayapi.Service, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := apigatewayapi.NewService(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building apigateway service: %w", err)
 	}
 	return client, err
 }

@@ -1,0 +1,8 @@
+apiVersion: apigateway.cnrm.cloud.google.com/v1beta1
+kind: APIGatewayAPI
+metadata:
+  name: apigatewayapi-iam-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  displayName: "IAM Test API"

@@ -27,6 +27,9 @@ import (
 
 	gcp "cloud.google.com/go/apigateway/apiv1"
 	pb "cloud.google.com/go/apigateway/apiv1/apigatewaypb"
+	"cloud.google.com/go/iam/apiv1/iampb"
+	apigatewayapi "google.golang.org/api/apigateway/v1"
+	"google.golang.org/genproto/googleapis/type/expr"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -82,10 +85,15 @@ func (m *apiModel) AdapterForObject(ctx context.Context, op *directbase.AdapterF
 	if err != nil {
 		return nil, err
 	}
+	iamService, err := gcpClient.newAPIGatewayService(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &apiAdapter{
-		gcpClient: apiGatewayClient,
-		id:        id,
-		desired:   obj,
+		gcpClient:  apiGatewayClient,
+		iamService: iamService,
+		id:         id,
+		desired:    obj,
 	}, nil
 }
 
@@ -95,13 +103,15 @@ func (m *apiModel) AdapterForURL(ctx context.Context, url string) (directbase.Ad
 }
 
 type apiAdapter struct {
-	gcpClient *gcp.Client
-	id        *krm.ApiIdentity
-	desired   *krm.APIGatewayAPI
-	actual    *pb.Api
+	gcpClient  *gcp.Client
+	iamService *apigatewayapi.Service
+	id         *krm.ApiIdentity
+	desired    *krm.APIGatewayAPI
+	actual     *pb.Api
 }
 
 var _ directbase.Adapter = &apiAdapter{}
+var _ direct.IAMAdapter = &apiAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
@@ -263,4 +273,83 @@ func (a *apiAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 		return false, fmt.Errorf("waiting delete apigateway api %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *apiAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
+	}
+
+	policy, err := a.iamService.Projects.Locations.Apis.GetIamPolicy(a.id.String()).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("getting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return autoConvert_apigateway_ApigatewayPolicy_To_iampb_Policy(policy), nil
+}
+
+func (a *apiAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+
+	req := &apigatewayapi.ApigatewaySetIamPolicyRequest{
+		Policy: autoConvert_iampb_Policy_To_apigateway_ApigatewayPolicy(policy),
+	}
+	newPolicy, err := a.iamService.Projects.Locations.Apis.SetIamPolicy(a.id.String(), req).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", a.id.String(), err)
+	}
+
+	return autoConvert_apigateway_ApigatewayPolicy_To_iampb_Policy(newPolicy), nil
+}
+
+func autoConvert_apigateway_ApigatewayPolicy_To_iampb_Policy(in *apigatewayapi.ApigatewayPolicy) *iampb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &iampb.Policy{}
+	out.Version = int32(in.Version)
+	out.Etag = []byte(in.Etag)
+	out.Bindings = make([]*iampb.Binding, len(in.Bindings))
+	for i, b := range in.Bindings {
+		out.Bindings[i] = &iampb.Binding{
+			Role:    b.Role,
+			Members: b.Members,
+		}
+		if b.Condition != nil {
+			out.Bindings[i].Condition = &expr.Expr{
+				Expression:  b.Condition.Expression,
+				Title:       b.Condition.Title,
+				Description: b.Condition.Description,
+				Location:    b.Condition.Location,
+			}
+		}
+	}
+	return out
+}
+
+func autoConvert_iampb_Policy_To_apigateway_ApigatewayPolicy(in *iampb.Policy) *apigatewayapi.ApigatewayPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &apigatewayapi.ApigatewayPolicy{}
+	out.Version = int64(in.Version)
+	out.Etag = string(in.Etag)
+	out.Bindings = make([]*apigatewayapi.ApigatewayBinding, len(in.Bindings))
+	for i, b := range in.Bindings {
+		out.Bindings[i] = &apigatewayapi.ApigatewayBinding{
+			Role:    b.Role,
+			Members: b.Members,
+		}
+		if b.Condition != nil {
+			out.Bindings[i].Condition = &apigatewayapi.ApigatewayExpr{
+				Expression:  b.Condition.Expression,
+				Title:       b.Condition.Title,
+				Description: b.Condition.Description,
+				Location:    b.Condition.Location,
+			}
+		}
+	}
+	return out
 }

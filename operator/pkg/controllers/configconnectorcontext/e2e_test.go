@@ -76,21 +76,22 @@ func TestConfigConnectorContextE2E(t *testing.T) {
 	}
 
 	newCCC := &corev1beta1.ConfigConnectorContext{}
-	err := wait.PollImmediate(2*time.Second, 60*time.Second, func() (bool, error) {
+	err := wait.PollImmediate(1*time.Second, 60*time.Second, func() (bool, error) {
 		if err := c.Get(ctx, nn, newCCC); err != nil {
 			return false, err
 		}
 		status := newCCC.GetCommonStatus()
-		return status.Healthy, nil
+		if len(status.Errors) != 0 {
+			t.Logf("ConfigConnectorContext has errors: %v", status.Errors)
+			return false, nil
+		}
+		if !status.Healthy {
+			return false, nil
+		}
+		return true, nil
 	})
+
 	if err != nil {
-		t.Errorf("ConfigConnectorContext did not become healthy: %v", err)
-	}
-	status := newCCC.GetCommonStatus()
-	if got, want := status.Healthy, true; got != want {
-		t.Errorf("unexpected value for status.healthy: got '%v', want '%v'", got, want)
-	}
-	if len(status.Errors) != 0 {
-		t.Errorf("unexpected number of errors in status.errors: got %v, want 0. Got errors: %v", len(status.Errors), status.Errors)
+		t.Fatalf("ConfigConnectorContext failed to become healthy: %v. CCC: %+v", err, newCCC)
 	}
 }
