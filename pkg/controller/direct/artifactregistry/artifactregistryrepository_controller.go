@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -248,6 +249,17 @@ func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*st
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
+
+	populateDefaults := func(obj *pb.Repository) {
+		if obj.Mode == pb.Repository_MODE_UNSPECIFIED {
+			obj.Mode = pb.Repository_STANDARD_REPOSITORY
+		}
+	}
+
+	desired = proto.Clone(desired).(*pb.Repository)
+	populateDefaults(desired)
+	populateDefaults(maskedActual)
+
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
