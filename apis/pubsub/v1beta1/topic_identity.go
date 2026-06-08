@@ -18,8 +18,11 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
+
+var _ identity.Identity = &TopicIdentity{}
 
 // TopicIdentity is the identity of a PubSubTopic.
 type TopicIdentity struct {
@@ -33,6 +36,15 @@ func (i *TopicIdentity) String() string {
 
 func (i *TopicIdentity) ID() string {
 	return i.id
+}
+
+func (i *TopicIdentity) FromExternal(ref string) error {
+	parsed, err := ParseTopicExternal(ref)
+	if err != nil {
+		return err
+	}
+	*i = *parsed
+	return nil
 }
 
 func ParseTopicExternal(external string) (*TopicIdentity, error) {

@@ -150,7 +150,7 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 	if len(secret.Spec.TopicRefs) != 0 {
 		for _, topicRef := range secret.Spec.TopicRefs {
 			if topicRef.PubSubTopicRef != nil {
-				_, err := topicRef.PubSubTopicRef.NormalizedExternal(ctx, reader, src.GetNamespace())
+				err := topicRef.PubSubTopicRef.Normalize(ctx, reader, src.GetNamespace())
 				if err != nil {
 					return err
 				}

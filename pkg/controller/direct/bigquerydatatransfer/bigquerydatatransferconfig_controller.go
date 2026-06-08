@@ -95,7 +95,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	// Resolve PubSubTopic Ref
 	if obj.Spec.PubSubTopicRef != nil {
 		ref := obj.Spec.PubSubTopicRef
-		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		err := ref.Normalize(ctx, reader, obj.GetNamespace())
 		if err != nil {
 			return nil, err
 		}

@@ -18,15 +18,15 @@ import (
 	"context"
 	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &PubSubTopicRef{}
+var _ refs.Ref = &PubSubTopicRef{}
 var PubSubTopicGVK = GroupVersion.WithKind("PubSubTopic")
 
 // PubSubTopicRef is a reference to a PubSubTopic.
@@ -42,54 +42,60 @@ type PubSubTopicRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on PubSubTopic.
-// If the "External" is given in the other resource's spec.PubSubTopicRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual PubSubTopic object from the cluster.
-func (r *PubSubTopicRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", PubSubTopicGVK.Kind)
+func init() {
+	refs.Register(&PubSubTopicRef{})
+}
+
+func (r *PubSubTopicRef) GetGVK() schema.GroupVersionKind {
+	return PubSubTopicGVK
+}
+
+func (r *PubSubTopicRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	// From given External
-	if r.External != "" {
-		if _, err := ParseTopicExternal(r.External); err != nil {
-			return "", err
+}
+
+func (r *PubSubTopicRef) GetExternal() string {
+	return r.External
+}
+
+func (r *PubSubTopicRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *PubSubTopicRef) ValidateExternal(ref string) error {
+	_, err := ParseTopicExternal(ref)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *PubSubTopicRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &TopicIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *PubSubTopicRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		resourceID, err := refs.GetResourceID(u)
+		if err != nil {
+			return ""
 		}
-		return r.External, nil
-	}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(PubSubTopicGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		projectID, err := refs.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return ""
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", PubSubTopicGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef != "" {
-		r.External = actualExternalRef
-		return r.External, nil
-	}
 
-	resourceID, err := refsv1beta1.GetResourceID(u)
-	if err != nil {
-		return "", err
+		return fmt.Sprintf("projects/%s/topics/%s", projectID, resourceID)
 	}
-
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-	if err != nil {
-		return "", err
-	}
-
-	r.External = fmt.Sprintf("projects/%s/topics/%s", projectID, resourceID)
-	return r.External, nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
