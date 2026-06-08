@@ -29,15 +29,10 @@
     </header>
 
     <main>
-        <div class="controls">
-            <input type="text" id="search" placeholder="Search by Kind, Group, or Dependency..." />
-            <select id="filter-state">
-                <option value="All">All States</option>
-                <option value="Not Started">Not Started</option>
-                <option value="In Progress">In Progress</option>
-                <option value="PR Sent">PR Sent</option>
-                <option value="Completed">Completed</option>
-            </select>
+        <div class="controls" style="justify-content: flex-end; margin-bottom: 8px;">
+            <div style="font-size: 14px; color: var(--text-muted);">
+                Showing <strong id="row-count">-</strong> resources
+            </div>
         </div>
 
         <div class="table-container">
@@ -52,9 +47,51 @@
                         <th data-sort="controllerType">Controller <span class="sort-icon"></span></th>
                         <th data-sort="state">State <span class="sort-icon"></span></th>
                         <th>Migration Steps</th>
-                        <th>Dependencies</th>
+                        <th data-sort="gcpTestLocation">GCP Tests <span class="sort-icon"></span></th>
+                        <th data-sort="mockgcpLocation">MockGCP <span class="sort-icon"></span></th>
                         <th data-sort="mocksLastRefreshed">Mocks Refreshed <span class="sort-icon"></span></th>
                         <th>Notes</th>
+                        <th>Dependencies</th>
+                    </tr>
+                    <tr class="filters-row">
+                        <th colspan="2"><input type="text" id="search" placeholder="Search Kind, Group, Dep..." style="width: 100%; padding: 6px; font-weight: normal;" /></th>
+                        <th>
+                            <select id="filter-version" style="width: 100%; padding: 6px; font-weight: normal;">
+                                <option value="All">All</option>
+                                <option value="v1beta1">v1beta1</option>
+                                <option value="v1alpha1">v1alpha1</option>
+                            </select>
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>
+                            <select id="filter-state" style="width: 100%; padding: 6px; font-weight: normal;">
+                                <option value="All">All</option>
+                                <option value="Not Started">Not Started</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="PR Sent">PR Sent</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </th>
+                        <th></th>
+                        <th>
+                            <select id="filter-gcptests" style="width: 100%; padding: 6px; font-weight: normal;">
+                                <option value="All">All</option>
+                                <option value="Present">Present</option>
+                                <option value="Missing">Missing</option>
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filter-mockgcp" style="width: 100%; padding: 6px; font-weight: normal;">
+                                <option value="All">All</option>
+                                <option value="Present">Present</option>
+                                <option value="Missing">Missing</option>
+                            </select>
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="table-body">

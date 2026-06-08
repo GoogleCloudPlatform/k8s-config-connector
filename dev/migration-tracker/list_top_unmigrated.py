@@ -20,6 +20,7 @@ import os
 def main():
     parser = argparse.ArgumentParser(description="List top n unmigrated resources topologically sorted.")
     parser.add_argument('-n', '--num', type=int, default=10, help='Number of resources to list (default: 10)')
+    parser.add_argument('-s', '--step', type=str, default=None, help='Filter resources where the specified step is NOT completed (e.g., mocks)')
     args = parser.parse_args()
 
     # Determine the path to data.json relative to this script
@@ -36,6 +37,9 @@ def main():
     # Filter out resources that are already completed
     # Any state other than 'Completed' is considered not migrated
     unmigrated = [r for r in data if r.get('state') != 'Completed']
+
+    if args.step:
+        unmigrated = [r for r in unmigrated if not r.get('steps', {}).get(args.step, False)]
 
     # Sort by sortOrder (topological order calculated by generate_data.py)
     # Use 9999 as a fallback for missing sort orders

@@ -23,12 +23,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 113,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apigateway/v1beta1/apigatewayapi",
+    "mockgcpLocation": "mockgcp/mockapigateway"
   },
   {
     "group": "apigateway",
     "kind": "APIGatewayAPIConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -49,12 +51,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 114,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "apigateway",
     "kind": "APIGatewayGateway",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -75,12 +79,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 115,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "apikeys",
     "kind": "APIKeysKey",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -102,7 +108,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 116,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apikeys/v1alpha1/apikeyskey",
+    "mockgcpLocation": "mockgcp/mockapikeys"
   },
   {
     "group": "cloudquota",
@@ -128,7 +136,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 117,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudquota/v1beta1/apiquotaadjustersettings",
+    "mockgcpLocation": "mockgcp/mockcloudquota"
   },
   {
     "group": "cloudquota",
@@ -155,7 +165,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 118,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudquota/v1beta1/apiquotapreference",
+    "mockgcpLocation": "mockgcp/mockcloudquota"
   },
   {
     "group": "accesscontextmanager",
@@ -182,12 +194,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 42,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/accesscontextmanager/v1beta1/accesscontextmanageraccesslevel",
+    "mockgcpLocation": "mockgcp/mockaccesscontextmanager"
   },
   {
     "group": "accesscontextmanager",
     "kind": "AccessContextManagerAccessLevelCondition",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -208,7 +222,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 119,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/accesscontextmanager/v1alpha1/accesscontextmanageraccesslevelcondition",
+    "mockgcpLocation": ""
   },
   {
     "group": "accesscontextmanager",
@@ -232,12 +248,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 37,
-    "downstreamCount": 3
+    "downstreamCount": 3,
+    "gcpTestLocation": "",
+    "mockgcpLocation": "mockgcp/mockaccesscontextmanager"
   },
   {
     "group": "accesscontextmanager",
     "kind": "AccessContextManagerGCPUserAccessBinding",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -256,7 +274,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 120,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/accesscontextmanager/v1alpha1/accesscontextmanagergcpuseraccessbinding",
+    "mockgcpLocation": ""
   },
   {
     "group": "accesscontextmanager",
@@ -285,7 +305,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 121,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/accesscontextmanager/v1beta1/accesscontextmanagerserviceperimeter",
+    "mockgcpLocation": ""
   },
   {
     "group": "accesscontextmanager",
@@ -309,7 +331,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 122,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/accesscontextmanager/v1beta1/accesscontextmanagerserviceperimeterresource",
+    "mockgcpLocation": ""
   },
   {
     "group": "alloydb",
@@ -335,7 +359,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 123,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/alloydb/v1beta1/alloydbbackup",
+    "mockgcpLocation": ""
   },
   {
     "group": "alloydb",
@@ -364,7 +390,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 43,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/alloydb/v1beta1/alloydbcluster",
+    "mockgcpLocation": "mockgcp/mockalloydb"
   },
   {
     "group": "alloydb",
@@ -390,7 +418,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 124,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/alloydb/v1beta1/alloydbinstance",
+    "mockgcpLocation": "mockgcp/mockalloydb"
   },
   {
     "group": "alloydb",
@@ -416,12 +446,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 125,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/alloydb/v1beta1/alloydbuser",
+    "mockgcpLocation": "mockgcp/mockalloydb"
   },
   {
     "group": "apigee",
     "kind": "ApigeeAddonsConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -440,7 +472,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 127,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apigee/v1alpha1/apigeeaddonsconfig",
+    "mockgcpLocation": ""
   },
   {
     "group": "apigee",
@@ -466,7 +500,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 128,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apigee/apigeeendpointattachment",
+    "mockgcpLocation": "mockgcp/mockapigee"
   },
   {
     "group": "apigee",
@@ -492,7 +528,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 69,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apigee/v1beta1/apigeeenvgroup",
+    "mockgcpLocation": "mockgcp/mockapigee"
   },
   {
     "group": "apigee",
@@ -519,7 +557,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 129,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apigee/apigeeenvgroupattachment",
+    "mockgcpLocation": "mockgcp/mockapigee"
   },
   {
     "group": "apigee",
@@ -545,7 +585,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 44,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apigee/v1beta1/apigeeenvironment",
+    "mockgcpLocation": "mockgcp/mockapigee"
   },
   {
     "group": "apigee",
@@ -572,7 +614,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 70,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apigee/apigeeinstance",
+    "mockgcpLocation": "mockgcp/mockapigee"
   },
   {
     "group": "apigee",
@@ -599,12 +643,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 130,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apigee/apigeeinstanceattachment",
+    "mockgcpLocation": "mockgcp/mockapigee"
   },
   {
     "group": "apigee",
     "kind": "ApigeeNATAddress",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -623,7 +669,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 131,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "apigee",
@@ -650,12 +698,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 21,
-    "downstreamCount": 6
+    "downstreamCount": 6,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apigee/v1beta1/apigeeorganization",
+    "mockgcpLocation": "mockgcp/mockapigee"
   },
   {
     "group": "apigee",
     "kind": "ApigeeSyncAuthorization",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -674,12 +724,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 132,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "appengine",
     "kind": "AppEngineDomainMapping",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -698,12 +750,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 133,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/appengine/v1alpha1/appenginedomainmapping",
+    "mockgcpLocation": ""
   },
   {
     "group": "appengine",
     "kind": "AppEngineFirewallRule",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -722,12 +776,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 134,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "appengine",
     "kind": "AppEngineFlexibleAppVersion",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -748,12 +804,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 135,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "appengine",
     "kind": "AppEngineServiceSplitTraffic",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -772,12 +830,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 136,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "appengine",
     "kind": "AppEngineStandardAppVersion",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -798,7 +858,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 137,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "apphub",
@@ -824,7 +886,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 138,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/apphub/v1beta1/apphubapplication",
+    "mockgcpLocation": "mockgcp/mockapphub"
   },
   {
     "group": "artifactregistry",
@@ -850,7 +914,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 141,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/artifactregistry/v1beta1/artifactregistryrepository",
+    "mockgcpLocation": "mockgcp/mockartifactregistry"
   },
   {
     "group": "asset",
@@ -877,7 +943,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 142,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/asset/v1beta1/assetfeed",
+    "mockgcpLocation": "mockgcp/mockasset"
   },
   {
     "group": "asset",
@@ -904,7 +972,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 143,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/asset/v1beta1/assetsavedquery",
+    "mockgcpLocation": "mockgcp/mockasset"
   },
   {
     "group": "backupdr",
@@ -931,7 +1001,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 71,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/backupdr/v1beta1/backupdrbackupplan",
+    "mockgcpLocation": "mockgcp/mockbackupdr"
   },
   {
     "group": "backupdr",
@@ -959,7 +1031,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 145,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/backupdr/v1beta1/backupdrbackupplanassociation",
+    "mockgcpLocation": "mockgcp/mockbackupdr"
   },
   {
     "group": "backupdr",
@@ -985,12 +1059,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 45,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/backupdr/v1beta1/backupdrbackupvault",
+    "mockgcpLocation": "mockgcp/mockbackupdr"
   },
   {
     "group": "backupdr",
     "kind": "BackupDRManagementServer",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -1012,12 +1088,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 146,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/backupdr/v1alpha1/backupdrmanagementserver",
+    "mockgcpLocation": "mockgcp/mockbackupdr"
   },
   {
     "group": "batch",
     "kind": "BatchJob",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -1042,12 +1120,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 147,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/batch/v1alpha1/batchjob",
+    "mockgcpLocation": "mockgcp/mockbatch"
   },
   {
     "group": "beyondcorp",
     "kind": "BeyondCorpAppConnection",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -1068,12 +1148,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 149,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/beyondcorp/v1alpha1/beyondcorpappconnection",
+    "mockgcpLocation": ""
   },
   {
     "group": "beyondcorp",
     "kind": "BeyondCorpAppConnector",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -1094,12 +1176,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 150,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/beyondcorp/v1alpha1/beyondcorpappconnector",
+    "mockgcpLocation": ""
   },
   {
     "group": "beyondcorp",
     "kind": "BeyondCorpAppGateway",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -1120,7 +1204,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 151,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/beyondcorp/v1alpha1/beyondcorpappgateway",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigquerybiglake",
@@ -1144,7 +1230,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 154,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigquerybiglake/v1beta1/biglaketable",
+    "mockgcpLocation": "mockgcp/mockbigquerybiglake"
   },
   {
     "group": "bigqueryanalyticshub",
@@ -1170,7 +1258,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 72,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigqueryanalyticshub/v1beta1/bigqueryanalyticshubdataexchange",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigqueryanalyticshub",
@@ -1197,7 +1287,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 155,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigqueryanalyticshub/v1beta1/bigqueryanalyticshublisting",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigqueryconnection",
@@ -1225,12 +1317,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 46,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigqueryconnection/v1beta1/bigqueryconnectionconnection",
+    "mockgcpLocation": "mockgcp/mockbigqueryconnection"
   },
   {
     "group": "bigquerydatapolicy",
     "kind": "BigQueryDataPolicyDataPolicy",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -1251,7 +1345,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 157,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigquerydatapolicy/v1alpha1/bigquerydatapolicydatapolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigquerydatatransfer",
@@ -1281,7 +1377,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 158,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigquerydatatransfer/v1beta1/bigquerydatatransferconfig",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigquery",
@@ -1309,12 +1407,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 29,
-    "downstreamCount": 4
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigquery/v1beta1/bigquerydataset",
+    "mockgcpLocation": "mockgcp/mockbigquery"
   },
   {
     "group": "bigquery",
     "kind": "BigQueryDatasetAccess",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -1335,7 +1435,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 159,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigquery",
@@ -1363,7 +1465,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 160,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigquery/v1beta1/bigqueryjob",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigqueryreservation",
@@ -1391,12 +1495,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 161,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigqueryreservation/v1beta1/bigqueryreservationassignment",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigqueryreservation",
     "kind": "BigQueryReservationCapacityCommitment",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -1417,7 +1523,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 162,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigqueryreservation/v1alpha1/bigqueryreservationcapacitycommitment",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigqueryreservation",
@@ -1443,7 +1551,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 73,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigqueryreservation/v1beta1/bigqueryreservationreservation",
+    "mockgcpLocation": "mockgcp/mockbigqueryreservation"
   },
   {
     "group": "bigquery",
@@ -1470,7 +1580,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 163,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigquery/v1beta1/bigqueryroutine",
+    "mockgcpLocation": "mockgcp/mockbigquery"
   },
   {
     "group": "bigquery",
@@ -1498,7 +1610,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 74,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigquery/v1beta1/bigquerytable",
+    "mockgcpLocation": "mockgcp/mockbigquery"
   },
   {
     "group": "bigtable",
@@ -1525,7 +1639,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 164,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigtable/v1beta1/bigtableappprofile",
+    "mockgcpLocation": "mockgcp/mockbigtable"
   },
   {
     "group": "bigtable",
@@ -1552,7 +1668,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 167,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigtable/v1beta1/bigtablegcpolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "bigtable",
@@ -1578,12 +1696,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 17,
-    "downstreamCount": 8
+    "downstreamCount": 8,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigtable/v1beta1/bigtableinstance",
+    "mockgcpLocation": "mockgcp/mockbigtable"
   },
   {
     "group": "bigtable",
     "kind": "BigtableLogicalView",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -1604,12 +1724,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 168,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigtable/v1alpha1/bigtablelogicalview",
+    "mockgcpLocation": "mockgcp/mockbigtable"
   },
   {
     "group": "bigtable",
     "kind": "BigtableMaterializedView",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -1630,7 +1752,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 169,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigtable/v1alpha1/bigtablematerializedview",
+    "mockgcpLocation": "mockgcp/mockbigtable"
   },
   {
     "group": "bigtable",
@@ -1656,7 +1780,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 47,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/bigtable/v1beta1/bigtabletable",
+    "mockgcpLocation": "mockgcp/mockbigtable"
   },
   {
     "group": "billingbudgets",
@@ -1682,7 +1808,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 170,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/billingbudgets/v1beta1/billingbudgetsbudget",
+    "mockgcpLocation": "mockgcp/mockbillingbudgets"
   },
   {
     "group": "binaryauthorization",
@@ -1708,7 +1836,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 171,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/binaryauthorization/v1beta1/binaryauthorizationattestor",
+    "mockgcpLocation": ""
   },
   {
     "group": "binaryauthorization",
@@ -1734,7 +1864,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 172,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/binaryauthorization/v1beta1/binaryauthorizationpolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "certificatemanager",
@@ -1760,7 +1892,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 173,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/certificatemanager/v1beta1/certificatemanagercertificate",
+    "mockgcpLocation": "mockgcp/mockcertificatemanager"
   },
   {
     "group": "certificatemanager",
@@ -1786,7 +1920,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 175,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/certificatemanager/v1beta1/certificatemanagercertificatemap",
+    "mockgcpLocation": "mockgcp/mockcertificatemanager"
   },
   {
     "group": "certificatemanager",
@@ -1812,7 +1948,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 176,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/certificatemanager/v1beta1/certificatemanagercertificatemapentry",
+    "mockgcpLocation": "mockgcp/mockcertificatemanager"
   },
   {
     "group": "certificatemanager",
@@ -1838,12 +1976,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 177,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/certificatemanager/v1beta1/certificatemanagerdnsauthorization",
+    "mockgcpLocation": "mockgcp/mockcertificatemanager"
   },
   {
     "group": "cloudasset",
     "kind": "CloudAssetFolderFeed",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -1864,12 +2004,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 178,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "cloudasset",
     "kind": "CloudAssetOrganizationFeed",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -1888,12 +2030,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 179,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "cloudasset",
     "kind": "CloudAssetProjectFeed",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -1914,7 +2058,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 180,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "cloudbuild",
@@ -1942,7 +2088,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 181,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudbuild/v1beta1/cloudbuildtrigger",
+    "mockgcpLocation": ""
   },
   {
     "group": "cloudbuild",
@@ -1969,7 +2117,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 182,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudbuild/v1beta1/cloudbuildworkerpool",
+    "mockgcpLocation": "mockgcp/mockcloudbuild"
   },
   {
     "group": "clouddeploy",
@@ -1995,12 +2145,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 186,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/clouddeploy/v1beta1/clouddeploydeliverypipeline",
+    "mockgcpLocation": "mockgcp/mockclouddeploy"
   },
   {
     "group": "cloudfunctions2",
     "kind": "CloudFunctions2Function",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2021,7 +2173,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 189,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "cloudfunctions",
@@ -2048,7 +2202,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 190,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudfunctions/v1beta1/cloudfunctionsfunction",
+    "mockgcpLocation": "mockgcp/mockcloudfunctions"
   },
   {
     "group": "cloudids",
@@ -2075,12 +2231,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 191,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudids/v1beta1/cloudidsendpoint",
+    "mockgcpLocation": "mockgcp/mockcloudids"
   },
   {
     "group": "cloudiot",
     "kind": "CloudIOTDevice",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2099,12 +2257,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 192,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "cloudiot",
     "kind": "CloudIOTDeviceRegistry",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2123,7 +2283,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 193,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudiot/v1alpha1/cloudiotdeviceregistry",
+    "mockgcpLocation": ""
   },
   {
     "group": "cloudidentity",
@@ -2147,7 +2309,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 77,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudidentity/v1beta1/cloudidentitygroup",
+    "mockgcpLocation": "mockgcp/mockcloudidentity"
   },
   {
     "group": "cloudidentity",
@@ -2173,7 +2337,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 194,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudidentity/v1beta1/cloudidentitymembership",
+    "mockgcpLocation": ""
   },
   {
     "group": "cloudscheduler",
@@ -2199,12 +2365,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 195,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudscheduler/v1beta1/cloudschedulerjob",
+    "mockgcpLocation": ""
   },
   {
     "group": "colab",
     "kind": "ColabRuntime",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -2226,12 +2394,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 196,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/colab/v1alpha1/colabruntime",
+    "mockgcpLocation": ""
   },
   {
     "group": "colab",
     "kind": "ColabRuntimeTemplate",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -2255,7 +2425,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 78,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/colab/v1alpha1/colabruntimetemplate",
+    "mockgcpLocation": ""
   },
   {
     "group": "composer",
@@ -2285,7 +2457,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 197,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/composer/v1beta1/composerenvironment",
+    "mockgcpLocation": "mockgcp/mockcomposer"
   },
   {
     "group": "compute",
@@ -2312,12 +2486,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 48,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeaddress",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeAutoscaler",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2338,7 +2514,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 198,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2364,12 +2542,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 18,
-    "downstreamCount": 7
+    "downstreamCount": 7,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendbucket",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeBackendBucketSignedURLKey",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2391,7 +2571,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 199,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2422,12 +2604,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 16,
-    "downstreamCount": 9
+    "downstreamCount": 9,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computebackendservice",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
     "kind": "ComputeBackendServiceSignedURLKey",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2449,7 +2633,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 200,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2478,12 +2664,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 456,
-    "downstreamCount": 4
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computedisk",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
     "kind": "ComputeDiskResourcePolicyAttachment",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2505,7 +2693,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 453,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computediskresourcepolicyattachment",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2529,7 +2719,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 201,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeexternalvpngateway",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -2555,7 +2747,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 202,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewall",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2581,7 +2775,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 30,
-    "downstreamCount": 4
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewallpolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2607,7 +2803,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 203,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewallpolicyassociation",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2633,7 +2831,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 204,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewallpolicyrule",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2670,12 +2870,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 79,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeforwardingrule",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeGlobalNetworkEndpoint",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2696,12 +2898,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 205,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeGlobalNetworkEndpointGroup",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2722,7 +2926,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 206,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2746,7 +2952,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 13,
-    "downstreamCount": 11
+    "downstreamCount": 11,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttphealthcheck",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2770,7 +2978,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 207,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehttpshealthcheck",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2794,7 +3004,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 12,
-    "downstreamCount": 12
+    "downstreamCount": 12,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computehealthcheck",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2820,8 +3032,10 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 454,
-    "downstreamCount": 4
+    "sortOrder": 455,
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeimage",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -2851,7 +3065,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 31,
-    "downstreamCount": 4
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -2877,7 +3093,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 15,
-    "downstreamCount": 10
+    "downstreamCount": 10,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroup",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2906,12 +3124,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 80,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroupmanager",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeInstanceGroupNamedPort",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -2932,7 +3152,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 208,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -2961,7 +3183,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 19,
-    "downstreamCount": 7
+    "downstreamCount": 7,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancetemplate",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -2987,12 +3211,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 32,
-    "downstreamCount": 4
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinterconnectattachment",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeMachineImage",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3013,7 +3239,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 210,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computemachineimage",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3039,7 +3267,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 211,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computemanagedsslcertificate",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3063,12 +3293,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 6,
-    "downstreamCount": 97
+    "downstreamCount": 97,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetwork",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
     "kind": "ComputeNetworkAttachment",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -3089,12 +3321,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 212,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkattachment",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
     "kind": "ComputeNetworkEdgeSecurityService",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -3116,12 +3350,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 213,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkedgesecurityservice",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
     "kind": "ComputeNetworkEndpoint",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3144,7 +3380,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 214,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3171,7 +3409,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 14,
-    "downstreamCount": 11
+    "downstreamCount": 11,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkendpointgroup",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3197,7 +3437,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 215,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkfirewallpolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3224,12 +3466,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 216,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkfirewallpolicyassociation",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeNetworkFirewallPolicyRule",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3251,7 +3495,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 217,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkfirewallpolicyrule",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3277,12 +3523,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 218,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkpeering",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeNetworkPeeringRoutesConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3304,7 +3552,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 219,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3331,7 +3581,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 220,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenodegroup",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -3355,12 +3607,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 81,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenodetemplate",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
     "kind": "ComputeOrganizationSecurityPolicy",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3379,12 +3633,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 221,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeorganizationsecuritypolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeOrganizationSecurityPolicyAssociation",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3403,12 +3659,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 222,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeOrganizationSecurityPolicyRule",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3427,7 +3685,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 223,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3453,12 +3713,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 224,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computepacketmirroring",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputePerInstanceConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3480,7 +3742,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 225,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3504,12 +3768,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 226,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeprojectmetadata",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeRegionAutoscaler",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3530,12 +3796,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 227,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeRegionDiskResourcePolicyAttachment",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3556,8 +3824,10 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 455,
-    "downstreamCount": 0
+    "sortOrder": 454,
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeregiondiskresourcepolicyattachment",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3585,12 +3855,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 228,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
     "kind": "ComputeRegionPerInstanceConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3611,12 +3883,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 229,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
     "kind": "ComputeRegionSSLPolicy",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -3637,7 +3911,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 230,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3661,7 +3937,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 231,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3685,7 +3963,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 232,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeresourcepolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3711,7 +3991,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 233,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeroute",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -3737,7 +4019,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 22,
-    "downstreamCount": 6
+    "downstreamCount": 6,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouter",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3766,7 +4050,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 82,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterinterface",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3793,7 +4079,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 234,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3820,7 +4108,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 235,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterpeer",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3844,7 +4134,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 236,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslcertificate",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3868,7 +4160,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 33,
-    "downstreamCount": 4
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslpolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3892,7 +4186,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 10,
-    "downstreamCount": 13
+    "downstreamCount": 13,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3918,7 +4214,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 49,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeserviceattachment",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3942,7 +4240,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 237,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesharedvpchostproject",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3968,7 +4268,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 238,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesharedvpcserviceproject",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -3994,7 +4296,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 34,
-    "downstreamCount": 4
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesnapshot",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -4020,7 +4324,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 9,
-    "downstreamCount": 23
+    "downstreamCount": 23,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesubnetwork",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -4046,7 +4352,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 50,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetgrpcproxy",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -4072,7 +4380,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 51,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpproxy",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -4099,7 +4409,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 52,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -4127,7 +4439,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 239,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetinstance",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -4154,7 +4468,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 240,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetpool",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -4181,7 +4497,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 53,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetsslproxy",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -4208,7 +4526,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 54,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargettcpproxy",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -4234,7 +4554,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 25,
-    "downstreamCount": 5
+    "downstreamCount": 5,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetvpngateway",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -4261,7 +4583,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 26,
-    "downstreamCount": 5
+    "downstreamCount": 5,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap",
+    "mockgcpLocation": ""
   },
   {
     "group": "compute",
@@ -4288,7 +4612,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 38,
-    "downstreamCount": 3
+    "downstreamCount": 3,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computevpngateway",
+    "mockgcpLocation": "mockgcp/mockcompute"
   },
   {
     "group": "compute",
@@ -4316,7 +4642,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 55,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computevpntunnel",
+    "mockgcpLocation": ""
   },
   {
     "group": "configcontroller",
@@ -4343,7 +4671,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 241,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/configcontroller/v1beta1/configcontrollerinstance",
+    "mockgcpLocation": ""
   },
   {
     "group": "containeranalysis",
@@ -4367,12 +4697,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 243,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/containeranalysis/v1beta1/containeranalysisnote",
+    "mockgcpLocation": "mockgcp/mockcontaineranalysis"
   },
   {
     "group": "containeranalysis",
     "kind": "ContainerAnalysisOccurrence",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -4393,7 +4725,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 244,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "containerattached",
@@ -4419,7 +4753,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 245,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/containerattached/v1beta1/containerattachedcluster",
+    "mockgcpLocation": ""
   },
   {
     "group": "container",
@@ -4447,7 +4783,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 56,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/container/v1beta1/containercluster",
+    "mockgcpLocation": "mockgcp/mockcontainer"
   },
   {
     "group": "container",
@@ -4476,7 +4814,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 246,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/container/v1beta1/containernodepool",
+    "mockgcpLocation": "mockgcp/mockcontainer"
   },
   {
     "group": "dlp",
@@ -4503,7 +4843,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 247,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dlp/v1beta1/dlpdeidentifytemplate",
+    "mockgcpLocation": ""
   },
   {
     "group": "dlp",
@@ -4529,7 +4871,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 83,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dlp/v1beta1/dlpinspecttemplate",
+    "mockgcpLocation": ""
   },
   {
     "group": "dlp",
@@ -4557,7 +4901,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 248,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dlp/v1beta1/dlpjobtrigger",
+    "mockgcpLocation": ""
   },
   {
     "group": "dlp",
@@ -4583,7 +4929,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 249,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dlp/v1beta1/dlpstoredinfotype",
+    "mockgcpLocation": ""
   },
   {
     "group": "dns",
@@ -4609,7 +4957,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 84,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnsmanagedzone",
+    "mockgcpLocation": "mockgcp/mockdns"
   },
   {
     "group": "dns",
@@ -4635,7 +4985,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 250,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnspolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "dns",
@@ -4663,12 +5015,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 251,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnsrecordset",
+    "mockgcpLocation": "mockgcp/mockdns"
   },
   {
     "group": "dns",
     "kind": "DNSResponsePolicy",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -4689,12 +5043,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 252,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "dns",
     "kind": "DNSResponsePolicyRule",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -4715,12 +5071,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 253,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "datacatalog",
     "kind": "DataCatalogEntry",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -4741,12 +5099,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 85,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogentry",
+    "mockgcpLocation": "mockgcp/mockdatacatalog"
   },
   {
     "group": "datacatalog",
     "kind": "DataCatalogEntryGroup",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -4767,7 +5127,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 57,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogentrygroup",
+    "mockgcpLocation": "mockgcp/mockdatacatalog"
   },
   {
     "group": "datacatalog",
@@ -4793,12 +5155,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 254,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1beta1/datacatalogpolicytag",
+    "mockgcpLocation": "mockgcp/mockdatacatalog"
   },
   {
     "group": "datacatalog",
     "kind": "DataCatalogTag",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -4819,12 +5183,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 255,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogtag",
+    "mockgcpLocation": "mockgcp/mockdatacatalog"
   },
   {
     "group": "datacatalog",
     "kind": "DataCatalogTagTemplate",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -4845,7 +5211,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 256,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogtagtemplate",
+    "mockgcpLocation": "mockgcp/mockdatacatalog"
   },
   {
     "group": "datacatalog",
@@ -4871,7 +5239,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 86,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1beta1/datacatalogtaxonomy",
+    "mockgcpLocation": ""
   },
   {
     "group": "datafusion",
@@ -4898,7 +5268,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 257,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datafusion/v1beta1/datafusioninstance",
+    "mockgcpLocation": ""
   },
   {
     "group": "dataflow",
@@ -4927,7 +5299,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 258,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataflow/v1beta1/dataflowflextemplatejob",
+    "mockgcpLocation": ""
   },
   {
     "group": "dataflow",
@@ -4955,7 +5329,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 259,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataflow/v1beta1/dataflowjob",
+    "mockgcpLocation": "mockgcp/mockdataflow"
   },
   {
     "group": "dataform",
@@ -4982,12 +5358,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 260,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataform/v1beta1/dataformrepository",
+    "mockgcpLocation": "mockgcp/mockdataform"
   },
   {
     "group": "dataplex",
     "kind": "DataplexEntryGroup",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5008,12 +5386,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 261,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplexentrygroup",
+    "mockgcpLocation": "mockgcp/mockdataplex"
   },
   {
     "group": "dataplex",
     "kind": "DataplexEntryType",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5034,12 +5414,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 262,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplexentrytype",
+    "mockgcpLocation": "mockgcp/mockdataplex"
   },
   {
     "group": "dataplex",
     "kind": "DataplexLake",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5061,12 +5443,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 58,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplexlake",
+    "mockgcpLocation": "mockgcp/mockdataplex"
   },
   {
     "group": "dataplex",
     "kind": "DataplexTask",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5090,12 +5474,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 263,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplextask",
+    "mockgcpLocation": "mockgcp/mockdataplex"
   },
   {
     "group": "dataplex",
     "kind": "DataplexZone",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5116,7 +5502,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 264,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplexzone",
+    "mockgcpLocation": "mockgcp/mockdataplex"
   },
   {
     "group": "dataproc",
@@ -5142,12 +5530,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 265,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataproc/v1beta1/dataprocautoscalingpolicy",
+    "mockgcpLocation": "mockgcp/mockdataproc"
   },
   {
     "group": "dataproc",
     "kind": "DataprocBatch",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5172,7 +5562,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 266,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataproc/v1alpha1/dataprocbatch",
+    "mockgcpLocation": "mockgcp/mockdataproc"
   },
   {
     "group": "dataproc",
@@ -5202,12 +5594,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 35,
-    "downstreamCount": 4
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataproc/v1beta1/dataproccluster",
+    "mockgcpLocation": "mockgcp/mockdataproc"
   },
   {
     "group": "dataproc",
     "kind": "DataprocJob",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5228,7 +5622,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 267,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataproc/v1alpha1/dataprocjob",
+    "mockgcpLocation": "mockgcp/mockdataproc"
   },
   {
     "group": "dataproc",
@@ -5258,12 +5654,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 268,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dataproc/v1beta1/dataprocworkflowtemplate",
+    "mockgcpLocation": "mockgcp/mockdataproc"
   },
   {
     "group": "datastore",
     "kind": "DatastoreIndex",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5284,12 +5682,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 269,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "datastream",
     "kind": "DatastreamConnectionProfile",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5312,12 +5712,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 270,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datastream/v1alpha1/datastreamconnectionprofile",
+    "mockgcpLocation": "mockgcp/mockdatastream"
   },
   {
     "group": "datastream",
     "kind": "DatastreamPrivateConnection",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5339,12 +5741,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 59,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datastream/v1alpha1/datastreamprivateconnection",
+    "mockgcpLocation": "mockgcp/mockdatastream"
   },
   {
     "group": "datastream",
     "kind": "DatastreamRoute",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5365,12 +5769,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 271,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/datastream/v1alpha1/datastreamroute",
+    "mockgcpLocation": "mockgcp/mockdatastream"
   },
   {
     "group": "datastream",
     "kind": "DatastreamStream",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5391,12 +5797,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 272,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "deploymentmanager",
     "kind": "DeploymentManagerDeployment",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5417,12 +5825,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 273,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/deploymentmanager/v1alpha1/deploymentmanagerdeployment",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflow",
     "kind": "DialogflowAgent",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5441,12 +5851,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 274,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflowcx",
     "kind": "DialogflowCXAgent",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5467,12 +5879,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 275,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflowcx",
     "kind": "DialogflowCXEntityType",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5491,12 +5905,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 276,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflowcx",
     "kind": "DialogflowCXFlow",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5515,12 +5931,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 277,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflowcx",
     "kind": "DialogflowCXIntent",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5539,12 +5957,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 278,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflowcx",
     "kind": "DialogflowCXPage",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5563,12 +5983,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 279,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflowcx",
     "kind": "DialogflowCXWebhook",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5587,12 +6009,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 280,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflow",
     "kind": "DialogflowEntityType",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5613,12 +6037,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 281,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dialogflow/v1alpha1/dialogflowentitytype",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflow",
     "kind": "DialogflowFulfillment",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5639,12 +6065,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 282,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dialogflow/v1alpha1/dialogflowfulfillment",
+    "mockgcpLocation": ""
   },
   {
     "group": "dialogflow",
     "kind": "DialogflowIntent",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5665,12 +6093,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 283,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/dialogflow/v1alpha1/dialogflowintent",
+    "mockgcpLocation": ""
   },
   {
     "group": "discoveryengine",
     "kind": "DiscoveryEngineDataStore",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5691,12 +6121,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 87,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/discoveryengine/v1alpha1/discoveryenginedatastore",
+    "mockgcpLocation": "mockgcp/mockdiscoveryengine"
   },
   {
     "group": "documentai",
     "kind": "DocumentAIProcessor",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5718,12 +6150,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 88,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/documentai/v1alpha1/documentaiprocessor",
+    "mockgcpLocation": "mockgcp/mockdocumentai"
   },
   {
     "group": "documentai",
     "kind": "DocumentAIProcessorDefaultVersion",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -5742,7 +6176,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 286,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "documentai",
@@ -5769,7 +6205,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 287,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/documentai/v1beta1/documentaiprocessorversion",
+    "mockgcpLocation": ""
   },
   {
     "group": "edgecontainer",
@@ -5796,7 +6234,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 60,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/edgecontainer/v1beta1/edgecontainercluster",
+    "mockgcpLocation": "mockgcp/mockedgecontainer"
   },
   {
     "group": "edgecontainer",
@@ -5824,7 +6264,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 289,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/edgecontainer/v1beta1/edgecontainernodepool",
+    "mockgcpLocation": "mockgcp/mockedgecontainer"
   },
   {
     "group": "edgecontainer",
@@ -5851,7 +6293,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 290,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/edgecontainer/v1beta1/edgecontainervpnconnection",
+    "mockgcpLocation": "mockgcp/mockedgecontainer"
   },
   {
     "group": "edgenetwork",
@@ -5877,7 +6321,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 89,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/edgenetwork/v1beta1/edgenetworknetwork",
+    "mockgcpLocation": "mockgcp/mockedgenetwork"
   },
   {
     "group": "edgenetwork",
@@ -5904,7 +6350,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 291,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/edgenetwork/v1beta1/edgenetworksubnet",
+    "mockgcpLocation": "mockgcp/mockedgenetwork"
   },
   {
     "group": "essentialcontacts",
@@ -5931,12 +6379,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 292,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/essentialcontacts/v1beta1/essentialcontactscontact",
+    "mockgcpLocation": "mockgcp/mockessentialcontacts"
   },
   {
     "group": "eventarc",
     "kind": "EventarcChannel",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5958,12 +6408,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 90,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/eventarc/v1alpha1/eventarcchannel",
+    "mockgcpLocation": "mockgcp/mockeventarc"
   },
   {
     "group": "eventarc",
     "kind": "EventarcGoogleChannelConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -5985,7 +6437,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 293,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/eventarc/v1alpha1/eventarcgooglechannelconfig",
+    "mockgcpLocation": "mockgcp/mockeventarc"
   },
   {
     "group": "eventarc",
@@ -6015,7 +6469,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 294,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/eventarc/v1beta1/eventarctrigger",
+    "mockgcpLocation": ""
   },
   {
     "group": "filestore",
@@ -6041,7 +6497,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 295,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/filestore/v1beta1/filestorebackup",
+    "mockgcpLocation": ""
   },
   {
     "group": "filestore",
@@ -6068,12 +6526,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 296,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/filestore/v1beta1/filestoreinstance",
+    "mockgcpLocation": "mockgcp/mockfilestore"
   },
   {
     "group": "filestore",
     "kind": "FilestoreSnapshot",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6094,12 +6554,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 297,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "firebase",
     "kind": "FirebaseAndroidApp",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6120,12 +6582,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 298,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/firebase/v1alpha1/firebaseandroidapp",
+    "mockgcpLocation": ""
   },
   {
     "group": "firebasedatabase",
     "kind": "FirebaseDatabaseInstance",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6146,12 +6610,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 299,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/firebasedatabase/v1alpha1/firebasedatabaseinstance",
+    "mockgcpLocation": ""
   },
   {
     "group": "firebasehosting",
     "kind": "FirebaseHostingChannel",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6170,12 +6636,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 300,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "firebasehosting",
     "kind": "FirebaseHostingSite",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6196,12 +6664,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 301,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/firebasehosting/v1alpha1/firebasehostingsite",
+    "mockgcpLocation": ""
   },
   {
     "group": "firebase",
     "kind": "FirebaseProject",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6220,12 +6690,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 91,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/firebase/v1alpha1/firebaseproject",
+    "mockgcpLocation": ""
   },
   {
     "group": "firebasestorage",
     "kind": "FirebaseStorageBucket",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6246,12 +6718,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 302,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "firebase",
     "kind": "FirebaseWebApp",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6270,7 +6744,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 303,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "firestore",
@@ -6296,12 +6772,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 39,
-    "downstreamCount": 3
+    "downstreamCount": 3,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/firestore/v1beta1/firestoredatabase",
+    "mockgcpLocation": "mockgcp/mockfirestore"
   },
   {
     "group": "firestore",
     "kind": "FirestoreDocument",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -6322,12 +6800,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 305,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/firestore/v1alpha1/firestoredocument",
+    "mockgcpLocation": "mockgcp/mockfirestore"
   },
   {
     "group": "firestore",
     "kind": "FirestoreField",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -6348,7 +6828,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 306,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/firestore/v1alpha1/firestorefield",
+    "mockgcpLocation": "mockgcp/mockfirestore"
   },
   {
     "group": "firestore",
@@ -6372,7 +6854,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 307,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/firestore/v1beta1/firestoreindex",
+    "mockgcpLocation": ""
   },
   {
     "group": "resourcemanager",
@@ -6396,12 +6880,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 1,
-    "downstreamCount": 298
+    "downstreamCount": 298,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/resourcemanager/v1beta1/folder",
+    "mockgcpLocation": "mockgcp/mockresourcemanager"
   },
   {
     "group": "gkebackup",
     "kind": "GKEBackupBackup",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -6422,12 +6908,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 92,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/gkebackup/v1alpha1/gkebackupbackup",
+    "mockgcpLocation": "mockgcp/mockgkebackup"
   },
   {
     "group": "gkebackup",
     "kind": "GKEBackupBackupPlan",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -6449,12 +6937,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 40,
-    "downstreamCount": 3
+    "downstreamCount": 3,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/gkebackup/v1alpha1/gkebackupbackupplan",
+    "mockgcpLocation": "mockgcp/mockgkebackup"
   },
   {
     "group": "gkebackup",
     "kind": "GKEBackupRestore",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -6476,12 +6966,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 308,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/gkebackup/v1alpha1/gkebackuprestore",
+    "mockgcpLocation": "mockgcp/mockgkebackup"
   },
   {
     "group": "gkebackup",
     "kind": "GKEBackupRestorePlan",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -6503,7 +6995,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 93,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/gkebackup/v1alpha1/gkebackuprestoreplan",
+    "mockgcpLocation": "mockgcp/mockgkebackup"
   },
   {
     "group": "gkehub",
@@ -6529,7 +7023,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 94,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/gkehub/v1beta1/gkehubfeature",
+    "mockgcpLocation": ""
   },
   {
     "group": "gkehub",
@@ -6558,7 +7054,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 309,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/gkehub/v1beta1/gkehubfeaturemembership",
+    "mockgcpLocation": ""
   },
   {
     "group": "gkehub",
@@ -6582,12 +7080,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 95,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/gkehub/v1beta1/gkehubmembership",
+    "mockgcpLocation": ""
   },
   {
     "group": "healthcare",
     "kind": "HealthcareConsentStore",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6606,12 +7106,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 310,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "healthcare",
     "kind": "HealthcareDICOMStore",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6630,12 +7132,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 311,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "healthcare",
     "kind": "HealthcareDataset",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6656,12 +7160,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 312,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/healthcare/v1alpha1/healthcaredataset",
+    "mockgcpLocation": ""
   },
   {
     "group": "healthcare",
     "kind": "HealthcareFHIRStore",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6680,12 +7186,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 313,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "healthcare",
     "kind": "HealthcareHL7V2Store",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -6704,7 +7212,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 314,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "iam",
@@ -6730,7 +7240,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 315,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iam/v1beta1/iamaccessboundarypolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "iam",
@@ -6754,7 +7266,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 316,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "iam",
@@ -6778,7 +7292,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 317,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iam/v1beta1/iamcustomrole",
+    "mockgcpLocation": "mockgcp/mockiam"
   },
   {
     "group": "iam",
@@ -6808,7 +7324,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 319,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "iam",
@@ -6832,7 +7350,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 320,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "iam",
@@ -6861,7 +7381,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 321,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "iam",
@@ -6885,7 +7407,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 7,
-    "downstreamCount": 43
+    "downstreamCount": 43,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iam/v1beta1/iamserviceaccount",
+    "mockgcpLocation": "mockgcp/mockiam"
   },
   {
     "group": "iam",
@@ -6911,7 +7435,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 322,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iam/v1beta1/iamserviceaccountkey",
+    "mockgcpLocation": "mockgcp/mockiam"
   },
   {
     "group": "iam",
@@ -6935,7 +7461,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 96,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iam/v1beta1/iamworkforcepool",
+    "mockgcpLocation": ""
   },
   {
     "group": "iam",
@@ -6961,7 +7489,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 323,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iam/v1beta1/iamworkforcepoolprovider",
+    "mockgcpLocation": ""
   },
   {
     "group": "iam",
@@ -6987,7 +7517,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 97,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iam/v1beta1/iamworkloadidentitypool",
+    "mockgcpLocation": ""
   },
   {
     "group": "iam",
@@ -7014,7 +7546,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 324,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iam/v1beta1/iamworkloadidentitypoolprovider",
+    "mockgcpLocation": ""
   },
   {
     "group": "iap",
@@ -7038,7 +7572,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 98,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iap/v1beta1/iapbrand",
+    "mockgcpLocation": "mockgcp/mockiap"
   },
   {
     "group": "iap",
@@ -7064,7 +7600,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 325,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iap/v1beta1/iapidentityawareproxyclient",
+    "mockgcpLocation": ""
   },
   {
     "group": "iap",
@@ -7091,7 +7629,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 326,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/iap/v1beta1/iapsettings",
+    "mockgcpLocation": ""
   },
   {
     "group": "identityplatform",
@@ -7117,12 +7657,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 327,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/identityplatform/v1beta1/identityplatformconfig",
+    "mockgcpLocation": ""
   },
   {
     "group": "identityplatform",
     "kind": "IdentityPlatformDefaultSupportedIDPConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -7143,12 +7685,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 328,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/identityplatform/v1alpha1/identityplatformdefaultsupportedidpconfig",
+    "mockgcpLocation": ""
   },
   {
     "group": "identityplatform",
     "kind": "IdentityPlatformInboundSAMLConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -7169,7 +7713,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 329,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/identityplatform/v1alpha1/identityplatforminboundsamlconfig",
+    "mockgcpLocation": ""
   },
   {
     "group": "identityplatform",
@@ -7193,12 +7739,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 330,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/identityplatform/v1beta1/identityplatformoauthidpconfig",
+    "mockgcpLocation": ""
   },
   {
     "group": "identityplatform",
     "kind": "IdentityPlatformProjectDefaultConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -7219,7 +7767,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 331,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "identityplatform",
@@ -7243,12 +7793,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 99,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/identityplatform/v1beta1/identityplatformtenant",
+    "mockgcpLocation": ""
   },
   {
     "group": "identityplatform",
     "kind": "IdentityPlatformTenantDefaultSupportedIDPConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -7269,12 +7821,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 332,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "identityplatform",
     "kind": "IdentityPlatformTenantInboundSAMLConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -7295,7 +7849,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 333,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "identityplatform",
@@ -7321,7 +7877,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 334,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/identityplatform/v1beta1/identityplatformtenantoauthidpconfig",
+    "mockgcpLocation": ""
   },
   {
     "group": "kms",
@@ -7347,7 +7905,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 335,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/kms/v1beta1/kmsautokeyconfig",
+    "mockgcpLocation": "mockgcp/mockkms"
   },
   {
     "group": "kms",
@@ -7373,12 +7933,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 5,
-    "downstreamCount": 113
+    "downstreamCount": 113,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/kms/v1beta1/kmscryptokey",
+    "mockgcpLocation": "mockgcp/mockkms"
   },
   {
     "group": "kms",
     "kind": "KMSCryptoKeyVersion",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -7397,7 +7959,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 336,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": "mockgcp/mockkms"
   },
   {
     "group": "kms",
@@ -7423,7 +7987,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 337,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/kms/v1beta1/kmsimportjob",
+    "mockgcpLocation": "mockgcp/mockkms"
   },
   {
     "group": "kms",
@@ -7449,7 +8015,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 338,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/kms/v1beta1/kmskeyhandle",
+    "mockgcpLocation": "mockgcp/mockkms"
   },
   {
     "group": "kms",
@@ -7473,12 +8041,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 4,
-    "downstreamCount": 115
+    "downstreamCount": 115,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/kms/v1beta1/kmskeyring",
+    "mockgcpLocation": "mockgcp/mockkms"
   },
   {
     "group": "kms",
     "kind": "KMSKeyRingImportJob",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -7497,12 +8067,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 339,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": "mockgcp/mockkms"
   },
   {
     "group": "kms",
     "kind": "KMSSecretCiphertext",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -7521,7 +8093,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 340,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "logging",
@@ -7547,7 +8121,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 341,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/logging/v1beta1/logginglink",
+    "mockgcpLocation": "mockgcp/mocklogging"
   },
   {
     "group": "logging",
@@ -7574,7 +8150,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 41,
-    "downstreamCount": 3
+    "downstreamCount": 3,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/logging/v1beta1/logginglogbucket",
+    "mockgcpLocation": "mockgcp/mocklogging"
   },
   {
     "group": "logging",
@@ -7601,7 +8179,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 342,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/logging/v1beta1/logginglogexclusion",
+    "mockgcpLocation": ""
   },
   {
     "group": "logging",
@@ -7628,7 +8208,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 343,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/logging/v1beta1/logginglogmetric",
+    "mockgcpLocation": "mockgcp/mocklogging"
   },
   {
     "group": "logging",
@@ -7659,7 +8241,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 344,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/logging/v1beta1/logginglogsink",
+    "mockgcpLocation": "mockgcp/mocklogging"
   },
   {
     "group": "logging",
@@ -7687,12 +8271,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 345,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/logging/v1beta1/logginglogview",
+    "mockgcpLocation": "mockgcp/mocklogging"
   },
   {
     "group": "mlengine",
     "kind": "MLEngineModel",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -7713,7 +8299,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 346,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/mlengine/v1alpha1/mlenginemodel",
+    "mockgcpLocation": ""
   },
   {
     "group": "managedkafka",
@@ -7741,7 +8329,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 61,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/managedkafka/v1beta1/managedkafkacluster",
+    "mockgcpLocation": "mockgcp/mockmanagedkafka"
   },
   {
     "group": "managedkafka",
@@ -7768,7 +8358,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 348,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/managedkafka/v1beta1/managedkafkatopic",
+    "mockgcpLocation": "mockgcp/mockmanagedkafka"
   },
   {
     "group": "memcache",
@@ -7794,7 +8386,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 349,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/memcache/v1beta1/memcacheinstance",
+    "mockgcpLocation": ""
   },
   {
     "group": "memorystore",
@@ -7821,7 +8415,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 350,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/memorystore/v1beta1/memorystoreinstance",
+    "mockgcpLocation": "mockgcp/mockmemorystore"
   },
   {
     "group": "metastore",
@@ -7847,12 +8443,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 351,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/metastore/v1beta1/metastorebackup",
+    "mockgcpLocation": "mockgcp/mockmetastore"
   },
   {
     "group": "metastore",
     "kind": "MetastoreFederation",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -7873,12 +8471,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 352,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/metastore/v1alpha1/metastorefederation",
+    "mockgcpLocation": "mockgcp/mockmetastore"
   },
   {
     "group": "metastore",
     "kind": "MetastoreService",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -7901,7 +8501,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 36,
-    "downstreamCount": 4
+    "downstreamCount": 4,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/metastore/v1alpha1/metastoreservice",
+    "mockgcpLocation": ""
   },
   {
     "group": "monitoring",
@@ -7925,7 +8527,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 100,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/monitoring/v1beta1/monitoringalertpolicy",
+    "mockgcpLocation": "mockgcp/mockmonitoring"
   },
   {
     "group": "monitoring",
@@ -7952,7 +8556,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 353,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/monitoring/v1beta1/monitoringdashboard",
+    "mockgcpLocation": "mockgcp/mockmonitoring"
   },
   {
     "group": "monitoring",
@@ -7978,7 +8584,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 101,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/monitoring/v1beta1/monitoringgroup",
+    "mockgcpLocation": "mockgcp/mockmonitoring"
   },
   {
     "group": "monitoring",
@@ -8004,7 +8612,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 354,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/monitoring/v1beta1/monitoringmetricdescriptor",
+    "mockgcpLocation": "mockgcp/mockmonitoring"
   },
   {
     "group": "monitoring",
@@ -8028,7 +8638,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 355,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/monitoring/v1beta1/monitoringmonitoredproject",
+    "mockgcpLocation": ""
   },
   {
     "group": "monitoring",
@@ -8052,7 +8664,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 356,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/monitoring/v1beta1/monitoringnotificationchannel",
+    "mockgcpLocation": "mockgcp/mockmonitoring"
   },
   {
     "group": "monitoring",
@@ -8078,7 +8692,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 102,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/monitoring/v1beta1/monitoringservice",
+    "mockgcpLocation": ""
   },
   {
     "group": "monitoring",
@@ -8105,7 +8721,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 357,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/monitoring/v1beta1/monitoringservicelevelobjective",
+    "mockgcpLocation": "mockgcp/mockmonitoring"
   },
   {
     "group": "monitoring",
@@ -8132,12 +8750,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 358,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/monitoring/v1beta1/monitoringuptimecheckconfig",
+    "mockgcpLocation": ""
   },
   {
     "group": "netapp",
     "kind": "NetAppBackupPolicy",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -8158,7 +8778,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 359,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/netapp/v1alpha1/netappbackuppolicy",
+    "mockgcpLocation": "mockgcp/mocknetapp"
   },
   {
     "group": "networkconnectivity",
@@ -8184,12 +8806,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 103,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkconnectivity/v1beta1/networkconnectivityhub",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkconnectivity",
     "kind": "NetworkConnectivityInternalRange",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -8211,12 +8835,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 361,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkconnectivity/v1alpha1/networkconnectivityinternalrange",
+    "mockgcpLocation": "mockgcp/mocknetworkconnectivity"
   },
   {
     "group": "networkconnectivity",
     "kind": "NetworkConnectivityServiceConnectionPolicy",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -8238,7 +8864,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 362,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkconnectivity/v1alpha1/networkconnectivityserviceconnectionpolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkconnectivity",
@@ -8265,12 +8893,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 363,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkconnectivity/v1beta1/networkconnectivityspoke",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkmanagement",
     "kind": "NetworkManagementConnectivityTest",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -8295,7 +8925,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 364,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkmanagement/v1alpha1/networkmanagementconnectivitytest",
+    "mockgcpLocation": "mockgcp/mocknetworkmanagement"
   },
   {
     "group": "networksecurity",
@@ -8321,7 +8953,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 365,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networksecurity/v1beta1/networksecurityauthorizationpolicy",
+    "mockgcpLocation": "mockgcp/mocknetworksecurity"
   },
   {
     "group": "networksecurity",
@@ -8347,7 +8981,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 366,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networksecurity/v1beta1/networksecurityclienttlspolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "networksecurity",
@@ -8373,12 +9009,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 367,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networksecurity/v1beta1/networksecurityservertlspolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkservices",
     "kind": "NetworkServicesEdgeCacheKeyset",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -8399,12 +9037,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 368,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1alpha1/networkservicesedgecachekeyset",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkservices",
     "kind": "NetworkServicesEdgeCacheOrigin",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -8425,12 +9065,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 369,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1alpha1/networkservicesedgecacheorigin",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkservices",
     "kind": "NetworkServicesEdgeCacheService",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -8451,7 +9093,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 370,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkservices",
@@ -8477,7 +9121,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 371,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1beta1/networkservicesendpointpolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkservices",
@@ -8504,7 +9150,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 372,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1beta1/networkservicesgrpcroute",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkservices",
@@ -8530,7 +9178,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 373,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1beta1/networkservicesgateway",
+    "mockgcpLocation": "mockgcp/mocknetworkservices"
   },
   {
     "group": "networkservices",
@@ -8557,7 +9207,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 374,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1beta1/networkserviceshttproute",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkservices",
@@ -8583,12 +9235,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 376,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1beta1/networkservicesmesh",
+    "mockgcpLocation": "mockgcp/mocknetworkservices"
   },
   {
     "group": "networkservices",
     "kind": "NetworkServicesServiceBinding",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -8610,7 +9264,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 377,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1alpha1/networkservicesservicebinding",
+    "mockgcpLocation": "mockgcp/mocknetworkservices"
   },
   {
     "group": "networkservices",
@@ -8637,7 +9293,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 378,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1beta1/networkservicestcproute",
+    "mockgcpLocation": ""
   },
   {
     "group": "networkservices",
@@ -8664,7 +9322,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 379,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/networkservices/v1beta1/networkservicestlsroute",
+    "mockgcpLocation": ""
   },
   {
     "group": "notebooks",
@@ -8693,12 +9353,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 380,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/notebooks/v1beta1/notebookinstance",
+    "mockgcpLocation": "mockgcp/mocknotebooks"
   },
   {
     "group": "notebooks",
     "kind": "NotebooksEnvironment",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -8719,7 +9381,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 381,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/notebooks/v1alpha1/notebooksenvironment",
+    "mockgcpLocation": ""
   },
   {
     "group": "osconfig",
@@ -8745,7 +9409,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 382,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/osconfig/v1beta1/osconfigguestpolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "osconfig",
@@ -8771,12 +9437,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 383,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/osconfig/v1beta1/osconfigospolicyassignment",
+    "mockgcpLocation": ""
   },
   {
     "group": "osconfig",
     "kind": "OSConfigPatchDeployment",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -8797,12 +9465,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 384,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/osconfig/v1alpha1/osconfigpatchdeployment",
+    "mockgcpLocation": ""
   },
   {
     "group": "oslogin",
     "kind": "OSLoginSSHPublicKey",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -8821,7 +9491,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 385,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/oslogin/v1alpha1/osloginsshpublickey",
+    "mockgcpLocation": ""
   },
   {
     "group": "orgpolicy",
@@ -8845,12 +9517,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 386,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/orgpolicy/v1beta1/orgpolicycustomconstraint",
+    "mockgcpLocation": "mockgcp/mockorgpolicy"
   },
   {
     "group": "orgpolicy",
     "kind": "OrgPolicyPolicy",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -8872,12 +9546,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 387,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/orgpolicy/v1alpha1/orgpolicypolicy",
+    "mockgcpLocation": "mockgcp/mockorgpolicy"
   },
   {
     "group": "parametermanager",
     "kind": "ParameterManagerParameter",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -8899,7 +9575,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 104,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/parametermanager/v1alpha1/parametermanagerparameter",
+    "mockgcpLocation": "mockgcp/mockparametermanager"
   },
   {
     "group": "privateca",
@@ -8926,7 +9604,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 62,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/privateca/v1beta1/privatecacapool",
+    "mockgcpLocation": "mockgcp/mockprivateca"
   },
   {
     "group": "privateca",
@@ -8955,7 +9635,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 389,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/privateca/v1beta1/privatecacertificate",
+    "mockgcpLocation": ""
   },
   {
     "group": "privateca",
@@ -8984,7 +9666,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 105,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/privateca/v1beta1/privatecacertificateauthority",
+    "mockgcpLocation": "mockgcp/mockprivateca"
   },
   {
     "group": "privateca",
@@ -9010,7 +9694,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 106,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/privateca/v1beta1/privatecacertificatetemplate",
+    "mockgcpLocation": ""
   },
   {
     "group": "privilegedaccessmanager",
@@ -9037,7 +9723,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 390,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/privilegedaccessmanager/v1beta1/privilegedaccessmanagerentitlement",
+    "mockgcpLocation": "mockgcp/mockprivilegedaccessmanager"
   },
   {
     "group": "resourcemanager",
@@ -9063,7 +9751,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 3,
-    "downstreamCount": 292
+    "downstreamCount": 292,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/resourcemanager/v1beta1/project",
+    "mockgcpLocation": "mockgcp/mockresourcemanager"
   },
   {
     "group": "pubsublite",
@@ -9089,12 +9779,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 391,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/pubsublite/v1beta1/pubsublitereservation",
+    "mockgcpLocation": "mockgcp/mockpubsublite"
   },
   {
     "group": "pubsublite",
     "kind": "PubSubLiteSubscription",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -9115,12 +9807,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 392,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/pubsublite/v1alpha1/pubsublitesubscription",
+    "mockgcpLocation": "mockgcp/mockpubsublite"
   },
   {
     "group": "pubsublite",
     "kind": "PubSubLiteTopic",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -9141,7 +9835,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 393,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/pubsublite/v1alpha1/pubsublitetopic",
+    "mockgcpLocation": "mockgcp/mockpubsublite"
   },
   {
     "group": "pubsub",
@@ -9167,7 +9863,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 20,
-    "downstreamCount": 7
+    "downstreamCount": 7,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/pubsub/v1beta1/pubsubschema",
+    "mockgcpLocation": "mockgcp/mockpubsub"
   },
   {
     "group": "pubsub",
@@ -9195,7 +9893,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 394,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/pubsub/pubsubsnapshot",
+    "mockgcpLocation": "mockgcp/mockpubsub"
   },
   {
     "group": "pubsub",
@@ -9222,7 +9922,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 63,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/pubsub/v1beta1/pubsubsubscription",
+    "mockgcpLocation": "mockgcp/mockpubsub"
   },
   {
     "group": "pubsub",
@@ -9249,12 +9951,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 24,
-    "downstreamCount": 6
+    "downstreamCount": 6,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/pubsub/v1beta1/pubsubtopic",
+    "mockgcpLocation": "mockgcp/mockpubsub"
   },
   {
     "group": "recaptchaenterprise",
     "kind": "ReCAPTCHAEnterpriseFirewallPolicy",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -9275,7 +9979,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 395,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/recaptchaenterprise/v1alpha1/recaptchaenterprisefirewallpolicy",
+    "mockgcpLocation": "mockgcp/mockrecaptchaenterprise"
   },
   {
     "group": "recaptchaenterprise",
@@ -9301,7 +10007,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 396,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/recaptchaenterprise/v1beta1/recaptchaenterprisekey",
+    "mockgcpLocation": ""
   },
   {
     "group": "redis",
@@ -9328,7 +10036,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 397,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/redis/v1beta1/rediscluster",
+    "mockgcpLocation": "mockgcp/mockredis"
   },
   {
     "group": "redis",
@@ -9354,7 +10064,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 398,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/redis/v1beta1/redisinstance",
+    "mockgcpLocation": "mockgcp/mockredis"
   },
   {
     "group": "resourcemanager",
@@ -9380,7 +10092,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 399,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/resourcemanager/v1beta1/resourcemanagerlien",
+    "mockgcpLocation": ""
   },
   {
     "group": "resourcemanager",
@@ -9407,7 +10121,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 400,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/resourcemanager/v1beta1/resourcemanagerpolicy",
+    "mockgcpLocation": ""
   },
   {
     "group": "run",
@@ -9437,7 +10153,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 401,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/run/v1beta1/runjob",
+    "mockgcpLocation": "mockgcp/mockrun"
   },
   {
     "group": "run",
@@ -9465,7 +10183,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 402,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/run/v1beta1/runservice",
+    "mockgcpLocation": "mockgcp/mockrun"
   },
   {
     "group": "sql",
@@ -9491,7 +10211,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 403,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqldatabase",
+    "mockgcpLocation": ""
   },
   {
     "group": "sql",
@@ -9519,7 +10241,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 27,
-    "downstreamCount": 5
+    "downstreamCount": 5,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlinstance",
+    "mockgcpLocation": ""
   },
   {
     "group": "sql",
@@ -9545,7 +10269,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 404,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlsslcert",
+    "mockgcpLocation": ""
   },
   {
     "group": "sql",
@@ -9571,7 +10297,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 405,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqluser",
+    "mockgcpLocation": ""
   },
   {
     "group": "secretmanager",
@@ -9598,7 +10326,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 64,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/secretmanager/v1beta1/secretmanagersecret",
+    "mockgcpLocation": "mockgcp/mocksecretmanager"
   },
   {
     "group": "secretmanager",
@@ -9625,7 +10355,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 406,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/secretmanager/v1beta1/secretmanagersecretversion",
+    "mockgcpLocation": "mockgcp/mocksecretmanager"
   },
   {
     "group": "securesourcemanager",
@@ -9652,7 +10384,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 107,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/securesourcemanager/v1beta1/securesourcemanagerinstance",
+    "mockgcpLocation": "mockgcp/mocksecuresourcemanager"
   },
   {
     "group": "securesourcemanager",
@@ -9679,12 +10413,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 407,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/securesourcemanager/v1beta1/securesourcemanagerrepository",
+    "mockgcpLocation": "mockgcp/mocksecuresourcemanager"
   },
   {
     "group": "securitycenter",
     "kind": "SecurityCenterNotificationConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -9703,12 +10439,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 408,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "securitycenter",
     "kind": "SecurityCenterSource",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -9727,7 +10465,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 409,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/securitycenter/v1alpha1/securitycentersource",
+    "mockgcpLocation": ""
   },
   {
     "group": "serviceusage",
@@ -9753,7 +10493,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 11,
-    "downstreamCount": 13
+    "downstreamCount": 13,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/serviceusage/v1beta1/service",
+    "mockgcpLocation": ""
   },
   {
     "group": "servicedirectory",
@@ -9780,7 +10522,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 410,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/servicedirectory/v1beta1/servicedirectoryendpoint",
+    "mockgcpLocation": ""
   },
   {
     "group": "servicedirectory",
@@ -9806,7 +10550,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 108,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/servicedirectory/v1beta1/servicedirectorynamespace",
+    "mockgcpLocation": "mockgcp/mockservicedirectory"
   },
   {
     "group": "servicedirectory",
@@ -9832,7 +10578,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 411,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/servicedirectory/v1beta1/servicedirectoryservice",
+    "mockgcpLocation": "mockgcp/mockservicedirectory"
   },
   {
     "group": "serviceusage",
@@ -9858,7 +10606,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 65,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/serviceusage/v1beta1/serviceidentity",
+    "mockgcpLocation": ""
   },
   {
     "group": "servicenetworking",
@@ -9884,12 +10634,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 412,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/servicenetworking/v1beta1/servicenetworkingconnection",
+    "mockgcpLocation": "mockgcp/mockservicenetworking"
   },
   {
     "group": "servicenetworking",
     "kind": "ServiceNetworkingPeeredDNSDomain",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -9910,12 +10662,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 413,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/servicenetworking/v1alpha1/servicenetworkingpeereddnsdomain",
+    "mockgcpLocation": "mockgcp/mockservicenetworking"
   },
   {
     "group": "serviceusage",
     "kind": "ServiceUsageConsumerQuotaOverride",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -9936,7 +10690,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 414,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "sourcerepo",
@@ -9962,7 +10718,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 415,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/sourcerepo/v1beta1/sourcereporepository",
+    "mockgcpLocation": ""
   },
   {
     "group": "spanner",
@@ -9989,7 +10747,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 416,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/spanner/v1beta1/spannerbackupschedule",
+    "mockgcpLocation": ""
   },
   {
     "group": "spanner",
@@ -10016,7 +10776,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 109,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/spanner/v1beta1/spannerdatabase",
+    "mockgcpLocation": ""
   },
   {
     "group": "spanner",
@@ -10041,12 +10803,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 66,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/spanner/v1beta1/spannerinstance",
+    "mockgcpLocation": ""
   },
   {
     "group": "spanner",
     "kind": "SpannerInstanceConfig",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10067,7 +10831,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 417,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/spanner/v1alpha1/spannerinstanceconfig",
+    "mockgcpLocation": ""
   },
   {
     "group": "speech",
@@ -10093,7 +10859,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 418,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/speech/v1beta1/speechcustomclass",
+    "mockgcpLocation": "mockgcp/mockspeech"
   },
   {
     "group": "speech",
@@ -10119,7 +10887,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 419,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/speech/v1beta1/speechphraseset",
+    "mockgcpLocation": "mockgcp/mockspeech"
   },
   {
     "group": "speech",
@@ -10145,7 +10915,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 420,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/speech/v1beta1/speechrecognizer",
+    "mockgcpLocation": "mockgcp/mockspeech"
   },
   {
     "group": "storage",
@@ -10171,7 +10943,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 421,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storageanywherecache",
+    "mockgcpLocation": ""
   },
   {
     "group": "storage",
@@ -10197,7 +10971,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 8,
-    "downstreamCount": 37
+    "downstreamCount": 37,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storagebucket",
+    "mockgcpLocation": "mockgcp/mockstorage"
   },
   {
     "group": "storage",
@@ -10223,7 +10999,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 422,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storagebucketaccesscontrol",
+    "mockgcpLocation": ""
   },
   {
     "group": "storage",
@@ -10249,12 +11027,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 423,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storagedefaultobjectaccesscontrol",
+    "mockgcpLocation": ""
   },
   {
     "group": "storage",
     "kind": "StorageFolder",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10276,12 +11056,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 424,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/storage/v1alpha1/storagefolder",
+    "mockgcpLocation": "mockgcp/mockstorage"
   },
   {
     "group": "storage",
     "kind": "StorageHMACKey",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -10302,7 +11084,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 425,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "storage",
@@ -10328,12 +11112,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 427,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storagenotification",
+    "mockgcpLocation": "mockgcp/mockstorage"
   },
   {
     "group": "storagetransfer",
     "kind": "StorageTransferAgentPool",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -10354,7 +11140,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 428,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "storagetransfer",
@@ -10380,12 +11168,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 429,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/storagetransfer/v1beta1/storagetransferjob",
+    "mockgcpLocation": ""
   },
   {
     "group": "tpu",
     "kind": "TPUNode",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -10406,7 +11196,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 430,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/tpu/v1alpha1/tpunode",
+    "mockgcpLocation": "mockgcp/mocktpu"
   },
   {
     "group": "tags",
@@ -10433,7 +11225,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 432,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/tags/v1beta1/tagslocationtagbinding",
+    "mockgcpLocation": ""
   },
   {
     "group": "tags",
@@ -10460,7 +11254,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 433,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/tags/v1beta1/tagstagbinding",
+    "mockgcpLocation": ""
   },
   {
     "group": "tags",
@@ -10485,7 +11281,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 434,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/tags/v1beta1/tagstagkey",
+    "mockgcpLocation": ""
   },
   {
     "group": "tags",
@@ -10510,12 +11308,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 67,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/tags/v1beta1/tagstagvalue",
+    "mockgcpLocation": ""
   },
   {
     "group": "cloudtasks",
     "kind": "TasksQueue",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10536,12 +11336,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 435,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/cloudtasks/v1alpha1/tasksqueue",
+    "mockgcpLocation": "mockgcp/mockcloudtasks"
   },
   {
     "group": "vmwareengine",
     "kind": "VMwareEngineExternalAccessRule",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10563,7 +11365,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 436,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareengineexternalaccessrule",
+    "mockgcpLocation": "mockgcp/mockvmwareengine"
   },
   {
     "group": "vmwareengine",
@@ -10589,12 +11393,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 110,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1beta1/vmwareengineexternaladdress",
+    "mockgcpLocation": "mockgcp/mockvmwareengine"
   },
   {
     "group": "vmwareengine",
     "kind": "VMwareEngineNetwork",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10615,12 +11421,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 28,
-    "downstreamCount": 5
+    "downstreamCount": 5,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareenginenetwork",
+    "mockgcpLocation": ""
   },
   {
     "group": "vmwareengine",
     "kind": "VMwareEngineNetworkPeering",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10643,12 +11451,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 437,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareenginenetworkpeering",
+    "mockgcpLocation": "mockgcp/mockvmwareengine"
   },
   {
     "group": "vmwareengine",
     "kind": "VMwareEngineNetworkPolicy",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10670,12 +11480,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 111,
-    "downstreamCount": 1
+    "downstreamCount": 1,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareenginenetworkpolicy",
+    "mockgcpLocation": "mockgcp/mockvmwareengine"
   },
   {
     "group": "vmwareengine",
     "kind": "VMwareEnginePrivateCloud",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10697,7 +11509,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 68,
-    "downstreamCount": 2
+    "downstreamCount": 2,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareengineprivatecloud",
+    "mockgcpLocation": "mockgcp/mockvmwareengine"
   },
   {
     "group": "vpcaccess",
@@ -10724,7 +11538,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 438,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vpcaccess/v1beta1/vpcaccessconnector",
+    "mockgcpLocation": "mockgcp/mockvpcaccess"
   },
   {
     "group": "vertexai",
@@ -10751,7 +11567,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 439,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vertexai/v1beta1/vertexaidataset",
+    "mockgcpLocation": ""
   },
   {
     "group": "vertexai",
@@ -10779,12 +11597,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 440,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vertexai/v1beta1/vertexaiendpoint",
+    "mockgcpLocation": ""
   },
   {
     "group": "vertexai",
     "kind": "VertexAIFeaturestore",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10806,12 +11626,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 441,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vertexai/v1alpha1/vertexaifeaturestore",
+    "mockgcpLocation": ""
   },
   {
     "group": "vertexai",
     "kind": "VertexAIFeaturestoreEntityType",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -10830,12 +11652,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 442,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "vertexai",
     "kind": "VertexAIFeaturestoreEntityTypeFeature",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -10854,7 +11678,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 443,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "vertexai",
@@ -10880,12 +11706,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 444,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vertexai/v1beta1/vertexaiindex",
+    "mockgcpLocation": ""
   },
   {
     "group": "vertexai",
     "kind": "VertexAIIndexEndpoint",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -10906,7 +11734,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 445,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "",
+    "mockgcpLocation": ""
   },
   {
     "group": "vertexai",
@@ -10933,12 +11763,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 446,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vertexai/v1beta1/vertexaimetadatastore",
+    "mockgcpLocation": ""
   },
   {
     "group": "vertexai",
     "kind": "VertexAITensorboard",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
@@ -10959,12 +11791,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 447,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/vertexai/v1alpha1/vertexaitensorboard",
+    "mockgcpLocation": ""
   },
   {
     "group": "workflowexecutions",
     "kind": "WorkflowsExecution",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -10985,12 +11819,14 @@
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go",
     "sortOrder": 448,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/workflowexecutions/v1alpha1/workflowsexecution",
+    "mockgcpLocation": ""
   },
   {
     "group": "workflows",
     "kind": "WorkflowsWorkflow",
-    "version": "v1beta1",
+    "version": "v1alpha1",
     "controllerType": "Direct",
     "defaultController": "Direct",
     "supportedControllers": [
@@ -11013,7 +11849,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 449,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/workflows/v1alpha1/workflowsworkflow",
+    "mockgcpLocation": "mockgcp/mockworkflows"
   },
   {
     "group": "workstations",
@@ -11037,7 +11875,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 450,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/workstations/v1beta1/workstation",
+    "mockgcpLocation": "mockgcp/mockworkstations"
   },
   {
     "group": "workstations",
@@ -11064,7 +11904,9 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 451,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/workstations/v1beta1/workstationcluster",
+    "mockgcpLocation": ""
   },
   {
     "group": "workstations",
@@ -11091,6 +11933,8 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 452,
-    "downstreamCount": 0
+    "downstreamCount": 0,
+    "gcpTestLocation": "pkg/test/resourcefixture/testdata/basic/workstations/v1beta1/workstationconfig",
+    "mockgcpLocation": ""
   }
 ]
