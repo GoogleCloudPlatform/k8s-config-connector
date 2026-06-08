@@ -104,6 +104,10 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The automated backup config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.automated_backup_config
 	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional. The maintenance policy for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_policy
+	MaintenancePolicy *MaintenancePolicy `json:"maintenancePolicy,omitempty"`
 }
 
 var _ identity.Resource = &MemorystoreInstance{}
@@ -203,6 +207,14 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. The list of available maintenance versions for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.available_maintenance_versions
 	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
+
+	// Output only. Upcoming maintenance schedule.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_schedule
+	MaintenanceSchedule *MaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
+
+	// Output only. User-defined weekly maintenance windows in which space is reserved for maintenance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_policy
+	MaintenancePolicy *MaintenancePolicyObservedState `json:"maintenancePolicy,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail

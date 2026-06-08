@@ -37,6 +37,14 @@ spec:
   labels:
     keyx: valx
   location: us-central1
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: WEDNESDAY
+      startTime:
+        hours: 6
+        minutes: 0
+        nanos: 0
+        seconds: 0
   mode: CLUSTER
   nodeType: STANDARD_SMALL
   persistenceConfig:
@@ -81,6 +89,7 @@ status:
           ipAddress: ${ipAddress}-2
           pscConnectionID: ${pscConnectionId}
           serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2
+    maintenancePolicy: {}
     nodeConfig:
       sizeGB: 6.5
     pscAttachmentDetails:

@@ -265,10 +265,6 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
 		obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
 	}
-	if obj.MaintenancePolicy != nil && obj.MaintenancePolicy.CreateTime == nil {
-		obj.MaintenancePolicy.CreateTime = timestamppb.New(time.Now())
-		obj.MaintenancePolicy.UpdateTime = obj.MaintenancePolicy.CreateTime
-	}
 	if crr := obj.CrossInstanceReplicationConfig; crr != nil {
 		switch crr.InstanceRole {
 		case pb.CrossInstanceReplicationConfig_PRIMARY:
@@ -387,7 +383,6 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		case "maintenancePolicy":
 			if req.Instance.MaintenancePolicy != nil {
 				obj.MaintenancePolicy = req.Instance.MaintenancePolicy
-				obj.MaintenancePolicy.UpdateTime = timestamppb.New(now)
 			}
 		case "automatedBackupConfig":
 			obj.AutomatedBackupConfig = req.Instance.AutomatedBackupConfig
