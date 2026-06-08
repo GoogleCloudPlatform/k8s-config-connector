@@ -207,6 +207,20 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 			obj.AutomatedBackupConfig.Retention = nil
 		}
 	}
+	if obj.MaintenancePolicy != nil {
+		if obj.MaintenancePolicy.CreateTime == nil {
+			obj.MaintenancePolicy.CreateTime = timestamppb.New(time.Unix(1717171717, 0))
+		}
+		if obj.MaintenancePolicy.UpdateTime == nil {
+			obj.MaintenancePolicy.UpdateTime = timestamppb.New(time.Unix(1717171717, 0))
+		}
+		if obj.MaintenanceSchedule == nil {
+			obj.MaintenanceSchedule = &pb.ClusterMaintenanceSchedule{
+				StartTime: timestamppb.New(time.Unix(1727272727, 0)),
+				EndTime:   timestamppb.New(time.Unix(1727282727, 0)),
+			}
+		}
+	}
 	return nil
 }
 
@@ -262,6 +276,8 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.RedisConfigs = req.Cluster.RedisConfigs
 		case "automatedBackupConfig":
 			obj.AutomatedBackupConfig = req.Cluster.AutomatedBackupConfig
+		case "maintenancePolicy":
+			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)

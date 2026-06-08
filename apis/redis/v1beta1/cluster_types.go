@@ -75,6 +75,9 @@ type RedisClusterSpec struct {
 
 	// Optional. The automated backup config for the cluster.
 	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional. ClusterMaintenancePolicy determines when to allow or deny updates.
+	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 }
 
 type PscConfigSpec struct {
@@ -135,6 +138,12 @@ type RedisClusterObservedState struct {
 	// Output only. Precise value of redis memory size in GB for the entire
 	//  cluster.
 	PreciseSizeGB *float64 `json:"preciseSizeGb,omitempty"`
+
+	// Optional. ClusterMaintenancePolicy determines when to allow or deny updates.
+	MaintenancePolicy *ClusterMaintenancePolicyObservedState `json:"maintenancePolicy,omitempty"`
+
+	// Output only. ClusterMaintenanceSchedule Output only Published maintenance schedule.
+	MaintenanceSchedule *ClusterMaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
 }
 
 // +genclient

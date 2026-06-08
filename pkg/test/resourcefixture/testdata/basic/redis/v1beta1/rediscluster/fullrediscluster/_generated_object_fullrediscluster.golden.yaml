@@ -22,6 +22,14 @@ spec:
     retention: 1209600s
   deletionProtectionEnabled: false
   location: us-central1
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: MONDAY
+      startTime:
+        hours: 3
+        minutes: 45
+        nanos: 0
+        seconds: 0
   nodeType: REDIS_STANDARD_SMALL
   persistenceConfig:
     aofConfig:
@@ -60,6 +68,12 @@ status:
       port: 6379
       pscConfig:
         network: projects/${projectId}/global/networks/${networkID}
+    maintenancePolicy:
+      createTime: "2024-05-31T16:08:37Z"
+      updateTime: "2024-05-31T16:08:37Z"
+    maintenanceSchedule:
+      endTime: "2024-09-25T16:45:27Z"
+      startTime: "2024-09-25T13:58:47Z"
     preciseSizeGb: 39
     pscConnections:
     - address: 10.11.12.13

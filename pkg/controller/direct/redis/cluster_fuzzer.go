@@ -42,28 +42,14 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".psc_connections[].connection_type")
 	f.UnimplementedFields.Insert(".cross_cluster_replication_config")
 	f.UnimplementedFields.Insert(".kms_key")
-	f.UnimplementedFields.Insert(".maintenance_policy")
-	f.UnimplementedFields.Insert(".maintenance_schedule")
 	f.UnimplementedFields.Insert(".encryption_info")
 	f.UnimplementedFields.Insert(".gcs_source")
 	f.UnimplementedFields.Insert(".cluster_endpoints")
 	f.UnimplementedFields.Insert(".labels")
 
-	// New Fields in the updated version of Redis Cluster
-	f.UnimplementedFields.Insert(".backup_collection")
-	f.UnimplementedFields.Insert(".managed_backup_source")
-	f.UnimplementedFields.Insert(".psc_service_attachments")
-	f.UnimplementedFields.Insert(".psc_connections[].psc_connection_status")
-	f.UnimplementedFields.Insert(".psc_connections[].service_attachment")
-	f.UnimplementedFields.Insert(".psc_connections[].connection_type")
-	f.UnimplementedFields.Insert(".cross_cluster_replication_config")
-	f.UnimplementedFields.Insert(".kms_key")
-	f.UnimplementedFields.Insert(".maintenance_policy")
-	f.UnimplementedFields.Insert(".maintenance_schedule")
-	f.UnimplementedFields.Insert(".encryption_info")
-	f.UnimplementedFields.Insert(".gcs_source")
-	f.UnimplementedFields.Insert(".cluster_endpoints")
-	f.UnimplementedFields.Insert(".labels")
+	// Output-only fields inside maintenance_policy (which belongs to Spec but create/update times are Status only)
+	f.UnimplementedFields.Insert(".maintenance_policy.create_time")
+	f.UnimplementedFields.Insert(".maintenance_policy.update_time")
 
 	f.SpecFields.Insert(".authorization_mode")
 	f.SpecFields.Insert(".transit_encryption_mode")
@@ -76,6 +62,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".zone_distribution_config")
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".automated_backup_config")
+	f.SpecFields.Insert(".maintenance_policy")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".state")
@@ -85,6 +72,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".psc_connections")
 	f.StatusFields.Insert(".state_info")
 	f.StatusFields.Insert(".precise_size_gb")
+	f.StatusFields.Insert(".maintenance_schedule")
 
 	return f
 }

@@ -47,3 +47,11 @@ spec:
         minutes: 0
         seconds: 0
         nanos: 0
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: SUNDAY
+      startTime:
+        hours: 2
+        minutes: 30
+        seconds: 0
+        nanos: 0
