@@ -101,3 +101,12 @@ func (r *PubSubTopicRef) Normalize(ctx context.Context, reader client.Reader, de
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
+
+// NormalizedExternal provision the "External" value.
+// Kept for backward compatibility with older callers.
+func (r *PubSubTopicRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
+	}
+	return r.External, nil
+}
