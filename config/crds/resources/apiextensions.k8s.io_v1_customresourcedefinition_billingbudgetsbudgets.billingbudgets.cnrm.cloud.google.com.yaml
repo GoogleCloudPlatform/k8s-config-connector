@@ -407,7 +407,7 @@ spec:
             - billingAccountRef
             type: object
           status:
-            description: BillingBudgetsBudgetStatus defines the config connector machine
+            description: BillingBudgetsBudgetStatus defines the Config Connector machine
               state of BillingBudgetsBudget
             properties:
               conditions:
