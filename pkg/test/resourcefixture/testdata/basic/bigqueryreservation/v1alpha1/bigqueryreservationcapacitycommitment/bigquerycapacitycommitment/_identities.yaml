@@ -1,0 +1,6 @@
+- caisURL: //bigqueryreservation.googleapis.com/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}
+  group: bigqueryreservation.cnrm.cloud.google.com
+  kind: BigQueryReservationCapacityCommitment
+  name: bqcc-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
