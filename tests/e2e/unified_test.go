@@ -340,6 +340,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					forceDirect = true
 				case "CertificateManagerCertificate":
 					forceDirect = true
+				case "BillingAccount":
+					forceDirect = true
 				default:
 					forceDirect = false
 				}
