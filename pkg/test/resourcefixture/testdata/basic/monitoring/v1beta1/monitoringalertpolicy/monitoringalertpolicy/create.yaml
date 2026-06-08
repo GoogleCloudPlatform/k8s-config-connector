@@ -42,6 +42,7 @@ spec:
               - resource.label.instance_id
               - resource.label.zone
   documentation:
+    subject: "Alert: Very high CPU usage"
     content: |-
       Introduction to alerting
       Alerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.
