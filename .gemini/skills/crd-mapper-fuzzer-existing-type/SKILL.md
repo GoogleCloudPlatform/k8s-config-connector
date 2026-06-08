@@ -57,8 +57,10 @@ When writing a KRM round-trip fuzzer, or if a fuzzer already exists:
   - Use `f.Unimplemented_LabelsAnnotations(fieldPath)` for labels or annotations.
 - **Move Hand-Coded Mappers**: Ensure all hand-coded mapper functions reside in a file called `mappers.go` within the direct controller package to distinguish them from the generated mapper file `mapper.generated.go`.
 
+**No Dedicated Unit Test Needed**: There is no need to add a dedicated/standalone `_fuzzer_test.go` file for the resource. Simply registering the fuzzer using `fuzztesting.RegisterKRMFuzzer()` in your fuzzer implementation file (e.g. `backupvault_fuzzer.go`) is fully sufficient. The existing shared testing framework (such as `pkg/fuzztesting/fuzztests/fuzz_test.go`) will automatically discover and run it.
+
 ### 4. Verification & Acceptance Criteria
 - Run `dev/tasks/diff-crds` to verify there are absolutely no unintended schema changes.
-- Since we are transitioning an existing type, we do not need a fuzzer yet. The primary acceptance criterion is "does it generate the same CRD schema".
+- Since we are transitioning an existing type, the primary acceptance criterion is "does it generate the same CRD schema".
 - Once the schema is identical, run `make ready-pr` to regenerate Go clients (and compile-check the changes, run custom linters, format the files, and regenerate static configs).
 - Finally, run `dev/tasks/generate-resource-report` to update the resource reports `docs/reports/crd_report.csv` and `docs/reports/crd_report.md` to reflect the transition.
