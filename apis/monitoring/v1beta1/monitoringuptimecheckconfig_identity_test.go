@@ -48,6 +48,14 @@ func TestMonitoringUptimeCheckConfigIdentity_FromExternal(t *testing.T) {
 				UptimeCheckConfig: "my-uptime-check",
 			},
 		},
+		{
+			name: "double slash with host",
+			ref:  "//monitoring.googleapis.com/projects/my-project/uptimeCheckConfigs/my-uptime-check",
+			want: &MonitoringUptimeCheckConfigIdentity{
+				Project:           "my-project",
+				UptimeCheckConfig: "my-uptime-check",
+			},
+		},
 	}
 
 	for _, tt := range tests {

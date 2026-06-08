@@ -3,10 +3,13 @@ kind: MonitoringUptimeCheckConfig
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"httpCheck":{"authInfo":{"password":{"valueFrom":{"secretKeyRef":{"key":"password","name":"secret-2-${uniqueId}"}}}},"headers":{"header-one":"value-one","header-two":"value-two"}}}}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: monitoringuptimecheckconfig-${uniqueId}
@@ -43,6 +46,7 @@ spec:
   period: 300s
   projectRef:
     external: projects/${projectId}
+  resourceID: ${uptimeCheckConfigId}
   selectedRegions:
   - EUROPE
   - SOUTH_AMERICA
@@ -55,4 +59,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 3
