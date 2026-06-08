@@ -1,0 +1,84 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: migration-tracker-bot
+
+on:
+  schedule:
+    # Run daily at midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # Allow manual triggering
+
+jobs:
+  update-tracker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write  # Crucial to allow the bot to create PRs
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: master  # Ensure we run on master
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install PyYAML
+
+      - name: Run migration tracker generator
+        run: |
+          cd dev/migration-tracker
+          python3 generate_data.py
+
+      - name: Commit and create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          
+          # Check if there are changes
+          if ! git diff --quiet dev/migration-tracker/data.json; then
+            echo "Changes detected in data.json. Creating Pull Request..."
+            
+            BRANCH_NAME="automation/migration-tracker-update"
+            git checkout -b $BRANCH_NAME
+            
+            git add dev/migration-tracker/data.json
+            git commit -m "Update migration tracker data.json"
+            
+            # Push the branch to origin (force push to overwrite previous automation branches)
+            git push -f origin $BRANCH_NAME
+            
+            # Check if a PR already exists for this branch to avoid duplicate errors
+            PR_EXISTS=$(gh pr list --head $BRANCH_NAME --json number --jq '.[0].number')
+            if [ -z "$PR_EXISTS" ]; then
+              gh pr create \
+                --title "Automatic Migration Tracker Update" \
+                --body "This is an automated daily PR to update the migration tracker data.json file with latest status of direct controllers." \
+                --head $BRANCH_NAME \
+                --base master
+            else
+              echo "Pull Request #$PR_EXISTS already exists for $BRANCH_NAME. Skipping PR creation."
+            fi
+          else
+            echo "No changes detected in data.json."
+          fi
