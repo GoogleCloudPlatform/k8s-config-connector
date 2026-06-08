@@ -38,6 +38,7 @@ import (
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appengine/v1alpha1"
 	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1beta1"
+	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1alpha1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/asset/v1beta1"
 	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/assuredworkloads/v1alpha1"
@@ -232,6 +233,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	appenginev1alpha1.AddToScheme,
 	apphubv1alpha1.AddToScheme,
 	apphubv1beta1.AddToScheme,
+	artifactregistryv1alpha1.AddToScheme,
 	artifactregistryv1beta1.AddToScheme,
 	assetv1beta1.AddToScheme,
 	assuredworkloadsv1alpha1.AddToScheme,

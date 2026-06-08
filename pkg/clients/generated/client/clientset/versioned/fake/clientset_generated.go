@@ -55,6 +55,8 @@ import (
 	fakeapphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1alpha1/fake"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1"
 	fakeapphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1/fake"
+	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1alpha1"
+	fakeartifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1alpha1/fake"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	fakeartifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1/fake"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/asset/v1beta1"
@@ -540,6 +542,11 @@ func (c *Clientset) ApphubV1alpha1() apphubv1alpha1.ApphubV1alpha1Interface {
 // ApphubV1beta1 retrieves the ApphubV1beta1Client
 func (c *Clientset) ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface {
 	return &fakeapphubv1beta1.FakeApphubV1beta1{Fake: &c.Fake}
+}
+
+// ArtifactregistryV1alpha1 retrieves the ArtifactregistryV1alpha1Client
+func (c *Clientset) ArtifactregistryV1alpha1() artifactregistryv1alpha1.ArtifactregistryV1alpha1Interface {
+	return &fakeartifactregistryv1alpha1.FakeArtifactregistryV1alpha1{Fake: &c.Fake}
 }
 
 // ArtifactregistryV1beta1 retrieves the ArtifactregistryV1beta1Client
