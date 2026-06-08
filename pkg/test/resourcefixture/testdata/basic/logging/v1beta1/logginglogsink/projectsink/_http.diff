@@ -1,0 +1,45 @@
+77c77,78
+< GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+99c100
+< POST https://logging.googleapis.com/v2/projects/${projectId}/sinks?alt=json&prettyPrint=false&uniqueWriterIdentity=true
+---
+> POST https://logging.googleapis.com/v2/projects/${projectId}/sinks?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true
+103d103
+<   "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
+120d119
+<   "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
+129c128,129
+< GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+143d142
+<   "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
+152c151
+< PATCH https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
+---
+> PUT https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true&updateMask=filter
+156,158c155,156
+<   "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
+<   "disabled": false,
+<   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\""
+---
+>   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
+>   "name": "logsink-${uniqueId}"
+173d170
+<   "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
+182c179,180
+< GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+196d193
+<   "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
+205c202,203
+< DELETE https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> DELETE https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json

@@ -1,0 +1,57 @@
+133c133,134
+< GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+155c156
+< POST https://logging.googleapis.com/v2/organizations/${organizationID}/sinks?alt=json&prettyPrint=false&uniqueWriterIdentity=true
+---
+> POST https://logging.googleapis.com/v2/organizations/${organizationID}/sinks?%24alt=json%3Benum-encoding%3Dint
+159c160
+<   "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+---
+>   "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+176c177
+<   "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+---
+>   "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+185c186,187
+< GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+199c201
+<   "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+---
+>   "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+208c210
+< PATCH https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
+---
+> PUT https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter
+212,213c214
+<   "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+<   "disabled": false,
+---
+>   "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+215c216
+<   "includeChildren": false
+---
+>   "name": "orgsink-${uniqueId}"
+230c231
+<   "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+---
+>   "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+239c240,241
+< GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+253c255
+<   "destination": "storage.googleapis.com/orgsink-${uniqueId}",
+---
+>   "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+262c264,265
+< DELETE https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> DELETE https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
