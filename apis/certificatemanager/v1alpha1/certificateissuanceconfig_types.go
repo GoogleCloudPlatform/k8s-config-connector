@@ -15,8 +15,8 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,8 +26,14 @@ var CertificateManagerCertificateIssuanceConfigGVK = GroupVersion.WithKind("Cert
 // CertificateManagerCertificateIssuanceConfigSpec defines the desired state of CertificateManagerCertificateIssuanceConfig
 // +kcc:spec:proto=google.cloud.certificatemanager.v1.CertificateIssuanceConfig
 type CertificateManagerCertificateIssuanceConfigSpec struct {
-	// Required. Defines the parent path of the resource.
-	*parent.ProjectAndLocationRef `json:",inline"`
+	// The Project that this resource belongs to.
+	// +required
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	// The location that this resource belongs to.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location is immutable."
+	Location string `json:"location"`
 
 	// Set of labels associated with a CertificateIssuanceConfig.
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.labels

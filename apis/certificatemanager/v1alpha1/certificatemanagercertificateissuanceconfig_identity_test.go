@@ -19,7 +19,6 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/google/go-cmp/cmp"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -126,12 +125,10 @@ func TestCertificateManagerCertificateIssuanceConfigIdentity_GetIdentity(t *test
 					Namespace: "my-namespace",
 				},
 				Spec: CertificateManagerCertificateIssuanceConfigSpec{
-					ProjectAndLocationRef: &parent.ProjectAndLocationRef{
-						ProjectRef: &refs.ProjectRef{
-							External: "my-project",
-						},
-						Location: "global",
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
 					},
+					Location: "global",
 				},
 			},
 			expected: "projects/my-project/locations/global/certificateIssuanceConfigs/my-config",
@@ -144,12 +141,10 @@ func TestCertificateManagerCertificateIssuanceConfigIdentity_GetIdentity(t *test
 					Namespace: "my-namespace",
 				},
 				Spec: CertificateManagerCertificateIssuanceConfigSpec{
-					ProjectAndLocationRef: &parent.ProjectAndLocationRef{
-						ProjectRef: &refs.ProjectRef{
-							External: "my-project",
-						},
-						Location: "global",
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
 					},
+					Location:   "global",
 					ResourceID: func() *string { s := "custom-config-id"; return &s }(),
 				},
 			},
@@ -163,12 +158,10 @@ func TestCertificateManagerCertificateIssuanceConfigIdentity_GetIdentity(t *test
 					Namespace: "my-namespace",
 				},
 				Spec: CertificateManagerCertificateIssuanceConfigSpec{
-					ProjectAndLocationRef: &parent.ProjectAndLocationRef{
-						ProjectRef: &refs.ProjectRef{
-							Name: "my-project-name",
-						},
-						Location: "us-central1",
+					ProjectRef: &refs.ProjectRef{
+						Name: "my-project-name",
 					},
+					Location: "us-central1",
 				},
 			},
 			expected: "projects/my-project-id/locations/us-central1/certificateIssuanceConfigs/my-config",
@@ -181,12 +174,10 @@ func TestCertificateManagerCertificateIssuanceConfigIdentity_GetIdentity(t *test
 					Namespace: "my-namespace",
 				},
 				Spec: CertificateManagerCertificateIssuanceConfigSpec{
-					ProjectAndLocationRef: &parent.ProjectAndLocationRef{
-						ProjectRef: &refs.ProjectRef{
-							External: "my-project",
-						},
-						Location: "global",
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
 					},
+					Location: "global",
 				},
 				Status: CertificateManagerCertificateIssuanceConfigStatus{
 					ExternalRef: func() *string {
@@ -228,12 +219,10 @@ func TestCertificateManagerCertificateIssuanceConfigRef_Normalize(t *testing.T) 
 			Namespace: "my-ns",
 		},
 		Spec: CertificateManagerCertificateIssuanceConfigSpec{
-			ProjectAndLocationRef: &parent.ProjectAndLocationRef{
-				ProjectRef: &refs.ProjectRef{
-					External: "my-project",
-				},
-				Location: "global",
+			ProjectRef: &refs.ProjectRef{
+				External: "my-project",
 			},
+			Location:   "global",
 			ResourceID: func() *string { s := "my-config-id"; return &s }(),
 		},
 	}

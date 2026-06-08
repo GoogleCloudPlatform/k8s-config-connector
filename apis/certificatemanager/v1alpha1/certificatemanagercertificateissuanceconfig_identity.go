@@ -20,7 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -61,17 +61,17 @@ func (i *CertificateManagerCertificateIssuanceConfigIdentity) Host() string {
 }
 
 func getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx context.Context, reader client.Reader, obj *CertificateManagerCertificateIssuanceConfig) (*CertificateManagerCertificateIssuanceConfigIdentity, error) {
-	if obj.Spec.ProjectAndLocationRef == nil {
-		return nil, fmt.Errorf("inline projectRef/location must be specified")
-	}
-	if obj.Spec.ProjectAndLocationRef.ProjectRef == nil {
+	if obj.Spec.ProjectRef == nil {
 		return nil, fmt.Errorf("spec.projectRef must be specified")
 	}
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("resolving projectRef: %w", err)
+	}
 
-	// Resolve user-configured Parent (project and location)
-	p := &parent.ProjectAndLocationParent{}
-	if err := obj.Spec.ProjectAndLocationRef.Build(ctx, reader, obj.GetNamespace(), p); err != nil {
-		return nil, err
+	location := obj.Spec.Location
+	if location == "" {
+		return nil, fmt.Errorf("spec.location must be specified")
 	}
 
 	// Resolve user-configured ID
@@ -84,8 +84,8 @@ func getIdentityFromCertificateManagerCertificateIssuanceConfigSpec(ctx context.
 	}
 
 	identity := &CertificateManagerCertificateIssuanceConfigIdentity{
-		Project:                   p.ProjectID,
-		Location:                  p.Location,
+		Project:                   projectID,
+		Location:                  location,
 		CertificateIssuanceConfig: resourceID,
 	}
 	return identity, nil
