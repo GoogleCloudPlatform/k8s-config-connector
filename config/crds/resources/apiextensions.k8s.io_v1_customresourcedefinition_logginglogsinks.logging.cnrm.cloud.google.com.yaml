@@ -175,7 +175,7 @@ spec:
                         type: string
                     type: object
                   storageBucketRef:
-                    description: StorageBucketRef is a reference to a StorageBucket.
+                    description: StorageBucketRef is a reference to a GCP StorageBucket.
                     oneOf:
                     - not:
                         required:
@@ -192,8 +192,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally-managed StorageBucket
-                          resource.
+                        description: A reference to an externally managed StorageBucket
+                          resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
                         type: string
                       name:
                         description: The name of a StorageBucket resource.
