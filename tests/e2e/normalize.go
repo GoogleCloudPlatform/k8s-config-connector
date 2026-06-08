@@ -293,6 +293,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
 	visitor.replacePaths[".lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
 
+	// Specific to RedisCluster
+	visitor.replacePaths[".status.observedState.encryptionInfo.lastUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
+
 	// Specific to BigQueryDataTransferConfig
 	if u.GetKind() == "BigQueryDataTransferConfig" {
 		visitor.replacePaths[".status.observedState.nextRunTime"] = mockgcpregistry.PlaceholderTime

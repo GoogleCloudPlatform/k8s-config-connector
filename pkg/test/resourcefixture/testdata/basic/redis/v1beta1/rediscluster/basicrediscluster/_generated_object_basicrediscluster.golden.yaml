@@ -33,6 +33,8 @@ status:
       port: 6379
       pscConfig:
         network: projects/${projectId}/global/networks/${networkID}
+    encryptionInfo:
+      encryptionType: GOOGLE_DEFAULT_ENCRYPTION
     preciseSizeGb: 130
     pscConnections:
     - address: 10.11.12.13
