@@ -181,6 +181,5 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".reachability_details.error.details")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.error.details")
 	f.Unimplemented_NotYetTriaged(".probing_details.error.details")
-
 	return f
 }
