@@ -258,12 +258,9 @@ func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	log.V(2).Info("updating object", "u", u)
 	actual := a.actual.MembershipSpecs[a.membershipID]
 	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
-	diffPaths := diffFeatureMembership(&a.desired.Spec, &actual)
-	if len(diffPaths) != 0 {
-		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-		for _, path := range diffPaths {
-			report.AddField(path, nil, nil)
-		}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	diffFeatureMembership(report, &a.desired.Spec, &actual)
+	if report.HasDiff() {
 		structuredreporting.ReportDiff(ctx, report)
 
 		log.V(2).Info("diff detected, patching gkehubfeaturemembership")
