@@ -258,6 +258,34 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              kmsKeyRef:
+                description: Optional. The KMS key reference for the instance.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -548,6 +576,26 @@ spec:
                     description: Output only. The current version of the maintenance
                       schedule.
                     type: string
+                  encryptionInfo:
+                    description: Output only. Encryption information for the instance.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary KMS key.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the instance.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. Latest update timestamp of the encryption
+                          info.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -919,6 +967,34 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              kmsKeyRef:
+                description: Optional. The KMS key reference for the instance.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -1209,6 +1285,26 @@ spec:
                     description: Output only. The current version of the maintenance
                       schedule.
                     type: string
+                  encryptionInfo:
+                    description: Output only. Encryption information for the instance.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary KMS key.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the instance.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. Latest update timestamp of the encryption
+                          info.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
