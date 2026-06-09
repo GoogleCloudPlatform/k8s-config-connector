@@ -111,6 +111,8 @@ func (s *configServiceV2) UpdateSink(ctx context.Context, req *pb.UpdateSinkRequ
 			updated.Description = req.GetSink().GetDescription()
 		case "filter":
 			updated.Filter = req.GetSink().GetFilter()
+		case "destination":
+			updated.Destination = req.GetSink().GetDestination()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

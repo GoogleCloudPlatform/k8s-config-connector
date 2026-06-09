@@ -93,9 +93,6 @@ func (m *modelLoggingLogSink) AdapterForObject(ctx context.Context, op *directba
 		return nil, mapCtx.Err()
 	}
 
-	// Logging LogSink name in proto is the ID
-	desiredPb.Name = id.(*krm.LoggingLogSinkIdentity).ID()
-
 	// uniqueWriterIdentity is not part of the GCP resource state representation (loggingpb.LogSink)
 	// but is instead passed as a query parameter / request field to create and update API calls.
 	uniqueWriterIdentity := false
@@ -150,6 +147,8 @@ func (a *LoggingLogSinkAdapter) Create(ctx context.Context, createOp *directbase
 
 	parent := a.id.ParentString()
 
+	a.desired.Name = a.id.ID()
+
 	req := &loggingpb.CreateSinkRequest{
 		Parent:               parent,
 		Sink:                 a.desired,
@@ -177,6 +176,20 @@ func (a *LoggingLogSinkAdapter) Update(ctx context.Context, updateOp *directbase
 	if diffs.HasDiff() {
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
+
+		a.desired.Name = a.id.ID()
+
+		// Always include "destination" in the update mask to ensure it is serialized in PUT payload
+		foundDestination := false
+		for _, path := range updateMask.Paths {
+			if path == "destination" {
+				foundDestination = true
+				break
+			}
+		}
+		if !foundDestination {
+			updateMask.Paths = append(updateMask.Paths, "destination")
+		}
 
 		req := &loggingpb.UpdateSinkRequest{
 			SinkName:             a.id.String(),
