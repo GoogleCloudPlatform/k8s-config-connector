@@ -423,3 +423,48 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeInstanceGroupRef struct {
+	/* A reference to an externally managed ComputeInstanceGroup resource. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeInstanceGroup` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeInstanceGroup` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeNetworkEndpointGroupRef struct {
+	/* A reference to an externally managed ComputeNetworkEndpointGroup resource. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeNetworkEndpointGroup` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeNetworkEndpointGroup` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeHealthCheckRef struct {
+	/* A reference to an externally managed ComputeHealthCheck resource. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeHealthCheck` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeHealthCheck` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeSecurityPolicyRef struct {
+	/* A reference to an externally managed ComputeSecurityPolicy resource. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeSecurityPolicy` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeSecurityPolicy` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeNetworkRef struct {
+	/* A reference to an externally managed ComputeNetwork resource. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeNetwork` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeNetwork` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
