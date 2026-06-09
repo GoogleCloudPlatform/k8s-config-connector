@@ -157,6 +157,7 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.PscAttachmentDetails = direct.Slice_FromProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_FromProto)
 	out.MaintenanceSchedule = MaintenanceScheduleObservedState_FromProto(mapCtx, in.GetMaintenanceSchedule())
 	out.MaintenancePolicy = MaintenancePolicyObservedState_FromProto(mapCtx, in.GetMaintenancePolicy())
+	out.EncryptionInfo = EncryptionInfoObservedState_FromProto(mapCtx, in.GetEncryptionInfo())
 	return out
 }
 func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceObservedState) *pb.Instance {
@@ -176,6 +177,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_ToProto)
 	out.MaintenanceSchedule = MaintenanceScheduleObservedState_ToProto(mapCtx, in.MaintenanceSchedule)
 	out.MaintenancePolicy = MaintenancePolicyObservedState_ToProto(mapCtx, in.MaintenancePolicy)
+	out.EncryptionInfo = EncryptionInfoObservedState_ToProto(mapCtx, in.EncryptionInfo)
 	return out
 }
 func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
@@ -200,6 +202,9 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
 	out.MaintenanceVersion = in.MaintenanceVersion
 	out.MaintenancePolicy = MaintenancePolicy_FromProto(mapCtx, in.GetMaintenancePolicy())
+	if in.GetKmsKey() != "" {
+		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
 
 	return out
 }
@@ -226,6 +231,9 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.M
 	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
 	out.MaintenanceVersion = in.MaintenanceVersion
 	out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
+	if in.KmsKeyRef != nil {
+		out.KmsKey = direct.LazyPtr(in.KmsKeyRef.External)
+	}
 	return out
 }
 func NodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krmv1beta1.NodeConfigObservedState {
@@ -498,5 +506,29 @@ func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapCont
 	}
 	out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
 	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+	return out
+}
+
+func EncryptionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmv1beta1.EncryptionInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.EncryptionInfoObservedState{}
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	out.KmsKeyVersions = in.GetKmsKeyVersions()
+	out.KmsKeyPrimaryState = direct.Enum_FromProto(mapCtx, in.GetKmsKeyPrimaryState())
+	out.LastUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUpdateTime())
+	return out
+}
+
+func EncryptionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.EncryptionInfoObservedState) *pb.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_Type](mapCtx, in.EncryptionType)
+	out.KmsKeyVersions = in.KmsKeyVersions
+	out.KmsKeyPrimaryState = direct.Enum_ToProto[pb.EncryptionInfo_KmsKeyState](mapCtx, in.KmsKeyPrimaryState)
+	out.LastUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.LastUpdateTime)
 	return out
 }
