@@ -35,9 +35,6 @@ go run . generate-mapper \
   --api-version redis.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 
-mv ${REPO_ROOT}/pkg/controller/direct/redis/mapper.generated.go ${REPO_ROOT}/pkg/controller/direct/redis/cluster/mapper.generated.go
-python3 -c "import sys; f=open(sys.argv[1], 'r+'); content=f.read().replace('package redis', 'package cluster'); f.seek(0); f.write(content); f.truncate()" ${REPO_ROOT}/pkg/controller/direct/redis/cluster/mapper.generated.go
-
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
