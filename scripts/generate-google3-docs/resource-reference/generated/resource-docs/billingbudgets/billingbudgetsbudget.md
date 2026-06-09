@@ -154,7 +154,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>MonitoringNotificationChannelRef defines the resource reference to MonitoringNotificationChannel, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>MonitoringNotificationChannelRef is a reference to a MonitoringNotificationChannel.</p>
         </td>
     </tr>
     <tr>
@@ -194,7 +194,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>PubSubTopicRef is a reference to a PubSubTopic.</p>
         </td>
     </tr>
     <tr>
@@ -504,7 +504,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ProjectRef is a clean resource reference to a GCP Project that does not include the kind field.</p>
+            <p>ProjectRef is a reference to a GCP Project.</p>
         </td>
     </tr>
     <tr>
@@ -574,7 +574,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>BillingAccountRef is a clean resource reference to a GCP BillingAccount that does not include the kind field.</p>
+            <p>BillingAccountRef is a reference to a GCP BillingAccount.</p>
         </td>
     </tr>
     <tr>

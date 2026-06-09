@@ -99,9 +99,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Sets an alternative name server for the associated networks.
-When specified, all DNS queries are forwarded to a name server that you choose.
-Names such as .internal are not available when an alternative name server is specified.</p>
+            <p>Sets an alternative name server for the associated networks. When specified, all DNS queries are forwarded to a name server that you choose. Names such as .internal are not available when an alternative name server is specified.</p>
         </td>
     </tr>
     <tr>
@@ -111,9 +109,7 @@ Names such as .internal are not available when an alternative name server is spe
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Sets an alternative name server for the associated networks. When specified,
-all DNS queries are forwarded to a name server that you choose. Names such as .internal
-are not available when an alternative name server is specified.</p>
+            <p>Sets an alternative name server for the associated networks. When specified, all DNS queries are forwarded to a name server that you choose. Names such as .internal are not available when an alternative name server is specified.</p>
         </td>
     </tr>
     <tr>
@@ -133,9 +129,7 @@ are not available when an alternative name server is specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
-decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
-to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"].</p>
+            <p>Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"].</p>
         </td>
     </tr>
     <tr>
@@ -165,10 +159,7 @@ to the Internet. When set to 'private', Cloud DNS will always send queries throu
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Allows networks bound to this policy to receive DNS queries sent
-by VMs or applications over VPN connections. When enabled, a
-virtual IP address will be allocated from each of the sub-networks
-that are bound to this policy.</p>
+            <p>Allows networks bound to this policy to receive DNS queries sent by VMs or applications over VPN connections. When enabled, a virtual IP address will be allocated from each of the sub-networks that are bound to this policy.</p>
         </td>
     </tr>
     <tr>
@@ -178,8 +169,7 @@ that are bound to this policy.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Controls whether logging is enabled for the networks bound to this policy.
-Defaults to no logging if not set.</p>
+            <p>Controls whether logging is enabled for the networks bound to this policy. Defaults to no logging if not set.</p>
         </td>
     </tr>
     <tr>
@@ -219,7 +209,7 @@ Defaults to no logging if not set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -229,7 +219,7 @@ Defaults to no logging if not set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -239,7 +229,7 @@ Defaults to no logging if not set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -280,7 +270,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the DNSPolicy's current state.</p>
         </td>
     </tr>
     <tr>

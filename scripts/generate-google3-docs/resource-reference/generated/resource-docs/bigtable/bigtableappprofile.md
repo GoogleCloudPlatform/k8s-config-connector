@@ -135,7 +135,7 @@ standardIsolation:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>InstanceRef is a reference to a BigtableInstance.</p>
         </td>
     </tr>
     <tr>

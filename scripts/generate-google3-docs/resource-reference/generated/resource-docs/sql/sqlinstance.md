@@ -1280,7 +1280,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -1290,7 +1290,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1580,7 +1580,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally-managed StorageBucket resource.</p>
+            <p>A reference to an externally managed StorageBucket resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".</p>
         </td>
     </tr>
     <tr>

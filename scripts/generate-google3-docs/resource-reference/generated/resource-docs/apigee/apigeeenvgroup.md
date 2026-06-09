@@ -103,7 +103,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ApigeeOrganizationRef is a reference to a ApigeeOrganization resource.</p>
+            <p>ApigeeOrganizationRef is a reference to an ApigeeOrganization resource.</p>
         </td>
     </tr>
     <tr>
@@ -123,7 +123,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a ApigeeOrganization resource.</p>
+            <p>The name of an ApigeeOrganization resource.</p>
         </td>
     </tr>
     <tr>
@@ -133,7 +133,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a ApigeeOrganization resource.</p>
+            <p>The namespace of an ApigeeOrganization resource.</p>
         </td>
     </tr>
     <tr>

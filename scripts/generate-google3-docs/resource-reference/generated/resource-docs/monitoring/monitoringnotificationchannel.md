@@ -152,7 +152,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The service-generated name of theresource. Used for acquisition only. Leave unset to create a new resource.</p>
+            <p>Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.</p>
         </td>
     </tr>
     <tr>
