@@ -623,7 +623,6 @@ type DiscoveryEndpointObservedState struct {
 	PSCConfig *PSCConfig `json:"pscConfig,omitempty"`
 }
 
-/* unreachable type EncryptionInfoObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.EncryptionInfo
 type EncryptionInfoObservedState struct {
 	// Output only. Type of encryption.
@@ -644,7 +643,6 @@ type EncryptionInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.EncryptionInfo.last_update_time
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 }
-*/
 
 /* unreachable type PSCAutoConnectionObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscAutoConnection

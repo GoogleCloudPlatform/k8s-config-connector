@@ -207,6 +207,24 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 			obj.AutomatedBackupConfig.Retention = nil
 		}
 	}
+
+	if obj.GetKmsKey() != "" {
+		if obj.EncryptionInfo == nil {
+			obj.EncryptionInfo = &pb.EncryptionInfo{
+				EncryptionType:     pb.EncryptionInfo_CUSTOMER_MANAGED_ENCRYPTION,
+				KmsKeyVersions:     []string{obj.GetKmsKey() + "/cryptoKeyVersions/1"},
+				KmsKeyPrimaryState: pb.EncryptionInfo_ENABLED,
+				LastUpdateTime:     timestamppb.Now(),
+			}
+		}
+	} else {
+		if obj.EncryptionInfo == nil {
+			obj.EncryptionInfo = &pb.EncryptionInfo{
+				EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+			}
+		}
+	}
+
 	return nil
 }
 

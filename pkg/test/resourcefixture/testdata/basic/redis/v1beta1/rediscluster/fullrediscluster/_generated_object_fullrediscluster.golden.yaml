@@ -21,6 +21,8 @@ spec:
         seconds: 0
     retention: 1209600s
   deletionProtectionEnabled: false
+  kmsKeyRef:
+    name: kmscryptokey-${uniqueId}
   location: us-central1
   maintenancePolicy:
     weeklyMaintenanceWindow:
@@ -68,6 +70,12 @@ status:
       port: 6379
       pscConfig:
         network: projects/${projectId}/global/networks/${networkID}
+    encryptionInfo:
+      encryptionType: CUSTOMER_MANAGED_ENCRYPTION
+      kmsKeyPrimaryState: ENABLED
+      kmsKeyVersions:
+      - projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1
+      lastUpdateTime: "2024-04-01T12:34:56.123456Z"
     maintenancePolicy: {}
     preciseSizeGb: 39
     pscConnections:

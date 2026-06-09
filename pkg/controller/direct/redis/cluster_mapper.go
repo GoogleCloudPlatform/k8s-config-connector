@@ -21,6 +21,7 @@ import (
 
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	timeofdaypb "google.golang.org/genproto/googleapis/type/timeofday"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -103,5 +104,51 @@ func TimeOfDay_ToProto(mapCtx *direct.MapContext, in *krm.TimeOfDay) *timeofdayp
 	out.Minutes = direct.ValueOf(in.Minutes)
 	out.Seconds = direct.ValueOf(in.Seconds)
 	out.Nanos = direct.ValueOf(in.Nanos)
+	return out
+}
+
+func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.RedisClusterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RedisClusterSpec{}
+	out.ReplicaCount = in.ReplicaCount
+	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.GetAuthorizationMode())
+	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
+	out.ShardCount = in.ShardCount
+	out.PSCConfigs = direct.Slice_FromProto(mapCtx, in.PscConfigs, PscConfigSpec_FromProto)
+	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
+	out.PersistenceConfig = ClusterPersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
+	out.RedisConfigs = in.RedisConfigs
+	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
+	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	out.MaintenancePolicy = ClusterMaintenancePolicy_FromProto(mapCtx, in.GetMaintenancePolicy())
+	if in.GetKmsKey() != "" {
+		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
+	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
+	return out
+}
+
+func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpec) *pb.Cluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster{}
+	out.ReplicaCount = in.ReplicaCount
+	out.AuthorizationMode = direct.Enum_ToProto[pb.AuthorizationMode](mapCtx, in.AuthorizationMode)
+	out.TransitEncryptionMode = direct.Enum_ToProto[pb.TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
+	out.ShardCount = in.ShardCount
+	out.PscConfigs = direct.Slice_ToProto(mapCtx, in.PSCConfigs, PscConfigSpec_ToProto)
+	out.NodeType = direct.Enum_ToProto[pb.NodeType](mapCtx, in.NodeType)
+	out.PersistenceConfig = ClusterPersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
+	out.RedisConfigs = in.RedisConfigs
+	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
+	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	out.MaintenancePolicy = ClusterMaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
+	if in.KMSKeyRef != nil {
+		out.KmsKey = &in.KMSKeyRef.External
+	}
+	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
 	return out
 }
