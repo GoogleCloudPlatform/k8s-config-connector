@@ -27,7 +27,7 @@
 208c210
 < PATCH https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
 ---
-> PUT https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter%2Cdestination
+> PUT https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter
 212,213c214
 <   "destination": "storage.googleapis.com/orgsink-${uniqueId}",
 <   "disabled": false,

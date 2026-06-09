@@ -151,7 +151,7 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true&updateMask=filter%2Cdestination
+PUT https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true&updateMask=filter
 Content-Type: application/json
 
 {

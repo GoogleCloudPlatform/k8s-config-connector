@@ -15,7 +15,7 @@
 152c154
 < PATCH https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
 ---
-> PUT https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true&updateMask=filter%2Cdestination
+> PUT https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true&updateMask=filter
 157,158c159,160
 <   "disabled": false,
 <   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\""
