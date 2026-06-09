@@ -52,30 +52,26 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		return
 	}
 
-	kind := ""
+	parentToKind := make(map[string]string)
 
 	event.VisitResponseStringValues(func(path string, value string) {
-		switch path {
-		case ".kind":
-			kind = value
+		if strings.HasSuffix(path, ".kind") {
+			parent := strings.TrimSuffix(path, ".kind")
+			parentToKind[parent] = value
 		}
 	})
 
-	if kind == "dns#managedZone" {
-		event.VisitResponseStringValues(func(path string, value string) {
-			switch path {
-			case ".id":
-				replacements.ReplaceStringValue(value, "${managedZoneId}")
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasSuffix(path, ".id") {
+			parent := strings.TrimSuffix(path, ".id")
+			if kind, ok := parentToKind[parent]; ok {
+				if kind == "dns#policy" {
+					replacements.ReplaceStringValue(value, "${dnsPolicyId}")
+				}
+				if kind == "dns#managedZone" {
+					replacements.ReplaceStringValue(value, "${managedZoneId}")
+				}
 			}
-		})
-	}
-
-	if kind == "dns#policy" {
-		event.VisitResponseStringValues(func(path string, value string) {
-			switch path {
-			case ".id":
-				replacements.ReplaceStringValue(value, "${dnsPolicyId}")
-			}
-		})
-	}
+		}
+	})
 }

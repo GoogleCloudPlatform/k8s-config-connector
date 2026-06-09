@@ -17,6 +17,7 @@ package mockdns
 import (
 	"context"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -88,7 +89,7 @@ func (s *policiesService) CreatePolicy(ctx context.Context, req *pb.CreatePolicy
 
 	obj := proto.Clone(req.Policy).(*pb.Policy)
 
-	obj.Id = PtrTo[uint64](1234567890)
+	obj.Id = PtrTo[uint64](uint64(time.Now().UnixNano()))
 	obj.Kind = PtrTo("dns#policy")
 
 	if obj.AlternativeNameServerConfig != nil {
