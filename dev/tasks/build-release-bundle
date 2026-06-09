@@ -118,7 +118,6 @@ BLOCKED_KINDS=(
     "ArtifactRegistryVPCSCConfig"
     "NetworkSecurityUrlList"
     "NetworkSecurityTLSInspectionPolicy"
-    "NetworkSecurityGatewaySecurityPolicy"
     "ConnectorsConnection"
     "ApigeeRegistryInstance"
     "BlockchainNodeEngineNode"
