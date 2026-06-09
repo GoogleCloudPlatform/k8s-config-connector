@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	bigquerybiglakev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerybiglake/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeBigLakeTables implements BigLakeTableInterface
-type FakeBigLakeTables struct {
+// fakeBigLakeTables implements BigLakeTableInterface
+type fakeBigLakeTables struct {
+	*gentype.FakeClientWithList[*v1beta1.BigLakeTable, *v1beta1.BigLakeTableList]
 	Fake *FakeBigquerybiglakeV1beta1
-	ns   string
 }
 
-var biglaketablesResource = v1beta1.SchemeGroupVersion.WithResource("biglaketables")
-
-var biglaketablesKind = v1beta1.SchemeGroupVersion.WithKind("BigLakeTable")
-
-// Get takes name of the bigLakeTable, and returns the corresponding bigLakeTable object, and an error if there is any.
-func (c *FakeBigLakeTables) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigLakeTable, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(biglaketablesResource, c.ns, name), &v1beta1.BigLakeTable{})
-
-	if obj == nil {
-		return nil, err
+func newFakeBigLakeTables(fake *FakeBigquerybiglakeV1beta1, namespace string) bigquerybiglakev1beta1.BigLakeTableInterface {
+	return &fakeBigLakeTables{
+		gentype.NewFakeClientWithList[*v1beta1.BigLakeTable, *v1beta1.BigLakeTableList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("biglaketables"),
+			v1beta1.SchemeGroupVersion.WithKind("BigLakeTable"),
+			func() *v1beta1.BigLakeTable { return &v1beta1.BigLakeTable{} },
+			func() *v1beta1.BigLakeTableList { return &v1beta1.BigLakeTableList{} },
+			func(dst, src *v1beta1.BigLakeTableList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.BigLakeTableList) []*v1beta1.BigLakeTable {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.BigLakeTableList, items []*v1beta1.BigLakeTable) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.BigLakeTable), err
-}
-
-// List takes label and field selectors, and returns the list of BigLakeTables that match those selectors.
-func (c *FakeBigLakeTables) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigLakeTableList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(biglaketablesResource, biglaketablesKind, c.ns, opts), &v1beta1.BigLakeTableList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.BigLakeTableList{ListMeta: obj.(*v1beta1.BigLakeTableList).ListMeta}
-	for _, item := range obj.(*v1beta1.BigLakeTableList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested bigLakeTables.
-func (c *FakeBigLakeTables) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(biglaketablesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a bigLakeTable and creates it.  Returns the server's representation of the bigLakeTable, and an error, if there is any.
-func (c *FakeBigLakeTables) Create(ctx context.Context, bigLakeTable *v1beta1.BigLakeTable, opts v1.CreateOptions) (result *v1beta1.BigLakeTable, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(biglaketablesResource, c.ns, bigLakeTable), &v1beta1.BigLakeTable{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigLakeTable), err
-}
-
-// Update takes the representation of a bigLakeTable and updates it. Returns the server's representation of the bigLakeTable, and an error, if there is any.
-func (c *FakeBigLakeTables) Update(ctx context.Context, bigLakeTable *v1beta1.BigLakeTable, opts v1.UpdateOptions) (result *v1beta1.BigLakeTable, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(biglaketablesResource, c.ns, bigLakeTable), &v1beta1.BigLakeTable{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigLakeTable), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeBigLakeTables) UpdateStatus(ctx context.Context, bigLakeTable *v1beta1.BigLakeTable, opts v1.UpdateOptions) (*v1beta1.BigLakeTable, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(biglaketablesResource, "status", c.ns, bigLakeTable), &v1beta1.BigLakeTable{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigLakeTable), err
-}
-
-// Delete takes name of the bigLakeTable and deletes it. Returns an error if one occurs.
-func (c *FakeBigLakeTables) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(biglaketablesResource, c.ns, name, opts), &v1beta1.BigLakeTable{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeBigLakeTables) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(biglaketablesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.BigLakeTableList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched bigLakeTable.
-func (c *FakeBigLakeTables) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigLakeTable, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(biglaketablesResource, c.ns, name, pt, data, subresources...), &v1beta1.BigLakeTable{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.BigLakeTable), err
 }

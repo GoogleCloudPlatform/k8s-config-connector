@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1beta1"
+	bigquerybiglakev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerybiglake/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // BigLakeTablesGetter has a method to return a BigLakeTableInterface.
@@ -41,158 +40,34 @@ type BigLakeTablesGetter interface {
 
 // BigLakeTableInterface has methods to work with BigLakeTable resources.
 type BigLakeTableInterface interface {
-	Create(ctx context.Context, bigLakeTable *v1beta1.BigLakeTable, opts v1.CreateOptions) (*v1beta1.BigLakeTable, error)
-	Update(ctx context.Context, bigLakeTable *v1beta1.BigLakeTable, opts v1.UpdateOptions) (*v1beta1.BigLakeTable, error)
-	UpdateStatus(ctx context.Context, bigLakeTable *v1beta1.BigLakeTable, opts v1.UpdateOptions) (*v1beta1.BigLakeTable, error)
+	Create(ctx context.Context, bigLakeTable *bigquerybiglakev1beta1.BigLakeTable, opts v1.CreateOptions) (*bigquerybiglakev1beta1.BigLakeTable, error)
+	Update(ctx context.Context, bigLakeTable *bigquerybiglakev1beta1.BigLakeTable, opts v1.UpdateOptions) (*bigquerybiglakev1beta1.BigLakeTable, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, bigLakeTable *bigquerybiglakev1beta1.BigLakeTable, opts v1.UpdateOptions) (*bigquerybiglakev1beta1.BigLakeTable, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.BigLakeTable, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.BigLakeTableList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*bigquerybiglakev1beta1.BigLakeTable, error)
+	List(ctx context.Context, opts v1.ListOptions) (*bigquerybiglakev1beta1.BigLakeTableList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigLakeTable, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *bigquerybiglakev1beta1.BigLakeTable, err error)
 	BigLakeTableExpansion
 }
 
 // bigLakeTables implements BigLakeTableInterface
 type bigLakeTables struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*bigquerybiglakev1beta1.BigLakeTable, *bigquerybiglakev1beta1.BigLakeTableList]
 }
 
 // newBigLakeTables returns a BigLakeTables
 func newBigLakeTables(c *BigquerybiglakeV1beta1Client, namespace string) *bigLakeTables {
 	return &bigLakeTables{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*bigquerybiglakev1beta1.BigLakeTable, *bigquerybiglakev1beta1.BigLakeTableList](
+			"biglaketables",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *bigquerybiglakev1beta1.BigLakeTable { return &bigquerybiglakev1beta1.BigLakeTable{} },
+			func() *bigquerybiglakev1beta1.BigLakeTableList { return &bigquerybiglakev1beta1.BigLakeTableList{} },
+		),
 	}
-}
-
-// Get takes name of the bigLakeTable, and returns the corresponding bigLakeTable object, and an error if there is any.
-func (c *bigLakeTables) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigLakeTable, err error) {
-	result = &v1beta1.BigLakeTable{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("biglaketables").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of BigLakeTables that match those selectors.
-func (c *bigLakeTables) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.BigLakeTableList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.BigLakeTableList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("biglaketables").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested bigLakeTables.
-func (c *bigLakeTables) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("biglaketables").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a bigLakeTable and creates it.  Returns the server's representation of the bigLakeTable, and an error, if there is any.
-func (c *bigLakeTables) Create(ctx context.Context, bigLakeTable *v1beta1.BigLakeTable, opts v1.CreateOptions) (result *v1beta1.BigLakeTable, err error) {
-	result = &v1beta1.BigLakeTable{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("biglaketables").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(bigLakeTable).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a bigLakeTable and updates it. Returns the server's representation of the bigLakeTable, and an error, if there is any.
-func (c *bigLakeTables) Update(ctx context.Context, bigLakeTable *v1beta1.BigLakeTable, opts v1.UpdateOptions) (result *v1beta1.BigLakeTable, err error) {
-	result = &v1beta1.BigLakeTable{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("biglaketables").
-		Name(bigLakeTable.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(bigLakeTable).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *bigLakeTables) UpdateStatus(ctx context.Context, bigLakeTable *v1beta1.BigLakeTable, opts v1.UpdateOptions) (result *v1beta1.BigLakeTable, err error) {
-	result = &v1beta1.BigLakeTable{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("biglaketables").
-		Name(bigLakeTable.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(bigLakeTable).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the bigLakeTable and deletes it. Returns an error if one occurs.
-func (c *bigLakeTables) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("biglaketables").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *bigLakeTables) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("biglaketables").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched bigLakeTable.
-func (c *bigLakeTables) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.BigLakeTable, err error) {
-	result = &v1beta1.BigLakeTable{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("biglaketables").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	eventarcv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeEventarcGoogleChannelConfigs implements EventarcGoogleChannelConfigInterface
-type FakeEventarcGoogleChannelConfigs struct {
+// fakeEventarcGoogleChannelConfigs implements EventarcGoogleChannelConfigInterface
+type fakeEventarcGoogleChannelConfigs struct {
+	*gentype.FakeClientWithList[*v1alpha1.EventarcGoogleChannelConfig, *v1alpha1.EventarcGoogleChannelConfigList]
 	Fake *FakeEventarcV1alpha1
-	ns   string
 }
 
-var eventarcgooglechannelconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("eventarcgooglechannelconfigs")
-
-var eventarcgooglechannelconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("EventarcGoogleChannelConfig")
-
-// Get takes name of the eventarcGoogleChannelConfig, and returns the corresponding eventarcGoogleChannelConfig object, and an error if there is any.
-func (c *FakeEventarcGoogleChannelConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.EventarcGoogleChannelConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(eventarcgooglechannelconfigsResource, c.ns, name), &v1alpha1.EventarcGoogleChannelConfig{})
-
-	if obj == nil {
-		return nil, err
+func newFakeEventarcGoogleChannelConfigs(fake *FakeEventarcV1alpha1, namespace string) eventarcv1alpha1.EventarcGoogleChannelConfigInterface {
+	return &fakeEventarcGoogleChannelConfigs{
+		gentype.NewFakeClientWithList[*v1alpha1.EventarcGoogleChannelConfig, *v1alpha1.EventarcGoogleChannelConfigList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("eventarcgooglechannelconfigs"),
+			v1alpha1.SchemeGroupVersion.WithKind("EventarcGoogleChannelConfig"),
+			func() *v1alpha1.EventarcGoogleChannelConfig { return &v1alpha1.EventarcGoogleChannelConfig{} },
+			func() *v1alpha1.EventarcGoogleChannelConfigList { return &v1alpha1.EventarcGoogleChannelConfigList{} },
+			func(dst, src *v1alpha1.EventarcGoogleChannelConfigList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.EventarcGoogleChannelConfigList) []*v1alpha1.EventarcGoogleChannelConfig {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.EventarcGoogleChannelConfigList, items []*v1alpha1.EventarcGoogleChannelConfig) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.EventarcGoogleChannelConfig), err
-}
-
-// List takes label and field selectors, and returns the list of EventarcGoogleChannelConfigs that match those selectors.
-func (c *FakeEventarcGoogleChannelConfigs) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.EventarcGoogleChannelConfigList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(eventarcgooglechannelconfigsResource, eventarcgooglechannelconfigsKind, c.ns, opts), &v1alpha1.EventarcGoogleChannelConfigList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.EventarcGoogleChannelConfigList{ListMeta: obj.(*v1alpha1.EventarcGoogleChannelConfigList).ListMeta}
-	for _, item := range obj.(*v1alpha1.EventarcGoogleChannelConfigList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested eventarcGoogleChannelConfigs.
-func (c *FakeEventarcGoogleChannelConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(eventarcgooglechannelconfigsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a eventarcGoogleChannelConfig and creates it.  Returns the server's representation of the eventarcGoogleChannelConfig, and an error, if there is any.
-func (c *FakeEventarcGoogleChannelConfigs) Create(ctx context.Context, eventarcGoogleChannelConfig *v1alpha1.EventarcGoogleChannelConfig, opts v1.CreateOptions) (result *v1alpha1.EventarcGoogleChannelConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(eventarcgooglechannelconfigsResource, c.ns, eventarcGoogleChannelConfig), &v1alpha1.EventarcGoogleChannelConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.EventarcGoogleChannelConfig), err
-}
-
-// Update takes the representation of a eventarcGoogleChannelConfig and updates it. Returns the server's representation of the eventarcGoogleChannelConfig, and an error, if there is any.
-func (c *FakeEventarcGoogleChannelConfigs) Update(ctx context.Context, eventarcGoogleChannelConfig *v1alpha1.EventarcGoogleChannelConfig, opts v1.UpdateOptions) (result *v1alpha1.EventarcGoogleChannelConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(eventarcgooglechannelconfigsResource, c.ns, eventarcGoogleChannelConfig), &v1alpha1.EventarcGoogleChannelConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.EventarcGoogleChannelConfig), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeEventarcGoogleChannelConfigs) UpdateStatus(ctx context.Context, eventarcGoogleChannelConfig *v1alpha1.EventarcGoogleChannelConfig, opts v1.UpdateOptions) (*v1alpha1.EventarcGoogleChannelConfig, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(eventarcgooglechannelconfigsResource, "status", c.ns, eventarcGoogleChannelConfig), &v1alpha1.EventarcGoogleChannelConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.EventarcGoogleChannelConfig), err
-}
-
-// Delete takes name of the eventarcGoogleChannelConfig and deletes it. Returns an error if one occurs.
-func (c *FakeEventarcGoogleChannelConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(eventarcgooglechannelconfigsResource, c.ns, name, opts), &v1alpha1.EventarcGoogleChannelConfig{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeEventarcGoogleChannelConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(eventarcgooglechannelconfigsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.EventarcGoogleChannelConfigList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched eventarcGoogleChannelConfig.
-func (c *FakeEventarcGoogleChannelConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.EventarcGoogleChannelConfig, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(eventarcgooglechannelconfigsResource, c.ns, name, pt, data, subresources...), &v1alpha1.EventarcGoogleChannelConfig{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.EventarcGoogleChannelConfig), err
 }

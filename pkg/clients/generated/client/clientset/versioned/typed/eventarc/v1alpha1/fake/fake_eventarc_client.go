@@ -32,7 +32,7 @@ type FakeEventarcV1alpha1 struct {
 }
 
 func (c *FakeEventarcV1alpha1) EventarcChannels(namespace string) v1alpha1.EventarcChannelInterface {
-	return &FakeEventarcChannels{c, namespace}
+	return newFakeEventarcChannels(c, namespace)
 }
 
 func (c *FakeEventarcV1alpha1) EventarcChannelConnections(namespace string) v1alpha1.EventarcChannelConnectionInterface {
@@ -44,7 +44,7 @@ func (c *FakeEventarcV1alpha1) EventarcEnrollments(namespace string) v1alpha1.Ev
 }
 
 func (c *FakeEventarcV1alpha1) EventarcGoogleChannelConfigs(namespace string) v1alpha1.EventarcGoogleChannelConfigInterface {
-	return &FakeEventarcGoogleChannelConfigs{c, namespace}
+	return newFakeEventarcGoogleChannelConfigs(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -32,7 +32,7 @@ type FakeOsloginV1alpha1 struct {
 }
 
 func (c *FakeOsloginV1alpha1) OSLoginSSHPublicKeys(namespace string) v1alpha1.OSLoginSSHPublicKeyInterface {
-	return &FakeOSLoginSSHPublicKeys{c, namespace}
+	return newFakeOSLoginSSHPublicKeys(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

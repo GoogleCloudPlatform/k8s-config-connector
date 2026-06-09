@@ -32,91 +32,95 @@ type FakeComputeV1alpha1 struct {
 }
 
 func (c *FakeComputeV1alpha1) ComputeAutoscalers(namespace string) v1alpha1.ComputeAutoscalerInterface {
-	return &FakeComputeAutoscalers{c, namespace}
+	return newFakeComputeAutoscalers(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeBackendBucketSignedURLKeys(namespace string) v1alpha1.ComputeBackendBucketSignedURLKeyInterface {
-	return &FakeComputeBackendBucketSignedURLKeys{c, namespace}
+	return newFakeComputeBackendBucketSignedURLKeys(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeBackendServiceSignedURLKeys(namespace string) v1alpha1.ComputeBackendServiceSignedURLKeyInterface {
-	return &FakeComputeBackendServiceSignedURLKeys{c, namespace}
+	return newFakeComputeBackendServiceSignedURLKeys(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeDiskResourcePolicyAttachments(namespace string) v1alpha1.ComputeDiskResourcePolicyAttachmentInterface {
-	return &FakeComputeDiskResourcePolicyAttachments{c, namespace}
+	return newFakeComputeDiskResourcePolicyAttachments(c, namespace)
+}
+
+func (c *FakeComputeV1alpha1) ComputeFutureReservations(namespace string) v1alpha1.ComputeFutureReservationInterface {
+	return newFakeComputeFutureReservations(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeGlobalNetworkEndpoints(namespace string) v1alpha1.ComputeGlobalNetworkEndpointInterface {
-	return &FakeComputeGlobalNetworkEndpoints{c, namespace}
+	return newFakeComputeGlobalNetworkEndpoints(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeGlobalNetworkEndpointGroups(namespace string) v1alpha1.ComputeGlobalNetworkEndpointGroupInterface {
-	return &FakeComputeGlobalNetworkEndpointGroups{c, namespace}
+	return newFakeComputeGlobalNetworkEndpointGroups(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeInstanceGroupNamedPorts(namespace string) v1alpha1.ComputeInstanceGroupNamedPortInterface {
-	return &FakeComputeInstanceGroupNamedPorts{c, namespace}
+	return newFakeComputeInstanceGroupNamedPorts(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeInterconnects(namespace string) v1alpha1.ComputeInterconnectInterface {
-	return &FakeComputeInterconnects{c, namespace}
+	return newFakeComputeInterconnects(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeMachineImages(namespace string) v1alpha1.ComputeMachineImageInterface {
-	return &FakeComputeMachineImages{c, namespace}
+	return newFakeComputeMachineImages(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeNetworkAttachments(namespace string) v1alpha1.ComputeNetworkAttachmentInterface {
-	return &FakeComputeNetworkAttachments{c, namespace}
+	return newFakeComputeNetworkAttachments(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeNetworkEdgeSecurityServices(namespace string) v1alpha1.ComputeNetworkEdgeSecurityServiceInterface {
-	return &FakeComputeNetworkEdgeSecurityServices{c, namespace}
+	return newFakeComputeNetworkEdgeSecurityServices(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeNetworkEndpoints(namespace string) v1alpha1.ComputeNetworkEndpointInterface {
-	return &FakeComputeNetworkEndpoints{c, namespace}
+	return newFakeComputeNetworkEndpoints(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeNetworkFirewallPolicyRules(namespace string) v1alpha1.ComputeNetworkFirewallPolicyRuleInterface {
-	return &FakeComputeNetworkFirewallPolicyRules{c, namespace}
+	return newFakeComputeNetworkFirewallPolicyRules(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeNetworkPeeringRoutesConfigs(namespace string) v1alpha1.ComputeNetworkPeeringRoutesConfigInterface {
-	return &FakeComputeNetworkPeeringRoutesConfigs{c, namespace}
+	return newFakeComputeNetworkPeeringRoutesConfigs(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeOrganizationSecurityPolicies(namespace string) v1alpha1.ComputeOrganizationSecurityPolicyInterface {
-	return &FakeComputeOrganizationSecurityPolicies{c, namespace}
+	return newFakeComputeOrganizationSecurityPolicies(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeOrganizationSecurityPolicyAssociations(namespace string) v1alpha1.ComputeOrganizationSecurityPolicyAssociationInterface {
-	return &FakeComputeOrganizationSecurityPolicyAssociations{c, namespace}
+	return newFakeComputeOrganizationSecurityPolicyAssociations(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeOrganizationSecurityPolicyRules(namespace string) v1alpha1.ComputeOrganizationSecurityPolicyRuleInterface {
-	return &FakeComputeOrganizationSecurityPolicyRules{c, namespace}
+	return newFakeComputeOrganizationSecurityPolicyRules(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputePerInstanceConfigs(namespace string) v1alpha1.ComputePerInstanceConfigInterface {
-	return &FakeComputePerInstanceConfigs{c, namespace}
+	return newFakeComputePerInstanceConfigs(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeRegionAutoscalers(namespace string) v1alpha1.ComputeRegionAutoscalerInterface {
-	return &FakeComputeRegionAutoscalers{c, namespace}
+	return newFakeComputeRegionAutoscalers(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeRegionDiskResourcePolicyAttachments(namespace string) v1alpha1.ComputeRegionDiskResourcePolicyAttachmentInterface {
-	return &FakeComputeRegionDiskResourcePolicyAttachments{c, namespace}
+	return newFakeComputeRegionDiskResourcePolicyAttachments(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeRegionPerInstanceConfigs(namespace string) v1alpha1.ComputeRegionPerInstanceConfigInterface {
-	return &FakeComputeRegionPerInstanceConfigs{c, namespace}
+	return newFakeComputeRegionPerInstanceConfigs(c, namespace)
 }
 
 func (c *FakeComputeV1alpha1) ComputeRegionSSLPolicies(namespace string) v1alpha1.ComputeRegionSSLPolicyInterface {
-	return &FakeComputeRegionSSLPolicies{c, namespace}
+	return newFakeComputeRegionSSLPolicies(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
