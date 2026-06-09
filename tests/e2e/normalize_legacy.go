@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -767,6 +768,10 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	for k := range r.OperationIDs {
 		normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
 	}
+	re := regexp.MustCompile(`operation-[0-9a-zA-Z\-]+`)
+	normalizers = append(normalizers, func(got string) string {
+		return re.ReplaceAllString(got, "operation-$${operationID}")
+	})
 
 	return got, normalizers
 

@@ -104,3 +104,11 @@ func (obj *NetworkSecurityInterceptEndpointGroup) GetIdentity(ctx context.Contex
 
 	return specIdentity, nil
 }
+
+func NewNetworkSecurityInterceptEndpointGroupIdentity(ctx context.Context, reader client.Reader, obj *NetworkSecurityInterceptEndpointGroup) (*NetworkSecurityInterceptEndpointGroupIdentity, error) {
+	id, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	return id.(*NetworkSecurityInterceptEndpointGroupIdentity), nil
+}

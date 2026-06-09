@@ -720,7 +720,8 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						case "GET":
 							isReadOnly = true
 						case "GRPC":
-							if strings.Contains(event.Request.URL, "/Get") || strings.Contains(event.Request.URL, "/List") {
+							urlStr := event.Request.URL
+							if strings.Contains(urlStr, "/Get") || strings.Contains(urlStr, "/List") || strings.Contains(urlStr, "/Describe") || strings.Contains(urlStr, "/Search") {
 								isReadOnly = true
 							}
 						}

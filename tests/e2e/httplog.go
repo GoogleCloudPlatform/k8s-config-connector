@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -282,6 +283,8 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	for _, normalizer := range normalizers {
 		got = normalizer(got)
 	}
+	re := regexp.MustCompile(`operation-[0-9a-zA-Z\-]+`)
+	got = re.ReplaceAllString(got, "operation-$${operationID}")
 	return got
 }
 
