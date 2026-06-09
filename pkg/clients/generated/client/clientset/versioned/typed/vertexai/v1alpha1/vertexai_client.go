@@ -39,6 +39,7 @@ type VertexaiV1alpha1Interface interface {
 	VertexAIFeaturestoreEntityTypesGetter
 	VertexAIFeaturestoreEntityTypeFeaturesGetter
 	VertexAIIndexEndpointsGetter
+	VertexAIOnlineEvaluatorsGetter
 	VertexAITensorboardsGetter
 }
 
@@ -77,6 +78,10 @@ func (c *VertexaiV1alpha1Client) VertexAIFeaturestoreEntityTypeFeatures(namespac
 
 func (c *VertexaiV1alpha1Client) VertexAIIndexEndpoints(namespace string) VertexAIIndexEndpointInterface {
 	return newVertexAIIndexEndpoints(c, namespace)
+}
+
+func (c *VertexaiV1alpha1Client) VertexAIOnlineEvaluators(namespace string) VertexAIOnlineEvaluatorInterface {
+	return newVertexAIOnlineEvaluators(c, namespace)
 }
 
 func (c *VertexaiV1alpha1Client) VertexAITensorboards(namespace string) VertexAITensorboardInterface {
