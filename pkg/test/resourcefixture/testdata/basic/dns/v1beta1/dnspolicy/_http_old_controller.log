@@ -259,3 +259,47 @@ X-Xss-Protection: 0
     }
   ]
 }
+
+---
+
+PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+Content-Type: application/json
+
+{
+  "networks": null
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "policy": {
+    "id": "${dnsPolicyId}",
+    "kind": "dns#policy",
+    "name": "dnspolicy-test-${uniqueId}"
+  }
+}
+
+---
+
+DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

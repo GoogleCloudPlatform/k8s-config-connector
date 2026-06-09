@@ -263,6 +263,19 @@ func (a *DNSPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting DNSPolicy", "name", a.id)
 
+	if a.actual != nil && len(a.actual.Networks) > 0 {
+		log.V(2).Info("clearing networks for DNSPolicy before deletion", "name", a.id)
+		cleared := common.DeepCopy(a.actual)
+		cleared.Networks = []*api.PolicyNetwork{}
+		cleared.ForceSendFields = []string{"Networks"}
+		// Workaround: Id is required in update calls
+		cleared.Id = a.actual.Id
+		_, err := a.gcpClient.Policies.Update(a.id.Project, a.id.Policy, cleared).Context(ctx).Do()
+		if err != nil && !direct.IsNotFound(err) {
+			return false, fmt.Errorf("clearing networks for DNSPolicy %s before deletion: %w", a.id, err)
+		}
+	}
+
 	err := a.gcpClient.Policies.Delete(a.id.Project, a.id.Policy).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {

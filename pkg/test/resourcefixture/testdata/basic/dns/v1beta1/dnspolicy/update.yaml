@@ -17,7 +17,6 @@ kind: DNSPolicy
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/deletion-policy: abandon
   name: dnspolicy-test-${uniqueId}
 spec:
   alternativeNameServerConfig:
