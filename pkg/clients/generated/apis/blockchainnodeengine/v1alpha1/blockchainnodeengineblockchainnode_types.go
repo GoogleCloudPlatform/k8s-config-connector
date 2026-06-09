@@ -98,7 +98,7 @@ type BlockchainnodeValidatorConfig struct {
 
 	/* URLs for MEV-relay services to use for block building. When set, a GCP-managed MEV-boost service is configured on the beacon client. */
 	// +optional
-	MevRelayUrls []string `json:"mevRelayUrls,omitempty"`
+	MevRelayURLs []string `json:"mevRelayURLs,omitempty"`
 }
 
 type BlockchainNodeEngineBlockchainNodeSpec struct {

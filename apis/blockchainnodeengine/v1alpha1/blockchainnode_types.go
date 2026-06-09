@@ -250,7 +250,7 @@ type BlockchainNode_EthereumDetails_ValidatorConfig struct {
 	// URLs for MEV-relay services to use for block building. When set, a
 	//  GCP-managed MEV-boost service is configured on the beacon client.
 	// +kcc:proto:field=google.cloud.blockchainnodeengine.v1.BlockchainNode.EthereumDetails.ValidatorConfig.mev_relay_urls
-	MevRelayUrls []string `json:"mevRelayUrls,omitempty"`
+	MevRelayURLs []string `json:"mevRelayURLs,omitempty"`
 
 	// Immutable. When true, deploys a GCP-managed validator client alongside
 	//  the beacon client.

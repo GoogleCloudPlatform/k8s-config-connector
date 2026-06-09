@@ -410,8 +410,8 @@ func (in *BlockchainnodeValidatorConfig) DeepCopyInto(out *BlockchainnodeValidat
 		*out = new(bool)
 		**out = **in
 	}
-	if in.MevRelayUrls != nil {
-		in, out := &in.MevRelayUrls, &out.MevRelayUrls
+	if in.MevRelayURLs != nil {
+		in, out := &in.MevRelayURLs, &out.MevRelayURLs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
