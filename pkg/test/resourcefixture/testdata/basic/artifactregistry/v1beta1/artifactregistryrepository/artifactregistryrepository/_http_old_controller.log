@@ -1,4 +1,4 @@
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -21,16 +21,17 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}-2
+POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arrepository-${uniqueId}-2
 Content-Type: application/json
 
 {
-  "format": 1,
+  "format": "DOCKER",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
-  }
+  },
+  "mode": "STANDARD_REPOSITORY"
 }
 
 200 OK
@@ -52,7 +53,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -92,7 +93,42 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "STANDARD_REPOSITORY",
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}-2",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -115,18 +151,18 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}
+POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arrepository-${uniqueId}
 Content-Type: application/json
 
 {
   "description": "test repository description",
-  "format": 1,
+  "format": "DOCKER",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "mode": 2,
+  "mode": "VIRTUAL_REPOSITORY",
   "virtualRepositoryConfig": {
     "upstreamPolicies": [
       {
@@ -157,7 +193,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -207,7 +243,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -223,13 +259,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "test repository description",
-  "format": 1,
+  "format": "DOCKER",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "mode": 2,
+  "mode": "VIRTUAL_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
   "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
   "satisfiesPzi": true,
@@ -244,7 +280,7 @@ X-Xss-Protection: 0
     ]
   },
   "vulnerabilityScanningConfig": {
-    "enablementState": 1,
+    "enablementState": "SCANNING_UNSUPPORTED",
     "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -252,19 +288,17 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json&updateMask=description
 Content-Type: application/json
 
 {
+  "cleanupPolicies": {},
   "description": "test repository description 2",
-  "format": 1,
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "mode": 2,
-  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
   "virtualRepositoryConfig": {
     "upstreamPolicies": [
       {
@@ -289,13 +323,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "test repository description 2",
-  "format": 1,
+  "format": "DOCKER",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "mode": 2,
+  "mode": "VIRTUAL_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -309,7 +343,7 @@ X-Xss-Protection: 0
     ]
   },
   "vulnerabilityScanningConfig": {
-    "enablementState": 1,
+    "enablementState": "SCANNING_UNSUPPORTED",
     "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -317,7 +351,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -333,13 +367,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "test repository description 2",
-  "format": 1,
+  "format": "DOCKER",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "mode": 2,
+  "mode": "VIRTUAL_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
   "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
   "satisfiesPzi": true,
@@ -354,7 +388,7 @@ X-Xss-Protection: 0
     ]
   },
   "vulnerabilityScanningConfig": {
-    "enablementState": 1,
+    "enablementState": "SCANNING_UNSUPPORTED",
     "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -362,7 +396,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -384,7 +418,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -410,7 +444,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
 Content-Type: application/json
 
 200 OK
@@ -425,19 +459,19 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "format": 1,
+  "format": "DOCKER",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
-  "mode": 1,
+  "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
   "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}-2",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vulnerabilityScanningConfig": {
-    "enablementState": 2,
+    "enablementState": "SCANNING_DISABLED",
     "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -445,7 +479,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?alt=json
 Content-Type: application/json
 
 200 OK
@@ -467,7 +501,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
