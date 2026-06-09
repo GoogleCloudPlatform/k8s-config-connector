@@ -118,9 +118,17 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		obj.AvailableMaintenanceVersions = []string{"MEMORYSTORE_20260313_01_02", "MEMORYSTORE_20260313_01_03"}
 	}
 
-	if obj.EncryptionInfo == nil {
+	if obj.KmsKey != nil && *obj.KmsKey != "" {
 		obj.EncryptionInfo = &pb.EncryptionInfo{
-			EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+			EncryptionType:     pb.EncryptionInfo_CUSTOMER_MANAGED_ENCRYPTION,
+			KmsKeyVersions:     []string{*obj.KmsKey + "/cryptoKeyVersions/1"},
+			KmsKeyPrimaryState: pb.EncryptionInfo_ENABLED,
+		}
+	} else {
+		if obj.EncryptionInfo == nil {
+			obj.EncryptionInfo = &pb.EncryptionInfo{
+				EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+			}
 		}
 	}
 

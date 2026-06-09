@@ -200,6 +200,10 @@ type MemorystoreInstanceSpec struct {
 	// +optional
 	EngineVersion *string `json:"engineVersion,omitempty"`
 
+	/* Optional. The KMS key reference for the instance. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Optional. Labels to represent user-provided metadata. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
@@ -277,6 +281,24 @@ type InstanceCrossInstanceReplicationConfigStatus struct {
 	SecondaryInstances []InstanceSecondaryInstancesStatus `json:"secondaryInstances,omitempty"`
 }
 
+type InstanceEncryptionInfoStatus struct {
+	/* Output only. Type of encryption. */
+	// +optional
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	/* Output only. The state of the primary KMS key. */
+	// +optional
+	KmsKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
+
+	/* Output only. KMS key versions that are being used to protect the instance. */
+	// +optional
+	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+
+	/* Output only. Latest update timestamp of the encryption info. */
+	// +optional
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+
 type InstanceEndpointsStatus struct {
 	/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
 	// +optional
@@ -335,6 +357,10 @@ type InstanceObservedStateStatus struct {
 	/* Output only. The current version of the maintenance schedule. */
 	// +optional
 	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
+
+	/* Output only. Encryption information for the instance. */
+	// +optional
+	EncryptionInfo *InstanceEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
 
 	/* Optional. Endpoints for the instance. */
 	// +optional

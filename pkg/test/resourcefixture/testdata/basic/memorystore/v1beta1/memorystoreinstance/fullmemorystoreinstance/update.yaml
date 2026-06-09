@@ -65,3 +65,5 @@ spec:
         seconds: 0
         nanos: 0
     retention: 432000s
+  kmsKeyRef:
+    name: key-${uniqueId}
