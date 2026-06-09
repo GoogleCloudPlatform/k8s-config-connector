@@ -105,3 +105,38 @@ func ParseDataprocClusterExternal(external string) (project, region, cluster str
 	}
 	return tokens[1], tokens[3], tokens[5], nil
 }
+
+func (r *DataprocClusterRef) GetGVK() schema.GroupVersionKind {
+	return DataprocClusterGVK
+}
+
+func (r *DataprocClusterRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *DataprocClusterRef) GetExternal() string {
+	return r.External
+}
+
+func (r *DataprocClusterRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *DataprocClusterRef) ValidateExternal(ref string) error {
+	_, _, _, err := ParseDataprocClusterExternal(ref)
+	return err
+}
+
+func (r *DataprocClusterRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	external, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
+	if err != nil {
+		return err
+	}
+	r.SetExternal(external)
+	return nil
+}

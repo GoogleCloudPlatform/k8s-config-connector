@@ -27,6 +27,7 @@ var DataprocNodeGroupGVK = GroupVersion.WithKind("DataprocNodeGroup")
 // +kcc:spec:proto=google.cloud.dataproc.v1.NodeGroup
 type DataprocNodeGroupSpec struct {
 	// Required. Node group roles.
+	// +required
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.roles
 	Roles []string `json:"roles,omitempty"`
 
@@ -46,6 +47,7 @@ type DataprocNodeGroupSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. The cluster that this node group belongs to.
+	// +required
 	ClusterRef *refsv1beta1.DataprocClusterRef `json:"clusterRef,omitempty"`
 
 	*Parent `json:",inline"`

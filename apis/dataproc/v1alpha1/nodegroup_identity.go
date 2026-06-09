@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,6 +61,13 @@ func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *Datapr
 
 func (s *DataprocNodeGroup) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	return NewNodeGroupIdentity(ctx, reader, s)
+}
+
+func (s *DataprocNodeGroup) ExternalIdentifier() *string {
+	if s.Status.ExternalRef != nil {
+		return s.Status.ExternalRef
+	}
+	return nil
 }
 
 // NodeGroupIdentity is the identity of a DataprocNodeGroup.

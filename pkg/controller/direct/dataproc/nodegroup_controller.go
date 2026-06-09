@@ -76,6 +76,31 @@ func (m *nodeGroupModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if obj.Spec.ClusterRef != nil {
+		if err := obj.Spec.ClusterRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, err
+		}
+	}
+	if obj.Spec.NodeGroupConfig != nil {
+		if obj.Spec.NodeGroupConfig.ImageRef != nil {
+			if err := obj.Spec.NodeGroupConfig.ImageRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
+		}
+		if obj.Spec.NodeGroupConfig.MachineTypeRef != nil {
+			if err := obj.Spec.NodeGroupConfig.MachineTypeRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
+		}
+		for i := range obj.Spec.NodeGroupConfig.Accelerators {
+			if obj.Spec.NodeGroupConfig.Accelerators[i].AcceleratorTypeRef != nil {
+				if err := obj.Spec.NodeGroupConfig.Accelerators[i].AcceleratorTypeRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+					return nil, err
+				}
+			}
+		}
+	}
+
 	id, err := krm.NewNodeGroupIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
