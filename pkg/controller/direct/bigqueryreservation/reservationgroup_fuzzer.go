@@ -29,8 +29,8 @@ func init() {
 
 func reservationGroupFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ReservationGroup{},
-		BigQueryReservationReservationGroupSpec_FromProto, BigQueryReservationReservationGroupSpec_ToProto,
-		BigQueryReservationReservationGroupObservedState_FromProto, BigQueryReservationReservationGroupObservedState_ToProto,
+		BigQueryReservationReservationGroupSpec_v1alpha1_FromProto, BigQueryReservationReservationGroupSpec_v1alpha1_ToProto,
+		BigQueryReservationReservationGroupObservedState_v1alpha1_FromProto, BigQueryReservationReservationGroupObservedState_v1alpha1_ToProto,
 	)
 	f.IdentityField(".name")
 	return f

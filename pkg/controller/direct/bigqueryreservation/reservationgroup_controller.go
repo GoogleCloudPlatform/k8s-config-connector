@@ -116,7 +116,7 @@ func (a *ReservationGroupAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	mapCtx := &direct.MapContext{}
-	observedState := BigQueryReservationReservationGroupObservedState_FromProto(mapCtx, reservationGroup)
+	observedState := BigQueryReservationReservationGroupObservedState_v1alpha1_FromProto(mapCtx, reservationGroup)
 	if mapCtx.Err() != nil {
 		return true, mapCtx.Err()
 	}
@@ -132,7 +132,7 @@ func (a *ReservationGroupAdapter) Create(ctx context.Context, createOp *directba
 	log.V(2).Info("creating ReservationGroup", "name", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	reservationGroup := BigQueryReservationReservationGroupSpec_ToProto(mapCtx, &a.inner.Spec)
+	reservationGroup := BigQueryReservationReservationGroupSpec_v1alpha1_ToProto(mapCtx, &a.inner.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -151,7 +151,7 @@ func (a *ReservationGroupAdapter) Create(ctx context.Context, createOp *directba
 
 	log.V(2).Info("successfully created ReservationGroup", "name", a.id.String())
 
-	observedState := BigQueryReservationReservationGroupObservedState_FromProto(mapCtx, created)
+	observedState := BigQueryReservationReservationGroupObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
