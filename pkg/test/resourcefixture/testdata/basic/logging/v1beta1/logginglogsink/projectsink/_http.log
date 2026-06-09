@@ -101,6 +101,7 @@ POST https://logging.googleapis.com/v2/projects/${projectId}/sinks?%24alt=json%3
 Content-Type: application/json
 
 {
+  "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "logsink-${uniqueId}"
 }
@@ -117,6 +118,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "logsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -140,6 +142,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "logsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -148,10 +151,11 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true&updateMask=filter
+PUT https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true&updateMask=filter%2Cdestination
 Content-Type: application/json
 
 {
+  "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "logsink-${uniqueId}"
 }
@@ -168,6 +172,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "logsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -191,6 +196,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": "pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "logsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",

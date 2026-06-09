@@ -356,7 +356,7 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-resourceid-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter
+PUT https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-resourceid-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter%2Cdestination
 Content-Type: application/json
 
 {

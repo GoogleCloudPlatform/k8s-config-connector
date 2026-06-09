@@ -15,7 +15,7 @@
 357c359
 < PATCH https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
 ---
-> PUT https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter
+> PUT https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter%2Cdestination
 362d363
 <   "disabled": false,
 364c365,366
