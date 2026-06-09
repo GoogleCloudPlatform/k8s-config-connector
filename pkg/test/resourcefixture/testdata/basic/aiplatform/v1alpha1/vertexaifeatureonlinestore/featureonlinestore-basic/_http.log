@@ -33,7 +33,7 @@ OK
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreateFeatureOnlineStoreOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateFeatureOnlineStoreOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -55,7 +55,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreateFeatureOnlineStoreOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateFeatureOnlineStoreOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -63,7 +63,7 @@ OK
   },
   "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.FeatureOnlineStore",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.FeatureOnlineStore",
     "bigtable": {
       "autoScaling": {
         "cpuUtilizationTarget": 50,
@@ -80,6 +80,34 @@ OK
     "state": "STABLE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -135,7 +163,7 @@ OK
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UpdateFeatureOnlineStoreOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateFeatureOnlineStoreOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -157,7 +185,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UpdateFeatureOnlineStoreOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateFeatureOnlineStoreOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -165,7 +193,7 @@ OK
   },
   "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.FeatureOnlineStore",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.FeatureOnlineStore",
     "bigtable": {
       "autoScaling": {
         "cpuUtilizationTarget": 50,
@@ -182,6 +210,34 @@ OK
     "state": "STABLE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -253,7 +309,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
