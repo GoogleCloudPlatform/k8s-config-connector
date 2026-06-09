@@ -94,15 +94,41 @@ spec:
                   usernamePassword:
                     description: A username and password stored in Secret Manager.
                     properties:
-                      passwordSecretVersionName:
-                        description: Required. The name of the Secret Manager resource
-                          that stores the password, in the form `projects/project-id/secrets/secret-name/versions/version`.
-                        type: string
+                      secretRef:
+                        description: Required. The Secret Manager secret version that
+                          stores the password.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                            type: string
+                          name:
+                            description: The `name` field of a `SecretManagerSecretVersion`
+                              resource.
+                            type: string
+                          namespace:
+                            description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                              resource.
+                            type: string
+                        type: object
                       username:
                         description: Required. The username.
                         type: string
                     required:
-                    - passwordSecretVersionName
+                    - secretRef
                     - username
                     type: object
                 required:

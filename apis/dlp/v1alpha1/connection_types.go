@@ -96,11 +96,10 @@ type SecretManagerCredential struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.SecretManagerCredential.username
 	Username *string `json:"username,omitempty"`
 
-	// Required. The name of the Secret Manager resource that stores the password,
-	//  in the form `projects/project-id/secrets/secret-name/versions/version`.
+	// Required. The Secret Manager secret version that stores the password.
 	// +kubebuilder:validation:Required
 	// +kcc:proto:field=google.privacy.dlp.v2.SecretManagerCredential.password_secret_version_name
-	PasswordSecretVersionName *string `json:"passwordSecretVersionName,omitempty"`
+	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
 }
 
 // +kcc:proto=google.privacy.dlp.v2.CloudSqlIamCredential

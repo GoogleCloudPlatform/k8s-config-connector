@@ -71,8 +71,8 @@ type ConnectionCloudSQLIAM struct {
 }
 
 type ConnectionUsernamePassword struct {
-	/* Required. The name of the Secret Manager resource that stores the password, in the form `projects/project-id/secrets/secret-name/versions/version`. */
-	PasswordSecretVersionName string `json:"passwordSecretVersionName"`
+	/* Required. The Secret Manager secret version that stores the password. */
+	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 
 	/* Required. The username. */
 	Username string `json:"username"`
