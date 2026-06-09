@@ -56,7 +56,6 @@ spec:
             kind: AccessContextManagerAccessLevel
             version: v1beta1
             group: accesscontextmanager.cnrm.cloud.google.com
-          targetField: name
         - tfField: basic.conditions.members
           description: |-
             An allowed list of members (users, service accounts).
