@@ -3,27 +3,31 @@ kind: CertificateManagerCertificate
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-  name: certificatemanagercertificate-kompanion-${uniqueId}
+    label-one: value-two
+  name: certificatemanagercertificate-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: sample managed certificate for kcc
+  description: updated description of a managed cert for kcc
   location: global
   managed:
+    dnsAuthorizationsRefs:
+    - name: certificatemanagerdnsauthorization-1-${uniqueId}
+    - name: certificatemanagerdnsauthorization-2-${uniqueId}
     domains:
-    - '*.${uniqueId}.com'
-    - test.${uniqueId}.com
-    - test2.${uniqueId}.com
-    issuanceConfigRef:
-      external: projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic
+    - ${uniqueId}1.hashicorptest.com
+    - ${uniqueId}2.hashicorptest.com
   projectRef:
     external: ${projectId}
-  scope: ALL_REGIONS
+  resourceID: certificatemanagercertificate${uniqueId}
+  scope: EDGE_CACHE
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -31,14 +35,12 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     managed:
       authorizationAttemptInfo:
-      - domain: '*.${uniqueId}.com'
+      - domain: ${uniqueId}1.hashicorptest.com
         state: AUTHORIZED
-      - domain: test.${uniqueId}.com
-        state: AUTHORIZED
-      - domain: test2.${uniqueId}.com
+      - domain: ${uniqueId}2.hashicorptest.com
         state: AUTHORIZED
       state: ACTIVE

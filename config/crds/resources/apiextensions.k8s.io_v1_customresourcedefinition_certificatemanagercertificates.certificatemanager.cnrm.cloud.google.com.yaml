@@ -106,6 +106,8 @@ spec:
                       domain authorization. Either issuanceConfig or dnsAuthorizations
                       should be specified, but not both.
                     items:
+                      description: CertificateManagerDNSAuthorizationRef is a reference
+                        to a GCP CertificateManagerDNSAuthorization.
                       oneOf:
                       - not:
                           required:
@@ -122,10 +124,16 @@ spec:
                         - external
                       properties:
                         external:
+                          description: A reference to an externally managed CertificateManagerDNSAuthorization
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dnsAuthorizations/{{dnsAuthorizationID}}".
                           type: string
                         name:
+                          description: The name of a CertificateManagerDNSAuthorization
+                            resource.
                           type: string
                         namespace:
+                          description: The namespace of a CertificateManagerDNSAuthorization
+                            resource.
                           type: string
                       type: object
                     type: array
@@ -159,10 +167,16 @@ spec:
                       - external
                     properties:
                       external:
+                        description: A reference to an externally managed CertificateManagerCertificateIssuanceConfig
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificateIssuanceConfigs/{{certificateIssuanceConfigID}}".
                         type: string
                       name:
+                        description: The name of a CertificateManagerCertificateIssuanceConfig
+                          resource.
                         type: string
                       namespace:
+                        description: The namespace of a CertificateManagerCertificateIssuanceConfig
+                          resource.
                         type: string
                     type: object
                   provisioningIssue:
@@ -513,6 +527,8 @@ spec:
                       domain authorization. Either issuanceConfig or dnsAuthorizations
                       should be specified, but not both.
                     items:
+                      description: CertificateManagerDNSAuthorizationRef is a reference
+                        to a GCP CertificateManagerDNSAuthorization.
                       oneOf:
                       - not:
                           required:
@@ -529,10 +545,16 @@ spec:
                         - external
                       properties:
                         external:
+                          description: A reference to an externally managed CertificateManagerDNSAuthorization
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dnsAuthorizations/{{dnsAuthorizationID}}".
                           type: string
                         name:
+                          description: The name of a CertificateManagerDNSAuthorization
+                            resource.
                           type: string
                         namespace:
+                          description: The namespace of a CertificateManagerDNSAuthorization
+                            resource.
                           type: string
                       type: object
                     type: array
@@ -566,10 +588,16 @@ spec:
                       - external
                     properties:
                       external:
+                        description: A reference to an externally managed CertificateManagerCertificateIssuanceConfig
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificateIssuanceConfigs/{{certificateIssuanceConfigID}}".
                         type: string
                       name:
+                        description: The name of a CertificateManagerCertificateIssuanceConfig
+                          resource.
                         type: string
                       namespace:
+                        description: The namespace of a CertificateManagerCertificateIssuanceConfig
+                          resource.
                         type: string
                     type: object
                   provisioningIssue:

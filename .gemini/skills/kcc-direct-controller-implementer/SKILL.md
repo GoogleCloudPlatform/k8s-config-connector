@@ -39,21 +39,14 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
       }
       gcpClient, err := gcp.NewConfigRESTClient(ctx, opts...)
       ```
-    - **Diff Comparison (`compare<Resource>` pattern)**: Implement a dedicated `compare<Resource>` helper function to compare the spec fields of actual/desired proto structures by round-tripping actual via its KRM Spec and calling `tags.DiffForTopLevelFields`:
+    - **Diff Comparison (`compare<Resource>` pattern)**: Implement a dedicated `compare<Resource>` helper function to compare the spec fields of actual/desired proto structures by round-tripping actual via its KRM Spec using `mappers.OnlySpecFields` and calling `tags.DiffForTopLevelFields`:
       ```go
       func compareResource(ctx context.Context, actual, desired *pb.MyResource) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-          var maskedActual *pb.MyResource
-          {
-              mapCtx := &direct.MapContext{}
-              spec := MyResourceSpec_FromProto(mapCtx, actual)
-              if mapCtx.Err() != nil {
-                  return nil, nil, mapCtx.Err()
-              }
-              maskedActual = MyResourceSpec_ToProto(mapCtx, spec)
-              if mapCtx.Err() != nil {
-                  return nil, nil, mapCtx.Err()
-              }
+          maskedActual, err := mappers.OnlySpecFields(actual, MyResourceSpec_FromProto, MyResourceSpec_ToProto)
+          if err != nil {
+              return nil, nil, err
           }
+          maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
           diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
           if err != nil {
               return nil, nil, err

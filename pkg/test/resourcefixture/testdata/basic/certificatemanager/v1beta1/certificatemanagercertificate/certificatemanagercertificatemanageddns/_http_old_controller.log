@@ -196,7 +196,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -219,7 +219,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?%24alt=json%3Benum-encoding%3Dint&certificateId=certificatemanagercertificate${uniqueId}
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?alt=json&certificateId=certificatemanagercertificate${uniqueId}
 Content-Type: application/json
 
 {
@@ -239,7 +239,7 @@ Content-Type: application/json
       "${uniqueId}2.hashicorptest.com"
     ]
   },
-  "scope": 1
+  "scope": "EDGE_CACHE"
 }
 
 200 OK
@@ -265,7 +265,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -319,7 +319,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -343,11 +343,11 @@ X-Xss-Protection: 0
     "authorizationAttemptInfo": [
       {
         "domain": "${uniqueId}1.hashicorptest.com",
-        "state": 6
+        "state": "AUTHORIZED"
       },
       {
         "domain": "${uniqueId}2.hashicorptest.com",
-        "state": 6
+        "state": "AUTHORIZED"
       }
     ],
     "dnsAuthorizations": [
@@ -358,15 +358,15 @@ X-Xss-Protection: 0
       "${uniqueId}1.hashicorptest.com",
       "${uniqueId}2.hashicorptest.com"
     ],
-    "state": 3
+    "state": "ACTIVE"
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
-  "scope": 1
+  "scope": "EDGE_CACHE"
 }
 
 ---
 
-PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
+PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json&updateMask=description%2Clabels
 Content-Type: application/json
 
 {
@@ -375,19 +375,7 @@ Content-Type: application/json
     "cnrm-test": "true",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
-  },
-  "managed": {
-    "dnsAuthorizations": [
-      "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
-      "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}"
-    ],
-    "domains": [
-      "${uniqueId}1.hashicorptest.com",
-      "${uniqueId}2.hashicorptest.com"
-    ]
-  },
-  "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
-  "scope": 1
+  }
 }
 
 200 OK
@@ -413,7 +401,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -468,7 +456,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -492,11 +480,11 @@ X-Xss-Protection: 0
     "authorizationAttemptInfo": [
       {
         "domain": "${uniqueId}1.hashicorptest.com",
-        "state": 6
+        "state": "AUTHORIZED"
       },
       {
         "domain": "${uniqueId}2.hashicorptest.com",
-        "state": 6
+        "state": "AUTHORIZED"
       }
     ],
     "dnsAuthorizations": [
@@ -507,15 +495,15 @@ X-Xss-Protection: 0
       "${uniqueId}1.hashicorptest.com",
       "${uniqueId}2.hashicorptest.com"
     ],
-    "state": 3
+    "state": "ACTIVE"
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
-  "scope": 1
+  "scope": "EDGE_CACHE"
 }
 
 ---
 
-DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -541,7 +529,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK

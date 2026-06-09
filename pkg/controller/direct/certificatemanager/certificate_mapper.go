@@ -16,6 +16,7 @@ package certificatemanager
 
 import (
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -57,13 +58,13 @@ func CertificateManaged_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Cert
 	out := &krm.CertificateManaged{}
 	out.Domains = in.Domains
 	if len(in.DnsAuthorizations) > 0 {
-		out.DnsAuthorizationsRefs = make([]krm.CertificateDNSAuthorizationRef, len(in.DnsAuthorizations))
+		out.DnsAuthorizationsRefs = make([]krm.CertificateManagerDNSAuthorizationRef, len(in.DnsAuthorizations))
 		for i, v := range in.DnsAuthorizations {
-			out.DnsAuthorizationsRefs[i] = krm.CertificateDNSAuthorizationRef{External: v}
+			out.DnsAuthorizationsRefs[i] = krm.CertificateManagerDNSAuthorizationRef{External: v}
 		}
 	}
 	if in.IssuanceConfig != "" {
-		out.IssuanceConfigRef = &krm.CertificateIssuanceConfigRef{External: in.IssuanceConfig}
+		out.IssuanceConfigRef = &krmv1alpha1.CertificateManagerCertificateIssuanceConfigRef{External: in.IssuanceConfig}
 	}
 	return out
 }

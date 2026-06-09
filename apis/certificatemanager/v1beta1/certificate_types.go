@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -52,24 +53,6 @@ type CertificateCertificatePem struct {
 	ValueFrom *CertificateValueFrom `json:"valueFrom,omitempty"`
 }
 
-type CertificateDNSAuthorizationRef struct {
-	// +optional
-	External string `json:"external,omitempty"`
-	// +optional
-	Name string `json:"name,omitempty"`
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
-type CertificateIssuanceConfigRef struct {
-	// +optional
-	External string `json:"external,omitempty"`
-	// +optional
-	Name string `json:"name,omitempty"`
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
 // +kcc:proto=google.cloud.certificatemanager.v1.Certificate.ManagedCertificate
 type CertificateManaged struct {
 	/* Detailed state of the latest authorization attempt for each domain
@@ -79,7 +62,7 @@ type CertificateManaged struct {
 
 	/* Immutable. Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specified, but not both. */
 	// +optional
-	DnsAuthorizationsRefs []CertificateDNSAuthorizationRef `json:"dnsAuthorizationsRefs,omitempty"`
+	DnsAuthorizationsRefs []CertificateManagerDNSAuthorizationRef `json:"dnsAuthorizationsRefs,omitempty"`
 
 	/* Immutable. The domains for which a managed SSL certificate will be generated.
 	Wildcard domains are only supported with DNS challenge resolution. */
@@ -92,7 +75,7 @@ type CertificateManaged struct {
 	If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
 	Either issuanceConfig or dnsAuthorizations should be specified, but not both. */
 	// +optional
-	IssuanceConfigRef *CertificateIssuanceConfigRef `json:"issuanceConfigRef,omitempty"`
+	IssuanceConfigRef *krmv1alpha1.CertificateManagerCertificateIssuanceConfigRef `json:"issuanceConfigRef,omitempty"`
 
 	/* Information about issues with provisioning this Managed Certificate. */
 	// +optional

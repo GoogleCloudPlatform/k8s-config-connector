@@ -1,4 +1,4 @@
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -21,7 +21,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?%24alt=json%3Benum-encoding%3Dint&certificateId=certificatemanagercertificate-kompanion-${uniqueId}
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?alt=json&certificateId=certificatemanagercertificate-kompanion-${uniqueId}
 Content-Type: application/json
 
 {
@@ -38,7 +38,7 @@ Content-Type: application/json
     ],
     "issuanceConfig": "projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic"
   },
-  "scope": 2
+  "scope": "ALL_REGIONS"
 }
 
 200 OK
@@ -64,7 +64,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -120,7 +120,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -143,15 +143,15 @@ X-Xss-Protection: 0
     "authorizationAttemptInfo": [
       {
         "domain": "*.${uniqueId}.com",
-        "state": 6
+        "state": "AUTHORIZED"
       },
       {
         "domain": "test.${uniqueId}.com",
-        "state": 6
+        "state": "AUTHORIZED"
       },
       {
         "domain": "test2.${uniqueId}.com",
-        "state": 6
+        "state": "AUTHORIZED"
       }
     ],
     "domains": [
@@ -160,15 +160,15 @@ X-Xss-Protection: 0
       "test2.${uniqueId}.com"
     ],
     "issuanceConfig": "projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic",
-    "state": 3
+    "state": "ACTIVE"
   },
   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}",
-  "scope": 2
+  "scope": "ALL_REGIONS"
 }
 
 ---
 
-DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -194,7 +194,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
