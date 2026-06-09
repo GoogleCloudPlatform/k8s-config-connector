@@ -149,6 +149,7 @@ import (
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
+	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/modelarmor/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
 	netappv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/netapp/v1alpha1"
 	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
@@ -333,6 +334,7 @@ type Interface interface {
 	MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface
 	MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface
 	MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface
+	ModelarmorV1alpha1() modelarmorv1alpha1.ModelarmorV1alpha1Interface
 	MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface
 	NetappV1alpha1() netappv1alpha1.NetappV1alpha1Interface
 	NetworkconnectivityV1alpha1() networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Interface
@@ -515,6 +517,7 @@ type Clientset struct {
 	metastoreV1alpha1               *metastorev1alpha1.MetastoreV1alpha1Client
 	metastoreV1beta1                *metastorev1beta1.MetastoreV1beta1Client
 	mlengineV1alpha1                *mlenginev1alpha1.MlengineV1alpha1Client
+	modelarmorV1alpha1              *modelarmorv1alpha1.ModelarmorV1alpha1Client
 	monitoringV1beta1               *monitoringv1beta1.MonitoringV1beta1Client
 	netappV1alpha1                  *netappv1alpha1.NetappV1alpha1Client
 	networkconnectivityV1alpha1     *networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Client
@@ -1188,6 +1191,11 @@ func (c *Clientset) MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interfac
 // MlengineV1alpha1 retrieves the MlengineV1alpha1Client
 func (c *Clientset) MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface {
 	return c.mlengineV1alpha1
+}
+
+// ModelarmorV1alpha1 retrieves the ModelarmorV1alpha1Client
+func (c *Clientset) ModelarmorV1alpha1() modelarmorv1alpha1.ModelarmorV1alpha1Interface {
+	return c.modelarmorV1alpha1
 }
 
 // MonitoringV1beta1 retrieves the MonitoringV1beta1Client
@@ -1995,6 +2003,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.modelarmorV1alpha1, err = modelarmorv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.monitoringV1beta1, err = monitoringv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2352,6 +2364,7 @@ func New(c rest.Interface) *Clientset {
 	cs.metastoreV1alpha1 = metastorev1alpha1.New(c)
 	cs.metastoreV1beta1 = metastorev1beta1.New(c)
 	cs.mlengineV1alpha1 = mlenginev1alpha1.New(c)
+	cs.modelarmorV1alpha1 = modelarmorv1alpha1.New(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.New(c)
 	cs.netappV1alpha1 = netappv1alpha1.New(c)
 	cs.networkconnectivityV1alpha1 = networkconnectivityv1alpha1.New(c)

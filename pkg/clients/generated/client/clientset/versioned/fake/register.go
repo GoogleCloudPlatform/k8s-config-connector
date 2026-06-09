@@ -146,6 +146,7 @@ import (
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1beta1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/mlengine/v1alpha1"
+	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/modelarmor/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
 	netappv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/netapp/v1alpha1"
 	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1alpha1"
@@ -334,6 +335,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	metastorev1alpha1.AddToScheme,
 	metastorev1beta1.AddToScheme,
 	mlenginev1alpha1.AddToScheme,
+	modelarmorv1alpha1.AddToScheme,
 	monitoringv1beta1.AddToScheme,
 	netappv1alpha1.AddToScheme,
 	networkconnectivityv1alpha1.AddToScheme,
