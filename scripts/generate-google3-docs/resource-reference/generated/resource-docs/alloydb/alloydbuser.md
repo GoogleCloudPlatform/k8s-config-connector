@@ -106,7 +106,7 @@ userType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a AlloyDBCluster resource.</p>
+            <p>The name of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -116,7 +116,7 @@ userType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a AlloyDBCluster resource.</p>
+            <p>The namespace of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>

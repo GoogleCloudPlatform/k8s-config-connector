@@ -126,7 +126,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A reference to a CertificateManagerCertificate resource.</p>
+            <p>CertificateManagerCertificateRef is a reference to a CertificateManagerCertificate.</p>
         </td>
     </tr>
     <tr>
@@ -136,7 +136,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The format `projects/{{project}}/locations/{{location}}/certificates/{{name}}` or `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificates/{{name}}`.</p>
+            <p>A reference to an externally managed CertificateManagerCertificate resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificates/{{certificateID}}".</p>
         </td>
     </tr>
     <tr>

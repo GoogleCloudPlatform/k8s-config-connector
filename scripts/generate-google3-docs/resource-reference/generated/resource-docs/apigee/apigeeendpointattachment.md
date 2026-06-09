@@ -116,7 +116,7 @@ serviceAttachmentRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a ApigeeOrganization resource.</p>
+            <p>The name of an ApigeeOrganization resource.</p>
         </td>
     </tr>
     <tr>
@@ -126,7 +126,7 @@ serviceAttachmentRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a ApigeeOrganization resource.</p>
+            <p>The namespace of an ApigeeOrganization resource.</p>
         </td>
     </tr>
     <tr>

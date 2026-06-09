@@ -121,7 +121,7 @@ taxonomyRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>PolicyTagRef defines the resource reference to DataCatalogPolicyTag, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>PolicyTagRef is a reference to a DataCatalogPolicyTag.</p>
         </td>
     </tr>
     <tr>
@@ -171,7 +171,7 @@ taxonomyRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>TaxonomyRef defines the resource reference to DataCatalogTaxonomy, which "External" field holds the GCP identifier for the KRM object.</p>
+            <p>TaxonomyRef is a reference to a DataCatalogTaxonomy.</p>
         </td>
     </tr>
     <tr>

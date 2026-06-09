@@ -2015,7 +2015,7 @@ uid: string
         <td><code>revisionId</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. The assignment revision ID A new revision is committed whenever a rollout is triggered for a OS policy assignment</p>
+            <p>Output only. The assignment revision ID A new revision is committed whenever a rollout is triggered for an OS policy assignment</p>
         </td>
     </tr>
     <tr>
