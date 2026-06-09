@@ -438,12 +438,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "securitycenter.cnrm.cloud.google.com", Kind: "SecurityCenterSource"}:
 	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryEndpoint"}:
 	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryNamespace"}:
-	// ServiceDirectoryService has no mutable spec fields; updates are purely metadata-based (labels).
-	// Since metadata-only updates do not increment metadata.generation, the test runner's
-	// waitForReadySingleResource immediately returns (as status remains Ready: True and generation doesn't change).
-	// This causes the test runner to proceed to the re-reconciliation touch step before KCC's background
-	// controller can execute the update's PATCH request, causing a race condition and test failure.
-	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryService"}:
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
 	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingConnection"}:
 	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:

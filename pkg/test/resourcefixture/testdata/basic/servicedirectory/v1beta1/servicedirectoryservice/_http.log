@@ -159,7 +159,6 @@ Content-Type: application/json
 {
   "metadata": {
     "cnrm-test": "true",
-    "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -179,7 +178,6 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "cnrm-test": "true",
-    "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -204,7 +202,6 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "cnrm-test": "true",
-    "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
