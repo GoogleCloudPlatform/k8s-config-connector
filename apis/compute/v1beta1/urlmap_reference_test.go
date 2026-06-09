@@ -63,8 +63,12 @@ func TestComputeURLMapRef_Normalize(t *testing.T) {
 	urlmap.SetGroupVersionKind(ComputeURLMapGVK)
 	urlmap.SetName("my-urlmap")
 	urlmap.SetNamespace("my-ns")
+	urlmap.SetAnnotations(map[string]string{
+		"cnrm.cloud.google.com/project-id": "my-project",
+	})
 	urlmap.Object["status"] = map[string]interface{}{
-		"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
+		"externalRef": "projects/my-project/global/urlMaps/my-urlmap",
+		"selfLink":    "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
 	}
 
 	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(urlmap).Build()
@@ -89,7 +93,7 @@ func TestComputeURLMapRef_Normalize(t *testing.T) {
 				Name:      "my-urlmap",
 				Namespace: "my-ns",
 			},
-			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
+			want: "projects/my-project/global/urlMaps/my-urlmap",
 		},
 		{
 			name: "internal reference with default namespace",
@@ -97,7 +101,7 @@ func TestComputeURLMapRef_Normalize(t *testing.T) {
 				Name: "my-urlmap",
 			},
 			defaultNamespace: "my-ns",
-			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/urlMaps/my-urlmap",
+			want:             "projects/my-project/global/urlMaps/my-urlmap",
 		},
 		{
 			name: "internal reference not found",

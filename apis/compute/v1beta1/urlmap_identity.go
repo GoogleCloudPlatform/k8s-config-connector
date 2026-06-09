@@ -48,6 +48,8 @@ func (i *ComputeURLMapIdentity) String() string {
 }
 
 func (i *ComputeURLMapIdentity) FromExternal(ref string) error {
+	ref = refs.TrimComputeURIPrefix(ref)
+
 	if parsed, match, err := ComputeURLMapGlobalIdentityFormat.Parse(ref); err == nil && match {
 		*i = *parsed
 		i.Region = ""
