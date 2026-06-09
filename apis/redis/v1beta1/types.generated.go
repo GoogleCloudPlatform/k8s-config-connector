@@ -137,7 +137,6 @@ type Cluster struct {
 }
 */
 
-/* unreachable type Cluster_GCSBackupSource
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.GcsBackupSource
 type Cluster_GCSBackupSource struct {
 	// Optional. URIs of the GCS objects to import.
@@ -145,7 +144,6 @@ type Cluster_GCSBackupSource struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.GcsBackupSource.uris
 	Uris []string `json:"uris,omitempty"`
 }
-*/
 
 /* unreachable type Cluster_ManagedBackupSource
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.ManagedBackupSource
