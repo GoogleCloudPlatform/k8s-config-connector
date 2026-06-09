@@ -386,6 +386,11 @@ spec:
                 items:
                   type: string
                 type: array
+            required:
+            - clusterRef
+            - location
+            - projectRef
+            - roles
             type: object
           status:
             description: DataprocNodeGroupStatus defines the config connector machine

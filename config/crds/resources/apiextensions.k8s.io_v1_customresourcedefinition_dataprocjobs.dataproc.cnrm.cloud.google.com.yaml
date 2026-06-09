@@ -275,6 +275,9 @@ spec:
                         description: The `namespace` field of a `Project` resource.
                         type: string
                     type: object
+                required:
+                - location
+                - projectRef
                 type: object
               pigJob:
                 description: Optional. Job is a Pig job.

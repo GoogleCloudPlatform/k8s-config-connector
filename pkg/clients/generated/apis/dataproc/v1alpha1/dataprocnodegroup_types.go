@@ -162,8 +162,7 @@ type NodegroupStartupConfig struct {
 
 type DataprocNodeGroupSpec struct {
 	/* Required. The cluster that this node group belongs to. */
-	// +optional
-	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
+	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Optional. Node group labels.
 
@@ -177,24 +176,21 @@ type DataprocNodeGroupSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* Required. */
-	// +optional
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location"`
 
 	/* Optional. The node group instance group configuration. */
 	// +optional
 	NodeGroupConfig *NodegroupNodeGroupConfig `json:"nodeGroupConfig,omitempty"`
 
 	/* Required. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DataprocNodeGroup name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Required. Node group roles. */
-	// +optional
-	Roles []string `json:"roles,omitempty"`
+	Roles []string `json:"roles"`
 }
 
 type NodegroupInstanceFlexibilityPolicyStatus struct {
