@@ -157,7 +157,7 @@ POST https://logging.googleapis.com/v2/organizations/${organizationID}/sinks?%24
 Content-Type: application/json
 
 {
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}"
 }
@@ -174,7 +174,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -198,7 +198,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -211,7 +211,7 @@ PUT https://logging.googleapis.com/v2/organizations/${organizationID}/sinks/orgs
 Content-Type: application/json
 
 {
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}"
 }
@@ -228,7 +228,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -252,7 +252,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}",
+  "destination": "storage.googleapis.com/orgsink-${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "name": "orgsink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
