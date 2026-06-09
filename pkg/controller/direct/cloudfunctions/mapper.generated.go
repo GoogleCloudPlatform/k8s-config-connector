@@ -35,20 +35,192 @@ func CloudFunctionsFunctionObservedState_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krm.CloudFunctionsFunctionObservedState{}
 	// MISSING: Name
-	// MISSING: Description
 	// MISSING: SourceArchiveURL
-	// MISSING: SourceRepository
 	// MISSING: SourceUploadURL
 	// MISSING: HTTPSTrigger
-	// MISSING: EventTrigger
 	// MISSING: Status
+	// MISSING: ServiceAccountEmail
+	// MISSING: UpdateTime
+	// MISSING: VersionID
+	// MISSING: Labels
+	// MISSING: BuildEnvironmentVariables
+	// MISSING: Network
+	// MISSING: MinInstances
+	// MISSING: VPCConnector
+	// MISSING: VPCConnectorEgressSettings
+	// MISSING: KMSKeyName
+	// MISSING: BuildWorkerPool
+	// MISSING: BuildID
+	// MISSING: BuildName
+	// MISSING: SecretEnvironmentVariables
+	// MISSING: SecretVolumes
+	// MISSING: SourceToken
+	// MISSING: DockerRepository
+	// MISSING: DockerRegistry
+	// MISSING: AutomaticUpdatePolicy
+	// MISSING: OnDeployUpdatePolicy
+	// MISSING: BuildServiceAccount
+	return out
+}
+func CloudFunctionsFunctionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudFunctionsFunctionObservedState) *pb.CloudFunction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudFunction{}
+	// MISSING: Name
+	// MISSING: SourceArchiveURL
+	// MISSING: SourceUploadURL
+	// MISSING: HTTPSTrigger
+	// MISSING: Status
+	// MISSING: ServiceAccountEmail
+	// MISSING: UpdateTime
+	// MISSING: VersionID
+	// MISSING: Labels
+	// MISSING: BuildEnvironmentVariables
+	// MISSING: Network
+	// MISSING: MinInstances
+	// MISSING: VPCConnector
+	// MISSING: VPCConnectorEgressSettings
+	// MISSING: KMSKeyName
+	// MISSING: BuildWorkerPool
+	// MISSING: BuildID
+	// MISSING: BuildName
+	// MISSING: SecretEnvironmentVariables
+	// MISSING: SecretVolumes
+	// MISSING: SourceToken
+	// MISSING: DockerRepository
+	// MISSING: DockerRegistry
+	// MISSING: AutomaticUpdatePolicy
+	// MISSING: OnDeployUpdatePolicy
+	// MISSING: BuildServiceAccount
+	return out
+}
+
+/* found existing non-generated mapping function "CloudFunctionsFunctionSpec_FromProto", skipping
+func CloudFunctionsFunctionSpec_FromProto(mapCtx *direct.MapContext, in *pb.CloudFunction) *krm.CloudFunctionsFunctionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudFunctionsFunctionSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: SourceArchiveURL
+	// (near miss): "SourceArchiveURL" vs "SourceArchiveUrl"
+	out.SourceRepository = FunctionSourceRepository_FromProto(mapCtx, in.GetSourceRepository())
+	// MISSING: SourceUploadURL
+	// MISSING: HTTPSTrigger
+	// (near miss): "HTTPSTrigger" vs "HttpsTrigger"
+	out.EventTrigger = FunctionEventTrigger_FromProto(mapCtx, in.GetEventTrigger())
+	// MISSING: Status
+	out.EntryPoint = direct.LazyPtr(in.GetEntryPoint())
+	out.Runtime = direct.LazyPtr(in.GetRuntime())
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.AvailableMemoryMb = direct.LazyPtr(in.GetAvailableMemoryMb())
+	// MISSING: ServiceAccountEmail
+	// MISSING: UpdateTime
+	// MISSING: VersionID
+	// MISSING: Labels
+	out.EnvironmentVariables = in.EnvironmentVariables
+	// MISSING: BuildEnvironmentVariables
+	// MISSING: Network
+	out.MaxInstances = direct.LazyPtr(in.GetMaxInstances())
+	// MISSING: MinInstances
+	// MISSING: VPCConnector
+	// MISSING: VPCConnectorEgressSettings
+	// (near miss): "VPCConnectorEgressSettings" vs "VpcConnectorEgressSettings"
+	out.IngressSettings = direct.Enum_FromProto(mapCtx, in.GetIngressSettings())
+	// MISSING: KMSKeyName
+	// MISSING: BuildWorkerPool
+	// MISSING: BuildID
+	// MISSING: BuildName
+	// MISSING: SecretEnvironmentVariables
+	// MISSING: SecretVolumes
+	// MISSING: SourceToken
+	// MISSING: DockerRepository
+	// MISSING: DockerRegistry
+	// MISSING: AutomaticUpdatePolicy
+	// MISSING: OnDeployUpdatePolicy
+	// MISSING: BuildServiceAccount
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "CloudFunctionsFunctionSpec_ToProto", skipping
+
+	func CloudFunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudFunctionsFunctionSpec) *pb.CloudFunction {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CloudFunction{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: SourceArchiveURL
+		// (near miss): "SourceArchiveURL" vs "SourceArchiveUrl"
+		if oneof := FunctionSourceRepository_ToProto(mapCtx, in.SourceRepository); oneof != nil {
+			out.SourceCode = &pb.CloudFunction_SourceRepository{SourceRepository: oneof}
+		}
+		// MISSING: SourceUploadURL
+		// MISSING: HTTPSTrigger
+		// (near miss): "HTTPSTrigger" vs "HttpsTrigger"
+		if oneof := FunctionEventTrigger_ToProto(mapCtx, in.EventTrigger); oneof != nil {
+			out.Trigger = &pb.CloudFunction_EventTrigger{EventTrigger: oneof}
+		}
+		// MISSING: Status
+		out.EntryPoint = direct.ValueOf(in.EntryPoint)
+		out.Runtime = CloudFunctionsFunctionSpec_Runtime_ToProto(mapCtx, in.Runtime)
+		out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+		out.AvailableMemoryMb = direct.ValueOf(in.AvailableMemoryMb)
+		// MISSING: ServiceAccountEmail
+		// MISSING: UpdateTime
+		// MISSING: VersionID
+		// MISSING: Labels
+		out.EnvironmentVariables = in.EnvironmentVariables
+		// MISSING: BuildEnvironmentVariables
+		// MISSING: Network
+		out.MaxInstances = direct.ValueOf(in.MaxInstances)
+		// MISSING: MinInstances
+		// MISSING: VPCConnector
+		// MISSING: VPCConnectorEgressSettings
+		// (near miss): "VPCConnectorEgressSettings" vs "VpcConnectorEgressSettings"
+		out.IngressSettings = direct.Enum_ToProto[pb.CloudFunction_IngressSettings](mapCtx, in.IngressSettings)
+		// MISSING: KMSKeyName
+		// MISSING: BuildWorkerPool
+		// MISSING: BuildID
+		// MISSING: BuildName
+		// MISSING: SecretEnvironmentVariables
+		// MISSING: SecretVolumes
+		// MISSING: SourceToken
+		// MISSING: DockerRepository
+		// MISSING: DockerRegistry
+		// MISSING: AutomaticUpdatePolicy
+		// MISSING: OnDeployUpdatePolicy
+		// MISSING: BuildServiceAccount
+		return out
+	}
+*/
+func CloudFunctionsFunctionStatus_FromProto(mapCtx *direct.MapContext, in *pb.CloudFunction) *krm.CloudFunctionsFunctionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudFunctionsFunctionStatus{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: SourceArchiveURL
+	out.SourceRepository = FunctionSourceRepositoryStatus_FromProto(mapCtx, in.GetSourceRepository())
+	// MISSING: SourceUploadURL
+	// MISSING: HTTPSTrigger
+	// (near miss): "HTTPSTrigger" vs "HttpsTrigger"
+	// MISSING: EventTrigger
+	out.Status = direct.Enum_FromProto(mapCtx, in.GetStatus())
 	// MISSING: EntryPoint
 	// MISSING: Runtime
 	// MISSING: Timeout
 	// MISSING: AvailableMemoryMb
 	// MISSING: ServiceAccountEmail
-	// MISSING: UpdateTime
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: VersionID
+	// (near miss): "VersionID" vs "VersionId"
 	// MISSING: Labels
 	// MISSING: EnvironmentVariables
 	// MISSING: BuildEnvironmentVariables
@@ -72,7 +244,7 @@ func CloudFunctionsFunctionObservedState_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: BuildServiceAccount
 	return out
 }
-func CloudFunctionsFunctionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudFunctionsFunctionObservedState) *pb.CloudFunction {
+func CloudFunctionsFunctionStatus_ToProto(mapCtx *direct.MapContext, in *krm.CloudFunctionsFunctionStatus) *pb.CloudFunction {
 	if in == nil {
 		return nil
 	}
@@ -80,18 +252,22 @@ func CloudFunctionsFunctionObservedState_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	// MISSING: Description
 	// MISSING: SourceArchiveURL
-	// MISSING: SourceRepository
+	if oneof := FunctionSourceRepositoryStatus_ToProto(mapCtx, in.SourceRepository); oneof != nil {
+		out.SourceCode = &pb.CloudFunction_SourceRepository{SourceRepository: oneof}
+	}
 	// MISSING: SourceUploadURL
 	// MISSING: HTTPSTrigger
+	// (near miss): "HTTPSTrigger" vs "HttpsTrigger"
 	// MISSING: EventTrigger
-	// MISSING: Status
+	out.Status = direct.Enum_ToProto[pb.CloudFunctionStatus](mapCtx, in.Status)
 	// MISSING: EntryPoint
 	// MISSING: Runtime
 	// MISSING: Timeout
 	// MISSING: AvailableMemoryMb
 	// MISSING: ServiceAccountEmail
-	// MISSING: UpdateTime
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: VersionID
+	// (near miss): "VersionID" vs "VersionId"
 	// MISSING: Labels
 	// MISSING: EnvironmentVariables
 	// MISSING: BuildEnvironmentVariables
@@ -113,5 +289,117 @@ func CloudFunctionsFunctionObservedState_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: AutomaticUpdatePolicy
 	// MISSING: OnDeployUpdatePolicy
 	// MISSING: BuildServiceAccount
+	return out
+}
+
+/* found existing non-generated mapping function "FunctionEventTrigger_FromProto", skipping
+func FunctionEventTrigger_FromProto(mapCtx *direct.MapContext, in *pb.EventTrigger) *krm.FunctionEventTrigger {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionEventTrigger{}
+	out.EventType = direct.LazyPtr(in.GetEventType())
+	if in.GetResource() != "" {
+		out.ResourceRef = &krm.EventTriggerResourceRef{External: in.GetResource()}
+	}
+	out.Service = direct.LazyPtr(in.GetService())
+	out.FailurePolicy = bool_FromProto(mapCtx, in.GetFailurePolicy())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "FunctionEventTrigger_ToProto", skipping
+
+	func FunctionEventTrigger_ToProto(mapCtx *direct.MapContext, in *krm.FunctionEventTrigger) *pb.EventTrigger {
+		if in == nil {
+			return nil
+		}
+		out := &pb.EventTrigger{}
+		out.EventType = FunctionEventTrigger_EventType_ToProto(mapCtx, in.EventType)
+		if in.ResourceRef != nil {
+			out.Resource = in.ResourceRef.External
+		}
+		out.Service = direct.ValueOf(in.Service)
+		out.FailurePolicy = bool_ToProto(mapCtx, in.FailurePolicy)
+		return out
+	}
+*/
+func FunctionHttpsTrigger_FromProto(mapCtx *direct.MapContext, in *pb.HttpsTrigger) *krm.FunctionHttpsTrigger {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionHttpsTrigger{}
+	// MISSING: URL
+	out.SecurityLevel = direct.Enum_FromProto(mapCtx, in.GetSecurityLevel())
+	return out
+}
+func FunctionHttpsTrigger_ToProto(mapCtx *direct.MapContext, in *krm.FunctionHttpsTrigger) *pb.HttpsTrigger {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpsTrigger{}
+	// MISSING: URL
+	out.SecurityLevel = direct.Enum_ToProto[pb.HttpsTrigger_SecurityLevel](mapCtx, in.SecurityLevel)
+	return out
+}
+func FunctionHttpsTriggerStatus_FromProto(mapCtx *direct.MapContext, in *pb.HttpsTrigger) *krm.FunctionHttpsTriggerStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionHttpsTriggerStatus{}
+	// MISSING: URL
+	// (near miss): "URL" vs "Url"
+	// MISSING: SecurityLevel
+	return out
+}
+func FunctionHttpsTriggerStatus_ToProto(mapCtx *direct.MapContext, in *krm.FunctionHttpsTriggerStatus) *pb.HttpsTrigger {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpsTrigger{}
+	// MISSING: URL
+	// (near miss): "URL" vs "Url"
+	// MISSING: SecurityLevel
+	return out
+}
+func FunctionSourceRepository_FromProto(mapCtx *direct.MapContext, in *pb.SourceRepository) *krm.FunctionSourceRepository {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionSourceRepository{}
+	// MISSING: URL
+	// (near miss): "URL" vs "Url"
+	// MISSING: DeployedURL
+	return out
+}
+func FunctionSourceRepository_ToProto(mapCtx *direct.MapContext, in *krm.FunctionSourceRepository) *pb.SourceRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceRepository{}
+	// MISSING: URL
+	// (near miss): "URL" vs "Url"
+	// MISSING: DeployedURL
+	return out
+}
+func FunctionSourceRepositoryStatus_FromProto(mapCtx *direct.MapContext, in *pb.SourceRepository) *krm.FunctionSourceRepositoryStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionSourceRepositoryStatus{}
+	// MISSING: URL
+	// MISSING: DeployedURL
+	// (near miss): "DeployedURL" vs "DeployedUrl"
+	return out
+}
+func FunctionSourceRepositoryStatus_ToProto(mapCtx *direct.MapContext, in *krm.FunctionSourceRepositoryStatus) *pb.SourceRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceRepository{}
+	// MISSING: URL
+	// MISSING: DeployedURL
+	// (near miss): "DeployedURL" vs "DeployedUrl"
 	return out
 }
