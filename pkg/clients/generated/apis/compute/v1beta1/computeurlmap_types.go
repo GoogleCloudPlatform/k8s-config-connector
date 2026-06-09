@@ -450,7 +450,7 @@ type UrlmapRequestHeadersToAdd struct {
 }
 
 type UrlmapRequestMirrorPolicy struct {
-	/* ComputeBackendServiceRef defines the resource reference to ComputeBackendService, which "External" field holds the GCP identifier for the KRM object. */
+	/* ComputeBackendServiceRef is a reference to a ComputeBackendService. */
 	// +optional
 	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 }
@@ -617,7 +617,7 @@ type UrlmapUrlRewrite struct {
 }
 
 type UrlmapWeightedBackendServices struct {
-	/* ComputeBackendServiceRef defines the resource reference to ComputeBackendService, which "External" field holds the GCP identifier for the KRM object. */
+	/* ComputeBackendServiceRef is a reference to a ComputeBackendService. */
 	// +optional
 	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 
