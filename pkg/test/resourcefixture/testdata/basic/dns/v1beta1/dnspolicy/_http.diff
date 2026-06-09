@@ -22,53 +22,36 @@
 < PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 ---
 > PUT https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
-178,180c173
+178,180c173,174
 <   "description": "Managed by Config Connector",
 <   "enableInboundForwarding": false,
 <   "enableLogging": false,
 ---
+>   "id": "000000000000000000000",
 >   "name": "dnspolicy-test-${uniqueId}",
-209,211d201
+209,211d202
 <     "description": "Managed by Config Connector",
 <     "enableInboundForwarding": false,
 <     "enableLogging": false,
-226,227c216
+226,227c217
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
-249,251d237
+249,251d238
 <   "description": "Managed by Config Connector",
 <   "enableInboundForwarding": false,
 <   "enableLogging": false,
-265,293c251
+265c252
 < PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
-< Content-Type: application/json
-< 
-< {
+---
+> PATCH https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
+269c256,257
 <   "networks": null
-< }
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "policy": {
-<     "id": "1234567890",
-<     "kind": "dns#policy",
-<     "name": "dnspolicy-test-${uniqueId}"
-<   }
-< }
-< 
-< ---
-< 
+---
+>   "id": "000000000000000000000",
+>   "networks": []
+292,293c280
 < DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---

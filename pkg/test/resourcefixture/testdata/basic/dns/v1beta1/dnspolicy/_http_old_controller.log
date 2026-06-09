@@ -209,7 +209,7 @@ X-Xss-Protection: 0
     "description": "Managed by Config Connector",
     "enableInboundForwarding": false,
     "enableLogging": false,
-    "id": "1234567890",
+    "id": "${dnsPolicyId}",
     "kind": "dns#policy",
     "name": "dnspolicy-test-${uniqueId}",
     "networks": [
@@ -281,7 +281,7 @@ X-Xss-Protection: 0
 
 {
   "policy": {
-    "id": "1234567890",
+    "id": "${dnsPolicyId}",
     "kind": "dns#policy",
     "name": "dnspolicy-test-${uniqueId}"
   }

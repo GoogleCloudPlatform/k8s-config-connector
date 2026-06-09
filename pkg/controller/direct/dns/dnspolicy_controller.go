@@ -174,7 +174,11 @@ func (a *DNSPolicyAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		diffResults.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffResults)
 
-		resp, err := a.gcpClient.Policies.Update(a.id.Project, a.id.Policy, a.desired).Context(ctx).Do()
+		desired := common.DeepCopy(a.desired)
+		// Workaround: Id is required in update calls
+		desired.Id = a.actual.Id
+
+		resp, err := a.gcpClient.Policies.Update(a.id.Project, a.id.Policy, desired).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("updating DNSPolicy %s: %w", a.id, err)
 		}
@@ -258,6 +262,20 @@ func (a *DNSPolicyAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 func (a *DNSPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting DNSPolicy", "name", a.id)
+
+	if a.actual != nil && len(a.actual.Networks) > 0 {
+		log.V(2).Info("clearing networks for DNSPolicy before deletion", "name", a.id)
+		cleared := &api.Policy{
+			Networks:        []*api.PolicyNetwork{},
+			ForceSendFields: []string{"Networks"},
+			// Workaround: Id is required in update/patch calls
+			Id: a.actual.Id,
+		}
+		_, err := a.gcpClient.Policies.Patch(a.id.Project, a.id.Policy, cleared).Context(ctx).Do()
+		if err != nil && !direct.IsNotFound(err) {
+			return false, fmt.Errorf("clearing networks for DNSPolicy %s before deletion: %w", a.id, err)
+		}
+	}
 
 	err := a.gcpClient.Policies.Delete(a.id.Project, a.id.Policy).Context(ctx).Do()
 	if err != nil {

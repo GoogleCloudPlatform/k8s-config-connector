@@ -265,7 +265,7 @@ X-Xss-Protection: 0
       "creationTime": "2024-04-01T12:34:56.123456Z",
       "description": "Example updated DNS zone",
       "dnsName": "cnrm-dns-example-${uniqueId}.com.",
-      "id": "1234567890",
+      "id": "${managedZoneId}",
       "kind": "dns#managedZone",
       "labels": {
         "cnrm-test": "true",
@@ -295,7 +295,7 @@ X-Xss-Protection: 0
       "creationTime": "2024-04-01T12:34:56.123456Z",
       "description": "Example DNS zone",
       "dnsName": "cnrm-dns-example-${uniqueId}.com.",
-      "id": "1234567890",
+      "id": "${managedZoneId}",
       "kind": "dns#managedZone",
       "labels": {
         "cnrm-test": "true",
