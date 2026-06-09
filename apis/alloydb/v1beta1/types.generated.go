@@ -86,6 +86,7 @@ type AutomatedBackupPolicy_TimeBasedRetention struct {
 
 /* unreachable type Backup_QuantityBasedExpiry
 // +kcc:proto=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
+// +kubebuilder:validation:XPreserveUnknownFields
 type Backup_QuantityBasedExpiry struct {
 }
 */
@@ -110,6 +111,7 @@ type CloudSQLBackupRunSource struct {
 
 /* unreachable type Cluster_PrimaryConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
+// +kubebuilder:validation:XPreserveUnknownFields
 type Cluster_PrimaryConfig struct {
 }
 */
@@ -166,24 +168,28 @@ type ContinuousBackupConfig struct {
 
 /* unreachable type EncryptionInfo
 // +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
+// +kubebuilder:validation:XPreserveUnknownFields
 type EncryptionInfo struct {
 }
 */
 
 /* unreachable type GcaInstanceConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.GCAInstanceConfig
+// +kubebuilder:validation:XPreserveUnknownFields
 type GcaInstanceConfig struct {
 }
 */
 
 /* unreachable type GeminiClusterConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.GeminiClusterConfig
+// +kubebuilder:validation:XPreserveUnknownFields
 type GeminiClusterConfig struct {
 }
 */
 
 /* unreachable type GeminiInstanceConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.GeminiInstanceConfig
+// +kubebuilder:validation:XPreserveUnknownFields
 type GeminiInstanceConfig struct {
 }
 */
@@ -224,6 +230,7 @@ type Instance_MachineConfig struct {
 
 /* unreachable type Instance_Node
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.Node
+// +kubebuilder:validation:XPreserveUnknownFields
 type Instance_Node struct {
 }
 */
@@ -369,6 +376,7 @@ type Instance_UpdatePolicy struct {
 
 /* unreachable type MaintenanceSchedule
 // +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceSchedule
+// +kubebuilder:validation:XPreserveUnknownFields
 type MaintenanceSchedule struct {
 }
 */

@@ -27,6 +27,7 @@ package v1beta1
 
 /* unreachable type BigQueryDataset
 // +kcc:proto=google.logging.v2.BigQueryDataset
+// +kubebuilder:validation:XPreserveUnknownFields
 type BigQueryDataset struct {
 }
 */

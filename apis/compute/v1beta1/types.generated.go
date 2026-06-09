@@ -1545,6 +1545,7 @@ type ResourcePolicyDailyCycle struct {
 /* found existing non-generated go type "ResourcePolicyDiskConsistencyGroupPolicy", skipping
 
 // +kcc:proto=google.cloud.compute.v1.ResourcePolicyDiskConsistencyGroupPolicy
+// +kubebuilder:validation:XPreserveUnknownFields
 type ResourcePolicyDiskConsistencyGroupPolicy struct {
 }
 */

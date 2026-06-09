@@ -179,6 +179,7 @@ type Filter struct {
 /* found existing non-generated go type with proto tag "google.cloud.billing.budgets.v1.LastPeriodAmount", skipping
 
 // +kcc:proto=google.cloud.billing.budgets.v1.LastPeriodAmount
+// +kubebuilder:validation:XPreserveUnknownFields
 type LastPeriodAmount struct {
 }
 */

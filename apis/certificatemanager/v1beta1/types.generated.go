@@ -182,6 +182,7 @@ type DNSAuthorization struct {
 
 /* unreachable type DNSAuthorization_DNSResourceRecord
 // +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
+// +kubebuilder:validation:XPreserveUnknownFields
 type DNSAuthorization_DNSResourceRecord struct {
 }
 */
