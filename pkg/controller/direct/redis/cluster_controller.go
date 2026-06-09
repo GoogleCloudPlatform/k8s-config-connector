@@ -363,6 +363,8 @@ func populateDefaults(cluster *pb.Cluster) *pb.Cluster {
 			cluster.AutomatedBackupConfig.Schedule = nil
 			cluster.AutomatedBackupConfig.Retention = nil
 		}
+	} else {
+		cluster.AutomatedBackupConfig = &pb.AutomatedBackupConfig{AutomatedBackupMode: pb.AutomatedBackupConfig_DISABLED}
 	}
 
 	// clear pscConfig as it's not included in the response
