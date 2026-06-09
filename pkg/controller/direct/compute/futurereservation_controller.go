@@ -27,8 +27,6 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
-
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -43,7 +41,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
@@ -90,12 +87,22 @@ func (m *futureReservationModel) AdapterForObject(ctx context.Context, op *direc
 		return nil, err
 	}
 
+	desired := obj.DeepCopy()
+	if err := ResolveComputeFutureReservationRefs(ctx, reader, m.config.ProjectMapper, desired); err != nil {
+		return nil, err
+	}
+
+	mapCtx := &direct.MapContext{}
+	desiredProto := ComputeFutureReservationSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desiredProto.Name = direct.LazyPtr(id.(*krm.ComputeFutureReservationIdentity).FutureReservation)
+
 	return &FutureReservationAdapter{
-		gcpClient:     futureReservationClient,
-		projectMapper: m.config.ProjectMapper,
-		id:            id.(*krm.ComputeFutureReservationIdentity),
-		desired:       obj,
-		reader:        reader,
+		gcpClient: futureReservationClient,
+		id:        id.(*krm.ComputeFutureReservationIdentity),
+		desired:   desiredProto,
 	}, nil
 }
 
@@ -105,12 +112,10 @@ func (m *futureReservationModel) AdapterForURL(ctx context.Context, url string) 
 }
 
 type FutureReservationAdapter struct {
-	gcpClient     *compute.FutureReservationsClient
-	projectMapper *projects.ProjectMapper
-	id            *v1alpha1.ComputeFutureReservationIdentity
-	desired       *krm.ComputeFutureReservation
-	actual        *computepb.FutureReservation
-	reader        client.Reader
+	gcpClient *compute.FutureReservationsClient
+	id        *v1alpha1.ComputeFutureReservationIdentity
+	desired   *computepb.FutureReservation
+	actual    *computepb.FutureReservation
 }
 
 var _ directbase.Adapter = &FutureReservationAdapter{}
@@ -146,15 +151,7 @@ func (a *FutureReservationAdapter) Create(ctx context.Context, createOp *directb
 	log.V(2).Info("creating FutureReservation", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	if err := ResolveComputeFutureReservationRefs(ctx, a.reader, a.projectMapper, desired); err != nil {
-		return err
-	}
-	resource := ComputeFutureReservationSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = direct.LazyPtr(a.id.FutureReservation)
+	resource := proto.CloneOf(a.desired)
 
 	req := &computepb.InsertFutureReservationRequest{
 		Project:                   a.id.Project,
@@ -193,15 +190,7 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 	log.V(2).Info("updating FutureReservation", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	if err := ResolveComputeFutureReservationRefs(ctx, a.reader, a.projectMapper, desired); err != nil {
-		return err
-	}
-	resource := ComputeFutureReservationSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = direct.LazyPtr(a.id.FutureReservation)
+	resource := proto.CloneOf(a.desired)
 
 	updateMask := fieldmaskpb.FieldMask{}
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
@@ -327,11 +316,7 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
-		if a.desired.Status.ExternalRef == nil {
-			// If it is the first reconciliation after switching to direct controller,
-			// or is an acquisition with updates, then fill out the ExternalRef.
-			status.ExternalRef = direct.LazyPtr(a.id.String())
-		}
+		status.ExternalRef = direct.LazyPtr(a.id.String())
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
@@ -366,11 +351,7 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	if a.desired.Status.ExternalRef == nil {
-		// If it is the first reconciliation after switching to direct controller,
-		// or is an acquisition with updates, then fill out the ExternalRef.
-		status.ExternalRef = direct.LazyPtr(a.id.String())
-	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
