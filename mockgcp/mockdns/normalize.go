@@ -48,6 +48,10 @@ func isDNSAPI(url string) bool {
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !isDNSAPI(event.URL()) {
+		return
+	}
+
 	kind := ""
 
 	event.VisitResponseStringValues(func(path string, value string) {
@@ -62,6 +66,15 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			switch path {
 			case ".id":
 				replacements.ReplaceStringValue(value, "${managedZoneId}")
+			}
+		})
+	}
+
+	if kind == "dns#policy" {
+		event.VisitResponseStringValues(func(path string, value string) {
+			switch path {
+			case ".id":
+				replacements.ReplaceStringValue(value, "${dnsPolicyId}")
 			}
 		})
 	}

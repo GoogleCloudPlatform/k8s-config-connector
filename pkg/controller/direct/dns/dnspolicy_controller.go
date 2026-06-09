@@ -174,7 +174,11 @@ func (a *DNSPolicyAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		diffResults.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffResults)
 
-		resp, err := a.gcpClient.Policies.Update(a.id.Project, a.id.Policy, a.desired).Context(ctx).Do()
+		desired := common.DeepCopy(a.desired)
+		// Workaround: Id is required in update calls
+		desired.Id = a.actual.Id
+
+		resp, err := a.gcpClient.Policies.Update(a.id.Project, a.id.Policy, desired).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("updating DNSPolicy %s: %w", a.id, err)
 		}

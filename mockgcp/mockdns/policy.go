@@ -70,7 +70,7 @@ func (s *policiesService) GetPolicy(ctx context.Context, req *pb.GetPolicyReques
 	obj := &pb.Policy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "policy %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "The 'parameters.policy' resource named '%s' does not exist.", name.Name)
 		}
 		return nil, err
 	}
@@ -119,7 +119,7 @@ func (s *policiesService) UpdatePolicy(ctx context.Context, req *pb.UpdatePolicy
 	var existing pb.Policy
 	if err := s.storage.Get(ctx, fqn, &existing); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "policy %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "The 'parameters.policy' resource named '%s' does not exist.", name.Name)
 		}
 		return nil, err
 	}
@@ -160,7 +160,7 @@ func (s *policiesService) PatchPolicy(ctx context.Context, req *pb.PatchPolicyRe
 	var existing pb.Policy
 	if err := s.storage.Get(ctx, fqn, &existing); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "policy %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "The 'parameters.policy' resource named '%s' does not exist.", name.Name)
 		}
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func (s *policiesService) DeletePolicy(ctx context.Context, req *pb.DeletePolicy
 	var existing pb.Policy
 	if err := s.storage.Get(ctx, fqn, &existing); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "policy %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "The 'parameters.policy' resource named '%s' does not exist.", name.Name)
 		}
 		return nil, err
 	}
