@@ -679,6 +679,9 @@ observedState:
     projectID: string
     pscConnectionID: string
     serviceAttachment: string
+  pscServiceAttachments:
+  - connectionType: string
+    serviceAttachment: string
   sizeGb: integer
   state: string
   stateInfo:
@@ -959,6 +962,34 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscServiceAttachments</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Output only. Service attachment details to configure Psc connections.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscServiceAttachments[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscServiceAttachments[].connectionType</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Type of a PSC connection targeting this service attachment.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pscServiceAttachments[].serviceAttachment</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Service attachment URI which your self-created PscConnection should use as target</p>
         </td>
     </tr>
     <tr>
