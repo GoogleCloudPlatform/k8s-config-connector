@@ -10,7 +10,7 @@
 < GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?alt=json
 ---
 > GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-156c156,214
+156c156,213
 < DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?alt=json
 ---
 > PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=metadata
@@ -19,7 +19,6 @@
 > {
 >   "metadata": {
 >     "cnrm-test": "true",
->     "label-one": "value-one",
 >     "label-two": "value-two",
 >     "managed-by-cnrm": "true"
 >   },
