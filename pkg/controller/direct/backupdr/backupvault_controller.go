@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
@@ -213,20 +214,12 @@ func (a *BackupVaultAdapter) updateStatus(ctx context.Context, op directbase.Ope
 }
 
 func compareBackupVault(ctx context.Context, actual, desired *pb.BackupVault) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	var maskedActual *pb.BackupVault
-	{
-		mapCtx := &direct.MapContext{}
-		spec := BackupDRBackupVaultSpec_v1beta1_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
-		maskedActual = BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
+	maskedActual, err := mappers.OnlySpecFields(actual, BackupDRBackupVaultSpec_v1beta1_FromProto, BackupDRBackupVaultSpec_v1beta1_ToProto)
+	if err != nil {
+		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
-	maskedActual.Labels = desired.Labels
+	maskedActual.Labels = actual.Labels
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
