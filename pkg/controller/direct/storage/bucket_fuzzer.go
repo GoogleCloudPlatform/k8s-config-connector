@@ -39,6 +39,7 @@ func StorageBucketFuzzer() fuzztesting.KRMFuzzer {
 	// - Cors ([]StorageBucketCors)                      -> f.SpecField(".cors")
 	// - DefaultEventBasedHold (*bool)                    -> f.SpecField(".default_event_based_hold")
 	// - Encryption (*StorageBucketEncryption)           -> f.SpecField(".encryption")
+	// - LifecycleRule ([]StorageBucketLifecycleRule)    -> f.SpecField(".lifecycle")
 	// - Location (*string)                              -> f.SpecField(".location")
 	// - Logging (*StorageBucketLogging)                 -> f.SpecField(".logging")
 	// - ResourceID (*string)                            -> f.Unimplemented_Identity(".name") / f.Unimplemented_Identity(".id")
@@ -50,7 +51,6 @@ func StorageBucketFuzzer() fuzztesting.KRMFuzzer {
 	// Unmapped KRM Spec fields:
 	// - BucketPolicyOnly (*bool)                         -> Unmapped/Deprecated (corresponds to iam_configuration.bucket_policy_only in proto, which is untriaged)
 	// - CustomPlacementConfig (*StorageBucketCustomPlacementConfig) -> Unmapped in KCC direct mapper (no corresponding field in google.storage.v1.Bucket proto)
-	// - LifecycleRule ([]StorageBucketLifecycleRule)    -> f.Unimplemented_NotYetTriaged(".lifecycle")
 	// - PublicAccessPrevention (*string)                 -> f.Unimplemented_NotYetTriaged(".iam_configuration")
 	// - RequesterPays (*bool)                           -> f.Unimplemented_NotYetTriaged(".billing")
 	// - SoftDeletePolicy (*StorageBucketSoftDeletePolicy) -> Unmapped in direct mapper (no corresponding field in google.storage.v1.Bucket proto)
@@ -66,6 +66,7 @@ func StorageBucketFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".encryption")
 	f.SpecField(".retention_policy")
 	f.SpecField(".autoclass")
+	f.SpecField(".lifecycle")
 
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_Identity(".id")
@@ -75,7 +76,6 @@ func StorageBucketFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".acl")
 	f.Unimplemented_NotYetTriaged(".default_object_acl")
-	f.Unimplemented_NotYetTriaged(".lifecycle")
 	f.Unimplemented_NotYetTriaged(".time_created")
 	f.Unimplemented_NotYetTriaged(".metageneration")
 	f.Unimplemented_NotYetTriaged(".updated")
@@ -87,6 +87,42 @@ func StorageBucketFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".satisfies_pzs")
 	f.Unimplemented_NotYetTriaged(".autoclass.toggle_time")
 	f.Unimplemented_NotYetTriaged(".retention_policy.effective_time")
+	f.Unimplemented_NotYetTriaged(".lifecycle.rule[].condition.matches_pattern")
+
+	f.FilterSpec = func(in *pb.Bucket) {
+		if in.Lifecycle != nil {
+			if len(in.Lifecycle.Rule) == 0 {
+				in.Lifecycle = nil
+			} else {
+				var activeRules []*pb.Bucket_Lifecycle_Rule
+				for _, r := range in.Lifecycle.Rule {
+					if r == nil {
+						continue
+					}
+					// If both Action and Condition are empty, skip the rule
+					if r.Action == nil && r.Condition == nil {
+						continue
+					}
+					// If Action is empty and Condition is empty, skip
+					if (r.Action == nil || (r.Action.Type == "" && r.Action.StorageClass == "")) &&
+						(r.Condition == nil || (r.Condition.Age == 0 && r.Condition.CreatedBefore == nil &&
+							r.Condition.CustomTimeBefore == nil && r.Condition.DaysSinceCustomTime == 0 &&
+							r.Condition.DaysSinceNoncurrentTime == 0 && len(r.Condition.MatchesPrefix) == 0 &&
+							len(r.Condition.MatchesStorageClass) == 0 && len(r.Condition.MatchesSuffix) == 0 &&
+							r.Condition.NoncurrentTimeBefore == nil && r.Condition.NumNewerVersions == 0 &&
+							r.Condition.IsLive == nil)) {
+						continue
+					}
+					activeRules = append(activeRules, r)
+				}
+				if len(activeRules) == 0 {
+					in.Lifecycle = nil
+				} else {
+					in.Lifecycle.Rule = activeRules
+				}
+			}
+		}
+	}
 
 	return f
 }

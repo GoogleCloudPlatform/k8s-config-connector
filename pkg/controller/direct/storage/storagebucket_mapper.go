@@ -23,6 +23,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	pb "google.golang.org/genproto/googleapis/storage/v1"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 func StorageBucketCors_FromProto(mapCtx *direct.MapContext, in *pb.Bucket_Cors) *krm.StorageBucketCors {
@@ -175,5 +176,116 @@ func StorageBucketAutoclass_ToProto(mapCtx *direct.MapContext, in *krm.StorageBu
 	if in.Enabled != nil {
 		out.Enabled = *in.Enabled
 	}
+	return out
+}
+
+func StorageBucketLifecycleRuleAction_FromProto(mapCtx *direct.MapContext, in *pb.Bucket_Lifecycle_Rule_Action) *krm.StorageBucketLifecycleRuleAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageBucketLifecycleRuleAction{}
+	if in.StorageClass != "" {
+		out.StorageClass = &in.StorageClass
+	}
+	out.Type = in.Type
+	return out
+}
+
+func StorageBucketLifecycleRuleAction_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketLifecycleRuleAction) *pb.Bucket_Lifecycle_Rule_Action {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Bucket_Lifecycle_Rule_Action{}
+	if in.StorageClass != nil {
+		out.StorageClass = *in.StorageClass
+	}
+	out.Type = in.Type
+	return out
+}
+
+func StorageBucketLifecycleRuleCondition_FromProto(mapCtx *direct.MapContext, in *pb.Bucket_Lifecycle_Rule_Condition) *krm.StorageBucketLifecycleRuleCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageBucketLifecycleRuleCondition{}
+	if in.Age != 0 {
+		out.Age = direct.PtrTo(int(in.Age))
+	}
+	out.CreatedBefore = direct.StringTimestamp_FromProto(mapCtx, in.CreatedBefore)
+	out.CustomTimeBefore = direct.StringTimestamp_FromProto(mapCtx, in.CustomTimeBefore)
+	if in.DaysSinceCustomTime != 0 {
+		out.DaysSinceCustomTime = direct.PtrTo(int(in.DaysSinceCustomTime))
+	}
+	if in.DaysSinceNoncurrentTime != 0 {
+		out.DaysSinceNoncurrentTime = direct.PtrTo(int(in.DaysSinceNoncurrentTime))
+	}
+	out.MatchesPrefix = in.MatchesPrefix
+	out.MatchesStorageClass = in.MatchesStorageClass
+	out.MatchesSuffix = in.MatchesSuffix
+	out.NoncurrentTimeBefore = direct.StringTimestamp_FromProto(mapCtx, in.NoncurrentTimeBefore)
+	if in.NumNewerVersions != 0 {
+		out.NumNewerVersions = direct.PtrTo(int(in.NumNewerVersions))
+	}
+	if in.IsLive != nil {
+		if in.IsLive.Value {
+			out.WithState = direct.PtrTo("LIVE")
+		} else {
+			out.WithState = direct.PtrTo("ARCHIVED")
+		}
+	}
+	return out
+}
+
+func StorageBucketLifecycleRuleCondition_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketLifecycleRuleCondition) *pb.Bucket_Lifecycle_Rule_Condition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Bucket_Lifecycle_Rule_Condition{}
+	if in.Age != nil {
+		out.Age = int32(*in.Age)
+	}
+	out.CreatedBefore = direct.StringTimestamp_ToProto(mapCtx, in.CreatedBefore)
+	out.CustomTimeBefore = direct.StringTimestamp_ToProto(mapCtx, in.CustomTimeBefore)
+	if in.DaysSinceCustomTime != nil {
+		out.DaysSinceCustomTime = int32(*in.DaysSinceCustomTime)
+	}
+	if in.DaysSinceNoncurrentTime != nil {
+		out.DaysSinceNoncurrentTime = int32(*in.DaysSinceNoncurrentTime)
+	}
+	out.MatchesPrefix = in.MatchesPrefix
+	out.MatchesStorageClass = in.MatchesStorageClass
+	out.MatchesSuffix = in.MatchesSuffix
+	out.NoncurrentTimeBefore = direct.StringTimestamp_ToProto(mapCtx, in.NoncurrentTimeBefore)
+	if in.NumNewerVersions != nil {
+		out.NumNewerVersions = int32(*in.NumNewerVersions)
+	}
+	if in.WithState != nil {
+		switch *in.WithState {
+		case "LIVE":
+			out.IsLive = &wrapperspb.BoolValue{Value: true}
+		case "ARCHIVED":
+			out.IsLive = &wrapperspb.BoolValue{Value: false}
+		}
+	}
+	return out
+}
+
+func StorageBucketLifecycleRule_FromProto(mapCtx *direct.MapContext, in *pb.Bucket_Lifecycle_Rule) *krm.StorageBucketLifecycleRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageBucketLifecycleRule{}
+	out.Action = StorageBucketLifecycleRuleAction_FromProto(mapCtx, in.Action)
+	out.Condition = StorageBucketLifecycleRuleCondition_FromProto(mapCtx, in.Condition)
+	return out
+}
+
+func StorageBucketLifecycleRule_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketLifecycleRule) *pb.Bucket_Lifecycle_Rule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Bucket_Lifecycle_Rule{}
+	out.Action = StorageBucketLifecycleRuleAction_ToProto(mapCtx, in.Action)
+	out.Condition = StorageBucketLifecycleRuleCondition_ToProto(mapCtx, in.Condition)
 	return out
 }

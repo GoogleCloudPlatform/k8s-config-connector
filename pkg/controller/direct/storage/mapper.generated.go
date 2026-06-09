@@ -36,7 +36,9 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.Bucket) *krm.
 	out := &krm.StorageBucketSpec{}
 	// MISSING: Acl
 	// MISSING: DefaultObjectAcl
-	// MISSING: Lifecycle
+	if in.Lifecycle != nil {
+		out.LifecycleRule = direct.Slice_FromProto(mapCtx, in.Lifecycle.Rule, StorageBucketLifecycleRule_FromProto)
+	}
 	// MISSING: TimeCreated
 	// MISSING: ID
 	// MISSING: Name
@@ -70,7 +72,11 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 	out := &pb.Bucket{}
 	// MISSING: Acl
 	// MISSING: DefaultObjectAcl
-	// MISSING: Lifecycle
+	if len(in.LifecycleRule) > 0 {
+		out.Lifecycle = &pb.Bucket_Lifecycle{
+			Rule: direct.Slice_ToProto(mapCtx, in.LifecycleRule, StorageBucketLifecycleRule_ToProto),
+		}
+	}
 	// MISSING: TimeCreated
 	// MISSING: ID
 	// MISSING: Name
