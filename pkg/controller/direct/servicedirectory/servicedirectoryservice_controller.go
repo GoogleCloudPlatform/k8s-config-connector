@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -178,8 +179,11 @@ func (a *ServiceDirectoryServiceAdapter) Update(ctx context.Context, updateOp *d
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
+		desired := proto.Clone(a.desired).(*pb.Service)
+		desired.Name = fqn
+
 		req := &pb.UpdateServiceRequest{
-			Service:    a.desired,
+			Service:    desired,
 			UpdateMask: updateMask,
 		}
 
@@ -249,8 +253,7 @@ func compareService(ctx context.Context, actual, desired *pb.Service) (*structur
 	if err != nil {
 		return nil, nil, err
 	}
-	maskedActual.Name = desired.Name
-	maskedActual.Metadata = desired.Metadata
+	maskedActual.Metadata = actual.Metadata
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
