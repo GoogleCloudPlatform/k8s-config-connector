@@ -9,6 +9,7 @@ metadata:
   generation: 1
   labels:
     cnrm-test: "true"
+    label-one: value-one
     label-two: value-two
   name: servicedirectoryservice-${uniqueId}
   namespace: ${uniqueId}
