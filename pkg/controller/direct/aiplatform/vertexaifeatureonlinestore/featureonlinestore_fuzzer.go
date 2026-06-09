@@ -38,6 +38,17 @@ func featureonlinestoreFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".satisfies_pzi")
 	f.UnimplementedFields.Insert(".satisfies_pzs")
 
+	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.public_endpoint_domain_name")
+	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.service_attachment")
+	f.Unimplemented_NotYetTriaged(".bigtable.enable_direct_bigtable_access")
+	f.Unimplemented_NotYetTriaged(".bigtable.bigtable_metadata")
+	f.Unimplemented_NotYetTriaged(".bigtable.zone")
+	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.private_service_connect_config.psc_automation_configs[].ip_address")
+	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.private_service_connect_config.psc_automation_configs[].forwarding_rule")
+	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.private_service_connect_config.psc_automation_configs[].state")
+	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.private_service_connect_config.psc_automation_configs[].error_message")
+	f.Unimplemented_NotYetTriaged(".dedicated_serving_endpoint.private_service_connect_config.service_attachment")
+
 	f.SpecFields.Insert(".bigtable")
 	f.SpecFields.Insert(".optimized")
 	f.SpecFields.Insert(".labels")
