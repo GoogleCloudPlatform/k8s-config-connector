@@ -535,7 +535,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeNetworkAttachment resource in the form "projects/{{project}}/regions/{{region}}/networkAttachments/{{name}}".</p>
+            <p>A reference to an externally managed ComputeNetworkAttachment resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkattachmentID}}".</p>
         </td>
     </tr>
     <tr>
