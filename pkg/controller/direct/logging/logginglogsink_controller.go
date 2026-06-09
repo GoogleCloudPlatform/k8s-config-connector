@@ -179,18 +179,6 @@ func (a *LoggingLogSinkAdapter) Update(ctx context.Context, updateOp *directbase
 
 		a.desired.Name = a.id.ID()
 
-		// Always include "destination" in the update mask to ensure it is serialized in PUT payload
-		foundDestination := false
-		for _, path := range updateMask.Paths {
-			if path == "destination" {
-				foundDestination = true
-				break
-			}
-		}
-		if !foundDestination {
-			updateMask.Paths = append(updateMask.Paths, "destination")
-		}
-
 		req := &loggingpb.UpdateSinkRequest{
 			SinkName:             a.id.String(),
 			Sink:                 a.desired,
