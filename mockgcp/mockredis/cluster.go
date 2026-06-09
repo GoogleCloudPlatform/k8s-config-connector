@@ -206,6 +206,8 @@ func (s *clusterServer) populateDefaultsForCluster(name *clusterName, obj *pb.Cl
 			obj.AutomatedBackupConfig.Schedule = nil
 			obj.AutomatedBackupConfig.Retention = nil
 		}
+	} else {
+		obj.AutomatedBackupConfig = &pb.AutomatedBackupConfig{AutomatedBackupMode: pb.AutomatedBackupConfig_DISABLED}
 	}
 
 	if obj.GetKmsKey() != "" {
