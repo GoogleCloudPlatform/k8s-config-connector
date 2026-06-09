@@ -32,6 +32,6 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  name: projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}
+  name: arrepository-${uniqueId}
   observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"

@@ -17,6 +17,7 @@ package artifactregistry
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/artifactregistry/apiv1"
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
@@ -195,6 +196,18 @@ func (a *ArtifactRegistryRepositoryAdapter) updateStatus(ctx context.Context, op
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	// Unusually, status.name is defined only as the Repository portion (last component) of the identity
+	// path (e.g. "arrepository-xxx" instead of "projects/xxx/locations/xxx/repositories/arrepository-xxx").
+	// We override status.Name here to preserve backward compatibility.
+	if status.Name != nil && *status.Name != "" {
+		s := *status.Name
+		if idx := strings.LastIndex(s, "/"); idx != -1 {
+			s = s[idx+1:]
+		}
+		status.Name = &s
+	}
+
 	return op.UpdateStatus(ctx, status, nil)
 }
 
@@ -248,7 +261,8 @@ func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*st
 	if err != nil {
 		return nil, nil, err
 	}
-	maskedActual.Name = desired.Name
+	maskedActual.Name = actual.Name
+	maskedActual.Labels = actual.Labels
 
 	populateDefaults := func(obj *pb.Repository) {
 		if obj.Mode == pb.Repository_MODE_UNSPECIFIED {
@@ -257,6 +271,9 @@ func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*st
 	}
 
 	desired = proto.Clone(desired).(*pb.Repository)
+	desired.Name = actual.Name
+	desired.Labels = actual.Labels
+
 	populateDefaults(desired)
 	populateDefaults(maskedActual)
 

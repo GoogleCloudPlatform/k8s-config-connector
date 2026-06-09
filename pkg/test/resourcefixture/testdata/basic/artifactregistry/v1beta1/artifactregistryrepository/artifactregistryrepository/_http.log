@@ -252,7 +252,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
+PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
 Content-Type: application/json
 
 {

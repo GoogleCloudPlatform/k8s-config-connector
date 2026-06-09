@@ -6,9 +6,7 @@
 >   generation: 2
 22d20
 <   resourceID: arrepository-${uniqueId}
-37,38c35,36
-<   name: arrepository-${uniqueId}
+38c36
 <   observedGeneration: 3
 ---
->   name: projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}
 >   observedGeneration: 2
