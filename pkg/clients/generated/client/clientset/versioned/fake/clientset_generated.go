@@ -147,6 +147,8 @@ import (
 	fakeconfigcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1/fake"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
 	fakeconfigdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1/fake"
+	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/connectors/v1alpha1"
+	fakeconnectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/connectors/v1alpha1/fake"
 	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1"
 	fakecontactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1/fake"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
@@ -766,6 +768,11 @@ func (c *Clientset) ConfigcontrollerV1beta1() configcontrollerv1beta1.Configcont
 // ConfigdeliveryV1alpha1 retrieves the ConfigdeliveryV1alpha1Client
 func (c *Clientset) ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface {
 	return &fakeconfigdeliveryv1alpha1.FakeConfigdeliveryV1alpha1{Fake: &c.Fake}
+}
+
+// ConnectorsV1alpha1 retrieves the ConnectorsV1alpha1Client
+func (c *Clientset) ConnectorsV1alpha1() connectorsv1alpha1.ConnectorsV1alpha1Interface {
+	return &fakeconnectorsv1alpha1.FakeConnectorsV1alpha1{Fake: &c.Fake}
 }
 
 // ContactcenterinsightsV1alpha1 retrieves the ContactcenterinsightsV1alpha1Client
