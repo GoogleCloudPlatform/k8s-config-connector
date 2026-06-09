@@ -272,7 +272,6 @@ func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*st
 
 	desired = proto.Clone(desired).(*pb.Repository)
 	desired.Name = actual.Name
-	desired.Labels = actual.Labels
 
 	populateDefaults(desired)
 	populateDefaults(maskedActual)
