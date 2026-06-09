@@ -697,7 +697,6 @@ type PSCConnectionObservedState struct {
 }
 */
 
-/* unreachable type PSCServiceAttachmentObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscServiceAttachment
 type PSCServiceAttachmentObservedState struct {
 	// Output only. Service attachment URI which your self-created PscConnection
@@ -709,4 +708,3 @@ type PSCServiceAttachmentObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscServiceAttachment.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
-*/
