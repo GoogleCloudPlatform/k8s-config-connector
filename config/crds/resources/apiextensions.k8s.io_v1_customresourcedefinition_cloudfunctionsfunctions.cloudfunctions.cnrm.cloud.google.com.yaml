@@ -116,20 +116,46 @@ spec:
                         - external
                       required:
                       - name
+                      - kind
                     - not:
                         anyOf:
                         - required:
                           - name
                         - required:
                           - namespace
+                        - required:
+                          - kind
                       required:
                       - external
                     properties:
                       external:
-                        description: The external name of the referenced resource
+                        description: |-
+                          Required. The resource(s) from which to observe events, for example,
+                          `projects/_/buckets/myBucket`.
+
+                          Not all syntactically correct values are accepted by all services. For
+                          example:
+
+                          1. The authorization model must support it. Google Cloud Functions
+                          only allows EventTriggers to be deployed that observe resources in the
+                          same project as the `Function`.
+                          2. The resource type must match the pattern expected for an
+                          `event_type`. For example, an `EventTrigger` that has an
+                          `event_type` of "google.pubsub.topic.publish" should have a resource
+                          that matches Google Cloud Pub/Sub topics.
+
+                          Additionally, some services may support short names when creating an
+                          `EventTrigger`. These will always be returned in the normalized "long"
+                          format.
+
+                          See each *service's* documentation for supported formats.
+
+                          Allowed values:
+                          * The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
+                          * The Google Cloud resource name of a `PubSubTopic` resource (format: `projects/{{project}}/topics/{{name}}`).
                         type: string
                       kind:
-                        description: Kind of the referent.
+                        description: 'Kind of the referent. Allowed values: StorageBucket,PubSubTopic'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -137,6 +163,8 @@ spec:
                       namespace:
                         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
+                    required:
+                    - kind
                     type: object
                   service:
                     description: |-
@@ -190,16 +218,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               region:
@@ -235,10 +261,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: The `email` field of an `IAMServiceAccount` resource.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -285,6 +308,9 @@ spec:
                   PRIVATE_RANGES_ONLY, ALL_TRAFFIC'
                 type: string
               vpcConnectorRef:
+                description: VPCAccessConnectorRef defines the resource reference
+                  to VPCAccessConnector, which "External" field holds the GCP identifier
+                  for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -301,16 +327,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: A reference to an externally managed VPCAccessConnector
+                      resource. Should be in the format `projects/{project_id}/locations/{location}/connectors/{connector_id}`
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a VPCAccessConnector resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a VPCAccessConnector resource.
                     type: string
                 type: object
             required:

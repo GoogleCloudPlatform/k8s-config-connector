@@ -265,14 +265,15 @@ type CloudFunction_OnDeployUpdatePolicy struct {
 }
 */
 
-/* unreachable type EventTrigger
+/* found existing non-generated go type with proto tag "google.cloud.functions.v1.EventTrigger", skipping
+
 // +kcc:proto=google.cloud.functions.v1.EventTrigger
 type EventTrigger struct {
 	// Required. The type of event to observe. For example:
 	//  `providers/cloud.storage/eventTypes/object.change` and
 	//  `providers/cloud.pubsub/eventTypes/topic.publish`.
 	//
-	//  Event types match pattern `providers/-*-/eventTypes/-*.*`.
+	//  Event types match pattern `providers/* /eventTypes/*.*`.
 	//  The pattern contains:
 	//
 	//  1. namespace: For example, `cloud.storage` and
@@ -336,7 +337,8 @@ type FailurePolicy_Retry struct {
 }
 */
 
-/* unreachable type HTTPSTrigger
+/* found existing non-generated go type with proto tag "google.cloud.functions.v1.HttpsTrigger", skipping
+
 // +kcc:proto=google.cloud.functions.v1.HttpsTrigger
 type HTTPSTrigger struct {
 
@@ -422,7 +424,8 @@ type SecretVolume_SecretVersion struct {
 }
 */
 
-/* unreachable type SourceRepository
+/* found existing non-generated go type with proto tag "google.cloud.functions.v1.SourceRepository", skipping
+
 // +kcc:proto=google.cloud.functions.v1.SourceRepository
 type SourceRepository struct {
 	// The URL pointing to the hosted repository where the function is defined.
@@ -430,14 +433,14 @@ type SourceRepository struct {
 	//  formats:
 	//
 	//  To refer to a specific commit:
-	//  `https://source.developers.google.com/projects/-*-/repos/-*-/revisions/-*-/paths/-*`
+	//  `https://source.developers.google.com/projects/* /repos/* /revisions/* /paths/*`
 	//  To refer to a moveable alias (branch):
-	//  `https://source.developers.google.com/projects/-*-/repos/-*-/moveable-aliases/-*-/paths/-*`
+	//  `https://source.developers.google.com/projects/* /repos/* /moveable-aliases/* /paths/*`
 	//  In particular, to refer to HEAD use `master` moveable alias.
 	//  To refer to a specific fixed alias (tag):
-	//  `https://source.developers.google.com/projects/-*-/repos/-*-/fixed-aliases/-*-/paths/-*`
+	//  `https://source.developers.google.com/projects/* /repos/* /fixed-aliases/* /paths/*`
 	//
-	//  You may omit `paths/-*` if you want to use the main directory. The function
+	//  You may omit `paths/*` if you want to use the main directory. The function
 	//  response may add an empty `/paths/` to the URL.
 	// +kcc:proto:field=google.cloud.functions.v1.SourceRepository.url
 	URL *string `json:"url,omitempty"`
@@ -496,7 +499,8 @@ type CloudFunction_OnDeployUpdatePolicyObservedState struct {
 }
 */
 
-/* unreachable type HTTPSTriggerObservedState
+/* found existing non-generated go type with proto tag "google.cloud.functions.v1.HttpsTrigger", skipping
+
 // +kcc:observedstate:proto=google.cloud.functions.v1.HttpsTrigger
 type HTTPSTriggerObservedState struct {
 	// Output only. The deployed url for the function.
@@ -505,7 +509,8 @@ type HTTPSTriggerObservedState struct {
 }
 */
 
-/* unreachable type SourceRepositoryObservedState
+/* found existing non-generated go type with proto tag "google.cloud.functions.v1.SourceRepository", skipping
+
 // +kcc:observedstate:proto=google.cloud.functions.v1.SourceRepository
 type SourceRepositoryObservedState struct {
 	// Output only. The URL pointing to the hosted repository where the function
