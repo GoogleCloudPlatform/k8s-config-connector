@@ -301,9 +301,11 @@ func TableEq(actual, desired *bigquery.Table, diff *structuredreporting.Diff) (b
 		diff.AddField("description", actual.Description, desired.Description)
 		return false, nil
 	}
-	if !reflect.DeepEqual(actual.EncryptionConfiguration, desired.EncryptionConfiguration) {
-		diff.AddField("encryption_configuration", actual.EncryptionConfiguration, desired.EncryptionConfiguration)
-		return false, nil
+	if desired.EncryptionConfiguration != nil && desired.EncryptionConfiguration.KmsKeyName != "" {
+		if !reflect.DeepEqual(actual.EncryptionConfiguration, desired.EncryptionConfiguration) {
+			diff.AddField("encryption_configuration", actual.EncryptionConfiguration, desired.EncryptionConfiguration)
+			return false, nil
+		}
 	}
 	if !reflect.DeepEqual(actual.ExpirationTime, desired.ExpirationTime) {
 		diff.AddField("expiration_time", actual.ExpirationTime, desired.ExpirationTime)
