@@ -45,34 +45,13 @@
 265c252
 < PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 ---
-> PUT https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
-269c256,268
+> PATCH https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
+269c256,257
 <   "networks": null
 ---
->   "alternativeNameServerConfig": {
->     "kind": "dns#policyAlternativeNameServerConfig",
->     "targetNameServers": [
->       {
->         "ipv4Address": "104.132.166.92",
->         "kind": "dns#policyTargetNameServer"
->       }
->     ]
->   },
 >   "id": "000000000000000000000",
->   "kind": "dns#policy",
->   "name": "dnspolicy-test-${uniqueId}",
 >   "networks": []
-283a283,291
->     "alternativeNameServerConfig": {
->       "kind": "dns#policyAlternativeNameServerConfig",
->       "targetNameServers": [
->         {
->           "ipv4Address": "104.132.166.92",
->           "kind": "dns#policyTargetNameServer"
->         }
->       ]
->     },
-292,293c300
+292,293c280
 < DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---

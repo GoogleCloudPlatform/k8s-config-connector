@@ -249,22 +249,11 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
+PATCH https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 
 {
-  "alternativeNameServerConfig": {
-    "kind": "dns#policyAlternativeNameServerConfig",
-    "targetNameServers": [
-      {
-        "ipv4Address": "104.132.166.92",
-        "kind": "dns#policyTargetNameServer"
-      }
-    ]
-  },
   "id": "000000000000000000000",
-  "kind": "dns#policy",
-  "name": "dnspolicy-test-${uniqueId}",
   "networks": []
 }
 
@@ -280,15 +269,6 @@ X-Xss-Protection: 0
 
 {
   "policy": {
-    "alternativeNameServerConfig": {
-      "kind": "dns#policyAlternativeNameServerConfig",
-      "targetNameServers": [
-        {
-          "ipv4Address": "104.132.166.92",
-          "kind": "dns#policyTargetNameServer"
-        }
-      ]
-    },
     "id": "${dnsPolicyId}",
     "kind": "dns#policy",
     "name": "dnspolicy-test-${uniqueId}"
