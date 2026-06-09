@@ -18,502 +18,383 @@
 
 // +generated:mapper
 // krm.group: cloudbuild.cnrm.cloud.google.com
-// krm.version: v1alpha1
-// proto.service: google.devtools.cloudbuild.v2
+// krm.version: v1beta1
+// proto.service: google.devtools.cloudbuild.v1
 
 package cloudbuild
 
 import (
-	pb "cloud.google.com/go/cloudbuild/apiv2/cloudbuildpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krmservicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
+	pb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BitbucketCloudConfig_FromProto(mapCtx *direct.MapContext, in *pb.BitbucketCloudConfig) *krm.BitbucketCloudConfig {
+/* found existing non-generated mapping function "CloudBuildTriggerObservedState_FromProto", skipping
+func CloudBuildTriggerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuildTrigger) *krm.CloudBuildTriggerObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BitbucketCloudConfig{}
-	out.Workspace = direct.LazyPtr(in.GetWorkspace())
-	if in.GetWebhookSecretSecretVersion() != "" {
-		out.WebhookSecretSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetWebhookSecretSecretVersion()}
-	}
-	out.ReadAuthorizerCredential = UserCredential_FromProto(mapCtx, in.GetReadAuthorizerCredential())
-	out.AuthorizerCredential = UserCredential_FromProto(mapCtx, in.GetAuthorizerCredential())
-	return out
-}
-func BitbucketCloudConfig_ToProto(mapCtx *direct.MapContext, in *krm.BitbucketCloudConfig) *pb.BitbucketCloudConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BitbucketCloudConfig{}
-	out.Workspace = direct.ValueOf(in.Workspace)
-	if in.WebhookSecretSecretVersionRef != nil {
-		out.WebhookSecretSecretVersion = in.WebhookSecretSecretVersionRef.External
-	}
-	out.ReadAuthorizerCredential = UserCredential_ToProto(mapCtx, in.ReadAuthorizerCredential)
-	out.AuthorizerCredential = UserCredential_ToProto(mapCtx, in.AuthorizerCredential)
-	return out
-}
-func BitbucketCloudConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BitbucketCloudConfig) *krm.BitbucketCloudConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BitbucketCloudConfigObservedState{}
-	// MISSING: Workspace
-	// MISSING: WebhookSecretSecretVersion
-	out.ReadAuthorizerCredential = UserCredentialObservedState_FromProto(mapCtx, in.GetReadAuthorizerCredential())
-	out.AuthorizerCredential = UserCredentialObservedState_FromProto(mapCtx, in.GetAuthorizerCredential())
-	return out
-}
-func BitbucketCloudConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BitbucketCloudConfigObservedState) *pb.BitbucketCloudConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BitbucketCloudConfig{}
-	// MISSING: Workspace
-	// MISSING: WebhookSecretSecretVersion
-	out.ReadAuthorizerCredential = UserCredentialObservedState_ToProto(mapCtx, in.ReadAuthorizerCredential)
-	out.AuthorizerCredential = UserCredentialObservedState_ToProto(mapCtx, in.AuthorizerCredential)
-	return out
-}
-func BitbucketDataCenterConfig_FromProto(mapCtx *direct.MapContext, in *pb.BitbucketDataCenterConfig) *krm.BitbucketDataCenterConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BitbucketDataCenterConfig{}
-	out.HostURI = direct.LazyPtr(in.GetHostUri())
-	if in.GetWebhookSecretSecretVersion() != "" {
-		out.WebhookSecretSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetWebhookSecretSecretVersion()}
-	}
-	out.ReadAuthorizerCredential = UserCredential_FromProto(mapCtx, in.GetReadAuthorizerCredential())
-	out.AuthorizerCredential = UserCredential_FromProto(mapCtx, in.GetAuthorizerCredential())
-	out.ServiceDirectoryConfig = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
-	out.SSLCA = direct.LazyPtr(in.GetSslCa())
-	// MISSING: ServerVersion
-	return out
-}
-func BitbucketDataCenterConfig_ToProto(mapCtx *direct.MapContext, in *krm.BitbucketDataCenterConfig) *pb.BitbucketDataCenterConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BitbucketDataCenterConfig{}
-	out.HostUri = direct.ValueOf(in.HostURI)
-	if in.WebhookSecretSecretVersionRef != nil {
-		out.WebhookSecretSecretVersion = in.WebhookSecretSecretVersionRef.External
-	}
-	out.ReadAuthorizerCredential = UserCredential_ToProto(mapCtx, in.ReadAuthorizerCredential)
-	out.AuthorizerCredential = UserCredential_ToProto(mapCtx, in.AuthorizerCredential)
-	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
-	out.SslCa = direct.ValueOf(in.SSLCA)
-	// MISSING: ServerVersion
-	return out
-}
-func BitbucketDataCenterConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BitbucketDataCenterConfig) *krm.BitbucketDataCenterConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BitbucketDataCenterConfigObservedState{}
-	// MISSING: HostURI
-	// MISSING: WebhookSecretSecretVersion
-	// MISSING: ReadAuthorizerCredential
-	// MISSING: AuthorizerCredential
-	// MISSING: ServiceDirectoryConfig
-	// MISSING: SSLCA
-	out.ServerVersion = direct.LazyPtr(in.GetServerVersion())
-	return out
-}
-func BitbucketDataCenterConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BitbucketDataCenterConfigObservedState) *pb.BitbucketDataCenterConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BitbucketDataCenterConfig{}
-	// MISSING: HostURI
-	// MISSING: WebhookSecretSecretVersion
-	// MISSING: ReadAuthorizerCredential
-	// MISSING: AuthorizerCredential
-	// MISSING: ServiceDirectoryConfig
-	// MISSING: SSLCA
-	out.ServerVersion = direct.ValueOf(in.ServerVersion)
-	return out
-}
-func CloudBuildConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.CloudBuildConnectionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudBuildConnectionObservedState{}
+	out := &krm.CloudBuildTriggerObservedState{}
+	// MISSING: ResourceName
+	// MISSING: ID
+	// (near miss): "ID" vs "Id"
+	// MISSING: Description
 	// MISSING: Name
+	// MISSING: Tags
+	// MISSING: TriggerTemplate
+	// MISSING: Github
+	// MISSING: PubsubConfig
+	// MISSING: WebhookConfig
+	// MISSING: Autodetect
+	// MISSING: Build
+	// MISSING: Filename
+	// MISSING: GitFileSource
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.GithubConfig = GitHubConfigObservedState_FromProto(mapCtx, in.GetGithubConfig())
-	out.GithubEnterpriseConfig = GitHubEnterpriseConfigObservedState_FromProto(mapCtx, in.GetGithubEnterpriseConfig())
-	out.GitlabConfig = GitLabConfigObservedState_FromProto(mapCtx, in.GetGitlabConfig())
-	out.BitbucketDataCenterConfig = BitbucketDataCenterConfigObservedState_FromProto(mapCtx, in.GetBitbucketDataCenterConfig())
-	out.BitbucketCloudConfig = BitbucketCloudConfigObservedState_FromProto(mapCtx, in.GetBitbucketCloudConfig())
-	out.InstallationState = InstallationStateObservedState_FromProto(mapCtx, in.GetInstallationState())
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Disabled
+	// MISSING: Substitutions
+	// MISSING: IgnoredFiles
+	// MISSING: IncludedFiles
+	// MISSING: Filter
+	// MISSING: SourceToBuild
+	// MISSING: ServiceAccount
+	// MISSING: RepositoryEventConfig
 	return out
 }
-func CloudBuildConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildConnectionObservedState) *pb.Connection {
+*/
+
+/*
+found existing non-generated mapping function "CloudBuildTriggerObservedState_ToProto", skipping
+
+	func CloudBuildTriggerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerObservedState) *pb.BuildTrigger {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BuildTrigger{}
+		// MISSING: ResourceName
+		// MISSING: ID
+		// (near miss): "ID" vs "Id"
+		// MISSING: Description
+		// MISSING: Name
+		// MISSING: Tags
+		// MISSING: TriggerTemplate
+		// MISSING: Github
+		// MISSING: PubsubConfig
+		// MISSING: WebhookConfig
+		// MISSING: Autodetect
+		// MISSING: Build
+		// MISSING: Filename
+		// MISSING: GitFileSource
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		// MISSING: Disabled
+		// MISSING: Substitutions
+		// MISSING: IgnoredFiles
+		// MISSING: IncludedFiles
+		// MISSING: Filter
+		// MISSING: SourceToBuild
+		// MISSING: ServiceAccount
+		// MISSING: RepositoryEventConfig
+		return out
+	}
+*/
+func CloudBuildTriggerSpec_ApprovalConfig_FromProto(mapCtx *direct.MapContext, in *pb.BuildTrigger) *krm.CloudBuildTriggerSpec_ApprovalConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Connection{}
+	out := &krm.CloudBuildTriggerSpec_ApprovalConfig{}
+	// MISSING: ResourceName
+	// MISSING: ID
+	// MISSING: Description
 	// MISSING: Name
+	// MISSING: Tags
+	// MISSING: TriggerTemplate
+	// MISSING: Github
+	// MISSING: PubsubConfig
+	// MISSING: WebhookConfig
+	// MISSING: Autodetect
+	// MISSING: Build
+	// MISSING: Filename
+	// MISSING: GitFileSource
+	// MISSING: CreateTime
+	// MISSING: Disabled
+	// MISSING: Substitutions
+	// MISSING: IgnoredFiles
+	// MISSING: IncludedFiles
+	// MISSING: Filter
+	// MISSING: SourceToBuild
+	// MISSING: ServiceAccount
+	// MISSING: RepositoryEventConfig
+	return out
+}
+func CloudBuildTriggerSpec_ApprovalConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerSpec_ApprovalConfig) *pb.BuildTrigger {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildTrigger{}
+	// MISSING: ResourceName
+	// MISSING: ID
+	// MISSING: Description
+	// MISSING: Name
+	// MISSING: Tags
+	// MISSING: TriggerTemplate
+	// MISSING: Github
+	// MISSING: PubsubConfig
+	// MISSING: WebhookConfig
+	// MISSING: Autodetect
+	// MISSING: Build
+	// MISSING: Filename
+	// MISSING: GitFileSource
+	// MISSING: CreateTime
+	// MISSING: Disabled
+	// MISSING: Substitutions
+	// MISSING: IgnoredFiles
+	// MISSING: IncludedFiles
+	// MISSING: Filter
+	// MISSING: SourceToBuild
+	// MISSING: ServiceAccount
+	// MISSING: RepositoryEventConfig
+	return out
+}
+
+/*
+found existing non-generated mapping function "CloudBuildWorkerPoolObservedState_FromProto", skipping
+
+	func CloudBuildWorkerPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krm.CloudBuildWorkerPoolObservedState {
+		if in == nil {
+			return nil
+		}
+		out := &krm.CloudBuildWorkerPoolObservedState{}
+		// MISSING: Name
+		// MISSING: Uid
+		// MISSING: Annotations
+		out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+		out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+		// MISSING: DeleteTime
+		// MISSING: State
+		// MISSING: PrivatePoolV1Config
+		// MISSING: Etag
+		// (near miss): "Etag" vs "ETag"
+		return out
+	}
+*/
+func CloudBuildWorkerPoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildWorkerPoolObservedState) *pb.WorkerPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkerPool{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: Annotations
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	if oneof := GitHubConfigObservedState_ToProto(mapCtx, in.GithubConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_GithubConfig{GithubConfig: oneof}
-	}
-	if oneof := GitHubEnterpriseConfigObservedState_ToProto(mapCtx, in.GithubEnterpriseConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_GithubEnterpriseConfig{GithubEnterpriseConfig: oneof}
-	}
-	if oneof := GitLabConfigObservedState_ToProto(mapCtx, in.GitlabConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_GitlabConfig{GitlabConfig: oneof}
-	}
-	if oneof := BitbucketDataCenterConfigObservedState_ToProto(mapCtx, in.BitbucketDataCenterConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_BitbucketDataCenterConfig{BitbucketDataCenterConfig: oneof}
-	}
-	if oneof := BitbucketCloudConfigObservedState_ToProto(mapCtx, in.BitbucketCloudConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_BitbucketCloudConfig{BitbucketCloudConfig: oneof}
-	}
-	out.InstallationState = InstallationStateObservedState_ToProto(mapCtx, in.InstallationState)
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: DeleteTime
+	// MISSING: State
+	// MISSING: PrivatePoolV1Config
+	// MISSING: Etag
+	// (near miss): "Etag" vs "ETag"
 	return out
 }
-func CloudBuildConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.CloudBuildConnectionSpec {
+
+/* found existing non-generated mapping function "CloudBuildWorkerPoolSpec_FromProto", skipping
+func CloudBuildWorkerPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krm.CloudBuildWorkerPoolSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CloudBuildConnectionSpec{}
+	out := &krm.CloudBuildWorkerPoolSpec{}
 	// MISSING: Name
-	out.GithubConfig = GitHubConfig_FromProto(mapCtx, in.GetGithubConfig())
-	out.GithubEnterpriseConfig = GitHubEnterpriseConfig_FromProto(mapCtx, in.GetGithubEnterpriseConfig())
-	out.GitlabConfig = GitLabConfig_FromProto(mapCtx, in.GetGitlabConfig())
-	out.BitbucketDataCenterConfig = BitbucketDataCenterConfig_FromProto(mapCtx, in.GetBitbucketDataCenterConfig())
-	out.BitbucketCloudConfig = BitbucketCloudConfig_FromProto(mapCtx, in.GetBitbucketCloudConfig())
-	out.Disabled = direct.LazyPtr(in.GetDisabled())
-	out.Annotations = in.Annotations
+	out.DisplayName = in.GetDisplayName()
+	// MISSING: Uid
+	// MISSING: Annotations
+	// MISSING: DeleteTime
+	// MISSING: State
+	// MISSING: PrivatePoolV1Config
+	// MISSING: Etag
 	return out
 }
-func CloudBuildConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildConnectionSpec) *pb.Connection {
+*/
+
+/* found existing non-generated mapping function "CloudBuildWorkerPoolSpec_ToProto", skipping
+func CloudBuildWorkerPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildWorkerPoolSpec) *pb.WorkerPool {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Connection{}
+	out := &pb.WorkerPool{}
 	// MISSING: Name
-	if oneof := GitHubConfig_ToProto(mapCtx, in.GithubConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_GithubConfig{GithubConfig: oneof}
-	}
-	if oneof := GitHubEnterpriseConfig_ToProto(mapCtx, in.GithubEnterpriseConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_GithubEnterpriseConfig{GithubEnterpriseConfig: oneof}
-	}
-	if oneof := GitLabConfig_ToProto(mapCtx, in.GitlabConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_GitlabConfig{GitlabConfig: oneof}
-	}
-	if oneof := BitbucketDataCenterConfig_ToProto(mapCtx, in.BitbucketDataCenterConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_BitbucketDataCenterConfig{BitbucketDataCenterConfig: oneof}
-	}
-	if oneof := BitbucketCloudConfig_ToProto(mapCtx, in.BitbucketCloudConfig); oneof != nil {
-		out.ConnectionConfig = &pb.Connection_BitbucketCloudConfig{BitbucketCloudConfig: oneof}
-	}
-	out.Disabled = direct.ValueOf(in.Disabled)
-	out.Annotations = in.Annotations
+	out.DisplayName = CloudBuildWorkerPoolSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	// MISSING: Uid
+	// MISSING: Annotations
+	// MISSING: DeleteTime
+	// MISSING: State
+	// MISSING: PrivatePoolV1Config
+	// MISSING: Etag
 	return out
 }
-func GitHubConfig_FromProto(mapCtx *direct.MapContext, in *pb.GitHubConfig) *krm.GitHubConfig {
+*/
+
+/* found existing non-generated mapping function "Hash_FromProto", skipping
+func Hash_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.Hash {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GitHubConfig{}
-	out.AuthorizerCredential = OAuthCredential_FromProto(mapCtx, in.GetAuthorizerCredential())
-	out.AppInstallationID = direct.LazyPtr(in.GetAppInstallationId())
+	out := &krm.Hash{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Value = in.GetValue()
 	return out
 }
-func GitHubConfig_ToProto(mapCtx *direct.MapContext, in *krm.GitHubConfig) *pb.GitHubConfig {
+*/
+
+/* found existing non-generated mapping function "Hash_ToProto", skipping
+func Hash_ToProto(mapCtx *direct.MapContext, in *krm.Hash) *pb.Hash {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GitHubConfig{}
-	out.AuthorizerCredential = OAuthCredential_ToProto(mapCtx, in.AuthorizerCredential)
-	out.AppInstallationId = direct.ValueOf(in.AppInstallationID)
+	out := &pb.Hash{}
+	out.Type = direct.Enum_ToProto[pb.Hash_HashType](mapCtx, in.Type)
+	out.Value = in.Value
 	return out
 }
-func GitHubConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitHubConfig) *krm.GitHubConfigObservedState {
+*/
+
+/* found existing non-generated mapping function "PrivatePoolV1Config_FromProto", skipping
+func PrivatePoolV1Config_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config) *krm.PrivatePoolV1Config {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GitHubConfigObservedState{}
-	out.AuthorizerCredential = OAuthCredentialObservedState_FromProto(mapCtx, in.GetAuthorizerCredential())
-	// MISSING: AppInstallationID
+	out := &krm.PrivatePoolV1Config{}
+	out.WorkerConfig = PrivatePoolV1Config_WorkerConfig_FromProto(mapCtx, in.GetWorkerConfig())
+	out.NetworkConfig = PrivatePoolV1Config_NetworkConfigSpec_FromProto(mapCtx, in.GetNetworkConfig())
+	// MISSING: PrivateServiceConnect
 	return out
 }
-func GitHubConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitHubConfigObservedState) *pb.GitHubConfig {
+*/
+
+/* found existing non-generated mapping function "PrivatePoolV1Config_ToProto", skipping
+func PrivatePoolV1Config_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config) *pb.PrivatePoolV1Config {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GitHubConfig{}
-	out.AuthorizerCredential = OAuthCredentialObservedState_ToProto(mapCtx, in.AuthorizerCredential)
-	// MISSING: AppInstallationID
+	out := &pb.PrivatePoolV1Config{}
+	out.WorkerConfig = PrivatePoolV1Config_WorkerConfig_ToProto(mapCtx, in.WorkerConfig)
+	out.NetworkConfig = PrivatePoolV1Config_NetworkConfigSpec_ToProto(mapCtx, in.NetworkConfig)
+	// MISSING: PrivateServiceConnect
 	return out
 }
-func GitHubEnterpriseConfig_FromProto(mapCtx *direct.MapContext, in *pb.GitHubEnterpriseConfig) *krm.GitHubEnterpriseConfig {
+*/
+
+/* found existing non-generated mapping function "PrivatePoolV1Config_NetworkConfigSpec_FromProto", skipping
+func PrivatePoolV1Config_NetworkConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GitHubEnterpriseConfig{}
-	out.HostURI = direct.LazyPtr(in.GetHostUri())
-	out.APIKey = direct.LazyPtr(in.GetApiKey())
-	out.AppID = direct.LazyPtr(in.GetAppId())
-	out.AppSlug = direct.LazyPtr(in.GetAppSlug())
-	if in.GetPrivateKeySecretVersion() != "" {
-		out.PrivateKeySecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetPrivateKeySecretVersion()}
+	out := &krm.PrivatePoolV1Config_NetworkConfigSpec{}
+	if in.GetPeeredNetwork() != "" {
+		out.PeeredNetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetPeeredNetwork()}
 	}
-	if in.GetWebhookSecretSecretVersion() != "" {
-		out.WebhookSecretSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetWebhookSecretSecretVersion()}
-	}
-	out.AppInstallationID = direct.LazyPtr(in.GetAppInstallationId())
-	out.ServiceDirectoryConfig = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
-	out.SSLCA = direct.LazyPtr(in.GetSslCa())
-	// MISSING: ServerVersion
+	out.EgressOption = direct.Enum_FromProto(mapCtx, in.GetEgressOption())
+	out.PeeredNetworkIPRange = direct.LazyPtr(in.GetPeeredNetworkIpRange())
 	return out
 }
-func GitHubEnterpriseConfig_ToProto(mapCtx *direct.MapContext, in *krm.GitHubEnterpriseConfig) *pb.GitHubEnterpriseConfig {
+*/
+
+/* found existing non-generated mapping function "PrivatePoolV1Config_NetworkConfigSpec_ToProto", skipping
+func PrivatePoolV1Config_NetworkConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_NetworkConfigSpec) *pb.PrivatePoolV1Config_NetworkConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GitHubEnterpriseConfig{}
-	out.HostUri = direct.ValueOf(in.HostURI)
-	out.ApiKey = direct.ValueOf(in.APIKey)
-	out.AppId = direct.ValueOf(in.AppID)
-	out.AppSlug = direct.ValueOf(in.AppSlug)
-	if in.PrivateKeySecretVersionRef != nil {
-		out.PrivateKeySecretVersion = in.PrivateKeySecretVersionRef.External
+	out := &pb.PrivatePoolV1Config_NetworkConfig{}
+	if in.PeeredNetworkRef != nil {
+		out.PeeredNetwork = in.PeeredNetworkRef.External
 	}
-	if in.WebhookSecretSecretVersionRef != nil {
-		out.WebhookSecretSecretVersion = in.WebhookSecretSecretVersionRef.External
-	}
-	out.AppInstallationId = direct.ValueOf(in.AppInstallationID)
-	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
-	out.SslCa = direct.ValueOf(in.SSLCA)
-	// MISSING: ServerVersion
+	out.EgressOption = direct.Enum_ToProto[pb.PrivatePoolV1Config_NetworkConfig_EgressOption](mapCtx, in.EgressOption)
+	out.PeeredNetworkIpRange = direct.ValueOf(in.PeeredNetworkIPRange)
 	return out
 }
-func GitHubEnterpriseConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitHubEnterpriseConfig) *krm.GitHubEnterpriseConfigObservedState {
+*/
+
+/*
+found existing non-generated mapping function "PrivatePoolV1Config_NetworkConfigStatus_FromProto", skipping
+
+	func PrivatePoolV1Config_NetworkConfigStatus_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigStatus {
+		if in == nil {
+			return nil
+		}
+		out := &krm.PrivatePoolV1Config_NetworkConfigStatus{}
+		out.PeeredNetwork = direct.LazyPtr(in.GetPeeredNetwork())
+		out.EgressOption = direct.Enum_FromProto(mapCtx, in.GetEgressOption())
+		out.PeeredNetworkIPRange = direct.LazyPtr(in.GetPeeredNetworkIpRange())
+		return out
+	}
+*/
+func PrivatePoolV1Config_NetworkConfigStatus_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_NetworkConfigStatus) *pb.PrivatePoolV1Config_NetworkConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GitHubEnterpriseConfigObservedState{}
-	// MISSING: HostURI
-	// MISSING: APIKey
-	// MISSING: AppID
-	// MISSING: AppSlug
-	// MISSING: PrivateKeySecretVersion
-	// MISSING: WebhookSecretSecretVersion
-	// MISSING: AppInstallationID
-	// MISSING: ServiceDirectoryConfig
-	// MISSING: SSLCA
-	out.ServerVersion = direct.LazyPtr(in.GetServerVersion())
+	out := &pb.PrivatePoolV1Config_NetworkConfig{}
+	out.PeeredNetwork = direct.ValueOf(in.PeeredNetwork)
+	out.EgressOption = direct.Enum_ToProto[pb.PrivatePoolV1Config_NetworkConfig_EgressOption](mapCtx, in.EgressOption)
+	out.PeeredNetworkIpRange = direct.ValueOf(in.PeeredNetworkIPRange)
 	return out
 }
-func GitHubEnterpriseConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitHubEnterpriseConfigObservedState) *pb.GitHubEnterpriseConfig {
+
+/* found existing non-generated mapping function "PrivatePoolV1Config_WorkerConfig_FromProto", skipping
+func PrivatePoolV1Config_WorkerConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_WorkerConfig) *krm.PrivatePoolV1Config_WorkerConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GitHubEnterpriseConfig{}
-	// MISSING: HostURI
-	// MISSING: APIKey
-	// MISSING: AppID
-	// MISSING: AppSlug
-	// MISSING: PrivateKeySecretVersion
-	// MISSING: WebhookSecretSecretVersion
-	// MISSING: AppInstallationID
-	// MISSING: ServiceDirectoryConfig
-	// MISSING: SSLCA
-	out.ServerVersion = direct.ValueOf(in.ServerVersion)
+	out := &krm.PrivatePoolV1Config_WorkerConfig{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	// MISSING: EnableNestedVirtualization
 	return out
 }
-func GitLabConfig_FromProto(mapCtx *direct.MapContext, in *pb.GitLabConfig) *krm.GitLabConfig {
+*/
+
+/*
+found existing non-generated mapping function "PrivatePoolV1Config_WorkerConfig_ToProto", skipping
+
+	func PrivatePoolV1Config_WorkerConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_WorkerConfig) *pb.PrivatePoolV1Config_WorkerConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PrivatePoolV1Config_WorkerConfig{}
+		out.MachineType = direct.ValueOf(in.MachineType)
+		// MISSING: DiskSizeGB
+		// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+		// MISSING: EnableNestedVirtualization
+		return out
+	}
+*/
+func Results_FromProto(mapCtx *direct.MapContext, in *pb.Results) *krm.Results {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GitLabConfig{}
-	out.HostURI = direct.LazyPtr(in.GetHostUri())
-	if in.GetWebhookSecretSecretVersion() != "" {
-		out.WebhookSecretSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetWebhookSecretSecretVersion()}
-	}
-	out.ReadAuthorizerCredential = UserCredential_FromProto(mapCtx, in.GetReadAuthorizerCredential())
-	out.AuthorizerCredential = UserCredential_FromProto(mapCtx, in.GetAuthorizerCredential())
-	out.ServiceDirectoryConfig = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
-	out.SSLCA = direct.LazyPtr(in.GetSslCa())
-	// MISSING: ServerVersion
+	out := &krm.Results{}
+	// MISSING: Images
+	out.BuildStepImages = in.BuildStepImages
+	// MISSING: ArtifactManifest
+	// MISSING: NumArtifacts
+	out.BuildStepOutputs = in.BuildStepOutputs
+	// MISSING: ArtifactTiming
+	// MISSING: PythonPackages
+	// MISSING: MavenArtifacts
+	// MISSING: GoModules
+	// MISSING: NpmPackages
 	return out
 }
-func GitLabConfig_ToProto(mapCtx *direct.MapContext, in *krm.GitLabConfig) *pb.GitLabConfig {
+func Results_ToProto(mapCtx *direct.MapContext, in *krm.Results) *pb.Results {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GitLabConfig{}
-	out.HostUri = direct.ValueOf(in.HostURI)
-	if in.WebhookSecretSecretVersionRef != nil {
-		out.WebhookSecretSecretVersion = in.WebhookSecretSecretVersionRef.External
-	}
-	out.ReadAuthorizerCredential = UserCredential_ToProto(mapCtx, in.ReadAuthorizerCredential)
-	out.AuthorizerCredential = UserCredential_ToProto(mapCtx, in.AuthorizerCredential)
-	out.ServiceDirectoryConfig = ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
-	out.SslCa = direct.ValueOf(in.SSLCA)
-	// MISSING: ServerVersion
-	return out
-}
-func GitLabConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitLabConfig) *krm.GitLabConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GitLabConfigObservedState{}
-	// MISSING: HostURI
-	// MISSING: WebhookSecretSecretVersion
-	out.ReadAuthorizerCredential = UserCredentialObservedState_FromProto(mapCtx, in.GetReadAuthorizerCredential())
-	// MISSING: AuthorizerCredential
-	// MISSING: ServiceDirectoryConfig
-	// MISSING: SSLCA
-	out.ServerVersion = direct.LazyPtr(in.GetServerVersion())
-	return out
-}
-func GitLabConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GitLabConfigObservedState) *pb.GitLabConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GitLabConfig{}
-	// MISSING: HostURI
-	// MISSING: WebhookSecretSecretVersion
-	out.ReadAuthorizerCredential = UserCredentialObservedState_ToProto(mapCtx, in.ReadAuthorizerCredential)
-	// MISSING: AuthorizerCredential
-	// MISSING: ServiceDirectoryConfig
-	// MISSING: SSLCA
-	out.ServerVersion = direct.ValueOf(in.ServerVersion)
-	return out
-}
-func InstallationStateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstallationState) *krm.InstallationStateObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.InstallationStateObservedState{}
-	out.Stage = direct.Enum_FromProto(mapCtx, in.GetStage())
-	out.Message = direct.LazyPtr(in.GetMessage())
-	out.ActionURI = direct.LazyPtr(in.GetActionUri())
-	return out
-}
-func InstallationStateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstallationStateObservedState) *pb.InstallationState {
-	if in == nil {
-		return nil
-	}
-	out := &pb.InstallationState{}
-	out.Stage = direct.Enum_ToProto[pb.InstallationState_Stage](mapCtx, in.Stage)
-	out.Message = direct.ValueOf(in.Message)
-	out.ActionUri = direct.ValueOf(in.ActionURI)
-	return out
-}
-func OAuthCredential_FromProto(mapCtx *direct.MapContext, in *pb.OAuthCredential) *krm.OAuthCredential {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OAuthCredential{}
-	if in.GetOauthTokenSecretVersion() != "" {
-		out.OauthTokenSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetOauthTokenSecretVersion()}
-	}
-	// MISSING: Username
-	return out
-}
-func OAuthCredential_ToProto(mapCtx *direct.MapContext, in *krm.OAuthCredential) *pb.OAuthCredential {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OAuthCredential{}
-	if in.OauthTokenSecretVersionRef != nil {
-		out.OauthTokenSecretVersion = in.OauthTokenSecretVersionRef.External
-	}
-	// MISSING: Username
-	return out
-}
-func OAuthCredentialObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OAuthCredential) *krm.OAuthCredentialObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OAuthCredentialObservedState{}
-	// MISSING: OauthTokenSecretVersion
-	out.Username = direct.LazyPtr(in.GetUsername())
-	return out
-}
-func OAuthCredentialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OAuthCredentialObservedState) *pb.OAuthCredential {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OAuthCredential{}
-	// MISSING: OauthTokenSecretVersion
-	out.Username = direct.ValueOf(in.Username)
-	return out
-}
-func ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServiceDirectoryConfig) *krm.ServiceDirectoryConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServiceDirectoryConfig{}
-	if in.GetService() != "" {
-		out.ServiceRef = &krmservicedirectoryv1alpha1.ServiceDirectoryServiceRef{External: in.GetService()}
-	}
-	return out
-}
-func ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryConfig) *pb.ServiceDirectoryConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceDirectoryConfig{}
-	if in.ServiceRef != nil {
-		out.Service = in.ServiceRef.External
-	}
-	return out
-}
-func UserCredential_FromProto(mapCtx *direct.MapContext, in *pb.UserCredential) *krm.UserCredential {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UserCredential{}
-	if in.GetUserTokenSecretVersion() != "" {
-		out.UserTokenSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetUserTokenSecretVersion()}
-	}
-	// MISSING: Username
-	return out
-}
-func UserCredential_ToProto(mapCtx *direct.MapContext, in *krm.UserCredential) *pb.UserCredential {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UserCredential{}
-	if in.UserTokenSecretVersionRef != nil {
-		out.UserTokenSecretVersion = in.UserTokenSecretVersionRef.External
-	}
-	// MISSING: Username
-	return out
-}
-func UserCredentialObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UserCredential) *krm.UserCredentialObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UserCredentialObservedState{}
-	// MISSING: UserTokenSecretVersion
-	out.Username = direct.LazyPtr(in.GetUsername())
-	return out
-}
-func UserCredentialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UserCredentialObservedState) *pb.UserCredential {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UserCredential{}
-	// MISSING: UserTokenSecretVersion
-	out.Username = direct.ValueOf(in.Username)
+	out := &pb.Results{}
+	// MISSING: Images
+	out.BuildStepImages = in.BuildStepImages
+	// MISSING: ArtifactManifest
+	// MISSING: NumArtifacts
+	out.BuildStepOutputs = in.BuildStepOutputs
+	// MISSING: ArtifactTiming
+	// MISSING: PythonPackages
+	// MISSING: MavenArtifacts
+	// MISSING: GoModules
+	// MISSING: NpmPackages
 	return out
 }

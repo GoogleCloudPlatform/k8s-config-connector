@@ -31,3 +31,5 @@ go run . generate-mapper \
   --service google.devtools.cloudbuild.v2 \
   --api-version cloudbuild.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
+
+mv ${REPO_ROOT}/pkg/controller/direct/cloudbuild/mapper.generated.go ${REPO_ROOT}/pkg/controller/direct/cloudbuild/connection_mapper.generated.go
