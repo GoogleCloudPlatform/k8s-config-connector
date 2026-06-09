@@ -1,4 +1,4 @@
-GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dfolders%2F${folderID}+AND+displayName%3D%22KCC+${uniqueId}%22
+GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dfolders%2F${folderID}+AND+displayName%3D%22Sink+${uniqueId}%22
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -18,7 +18,7 @@ POST https://cloudresourcemanager.googleapis.com/v3/folders?alt=json&prettyPrint
 Content-Type: application/json
 
 {
-  "displayName": "KCC ${uniqueId}",
+  "displayName": "Sink ${uniqueId}",
   "parent": "folders/${folderID}"
 }
 
@@ -57,7 +57,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "KCC ${uniqueId}",
+    "displayName": "Sink ${uniqueId}",
     "etag": "abcdef0123A=",
     "name": "folders/${folderID}",
     "parent": "folders/${folderID}",
@@ -86,7 +86,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "KCC ${uniqueId}",
+    "displayName": "Sink ${uniqueId}",
     "etag": "abcdef0123A=",
     "name": "folders/${folderID}",
     "parent": "folders/${folderID}",
@@ -111,7 +111,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "KCC ${uniqueId}",
+  "displayName": "Sink ${uniqueId}",
   "etag": "abcdef0123A=",
   "name": "folders/${folderID}",
   "parent": "folders/${folderID}",
@@ -140,11 +140,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset_resourceid_${uniqueId}",
+        "message": "Not found: Dataset ${projectId}:foldersink${uniqueId}",
         "reason": "notFound"
       }
     ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset_resourceid_${uniqueId}",
+    "message": "Not found: Dataset ${projectId}:foldersink${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -156,11 +156,11 @@ Content-Type: application/json
 
 {
   "datasetReference": {
-    "datasetId": "bigquerydataset_resourceid_${uniqueId}"
+    "datasetId": "foldersink${uniqueId}"
   },
   "defaultTableExpirationMs": 3600000,
   "description": "BigQuery Dataset Sample",
-  "friendlyName": "bigquerydataset${uniqueId}",
+  "friendlyName": "foldersink${uniqueId}",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -199,13 +199,13 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
+    "datasetId": "foldersink${uniqueId}",
     "projectId": "${projectId}"
   },
   "defaultTableExpirationMs": "3600000",
   "description": "BigQuery Dataset Sample",
   "etag": "abcdef0123A=",
-  "friendlyName": "bigquerydataset${uniqueId}",
+  "friendlyName": "foldersink${uniqueId}",
   "id": "000000000000000000000",
   "kind": "bigquery#dataset",
   "labels": {
@@ -214,7 +214,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "US",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/foldersink${uniqueId}",
   "type": "DEFAULT"
 }
 
@@ -254,13 +254,13 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
+    "datasetId": "foldersink${uniqueId}",
     "projectId": "${projectId}"
   },
   "defaultTableExpirationMs": "3600000",
   "description": "BigQuery Dataset Sample",
   "etag": "abcdef0123A=",
-  "friendlyName": "bigquerydataset${uniqueId}",
+  "friendlyName": "foldersink${uniqueId}",
   "id": "000000000000000000000",
   "kind": "bigquery#dataset",
   "labels": {
@@ -270,14 +270,13 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "US",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/foldersink${uniqueId}",
   "type": "DEFAULT"
 }
 
 ---
 
-GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-resourceid-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -292,21 +291,21 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Sink foldersink-resourceid-${uniqueId} does not exist",
+    "message": "Sink foldersink-${uniqueId} does not exist",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://logging.googleapis.com/v2/folders/${folderID}/sinks?%24alt=json%3Benum-encoding%3Dint
+POST https://logging.googleapis.com/v2/folders/${folderID}/sinks?alt=json&prettyPrint=false&uniqueWriterIdentity=true
 Content-Type: application/json
 
 {
-  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
+  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/foldersink${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "includeChildren": true,
-  "name": "foldersink-resourceid-${uniqueId}"
+  "name": "foldersink-${uniqueId}"
 }
 
 200 OK
@@ -321,18 +320,17 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
+  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/foldersink${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "includeChildren": true,
-  "name": "foldersink-resourceid-${uniqueId}",
+  "name": "foldersink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "writerIdentity": "serviceAccount:service-folder-${folderID}@gcp-sa-logging.iam.gserviceaccount.com"
 }
 
 ---
 
-GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-resourceid-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -346,24 +344,24 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
+  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/foldersink${uniqueId}",
   "filter": "resource.type=\"bigquery_project\" AND logName:\"cloudaudit.googleapis.com\"",
   "includeChildren": true,
-  "name": "foldersink-resourceid-${uniqueId}",
+  "name": "foldersink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "writerIdentity": "serviceAccount:service-folder-${folderID}@gcp-sa-logging.iam.gserviceaccount.com"
 }
 
 ---
 
-PUT https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-resourceid-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter
+PATCH https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
 Content-Type: application/json
 
 {
-  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
+  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/foldersink${uniqueId}",
+  "disabled": false,
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
-  "includeChildren": true,
-  "name": "foldersink-resourceid-${uniqueId}"
+  "includeChildren": true
 }
 
 200 OK
@@ -378,18 +376,17 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
+  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/foldersink${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "includeChildren": true,
-  "name": "foldersink-resourceid-${uniqueId}",
+  "name": "foldersink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "writerIdentity": "serviceAccount:service-folder-${folderID}@gcp-sa-logging.iam.gserviceaccount.com"
 }
 
 ---
 
-GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-resourceid-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -403,18 +400,17 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
+  "destination": "bigquery.googleapis.com/projects/${projectId}/datasets/foldersink${uniqueId}",
   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
   "includeChildren": true,
-  "name": "foldersink-resourceid-${uniqueId}",
+  "name": "foldersink-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "writerIdentity": "serviceAccount:service-folder-${folderID}@gcp-sa-logging.iam.gserviceaccount.com"
 }
 
 ---
 
-DELETE https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-resourceid-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
+DELETE https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -464,13 +460,13 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
+    "datasetId": "foldersink${uniqueId}",
     "projectId": "${projectId}"
   },
   "defaultTableExpirationMs": "3600000",
   "description": "BigQuery Dataset Sample",
   "etag": "abcdef0123A=",
-  "friendlyName": "bigquerydataset${uniqueId}",
+  "friendlyName": "foldersink${uniqueId}",
   "id": "000000000000000000000",
   "kind": "bigquery#dataset",
   "labels": {
@@ -480,7 +476,7 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "US",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/foldersink${uniqueId}",
   "type": "DEFAULT"
 }
 
@@ -516,7 +512,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "KCC ${uniqueId}",
+  "displayName": "Sink ${uniqueId}",
   "etag": "abcdef0123A=",
   "name": "folders/${folderID}",
   "parent": "folders/${folderID}",
@@ -543,7 +539,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "KCC ${uniqueId}",
+    "displayName": "Sink ${uniqueId}",
     "etag": "abcdef0123A=",
     "name": "folders/${folderID}",
     "parent": "folders/${folderID}",
