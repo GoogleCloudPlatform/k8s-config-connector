@@ -31,6 +31,10 @@ type FakeDeveloperconnectV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDeveloperconnectV1alpha1) DevConnectAccountConnectors(namespace string) v1alpha1.DevConnectAccountConnectorInterface {
+	return newFakeDevConnectAccountConnectors(c, namespace)
+}
+
 func (c *FakeDeveloperconnectV1alpha1) DevConnectInsightsConfigs(namespace string) v1alpha1.DevConnectInsightsConfigInterface {
 	return newFakeDevConnectInsightsConfigs(c, namespace)
 }

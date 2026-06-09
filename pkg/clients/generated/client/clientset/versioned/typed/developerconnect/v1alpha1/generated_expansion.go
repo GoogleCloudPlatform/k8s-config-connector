@@ -21,4 +21,6 @@
 
 package v1alpha1
 
+type DevConnectAccountConnectorExpansion interface{}
+
 type DevConnectInsightsConfigExpansion interface{}

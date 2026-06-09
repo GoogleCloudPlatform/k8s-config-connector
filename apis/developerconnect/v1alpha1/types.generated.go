@@ -18,14 +18,13 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.developerconnect.v1
 // resource: DevConnectInsightsConfig:InsightsConfig
+// resource: DevConnectAccountConnector:AccountConnector
 
 package v1alpha1
 
-/* unreachable type AppHubWorkload
 // +kcc:proto=google.cloud.developerconnect.v1.AppHubWorkload
 type AppHubWorkload struct {
 }
-*/
 
 // +kcc:proto=google.cloud.developerconnect.v1.ArtifactConfig
 type ArtifactConfig struct {
@@ -45,7 +44,6 @@ type ArtifactConfig struct {
 	URI *string `json:"uri,omitempty"`
 }
 
-/* unreachable type GKEWorkload
 // +kcc:proto=google.cloud.developerconnect.v1.GKEWorkload
 type GKEWorkload struct {
 	// Required. Immutable. The name of the GKE cluster.
@@ -54,7 +52,6 @@ type GKEWorkload struct {
 	// +kcc:proto:field=google.cloud.developerconnect.v1.GKEWorkload.cluster
 	Cluster *string `json:"cluster,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.developerconnect.v1.GoogleArtifactAnalysis
 type GoogleArtifactAnalysis struct {
@@ -74,7 +71,6 @@ type GoogleArtifactRegistry struct {
 	ArtifactRegistryPackage *string `json:"artifactRegistryPackage,omitempty"`
 }
 
-/* unreachable type RuntimeConfig
 // +kcc:proto=google.cloud.developerconnect.v1.RuntimeConfig
 type RuntimeConfig struct {
 
@@ -84,7 +80,6 @@ type RuntimeConfig struct {
 	// +kcc:proto:field=google.cloud.developerconnect.v1.RuntimeConfig.uri
 	URI *string `json:"uri,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.developerconnect.v1.AppHubWorkload
 type AppHubWorkloadObservedState struct {
