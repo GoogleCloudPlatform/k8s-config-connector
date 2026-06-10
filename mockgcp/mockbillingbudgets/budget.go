@@ -130,18 +130,34 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 		return nil, err
 	}
 
+	updated := proto.CloneOf(obj)
 	for _, path := range req.GetUpdateMask().GetPaths() {
-		switch path {
+		parts := strings.Split(path, ".")
+		rootField := parts[0]
+		switch rootField {
+		case "display_name", "displayName":
+			updated.DisplayName = req.GetBudget().GetDisplayName()
+		case "amount":
+			updated.Amount = req.GetBudget().GetAmount()
+		case "budget_filter", "budgetFilter":
+			updated.BudgetFilter = req.GetBudget().GetBudgetFilter()
+		case "threshold_rules", "thresholdRules":
+			updated.ThresholdRules = req.GetBudget().GetThresholdRules()
+		case "all_updates_rule", "allUpdatesRule":
+			updated.AllUpdatesRule = req.GetBudget().GetAllUpdatesRule()
 		default:
-			return nil, fmt.Errorf("unhandled path in mockgcp UpdateBudget: %w", err)
+			return nil, fmt.Errorf("unhandled path in mockgcp UpdateBudget: %s", path)
 		}
 	}
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	s.populateDefaultsForBudget(updated)
+	updated.Etag = fields.ComputeWeakEtag(updated)
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
-	return obj, nil
+	return updated, nil
 }
 
 func (s *BudgetServiceServer) DeleteBudget(ctx context.Context, req *pb.DeleteBudgetRequest) (*emptypb.Empty, error) {
