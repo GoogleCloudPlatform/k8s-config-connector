@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -920,7 +921,7 @@ func (in *VertexAIDataLabelingJobSpec) DeepCopyInto(out *VertexAIDataLabelingJob
 	}
 	if in.DatasetRefs != nil {
 		in, out := &in.DatasetRefs, &out.DatasetRefs
-		*out = make([]v1beta1.VertexAIDatasetRef, len(*in))
+		*out = make([]vertexaiv1beta1.VertexAIDatasetRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.AnnotationLabels != nil {
