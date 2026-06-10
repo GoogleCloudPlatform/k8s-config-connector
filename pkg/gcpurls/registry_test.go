@@ -102,6 +102,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}":    true,
 		"//biglake.googleapis.com/projects/{}/locations/{}/catalogs/{}":                             true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":                        true,
+		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}/{}":                             true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
