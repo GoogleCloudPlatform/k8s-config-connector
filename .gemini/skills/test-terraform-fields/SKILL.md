@@ -64,15 +64,15 @@ For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`,
 1. Run the script passing either the test name suffix or the package path:
    - **Using test name suffix**:
      ```bash
-     hack/record-gcp <resource_name>
+     hack/record-gcp <test_name>
      ```
    - **Using full test package path**:
      ```bash
-     hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/<resource_name>
+     hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/<test_name>
      ```
      - **Example: Using test name suffix**:
      ```bash
-     hack/record-gcp dnsrecordsetbasic
+     hack/record-gcp fixtures/dnsrecordsetbasic
      ```
    - **Example: Using full test package path**:
      ```bash
@@ -191,7 +191,7 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
 4. **Verify Local Control Plane Webhooks**:
    - If envtest webhook startup fails with validation errors under new Kubernetes control plane versions, ensure `admissionReviewVersions` in `pkg/webhook/manifests.go` includes both `"v1"` and `"v1beta1"`.
 5. **Verify CRD Field Coverage Checks**:
-   - Run the API checks tests to ensure all new fields are either tested in the fixture tests or explicitly added to the exceptions list:
+   - Run the API checks tests to ensure all new fields are either tested in the fixture tests. WARNING: New fields, in the vast majority of cases, should not be added to the  the exceptions list; this is verified by KCC testing as well. If a field needs to be added to the exceptions list you **must** provide a clear explanation as to why this is the case:
      - For **Beta** resources:
        ```bash
        WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests
