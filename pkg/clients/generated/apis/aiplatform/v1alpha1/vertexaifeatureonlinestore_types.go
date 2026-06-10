@@ -90,7 +90,7 @@ type VertexaifeatureonlinestorePrivateServiceConnectConfig struct {
 type VertexaifeatureonlinestorePscAutomationConfigs struct {
 	/* Required. The full name of the Google Compute Engine [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks). [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/get): `projects/{project}/global/networks/{network}`. */
 	// +optional
-	Network *string `json:"network,omitempty"`
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Required. Project id used to create forwarding rule. */
 	// +optional
