@@ -91,7 +91,7 @@ func (m *modelCatalog) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, err
 	}
 	return &CatalogAdapter{
-		id:        id.(*krm.CatalogIdentity),
+		id:        id.(*krm.BigLakeCatalogIdentity),
 		gcpClient: gcpClient,
 		desired:   desired,
 	}, nil
@@ -103,7 +103,7 @@ func (m *modelCatalog) AdapterForURL(ctx context.Context, url string) (directbas
 }
 
 type CatalogAdapter struct {
-	id        *krm.CatalogIdentity
+	id        *krm.BigLakeCatalogIdentity
 	gcpClient *gcp.MetastoreClient
 	desired   *bigquerybiglakepb.Catalog
 	actual    *bigquerybiglakepb.Catalog
@@ -132,9 +132,9 @@ func (a *CatalogAdapter) Create(ctx context.Context, createOp *directbase.Create
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Catalog", "name", a.id)
 	req := &bigquerybiglakepb.CreateCatalogRequest{
-		Parent:    a.id.Parent().String(),
+		Parent:    fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
 		Catalog:   a.desired,
-		CatalogId: a.id.ID(),
+		CatalogId: a.id.Catalog,
 	}
 	created, err := a.gcpClient.CreateCatalog(ctx, req)
 	if err != nil {
@@ -182,23 +182,23 @@ func (a *CatalogAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 		return nil, mapCtx.Err()
 	}
 	externalRef := a.actual.GetName()
-	id := &krm.CatalogIdentity{}
+	id := &krm.BigLakeCatalogIdentity{}
 	if err := id.FromExternal(externalRef); err != nil {
 		return nil, fmt.Errorf("parsing external ref %q: %w", externalRef, err)
 	}
 	obj.Spec.ProjectAndLocationRef = &parent.ProjectAndLocationRef{
 		ProjectRef: &refs.ProjectRef{
-			External: id.Parent().ProjectID,
+			External: id.Project,
 		},
-		Location: id.Parent().Location,
+		Location: id.Location,
 	}
-	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Catalog)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.Catalog)
 	u.SetGroupVersionKind(krm.BigLakeCatalogGVK)
 
 	u.Object = uObj
