@@ -36,6 +36,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -81,23 +82,15 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err != nil {
 		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s, err: %w", obj.GetName(), err)
 	}
-	var keyProject *refs.ProjectIdentity
-	if obj.Spec.KeyProjectRef != nil {
-		var err error
-		keyProject, err = refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.KeyProjectRef)
-		if err != nil {
-			return nil, fmt.Errorf("unable to resolve key project for autokeyConfig naem: %s, err: %w", obj.GetName(), err)
-		}
-	}
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &Adapter{
-		id:                id,
-		desiredKeyProject: keyProject,
-		gcpClient:         gcpClient,
-		desired:           obj,
+		id:        id,
+		reader:    reader,
+		gcpClient: gcpClient,
+		desired:   obj,
 	}, nil
 }
 
@@ -107,11 +100,11 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id                *krm.KMSAutokeyConfigIdentity
-	desiredKeyProject *refs.ProjectIdentity
-	gcpClient         *gcp.AutokeyAdminClient
-	desired           *krm.KMSAutokeyConfig
-	actual            *kmspb.AutokeyConfig
+	id        *krm.KMSAutokeyConfigIdentity
+	reader    client.Reader
+	gcpClient *gcp.AutokeyAdminClient
+	desired   *krm.KMSAutokeyConfig
+	actual    *kmspb.AutokeyConfig
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -147,12 +140,20 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating AutokeyConfig", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	resource := KMSAutokeyConfig_FromFields(mapCtx, a.id, a.desiredKeyProject, a.desired.Spec.KeyProjectResolutionMode)
+	var keyProject *refs.ProjectIdentity
+	if a.desired.Spec.KeyProjectRef != nil {
+		var err error
+		keyProject, err = refs.ResolveProject(ctx, a.reader, a.desired.GetNamespace(), a.desired.Spec.KeyProjectRef)
+		if err != nil {
+			return fmt.Errorf("unable to resolve key project for autokeyConfig name: %s, err: %w", a.desired.GetName(), err)
+		}
+	}
+
+	mapCtx := &direct.MapContext{}
+	resource := KMSAutokeyConfig_FromFields(mapCtx, a.id, keyProject, a.desired.Spec.KeyProjectResolutionMode)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -175,9 +176,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
 	log := klog.FromContext(ctx)
-	if a.actual == nil {
-		return nil, fmt.Errorf("updateAutokeyConfig failed: Find() was not called or returned false")
-	}
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(resource.KeyProject, a.actual.KeyProject) {
 		updateMask.Paths = append(updateMask.Paths, "key_project")
@@ -243,6 +241,10 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	if a.actual == nil {
 		return false, fmt.Errorf("delete AutokeyConfig failed: Find() was not called or returned false")
 	}
+	if a.actual.State == kmspb.AutokeyConfig_UNINITIALIZED {
+		log.V(2).Info("skipping delete for UNINITIALIZED AutokeyConfig, assuming it was already deleted", "name", a.id)
+		return true, nil
+	}
 	mapCtx := &direct.MapContext{}
 	// Keep only spec fields, by round-tripping through KRM.
 	// Make a copy of the a.actual, disable AutokeyConfig, and clear the project reference.
@@ -253,6 +255,10 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	resource := AutokeyConfig_ToProto(mapCtx, tempKrmAutokeyResource)
 	updated, err := a.updateAutokeyConfig(ctx, resource)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			log.V(2).Info("skipping delete for non-existent AutokeyConfig (or deleted parent), assuming it was already deleted", "name", a.id)
+			return true, nil
+		}
 		return false, fmt.Errorf("updating AutokeyConfig %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted AutokeyConfig in KCC by resetting the key_project", "name", a.id)
