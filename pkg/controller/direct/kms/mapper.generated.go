@@ -168,6 +168,8 @@ func KMSKeyHandleSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleSpe
 	out.ResourceTypeSelector = direct.ValueOf(in.ResourceTypeSelector)
 	return out
 }
+
+/* found existing non-generated mapping function "KMSKeyRingSpec_FromProto", skipping
 func KMSKeyRingSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.KMSKeyRingSpec {
 	if in == nil {
 		return nil
@@ -177,6 +179,9 @@ func KMSKeyRingSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.KM
 	// MISSING: CreateTime
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "KMSKeyRingSpec_ToProto", skipping
 func KMSKeyRingSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyRingSpec) *pb.KeyRing {
 	if in == nil {
 		return nil
@@ -186,6 +191,9 @@ func KMSKeyRingSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyRingSpec) *
 	// MISSING: CreateTime
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "KMSKeyRingStatus_FromProto", skipping
 func KMSKeyRingStatus_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.KMSKeyRingStatus {
 	if in == nil {
 		return nil
@@ -195,15 +203,21 @@ func KMSKeyRingStatus_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.
 	// MISSING: CreateTime
 	return out
 }
-func KMSKeyRingStatus_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyRingStatus) *pb.KeyRing {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "KMSKeyRingStatus_ToProto", skipping
+
+	func KMSKeyRingStatus_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyRingStatus) *pb.KeyRing {
+		if in == nil {
+			return nil
+		}
+		out := &pb.KeyRing{}
+		// MISSING: Name
+		// MISSING: CreateTime
+		return out
 	}
-	out := &pb.KeyRing{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	return out
-}
+*/
 func KeyOperationAttestationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krm.KeyOperationAttestationObservedState {
 	if in == nil {
 		return nil
