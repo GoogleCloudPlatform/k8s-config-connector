@@ -25,7 +25,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.datalabeling.v1beta1 \
   --api-version datalabeling.cnrm.cloud.google.com/v1alpha1 \
-  --resource DataLabelingInstruction:Instruction
+  --resource DataLabelingAnnotationSpecSet:AnnotationSpecSet \
+  --prune-unused-types=false
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
