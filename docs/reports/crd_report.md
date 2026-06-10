@@ -72,6 +72,7 @@
 | bigquery.cnrm.cloud.google.com                | BigQueryJob                                     | False        | True        | False  | Terraform  | False       |
 | bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationAssignment                   | True         | True        | False  | Direct     | True        |
 | bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationCapacityCommitment           | True         | False       | False  | Terraform  | True        |
+| bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationReservationGroup             | True         | False       | False  | Direct     | True        |
 | bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationReservation                  | True         | True        | False  | Direct     | True        |
 | bigquery.cnrm.cloud.google.com                | BigQueryRoutine                                 | False        | True        | False  | Terraform  | False       |
 | bigquery.cnrm.cloud.google.com                | BigQueryTable                                   | False        | True        | False  | Terraform  | True        |
