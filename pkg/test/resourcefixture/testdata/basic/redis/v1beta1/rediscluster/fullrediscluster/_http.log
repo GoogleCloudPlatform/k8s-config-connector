@@ -956,6 +956,15 @@ X-Xss-Protection: 0
         "pscConnectionId": "${pscConnectionID}"
       }
     ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      }
+    ],
     "redisConfigs": {
       "maxmemory-policy": "volatile-ttl"
     },
@@ -1053,6 +1062,15 @@ X-Xss-Protection: 0
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "redisConfigs": {
@@ -1241,6 +1259,15 @@ X-Xss-Protection: 0
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -1432,6 +1459,15 @@ X-Xss-Protection: 0
         "pscConnectionId": "${pscConnectionID}"
       }
     ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      }
+    ],
     "redisConfigs": {
       "maxmemory-policy": "volatile-ttl"
     },
@@ -1619,6 +1655,15 @@ X-Xss-Protection: 0
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -1811,6 +1856,15 @@ X-Xss-Protection: 0
         "pscConnectionId": "${pscConnectionID}"
       }
     ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      }
+    ],
     "redisConfigs": {
       "maxmemory-policy": "volatile-ttl"
     },
@@ -1999,6 +2053,15 @@ X-Xss-Protection: 0
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -2192,6 +2255,15 @@ X-Xss-Protection: 0
         "pscConnectionId": "${pscConnectionID}"
       }
     ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      }
+    ],
     "redisConfigs": {
       "maxclients": "10",
       "maxmemory-policy": "volatile-ttl"
@@ -2291,6 +2363,15 @@ X-Xss-Protection: 0
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "redisConfigs": {

@@ -627,6 +627,15 @@ X-Xss-Protection: 0
         "pscConnectionId": "${pscConnectionID}"
       }
     ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      }
+    ],
     "replicaCount": 0,
     "shardCount": 3,
     "sizeGb": 39,
@@ -695,6 +704,15 @@ X-Xss-Protection: 0
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "replicaCount": 0,
@@ -816,6 +834,15 @@ X-Xss-Protection: 0
         "pscConnectionId": "${pscConnectionID}"
       }
     ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      }
+    ],
     "replicaCount": 0,
     "shardCount": 10,
     "sizeGb": 130,
@@ -884,6 +911,15 @@ X-Xss-Protection: 0
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "replicaCount": 0,
