@@ -121,3 +121,14 @@ type VertexAIMetadataStoreList struct {
 func init() {
 	SchemeBuilder.Register(&VertexAIMetadataStore{}, &VertexAIMetadataStoreList{})
 }
+
+// +kcc:spec:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
+type EncryptionSpec struct {
+	// Required. The Cloud KMS resource identifier of the customer managed
+	//  encryption key used to protect a resource.
+	//  The key needs to be in the same region as where the compute resource is
+	//  created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EncryptionSpec.kms_key_name
+	// +required
+	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
