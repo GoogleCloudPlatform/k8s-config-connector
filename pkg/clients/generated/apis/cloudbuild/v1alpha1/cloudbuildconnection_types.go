@@ -205,6 +205,16 @@ type ConnectionAuthorizerCredentialStatus struct {
 	Username *string `json:"username,omitempty"`
 }
 
+type ConnectionBitbucketCloudConfigStatus struct {
+	/* Required. An access token with the `webhook`, `repository`, `repository:admin` and `pullrequest` scope access. It can be either a workspace, project or repository access token. It's recommended to use a system account to generate these credentials. */
+	// +optional
+	AuthorizerCredential *ConnectionAuthorizerCredentialStatus `json:"authorizerCredential,omitempty"`
+
+	/* Required. An access token with the `repository` access. It can be either a workspace, project or repository access token. It's recommended to use a system account to generate the credentials. */
+	// +optional
+	ReadAuthorizerCredential *ConnectionReadAuthorizerCredentialStatus `json:"readAuthorizerCredential,omitempty"`
+}
+
 type ConnectionBitbucketDataCenterConfigStatus struct {
 	/* Output only. Version of the Bitbucket Data Center running on the `host_uri`. */
 	// +optional
@@ -248,6 +258,10 @@ type ConnectionInstallationStateStatus struct {
 }
 
 type ConnectionObservedStateStatus struct {
+	/* Configuration for connections to Bitbucket Cloud. */
+	// +optional
+	BitbucketCloudConfig *ConnectionBitbucketCloudConfigStatus `json:"bitbucketCloudConfig,omitempty"`
+
 	/* Configuration for connections to Bitbucket Data Center. */
 	// +optional
 	BitbucketDataCenterConfig *ConnectionBitbucketDataCenterConfigStatus `json:"bitbucketDataCenterConfig,omitempty"`
@@ -313,6 +327,7 @@ type CloudBuildConnectionStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudbuildconnection;gcpcloudbuildconnections
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
