@@ -49,6 +49,44 @@ func (p *KMSAutokeyConfigParent) String() string {
 }
 
 func NewAutokeyConfigIdentity(ctx context.Context, reader client.Reader, obj *KMSAutokeyConfig) (*KMSAutokeyConfigIdentity, error) {
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		actualIdentity, err := ParseKMSAutokeyConfigExternal(externalRef)
+		if err != nil {
+			return nil, err
+		}
+
+		if obj.Spec.FolderRef != nil && obj.Spec.ProjectRef != nil {
+			return nil, fmt.Errorf("only one of spec.folderRef or spec.projectRef can be specified")
+		}
+
+		if obj.Spec.FolderRef != nil {
+			if actualIdentity.parent.FolderID == "" {
+				return nil, fmt.Errorf("parent changed, expect %s, got folder reference", actualIdentity.parent.String())
+			}
+			if obj.Spec.FolderRef.External != "" {
+				folderID := strings.TrimPrefix(obj.Spec.FolderRef.External, "folders/")
+				if folderID != actualIdentity.parent.FolderID {
+					return nil, fmt.Errorf("parent changed, expect %s, got %s", actualIdentity.parent.String(), folderID)
+				}
+			}
+		}
+
+		if obj.Spec.ProjectRef != nil {
+			if actualIdentity.parent.ProjectID == "" {
+				return nil, fmt.Errorf("parent changed, expect %s, got project reference", actualIdentity.parent.String())
+			}
+			if obj.Spec.ProjectRef.External != "" {
+				projectID := strings.TrimPrefix(obj.Spec.ProjectRef.External, "projects/")
+				if projectID != actualIdentity.parent.ProjectID {
+					return nil, fmt.Errorf("parent changed, expect %s, got %s", actualIdentity.parent.String(), projectID)
+				}
+			}
+		}
+
+		return actualIdentity, nil
+	}
+
 	// Get Parent
 	var folderID, projectID string
 	if obj.Spec.FolderRef != nil {
@@ -71,17 +109,6 @@ func NewAutokeyConfigIdentity(ctx context.Context, reader client.Reader, obj *KM
 	}
 	if folderID != "" && projectID != "" {
 		return nil, fmt.Errorf("only one of spec.folderRef or spec.projectRef can be specified")
-	}
-
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		actualIdentity, err := ParseKMSAutokeyConfigExternal(externalRef)
-		if err != nil {
-			return nil, err
-		}
-		if actualIdentity.parent.FolderID != folderID || actualIdentity.parent.ProjectID != projectID {
-			return nil, fmt.Errorf("parent changed, expect %s, got %s", actualIdentity.parent.String(), folderID+projectID)
-		}
 	}
 
 	return &KMSAutokeyConfigIdentity{
