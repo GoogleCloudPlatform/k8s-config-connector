@@ -94,10 +94,6 @@ func getIdentityFromDNSRecordSetSpec(ctx context.Context, reader client.Reader, 
 		return nil, fmt.Errorf("spec.name is required")
 	}
 
-	if obj.Spec.Type == "" {
-		return nil, fmt.Errorf("spec.type is required")
-	}
-
 	identity := &DNSRecordSetIdentity{
 		Project:     projectID,
 		ManagedZone: managedZoneIdentity.ManagedZone,
