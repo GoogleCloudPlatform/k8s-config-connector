@@ -56,7 +56,7 @@ func (r *ComputeNetworkAttachmentRef) NormalizedExternal(ctx context.Context, re
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseInterconnectExternal(r.External); err != nil {
+		if _, _, err := ParseNetworkAttachmentExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

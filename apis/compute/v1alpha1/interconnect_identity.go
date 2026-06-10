@@ -17,95 +17,89 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// InterconnectIdentity is the identity of a ComputeInterconnect.
-type InterconnectIdentity struct {
-	parent *InterconnectParent
-	id     string
+var (
+	_ identity.IdentityV2 = &ComputeInterconnectIdentity{}
+	_ identity.Resource   = &ComputeInterconnect{}
+)
+
+var ComputeInterconnectIdentityFormat = gcpurls.Template[ComputeInterconnectIdentity](
+	"compute.googleapis.com",
+	"projects/{project}/global/interconnects/{interconnect}",
+)
+
+// ComputeInterconnectIdentity is the identity of a GCP ComputeInterconnect resource.
+// +k8s:deepcopy-gen=false
+type ComputeInterconnectIdentity struct {
+	Project      string
+	Interconnect string
 }
 
-func (i *InterconnectIdentity) String() string {
-	return i.parent.String() + "/global/interconnects/" + i.id
+func (i *ComputeInterconnectIdentity) String() string {
+	return ComputeInterconnectIdentityFormat.ToString(*i)
 }
 
-func (i *InterconnectIdentity) ID() string {
-	return i.id
-}
-
-func (i *InterconnectIdentity) Parent() *InterconnectParent {
-	return i.parent
-}
-
-// No changes needed to the InterconnectParent struct.
-type InterconnectParent struct {
-	ProjectID string
-}
-
-func (p *InterconnectParent) String() string {
-	return "projects/" + p.ProjectID
-}
-
-// New builds an InterconnectIdentity from the Config Connector Interconnect object.
-func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *ComputeInterconnect) (*InterconnectIdentity, error) {
-
-	// Get Parent
-	parent := obj.Spec.Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), parent.ProjectRef)
+func (i *ComputeInterconnectIdentity) FromExternal(ref string) error {
+	parsed, match, err := ComputeInterconnectIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of ComputeInterconnect external=%q was not known (use %s): %w", ref, ComputeInterconnectIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of ComputeInterconnect external=%q was not known (use %s)", ref, ComputeInterconnectIdentityFormat.CanonicalForm())
 	}
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *ComputeInterconnectIdentity) Host() string {
+	return ComputeInterconnectIdentityFormat.Host()
+}
+
+func getIdentityFromComputeInterconnectSpec(ctx context.Context, reader client.Reader, obj *ComputeInterconnect) (*ComputeInterconnectIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &ComputeInterconnectIdentity{
+		Project:      projectID,
+		Interconnect: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *ComputeInterconnect) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromComputeInterconnectSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseInterconnectExternal(externalRef)
-		if err != nil {
+		statusIdentity := &ComputeInterconnectIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &InterconnectIdentity{
-		parent: &InterconnectParent{
-			ProjectID: projectID,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseInterconnectExternal(external string) (parent *InterconnectParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 5 || tokens[0] != "projects" || tokens[2] != "global" || tokens[3] != "interconnects" {
-		return nil, "", fmt.Errorf("format of ComputeInterconnect external=%q was not known (use projects/{{projectID}}/global/interconnects/{{interconnectID}})", external)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ComputeInterconnect identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
-	parent = &InterconnectParent{
-		ProjectID: tokens[1],
-	}
-	resourceID = tokens[4]
-	return parent, resourceID, nil
+
+	return specIdentity, nil
 }
