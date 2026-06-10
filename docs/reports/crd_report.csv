@@ -264,7 +264,7 @@ dlp.cnrm.cloud.google.com,DLPJobTrigger,False,True,False,DCL,False
 dlp.cnrm.cloud.google.com,DLPStoredInfoType,False,True,False,DCL,False
 dns.cnrm.cloud.google.com,DNSManagedZone,False,True,False,Terraform,True
 dns.cnrm.cloud.google.com,DNSPolicy,False,True,False,Terraform,True
-dns.cnrm.cloud.google.com,DNSRecordSet,False,True,False,Terraform,False
+dns.cnrm.cloud.google.com,DNSRecordSet,False,True,False,Terraform,True
 dns.cnrm.cloud.google.com,DNSResponsePolicy,True,False,False,Terraform,True
 dns.cnrm.cloud.google.com,DNSResponsePolicyRule,True,False,False,Terraform,False
 documentai.cnrm.cloud.google.com,DocumentAIProcessorDefaultVersion,True,False,False,Terraform,False
