@@ -71,6 +71,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	ignoredTemplates := map[string]bool{
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":                         true,
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}":                              true,
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}":             true,
 		"//storage.googleapis.com/projects/{}/buckets/{}":                                           true,
