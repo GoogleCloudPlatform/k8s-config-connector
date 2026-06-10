@@ -12,30 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:fuzz-gen
-// proto.message: google.cloud.kms.v1.KeyRing
-// api.group: kms.cnrm.cloud.google.com
-
 package kms
 
 import (
-	pb "cloud.google.com/go/kms/apiv1/kmspb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"math/rand"
+	"testing"
 )
 
-func init() {
-	fuzztesting.RegisterKRMFuzzer(KMSKeyRingFuzzer())
-}
-
-func KMSKeyRingFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.KeyRing{},
-		KMSKeyRingSpec_FromProto, KMSKeyRingSpec_ToProto,
-		KMSKeyRingStatus_FromProto, KMSKeyRingStatus_ToProto,
-	)
-
-	f.StatusField(".name")
-
-	f.Unimplemented_NotYetTriaged(".create_time")
-
-	return f
+func TestKMSKeyRingFuzzer(t *testing.T) {
+	t.Parallel()
+	fuzzer := KMSKeyRingFuzzer()
+	for i := int64(0); i < 1000; i++ {
+		seed := rand.Int63()
+		fuzzer.FuzzSpec(t, seed)
+		fuzzer.FuzzStatus(t, seed)
+	}
 }
