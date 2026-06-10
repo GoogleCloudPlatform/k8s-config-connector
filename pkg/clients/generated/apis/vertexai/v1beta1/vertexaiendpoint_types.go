@@ -38,39 +38,95 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type EndpointBigqueryDestination struct {
+	/* Required. BigQuery URI to a project or table, up to 2000 characters long.
+
+	When only the project is specified, the Dataset and Table is created.
+	When the full table reference is specified, the Dataset must exist and
+	table must not exist.
+
+	Accepted forms:
+
+	*  BigQuery path. For example:
+	`bq://projectId` or `bq://projectId.bqDatasetId` or
+	`bq://projectId.bqDatasetId.bqTableId`. */
+	// +optional
+	OutputURI *string `json:"outputURI,omitempty"`
+}
+
+type EndpointClientConnectionConfig struct {
+	/* Customizable online prediction request timeout. */
+	// +optional
+	InferenceTimeout *string `json:"inferenceTimeout,omitempty"`
+}
+
 type EndpointEncryptionSpec struct {
-	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
-	Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
-	The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyNameRef v1alpha1.ResourceRef `json:"kmsKeyNameRef"`
+	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
+	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+}
+
+type EndpointPredictRequestResponseLoggingConfig struct {
+	/* BigQuery table for logging. If only given a project, a new dataset will be created with name `logging_<endpoint-display-name>_<endpoint-id>` where <endpoint-display-name> will be made BigQuery-dataset-name compatible (e.g. most special characters will become underscores). If no table name is given, a new table will be created with name `request_response_logging` */
+	// +optional
+	BigqueryDestination *EndpointBigqueryDestination `json:"bigqueryDestination,omitempty"`
+
+	/* This field is used for large models. If true, in addition to the original large model logs, logs will be converted in OTel schema format, and saved in otel_log column. Default value is false. */
+	// +optional
+	EnableOtelLogging *bool `json:"enableOtelLogging,omitempty"`
+
+	/* If logging is enabled or not. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Percentage of requests to be logged, expressed as a fraction in range(0,1]. */
+	// +optional
+	SamplingRate *float64 `json:"samplingRate,omitempty"`
 }
 
 type VertexAIEndpointSpec struct {
+	/* Configurations that are applied to the endpoint for online prediction. */
+	// +optional
+	ClientConnectionConfig *EndpointClientConnectionConfig `json:"clientConnectionConfig,omitempty"`
+
+	/* If true, the endpoint will be exposed through a dedicated DNS	//  [Endpoint.dedicated_endpoint_dns]. Your request to the dedicated DNS will be isolated from other users' traffic and will have better performance and routing capabilities. Note: Once you enabled dedicated endpoint, you won't be able to send request to the shared DNS {region}-aiplatform.googleapis.com. The limitation will be removed soon. */
+	// +optional
+	DedicatedEndpointEnabled *bool `json:"dedicatedEndpointEnabled,omitempty"`
+
 	/* The description of the Endpoint. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
 	/* Required. The display name of the Endpoint. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
-	DisplayName string `json:"displayName"`
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. Customer-managed encryption key spec for an Endpoint. If set, this Endpoint and all sub-resources of this Endpoint will be secured by this key. */
+	/* Deprecated: If true, expose the Endpoint via private service connect. Only one of the fields, [network][google.cloud.aiplatform.v1beta1.Endpoint.network] or [enable_private_service_connect][google.cloud.aiplatform.v1beta1.Endpoint.enable_private_service_connect], can be set. */
+	// +optional
+	EnablePrivateServiceConnect *bool `json:"enablePrivateServiceConnect,omitempty"`
+
+	/* Customer-managed encryption key spec for an Endpoint. If set, this Endpoint and all sub-resources of this Endpoint will be secured by this key. */
 	// +optional
 	EncryptionSpec *EndpointEncryptionSpec `json:"encryptionSpec,omitempty"`
 
-	/* Optional. The full name of the Google Compute Engine network to which the Endpoint should be peered.
-	Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network.
-	Only one of the fields, network or enablePrivateServiceConnect, can be set.
-	Format: projects/{project_id}/global/networks/{network_name}. */
+	/* The labels with user-defined metadata to organize your Endpoints. Label keys and values can be no longer than 64 characters (Unicode codepoints), can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. See https://goo.gl/xmQnxf for more information and examples of labels. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* The full name of the Google Compute Engine [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks) to which the Endpoint should be peered. Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network. Only one of the fields, [network][google.cloud.aiplatform.v1beta1.Endpoint.network] or [enable_private_service_connect][google.cloud.aiplatform.v1beta1.Endpoint.enable_private_service_connect], can be set. [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/get): `projects/{project}/global/networks/{network}`. Where {project} is a project number, as in '12345', and {network} is network name. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
+	/* Configures the request-response logging for online prediction.	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Endpoint.predict_request_response_logging_config */
+	// +optional
+	PredictRequestResponseLoggingConfig *EndpointPredictRequestResponseLoggingConfig `json:"predictRequestResponseLoggingConfig,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. The region for the resource. */
+	/* Immutable. The region of this resource. */
 	Region string `json:"region"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The VertexAIEndpoint name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -80,20 +136,28 @@ type EndpointObservedStateStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Resource name of the Model Monitoring job associated with this Endpoint if monitoring is enabled by CreateModelDeploymentMonitoringJob. Format: 'projects/{project}/locations/{location}/modelDeploymentMonitoringJobs/{model_deployment_monitoring_job}'. */
+	/* Output only. DNS of the dedicated endpoint. Will only be populated if dedicated_endpoint_enabled is true. Format: `https://{endpoint_id}.{region}-{project_number}.prediction.vertexai.goog`. */
 	// +optional
-	ModelDeploymentMonitoringJob *string `json:"modelDeploymentMonitoringJob,omitempty"`
+	DedicatedEndpointDNS *string `json:"dedicatedEndpointDNS,omitempty"`
+
+	/* Output only. Timestamp when this Endpoint was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type VertexAIEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIEndpoint's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the VertexAIEndpoint resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
 	ObservedState *EndpointObservedStateStatus `json:"observedState,omitempty"`
 }

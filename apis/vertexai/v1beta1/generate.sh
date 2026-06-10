@@ -29,7 +29,8 @@ go run . generate-types \
     --api-version vertexai.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
     --resource VertexAIMetadataStore:MetadataStore \
-    --resource VertexAIDataset:Dataset
+    --resource VertexAIDataset:Dataset \
+    --resource VertexAIEndpoint:Endpoint
 
 go run . generate-mapper \
     --service google.cloud.aiplatform.v1beta1 \

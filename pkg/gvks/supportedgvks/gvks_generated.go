@@ -2764,15 +2764,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "vertexai.cnrm.cloud.google.com",
 		Version: "v1alpha1",
-		Kind:    "VertexAIEndpoint",
-	}: {
-		Terraform:   true,
-		DCL:         false,
-		SupportsIAM: false,
-	},
-	{
-		Group:   "vertexai.cnrm.cloud.google.com",
-		Version: "v1alpha1",
 		Kind:    "VertexAIFeaturestoreEntityTypeFeature",
 	}: {
 		Terraform:   true,

@@ -17,7 +17,7 @@ spec:
   description: example vertex AI endpoint with encryption key
   displayName: vertexai-endpoint-encryptionkey-updated
   encryptionSpec:
-    kmsKeyNameRef:
+    kmsKeyRef:
       name: kmscryptokey-${uniqueId}
   projectRef:
     external: ${projectId}

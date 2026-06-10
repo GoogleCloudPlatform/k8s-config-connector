@@ -23,7 +23,7 @@ spec:
   description: "example vertex AI endpoint with encryption key"
   region: us-central1
   encryptionSpec:
-    kmsKeyNameRef:
+    kmsKeyRef:
       name: kmscryptokey-${uniqueId}
   projectRef:
     external: ${projectId}

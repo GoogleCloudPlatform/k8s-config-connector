@@ -56,19 +56,32 @@ title: "VertexAIEndpoint"
 ### Spec
 #### Schema
 ```yaml
+clientConnectionConfig:
+  inferenceTimeout: string
+dedicatedEndpointEnabled: boolean
 description: string
 displayName: string
+enablePrivateServiceConnect: boolean
 encryptionSpec:
-  kmsKeyNameRef:
+  kmsKeyRef:
     external: string
     name: string
     namespace: string
+labels:
+  string: string
 networkRef:
   external: string
   name: string
   namespace: string
+predictRequestResponseLoggingConfig:
+  bigqueryDestination:
+    outputURI: string
+  enableOtelLogging: boolean
+  enabled: boolean
+  samplingRate: float
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 region: string
@@ -84,6 +97,36 @@ resourceID: string
 <tbody>
     <tr>
         <td>
+            <p><code>clientConnectionConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Configurations that are applied to the endpoint for online prediction.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clientConnectionConfig.inferenceTimeout</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Customizable online prediction request timeout.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dedicatedEndpointEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>If true, the endpoint will be exposed through a dedicated DNS	//  [Endpoint.dedicated_endpoint_dns]. Your request to the dedicated DNS will be isolated from other users' traffic and will have better performance and routing capabilities. Note: Once you enabled dedicated endpoint, you won't be able to send request to the shared DNS {region}-aiplatform.googleapis.com. The limitation will be removed soon.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>description</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -95,11 +138,21 @@ resourceID: string
     <tr>
         <td>
             <p><code>displayName</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>Required. The display name of the Endpoint. The name can be up to 128 characters long and can consist of any UTF-8 characters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>enablePrivateServiceConnect</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Deprecated: If true, expose the Endpoint via private service connect. Only one of the fields, [network][google.cloud.aiplatform.v1beta1.Endpoint.network] or [enable_private_service_connect][google.cloud.aiplatform.v1beta1.Endpoint.enable_private_service_connect], can be set.</p>
         </td>
     </tr>
     <tr>
@@ -109,49 +162,57 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Customer-managed encryption key spec for an Endpoint. If set, this Endpoint and all sub-resources of this Endpoint will be secured by this key.</p>
+            <p>Customer-managed encryption key spec for an Endpoint. If set, this Endpoint and all sub-resources of this Endpoint will be secured by this key.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>encryptionSpec.kmsKeyNameRef</code></p>
+            <p><code>encryptionSpec.kmsKeyRef</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
-Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
-The key needs to be in the same region as where the compute resource is created.</p>
+            <p>Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>encryptionSpec.kmsKeyNameRef.external</code></p>
+            <p><code>encryptionSpec.kmsKeyRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>encryptionSpec.kmsKeyNameRef.name</code></p>
+            <p><code>encryptionSpec.kmsKeyRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>encryptionSpec.kmsKeyNameRef.namespace</code></p>
+            <p><code>encryptionSpec.kmsKeyRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>The labels with user-defined metadata to organize your Endpoints. Label keys and values can be no longer than 64 characters (Unicode codepoints), can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. See https://goo.gl/xmQnxf for more information and examples of labels.</p>
         </td>
     </tr>
     <tr>
@@ -161,10 +222,7 @@ The key needs to be in the same region as where the compute resource is created.
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Optional. The full name of the Google Compute Engine network to which the Endpoint should be peered.
-Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network.
-Only one of the fields, network or enablePrivateServiceConnect, can be set.
-Format: projects/{project_id}/global/networks/{network_name}.</p>
+            <p>The full name of the Google Compute Engine [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks) to which the Endpoint should be peered. Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network. Only one of the fields, [network][google.cloud.aiplatform.v1beta1.Endpoint.network] or [enable_private_service_connect][google.cloud.aiplatform.v1beta1.Endpoint.enable_private_service_connect], can be set. [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/get): `projects/{project}/global/networks/{network}`. Where {project} is a project number, as in '12345', and {network} is network name.</p>
         </td>
     </tr>
     <tr>
@@ -174,7 +232,7 @@ Format: projects/{project_id}/global/networks/{network_name}.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`, where {{value}} is the `name` field of a `ComputeNetwork` resource.</p>
+            <p>The ComputeNetwork selflink of form "projects/{{project}}/global/networks/{{name}}", when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -184,7 +242,7 @@ Format: projects/{project_id}/global/networks/{network_name}.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `ComputeNetwork` resource.</p>
         </td>
     </tr>
     <tr>
@@ -194,7 +252,77 @@ Format: projects/{project_id}/global/networks/{network_name}.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `ComputeNetwork` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>predictRequestResponseLoggingConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Configures the request-response logging for online prediction.	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Endpoint.predict_request_response_logging_config</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>predictRequestResponseLoggingConfig.bigqueryDestination</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>BigQuery table for logging. If only given a project, a new dataset will be created with name `logging_<endpoint-display-name>_<endpoint-id>` where <endpoint-display-name> will be made BigQuery-dataset-name compatible (e.g. most special characters will become underscores). If no table name is given, a new table will be created with name `request_response_logging`</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>predictRequestResponseLoggingConfig.bigqueryDestination.outputURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Required. BigQuery URI to a project or table, up to 2000 characters long.
+
+ When only the project is specified, the Dataset and Table is created.
+ When the full table reference is specified, the Dataset must exist and
+ table must not exist.
+
+ Accepted forms:
+
+ *  BigQuery path. For example:
+ `bq://projectId` or `bq://projectId.bqDatasetId` or
+ `bq://projectId.bqDatasetId.bqTableId`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>predictRequestResponseLoggingConfig.enableOtelLogging</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>This field is used for large models. If true, in addition to the original large model logs, logs will be converted in OTel schema format, and saved in otel_log column. Default value is false.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>predictRequestResponseLoggingConfig.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>If logging is enabled or not.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>predictRequestResponseLoggingConfig.samplingRate</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>Percentage of requests to be logged, expressed as a fraction in range(0,1].</p>
         </td>
     </tr>
     <tr>
@@ -214,7 +342,17 @@ Format: projects/{project_id}/global/networks/{network_name}.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
         </td>
     </tr>
     <tr>
@@ -224,7 +362,7 @@ Format: projects/{project_id}/global/networks/{network_name}.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -234,7 +372,7 @@ Format: projects/{project_id}/global/networks/{network_name}.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -244,7 +382,7 @@ Format: projects/{project_id}/global/networks/{network_name}.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The region for the resource.</p>
+            <p>Immutable. The region of this resource.</p>
         </td>
     </tr>
     <tr>
@@ -254,7 +392,7 @@ Format: projects/{project_id}/global/networks/{network_name}.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The VertexAIEndpoint name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
 </tbody>
@@ -271,10 +409,12 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
 observedState:
   createTime: string
-  modelDeploymentMonitoringJob: string
+  dedicatedEndpointDNS: string
+  updateTime: string
 ```
 
 <table class="properties responsive">
@@ -288,7 +428,7 @@ observedState:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -334,6 +474,13 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the VertexAIEndpoint resource in GCP.</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -344,7 +491,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The observed state of the underlying GCP resource.</p>
+            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
         </td>
     </tr>
     <tr>
@@ -355,10 +502,17 @@ observedState:
         </td>
     </tr>
     <tr>
-        <td><code>observedState.modelDeploymentMonitoringJob</code></td>
+        <td><code>observedState.dedicatedEndpointDNS</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. Resource name of the Model Monitoring job associated with this Endpoint if monitoring is enabled by CreateModelDeploymentMonitoringJob. Format: 'projects/{project}/locations/{location}/modelDeploymentMonitoringJobs/{model_deployment_monitoring_job}'.</p>
+            <p>Output only. DNS of the dedicated endpoint. Will only be populated if dedicated_endpoint_enabled is true. Format: `https://{endpoint_id}.{region}-{project_number}.prediction.vertexai.goog`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Timestamp when this Endpoint was last updated.</p>
         </td>
     </tr>
 </tbody>

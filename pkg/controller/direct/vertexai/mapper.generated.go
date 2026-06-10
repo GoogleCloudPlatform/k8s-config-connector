@@ -51,6 +51,38 @@ func AutoscalingMetricSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmve
 	out.MonitoredResourceLabels = in.MonitoredResourceLabels
 	return out
 }
+func BigQueryDestination_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryDestination{}
+	out.OutputURI = direct.LazyPtr(in.GetOutputUri())
+	return out
+}
+func BigQueryDestination_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDestination) *pb.BigQueryDestination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryDestination{}
+	out.OutputUri = direct.ValueOf(in.OutputURI)
+	return out
+}
+func ClientConnectionConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectionConfig) *krm.ClientConnectionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClientConnectionConfig{}
+	out.InferenceTimeout = direct.StringDuration_FromProto(mapCtx, in.GetInferenceTimeout())
+	return out
+}
+func ClientConnectionConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClientConnectionConfig) *pb.ClientConnectionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClientConnectionConfig{}
+	out.InferenceTimeout = direct.StringDuration_ToProto(mapCtx, in.InferenceTimeout)
+	return out
+}
 func DedicatedResources_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedResources) *krmvertexaiv1alpha1.DedicatedResources {
 	if in == nil {
 		return nil
@@ -339,6 +371,84 @@ func MetadataStore_MetadataStoreState_v1beta1_ToProto(mapCtx *direct.MapContext,
 	out.DiskUtilizationBytes = direct.ValueOf(in.DiskUtilizationBytes)
 	return out
 }
+func PSCAutomationConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PSCAutomationConfig) *krm.PSCAutomationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCAutomationConfig{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: IPAddress
+	// MISSING: ForwardingRule
+	// MISSING: State
+	// MISSING: ErrorMessage
+	return out
+}
+func PSCAutomationConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutomationConfig) *pb.PSCAutomationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PSCAutomationConfig{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	// MISSING: IPAddress
+	// MISSING: ForwardingRule
+	// MISSING: State
+	// MISSING: ErrorMessage
+	return out
+}
+func PredictRequestResponseLoggingConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PredictRequestResponseLoggingConfig) *krm.PredictRequestResponseLoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PredictRequestResponseLoggingConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.SamplingRate = direct.LazyPtr(in.GetSamplingRate())
+	out.BigqueryDestination = BigQueryDestination_v1beta1_FromProto(mapCtx, in.GetBigqueryDestination())
+	// MISSING: RequestResponseLoggingSchemaVersion
+	out.EnableOtelLogging = direct.LazyPtr(in.GetEnableOtelLogging())
+	return out
+}
+func PredictRequestResponseLoggingConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PredictRequestResponseLoggingConfig) *pb.PredictRequestResponseLoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PredictRequestResponseLoggingConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.SamplingRate = direct.ValueOf(in.SamplingRate)
+	out.BigqueryDestination = BigQueryDestination_v1beta1_ToProto(mapCtx, in.BigqueryDestination)
+	// MISSING: RequestResponseLoggingSchemaVersion
+	out.EnableOtelLogging = direct.ValueOf(in.EnableOtelLogging)
+	return out
+}
+func PrivateServiceConnectConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConfig) *krm.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateServiceConnectConfig{}
+	out.EnablePrivateServiceConnect = direct.LazyPtr(in.GetEnablePrivateServiceConnect())
+	out.ProjectAllowlist = PrivateServiceConnectConfig_ProjectAllowlist_FromProto(mapCtx, in.ProjectAllowlist)
+	out.PSCAutomationConfigs = direct.Slice_FromProto(mapCtx, in.PscAutomationConfigs, PSCAutomationConfig_v1beta1_FromProto)
+	out.EnableSecurePrivateServiceConnect = direct.LazyPtr(in.GetEnableSecurePrivateServiceConnect())
+	// MISSING: ServiceAttachment
+	return out
+}
+func PrivateServiceConnectConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConfig) *pb.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateServiceConnectConfig{}
+	out.EnablePrivateServiceConnect = direct.ValueOf(in.EnablePrivateServiceConnect)
+	out.ProjectAllowlist = PrivateServiceConnectConfig_ProjectAllowlist_ToProto(mapCtx, in.ProjectAllowlist)
+	out.PscAutomationConfigs = direct.Slice_ToProto(mapCtx, in.PSCAutomationConfigs, PSCAutomationConfig_v1beta1_ToProto)
+	out.EnableSecurePrivateServiceConnect = direct.ValueOf(in.EnableSecurePrivateServiceConnect)
+	// MISSING: ServiceAttachment
+	return out
+}
 func ReservationAffinity_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krmvertexaiv1alpha1.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -489,6 +599,98 @@ func VertexAIDeploymentResourcePoolSpec_v1alpha1_ToProto(mapCtx *direct.MapConte
 		out.ServiceAccount = in.ServiceAccountRef.External
 	}
 	out.DisableContainerLogging = direct.ValueOf(in.DisableContainerLogging)
+	return out
+}
+func VertexAIEndpointObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.VertexAIEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIEndpointObservedState{}
+	// MISSING: Name
+	// MISSING: DeployedModels
+	// MISSING: TrafficSplit
+	// MISSING: Etag
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: PrivateServiceConnectConfig
+	// MISSING: ModelDeploymentMonitoringJob
+	out.DedicatedEndpointDNS = direct.LazyPtr(in.GetDedicatedEndpointDns())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	// MISSING: GenAiAdvancedFeaturesConfig
+	return out
+}
+func VertexAIEndpointObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIEndpointObservedState) *pb.Endpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Endpoint{}
+	// MISSING: Name
+	// MISSING: DeployedModels
+	// MISSING: TrafficSplit
+	// MISSING: Etag
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: PrivateServiceConnectConfig
+	// MISSING: ModelDeploymentMonitoringJob
+	out.DedicatedEndpointDns = direct.ValueOf(in.DedicatedEndpointDNS)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	// MISSING: GenAiAdvancedFeaturesConfig
+	return out
+}
+func VertexAIEndpointSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.VertexAIEndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIEndpointSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: DeployedModels
+	// MISSING: TrafficSplit
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_v1beta1_FromProto(mapCtx, in.GetEncryptionSpec())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.EnablePrivateServiceConnect = direct.LazyPtr(in.GetEnablePrivateServiceConnect())
+	// MISSING: PrivateServiceConnectConfig
+	// MISSING: ModelDeploymentMonitoringJob
+	out.PredictRequestResponseLoggingConfig = PredictRequestResponseLoggingConfig_v1beta1_FromProto(mapCtx, in.GetPredictRequestResponseLoggingConfig())
+	out.DedicatedEndpointEnabled = direct.LazyPtr(in.GetDedicatedEndpointEnabled())
+	out.ClientConnectionConfig = ClientConnectionConfig_v1beta1_FromProto(mapCtx, in.GetClientConnectionConfig())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	// MISSING: GenAiAdvancedFeaturesConfig
+	return out
+}
+func VertexAIEndpointSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIEndpointSpec) *pb.Endpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Endpoint{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: DeployedModels
+	// MISSING: TrafficSplit
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_v1beta1_ToProto(mapCtx, in.EncryptionSpec)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.EnablePrivateServiceConnect = direct.ValueOf(in.EnablePrivateServiceConnect)
+	// MISSING: PrivateServiceConnectConfig
+	// MISSING: ModelDeploymentMonitoringJob
+	out.PredictRequestResponseLoggingConfig = PredictRequestResponseLoggingConfig_v1beta1_ToProto(mapCtx, in.PredictRequestResponseLoggingConfig)
+	out.DedicatedEndpointEnabled = direct.ValueOf(in.DedicatedEndpointEnabled)
+	out.ClientConnectionConfig = ClientConnectionConfig_v1beta1_ToProto(mapCtx, in.ClientConnectionConfig)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	// MISSING: GenAiAdvancedFeaturesConfig
 	return out
 }
 func VertexAIExampleStoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExampleStore) *krmvertexaiv1alpha1.VertexAIExampleStoreObservedState {
