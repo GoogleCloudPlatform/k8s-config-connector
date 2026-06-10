@@ -308,9 +308,7 @@ spec:
                   PRIVATE_RANGES_ONLY, ALL_TRAFFIC'
                 type: string
               vpcConnectorRef:
-                description: VPCAccessConnectorRef defines the resource reference
-                  to VPCAccessConnector, which "External" field holds the GCP identifier
-                  for the KRM object.
+                description: VPCAccessConnectorRef is a reference to a VPCAccessConnector.
                 oneOf:
                 - not:
                     required:
