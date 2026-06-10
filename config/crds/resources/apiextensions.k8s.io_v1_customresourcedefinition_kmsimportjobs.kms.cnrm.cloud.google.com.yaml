@@ -83,14 +83,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed KMSKeyRing.
-                      Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}`.
+                    description: A reference to an externally managed KMSKeyRing resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}".
                     type: string
                   name:
-                    description: The `name` of a `KMSKeyRing` resource.
+                    description: The name of a KMSKeyRing resource.
                     type: string
                   namespace:
-                    description: The `namespace` of a `KMSKeyRing` resource.
+                    description: The namespace of a KMSKeyRing resource.
                     type: string
                 type: object
               protectionLevel:
@@ -295,14 +295,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed KMSKeyRing.
-                      Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}`.
+                    description: A reference to an externally managed KMSKeyRing resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}".
                     type: string
                   name:
-                    description: The `name` of a `KMSKeyRing` resource.
+                    description: The name of a KMSKeyRing resource.
                     type: string
                   namespace:
-                    description: The `namespace` of a `KMSKeyRing` resource.
+                    description: The namespace of a KMSKeyRing resource.
                     type: string
                 type: object
               protectionLevel:

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,86 +16,92 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &KMSKeyRingRef{}
+var _ refs.Ref = &KMSKeyRingRef{}
 
 // KMSKeyRingRef is a reference to a KMSKeyRing.
 type KMSKeyRingRef struct {
-	// A reference to an externally managed KMSKeyRing.
-	// Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}`.
+	// A reference to an externally managed KMSKeyRing resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}".
 	External string `json:"external,omitempty"`
 
-	// The `name` of a `KMSKeyRing` resource.
+	// The name of a KMSKeyRing resource.
 	Name string `json:"name,omitempty"`
-	// The `namespace` of a `KMSKeyRing` resource.
+
+	// The namespace of a KMSKeyRing resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on KMSKeyRingRef.
-// If the "External" is given in the other resource's spec.KMSKeyRingRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual KMSKeyRingRef object from the cluster.
+func init() {
+	refs.Register(&KMSKeyRingRef{})
+}
+
+func (r *KMSKeyRingRef) GetGVK() schema.GroupVersionKind {
+	return KMSKeyRingGVK
+}
+
+func (r *KMSKeyRingRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *KMSKeyRingRef) GetExternal() string {
+	return r.External
+}
+
+func (r *KMSKeyRingRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *KMSKeyRingRef) ValidateExternal(ref string) error {
+	id := &KMSKeyRingIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *KMSKeyRingRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &KMSKeyRingIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *KMSKeyRingRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*KMSKeyRing](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromKMSKeyRingSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+// NormalizedExternal provision the "External" value.
+// Kept for backward compatibility with older callers.
 func (r *KMSKeyRingRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", KMSKeyRingGVK.Kind)
-	}
-	// From given External
-	// External should be in the `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}` format
-	if r.External != "" {
-		if _, err := ParseKMSKeyRingExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(KMSKeyRingGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", KMSKeyRingGVK, key, err)
-	}
-
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef != "" {
-		r.External = actualExternalRef
-		return r.External, nil
-	}
-
-	// Backward compatible for resources still managed by the legacy controller and without the status.externalRef
-	resourceID, err := refsv1beta1.GetResourceID(u)
-	if err != nil {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
 		return "", err
 	}
-
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-	if err != nil {
-		return "", err
-	}
-
-	location, err := refsv1beta1.GetLocation(u)
-	if err != nil {
-		return "", err
-	}
-
-	r.External = fmt.Sprintf("projects/%s/locations/%s/keyRings/%s", projectID, location, resourceID)
 	return r.External, nil
 }

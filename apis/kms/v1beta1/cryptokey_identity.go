@@ -78,9 +78,9 @@ func getIdentityFromKMSCryptoKeySpec(ctx context.Context, reader client.Reader, 
 	}
 
 	identity := &KMSCryptoKeyIdentity{
-		Project:   keyRingIdentity.Parent.ProjectID,
-		Location:  keyRingIdentity.Parent.Location,
-		KeyRing:   keyRingIdentity.ID,
+		Project:   keyRingIdentity.Project,
+		Location:  keyRingIdentity.Location,
+		KeyRing:   keyRingIdentity.Keyring,
 		CryptoKey: resourceID,
 	}
 	return identity, nil
