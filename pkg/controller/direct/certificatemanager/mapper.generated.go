@@ -241,6 +241,32 @@ func CertificateManagerCertificateIssuanceConfigSpec_v1alpha1_ToProto(mapCtx *di
 	out.KeyAlgorithm = direct.Enum_ToProto[pb.CertificateIssuanceConfig_KeyAlgorithm](mapCtx, in.KeyAlgorithm)
 	return out
 }
+func CertificateManagerCertificateMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CertificateMap) *krm.CertificateManagerCertificateMapSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateManagerCertificateMapSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: GclbTargets
+	return out
+}
+func CertificateManagerCertificateMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagerCertificateMapSpec) *pb.CertificateMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateMap{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: GclbTargets
+	return out
+}
 func CertificateManagerCertificateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Certificate) *krm.CertificateManagerCertificateSpec {
 	if in == nil {
 		return nil
@@ -345,6 +371,68 @@ func CertificateManagerDNSAuthorizationStatus_v1beta1_ToProto(mapCtx *direct.Map
 	// MISSING: Type
 	return out
 }
+func CertificateMap_GclbTargetObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CertificateMap_GclbTarget) *krm.CertificateMap_GclbTargetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateMap_GclbTargetObservedState{}
+	out.TargetHTTPSProxy = direct.LazyPtr(in.GetTargetHttpsProxy())
+	out.TargetSSLProxy = direct.LazyPtr(in.GetTargetSslProxy())
+	out.IPConfigs = direct.Slice_FromProto(mapCtx, in.IpConfigs, CertificateMap_GclbTarget_IPConfigObservedState_v1beta1_FromProto)
+	return out
+}
+func CertificateMap_GclbTargetObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateMap_GclbTargetObservedState) *pb.CertificateMap_GclbTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateMap_GclbTarget{}
+	if oneof := CertificateMap_GclbTargetObservedState_TargetHttpsProxy_ToProto(mapCtx, in.TargetHTTPSProxy); oneof != nil {
+		out.TargetProxy = oneof
+	}
+	if oneof := CertificateMap_GclbTargetObservedState_TargetSslProxy_ToProto(mapCtx, in.TargetSSLProxy); oneof != nil {
+		out.TargetProxy = oneof
+	}
+	out.IpConfigs = direct.Slice_ToProto(mapCtx, in.IPConfigs, CertificateMap_GclbTarget_IPConfigObservedState_v1beta1_ToProto)
+	return out
+}
+func CertificateMap_GclbTargetObservedState_TargetHttpsProxy_ToProto(mapCtx *direct.MapContext, in *string) *pb.CertificateMap_GclbTarget_TargetHttpsProxy {
+	if in == nil {
+		return nil
+	}
+	return &pb.CertificateMap_GclbTarget_TargetHttpsProxy{TargetHttpsProxy: *in}
+}
+func CertificateMap_GclbTargetObservedState_TargetSslProxy_ToProto(mapCtx *direct.MapContext, in *string) *pb.CertificateMap_GclbTarget_TargetSslProxy {
+	if in == nil {
+		return nil
+	}
+	return &pb.CertificateMap_GclbTarget_TargetSslProxy{TargetSslProxy: *in}
+}
+
+/* found existing non-generated mapping function "CertificateMap_GclbTarget_IPConfigObservedState_v1beta1_FromProto", skipping
+func CertificateMap_GclbTarget_IPConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CertificateMap_GclbTarget_IpConfig) *krm.CertificateMap_GclbTarget_IPConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateMap_GclbTarget_IPConfigObservedState{}
+	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "CertificateMap_GclbTarget_IPConfigObservedState_v1beta1_ToProto", skipping
+
+	func CertificateMap_GclbTarget_IPConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateMap_GclbTarget_IPConfigObservedState) *pb.CertificateMap_GclbTarget_IpConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CertificateMap_GclbTarget_IpConfig{}
+		out.IpAddress = direct.ValueOf(in.IPAddress)
+		out.Ports = in.Ports
+		return out
+	}
+*/
 func CertificateObservedStateStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Certificate) *krm.CertificateObservedStateStatus {
 	if in == nil {
 		return nil

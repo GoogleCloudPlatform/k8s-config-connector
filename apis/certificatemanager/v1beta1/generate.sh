@@ -29,7 +29,8 @@ go run . generate-types \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output \
     --resource CertificateManagerDNSAuthorization:DnsAuthorization \
-    --resource CertificateManagerCertificate:Certificate
+    --resource CertificateManagerCertificate:Certificate \
+    --resource CertificateManagerCertificateMap:CertificateMap
 
 go run . generate-mapper \
     --service google.cloud.certificatemanager.v1 \
