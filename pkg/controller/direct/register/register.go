@@ -15,7 +15,6 @@
 package register
 
 import (
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/accesscontextmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aistreams"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
