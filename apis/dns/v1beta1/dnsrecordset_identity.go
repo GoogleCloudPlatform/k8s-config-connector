@@ -29,31 +29,41 @@ var (
 	_ identity.Resource   = &DNSRecordSet{}
 )
 
-var DNSRecordSetIdentityFormat = gcpurls.Template[DNSRecordSetIdentity]("dns.googleapis.com", "projects/{project}/managedZones/{managedZone}/rrsets/{name}")
+var (
+	DNSRecordSetIdentityFormat         = gcpurls.Template[DNSRecordSetIdentity]("dns.googleapis.com", "projects/{project}/locations/{location}/managedZones/{managedZone}/rrsets/{name}")
+	DNSRecordSetIdentityFallbackFormat = gcpurls.Template[DNSRecordSetIdentity]("dns.googleapis.com", "projects/{project}/managedZones/{managedZone}/rrsets/{name}")
+)
 
 // DNSRecordSetIdentity is the identity of a GCP DNSRecordSet resource.
 // +k8s:deepcopy-gen=false
 type DNSRecordSetIdentity struct {
 	Project     string
+	Location    string
 	ManagedZone string
 	Name        string
 }
 
 func (i *DNSRecordSetIdentity) String() string {
-	return DNSRecordSetIdentityFormat.ToString(*i)
+	if i.Location != "" {
+		return DNSRecordSetIdentityFormat.ToString(*i)
+	}
+	return DNSRecordSetIdentityFallbackFormat.ToString(*i)
 }
 
 func (i *DNSRecordSetIdentity) FromExternal(ref string) error {
-	parsed, match, err := DNSRecordSetIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of DNSRecordSet external=%q was not known (use %s): %w", ref, DNSRecordSetIdentityFormat.CanonicalForm(), err)
+	if parsed, match, err := DNSRecordSetIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	} else if err != nil {
+		return err
 	}
-	if !match {
-		return fmt.Errorf("format of DNSRecordSet external=%q was not known (use %s)", ref, DNSRecordSetIdentityFormat.CanonicalForm())
+	if parsed, match, err := DNSRecordSetIdentityFallbackFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	} else if err != nil {
+		return err
 	}
-
-	*i = *parsed
-	return nil
+	return fmt.Errorf("format of DNSRecordSet external=%q was not known (use %s or %s)", ref, DNSRecordSetIdentityFormat.CanonicalForm(), DNSRecordSetIdentityFallbackFormat.CanonicalForm())
 }
 
 func (i *DNSRecordSetIdentity) Host() string {

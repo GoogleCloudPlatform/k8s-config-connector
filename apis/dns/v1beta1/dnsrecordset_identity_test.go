@@ -28,7 +28,17 @@ func TestDNSRecordSetIdentity_FromExternal(t *testing.T) {
 		want    *DNSRecordSetIdentity
 	}{
 		{
-			name: "valid reference",
+			name: "valid reference - primary (with location)",
+			ref:  "projects/my-project/locations/global/managedZones/my-zone/rrsets/my-record.example.com.",
+			want: &DNSRecordSetIdentity{
+				Project:     "my-project",
+				Location:    "global",
+				ManagedZone: "my-zone",
+				Name:        "my-record.example.com.",
+			},
+		},
+		{
+			name: "valid reference - fallback (without location)",
 			ref:  "projects/my-project/managedZones/my-zone/rrsets/my-record.example.com.",
 			want: &DNSRecordSetIdentity{
 				Project:     "my-project",
@@ -42,7 +52,17 @@ func TestDNSRecordSetIdentity_FromExternal(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "full url",
+			name: "full url - primary (with location)",
+			ref:  "https://dns.googleapis.com/projects/my-project/locations/global/managedZones/my-zone/rrsets/www.example.com.",
+			want: &DNSRecordSetIdentity{
+				Project:     "my-project",
+				Location:    "global",
+				ManagedZone: "my-zone",
+				Name:        "www.example.com.",
+			},
+		},
+		{
+			name: "full url - fallback (without location)",
 			ref:  "https://dns.googleapis.com/projects/my-project/managedZones/my-zone/rrsets/www.example.com.",
 			want: &DNSRecordSetIdentity{
 				Project:     "my-project",
