@@ -22,17 +22,20 @@ on:
     paths:
       - '**'
       - '!experiments/**'
+      - '!.agents/**'
   push:
     branches: ["master", "release-*"]
     paths:
       - '**'
       - '!experiments/**'
+      - '!.agents/**'
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
     paths:
       - '**'
       - '!experiments/**'
+      - '!.agents/**'
 
 
 jobs:
