@@ -19,8 +19,6 @@
 package kms
 
 import (
-	"strings"
-
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
@@ -35,38 +33,10 @@ func KMSKeyRingFuzzer() fuzztesting.KRMFuzzer {
 		KMSKeyRingStatus_FromProto, KMSKeyRingStatus_ToProto,
 	)
 
-	f.SpecField(".location")
-	f.SpecField(".resource_id")
-
 	f.StatusField(".name")
 
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_NotYetTriaged(".create_time")
 
-	f.FilterSpec = func(in *pb.KeyRing) {
-		if in.Name != "" {
-			in.Name = "projects/p/locations/l/keyRings/" + sanitizeKeyRingID(in.Name)
-		}
-	}
-
-	f.FilterStatus = func(in *pb.KeyRing) {
-		if in.Name != "" {
-			in.Name = "projects/p/locations/l/keyRings/" + sanitizeKeyRingID(in.Name)
-		}
-	}
-
 	return f
-}
-
-func sanitizeKeyRingID(s string) string {
-	var sb strings.Builder
-	for _, r := range s {
-		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') {
-			sb.WriteRune(r)
-		}
-	}
-	if sb.Len() == 0 {
-		return "keyring"
-	}
-	return sb.String()
 }

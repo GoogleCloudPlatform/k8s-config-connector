@@ -25,15 +25,6 @@ func KMSKeyRingSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyRing) *krm.KM
 		return nil
 	}
 	out := &krm.KMSKeyRingSpec{}
-	if in.Name != "" {
-		id, err := krm.ParseKMSKeyRingExternal(in.Name)
-		if err == nil {
-			out.Location = &id.Parent.Location
-			out.ResourceID = &id.ID
-		} else {
-			mapCtx.Errorf("parsing keyring external name: %w", err)
-		}
-	}
 	return out
 }
 
@@ -42,9 +33,6 @@ func KMSKeyRingSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyRingSpec) *
 		return nil
 	}
 	out := &pb.KeyRing{}
-	if in.Location != nil && in.ResourceID != nil {
-		out.Name = "projects/p/locations/" + *in.Location + "/keyRings/" + *in.ResourceID
-	}
 	return out
 }
 
