@@ -24,3 +24,15 @@
 - **Problem**: `NetworkSecuritySecurityProfile` contains two references to endpoint groups (`mirroringEndpointGroup` and `interceptEndpointGroup`), which did not have pre-existing reference structs in `apis/refs/v1beta1/networksecurityrefs.go`.
 - **Solution**: Defined `NetworkSecurityMirroringEndpointGroupRef` and `NetworkSecurityInterceptEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go` to provide structured validation for endpoint group references, and used them in `CustomMirroringProfile` and `CustomInterceptProfile` respectively.
 - **Impact**: Enables strict validation and clean reference resolution for endpoint group fields within a SecurityProfile definition.
+
+### [2026-06-03] Implement direct types for NetworkSecurityUrlList
+- **Context**: Implementing initial types, CRD, and IdentityV2 for `NetworkSecurityUrlList` (Issue #8740).
+- **Problem**: Need to scaffold KRM types, generate CRD, and implement `identity.IdentityV2` / `refs.Ref` interfaces for `NetworkSecurityUrlList` using the direct approach under `networksecurity.cnrm.cloud.google.com/v1alpha1`.
+- **Solution**: 
+  1. Registered the resource in `apis/networksecurity/v1alpha1/generate.sh`.
+  2. Generated the deepcopy, types, and CRD files.
+  3. Added the detailed `Description` (optional) and `Values` (required) fields to `urllist_types.go`, adhering to the strict "Go Type Pointers" rule by making `Location` a pointer (`*string`).
+  4. Implemented `NetworkSecurityUrlListIdentity` in `networksecurityurllist_identity.go` mapping to the GCP URL template `projects/{project}/locations/{location}/urlLists/{url_list}`.
+  5. Implemented `NetworkSecurityUrlListRef` in `networksecurityurllist_reference.go` to support cross-resource referencing.
+  6. Successfully ran `scripts/validate-prereqs.sh` and updated CRD reports.
+- **Impact**: The initial types, CRD, and identity-matching files are fully implemented and validated, enabling future steps to build the reconciliation controller and mappers.
