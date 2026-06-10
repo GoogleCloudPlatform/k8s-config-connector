@@ -159,7 +159,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "sourceRegions": [
     "us-east1",
     "us-west1",
-    "us-central1"
+    "us-west4"
   ],
   "tcpHealthCheck": {
     "port": 80,
@@ -255,7 +255,7 @@ X-Xss-Protection: 0
   "sourceRegions": [
     "us-east1",
     "us-west1",
-    "us-central1"
+    "us-west4"
   ],
   "tcpHealthCheck": {
     "port": 80,

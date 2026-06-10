@@ -21,7 +21,7 @@ spec:
   sourceRegions:
   - us-east1
   - us-west1
-  - us-central1
+  - us-west4
   tcpHealthCheck:
     port: 80
   timeoutSec: 10
