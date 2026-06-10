@@ -748,7 +748,7 @@ func OracleConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: Password
 	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
 	// MISSING: DatabaseService
-	// MISSING: SSL
+	out.SSL = SSLConfigObservedState_FromProto(mapCtx, in.GetSsl())
 	// MISSING: StaticServiceIPConnectivity
 	// MISSING: ForwardSSHConnectivity
 	// MISSING: PrivateConnectivity
@@ -765,7 +765,7 @@ func OracleConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Password
 	out.PasswordSet = direct.ValueOf(in.PasswordSet)
 	// MISSING: DatabaseService
-	// MISSING: SSL
+	out.Ssl = SSLConfigObservedState_ToProto(mapCtx, in.SSL)
 	// MISSING: StaticServiceIPConnectivity
 	// MISSING: ForwardSSHConnectivity
 	// MISSING: PrivateConnectivity
@@ -781,7 +781,7 @@ func PostgreSQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContex
 	// MISSING: Username
 	// MISSING: Password
 	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
-	// MISSING: SSL
+	out.SSL = SSLConfigObservedState_FromProto(mapCtx, in.GetSsl())
 	// MISSING: CloudSQLID
 	out.NetworkArchitecture = direct.Enum_FromProto(mapCtx, in.GetNetworkArchitecture())
 	// MISSING: StaticIPConnectivity
@@ -798,7 +798,7 @@ func PostgreSQLConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Username
 	// MISSING: Password
 	out.PasswordSet = direct.ValueOf(in.PasswordSet)
-	// MISSING: SSL
+	out.Ssl = SSLConfigObservedState_ToProto(mapCtx, in.SSL)
 	// MISSING: CloudSQLID
 	out.NetworkArchitecture = direct.Enum_ToProto[pb.NetworkArchitecture](mapCtx, in.NetworkArchitecture)
 	// MISSING: StaticIPConnectivity

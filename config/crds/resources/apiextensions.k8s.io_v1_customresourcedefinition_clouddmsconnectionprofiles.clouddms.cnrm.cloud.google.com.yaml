@@ -90,10 +90,10 @@ spec:
                           resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The name of a AlloyDBCluster resource.
+                        description: The name of an AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The namespace of a AlloyDBCluster resource.
+                        description: The namespace of an AlloyDBCluster resource.
                         type: string
                     type: object
                   settings:
@@ -208,9 +208,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The value of an externally managed ComputeNetwork
-                              resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                              or "projects/{{projectId}}/global/networks/{{networkId}}"
+                            description: A reference to an externally managed ComputeNetwork
+                              resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                             type: string
                           name:
                             description: The name of a ComputeNetwork resource.
@@ -347,9 +346,9 @@ spec:
                               - external
                             properties:
                               external:
-                                description: The value of an externally managed ComputeNetwork
-                                  resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                                  or "projects/{{projectId}}/global/networks/{{networkId}}"
+                                description: A reference to an externally managed
+                                  ComputeNetwork resource. Should be in the format
+                                  "projects/{{projectID}}/global/networks/{{networkID}}".
                                 type: string
                               name:
                                 description: The name of a ComputeNetwork resource.
@@ -964,6 +963,18 @@ spec:
                         description: Output only. Indicates whether a new password
                           is included in the request.
                         type: boolean
+                      ssl:
+                        description: |-
+                          SSL configuration for the connection to the source Oracle database.
+
+                            * Only `SERVER_ONLY` configuration is supported for Oracle SSL.
+                            * SSL is supported for Oracle versions 12 and above.
+                        properties:
+                          type:
+                            description: Output only. The ssl config type according
+                              to 'client_key', 'client_certificate' and 'ca_certificate'.
+                            type: string
+                        type: object
                     type: object
                   postgresql:
                     description: A PostgreSQL database connection profile.
@@ -977,6 +988,15 @@ spec:
                         description: Output only. Indicates If this connection profile
                           password is stored.
                         type: boolean
+                      ssl:
+                        description: SSL configuration for the destination to connect
+                          to the source database.
+                        properties:
+                          type:
+                            description: Output only. The ssl config type according
+                              to 'client_key', 'client_certificate' and 'ca_certificate'.
+                            type: string
+                        type: object
                     type: object
                   state:
                     description: Output only. The current connection profile state

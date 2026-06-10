@@ -335,6 +335,13 @@ type OracleConnectionProfileObservedState struct {
 	// Output only. Indicates whether a new password is included in the request.
 	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password_set
 	PasswordSet *bool `json:"passwordSet,omitempty"`
+
+	// SSL configuration for the connection to the source Oracle database.
+	//
+	//   * Only `SERVER_ONLY` configuration is supported for Oracle SSL.
+	//   * SSL is supported for Oracle versions 12 and above.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.ssl
+	SSL *SSLConfigObservedState `json:"ssl,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.PostgreSqlConnectionProfile
@@ -342,6 +349,10 @@ type PostgreSQLConnectionProfileObservedState struct {
 	// Output only. Indicates If this connection profile password is stored.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.password_set
 	PasswordSet *bool `json:"passwordSet,omitempty"`
+
+	// SSL configuration for the destination to connect to the source database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.ssl
+	SSL *SSLConfigObservedState `json:"ssl,omitempty"`
 
 	// Output only. If the source is a Cloud SQL database, this field indicates
 	//  the network architecture it's associated with.
