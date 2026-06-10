@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,10 +27,12 @@ var VertexAICustomJobGVK = GroupVersion.WithKind("VertexAICustomJob")
 // +kcc:spec:proto=google.cloud.aiplatform.v1.CustomJob
 type VertexAICustomJobSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	// +required
+	Location *string `json:"location"`
 
 	// The VertexAICustomJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -38,6 +41,7 @@ type VertexAICustomJobSpec struct {
 	// The name can be up to 128 characters long and can consist of any UTF-8
 	// characters.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.display_name
+	// +required
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. Job spec.
@@ -117,6 +121,22 @@ type CustomJobSpec struct {
 	// dashboard in training chief container.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.enable_dashboard_access
 	EnableDashboardAccess *bool `json:"enableDashboardAccess,omitempty"`
+
+	// Optional. The name of the Vertex AI Experiment to which this custom job should be associated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.experiment
+	Experiment *string `json:"experiment,omitempty"`
+
+	// Optional. The name of the specific Experiment Run within the associated experiment.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.experiment_run
+	ExperimentRun *string `json:"experimentRun,omitempty"`
+
+	// Optional. The list of Model resource names for which to generate a mapping to artifact URIs.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.models
+	Models []string `json:"models,omitempty"`
+
+	// Optional. The Private Service Connect (PSC) interface configuration.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.psc_interface_config
+	PscInterfaceConfig *PSCInterfaceConfig `json:"pscInterfaceConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.WorkerPoolSpec
@@ -262,6 +282,14 @@ type CustomJobScheduling struct {
 	// Optional. This determines which type of scheduling strategy to use.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Scheduling.strategy
 	Strategy *string `json:"strategy,omitempty"`
+
+	// Optional. Restarts the entire CustomJob if a worker gets restarted.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Scheduling.disable_retries
+	DisableRetries *bool `json:"disableRetries,omitempty"`
+
+	// Optional. The maximum running time.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Scheduling.max_wait_duration
+	MaxWaitDuration *string `json:"maxWaitDuration,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.GcsDestination
@@ -293,6 +321,64 @@ type VertexAICustomJobObservedState struct {
 	// Output only. The detailed state of the job.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.state
 	State *string `json:"state,omitempty"`
+
+	// Output only. Time when the CustomJob was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Time when the CustomJob for the first time entered the `JOB_STATE_RUNNING` state.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. Time when the CustomJob entered any of the following states: `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, `JOB_STATE_CANCELLED`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. Time when the CustomJob was most recently updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Only populated when job's state is `JOB_STATE_FAILED` or `JOB_STATE_CANCELLED`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// Output only. UrIs for accessing interactive shells (if enable_web_access is true).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.web_access_uris
+	WebAccessURIs map[string]string `json:"webAccessURIs,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.PscInterfaceConfig
+type PSCInterfaceConfig struct {
+	// Optional. The name of the Compute Engine network attachment to attach to the resource.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PscInterfaceConfig.network_attachment
+	NetworkAttachmentRef *refsv1beta1.ComputeNetworkAttachmentRef `json:"networkAttachmentRef,omitempty"`
+
+	// Optional. DNS peering configurations.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PscInterfaceConfig.dns_peering_configs
+	DNSPeeringConfigs []DNSPeeringConfig `json:"dnsPeeringConfigs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.DnsPeeringConfig
+type DNSPeeringConfig struct {
+	// Required. The DNS name suffix of the zone being peered to, e.g., "my-internal-domain.corp.". Must end with a dot.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.DnsPeeringConfig.domain
+	Domain *string `json:"domain,omitempty"`
+
+	// Required. The project ID hosting the Cloud DNS managed zone that contains the 'domain'.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.DnsPeeringConfig.target_project
+	TargetProjectRef *refsv1beta1.ProjectRef `json:"targetProjectRef,omitempty"`
+
+	// Required. The VPC network name in the target_project where the DNS zone specified by 'domain' is visible.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.DnsPeeringConfig.target_network
+	TargetNetworkRef *refsv1beta1.ComputeNetworkRef `json:"targetNetworkRef,omitempty"`
 }
 
 // +genclient

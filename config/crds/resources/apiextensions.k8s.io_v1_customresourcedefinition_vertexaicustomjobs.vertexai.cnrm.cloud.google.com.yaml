@@ -120,6 +120,20 @@ spec:
                     description: Optional. Whether you want Vertex AI to enable interactive
                       shell access to training containers.
                     type: boolean
+                  experiment:
+                    description: Optional. The name of the Vertex AI Experiment to
+                      which this custom job should be associated.
+                    type: string
+                  experimentRun:
+                    description: Optional. The name of the specific Experiment Run
+                      within the associated experiment.
+                    type: string
+                  models:
+                    description: Optional. The list of Model resource names for which
+                      to generate a mapping to artifact URIs.
+                    items:
+                      type: string
+                    type: array
                   networkRef:
                     description: Optional. The full name of the Compute Engine network
                       to which the Job should be peered.
@@ -184,6 +198,119 @@ spec:
                     description: The ID of the location to store protected artifacts.
                       e.g. us-central1.
                     type: string
+                  pscInterfaceConfig:
+                    description: Optional. The Private Service Connect (PSC) interface
+                      configuration.
+                    properties:
+                      dnsPeeringConfigs:
+                        description: Optional. DNS peering configurations.
+                        items:
+                          properties:
+                            domain:
+                              description: Required. The DNS name suffix of the zone
+                                being peered to, e.g., "my-internal-domain.corp.".
+                                Must end with a dot.
+                              type: string
+                            targetNetworkRef:
+                              description: Required. The VPC network name in the target_project
+                                where the DNS zone specified by 'domain' is visible.
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    Compute Network resource. Should be of the format
+                                    `projects/{{projectID}}/global/networks/{{network}}`.
+                                  type: string
+                                name:
+                                  description: The `name` of a `ComputeNetwork` resource.
+                                  type: string
+                                namespace:
+                                  description: The `namespace` of a `ComputeNetwork`
+                                    resource.
+                                  type: string
+                              type: object
+                            targetProjectRef:
+                              description: Required. The project ID hosting the Cloud
+                                DNS managed zone that contains the 'domain'.
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: The `projectID` field of a project,
+                                    when not managed by Config Connector.
+                                  type: string
+                                kind:
+                                  description: The kind of the Project resource; optional
+                                    but must be `Project` if provided.
+                                  type: string
+                                name:
+                                  description: The `name` field of a `Project` resource.
+                                  type: string
+                                namespace:
+                                  description: The `namespace` field of a `Project`
+                                    resource.
+                                  type: string
+                              type: object
+                          type: object
+                        type: array
+                      networkAttachmentRef:
+                        description: Optional. The name of the Compute Engine network
+                          attachment to attach to the resource.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed Compute
+                              NetworkAttachment resource. Should be of the format
+                              `projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkAttachment}}`.
+                            type: string
+                          name:
+                            description: The `name` of a `ComputeNetworkAttachment`
+                              resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` of a `ComputeNetworkAttachment`
+                              resource.
+                            type: string
+                        type: object
+                    type: object
                   reservedIpRanges:
                     description: Optional. A list of names for the reserved ip ranges
                       under the VPC network that can be used for this job.
@@ -193,6 +320,13 @@ spec:
                   scheduling:
                     description: CustomJobScheduling options for a CustomJob.
                     properties:
+                      disableRetries:
+                        description: Optional. Restarts the entire CustomJob if a
+                          worker gets restarted.
+                        type: boolean
+                      maxWaitDuration:
+                        description: Optional. The maximum running time.
+                        type: string
                       restartJobOnWorkerRestart:
                         description: Restarts the entire CustomJob if a worker gets
                           restarted.
@@ -448,6 +582,7 @@ spec:
                   will be used.
                 type: string
             required:
+            - displayName
             - location
             - projectRef
             type: object
@@ -497,9 +632,53 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  createTime:
+                    description: Output only. Time when the CustomJob was created.
+                    type: string
+                  endTime:
+                    description: 'Output only. Time when the CustomJob entered any
+                      of the following states: `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`,
+                      `JOB_STATE_CANCELLED`.'
+                    type: string
+                  error:
+                    description: Output only. Only populated when job's state is `JOB_STATE_FAILED`
+                      or `JOB_STATE_CANCELLED`.
+                    properties:
+                      code:
+                        description: The status code, which should be an enum value
+                          of [google.rpc.Code][google.rpc.Code].
+                        format: int32
+                        type: integer
+                      message:
+                        description: A developer-facing error message, which should
+                          be in English. Any user-facing error message should be localized
+                          and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                          field, or localized by the client.
+                        type: string
+                    type: object
+                  satisfiesPzi:
+                    description: Output only. Reserved for future use.
+                    type: boolean
+                  satisfiesPzs:
+                    description: Output only. Reserved for future use.
+                    type: boolean
+                  startTime:
+                    description: Output only. Time when the CustomJob for the first
+                      time entered the `JOB_STATE_RUNNING` state.
+                    type: string
                   state:
                     description: Output only. The detailed state of the job.
                     type: string
+                  updateTime:
+                    description: Output only. Time when the CustomJob was most recently
+                      updated.
+                    type: string
+                  webAccessURIs:
+                    additionalProperties:
+                      type: string
+                    description: Output only. UrIs for accessing interactive shells
+                      (if enable_web_access is true).
+                    type: object
                 type: object
             type: object
         required:

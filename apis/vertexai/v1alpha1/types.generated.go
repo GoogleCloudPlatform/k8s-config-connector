@@ -234,28 +234,6 @@ type DiskSpec struct {
 }
 */
 
-/* unreachable type DNSPeeringConfig
-// +kcc:proto=google.cloud.aiplatform.v1beta1.DnsPeeringConfig
-type DNSPeeringConfig struct {
-	// Required. The DNS name suffix of the zone being peered to, e.g.,
-	//  "my-internal-domain.corp.". Must end with a dot.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DnsPeeringConfig.domain
-	Domain *string `json:"domain,omitempty"`
-
-	// Required. The project ID hosting the Cloud DNS managed zone that
-	//  contains the 'domain'. The Vertex AI Service Agent requires the
-	//  dns.peer role on this project.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DnsPeeringConfig.target_project
-	TargetProject *string `json:"targetProject,omitempty"`
-
-	// Required. The VPC network name
-	//  in the target_project where the DNS zone specified by 'domain' is
-	//  visible.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DnsPeeringConfig.target_network
-	TargetNetwork *string `json:"targetNetwork,omitempty"`
-}
-*/
-
 /* unreachable type EnvVar
 // +kcc:proto=google.cloud.aiplatform.v1beta1.EnvVar
 type EnvVar struct {
@@ -490,29 +468,6 @@ type NfsMount struct {
 	//  under /mnt/nfs/<mount_point>
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NfsMount.mount_point
 	MountPoint *string `json:"mountPoint,omitempty"`
-}
-*/
-
-/* unreachable type PSCInterfaceConfig
-// +kcc:proto=google.cloud.aiplatform.v1beta1.PscInterfaceConfig
-type PSCInterfaceConfig struct {
-	// Optional. The name of the Compute Engine
-	//  [network
-	//  attachment](https://cloud.google.com/vpc/docs/about-network-attachments) to
-	//  attach to the resource within the region and user project.
-	//  To specify this field, you must have already [created a network attachment]
-	//  (https://cloud.google.com/vpc/docs/create-manage-network-attachments#create-network-attachments).
-	//  This field is only used for resources using PSC-I.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PscInterfaceConfig.network_attachment
-	NetworkAttachment *string `json:"networkAttachment,omitempty"`
-
-	// Optional. DNS peering configurations. When specified, Vertex AI will
-	//  attempt to configure DNS peering zones in the tenant project VPC
-	//  to resolve the specified domains using the target network's Cloud DNS.
-	//  The user must grant the dns.peer role to the Vertex AI Service Agent
-	//  on the target project.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PscInterfaceConfig.dns_peering_configs
-	DNSPeeringConfigs []DNSPeeringConfig `json:"dnsPeeringConfigs,omitempty"`
 }
 */
 

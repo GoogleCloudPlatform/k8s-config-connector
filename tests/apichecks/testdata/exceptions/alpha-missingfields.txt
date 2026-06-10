@@ -2954,14 +2954,24 @@
 [missing_field] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.shieldedInstanceConfig.enableSecureBoot" is not set in unstructured objects
 [missing_field] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tags[]" is not set in unstructured objects
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.baseOutputDirectory.outputURIPrefix" is not set in unstructured objects
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.enableDashboardAccess" is not set in unstructured objects
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.enableWebAccess" is not set in unstructured objects
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.experiment" is not set in unstructured objects
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.experimentRun" is not set in unstructured objects
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.models[]" is not set in unstructured objects
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.persistentResourceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.protectedArtifactLocationId" is not set in unstructured objects
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.pscInterfaceConfig.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.reservedIpRanges[]" is not set in unstructured objects
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.scheduling.disableRetries" is not set in unstructured objects
+[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.scheduling.maxWaitDuration" is not set in unstructured objects
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.scheduling.restartJobOnWorkerRestart" is not set in unstructured objects
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.scheduling.strategy" is not set in unstructured objects
 [missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.scheduling.timeout" is not set in unstructured objects
@@ -3094,4 +3104,4 @@
 [missing_field] crd=vmwareengineprivateclouds.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.callLogLevel" is not set in unstructured objects
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set[missing_field] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

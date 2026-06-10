@@ -35,7 +35,12 @@ go run . generate-mapper \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
+    --output-dir "${REPO_ROOT}/pkg/controller/direct/vertexai/metadatastore" \
     --multiversion
+
+mv "${REPO_ROOT}/pkg/controller/direct/vertexai/metadatastore/vertexai/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/vertexai/metadatastore/mapper.generated.go" || true
+rmdir "${REPO_ROOT}/pkg/controller/direct/vertexai/metadatastore/vertexai" || true
+sed -i 's/package vertexai/package metadatastore/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/metadatastore/mapper.generated.go"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

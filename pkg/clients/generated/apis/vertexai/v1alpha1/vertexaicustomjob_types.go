@@ -72,6 +72,20 @@ type CustomjobDiskSpec struct {
 	BootDiskType *string `json:"bootDiskType,omitempty"`
 }
 
+type CustomjobDnsPeeringConfigs struct {
+	/* Required. The DNS name suffix of the zone being peered to, e.g., "my-internal-domain.corp.". Must end with a dot. */
+	// +optional
+	Domain *string `json:"domain,omitempty"`
+
+	/* Required. The VPC network name in the target_project where the DNS zone specified by 'domain' is visible. */
+	// +optional
+	TargetNetworkRef *v1alpha1.ResourceRef `json:"targetNetworkRef,omitempty"`
+
+	/* Required. The project ID hosting the Cloud DNS managed zone that contains the 'domain'. */
+	// +optional
+	TargetProjectRef *v1alpha1.ResourceRef `json:"targetProjectRef,omitempty"`
+}
+
 type CustomjobEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. */
 	// +optional
@@ -101,6 +115,18 @@ type CustomjobJobSpec struct {
 	// +optional
 	EnableWebAccess *bool `json:"enableWebAccess,omitempty"`
 
+	/* Optional. The name of the Vertex AI Experiment to which this custom job should be associated. */
+	// +optional
+	Experiment *string `json:"experiment,omitempty"`
+
+	/* Optional. The name of the specific Experiment Run within the associated experiment. */
+	// +optional
+	ExperimentRun *string `json:"experimentRun,omitempty"`
+
+	/* Optional. The list of Model resource names for which to generate a mapping to artifact URIs. */
+	// +optional
+	Models []string `json:"models,omitempty"`
+
 	/* Optional. The full name of the Compute Engine network to which the Job should be peered. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
@@ -112,6 +138,10 @@ type CustomjobJobSpec struct {
 	/* The ID of the location to store protected artifacts. e.g. us-central1. */
 	// +optional
 	ProtectedArtifactLocationId *string `json:"protectedArtifactLocationId,omitempty"`
+
+	/* Optional. The Private Service Connect (PSC) interface configuration. */
+	// +optional
+	PscInterfaceConfig *CustomjobPscInterfaceConfig `json:"pscInterfaceConfig,omitempty"`
 
 	/* Optional. A list of names for the reserved ip ranges under the VPC network that can be used for this job. */
 	// +optional
@@ -162,6 +192,16 @@ type CustomjobNfsMounts struct {
 	Server *string `json:"server,omitempty"`
 }
 
+type CustomjobPscInterfaceConfig struct {
+	/* Optional. DNS peering configurations. */
+	// +optional
+	DnsPeeringConfigs []CustomjobDnsPeeringConfigs `json:"dnsPeeringConfigs,omitempty"`
+
+	/* Optional. The name of the Compute Engine network attachment to attach to the resource. */
+	// +optional
+	NetworkAttachmentRef *v1alpha1.ResourceRef `json:"networkAttachmentRef,omitempty"`
+}
+
 type CustomjobPythonPackageSpec struct {
 	/* Command line arguments to be passed to the Python task. */
 	// +optional
@@ -185,6 +225,14 @@ type CustomjobPythonPackageSpec struct {
 }
 
 type CustomjobScheduling struct {
+	/* Optional. Restarts the entire CustomJob if a worker gets restarted. */
+	// +optional
+	DisableRetries *bool `json:"disableRetries,omitempty"`
+
+	/* Optional. The maximum running time. */
+	// +optional
+	MaxWaitDuration *string `json:"maxWaitDuration,omitempty"`
+
 	/* Restarts the entire CustomJob if a worker gets restarted. */
 	// +optional
 	RestartJobOnWorkerRestart *bool `json:"restartJobOnWorkerRestart,omitempty"`
@@ -226,8 +274,7 @@ type CustomjobWorkerPoolSpecs struct {
 
 type VertexAICustomJobSpec struct {
 	/* Required. The display name of the CustomJob. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName string `json:"displayName"`
 
 	/* Customer-managed encryption key options for a CustomJob. If this is set, then all resources created by the CustomJob will be encrypted with the provided encryption key. */
 	// +optional
@@ -252,10 +299,52 @@ type VertexAICustomJobSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type CustomjobErrorStatus struct {
+	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
+	// +optional
+	Code *int32 `json:"code,omitempty"`
+
+	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
+	// +optional
+	Message *string `json:"message,omitempty"`
+}
+
 type CustomjobObservedStateStatus struct {
+	/* Output only. Time when the CustomJob was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. Time when the CustomJob entered any of the following states: `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, `JOB_STATE_CANCELLED`. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Output only. Only populated when job's state is `JOB_STATE_FAILED` or `JOB_STATE_CANCELLED`. */
+	// +optional
+	Error *CustomjobErrorStatus `json:"error,omitempty"`
+
+	/* Output only. Reserved for future use. */
+	// +optional
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	/* Output only. Reserved for future use. */
+	// +optional
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	/* Output only. Time when the CustomJob for the first time entered the `JOB_STATE_RUNNING` state. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+
 	/* Output only. The detailed state of the job. */
 	// +optional
 	State *string `json:"state,omitempty"`
+
+	/* Output only. Time when the CustomJob was most recently updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	/* Output only. UrIs for accessing interactive shells (if enable_web_access is true). */
+	// +optional
+	WebAccessURIs map[string]string `json:"webAccessURIs,omitempty"`
 }
 
 type VertexAICustomJobStatus struct {
