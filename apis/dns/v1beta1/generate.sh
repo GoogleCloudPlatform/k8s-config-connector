@@ -19,36 +19,25 @@ set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
-# Generate KRM Go types for v1alpha1 from the OpenAPI / Discovery API JSON specification
-go run "${REPO_ROOT}/dev/tools/openapi-to-krm/main.go" \
-  --schema-file "${REPO_ROOT}/apis/dns/v1beta1/dns-api.json" \
-  --api-version "dns.cnrm.cloud.google.com/v1alpha1" \
-  --resource "DNSResponsePolicy:ResponsePolicy" \
-  --ignore-field "*:kind" \
-  --output-file "${REPO_ROOT}/apis/dns/v1alpha1/types.generated.go"
-
-# Generate KRM Go types for v1beta1 from the OpenAPI / Discovery API JSON specification
+# Generate KRM Go types from the OpenAPI / Discovery API JSON specification, ignoring all 'kind' fields and setting required fields
 go run "${REPO_ROOT}/dev/tools/openapi-to-krm/main.go" \
   --schema-file "${REPO_ROOT}/apis/dns/v1beta1/dns-api.json" \
   --api-version "dns.cnrm.cloud.google.com/v1beta1" \
   --resource "DNSManagedZone:ManagedZone" \
   --resource "DNSPolicy:Policy" \
+  --resource "DNSRecordSet:ResourceRecordSet" \
   --ignore-field "*:kind" \
   --require-field "ManagedZoneCloudLoggingConfig:enableLogging,ManagedZoneForwardingConfig:targetNameServers,ManagedZonePeeringConfig:targetNetwork,ManagedZoneServiceDirectoryConfig:namespace" \
   --output-file "${REPO_ROOT}/apis/dns/v1beta1/types.generated.go"
 
-# Generate OpenAPI mappers for v1alpha1
-go run "${REPO_ROOT}/dev/tools/openapi-to-krm/cmd/generate-mapper/main.go" \
-  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1alpha1/DNSResponsePolicySpec::google.golang.org/api/dns/v1/ResponsePolicy" \
-  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1alpha1/DNSResponsePolicyStatus::google.golang.org/api/dns/v1/ResponsePolicy" \
-  --output-file "${REPO_ROOT}/pkg/controller/direct/dns/zz_generated.v1alpha1.mappers.go"
-
-# Generate OpenAPI mappers for v1beta1
+# Generate OpenAPI mappers
 go run "${REPO_ROOT}/dev/tools/openapi-to-krm/cmd/generate-mapper/main.go" \
   --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSManagedZoneSpec::google.golang.org/api/dns/v1/ManagedZone" \
   --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSManagedZoneStatus::google.golang.org/api/dns/v1/ManagedZone" \
   --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSPolicySpec::google.golang.org/api/dns/v1/Policy" \
   --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSPolicyStatus::google.golang.org/api/dns/v1/Policy" \
+  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSRecordSetSpec::google.golang.org/api/dns/v1/ResourceRecordSet" \
+  --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSRecordSetStatus::google.golang.org/api/dns/v1/ResourceRecordSet" \
   --output-file "${REPO_ROOT}/pkg/controller/direct/dns/zz_generated.mappers.go"
 
 cd ${REPO_ROOT}
