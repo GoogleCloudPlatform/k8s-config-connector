@@ -65,9 +65,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 	// Exceptions for templates that are known not to match CAI or are not in CAI.
 	// We use the normalized format for the key.
-	//
-	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
-	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
 		// Add known exceptions here.
@@ -125,6 +122,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig":                    true,
 		"//iap.googleapis.com/projects/{}/brands/{}":                                                true,
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity":                            true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/firewallEndpoints/{}":            true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()

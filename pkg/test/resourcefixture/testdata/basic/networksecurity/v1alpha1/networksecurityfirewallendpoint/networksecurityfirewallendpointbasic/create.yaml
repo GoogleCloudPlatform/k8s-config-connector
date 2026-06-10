@@ -1,0 +1,11 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityFirewallEndpoint
+metadata:
+  name: networksecurityfirewallendpoint-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1-a
+  description: "basic firewall endpoint created by e2e test"
+  labels:
+    env: test

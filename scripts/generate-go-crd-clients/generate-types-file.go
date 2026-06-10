@@ -37,6 +37,10 @@ import (
 	"k8s.io/klog/v2"
 )
 
+var skipLegacyClientGeneration = map[string]bool{
+	"NetworkSecurityFirewallEndpoint": true,
+}
+
 var handwrittenIAMTypes = []string{
 	iamv1beta1.IAMPolicyGVK.Kind,
 	iamv1beta1.IAMPartialPolicyGVK.Kind,
@@ -289,6 +293,9 @@ func constructResourceDefinitions(crdsPath, crdFile string) []*resourceDefinitio
 		r := &resourceDefinition{}
 		r.CRD = crd
 		r.Name = crd.Spec.Names.Kind
+		if skipLegacyClientGeneration[r.Name] {
+			continue
+		}
 		if err = buildFieldProperties(r, crd, crdVersionDefinition.Name); err != nil {
 			log.Fatalf("error building field properties for %v: %v", r.Name, err)
 		}
