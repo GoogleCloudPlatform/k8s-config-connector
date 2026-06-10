@@ -133,7 +133,7 @@ versionTemplate:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed KMSKeyRing. Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}`.</p>
+            <p>A reference to an externally managed KMSKeyRing resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}".</p>
         </td>
     </tr>
     <tr>
@@ -143,7 +143,7 @@ versionTemplate:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` of a `KMSKeyRing` resource.</p>
+            <p>The name of a KMSKeyRing resource.</p>
         </td>
     </tr>
     <tr>
@@ -153,7 +153,7 @@ versionTemplate:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `KMSKeyRing` resource.</p>
+            <p>The namespace of a KMSKeyRing resource.</p>
         </td>
     </tr>
     <tr>
