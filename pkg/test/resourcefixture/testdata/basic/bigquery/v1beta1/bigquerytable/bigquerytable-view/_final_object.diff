@@ -1,0 +1,14 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 2
+---
+>   generation: 1
+29d27
+<   resourceID: bigquerytablesample${uniqueId}
+41a40
+>   externalRef: projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}
+44c43
+<   observedGeneration: 2
+---
+>   observedGeneration: 1

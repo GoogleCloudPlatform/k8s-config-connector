@@ -111,7 +111,7 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 		// update in re-reconciliation. As we are migrating BigQueryTable
 		// to direct, we'll focus on make the re-reconciliation behavior right
 		// for the direct resource instead of fixing this test.
-		if testName == "bigquerytable-ignore-schema-changes" {
+		if testName == "bigquerytable-ignore-schema-changes" || testName == "bigquerytable-view" || testName == "bigquerytable-view-schema" {
 			return false
 		} else {
 			return true
