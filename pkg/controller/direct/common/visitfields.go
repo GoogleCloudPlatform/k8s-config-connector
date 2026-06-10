@@ -98,8 +98,8 @@ func (w *visitorWalker) visitAny(path string, v reflect.Value) {
 			for i := 0; i < v.Len(); i++ {
 				w.visitAny(path+"[]", v.Index(i))
 			}
-		case reflect.Uint8:
-			// Do not visit []byte as individual values, treat as a leaf
+		case reflect.Uint8, reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Float32, reflect.Float64, reflect.Bool:
+			// Treat primitive slices as leaves
 		default:
 			w.errs = append(w.errs, fmt.Errorf("visiting slice of type %v is not supported", elemType.Kind()))
 		}
