@@ -152,5 +152,6 @@ Once definitions are updated, the agent must verify correctness of the field usi
      // you may not use this file except in compliance with the License.
      ...
      ```
+   - Do NOT modify the copyright year on existing files.
 2. **Proceed to Test Skill**:
    - Refer to [.gemini/skills/test-terraform-fields/SKILL.md](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/test-terraform-fields/SKILL.md) to set up E2E tests, record golden files, check against MockGCP, and run linters.

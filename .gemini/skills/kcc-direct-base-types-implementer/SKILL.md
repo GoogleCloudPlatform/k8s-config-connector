@@ -11,7 +11,7 @@ This skill provides the mandatory baseline standards that apply to *all* new KRM
 
 After running the generator (via `generate.sh`), you must verify and enforce the following baseline requirements on the resulting `_types.go` file:
 
-- **Copyright**: The file must start with `// Copyright 2026 Google LLC`.
+- **Copyright**: New files must start with `// Copyright 2026 Google LLC`. Do NOT modify the copyright year on existing files.
 - **CRD Labels**: Include at least these two labels in the type definition:
   ```go
   // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"

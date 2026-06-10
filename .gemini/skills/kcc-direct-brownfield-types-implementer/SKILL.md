@@ -37,7 +37,7 @@ go run . generate-types \
 ### 2. Standards for <kind>_types.go
 After running the generator, verify the `_types.go` file meets these requirements:
 
-- **Copyright**: Must be `// Copyright 2026 Google LLC`.
+- **Copyright**: New files must use `// Copyright 2026 Google LLC`. Do NOT modify the copyright year on existing files.
 - **CRD Labels**: Include exactly these labels in the type definition:
   ```go
   // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
