@@ -113,7 +113,7 @@ func CloudFunctionsFunctionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 	out.EventTrigger = FunctionEventTrigger_FromProto(mapCtx, in.GetEventTrigger())
 	// MISSING: Status
 	out.EntryPoint = direct.LazyPtr(in.GetEntryPoint())
-	out.Runtime = direct.LazyPtr(in.GetRuntime())
+	out.Runtime = in.GetRuntime()
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
 	out.AvailableMemoryMb = direct.LazyPtr(in.GetAvailableMemoryMb())
 	// MISSING: ServiceAccountEmail
@@ -298,7 +298,7 @@ func FunctionEventTrigger_FromProto(mapCtx *direct.MapContext, in *pb.EventTrigg
 		return nil
 	}
 	out := &krm.FunctionEventTrigger{}
-	out.EventType = direct.LazyPtr(in.GetEventType())
+	out.EventType = in.GetEventType()
 	if in.GetResource() != "" {
 		out.ResourceRef = &krm.EventTriggerResourceRef{External: in.GetResource()}
 	}
