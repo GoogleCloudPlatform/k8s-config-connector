@@ -43,6 +43,10 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".cluster_endpoints")
 	f.UnimplementedFields.Insert(".labels")
 
+	f.Unimplemented_NotYetTriaged(".server_ca_pool")
+	f.Unimplemented_NotYetTriaged(".server_ca_mode")
+	f.Unimplemented_NotYetTriaged(".rotate_server_certificate")
+
 	f.SpecFields.Insert(".authorization_mode")
 	f.SpecFields.Insert(".transit_encryption_mode")
 	f.SpecFields.Insert(".shard_count")

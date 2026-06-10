@@ -49,6 +49,8 @@ func dataflowFlexTemplateJobFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".launcher_machine_type")
 
 	f.UnimplementedFields.Insert(".zone")
+	f.Unimplemented_NotYetTriaged(".pausable")
+	f.Unimplemented_NotYetTriaged(".additional_pipeline_options")
 	f.UnimplementedFields.Insert(".additional_user_labels")
 	f.UnimplementedFields.Insert(".worker_region")
 	f.UnimplementedFields.Insert(".worker_zone")

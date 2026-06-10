@@ -90,6 +90,7 @@ func computeResourcePolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".workload_policy.type")
 	f.Unimplemented_NotYetTriaged(".group_placement_policy.gpu_topology")
 	f.Unimplemented_NotYetTriaged(".group_placement_policy.max_distance")
+	f.Unimplemented_NotYetTriaged(".group_placement_policy.accelerator_topology_mode")
 	f.Unimplemented_NotYetTriaged(".snapshot_schedule_policy.schedule.daily_schedule.duration")
 	f.Unimplemented_NotYetTriaged(".snapshot_schedule_policy.schedule.hourly_schedule.duration")
 	f.Unimplemented_NotYetTriaged(".snapshot_schedule_policy.schedule.weekly_schedule.day_of_weeks[].duration")

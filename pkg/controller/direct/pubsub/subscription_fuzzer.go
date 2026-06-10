@@ -55,6 +55,7 @@ func pubSubSubscriptionFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".topic_message_retention_duration")
 	f.Unimplemented_NotYetTriaged(".state")
 	f.Unimplemented_NotYetTriaged(".analytics_hub_subscription_info")
+	f.Unimplemented_NotYetTriaged(".bigtable_config")
 
 	f.Unimplemented_NotYetTriaged(".bigquery_config.service_account_email")
 	f.Unimplemented_NotYetTriaged(".bigquery_config.state")

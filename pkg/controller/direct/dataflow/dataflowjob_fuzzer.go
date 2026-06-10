@@ -110,6 +110,10 @@ func dataflowJobFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".environment.worker_pools[].num_threads_per_worker")
 	f.UnimplementedFields.Insert(".environment.worker_pools[].sdk_harness_container_images")
 	f.UnimplementedFields.Insert(".environment.worker_pools[].autoscaling_settings.algorithm")
+	f.Unimplemented_NotYetTriaged(".pausable")
+	f.Unimplemented_NotYetTriaged(".environment.worker_pools[].disk_provisioned_iops")
+	f.Unimplemented_NotYetTriaged(".environment.use_public_ips")
+	f.Unimplemented_NotYetTriaged(".environment.worker_pools[].disk_provisioned_throughput_mibps")
 
 	f.FilterSpec = func(in *pb.Job) {
 		if in.GetEnvironment() != nil {
