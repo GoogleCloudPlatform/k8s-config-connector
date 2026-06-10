@@ -1,0 +1,15 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityUrlList
+metadata:
+  labels:
+    test-label: "urllist-test-updated"
+  name: urllist-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  description: "Updated Test URL List"
+  values:
+    - "example.com"
+    - "google.com"
+    - "example.org"

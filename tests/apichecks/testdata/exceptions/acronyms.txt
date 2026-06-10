@@ -568,6 +568,7 @@
 [acronyms] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.mtlsPolicy.clientValidationCa" should be ".spec.mtlsPolicy.clientValidationCA"
 [acronyms] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.mtlsPolicy.clientValidationCa[].grpcEndpoint.targetUri" should be ".spec.mtlsPolicy.clientValidationCa[].grpcEndpoint.targetURI"
 [acronyms] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverCertificate.grpcEndpoint.targetUri" should be ".spec.serverCertificate.grpcEndpoint.targetURI"
+[acronyms] crd=networksecurityurllists.networksecurity.cnrm.cloud.google.com: kind "NetworkSecurityUrlList" should be "NetworkSecurityURLList"
 [acronyms] crd=networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.awsV4Authentication.accessKeyId" should be ".spec.awsV4Authentication.accessKeyID"
 [acronyms] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.edgeSslCertificates" should be ".spec.edgeSSLCertificates"
 [acronyms] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.edgeSslCertificates[]" should be ".spec.edgeSSLCertificates[]"
