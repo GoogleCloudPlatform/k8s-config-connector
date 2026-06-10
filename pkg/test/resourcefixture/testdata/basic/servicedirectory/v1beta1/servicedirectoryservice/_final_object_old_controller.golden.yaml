@@ -3,10 +3,11 @@ kind: ServiceDirectoryService
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     label-two: value-two
@@ -15,6 +16,7 @@ metadata:
 spec:
   namespaceRef:
     external: projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}
+  resourceID: servicedirectoryservice-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -23,4 +25,4 @@ status:
     status: "True"
     type: Ready
   name: projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 3
