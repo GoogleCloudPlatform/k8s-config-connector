@@ -29,7 +29,7 @@ var (
 	_ identity.Resource   = &DNSRecordSet{}
 )
 
-var DNSRecordSetIdentityFormat = gcpurls.Template[DNSRecordSetIdentity]("dns.googleapis.com", "projects/{project}/managedZones/{managedZone}/rrsets/{name}/{type}")
+var DNSRecordSetIdentityFormat = gcpurls.Template[DNSRecordSetIdentity]("dns.googleapis.com", "projects/{project}/managedZones/{managedZone}/rrsets/{name}")
 
 // DNSRecordSetIdentity is the identity of a GCP DNSRecordSet resource.
 // +k8s:deepcopy-gen=false
@@ -37,7 +37,6 @@ type DNSRecordSetIdentity struct {
 	Project     string
 	ManagedZone string
 	Name        string
-	Type        string
 }
 
 func (i *DNSRecordSetIdentity) String() string {
@@ -93,7 +92,6 @@ func getIdentityFromDNSRecordSetSpec(ctx context.Context, reader client.Reader, 
 		Project:     projectID,
 		ManagedZone: managedZoneIdentity.ManagedZone,
 		Name:        obj.Spec.Name,
-		Type:        obj.Spec.Type,
 	}
 	return identity, nil
 }

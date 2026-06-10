@@ -29,12 +29,11 @@ func TestDNSRecordSetIdentity_FromExternal(t *testing.T) {
 	}{
 		{
 			name: "valid reference",
-			ref:  "projects/my-project/managedZones/my-zone/rrsets/my-record.example.com./A",
+			ref:  "projects/my-project/managedZones/my-zone/rrsets/my-record.example.com.",
 			want: &DNSRecordSetIdentity{
 				Project:     "my-project",
 				ManagedZone: "my-zone",
 				Name:        "my-record.example.com.",
-				Type:        "A",
 			},
 		},
 		{
@@ -44,12 +43,11 @@ func TestDNSRecordSetIdentity_FromExternal(t *testing.T) {
 		},
 		{
 			name: "full url",
-			ref:  "https://dns.googleapis.com/projects/my-project/managedZones/my-zone/rrsets/www.example.com./AAAA",
+			ref:  "https://dns.googleapis.com/projects/my-project/managedZones/my-zone/rrsets/www.example.com.",
 			want: &DNSRecordSetIdentity{
 				Project:     "my-project",
 				ManagedZone: "my-zone",
 				Name:        "www.example.com.",
-				Type:        "AAAA",
 			},
 		},
 	}

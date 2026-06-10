@@ -31,7 +31,7 @@ var _ refs.Ref = &DNSRecordSetRef{}
 // DNSRecordSetRef is a reference to a DNSRecordSet.
 type DNSRecordSetRef struct {
 	// A reference to an externally managed DNSRecordSet resource.
-	// Should be in the format "projects/{{projectID}}/managedZones/{{managedZone}}/rrsets/{{name}}/{{type}}".
+	// Should be in the format "projects/{{projectID}}/managedZones/{{managedZone}}/rrsets/{{name}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DNSRecordSet resource.
