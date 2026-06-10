@@ -423,12 +423,7 @@
 [missing_field] crd=beyondcorpclientgateways.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=biglakecatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=biglakecatalogs.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataMaskingPolicy.predefinedExpression" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPolicyID" is not set in unstructured objects
-[missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPolicyType" is not set in unstructured objects
-[missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyTagRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigquerydatapolicydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataMaskingPolicy.predefinedExpression" is not set in unstructured objects
 [missing_field] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset.dataset.datasetId" is not set in unstructured objects
 [missing_field] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset.dataset.projectId" is not set in unstructured objects
