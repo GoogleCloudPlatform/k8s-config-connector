@@ -244,6 +244,18 @@ func viewEq(actual, desired *bigquery.ViewDefinition, prefix string, diff *struc
 	return len(diff.Fields) == startDiffs
 }
 
+func timePartitioningEqual(actual, desired *bigquery.TimePartitioning) bool {
+	if actual == nil && desired == nil {
+		return true
+	}
+	if actual == nil || desired == nil {
+		return false
+	}
+	return actual.Type == desired.Type &&
+		actual.ExpirationMs == desired.ExpirationMs &&
+		actual.Field == desired.Field
+}
+
 func TableEq(actual, desired *bigquery.Table, diff *structuredreporting.Diff) (bool, error) {
 	if actual == nil && desired == nil {
 		return true, nil
@@ -284,7 +296,7 @@ func TableEq(actual, desired *bigquery.Table, diff *structuredreporting.Diff) (b
 	if !reflect.DeepEqual(actual.TableConstraints, desired.TableConstraints) {
 		diff.AddField("table_constraints", actual.TableConstraints, desired.TableConstraints)
 	}
-	if !reflect.DeepEqual(actual.TimePartitioning, desired.TimePartitioning) {
+	if !timePartitioningEqual(actual.TimePartitioning, desired.TimePartitioning) {
 		diff.AddField("time_partitioning", actual.TimePartitioning, desired.TimePartitioning)
 	}
 

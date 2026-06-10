@@ -211,3 +211,34 @@ func TestTableEq_TimePartitioning(t *testing.T) {
 		t.Errorf("got diff ID %s, want time_partitioning", diff.Fields[0].ID)
 	}
 }
+
+func TestTableEq_TimePartitioning_IgnoreRequirePartitionFilter(t *testing.T) {
+	a := &bigquery.Table{
+		TimePartitioning: &bigquery.TimePartitioning{
+			Type:                   "DAY",
+			Field:                  "f1",
+			RequirePartitionFilter: true,
+		},
+	}
+	b := &bigquery.Table{
+		TimePartitioning: &bigquery.TimePartitioning{
+			Type:                   "DAY",
+			Field:                  "f1",
+			RequirePartitionFilter: false,
+		},
+	}
+
+	diff := &structuredreporting.Diff{}
+	equal, err := TableEq(a, b, diff)
+	if err != nil {
+		t.Fatalf("TableEq failed: %v", err)
+	}
+
+	if !equal {
+		t.Errorf("TableEq returned false, want true (RequirePartitionFilter under TimePartitioning should be ignored)")
+	}
+
+	if len(diff.Fields) != 0 {
+		t.Errorf("got %d diffs, want 0", len(diff.Fields))
+	}
+}
