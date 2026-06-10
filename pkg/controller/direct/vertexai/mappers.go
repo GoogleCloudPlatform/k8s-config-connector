@@ -171,3 +171,19 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Encryption
 func VertexAIExampleStoreSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in string) string {
 	return in
 }
+
+func VertexAIDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krmv1beta1.VertexAIDatasetSpec {
+	return VertexAIDatasetSpec_v1beta1_FromProto(mapCtx, in)
+}
+
+func VertexAIDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.VertexAIDatasetSpec) *pb.Dataset {
+	return VertexAIDatasetSpec_v1beta1_ToProto(mapCtx, in)
+}
+
+func VertexAIDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krmv1beta1.VertexAIDatasetObservedState {
+	return VertexAIDatasetObservedState_v1beta1_FromProto(mapCtx, in)
+}
+
+func VertexAIDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.VertexAIDatasetObservedState) *pb.Dataset {
+	return VertexAIDatasetObservedState_v1beta1_ToProto(mapCtx, in)
+}
