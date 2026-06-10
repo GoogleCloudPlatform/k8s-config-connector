@@ -22,26 +22,26 @@
 package fake
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/modelarmor/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudnumberregistry/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeModelarmorV1alpha1 struct {
+type FakeCloudnumberregistryV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeModelarmorV1alpha1) ModelArmorFloorSettings(namespace string) v1alpha1.ModelArmorFloorSettingInterface {
-	return newFakeModelArmorFloorSettings(c, namespace)
+func (c *FakeCloudnumberregistryV1alpha1) CloudNumberRegistryCustomRanges(namespace string) v1alpha1.CloudNumberRegistryCustomRangeInterface {
+	return newFakeCloudNumberRegistryCustomRanges(c, namespace)
 }
 
-func (c *FakeModelarmorV1alpha1) ModelArmorTemplates(namespace string) v1alpha1.ModelArmorTemplateInterface {
-	return newFakeModelArmorTemplates(c, namespace)
+func (c *FakeCloudnumberregistryV1alpha1) CloudNumberRegistryRegistryBooks(namespace string) v1alpha1.CloudNumberRegistryRegistryBookInterface {
+	return newFakeCloudNumberRegistryRegistryBooks(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeModelarmorV1alpha1) RESTClient() rest.Interface {
+func (c *FakeCloudnumberregistryV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }
