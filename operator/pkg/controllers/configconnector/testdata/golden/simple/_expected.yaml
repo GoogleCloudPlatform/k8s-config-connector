@@ -2664,6 +2664,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudnumberregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudquota.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4347,6 +4359,14 @@ rules:
   - watch
 - apiGroups:
   - cloudiot.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudnumberregistry.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

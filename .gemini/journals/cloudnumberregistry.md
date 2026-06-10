@@ -1,0 +1,5 @@
+### [2026-06-09] CloudNumberRegistry Custom Range Greenfield Scaffolding
+- **Context**: Implementing `CloudNumberRegistryCustomRange` types and identity in `v1alpha1`
+- **Problem**: The required `google.cloud.numberregistry.v1alpha` proto is only present in extremely recent commits of `googleapis` (on or after May 21, 2026) but the global pin in `apis/git.versions` is set to an older commit (`1765b559c42386788ff0c6412491277b4791107a`). Updating `apis/git.versions` globally triggers code regeneration on dozens of other resources, polluting the PR and violating targeted changes.
+- **Solution**: Compiled a custom, service-specific `googleapis-numberregistry.pb` by checking out `fe9f668e59b5448d27564d2b89b5aed97b74f8d7` only inside `generate.sh`. Restored the default global `apis/git.versions` and `googleapis.pb` to their original states. Updated the generation tool flags with `--proto-source-path` pointing to the custom `.pb` file.
+- **Impact**: Keeps PRs clean, avoids code-generation pollution of other services, and enables implementing greenfield APIs that depend on more recent googleapis commits than what is globally pinned in the repository.
