@@ -20,14 +20,20 @@ import (
 	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
 
+// ComputeInstanceGroupSpec_v1beta1_FromProto maps a pb.InstanceGroup to a krm.ComputeInstanceGroupSpec.
+// Note: Instances field is handled manually in the controller (via separate API calls like addInstances / removeInstances),
+// as it is not part of the base pb.InstanceGroup message.
 func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krm.ComputeInstanceGroupSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ComputeInstanceGroupSpec{}
 	out.Description = in.Description
+	if in.Name != nil {
+		out.ResourceID = in.Name
+	}
 	if in.Network != nil {
-		out.NetworkRef = &krm.ComputeInstanceGroupResourceRef{External: *in.Network}
+		out.NetworkRef = &krm.ComputeNetworkRef{External: *in.Network}
 	}
 	if in.Zone != nil {
 		out.Zone = *in.Zone
@@ -39,19 +45,25 @@ func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 				out.NamedPort[i].Name = *p.Name
 			}
 			if p.Port != nil {
-				out.NamedPort[i].Port = int64(*p.Port)
+				out.NamedPort[i].Port = int(*p.Port)
 			}
 		}
 	}
 	return out
 }
 
+// ComputeInstanceGroupSpec_v1beta1_ToProto maps a krm.ComputeInstanceGroupSpec to a pb.InstanceGroup.
+// Note: Instances field is handled manually in the controller (via separate API calls like addInstances / removeInstances),
+// as it is not part of the base pb.InstanceGroup message.
 func ComputeInstanceGroupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupSpec) *pb.InstanceGroup {
 	if in == nil {
 		return nil
 	}
 	out := &pb.InstanceGroup{}
 	out.Description = in.Description
+	if in.ResourceID != nil {
+		out.Name = in.ResourceID
+	}
 	if in.NetworkRef != nil {
 		out.Network = &in.NetworkRef.External
 	}
@@ -72,6 +84,8 @@ func ComputeInstanceGroupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	return out
 }
 
+// ComputeInstanceGroupStatus_v1beta1_FromProto maps a pb.InstanceGroup to a krm.ComputeInstanceGroupStatus.
+// Note: ObservedGeneration is managed by the Kubernetes controller and is not part of the GCP API proto.
 func ComputeInstanceGroupStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krm.ComputeInstanceGroupStatus {
 	if in == nil {
 		return nil
@@ -79,12 +93,14 @@ func ComputeInstanceGroupStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	out := &krm.ComputeInstanceGroupStatus{}
 	out.SelfLink = in.SelfLink
 	if in.Size != nil {
-		sizeVal := int64(*in.Size)
+		sizeVal := int(*in.Size)
 		out.Size = &sizeVal
 	}
 	return out
 }
 
+// ComputeInstanceGroupStatus_v1beta1_ToProto maps a krm.ComputeInstanceGroupStatus to a pb.InstanceGroup.
+// Note: ObservedGeneration is managed by the Kubernetes controller and is not part of the GCP API proto.
 func ComputeInstanceGroupStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupStatus) *pb.InstanceGroup {
 	if in == nil {
 		return nil
@@ -95,5 +111,33 @@ func ComputeInstanceGroupStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 		sizeVal := int32(*in.Size)
 		out.Size = &sizeVal
 	}
+	return out
+}
+
+// InstancegroupNamedPort_v1beta1_FromProto maps a pb.NamedPort to a krm.InstancegroupNamedPort.
+func InstancegroupNamedPort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NamedPort) *krm.InstancegroupNamedPort {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstancegroupNamedPort{}
+	if in.Name != nil {
+		out.Name = *in.Name
+	}
+	if in.Port != nil {
+		out.Port = int(*in.Port)
+	}
+	return out
+}
+
+// InstancegroupNamedPort_v1beta1_ToProto maps a krm.InstancegroupNamedPort to a pb.NamedPort.
+func InstancegroupNamedPort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstancegroupNamedPort) *pb.NamedPort {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NamedPort{}
+	name := in.Name
+	port := int32(in.Port)
+	out.Name = &name
+	out.Port = &port
 	return out
 }

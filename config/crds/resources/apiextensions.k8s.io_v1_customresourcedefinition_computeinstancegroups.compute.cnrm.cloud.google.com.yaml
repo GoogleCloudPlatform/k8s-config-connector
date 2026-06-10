@@ -70,6 +70,8 @@ spec:
                 type: string
               instances:
                 items:
+                  description: InstanceRef defines the resource reference to ComputeInstance,
+                    which "External" field holds the GCP identifier for the KRM object.
                   oneOf:
                   - not:
                       required:
@@ -86,13 +88,14 @@ spec:
                     - external
                   properties:
                     external:
-                      description: The external name of the referenced resource
+                      description: A reference to an externally managed ComputeInstance
+                        resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
                       type: string
                     name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      description: The name of a ComputeInstance resource.
                       type: string
                     namespace:
-                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      description: The namespace of a ComputeInstance resource.
                       type: string
                   type: object
                 type: array
@@ -105,7 +108,6 @@ spec:
                       type: string
                     port:
                       description: The port number to map the name to.
-                      format: int64
                       type: integer
                   required:
                   - name
@@ -129,13 +131,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
+                    description: The value of an externally managed ComputeNetwork
+                      resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
+                      or "projects/{{projectId}}/global/networks/{{networkId}}"
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a ComputeNetwork resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a ComputeNetwork resource.
                     type: string
                 type: object
               resourceID:
@@ -186,16 +190,16 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
               selfLink:
                 description: The URI of the created resource.
                 type: string
               size:
                 description: The number of instances in the group.
-                format: int64
                 type: integer
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

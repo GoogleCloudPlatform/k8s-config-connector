@@ -21,6 +21,7 @@ import (
 
 var ComputeInstanceGroupGVK = GroupVersion.WithKind("ComputeInstanceGroup")
 
+// +kcc:proto=google.cloud.compute.v1.NamedPort
 type InstancegroupNamedPort struct {
 	/* The name which the port will be mapped to. */
 	// +kcc:proto:field=google.cloud.compute.v1.NamedPort.name
@@ -28,18 +29,7 @@ type InstancegroupNamedPort struct {
 
 	/* The port number to map the name to. */
 	// +kcc:proto:field=google.cloud.compute.v1.NamedPort.port
-	Port int64 `json:"port"`
-}
-
-type ComputeInstanceGroupResourceRef struct {
-	/* The external name of the referenced resource */
-	External string `json:"external,omitempty"`
-
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	Name string `json:"name,omitempty"`
-
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	Namespace string `json:"namespace,omitempty"`
+	Port int `json:"port"`
 }
 
 // ComputeInstanceGroupSpec defines the desired state of ComputeInstanceGroup
@@ -51,7 +41,7 @@ type ComputeInstanceGroupSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	Instances []ComputeInstanceGroupResourceRef `json:"instances,omitempty"`
+	Instances []InstanceRef `json:"instances,omitempty"`
 
 	/* The named port configuration. */
 	// +optional
@@ -60,7 +50,7 @@ type ComputeInstanceGroupSpec struct {
 
 	// +optional
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.network
-	NetworkRef *ComputeInstanceGroupResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -80,7 +70,7 @@ type ComputeInstanceGroupStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	/* The URI of the created resource. */
 	// +optional
@@ -90,7 +80,7 @@ type ComputeInstanceGroupStatus struct {
 	/* The number of instances in the group. */
 	// +optional
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroup.size
-	Size *int64 `json:"size,omitempty"`
+	Size *int `json:"size,omitempty"`
 }
 
 // +genclient
@@ -112,6 +102,7 @@ type ComputeInstanceGroup struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// +required
 	Spec   ComputeInstanceGroupSpec   `json:"spec,omitempty"`
 	Status ComputeInstanceGroupStatus `json:"status,omitempty"`
 }

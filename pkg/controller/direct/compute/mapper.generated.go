@@ -567,7 +567,7 @@ func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: Name
 	// MISSING: NamedPorts
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeInstanceGroupResourceRef{External: in.GetNetwork()}
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	// MISSING: Region
 	// MISSING: SelfLink
@@ -2003,20 +2003,44 @@ func HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/*
-found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "HealthCheckTCPHealthCheck_v1beta1_ToProto", skipping
+func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TCPHealthCheck{}
+	out.Port = in.Port
+	out.PortName = in.PortName
+	out.PortSpecification = in.PortSpecification
+	out.ProxyHeader = in.ProxyHeader
+	out.Request = in.Request
+	out.Response = in.Response
+	return out
+}
+*/
 
-	func HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HealthCheckTCPHealthCheck) *pb.TCPHealthCheck {
+/* found existing non-generated mapping function "InstancegroupNamedPort_v1beta1_FromProto", skipping
+func InstancegroupNamedPort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NamedPort) *krm.InstancegroupNamedPort {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstancegroupNamedPort{}
+	out.Name = in.Name
+	out.Port = in.Port
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "InstancegroupNamedPort_v1beta1_ToProto", skipping
+
+	func InstancegroupNamedPort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InstancegroupNamedPort) *pb.NamedPort {
 		if in == nil {
 			return nil
 		}
-		out := &pb.TCPHealthCheck{}
+		out := &pb.NamedPort{}
+		out.Name = in.Name
 		out.Port = in.Port
-		out.PortName = in.PortName
-		out.PortSpecification = in.PortSpecification
-		out.ProxyHeader = in.ProxyHeader
-		out.Request = in.Request
-		out.Response = in.Response
 		return out
 	}
 */

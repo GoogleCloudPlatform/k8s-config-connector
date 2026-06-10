@@ -963,7 +963,8 @@ type MetadataFilterLabelMatch struct {
 }
 */
 
-/* unreachable type NamedPort
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NamedPort", skipping
+
 // +kcc:proto=google.cloud.compute.v1.NamedPort
 type NamedPort struct {
 	// The name for this named port. The name must be 1-63 characters long, and comply with RFC1035.
