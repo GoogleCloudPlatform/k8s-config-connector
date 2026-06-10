@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"sync"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -29,6 +30,8 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+var networkUpdateMutex sync.Mutex
 
 type SubnetsV1 struct {
 	*MockService
@@ -207,17 +210,21 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 
 	// Add the subnetwork to the list in the network
 	{
+		networkUpdateMutex.Lock()
 		networkFQN := networkName.String()
 		network := &pb.Network{}
 		if err := s.storage.Get(ctx, networkFQN, network); err != nil {
+			networkUpdateMutex.Unlock()
 			return nil, err
 		}
 
 		network.Subnetworks = append(network.Subnetworks, obj.GetSelfLink())
 
 		if err := s.storage.Update(ctx, networkFQN, network); err != nil {
+			networkUpdateMutex.Unlock()
 			return nil, err
 		}
+		networkUpdateMutex.Unlock()
 	}
 
 	op := &pb.Operation{
@@ -259,17 +266,21 @@ func (s *SubnetsV1) Delete(ctx context.Context, req *pb.DeleteSubnetworkRequest)
 
 	// Remove the subnetwork from the list in the network
 	{
+		networkUpdateMutex.Lock()
 		networkFQN := networkName.String()
 		network := &pb.Network{}
 		if err := s.storage.Get(ctx, networkFQN, network); err != nil {
+			networkUpdateMutex.Unlock()
 			return nil, err
 		}
 
 		network.Subnetworks, _ = removeFromSlice(network.Subnetworks, deleted.GetSelfLink())
 
 		if err := s.storage.Update(ctx, networkFQN, network); err != nil {
+			networkUpdateMutex.Unlock()
 			return nil, err
 		}
+		networkUpdateMutex.Unlock()
 	}
 
 	op := &pb.Operation{
