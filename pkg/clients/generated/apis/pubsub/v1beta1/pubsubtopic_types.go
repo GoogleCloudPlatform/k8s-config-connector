@@ -48,6 +48,7 @@ type TopicSchemaSettings struct {
 	// +optional
 	Encoding *string `json:"encoding,omitempty"`
 
+	/* PubSubSchemaRef is a reference to a PubSubSchema. */
 	SchemaRef v1alpha1.ResourceRef `json:"schemaRef"`
 }
 

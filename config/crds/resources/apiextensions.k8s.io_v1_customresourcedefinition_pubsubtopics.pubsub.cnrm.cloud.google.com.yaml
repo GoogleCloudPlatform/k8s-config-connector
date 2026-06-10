@@ -138,6 +138,7 @@ spec:
                       "JSON", "BINARY"].'
                     type: string
                   schemaRef:
+                    description: PubSubSchemaRef is a reference to a PubSubSchema.
                     oneOf:
                     - not:
                         required:
@@ -154,15 +155,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: string of the format `projects/{{project}}/schemas/{{value}}`,
-                          where {{value}} is the `name` field of a `PubSubSchema`
-                          resource.'
+                        description: A reference to an externally managed PubSubSchema
+                          resource. Should be in the format "projects/{{projectID}}/schemas/{{schemaID}}".
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name of a PubSubSchema resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace of a PubSubSchema resource.
                         type: string
                     type: object
                 required:
