@@ -320,6 +320,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				switch fixture.GVK.Kind {
 				case "TagsTagKey", "TagsTagValue", "TagsTagBinding":
 					forceDirect = true
+				case "BillingAccount":
+					forceDirect = true
 				case "APIKeysKey":
 					forceDirect = true
 				case "LoggingLogView":

@@ -1,0 +1,130 @@
+GET https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "billingAccount \"billingAccounts/billingaccount-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudbilling.googleapis.com/v1/billingAccounts?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+{
+  "currencyCode": "USD",
+  "displayName": "BillingAccount Maximal ${uniqueId}",
+  "name": "billingAccounts/billingaccount-${uniqueId}",
+  "parent": "billingAccounts/000000-123456-000000"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "currencyCode": "USD",
+  "displayName": "BillingAccount Maximal ${uniqueId}",
+  "masterBillingAccount": "",
+  "name": "billingAccounts/billingaccount-${uniqueId}",
+  "open": true,
+  "parent": "billingAccounts/000000-123456-000000"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "currencyCode": "USD",
+  "displayName": "BillingAccount Maximal ${uniqueId}",
+  "masterBillingAccount": "",
+  "name": "billingAccounts/billingaccount-${uniqueId}",
+  "open": true,
+  "parent": "billingAccounts/000000-123456-000000"
+}
+
+---
+
+PATCH https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+
+{
+  "currencyCode": "USD",
+  "displayName": "BillingAccount Maximal Updated ${uniqueId}",
+  "name": "billingAccounts/billingaccount-${uniqueId}",
+  "parent": "billingAccounts/000000-123456-000000"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "currencyCode": "USD",
+  "displayName": "BillingAccount Maximal Updated ${uniqueId}",
+  "masterBillingAccount": "",
+  "name": "billingAccounts/billingaccount-${uniqueId}",
+  "open": true,
+  "parent": "billingAccounts/000000-123456-000000"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "currencyCode": "USD",
+  "displayName": "BillingAccount Maximal Updated ${uniqueId}",
+  "masterBillingAccount": "",
+  "name": "billingAccounts/billingaccount-${uniqueId}",
+  "open": true,
+  "parent": "billingAccounts/000000-123456-000000"
+}
