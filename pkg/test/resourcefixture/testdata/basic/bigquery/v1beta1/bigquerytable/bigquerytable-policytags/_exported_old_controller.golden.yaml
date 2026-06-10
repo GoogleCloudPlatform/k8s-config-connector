@@ -1,0 +1,14 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: bigquerytable-${uniqueId}
+spec:
+  datasetRef:
+    external: bigquerydataset${uniqueId}
+  resourceID: bigquerytable-${uniqueId}
+  schema: '[{"mode":"NULLABLE","name":"col_with_empty_policy_tags","type":"STRING"},{"mode":"NULLABLE","name":"col_without_policy_tags","type":"STRING"}]'

@@ -315,38 +315,20 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					return primaryResource, opt
 				}
 
-				// Start gradually, only running for apikeyskey and tags* fixtures initially
+				// If the default controller is terraform/DCL, but there is a direct controller available, set forceDirect=true.
+				// Use static_config.go as the source of truth.
 				forceDirect := false
-				switch fixture.GVK.Kind {
-				case "TagsTagKey", "TagsTagValue", "TagsTagBinding":
-					forceDirect = true
-				case "APIKeysKey":
-					forceDirect = true
-				case "LoggingLogView":
-					forceDirect = true
-				case "LoggingLogBucket":
-					forceDirect = true
-				case "ArtifactRegistryRepository":
-					forceDirect = true
-				case "LoggingLogSink":
-					forceDirect = true
-				case "PubSubSchema":
-					forceDirect = true
-				case "TagsLocationTagBinding":
-					forceDirect = false
-				case "FirestoreIndex":
-					forceDirect = true
-				case "DNSManagedZone":
-					forceDirect = true
-				case "DNSPolicy":
-					forceDirect = true
-				case "CertificateManagerCertificate":
-					forceDirect = true
-				case "BillingAccount":
-					forceDirect = true
-				case "ServiceDirectoryService":
-					forceDirect = true
-				default:
+				config, err := resourceconfig.LoadConfig().GetControllersForGVK(fixture.GVK)
+				if err != nil {
+					t.Fatalf("error getting controller config for GVK %v: %v", fixture.GVK, err)
+				}
+				if config.DefaultController != k8scontrollertype.ReconcilerTypeDirect {
+					if slices.Contains(config.SupportedControllers, k8scontrollertype.ReconcilerTypeDirect) {
+						forceDirect = true
+					}
+				}
+				// Exclude PrivateCA* from forceDirect, to be fixed in a separate issue.
+				if strings.HasPrefix(fixture.GVK.Kind, "PrivateCA") {
 					forceDirect = false
 				}
 

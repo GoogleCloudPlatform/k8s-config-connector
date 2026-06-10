@@ -1,0 +1,14 @@
+8d7
+<     cnrm.cloud.google.com/state-into-spec: absent
+12c11
+<   generation: 3
+---
+>   generation: 2
+23d21
+<   resourceID: bigtableappprofile-${uniqueId}
+33a32
+>   externalRef: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
+35c34
+<   observedGeneration: 3
+---
+>   observedGeneration: 2

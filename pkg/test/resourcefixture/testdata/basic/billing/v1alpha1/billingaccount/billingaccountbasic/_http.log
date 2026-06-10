@@ -1,5 +1,7 @@
 GET https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=billingAccounts%2F${billingAccountID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -23,6 +25,8 @@ X-Xss-Protection: 0
 
 POST https://cloudbilling.googleapis.com/v1/billingAccounts?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=
 
 {
   "currencyCode": "USD",
@@ -53,6 +57,8 @@ X-Xss-Protection: 0
 
 GET https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=billingAccounts%2F${billingAccountID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -77,6 +83,8 @@ X-Xss-Protection: 0
 
 PATCH https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=billingAccounts%2F${billingAccountID}
 
 {
   "currencyCode": "USD",
@@ -107,6 +115,8 @@ X-Xss-Protection: 0
 
 GET https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=billingAccounts%2F${billingAccountID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

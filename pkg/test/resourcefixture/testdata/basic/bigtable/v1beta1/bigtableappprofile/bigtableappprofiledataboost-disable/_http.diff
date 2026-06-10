@@ -1,0 +1,179 @@
+213,214c213
+< GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
+216,231c215,216
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found",
+<     "status": "NOT_FOUND"
+<   }
+---
+> {
+>   "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+233a219,222
+> error: rpc error: code = NotFound desc = projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found
+> 
+> {}
+> 
+236,237c225
+< POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles?alt=json&appProfileId=bigtableappprofile-${uniqueId}&ignoreWarnings=true
+< Content-Type: application/json
+---
+> GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateAppProfile
+240,243c228,239
+<   "description": "Initial description.",
+<   "singleClusterRouting": {
+<     "clusterId": "cluster1-${uniqueId}"
+<   }
+---
+>   "appProfile": {
+>     "dataBoostIsolationReadOnly": {
+>       "computeBillingOwner": "HOST_PAYS"
+>     },
+>     "description": "Initial description.",
+>     "singleClusterRouting": {
+>       "clusterId": "cluster1-${uniqueId}"
+>     }
+>   },
+>   "appProfileId": "bigtableappprofile-${uniqueId}",
+>   "ignoreWarnings": true,
+>   "parent": "projects/${projectId}/instances/profiledep${uniqueId}"
+246,254c242
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+256a245,247
+>   "dataBoostIsolationReadOnly": {
+>     "computeBillingOwner": "HOST_PAYS"
+>   },
+261,263d251
+<   },
+<   "standardIsolation": {
+<     "priority": "PRIORITY_HIGH"
+269,270c257
+< GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
+272,280c259,263
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+> }
+> 
+> OK
+282a266,268
+>   "dataBoostIsolationReadOnly": {
+>     "computeBillingOwner": "HOST_PAYS"
+>   },
+287,289d272
+<   },
+<   "standardIsolation": {
+<     "priority": "PRIORITY_HIGH"
+295,296c278
+< PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true&updateMask=standardIsolation
+< Content-Type: application/json
+---
+> GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateAppProfile
+299,301c281,285
+<   "description": "Initial description.",
+<   "singleClusterRouting": {
+<     "clusterId": "cluster1-${uniqueId}"
+---
+>   "appProfile": {
+>     "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
+>     "standardIsolation": {
+>       "priority": "PRIORITY_MEDIUM"
+>     }
+303,305c287,288
+<   "standardIsolation": {
+<     "priority": "PRIORITY_MEDIUM"
+<   }
+---
+>   "ignoreWarnings": true,
+>   "updateMask": "standardIsolation"
+308,316c291
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+335,336c310,314
+< GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
+> 
+> {
+>   "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+> }
+338,346c316
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+361,362c331,336
+< DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true
+< Content-Type: application/json
+---
+> GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteAppProfile
+> 
+> {
+>   "ignoreWarnings": true,
+>   "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+> }
+364,372c338
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
