@@ -30,6 +30,7 @@ type AppProfile_DataBoostIsolationReadOnly struct {
 	ComputeBillingOwner *string `json:"computeBillingOwner,omitempty"`
 }
 
+/* unreachable type AppProfile_MultiClusterRoutingUseAny
 // +kcc:proto=google.bigtable.admin.v2.AppProfile.MultiClusterRoutingUseAny
 type AppProfile_MultiClusterRoutingUseAny struct {
 	// The set of clusters to route to. The order is ignored; clusters will be
@@ -42,10 +43,13 @@ type AppProfile_MultiClusterRoutingUseAny struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.MultiClusterRoutingUseAny.row_affinity
 	RowAffinity *AppProfile_MultiClusterRoutingUseAny_RowAffinity `json:"rowAffinity,omitempty"`
 }
+*/
 
+/* unreachable type AppProfile_MultiClusterRoutingUseAny_RowAffinity
 // +kcc:proto=google.bigtable.admin.v2.AppProfile.MultiClusterRoutingUseAny.RowAffinity
 type AppProfile_MultiClusterRoutingUseAny_RowAffinity struct {
 }
+*/
 
 // +kcc:proto=google.bigtable.admin.v2.AppProfile.StandardIsolation
 type AppProfile_StandardIsolation struct {
@@ -58,6 +62,7 @@ type AppProfile_StandardIsolation struct {
 type BackupInfo struct {
 }
 
+/* unreachable type ChangeStreamConfig
 // +kcc:proto=google.bigtable.admin.v2.ChangeStreamConfig
 type ChangeStreamConfig struct {
 	// How long the change stream should be retained. Change stream data older
@@ -68,6 +73,25 @@ type ChangeStreamConfig struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.ChangeStreamConfig.retention_period
 	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
 }
+*/
+
+/* unreachable type GcRule_Intersection
+// +kcc:proto=google.bigtable.admin.v2.GcRule.Intersection
+type GcRule_Intersection struct {
+	// Only delete cells which would be deleted by every element of `rules`.
+	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.Intersection.rules
+	Rules []GcRule `json:"rules,omitempty"`
+}
+*/
+
+/* unreachable type GcRule_Union
+// +kcc:proto=google.bigtable.admin.v2.GcRule.Union
+type GcRule_Union struct {
+	// Delete cells which would be deleted by any element of `rules`.
+	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.Union.rules
+	Rules []GcRule `json:"rules,omitempty"`
+}
+*/
 
 // +kcc:proto=google.bigtable.admin.v2.RestoreInfo
 type RestoreInfo struct {
@@ -81,6 +105,7 @@ type RestoreInfo struct {
 	BackupInfo *BackupInfo `json:"backupInfo,omitempty"`
 }
 
+/* unreachable type Table_AutomatedBackupPolicy
 // +kcc:proto=google.bigtable.admin.v2.Table.AutomatedBackupPolicy
 type Table_AutomatedBackupPolicy struct {
 	// Required. How long the automated backups should be retained. The only
@@ -93,11 +118,13 @@ type Table_AutomatedBackupPolicy struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Table.AutomatedBackupPolicy.frequency
 	Frequency *string `json:"frequency,omitempty"`
 }
+*/
 
 // +kcc:proto=google.bigtable.admin.v2.Table.ClusterState
 type Table_ClusterState struct {
 }
 
+/* unreachable type Type
 // +kcc:proto=google.bigtable.admin.v2.Type
 type Type struct {
 	// Bytes
@@ -156,7 +183,9 @@ type Type struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.enum_type
 	EnumType *Type_Enum `json:"enumType,omitempty"`
 }
+*/
 
+/* unreachable type Type_Aggregate
 // +kcc:proto=google.bigtable.admin.v2.Type.Aggregate
 type Type_Aggregate struct {
 	// Type of the inputs that are accumulated by this `Aggregate`, which must
@@ -181,56 +210,78 @@ type Type_Aggregate struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Aggregate.min
 	Min *Type_Aggregate_Min `json:"min,omitempty"`
 }
+*/
 
+/* unreachable type Type_Aggregate_HyperLogLogPlusPlusUniqueCount
 // +kcc:proto=google.bigtable.admin.v2.Type.Aggregate.HyperLogLogPlusPlusUniqueCount
 type Type_Aggregate_HyperLogLogPlusPlusUniqueCount struct {
 }
+*/
 
+/* unreachable type Type_Aggregate_Max
 // +kcc:proto=google.bigtable.admin.v2.Type.Aggregate.Max
 type Type_Aggregate_Max struct {
 }
+*/
 
+/* unreachable type Type_Aggregate_Min
 // +kcc:proto=google.bigtable.admin.v2.Type.Aggregate.Min
 type Type_Aggregate_Min struct {
 }
+*/
 
+/* unreachable type Type_Aggregate_Sum
 // +kcc:proto=google.bigtable.admin.v2.Type.Aggregate.Sum
 type Type_Aggregate_Sum struct {
 }
+*/
 
+/* unreachable type Type_Array
 // +kcc:proto=google.bigtable.admin.v2.Type.Array
 type Type_Array struct {
 	// The type of the elements in the array. This must not be `Array`.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Array.element_type
 	ElementType *Type `json:"elementType,omitempty"`
 }
+*/
 
+/* unreachable type Type_Bool
 // +kcc:proto=google.bigtable.admin.v2.Type.Bool
 type Type_Bool struct {
 }
+*/
 
+/* unreachable type Type_Bytes
 // +kcc:proto=google.bigtable.admin.v2.Type.Bytes
 type Type_Bytes struct {
 	// The encoding to use when converting to or from lower level types.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Bytes.encoding
 	Encoding *Type_Bytes_Encoding `json:"encoding,omitempty"`
 }
+*/
 
+/* unreachable type Type_Bytes_Encoding
 // +kcc:proto=google.bigtable.admin.v2.Type.Bytes.Encoding
 type Type_Bytes_Encoding struct {
 	// Use `Raw` encoding.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Bytes.Encoding.raw
 	Raw *Type_Bytes_Encoding_Raw `json:"raw,omitempty"`
 }
+*/
 
+/* unreachable type Type_Bytes_Encoding_Raw
 // +kcc:proto=google.bigtable.admin.v2.Type.Bytes.Encoding.Raw
 type Type_Bytes_Encoding_Raw struct {
 }
+*/
 
+/* unreachable type Type_Date
 // +kcc:proto=google.bigtable.admin.v2.Type.Date
 type Type_Date struct {
 }
+*/
 
+/* unreachable type Type_Enum
 // +kcc:proto=google.bigtable.admin.v2.Type.Enum
 type Type_Enum struct {
 	// The ID of the schema bundle that this enum is defined in.
@@ -242,22 +293,30 @@ type Type_Enum struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Enum.enum_name
 	EnumName *string `json:"enumName,omitempty"`
 }
+*/
 
+/* unreachable type Type_Float32
 // +kcc:proto=google.bigtable.admin.v2.Type.Float32
 type Type_Float32 struct {
 }
+*/
 
+/* unreachable type Type_Float64
 // +kcc:proto=google.bigtable.admin.v2.Type.Float64
 type Type_Float64 struct {
 }
+*/
 
+/* unreachable type Type_Int64
 // +kcc:proto=google.bigtable.admin.v2.Type.Int64
 type Type_Int64 struct {
 	// The encoding to use when converting to or from lower level types.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Int64.encoding
 	Encoding *Type_Int64_Encoding `json:"encoding,omitempty"`
 }
+*/
 
+/* unreachable type Type_Int64_Encoding
 // +kcc:proto=google.bigtable.admin.v2.Type.Int64.Encoding
 type Type_Int64_Encoding struct {
 	// Use `BigEndianBytes` encoding.
@@ -268,18 +327,24 @@ type Type_Int64_Encoding struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Int64.Encoding.ordered_code_bytes
 	OrderedCodeBytes *Type_Int64_Encoding_OrderedCodeBytes `json:"orderedCodeBytes,omitempty"`
 }
+*/
 
+/* unreachable type Type_Int64_Encoding_BigEndianBytes
 // +kcc:proto=google.bigtable.admin.v2.Type.Int64.Encoding.BigEndianBytes
 type Type_Int64_Encoding_BigEndianBytes struct {
 	// Deprecated: ignored if set.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Int64.Encoding.BigEndianBytes.bytes_type
 	BytesType *Type_Bytes `json:"bytesType,omitempty"`
 }
+*/
 
+/* unreachable type Type_Int64_Encoding_OrderedCodeBytes
 // +kcc:proto=google.bigtable.admin.v2.Type.Int64.Encoding.OrderedCodeBytes
 type Type_Int64_Encoding_OrderedCodeBytes struct {
 }
+*/
 
+/* unreachable type Type_Map
 // +kcc:proto=google.bigtable.admin.v2.Type.Map
 type Type_Map struct {
 	// The type of a map key.
@@ -291,7 +356,9 @@ type Type_Map struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Map.value_type
 	ValueType *Type `json:"valueType,omitempty"`
 }
+*/
 
+/* unreachable type Type_Proto
 // +kcc:proto=google.bigtable.admin.v2.Type.Proto
 type Type_Proto struct {
 	// The ID of the schema bundle that this proto is defined in.
@@ -303,14 +370,18 @@ type Type_Proto struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Proto.message_name
 	MessageName *string `json:"messageName,omitempty"`
 }
+*/
 
+/* unreachable type Type_String
 // +kcc:proto=google.bigtable.admin.v2.Type.String
 type Type_String struct {
 	// The encoding to use when converting to or from lower level types.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.String.encoding
 	Encoding *Type_String_Encoding `json:"encoding,omitempty"`
 }
+*/
 
+/* unreachable type Type_String_Encoding
 // +kcc:proto=google.bigtable.admin.v2.Type.String.Encoding
 type Type_String_Encoding struct {
 	// Deprecated: if set, converts to an empty `utf8_bytes`.
@@ -321,15 +392,21 @@ type Type_String_Encoding struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.String.Encoding.utf8_bytes
 	Utf8Bytes *Type_String_Encoding_Utf8Bytes `json:"utf8Bytes,omitempty"`
 }
+*/
 
+/* unreachable type Type_String_Encoding_Utf8Bytes
 // +kcc:proto=google.bigtable.admin.v2.Type.String.Encoding.Utf8Bytes
 type Type_String_Encoding_Utf8Bytes struct {
 }
+*/
 
+/* unreachable type Type_String_Encoding_Utf8Raw
 // +kcc:proto=google.bigtable.admin.v2.Type.String.Encoding.Utf8Raw
 type Type_String_Encoding_Utf8Raw struct {
 }
+*/
 
+/* unreachable type Type_Struct
 // +kcc:proto=google.bigtable.admin.v2.Type.Struct
 type Type_Struct struct {
 	// The names and types of the fields in this struct.
@@ -340,7 +417,9 @@ type Type_Struct struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.encoding
 	Encoding *Type_Struct_Encoding `json:"encoding,omitempty"`
 }
+*/
 
+/* unreachable type Type_Struct_Encoding
 // +kcc:proto=google.bigtable.admin.v2.Type.Struct.Encoding
 type Type_Struct_Encoding struct {
 	// Use `Singleton` encoding.
@@ -355,7 +434,9 @@ type Type_Struct_Encoding struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.Encoding.ordered_code_bytes
 	OrderedCodeBytes *Type_Struct_Encoding_OrderedCodeBytes `json:"orderedCodeBytes,omitempty"`
 }
+*/
 
+/* unreachable type Type_Struct_Encoding_DelimitedBytes
 // +kcc:proto=google.bigtable.admin.v2.Type.Struct.Encoding.DelimitedBytes
 type Type_Struct_Encoding_DelimitedBytes struct {
 	// Byte sequence used to delimit concatenated fields. The delimiter must
@@ -363,15 +444,21 @@ type Type_Struct_Encoding_DelimitedBytes struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.Encoding.DelimitedBytes.delimiter
 	Delimiter []byte `json:"delimiter,omitempty"`
 }
+*/
 
+/* unreachable type Type_Struct_Encoding_OrderedCodeBytes
 // +kcc:proto=google.bigtable.admin.v2.Type.Struct.Encoding.OrderedCodeBytes
 type Type_Struct_Encoding_OrderedCodeBytes struct {
 }
+*/
 
+/* unreachable type Type_Struct_Encoding_Singleton
 // +kcc:proto=google.bigtable.admin.v2.Type.Struct.Encoding.Singleton
 type Type_Struct_Encoding_Singleton struct {
 }
+*/
 
+/* unreachable type Type_Struct_Field
 // +kcc:proto=google.bigtable.admin.v2.Type.Struct.Field
 type Type_Struct_Field struct {
 	// The field name (optional). Fields without a `field_name` are considered
@@ -383,14 +470,18 @@ type Type_Struct_Field struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.Field.type
 	Type *Type `json:"type,omitempty"`
 }
+*/
 
+/* unreachable type Type_Timestamp
 // +kcc:proto=google.bigtable.admin.v2.Type.Timestamp
 type Type_Timestamp struct {
 	// The encoding to use when converting to or from lower level types.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Timestamp.encoding
 	Encoding *Type_Timestamp_Encoding `json:"encoding,omitempty"`
 }
+*/
 
+/* unreachable type Type_Timestamp_Encoding
 // +kcc:proto=google.bigtable.admin.v2.Type.Timestamp.Encoding
 type Type_Timestamp_Encoding struct {
 	// Encodes the number of microseconds since the Unix epoch using the
@@ -402,64 +493,9 @@ type Type_Timestamp_Encoding struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Timestamp.Encoding.unix_micros_int64
 	UnixMicrosInt64 *Type_Int64_Encoding `json:"unixMicrosInt64,omitempty"`
 }
+*/
 
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
-
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
-}
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
-}
-
+/* unreachable type BackupInfoObservedState
 // +kcc:observedstate:proto=google.bigtable.admin.v2.BackupInfo
 type BackupInfoObservedState struct {
 	// Output only. Name of the backup.
@@ -487,41 +523,79 @@ type BackupInfoObservedState struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.BackupInfo.source_backup
 	SourceBackup *string `json:"sourceBackup,omitempty"`
 }
+*/
 
+/* unreachable type RestoreInfoObservedState
 // +kcc:observedstate:proto=google.bigtable.admin.v2.RestoreInfo
 type RestoreInfoObservedState struct {
+	// The type of the restore source.
+	// +kcc:proto:field=google.bigtable.admin.v2.RestoreInfo.source_type
+	SourceType *string `json:"sourceType,omitempty"`
+
 	// Information about the backup used to restore the table. The backup
 	//  may no longer exist.
 	// +kcc:proto:field=google.bigtable.admin.v2.RestoreInfo.backup_info
 	BackupInfo *BackupInfoObservedState `json:"backupInfo,omitempty"`
 }
+*/
 
+/* unreachable type TypeObservedState
 // +kcc:observedstate:proto=google.bigtable.admin.v2.Type
 type TypeObservedState struct {
 	// Aggregate
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.aggregate_type
 	AggregateType *Type_AggregateObservedState `json:"aggregateType,omitempty"`
 }
+*/
 
+/* unreachable type Type_AggregateObservedState
 // +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Aggregate
 type Type_AggregateObservedState struct {
 	// Output only. Type that holds the internal accumulator state for the
 	//  `Aggregate`. This is a function of the `input_type` and `aggregator`
 	//  chosen, and will always specify a full encoding.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Aggregate.state_type
-	StateType *Type `json:"stateType,omitempty"`
+	StateType *TypeObservedState `json:"stateType,omitempty"`
 }
+*/
 
+/* unreachable type Type_ArrayObservedState
+// +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Array
+type Type_ArrayObservedState struct {
+	// The type of the elements in the array. This must not be `Array`.
+	// +kcc:proto:field=google.bigtable.admin.v2.Type.Array.element_type
+	ElementType *TypeObservedState `json:"elementType,omitempty"`
+}
+*/
+
+/* unreachable type Type_MapObservedState
+// +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Map
+type Type_MapObservedState struct {
+	// The type of a map key.
+	//  Only `Bytes`, `String`, and `Int64` are allowed as key types.
+	// +kcc:proto:field=google.bigtable.admin.v2.Type.Map.key_type
+	KeyType *TypeObservedState `json:"keyType,omitempty"`
+
+	// The type of the values in a map.
+	// +kcc:proto:field=google.bigtable.admin.v2.Type.Map.value_type
+	ValueType *TypeObservedState `json:"valueType,omitempty"`
+}
+*/
+
+/* unreachable type Type_StructObservedState
 // +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Struct
 type Type_StructObservedState struct {
 	// The names and types of the fields in this struct.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.fields
 	Fields []Type_Struct_FieldObservedState `json:"fields,omitempty"`
 }
+*/
 
+/* unreachable type Type_Struct_FieldObservedState
 // +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Struct.Field
 type Type_Struct_FieldObservedState struct {
 	// The type of values in this field.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.Field.type
 	Type *TypeObservedState `json:"type,omitempty"`
 }
+*/
