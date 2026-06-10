@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -104,4 +104,16 @@ func (obj *AIPlatformModel) GetIdentity(ctx context.Context, reader client.Reade
 	}
 
 	return specIdentity, nil
+}
+
+func (obj *AIPlatformModel) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
+}
+
+func (i *AIPlatformModelIdentity) ExternalIdentifier() *string {
+	s := i.String()
+	return &s
 }

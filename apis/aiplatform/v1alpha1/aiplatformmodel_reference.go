@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,16 +27,17 @@ import (
 
 var _ refs.Ref = &AIPlatformModelRef{}
 
-// AIPlatformModelRef is a reference to an AIPlatformModel.
+// AIPlatformModelRef defines the resource reference to AIPlatformModel, which "External" field
+// holds the GCP identifier for the KRM object.
 type AIPlatformModelRef struct {
 	// A reference to an externally managed AIPlatformModel resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/models/{{modelID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of an AIPlatformModel resource.
+	// The name of a AIPlatformModel resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of an AIPlatformModel resource.
+	// The namespace of a AIPlatformModel resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -61,8 +62,6 @@ func (r *AIPlatformModelRef) GetExternal() string {
 
 func (r *AIPlatformModelRef) SetExternal(ref string) {
 	r.External = ref
-	r.Name = ""
-	r.Namespace = ""
 }
 
 func (r *AIPlatformModelRef) ValidateExternal(ref string) error {

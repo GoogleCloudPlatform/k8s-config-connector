@@ -1,0 +1,9 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformModel
+metadata:
+  name: aiplatformmodel-${uniqueId}
+spec:
+  displayName: "Minimal Model Updated"
+  location: us-central1
+  projectRef:
+    external: ${projectId}

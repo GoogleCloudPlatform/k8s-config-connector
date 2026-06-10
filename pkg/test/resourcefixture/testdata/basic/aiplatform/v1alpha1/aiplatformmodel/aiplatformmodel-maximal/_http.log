@@ -1,0 +1,380 @@
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = model "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/UploadModel
+
+{
+  "model": {
+    "artifactUri": "gs://my-bucket/model-artifacts",
+    "containerSpec": {
+      "imageUri": "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest"
+    },
+    "description": "A comprehensive Vertex AI model representation",
+    "displayName": "Maximal Model",
+    "explanationSpec": {
+      "parameters": {
+        "sampledShapleyAttribution": {
+          "pathCount": 5
+        }
+      }
+    },
+    "labels": {
+      "env": "test",
+      "owner": "devops"
+    },
+    "metadata": "my-metadata-string",
+    "metadataSchemaUri": "projects/${projectId}/locations/us-central1/metadataSchemas/google.Model",
+    "pipelineJob": "projects/${projectId}/locations/us-central1/pipelineJobs/my-pipeline-job",
+    "predictSchemata": {
+      "instanceSchemaUri": "gs://my-bucket/instance_schema.yaml",
+      "parametersSchemaUri": "gs://my-bucket/parameters_schema.yaml",
+      "predictionSchemaUri": "gs://my-bucket/prediction_schema.yaml"
+    },
+    "versionAliases": [
+      "default",
+      "v1"
+    ],
+    "versionDescription": "Initial version"
+  },
+  "modelId": "aiplatformmodel-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UploadModelOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UploadModelOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UploadModelResponse",
+    "model": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "artifactUri": "gs://my-bucket/model-artifacts",
+  "containerSpec": {
+    "imageUri": "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A comprehensive Vertex AI model representation",
+  "displayName": "Maximal Model",
+  "explanationSpec": {
+    "parameters": {
+      "sampledShapleyAttribution": {
+        "pathCount": 5
+      }
+    }
+  },
+  "labels": {
+    "env": "test",
+    "owner": "devops"
+  },
+  "metadata": "my-metadata-string",
+  "metadataSchemaUri": "projects/${projectId}/locations/us-central1/metadataSchemas/google.Model",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "pipelineJob": "projects/${projectId}/locations/us-central1/pipelineJobs/my-pipeline-job",
+  "predictSchemata": {
+    "instanceSchemaUri": "gs://my-bucket/instance_schema.yaml",
+    "parametersSchemaUri": "gs://my-bucket/parameters_schema.yaml",
+    "predictionSchemaUri": "gs://my-bucket/prediction_schema.yaml"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionAliases": [
+    "default",
+    "v1"
+  ],
+  "versionDescription": "Initial version"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "artifactUri": "gs://my-bucket/model-artifacts",
+  "containerSpec": {
+    "imageUri": "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A comprehensive Vertex AI model representation",
+  "displayName": "Maximal Model",
+  "explanationSpec": {
+    "parameters": {
+      "sampledShapleyAttribution": {
+        "pathCount": 5
+      }
+    }
+  },
+  "labels": {
+    "env": "test",
+    "owner": "devops"
+  },
+  "metadata": "my-metadata-string",
+  "metadataSchemaUri": "projects/${projectId}/locations/us-central1/metadataSchemas/google.Model",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "pipelineJob": "projects/${projectId}/locations/us-central1/pipelineJobs/my-pipeline-job",
+  "predictSchemata": {
+    "instanceSchemaUri": "gs://my-bucket/instance_schema.yaml",
+    "parametersSchemaUri": "gs://my-bucket/parameters_schema.yaml",
+    "predictionSchemaUri": "gs://my-bucket/prediction_schema.yaml"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionAliases": [
+    "default",
+    "v1"
+  ],
+  "versionDescription": "Initial version"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/UpdateModel
+
+{
+  "model": {
+    "artifactUri": "gs://my-bucket/model-artifacts",
+    "containerSpec": {
+      "imageUri": "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest"
+    },
+    "description": "An updated comprehensive Vertex AI model representation",
+    "displayName": "Maximal Model Updated",
+    "explanationSpec": {
+      "parameters": {
+        "sampledShapleyAttribution": {
+          "pathCount": 5
+        }
+      }
+    },
+    "labels": {
+      "env": "staging",
+      "owner": "devops-core"
+    },
+    "metadata": "my-metadata-string",
+    "metadataSchemaUri": "projects/${projectId}/locations/us-central1/metadataSchemas/google.Model",
+    "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+    "pipelineJob": "projects/${projectId}/locations/us-central1/pipelineJobs/my-pipeline-job",
+    "predictSchemata": {
+      "instanceSchemaUri": "gs://my-bucket/instance_schema.yaml",
+      "parametersSchemaUri": "gs://my-bucket/parameters_schema.yaml",
+      "predictionSchemaUri": "gs://my-bucket/prediction_schema.yaml"
+    },
+    "versionAliases": [
+      "default",
+      "v1"
+    ],
+    "versionDescription": "Initial version"
+  },
+  "updateMask": "displayName,description,labels"
+}
+
+OK
+
+{
+  "artifactUri": "gs://my-bucket/model-artifacts",
+  "containerSpec": {
+    "imageUri": "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated comprehensive Vertex AI model representation",
+  "displayName": "Maximal Model Updated",
+  "explanationSpec": {
+    "parameters": {
+      "sampledShapleyAttribution": {
+        "pathCount": 5
+      }
+    }
+  },
+  "labels": {
+    "env": "staging",
+    "owner": "devops-core"
+  },
+  "metadata": "my-metadata-string",
+  "metadataSchemaUri": "projects/${projectId}/locations/us-central1/metadataSchemas/google.Model",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "pipelineJob": "projects/${projectId}/locations/us-central1/pipelineJobs/my-pipeline-job",
+  "predictSchemata": {
+    "instanceSchemaUri": "gs://my-bucket/instance_schema.yaml",
+    "parametersSchemaUri": "gs://my-bucket/parameters_schema.yaml",
+    "predictionSchemaUri": "gs://my-bucket/prediction_schema.yaml"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionAliases": [
+    "default",
+    "v1"
+  ],
+  "versionDescription": "Initial version",
+  "versionUpdateTime": "2024-03-24T00:00:00Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "artifactUri": "gs://my-bucket/model-artifacts",
+  "containerSpec": {
+    "imageUri": "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated comprehensive Vertex AI model representation",
+  "displayName": "Maximal Model Updated",
+  "explanationSpec": {
+    "parameters": {
+      "sampledShapleyAttribution": {
+        "pathCount": 5
+      }
+    }
+  },
+  "labels": {
+    "env": "staging",
+    "owner": "devops-core"
+  },
+  "metadata": "my-metadata-string",
+  "metadataSchemaUri": "projects/${projectId}/locations/us-central1/metadataSchemas/google.Model",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "pipelineJob": "projects/${projectId}/locations/us-central1/pipelineJobs/my-pipeline-job",
+  "predictSchemata": {
+    "instanceSchemaUri": "gs://my-bucket/instance_schema.yaml",
+    "parametersSchemaUri": "gs://my-bucket/parameters_schema.yaml",
+    "predictionSchemaUri": "gs://my-bucket/prediction_schema.yaml"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionAliases": [
+    "default",
+    "v1"
+  ],
+  "versionDescription": "Initial version",
+  "versionUpdateTime": "2024-03-24T00:00:00Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "artifactUri": "gs://my-bucket/model-artifacts",
+  "containerSpec": {
+    "imageUri": "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated comprehensive Vertex AI model representation",
+  "displayName": "Maximal Model Updated",
+  "explanationSpec": {
+    "parameters": {
+      "sampledShapleyAttribution": {
+        "pathCount": 5
+      }
+    }
+  },
+  "labels": {
+    "env": "staging",
+    "owner": "devops-core"
+  },
+  "metadata": "my-metadata-string",
+  "metadataSchemaUri": "projects/${projectId}/locations/us-central1/metadataSchemas/google.Model",
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}",
+  "pipelineJob": "projects/${projectId}/locations/us-central1/pipelineJobs/my-pipeline-job",
+  "predictSchemata": {
+    "instanceSchemaUri": "gs://my-bucket/instance_schema.yaml",
+    "parametersSchemaUri": "gs://my-bucket/parameters_schema.yaml",
+    "predictionSchemaUri": "gs://my-bucket/prediction_schema.yaml"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionAliases": [
+    "default",
+    "v1"
+  ],
+  "versionDescription": "Initial version",
+  "versionUpdateTime": "2024-03-24T00:00:00Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/DeleteModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/models/aiplatformmodel-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

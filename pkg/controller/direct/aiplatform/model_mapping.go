@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
 package aiplatform
 
 import (
-	"strconv"
-
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -126,9 +124,9 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 		}
 	}
 	if in.NullValue != nil {
-		value, err := strconv.Atoi(direct.ValueOf(in.NullValue))
-		if err != nil {
-			mapCtx.Errorf("error converting value %s from string to int", direct.ValueOf(in.NullValue))
+		value, ok := structpb.NullValue_value[direct.ValueOf(in.NullValue)]
+		if !ok {
+			mapCtx.Errorf("error converting value %s from string to structpb.NullValue", direct.ValueOf(in.NullValue))
 		}
 		out.Kind = &structpb.Value_NullValue{
 			NullValue: structpb.NullValue(value),
