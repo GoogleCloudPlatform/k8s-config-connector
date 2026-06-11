@@ -61,14 +61,14 @@ type NetworkSecurityInterceptEndpointGroupStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the NetworkSecurityInterceptEndpointGroup resource in GCP.
+	// A unique specifier for the NetworkSecurityInterceptEndpointGroup resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *NetworkSecurityInterceptEndpointGroupObservedState `json:"observedState,omitempty"`
 }
 
-// NetworkSecurityInterceptEndpointGroupObservedState is the state of the NetworkSecurityInterceptEndpointGroup resource as most recently observed in GCP.
+// NetworkSecurityInterceptEndpointGroupObservedState is the state of the NetworkSecurityInterceptEndpointGroup resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.networksecurity.v1.InterceptEndpointGroup
 type NetworkSecurityInterceptEndpointGroupObservedState struct {
 	// Output only. The timestamp when the resource was created.

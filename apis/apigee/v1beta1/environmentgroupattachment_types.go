@@ -46,14 +46,14 @@ type ApigeeEnvgroupAttachmentStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ApigeeEnvgroupAttachment resource in GCP.
+	// A unique specifier for the ApigeeEnvgroupAttachment resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ApigeeEnvgroupAttachmentObservedState `json:"observedState,omitempty"`
 }
 
-// ApigeeEnvgroupAttachmentObservedState is the state of the ApigeeEnvgroupAttachment resource as most recently observed in GCP.
+// ApigeeEnvgroupAttachmentObservedState is the state of the ApigeeEnvgroupAttachment resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment
 type ApigeeEnvgroupAttachmentObservedState struct {
 	// Output only. The time at which the environment group attachment was created as milliseconds since epoch.

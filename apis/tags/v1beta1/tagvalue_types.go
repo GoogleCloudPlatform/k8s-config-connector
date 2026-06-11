@@ -63,11 +63,11 @@ type TagsTagValueStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the TagsTagValue resource in GCP.
+	// A unique specifier for the TagsTagValue resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// NOTYET: TERRAFORM COMPATIBILITY
-	// // ObservedState is the state of the resource as most recently observed in GCP.
+	// // ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// ObservedState *TagsTagValueObservedState `json:"observedState,omitempty"`
 
 	// Immutable. Resource name for TagValue in the format `tagValues/456`.
@@ -90,7 +90,7 @@ type TagsTagValueStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// TagsTagValueObservedState is the state of the TagsTagValue resource as most recently observed in GCP.
+// TagsTagValueObservedState is the state of the TagsTagValue resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.resourcemanager.v3.TagValue
 type TagsTagValueObservedState struct {
 	// NOTYET: ETAG

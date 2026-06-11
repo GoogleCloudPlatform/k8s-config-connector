@@ -60,14 +60,14 @@ type BeyondCorpClientConnectorServiceStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BeyondCorpClientConnectorService resource in GCP.
+	// A unique specifier for the BeyondCorpClientConnectorService resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BeyondCorpClientConnectorServiceObservedState `json:"observedState,omitempty"`
 }
 
-// BeyondCorpClientConnectorServiceObservedState is the state of the BeyondCorpClientConnectorService resource as most recently observed in GCP.
+// BeyondCorpClientConnectorServiceObservedState is the state of the BeyondCorpClientConnectorService resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService
 type BeyondCorpClientConnectorServiceObservedState struct {
 	// Output only. [Output only] Create time stamp.

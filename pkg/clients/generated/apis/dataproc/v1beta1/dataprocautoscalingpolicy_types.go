@@ -208,7 +208,7 @@ type DataprocAutoscalingPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataprocAutoscalingPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DataprocAutoscalingPolicy resource in GCP. */
+	/* A unique specifier for the DataprocAutoscalingPolicy resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

@@ -68,16 +68,16 @@ type NetworkSecurityMirroringEndpointGroupStatus struct {
 	// +kubebuilder:validation:Optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the NetworkSecurityMirroringEndpointGroup resource in GCP.
+	// A unique specifier for the NetworkSecurityMirroringEndpointGroup resource in Google Cloud.
 	// +kubebuilder:validation:Optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// +kubebuilder:validation:Optional
 	ObservedState *NetworkSecurityMirroringEndpointGroupObservedState `json:"observedState,omitempty"`
 }
 
-// NetworkSecurityMirroringEndpointGroupObservedState is the state of the NetworkSecurityMirroringEndpointGroup resource as most recently observed in GCP.
+// NetworkSecurityMirroringEndpointGroupObservedState is the state of the NetworkSecurityMirroringEndpointGroup resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.networksecurity.v1.MirroringEndpointGroup
 type NetworkSecurityMirroringEndpointGroupObservedState struct {
 	// Output only. The timestamp when the resource was created.

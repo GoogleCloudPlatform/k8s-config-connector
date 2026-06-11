@@ -155,7 +155,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the DataCatalogTaxonomy resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               name:
                 description: 'Resource name of this taxonomy, whose format is: "projects/{project}/locations/{region}/taxonomies/{taxonomy}".'
@@ -170,7 +170,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   policyTagCount:
                     description: Output only. Number of policy tags in this taxonomy.

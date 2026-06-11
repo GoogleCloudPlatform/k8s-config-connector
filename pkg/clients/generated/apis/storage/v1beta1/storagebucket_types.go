@@ -309,7 +309,7 @@ type StorageBucketStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *BucketObservedStateStatus `json:"observedState,omitempty"`
 

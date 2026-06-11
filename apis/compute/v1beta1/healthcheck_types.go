@@ -24,7 +24,7 @@ var ComputeHealthCheckGVK = GroupVersion.WithKind("ComputeHealthCheck")
 // ComputeHealthCheckSpec defines the desired state of ComputeHealthCheck
 // +kcc:spec:proto=google.cloud.compute.v1.HealthCheck
 type ComputeHealthCheckSpec struct {
-	// Location represents the geographical location of the ComputeHealthCheck. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
+	// Location represents the geographical location of the ComputeHealthCheck. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
 	// +required
 	Location string `json:"location"`
 

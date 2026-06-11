@@ -126,14 +126,14 @@ type NetworkServicesWasmPluginStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the NetworkServicesWasmPlugin resource in GCP.
+	// A unique specifier for the NetworkServicesWasmPlugin resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *NetworkServicesWasmPluginObservedState `json:"observedState,omitempty"`
 }
 
-// NetworkServicesWasmPluginObservedState is the state of the NetworkServicesWasmPlugin resource as most recently observed in GCP.
+// NetworkServicesWasmPluginObservedState is the state of the NetworkServicesWasmPlugin resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.networkservices.v1.WasmPlugin
 type NetworkServicesWasmPluginObservedState struct {
 	// Output only. The timestamp when the resource was created.

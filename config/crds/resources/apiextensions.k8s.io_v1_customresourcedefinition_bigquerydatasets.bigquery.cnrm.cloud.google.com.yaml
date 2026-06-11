@@ -385,7 +385,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique specifier for the BigQueryAnalyticsHubDataExchangeListing
-                  resource in GCP.
+                  resource in Google Cloud.
                 type: string
               lastModifiedTime:
                 description: Output only. The date when this dataset was last modified,
@@ -402,12 +402,12 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   location:
                     description: Optional. If the location is not specified in the
-                      spec, the GCP server defaults to a location and will be captured
-                      here.
+                      spec, the Google Cloud server defaults to a location and will
+                      be captured here.
                     type: string
                 type: object
               selfLink:

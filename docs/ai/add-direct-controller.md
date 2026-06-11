@@ -1,6 +1,6 @@
 # How to Add a KCC Direct Controller
 
-This guide outlines the process for adding a new direct controller to KCC for managing a GCP resource.
+This guide outlines the process for adding a new direct controller to KCC for managing a Google Cloud resource.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ This guide outlines the process for adding a new direct controller to KCC for ma
 
 ### 1. Define the Resource Identity
 
-Add apis/<service>/<version>/<resource>_identity.go file, which builds the identity and parent (if applicable) from the API, and provide the controller to connect it with the real GCP resource. 
+Add apis/<service>/<version>/<resource>_identity.go file, which builds the identity and parent (if applicable) from the API, and provide the controller to connect it with the real Google Cloud resource. 
 
 The identity structure must implement the `identity.Identity` interface. 
 
@@ -25,7 +25,7 @@ If the Parent is not `parent.ProjectAndLocation` but a specific KCC object (the 
 
 ### 2. Implement the Controller Logic
 
-The controller contains the core reconciliation logic. It implements the adapter which retrieves the GCP object in each reconciliation. If not found, it create one from the KRM object `.spec` and update the `.status`. If found and GCP update is supported, it checks if there are any config drift between the KRM object `.spec` and the actual GCP object, and should only make an update call if it detect a drift. Whether or not it update the GCP object, it updates the KRM object `.status`. If the KRM object is going to be deleted (with finalizer )
+The controller contains the core reconciliation logic. It implements the adapter which retrieves the Google Cloud object in each reconciliation. If not found, it create one from the KRM object `.spec` and update the `.status`. If found and Google Cloud update is supported, it checks if there are any config drift between the KRM object `.spec` and the actual Google Cloud object, and should only make an update call if it detect a drift. Whether or not it update the Google Cloud object, it updates the KRM object `.status`. If the KRM object is going to be deleted (with finalizer )
 
 The `controllerbuilder` tool (`go run main.go generate-controller ...`) can generate skeleton code from a template, but this often requires significant manual intervention to fix protos, imports, and other implementation details.
 
@@ -36,6 +36,6 @@ The controller for `BigLakeTable` is at `@pkg/controller/direct/bigquerybiglake/
 
 ### 3. Add Fixture Tests
 
-Fixture tests verifying the controller's behavior against both MockGCP for local testing and real GCP in post-submit CI. A guide for adding a test suite can be found at `@experiments/promoter/tasks/add-full-test-suite.md`.
+Fixture tests verifying the controller's behavior against both MockGCP for local testing and real Google Cloud in post-submit CI. A guide for adding a test suite can be found at `@experiments/promoter/tasks/add-full-test-suite.md`.
 
 **Note for Alpha Resources:** When adding a controller for a new alpha resource, it is not necessary to achieve 100% API field coverage in the initial tests. The primary goal is to establish a solid test suite covering the fundamental CRUD operations for the controller. Full test coverage can be completed as the resource is prepared to promote to beta.

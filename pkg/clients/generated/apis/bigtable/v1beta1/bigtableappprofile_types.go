@@ -97,7 +97,7 @@ type BigtableAppProfileStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableAppProfile's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigtableAppProfile resource in GCP. */
+	/* A unique specifier for the BigtableAppProfile resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

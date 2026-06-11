@@ -136,7 +136,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the BatchTask resource in GCP.
+                description: A unique specifier for the BatchTask resource in Google
+                  Cloud.
                 type: string
               name:
                 description: 'Task name. The name is generated from the parent TaskGroup
@@ -152,7 +153,7 @@ spec:
                 type: integer
               observedState:
                 description: BatchTaskObservedState is the state of the BatchTask
-                  resource as most recently observed in GCP.
+                  resource as most recently observed in Google Cloud.
                 properties:
                   status:
                     description: Task Status.

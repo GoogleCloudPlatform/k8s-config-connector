@@ -215,7 +215,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the ApigeeInstance resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -227,7 +227,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createdAt:
                     description: Output only. Time the instance was created in milliseconds
@@ -460,7 +460,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the ApigeeInstance resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -472,7 +472,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   createdAt:
                     description: Output only. Time the instance was created in milliseconds

@@ -24,7 +24,7 @@ import (
 
 // IAMAuditConfigSpec defines the desired state of IAMAuditConfig.
 type IAMAuditConfigSpec struct {
-	// Immutable. Required. The GCP resource to set the IAMAuditConfig on
+	// Immutable. Required. The Google Cloud resource to set the IAMAuditConfig on
 	// (e.g. project).
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="resourceRef is immutable"
 	ResourceReference ResourceReference `json:"resourceRef"`

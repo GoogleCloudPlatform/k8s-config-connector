@@ -18,7 +18,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
-	// GCP Resource Reference type.
+	// Google Cloud Resource Reference type.
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -62,14 +62,14 @@ type DataplexEntryGroupStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataplexEntryGroup resource in GCP.
+	// A unique specifier for the DataplexEntryGroup resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DataplexEntryGroupObservedState `json:"observedState,omitempty"`
 }
 
-// DataplexEntryGroupObservedState is the state of the DataplexEntryGroup resource as most recently observed in GCP.
+// DataplexEntryGroupObservedState is the state of the DataplexEntryGroup resource as most recently observed in Google Cloud.
 // +kcc:proto=google.cloud.dataplex.v1.EntryGroup
 type DataplexEntryGroupObservedState struct {
 	// Output only. System generated globally unique ID for the EntryGroup. If you

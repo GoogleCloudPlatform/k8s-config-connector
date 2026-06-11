@@ -1,6 +1,6 @@
 # How to Handle Labels for Direct Resources
 
-This document provides instructions on how to handle GCP labels for direct resources in KCC. The standard approach is to use the Kubernetes `metadata.labels` field as the single source of truth for the labels on the GCP resource. This means the `labels` field should not be part of the resource's `Spec`.
+This document provides instructions on how to handle Google Cloud labels for direct resources in KCC. The standard approach is to use the Kubernetes `metadata.labels` field as the single source of truth for the labels on the Google Cloud resource. This means the `labels` field should not be part of the resource's `Spec`.
 
 To properly handle labels for a direct resource, follow these steps:
 
@@ -46,7 +46,7 @@ This tells the fuzzer to ignore the `.labels` field during testing, preventing f
 
 ### 3. Update the Controller to Handle Labels
 
-Finally, modify the controller to correctly map Kubernetes metadata labels to the GCP resource labels. The recommended pattern is to handle all the logic for constructing the desired GCP resource state, including labels, within the `AdapterForObject` function.
+Finally, modify the controller to correctly map Kubernetes metadata labels to the Google Cloud resource labels. The recommended pattern is to handle all the logic for constructing the desired Google Cloud resource state, including labels, within the `AdapterForObject` function.
 
 **File to edit:** `pkg/controller/direct/backupdr/backupdrbackupplan_controller.go`
 
@@ -70,14 +70,14 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 
     // ...
 
-    // Convert KCC resource spec to GCP proto message
+    // Convert KCC resource spec to Google Cloud proto message
     mapCtx := &direct.MapContext{}
     desiredProto := BackupDRBackupPlanSpec_ToProto(mapCtx, &obj.Spec)
     if mapCtx.Err() != nil {
         return nil, mapCtx.Err()
     }
 
-    // Handle GCP Labels
+    // Handle Google Cloud Labels
     desiredProto.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
     // ...
@@ -102,7 +102,7 @@ After implementing the label handling in the controller, update the resource fix
     If `create.yaml` or `update.yaml` in existing test fixtures contain a `labels` field within the `spec`, remove it. The labels are now managed via `metadata.labels`.
 
 2.  **Add a new test case for labels:**
-    Create a new test fixture directory (e.g., `backupdrbackupplan-labels`). This test will specifically verify that `metadata.labels` are correctly propagated to the GCP resource.
+    Create a new test fixture directory (e.g., `backupdrbackupplan-labels`). This test will specifically verify that `metadata.labels` are correctly propagated to the Google Cloud resource.
 
     **`create.yaml` for `backupdrbackupplan-labels` test:**
     ```yaml

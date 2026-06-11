@@ -315,7 +315,7 @@ type ClusterDnsConfig struct {
 }
 
 type ClusterDnsEndpointConfig struct {
-	/* Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false. */
+	/* Controls whether user traffic is allowed over this endpoint. Note that Google Cloud-managed services may still use the endpoint even if this is false. */
 	// +optional
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
 
@@ -1257,7 +1257,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	NetworkPolicy *ClusterNetworkPolicy `json:"networkPolicy,omitempty"`
 
-	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
+	/* ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -1332,7 +1332,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	VerticalPodAutoscaling *ClusterVerticalPodAutoscaling `json:"verticalPodAutoscaling,omitempty"`
 
-	/* Configuration for the use of Kubernetes Service Accounts in GCP IAM policies. */
+	/* Configuration for the use of Kubernetes Service Accounts in Google Cloud IAM policies. */
 	// +optional
 	WorkloadIdentityConfig *ClusterWorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
 }
@@ -1403,7 +1403,7 @@ type ContainerClusterStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
+	/* The observed state of the underlying Google Cloud resource. */
 	// +optional
 	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
 

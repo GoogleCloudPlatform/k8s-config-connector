@@ -76,15 +76,15 @@ type OrgPolicyPolicyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the OrgPolicyPolicy resource in GCP.
+	// A unique specifier for the OrgPolicyPolicy resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *OrgPolicyPolicyObservedState `json:"observedState,omitempty"`
 }
 
-// OrgPolicyPolicyObservedState is the state of the OrgPolicyPolicy resource as most recently observed in GCP.
-// Nested fields are all optional; the controller may omit spec or dryRunSpec until GCP returns them.
+// OrgPolicyPolicyObservedState is the state of the OrgPolicyPolicy resource as most recently observed in Google Cloud.
+// Nested fields are all optional; the controller may omit spec or dryRunSpec until Google Cloud returns them.
 // +kcc:proto=google.cloud.orgpolicy.v2.Policy
 type OrgPolicyPolicyObservedState struct {
 	// Basic information about the Organization Policy.

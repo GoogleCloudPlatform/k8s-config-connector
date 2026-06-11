@@ -135,8 +135,8 @@ spec:
                   reserved for future use.
                 type: string
               projectRef:
-                description: Required. Name of the GCP project in which to associate
-                  the Apigee organization.
+                description: Required. Name of the Google Cloud project in which to
+                  associate the Apigee organization.
                 oneOf:
                 - not:
                     required:
@@ -276,7 +276,7 @@ spec:
                 type: integer
               externalRef:
                 description: A unique specifier for the ApigeeOrganization resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               lastModifiedAt:
                 description: Output only. Time that the Apigee organization was last
@@ -293,7 +293,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 type: object
               projectId:
                 description: Output only. Project ID associated with the Apigee organization.

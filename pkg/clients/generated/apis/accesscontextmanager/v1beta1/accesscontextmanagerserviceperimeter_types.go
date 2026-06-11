@@ -137,7 +137,7 @@ type ServiceperimeterOperations struct {
 }
 
 type ServiceperimeterResources struct {
-	/* (Optional) A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed. */
+	/* (Optional) A list of Google Cloud resources that are inside of the service perimeter. Currently only projects are allowed. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
@@ -153,7 +153,7 @@ type ServiceperimeterSources struct {
 }
 
 type ServiceperimeterSpec struct {
-	/* (Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via GCP calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty. */
+	/* (Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via Google Cloud calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty. */
 	// +optional
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
 
@@ -165,11 +165,11 @@ type ServiceperimeterSpec struct {
 	// +optional
 	IngressPolicies []ServiceperimeterIngressPolicies `json:"ingressPolicies,omitempty"`
 
-	/* (Optional) A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed. */
+	/* (Optional) A list of Google Cloud resources that are inside of the service perimeter. Currently only projects are allowed. */
 	// +optional
 	Resources []ServiceperimeterResources `json:"resources,omitempty"`
 
-	/* GCP services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if 'storage.googleapis.com' is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions. */
+	/* Google Cloud services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if 'storage.googleapis.com' is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions. */
 	// +optional
 	RestrictedServices []string `json:"restrictedServices,omitempty"`
 
@@ -179,7 +179,7 @@ type ServiceperimeterSpec struct {
 }
 
 type ServiceperimeterStatus struct {
-	/* (Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via GCP calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty. */
+	/* (Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via Google Cloud calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty. */
 	// +optional
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
 
@@ -191,11 +191,11 @@ type ServiceperimeterStatus struct {
 	// +optional
 	IngressPolicies []ServiceperimeterIngressPolicies `json:"ingressPolicies,omitempty"`
 
-	/* (Optional) A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed. */
+	/* (Optional) A list of Google Cloud resources that are inside of the service perimeter. Currently only projects are allowed. */
 	// +optional
 	Resources []ServiceperimeterResources `json:"resources,omitempty"`
 
-	/* GCP services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if 'storage.googleapis.com' is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions. */
+	/* Google Cloud services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if 'storage.googleapis.com' is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions. */
 	// +optional
 	RestrictedServices []string `json:"restrictedServices,omitempty"`
 
@@ -269,7 +269,7 @@ type AccessContextManagerServicePerimeterStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* A unique specifier for the AccessContextManagerServicePerimeter resource in GCP. */
+	/* A unique specifier for the AccessContextManagerServicePerimeter resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

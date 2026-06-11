@@ -930,7 +930,7 @@ type ComputeURLMapSpec struct {
 	// +optional
 	HostRule []UrlmapHostRule `json:"hostRule,omitempty"`
 
-	/* Location represents the geographical location of the ComputeURLMap. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeURLMap. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* The list of named PathMatchers to use against the URL. */

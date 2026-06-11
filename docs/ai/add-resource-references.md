@@ -2,7 +2,7 @@ This document provides instructions on how to handle API resource references in 
 
 ## Background
 
-In KCC, a resource can reference another resource. For example, a `StorageBucket` might have a `kmsKeyName` field that references a `KMSKey` resource. When KCC sees such a reference, it needs to resolve the reference to the fully-qualified GCP resource name.
+In KCC, a resource can reference another resource. For example, a `StorageBucket` might have a `kmsKeyName` field that references a `KMSKey` resource. When KCC sees such a reference, it needs to resolve the reference to the fully-qualified Google Cloud resource name.
 
 The way KCC handles this is by defining a "reference" object. This object is a struct that implements the `refsv1beta1.Ref` interface. This interface has methods that allow the generic normalization logic to resolve the reference.
 
@@ -10,13 +10,13 @@ The reference object is typically placed in its own file, `apis/<service>/<versi
 
 ## Task
 
-Your task is to identify fields in KCC's API that are references to other GCP resources, and change them to use the KCC reference object.
+Your task is to identify fields in KCC's API that are references to other Google Cloud resources, and change them to use the KCC reference object.
 
 ### Identifying Reference Fields
 
 There are two cases to consider:
 
-1.  **Greenfield resources:** These are resources that are being added to KCC for the first time. In this case, you should look at the comments for each field in the API. If a field's comment indicates that it is a reference to another GCP resource, then you should mark it as a reference by adding the `//+kcc:ref={Your guess of its KCC kind}` annotation.
+1.  **Greenfield resources:** These are resources that are being added to KCC for the first time. In this case, you should look at the comments for each field in the API. If a field's comment indicates that it is a reference to another Google Cloud resource, then you should mark it as a reference by adding the `//+kcc:ref={Your guess of its KCC kind}` annotation.
 
 2.  **Terraform/DCL-migrated resources:** These are resources that are being migrated from Terraform or DCL to KCC. In this case, you should look at the `config/crds` differences. The field may be different by ending with `*Ref`, and is a structure with fields like "name", "namespace", and/or "external", rather than a string.
 

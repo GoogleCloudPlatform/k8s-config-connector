@@ -85,7 +85,7 @@ type ComputeNetworkStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeNetwork's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The gateway address for default routing out of the network. This value is selected by GCP. */
+	/* The gateway address for default routing out of the network. This value is selected by Google Cloud. */
 	// +optional
 	GatewayIpv4 *string `json:"gatewayIpv4,omitempty"`
 

@@ -175,7 +175,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the BigtableAppProfile resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               name:
                 description: The unique name of the app profile. Values are of the

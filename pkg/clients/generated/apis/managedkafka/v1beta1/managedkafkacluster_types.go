@@ -99,7 +99,7 @@ type ManagedKafkaClusterSpec struct {
 	// +optional
 	RebalanceConfig *ClusterRebalanceConfig `json:"rebalanceConfig,omitempty"`
 
-	/* The GCP resource identifier. If not given, the metadata.name will be used. */
+	/* The Google Cloud resource identifier. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -122,7 +122,7 @@ type ManagedKafkaClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ManagedKafkaCluster's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the ManagedKafkaCluster resource in GCP. */
+	/* A unique specifier for the ManagedKafkaCluster resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -130,7 +130,7 @@ type ManagedKafkaClusterStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
 }

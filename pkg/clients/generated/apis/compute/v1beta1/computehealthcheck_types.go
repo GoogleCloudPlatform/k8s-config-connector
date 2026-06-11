@@ -229,7 +229,7 @@ type ComputeHealthCheckSpec struct {
 	// +optional
 	HttpsHealthCheck *HealthcheckHttpsHealthCheck `json:"httpsHealthCheck,omitempty"`
 
-	/* Location represents the geographical location of the ComputeHealthCheck. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location represents the geographical location of the ComputeHealthCheck. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
 	/* Configure logging on this health check. */

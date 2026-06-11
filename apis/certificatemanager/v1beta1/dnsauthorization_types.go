@@ -65,12 +65,12 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the CertificateManagerDNSAuthorization resource in GCP.
+	// A unique specifier for the CertificateManagerDNSAuthorization resource in Google Cloud.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* NOTYET
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	// +optional
 	ObservedState *CertificateManagerDNSAuthorizationObservedState `json:"observedState,omitempty"`
 	*/

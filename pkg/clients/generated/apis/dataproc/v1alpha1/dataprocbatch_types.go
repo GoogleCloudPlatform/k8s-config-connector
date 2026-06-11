@@ -413,7 +413,7 @@ type DataprocBatchStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataprocBatch's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DataprocBatch resource in GCP. */
+	/* A unique specifier for the DataprocBatch resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -421,7 +421,7 @@ type DataprocBatchStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *BatchObservedStateStatus `json:"observedState,omitempty"`
 }

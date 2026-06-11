@@ -77,7 +77,7 @@ type FirestoreDocumentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   FirestoreDocument's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the FirestoreDocument resource in GCP. */
+	/* A unique specifier for the FirestoreDocument resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -85,7 +85,7 @@ type FirestoreDocumentStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	/* ObservedState is the state of the resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *DocumentObservedStateStatus `json:"observedState,omitempty"`
 }

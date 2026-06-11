@@ -97,7 +97,7 @@ spec:
                 type: string
               location:
                 description: 'The geographical location of the ComputeTargetTCPProxy.
-                  Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                  Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               proxyBind:
                 description: Immutable. This field only applies when the forwarding
@@ -151,7 +151,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique specifier for the ComputeTargetTCPProxy resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

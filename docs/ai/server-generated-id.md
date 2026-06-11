@@ -1,5 +1,5 @@
 When a resource has a server-generated ID, we need to store the generated ID into the kubernetes object,
-so that we can associate the GCP object with the kubernetes object on subsequent reconciliations.
+so that we can associate the Google Cloud object with the kubernetes object on subsequent reconciliations.
 
 Legacy controllers would write this ID to spec.resourceID,
 which is the same field that users can specify if they want to adopt an existing resource.
@@ -7,13 +7,13 @@ However, this makes the field ownership of the spec.resourceID field unclear: di
 
 For greenfield controllers, we are introducing status.externalRef.
 All new controllers should write the identity to status.externalRef,
-so this field will both consistently give the GCP resource ID, as well as indicating whether a resource is under KCC control.
+so this field will both consistently give the Google Cloud resource ID, as well as indicating whether a resource is under KCC control.
 
 The question is whether we should also write to spec.resourceID.
 To avoid a behavioural change, when moving from terraform to direct, we will write to both status.externalRef _and_ spec.resourceID.
 We want to avoid two problems:
 
-* It should be possible to create a GCP resource with the direct controller and then revert back to the terraform controller (without creating a new GCP resource).
+* It should be possible to create a Google Cloud resource with the direct controller and then revert back to the terraform controller (without creating a new Google Cloud resource).
 
 * Tooling or other controllers should continue to see the resourceID in the existing spec.resourceID field.
 
@@ -26,6 +26,6 @@ We do not intend to write to spec for non-server-generated-id resources, nor for
 This edge case for writing to spec should not be used as an excuse for writing any other spec fields.
 
 We may be able to stop writing spec.resourceID as part of "v1";
-we should start communicating now that status.externalRef is the canonical location for the GCP identity
+we should start communicating now that status.externalRef is the canonical location for the Google Cloud identity
 (and that eventually spec.resourceID will no longer be populated).
 We should add this to the documentation for the resources.

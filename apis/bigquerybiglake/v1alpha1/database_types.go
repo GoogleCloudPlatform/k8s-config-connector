@@ -48,14 +48,14 @@ type BigLakeDatabaseStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BigLakeDatabase resource in GCP.
+	// A unique specifier for the BigLakeDatabase resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BigLakeDatabaseObservedState `json:"observedState,omitempty"`
 }
 
-// BigLakeDatabaseObservedState is the state of the BigLakeDatabase resource as most recently observed in GCP.
+// BigLakeDatabaseObservedState is the state of the BigLakeDatabase resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.bigquery.biglake.v1.Database
 type BigLakeDatabaseObservedState struct {
 	// Output only. The creation time of the database.

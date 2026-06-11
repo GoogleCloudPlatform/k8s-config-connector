@@ -108,7 +108,7 @@ type BatchTaskStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BatchTask's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BatchTask resource in GCP. */
+	/* A unique specifier for the BatchTask resource in Google Cloud. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -120,7 +120,7 @@ type BatchTaskStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* BatchTaskObservedState is the state of the BatchTask resource as most recently observed in GCP. */
+	/* BatchTaskObservedState is the state of the BatchTask resource as most recently observed in Google Cloud. */
 	// +optional
 	ObservedState *TaskObservedStateStatus `json:"observedState,omitempty"`
 }

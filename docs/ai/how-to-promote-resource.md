@@ -132,7 +132,7 @@ Finally, move the test fixtures from `v1alpha1` to `v1beta1` and update any othe
     *   For each `dependencies.yaml` file that you find, update the entry for the promoted resource to use its new `v1beta1` `apiVersion`.
 
 4.  **Validate All Changes:**
-    *   Run the test validation script (e.g., `hack/compare-mock`) to ensure the mock GCP layer behaves as expected. You may need to run it for the promoted resource's fixtures as well as any fixtures whose dependencies you updated.
+    *   Run the test validation script (e.g., `hack/compare-mock`) to ensure the mock Google Cloud layer behaves as expected. You may need to run it for the promoted resource's fixtures as well as any fixtures whose dependencies you updated.
 
 ### Alternative (Advanced): Using `promote_tests`
 

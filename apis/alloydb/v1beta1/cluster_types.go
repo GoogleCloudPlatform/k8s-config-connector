@@ -311,7 +311,7 @@ type AlloyDBClusterStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the AlloyDBCluster resource in GCP.
+	// A unique specifier for the AlloyDBCluster resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Output only. Cluster created from backup.
@@ -350,7 +350,7 @@ type AlloyDBClusterStatus struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.uid
 	Uid *string `json:"uid,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *AlloyDBClusterObservedState `json:"observedState,omitempty"`
 }
 
@@ -410,7 +410,7 @@ type MigrationSourceObservedState struct {
 
 // AlloyDBClusterSpec defines the desired state of AlloyDBCluster
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster
-// AlloyDBClusterObservedState is the state of the AlloyDBCluster resource as most recently observed in GCP.
+// AlloyDBClusterObservedState is the state of the AlloyDBCluster resource as most recently observed in Google Cloud.
 type AlloyDBClusterObservedState struct {
 
 	// Output only. The type of the cluster. This is an output-only field and it's

@@ -86,16 +86,16 @@ type ApigeeInstanceStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ApigeeInstance resource in GCP.
+	// A unique specifier for the ApigeeInstance resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ApigeeInstanceObservedState `json:"observedState,omitempty"`
 }
 
 // ApigeeInstanceSpec defines the desired state of ApigeeInstance
 // +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Instance
-// ApigeeInstanceObservedState is the state of the ApigeeInstance resource as most recently observed in GCP.
+// ApigeeInstanceObservedState is the state of the ApigeeInstance resource as most recently observed in Google Cloud.
 type ApigeeInstanceObservedState struct {
 	// Output only. Time the instance was created in milliseconds since epoch.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Instance.created_at

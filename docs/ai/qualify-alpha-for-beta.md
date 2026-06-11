@@ -6,7 +6,7 @@ This document outlines the process for making an alpha resource eligible for pro
 
 The file `experiments/promoter/results/candidates.json` lists alpha resources that are candidates for promotion. Some of these resources may have the `apiCoverage` flag set to `false`.
 
-A `false` value for `apiCoverage` indicates that while the resource has all the necessary components (APIs, mapper, controller, and mock GCP implementation), it lacks a comprehensive test suite that covers all the fields in its API.
+A `false` value for `apiCoverage` indicates that while the resource has all the necessary components (APIs, mapper, controller, and mock Google Cloud implementation), it lacks a comprehensive test suite that covers all the fields in its API.
 
 ## Steps to Qualify a Resource
 
@@ -18,8 +18,8 @@ Follow the detailed instructions in [add-full-test-suite.md](experiments/promote
 
 -   Creating `create.yaml` and `update.yaml` test fixtures.
 -   Verifying that these fixtures cover every field in the resource's CRD.
--   Recording the GCP traffic for both creation and update operations.
--   Verifying the mock GCP implementation against the recorded traffic.
+-   Recording the Google Cloud traffic for both creation and update operations.
+-   Verifying the mock Google Cloud implementation against the recorded traffic.
 
 ### 2. Update API Coverage Status
 

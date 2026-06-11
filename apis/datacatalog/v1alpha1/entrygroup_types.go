@@ -68,14 +68,14 @@ type DataCatalogEntryGroupStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataCatalogEntryGroup resource in GCP.
+	// A unique specifier for the DataCatalogEntryGroup resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *DataCatalogEntryGroupObservedState `json:"observedState,omitempty"`
 }
 
-// DataCatalogEntryGroupObservedState is the state of the DataCatalogEntryGroup resource as most recently observed in GCP.
+// DataCatalogEntryGroupObservedState is the state of the DataCatalogEntryGroup resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.datacatalog.v1.EntryGroup
 type DataCatalogEntryGroupObservedState struct {
 	// Output only. Timestamps of the entry group. Default value is empty.

@@ -442,7 +442,7 @@ spec:
                   type: string
                 description: When using `alpha.cnrm.cloud.google.com/reconciler:direct`
                   annotion, use labels field to set the labels for this resource on
-                  GCP. Otherwise, use .metadata.labels. Please refer to https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4274
+                  Google Cloud. Otherwise, use .metadata.labels. Please refer to https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4274
                   for context. The labels associated with this table. You can use
                   these to organize and group your tables. Label keys and values can
                   be no longer than 63 characters, can only contain lowercase letters,
@@ -688,7 +688,7 @@ spec:
                 type: string
               externalRef:
                 description: A unique specifier for the BigQueryTable resource in
-                  GCP.
+                  Google Cloud.
                 type: string
               lastModifiedTime:
                 description: Output only. The time when this table was last modified,
@@ -724,7 +724,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 type: object
               selfLink:
                 description: Output only. A URL that can be used to access this resource

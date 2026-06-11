@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type AppconnectorPrincipalInfo struct {
-	/* ServiceAccount represents a GCP service account. */
+	/* ServiceAccount represents a Google Cloud service account. */
 	ServiceAccount AppconnectorServiceAccount `json:"serviceAccount"`
 }
 

@@ -161,14 +161,14 @@ type MetastoreServiceStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the MetastoreService resource in GCP.
+	// A unique specifier for the MetastoreService resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *MetastoreServiceObservedState `json:"observedState,omitempty"`
 }
 
-// MetastoreServiceObservedState is the state of the MetastoreService resource as most recently observed in GCP.
+// MetastoreServiceObservedState is the state of the MetastoreService resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.metastore.v1.Service
 type MetastoreServiceObservedState struct {
 	// Output only. The time when the metastore service was created.

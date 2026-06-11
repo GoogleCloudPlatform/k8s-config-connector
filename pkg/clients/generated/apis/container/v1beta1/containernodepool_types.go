@@ -600,7 +600,7 @@ type ContainerNodePoolStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
+	/* The observed state of the underlying Google Cloud resource. */
 	// +optional
 	ObservedState *NodepoolObservedStateStatus `json:"observedState,omitempty"`
 

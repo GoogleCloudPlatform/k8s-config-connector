@@ -95,14 +95,14 @@ type ColabRuntimeStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ColabRuntime resource in GCP.
+	// A unique specifier for the ColabRuntime resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *ColabRuntimeObservedState `json:"observedState,omitempty"`
 }
 
-// ColabRuntimeObservedState is the state of the ColabRuntime resource as most recently observed in GCP.
+// ColabRuntimeObservedState is the state of the ColabRuntime resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookRuntime
 type ColabRuntimeObservedState struct {
 	// Output only. The proxy endpoint used to access the NotebookRuntime.

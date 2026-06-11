@@ -146,7 +146,7 @@ spec:
                 type: integer
               externalRef:
                 description: A unique specifier for the ApigeeEnvironment resource
-                  in GCP.
+                  in Google Cloud.
                 type: string
               lastModifiedAt:
                 description: Output only. Last modification time of this environment
@@ -163,7 +163,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 type: object
               state:
                 description: Output only. State of the environment. Values other than

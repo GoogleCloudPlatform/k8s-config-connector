@@ -450,7 +450,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   softDeletePolicy:
                     description: The bucket's soft delete policy, which defines the

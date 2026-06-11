@@ -53,7 +53,7 @@ type ServiceDirectoryNamespaceStatus struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ServiceDirectoryNamespaceObservedState is the state of the ServiceDirectoryNamespace resource as most recently observed in GCP.
+// ServiceDirectoryNamespaceObservedState is the state of the ServiceDirectoryNamespace resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.servicedirectory.v1beta1.Namespace
 type ServiceDirectoryNamespaceObservedState struct {
 }

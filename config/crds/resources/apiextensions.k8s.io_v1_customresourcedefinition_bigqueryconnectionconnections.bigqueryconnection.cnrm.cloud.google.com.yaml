@@ -430,7 +430,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the BigQueryConnectionConnection
-                  resource in GCP.
+                  resource in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -442,7 +442,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   aws:
                     properties:
@@ -487,7 +487,7 @@ spec:
                            when it is created. After creation, customers delegate permissions
                            to the service account. When the connection is used in the context of an
                            operation in BigQuery, the service account will be used to connect to the
-                           desired resources in GCP.
+                           desired resources in Google Cloud.
 
                            The account ID is in the form of:
                              <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
@@ -943,7 +943,7 @@ spec:
                 type: array
               externalRef:
                 description: A unique specifier for the BigQueryConnectionConnection
-                  resource in GCP.
+                  resource in Google Cloud.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -955,7 +955,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
+                  observed in Google Cloud.
                 properties:
                   aws:
                     properties:
@@ -1000,7 +1000,7 @@ spec:
                            when it is created. After creation, customers delegate permissions
                            to the service account. When the connection is used in the context of an
                            operation in BigQuery, the service account will be used to connect to the
-                           desired resources in GCP.
+                           desired resources in Google Cloud.
 
                            The account ID is in the form of:
                              <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com

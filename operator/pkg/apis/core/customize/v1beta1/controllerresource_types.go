@@ -49,7 +49,7 @@ type ControllerResourceSpec struct {
 	// +optional
 	// +kubebuilder:default=Disabled
 	VerticalPodAutoscalerMode *VPAMode `json:"verticalPodAutoscalerMode,omitempty"`
-	// MetadataHost overrides the GCP metadata server hostname (injected as GCE_METADATA_HOST).
+	// MetadataHost overrides the Google Cloud metadata server hostname (injected as GCE_METADATA_HOST).
 	// Useful for IPv6-only clusters where the default 169.254.169.254 is unreachable.
 	// +optional
 	MetadataHost string `json:"metadataHost,omitempty"`

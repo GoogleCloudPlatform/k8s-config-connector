@@ -51,7 +51,7 @@ type BigtableMaterializedViewStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BigtableMaterializedView resource in GCP.
+	// A unique specifier for the BigtableMaterializedView resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// The unique name of the BigtableMaterializedView. Values are of the form
@@ -59,11 +59,11 @@ type BigtableMaterializedViewStatus struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.MaterializedView.name
 	Name *string `json:"name,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in Google Cloud.
 	ObservedState *BigtableMaterializedViewObservedState `json:"observedState,omitempty"`
 }
 
-// BigtableMaterializedViewObservedState is the state of the BigtableMaterializedView resource as most recently observed in GCP.
+// BigtableMaterializedViewObservedState is the state of the BigtableMaterializedView resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.bigtable.admin.v2.MaterializedView
 type BigtableMaterializedViewObservedState struct {
 }
