@@ -41,26 +41,13 @@ type MessageStoragePolicy struct {
 	AllowedPersistenceRegions []string `json:"allowedPersistenceRegions"`
 }
 
-type SchemaRef struct {
-	// Allowed value: string of the format `projects/{{project}}/schemas/{{value}}`,
-	// where {{value}} is the `name` field of a `PubSubSchema`
-	// resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
-
 type SchemaSettings struct {
 	// The encoding of messages validated against schema.
 	// Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"].
 	Encoding *string `json:"encoding,omitempty"`
 
 	// +required
-	SchemaRef *SchemaRef `json:"schemaRef"`
+	SchemaRef *PubSubSchemaRef `json:"schemaRef"`
 }
 
 // PubSubTopicSpec defines the desired state of PubSubTopic

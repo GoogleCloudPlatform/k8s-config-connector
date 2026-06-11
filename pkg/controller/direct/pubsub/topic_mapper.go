@@ -85,7 +85,7 @@ func SchemaSettings_FromProto(mapCtx *direct.MapContext, in *pb.SchemaSettings) 
 		out.Encoding = &encodingStr
 	}
 	if in.GetSchema() != "" {
-		out.SchemaRef = &krm.SchemaRef{External: in.GetSchema()}
+		out.SchemaRef = &krm.PubSubSchemaRef{External: in.GetSchema()}
 	}
 	return out
 }

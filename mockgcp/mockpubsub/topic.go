@@ -131,6 +131,10 @@ func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicR
 			updated.SchemaSettings = req.GetTopic().GetSchemaSettings()
 		case "message_retention_duration", "messageRetentionDuration":
 			updated.MessageRetentionDuration = req.GetTopic().GetMessageRetentionDuration()
+		case "message_storage_policy", "messageStoragePolicy":
+			updated.MessageStoragePolicy = req.GetTopic().GetMessageStoragePolicy()
+		case "kms_key_name", "kmsKeyName":
+			updated.KmsKeyName = req.GetTopic().GetKmsKeyName()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

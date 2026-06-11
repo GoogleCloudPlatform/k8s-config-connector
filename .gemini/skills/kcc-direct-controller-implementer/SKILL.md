@@ -20,7 +20,7 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
 2.  **Brownfield Migrations**:
     For brownfield resources (with existing terraform/DCL controllers), we do NOT immediately change the default controller to `direct` in Go type labels or static config map defaults.
     - Keep the default controller as legacy (TF/DCL), so users can opt-in gradually.
-    - Always test both the direct and legacy controllers. To do this, add the resource Kind to the `forceDirect = true` switch cases inside `tests/e2e/unified_test.go`.
+    - Both direct and legacy controllers are now automatically tested dynamically if a direct controller is available in `static_config.go` (under `SupportedControllers`), so there is no longer any need to manually modify `tests/e2e/unified_test.go`.
 
 3.  **Controller Structure & Patterns**:
     - **Proto Format Desired State**: Convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`.
