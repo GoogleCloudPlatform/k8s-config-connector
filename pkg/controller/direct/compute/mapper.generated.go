@@ -1410,6 +1410,118 @@ found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1
 		return out
 	}
 */
+func ComputeSSLPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLPolicyObservedState{}
+	// MISSING: CreationTimestamp
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+func ComputeSSLPolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLPolicyObservedState) *pb.SslPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslPolicy{}
+	// MISSING: CreationTimestamp
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+func ComputeSSLPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLPolicySpec{}
+	// MISSING: CreationTimestamp
+	out.CustomFeatures = in.CustomFeatures
+	out.Description = in.Description
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	out.MinTLSVersion = in.MinTlsVersion
+	// MISSING: Name
+	out.Profile = in.Profile
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+func ComputeSSLPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLPolicySpec) *pb.SslPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslPolicy{}
+	// MISSING: CreationTimestamp
+	out.CustomFeatures = in.CustomFeatures
+	out.Description = in.Description
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	out.MinTlsVersion = in.MinTLSVersion
+	// MISSING: Name
+	out.Profile = in.Profile
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+func ComputeSSLPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLPolicyStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomFeatures
+	// MISSING: Description
+	out.EnabledFeatures = in.EnabledFeatures
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// MISSING: Name
+	// MISSING: Profile
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Warnings
+	return out
+}
+func ComputeSSLPolicyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLPolicyStatus) *pb.SslPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslPolicy{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomFeatures
+	// MISSING: Description
+	out.EnabledFeatures = in.EnabledFeatures
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// MISSING: Name
+	// MISSING: Profile
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Warnings
+	return out
+}
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
 	if in == nil {
 		return nil
