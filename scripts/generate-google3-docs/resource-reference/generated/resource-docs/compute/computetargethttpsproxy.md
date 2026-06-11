@@ -176,7 +176,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificateMap` resource.</p>
+            <p>A reference to an externally managed CertificateManagerCertificateMap resource. Should be in the format "projects/{{projectID}}/locations/global/certificateMaps/{{certificateMapID}}".</p>
         </td>
     </tr>
     <tr>
