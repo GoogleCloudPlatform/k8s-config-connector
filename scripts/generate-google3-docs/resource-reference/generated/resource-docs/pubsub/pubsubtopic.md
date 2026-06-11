@@ -96,6 +96,7 @@ messageRetentionDuration: string
 messageStoragePolicy:
   allowedPersistenceRegions:
   - string
+  enforceInTransit: boolean
 resourceID: string
 schemaSettings:
   encoding: string
@@ -190,6 +191,16 @@ schemaSettings:
         <td>
             <p><code class="apitype">string</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>messageStoragePolicy.enforceInTransit</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Optional. If true, `allowed_persistence_regions` is also used to enforce in-transit guarantees for messages. That is, Pub/Sub will fail Publish operations on this topic and subscribe operations on any subscription attached to this topic in any region that is not in `allowed_persistence_regions`.</p>
         </td>
     </tr>
     <tr>

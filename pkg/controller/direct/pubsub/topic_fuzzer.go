@@ -36,6 +36,7 @@ func pubSubTopicFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".message_retention_duration")
 	f.SpecField(".message_storage_policy")
 	f.SpecField(".message_storage_policy.allowed_persistence_regions")
+	f.SpecField(".message_storage_policy.enforce_in_transit")
 	f.SpecField(".schema_settings")
 	f.SpecField(".schema_settings.schema")
 	f.SpecField(".schema_settings.encoding")
@@ -49,7 +50,6 @@ func pubSubTopicFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".tags")
 	f.Unimplemented_NotYetTriaged(".schema_settings.first_revision_id")
 	f.Unimplemented_NotYetTriaged(".schema_settings.last_revision_id")
-	f.Unimplemented_NotYetTriaged(".message_storage_policy.enforce_in_transit")
 
 	return f
 }
