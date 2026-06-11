@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}' was not found",
+        "message": "healthCheck \"projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}' was not found"
+    "message": "healthCheck \"projects/${projectId}/regions/europe-west4/healthChecks/${healthCheckID}\" not found"
   }
 }
 

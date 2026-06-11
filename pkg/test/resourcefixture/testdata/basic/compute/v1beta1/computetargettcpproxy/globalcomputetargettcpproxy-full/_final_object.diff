@@ -4,9 +4,9 @@
 <   generation: 3
 ---
 >   generation: 2
-23d21
+22d20
 <   resourceID: ${targetTcpProxyID}
-32c30,31
+31c29,30
 <   observedGeneration: 3
 ---
 >   externalRef: projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}

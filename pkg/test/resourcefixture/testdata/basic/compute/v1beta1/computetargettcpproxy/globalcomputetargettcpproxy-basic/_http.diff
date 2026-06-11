@@ -1,254 +1,55 @@
-0a1,29
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-> Content-Type: application/json
-> 
-> 404 Not Found
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "error": {
->     "code": 404,
->     "errors": [
->       {
->         "domain": "global",
->         "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found",
->         "reason": "notFound"
->       }
->     ],
->     "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found"
->   }
-> }
-> 
-> ---
-> 
-134a164,192
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-> Content-Type: application/json
-> 
-> 404 Not Found
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "error": {
->     "code": 404,
->     "errors": [
->       {
->         "domain": "global",
->         "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found",
->         "reason": "notFound"
->       }
->     ],
->     "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found"
->   }
-> }
-> 
-> ---
-> 
-281a340,368
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
-> Content-Type: application/json
-> 
-> 404 Not Found
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "error": {
->     "code": 404,
->     "errors": [
->       {
->         "domain": "global",
->         "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found",
->         "reason": "notFound"
->       }
->     ],
->     "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found"
->   }
-> }
-> 
-> ---
-> 
-400c487
+429c429
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-429c516
+458c458
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies
-435c522
+464c464
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-465c552,553
+494c494,495
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-495c583
+524c525
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-515c603
+544c545
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-520c608
+549c550
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}/setBackendService?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}/setBackendService
-524c612
+553c554
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-554c642,643
+583c584,585
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-584c673
+613c615
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-604c693
+633c635
 <   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
 ---
 >   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
-609c698
+638c640
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
-639c728,729
+668c670,671
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-669,700d758
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "checkIntervalSec": 10,
-<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "healthyThreshold": 2,
-<   "id": "000000000000000000000",
-<   "kind": "compute#healthCheck",
-<   "name": "${healthCheckID}",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-<   "tcpHealthCheck": {
-<     "port": 443,
-<     "proxyHeader": "NONE"
-<   },
-<   "timeoutSec": 5,
-<   "type": "TCP",
-<   "unhealthyThreshold": 2
-< }
-< 
-< ---
-< 
-742c800
-< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
----
-> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
-765,766c823,824
-<   "targetId": "${healthCheckID}",
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
----
->   "targetId": "${backendServiceID}",
->   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
-772c830
-< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
-785a844,875
->   "checkIntervalSec": 10,
->   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
->   "healthyThreshold": 2,
->   "id": "000000000000000000000",
->   "kind": "compute#healthCheck",
->   "name": "${healthCheckID}",
->   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
->   "tcpHealthCheck": {
->     "port": 443,
->     "proxyHeader": "NONE"
->   },
->   "timeoutSec": 5,
->   "type": "TCP",
->   "unhealthyThreshold": 2
-> }
-> 
-> ---
-> 
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "endTime": "2024-04-01T12:34:56.123456Z",
-791c881
-<   "progress": 0,
----
->   "progress": 100,
-794c884
-<   "status": "RUNNING",
----
->   "status": "DONE",
-802c892,893
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
----
-> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
-> Content-Type: application/json
-815d905
-<   "endTime": "2024-04-01T12:34:56.123456Z",
-821c911
-<   "progress": 100,
----
->   "progress": 0,
-824c914
-<   "status": "DONE",
----
->   "status": "RUNNING",
-855,856c945,946
-<   "targetId": "${backendServiceID}",
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
----
->   "targetId": "${healthCheckID}",
->   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
