@@ -746,7 +746,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...)</p>
+            <p>Immutable. Required. The Google Cloud resource to set the IAM policy on (e.g. organization, project...)</p>
         </td>
     </tr>
     <tr>

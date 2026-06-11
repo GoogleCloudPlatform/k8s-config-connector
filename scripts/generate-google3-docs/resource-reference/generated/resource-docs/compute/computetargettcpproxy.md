@@ -145,7 +145,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The geographical location of the ComputeTargetTCPProxy. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
+            <p>The geographical location of the ComputeTargetTCPProxy. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
         </td>
     </tr>
     <tr>
@@ -264,7 +264,7 @@ selfLink: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the ComputeTargetTCPProxy resource in GCP.</p>
+            <p>A unique specifier for the ComputeTargetTCPProxy resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>

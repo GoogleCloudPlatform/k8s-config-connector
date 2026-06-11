@@ -298,7 +298,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The GCP region for this subnetwork.</p>
+            <p>Immutable. The Google Cloud region for this subnetwork.</p>
         </td>
     </tr>
     <tr>
